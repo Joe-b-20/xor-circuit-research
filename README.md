@@ -62,7 +62,8 @@ matrices from the literature).
 Every push runs the independent circuit checker (`python3 circuits/check.py`) and the XORFlux
 test suite on GitHub ([checks](.github/workflows/checks.yml)). The lower-bound checkers run
 separately ([proofs](.github/workflows/proofs.yml)): the quick checks on every change to
-`lower-bound-proofs/`, the full depth-3 replay (about 20 minutes) monthly and on request.
+`lower-bound-proofs/`, the full depth-3 replay (12 minutes on GitHub's runners) monthly and on
+request.
 
 ## License
 
