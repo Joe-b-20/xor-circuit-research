@@ -1,0 +1,39 @@
+# Independent circuit checker and XORFlux test suite, on every push and pull request.
+name: checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  circuits:
+    name: circuit checker
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check every circuit against its map (standard library only, no search code)
+        run: python3 circuits/check.py
+
+  tests:
+    name: XORFlux tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit tests (includes the second verifier over every XOR-only circuit)
+        run: python3 -m unittest discover -s search/xorflux/tests -t search

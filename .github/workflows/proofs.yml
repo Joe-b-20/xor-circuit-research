@@ -1,0 +1,57 @@
+# Lower-bound checkers. They replay the proofs' finite computations, not the mathematical
+# arguments (see lower-bound-proofs/README.md).
+#   quick: the full lb75 check (about 1 min) and the lb93 quick check, on every change to
+#          lower-bound-proofs/ and on request;
+#   full-depth3: the complete lb93 replay (about 20 min, needs g++), monthly and on request.
+name: proofs
+
+on:
+  push:
+    paths: ["lower-bound-proofs/**", ".github/workflows/proofs.yml"]
+  pull_request:
+    paths: ["lower-bound-proofs/**", ".github/workflows/proofs.yml"]
+  schedule:
+    - cron: "17 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Also run the full depth-3 replay (about 20 min)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  quick:
+    name: lb75 full check, lb93 quick check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Package checksums
+        run: |
+          (cd lower-bound-proofs/mixcolumns-lb75 && sha256sum -c --quiet SHA256SUMS.txt)
+          (cd lower-bound-proofs/mixcolumns-lb93-depth3 && sha256sum -c --quiet SHA256SUMS.txt)
+      - name: At least 75 gates (complete check)
+        run: python3 lower-bound-proofs/mixcolumns-lb75/verify_all.py
+      - name: At least 93 gates at depth 3 (quick check, not a proof replay)
+        run: python3 lower-bound-proofs/mixcolumns-lb93-depth3/verify_all.py --quick
+
+  full-depth3:
+    name: lb93 full replay
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.full)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: At least 93 gates at depth 3 (complete replay)
+        run: |
+          g++ --version | head -n 1
+          python3 lower-bound-proofs/mixcolumns-lb93-depth3/verify_all.py
