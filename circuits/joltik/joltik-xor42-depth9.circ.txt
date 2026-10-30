@@ -1,0 +1,80 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-10-30T00:38:11Z
+  % Not a NIST-issued circuit
+  % Found by: xorsearch v6 (search/versions/v6-xorsearch), run rerun-joltik, worker cap8-04
+  % Started from: NIST 44@7 circuit (seed.json in the logs)
+  % Logs: logs/joltik-xor42-depth9/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % joltik-xor42-depth9 16 16   % joltik; 16x16 bit matrix; 2-input XOR basis
+
+## Circuit
+begin circuit joltik-xor42-depth9
+
+  % Description: y = A.x with A in joltik.mat.txt (row i = y_i, column j = x_j)
+  % Tally of variables (58): 16 inputs; 16 outputs; 26 intermediates
+  % Tally of gates (42): 42 XOR
+  % Gate depth 9
+  % Gates per gate level: 4 4 4 6 6 5 5 4 4
+
+Inputs: x0:x15
+Outputs: y0:y15
+Internal: t1:t26
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x0 x1
+XOR t2 x0 x8
+XOR t3 x6 x14
+XOR t4 x7 x14
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t5 t2 x11
+XOR t6 t1 x12
+XOR t7 x13 t3
+XOR t8 t4 x15
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t9 x9 t6
+XOR y14 t5 t4
+XOR t10 x2 t8
+XOR t11 x10 t8
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR t12 x3 t9
+XOR t13 x4 t9
+XOR t14 t2 t9
+XOR t15 t3 t11
+XOR y9 x9 t10
+XOR t16 x5 t11
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 5
+XOR t17 x12 t13
+XOR t18 t1 t14
+XOR y7 x7 t14
+XOR t19 x10 t12
+XOR y1 x1 t15
+XOR t20 t13 t16
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 6
+XOR t21 y7 t19
+XOR y12 y9 t20
+XOR t22 y1 t20
+XOR y0 t18 t7
+XOR y15 t17 x15
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 7
+XOR t23 t22 y0
+XOR y8 t14 t22
+XOR t24 t21 y14
+XOR y6 t21 t15
+XOR y10 t19 y15
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 8
+XOR t25 t17 t23
+XOR y11 t5 t23
+XOR y13 t24 t7
+XOR t26 t24 t10
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 9
+XOR y2 t26 y10
+XOR y3 t12 t25
+XOR y4 y12 t25
+XOR y5 t26 t16
+end SLP
+end circuit

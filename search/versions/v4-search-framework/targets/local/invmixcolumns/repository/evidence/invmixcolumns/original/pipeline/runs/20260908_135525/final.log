@@ -1,0 +1,288 @@
+[     0.0s 14:03:27] worker start: engine=lns depth=None start=~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/seed_from_d9.json seeds=[1, 2, 3] chunk=600s reseed=True
+[     0.0s 14:03:27] target=~/xor_ui/slp-invmc/spec/invmc_matrix.json MIN_DEPTH=5 oracle=~/xor_ui/slp-invmc/tools/verify_slp_generic.py
+[     0.0s 14:03:27] knobs: {"lns": {"accept": "sa", "biginj_hi": 16, "biginj_lo": 8, "cone_hi": 4, "cone_lo": 2, "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/final.pop.jsonl", "hot_frac": 0.5, "kmax": 4, "kshake": 12, "nsamp": [12, 12], "op_mix": {"biginj": 0.2, "coneinj": 0.45, "small": 0.35}, "peel_window": 6, "pop_period_s": 120.0, "sa_T0": 1.2, "sa_cool": 0.9997, "sa_reheat": 4000, "snapback": 12, "up_prob": 0.5, "up_slack": 4, "vic_cost": 3}}
+[     0.5s 14:03:27]   NEW BEST 240 gates depth 6 VERIFIED+ORACLED  -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    86.2s 14:04:53]   NEW BEST 239 gates depth 7 VERIFIED+ORACLED it=526 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    87.1s 14:04:54]   NEW BEST 238 gates depth 7 VERIFIED+ORACLED it=528 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   138.9s 14:05:46]   NEW BEST 237 gates depth 8 VERIFIED+ORACLED it=857 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   150.6s 14:05:57]   NEW BEST 236 gates depth 8 VERIFIED+ORACLED it=902 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   162.0s 14:06:09]   NEW BEST 236 gates depth 7 VERIFIED+ORACLED depth-tiebreak it=941 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   172.0s 14:06:19]   NEW BEST 236 gates depth 6 VERIFIED+ORACLED depth-tiebreak it=999 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   175.4s 14:06:22]   NEW BEST 235 gates depth 6 VERIFIED+ORACLED it=1027 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   386.9s 14:09:54]   NEW BEST 234 gates depth 6 VERIFIED+ORACLED it=2522 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   602.8s 14:13:30]   ADOPTED reseed 225 gates depth 6 from reseed_final.json
+[   698.9s 14:15:06]   NEW BEST 224 gates depth 6 VERIFIED+ORACLED it=75 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   807.8s 14:16:55]   NEW BEST 223 gates depth 7 VERIFIED+ORACLED it=134 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   928.7s 14:18:55]   NEW BEST 223 gates depth 6 VERIFIED+ORACLED depth-tiebreak it=288 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  1803.9s 14:33:31]   NEW BEST 222 gates depth 6 VERIFIED+ORACLED it=646 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  3064.2s 14:54:31]   ADOPTED reseed 220 gates depth 7 from reseed_final.json
+[  3641.4s 15:04:08]   NEW BEST 219 gates depth 7 VERIFIED+ORACLED it=1783 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  3673.9s 15:04:41]   ADOPTED reseed 219 gates depth 6 from reseed_final.json
+[  4127.1s 15:12:14]   NEW BEST 218 gates depth 8 VERIFIED+ORACLED it=655 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  4144.2s 15:12:31]   NEW BEST 217 gates depth 7 VERIFIED+ORACLED it=670 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  4276.1s 15:14:43]   ADOPTED reseed 217 gates depth 6 from reseed_final.json
+[  4427.1s 15:17:14]   NEW BEST 216 gates depth 9 VERIFIED+ORACLED it=208 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  4438.0s 15:17:25]   NEW BEST 216 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=218 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  4627.9s 15:20:35]   NEW BEST 216 gates depth 7 VERIFIED+ORACLED depth-tiebreak it=533 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  4879.3s 15:24:46]   ADOPTED reseed 214 gates depth 7 from reseed_final.json
+[  5511.5s 15:35:18]   ADOPTED reseed 213 gates depth 7 from reseed_final.json
+[  5589.7s 15:36:36]   NEW BEST 212 gates depth 7 VERIFIED+ORACLED it=113 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  6721.1s 15:55:28]   ADOPTED reseed 210 gates depth 6 from reseed_final.json
+[  6981.8s 15:59:49]   NEW BEST 209 gates depth 6 VERIFIED+ORACLED it=1096 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  7065.5s 16:01:12]   NEW BEST 208 gates depth 6 VERIFIED+ORACLED it=1336 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  7106.0s 16:01:53]   NEW BEST 207 gates depth 6 VERIFIED+ORACLED it=1508 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  7207.7s 16:03:34]   NEW BEST 206 gates depth 6 VERIFIED+ORACLED it=1759 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  7740.2s 16:12:27]   NEW BEST 205 gates depth 7 VERIFIED+ORACLED it=3888 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  7798.8s 16:13:26]   NEW BEST 205 gates depth 6 VERIFIED+ORACLED depth-tiebreak it=4121 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  7923.3s 16:15:30]   ADOPTED reseed 203 gates depth 6 from reseed_final.json
+[  8101.3s 16:18:28]   NEW BEST 202 gates depth 6 VERIFIED+ORACLED it=1347 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  8210.7s 16:20:17]   NEW BEST 201 gates depth 7 VERIFIED+ORACLED it=2124 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  8216.7s 16:20:23]   NEW BEST 201 gates depth 6 VERIFIED+ORACLED depth-tiebreak it=2151 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  8285.1s 16:21:32]   NEW BEST 200 gates depth 6 VERIFIED+ORACLED it=2696 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[  9127.4s 16:35:34]   ADOPTED reseed 199 gates depth 6 from reseed_final.json
+[  9728.1s 16:45:35]   ADOPTED reseed 198 gates depth 6 from reseed_final.json
+[ 10931.0s 17:05:38]   ADOPTED reseed 197 gates depth 6 from reseed_final.json
+[ 11333.1s 17:12:20]   NEW BEST 196 gates depth 7 VERIFIED+ORACLED it=1669 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11338.6s 17:12:25]   NEW BEST 196 gates depth 6 VERIFIED+ORACLED depth-tiebreak it=1716 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11361.6s 17:12:48]   NEW BEST 195 gates depth 10 VERIFIED+ORACLED it=1934 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11363.9s 17:12:51]   NEW BEST 195 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=1959 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11384.3s 17:13:11]   NEW BEST 194 gates depth 9 VERIFIED+ORACLED it=2160 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11390.4s 17:13:17]   NEW BEST 193 gates depth 9 VERIFIED+ORACLED it=2249 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11536.9s 17:15:44]   NEW BEST 193 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=57 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11907.1s 17:21:54]   NEW BEST 192 gates depth 8 VERIFIED+ORACLED it=5908 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 11937.9s 17:22:25]   NEW BEST 191 gates depth 8 VERIFIED+ORACLED it=6313 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12075.9s 17:24:43]   NEW BEST 191 gates depth 7 VERIFIED+ORACLED depth-tiebreak it=8525 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12254.7s 17:27:42]   NEW BEST 190 gates depth 9 VERIFIED+ORACLED it=1943 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12263.2s 17:27:50]   NEW BEST 189 gates depth 9 VERIFIED+ORACLED it=2041 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12293.1s 17:28:20]   NEW BEST 189 gates depth 7 VERIFIED+ORACLED depth-tiebreak it=2440 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12374.2s 17:29:41]   NEW BEST 188 gates depth 9 VERIFIED+ORACLED it=3624 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12392.1s 17:29:59]   NEW BEST 188 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=3833 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12396.9s 17:30:04]   NEW BEST 185 gates depth 8 VERIFIED+ORACLED it=3904 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12397.9s 17:30:05]   NEW BEST 184 gates depth 8 VERIFIED+ORACLED it=3909 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12559.7s 17:32:46]   NEW BEST 183 gates depth 11 VERIFIED+ORACLED it=6831 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12561.7s 17:32:48]   NEW BEST 183 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=6854 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12569.2s 17:32:56]   NEW BEST 183 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=6944 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12583.0s 17:33:10]   NEW BEST 182 gates depth 9 VERIFIED+ORACLED it=7105 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12586.5s 17:33:13]   NEW BEST 181 gates depth 10 VERIFIED+ORACLED it=7135 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12591.7s 17:33:18]   NEW BEST 181 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=7179 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12605.9s 17:33:33]   NEW BEST 180 gates depth 9 VERIFIED+ORACLED it=7335 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12607.3s 17:33:34]   NEW BEST 179 gates depth 10 VERIFIED+ORACLED it=7359 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12613.2s 17:33:40]   NEW BEST 178 gates depth 9 VERIFIED+ORACLED it=7428 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12729.6s 17:35:36]   NEW BEST 177 gates depth 9 VERIFIED+ORACLED it=8895 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12733.1s 17:35:40]   NEW BEST 176 gates depth 9 VERIFIED+ORACLED it=5 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12785.2s 17:36:32]   NEW BEST 175 gates depth 10 VERIFIED+ORACLED it=834 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12790.1s 17:36:37]   NEW BEST 174 gates depth 10 VERIFIED+ORACLED it=885 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12790.4s 17:36:37]   NEW BEST 173 gates depth 10 VERIFIED+ORACLED it=895 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12792.5s 17:36:39]   NEW BEST 172 gates depth 10 VERIFIED+ORACLED it=932 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12792.8s 17:36:40]   NEW BEST 172 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=934 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12795.0s 17:36:42]   NEW BEST 171 gates depth 9 VERIFIED+ORACLED it=976 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12897.2s 17:38:24]   NEW BEST 170 gates depth 9 VERIFIED+ORACLED it=2701 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12902.1s 17:38:29]   NEW BEST 170 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=2764 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12922.2s 17:38:49]   NEW BEST 169 gates depth 10 VERIFIED+ORACLED it=3071 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 12923.6s 17:38:50]   NEW BEST 169 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=3080 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13094.3s 17:41:41]   NEW BEST 168 gates depth 9 VERIFIED+ORACLED it=5485 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13179.4s 17:43:06]   NEW BEST 167 gates depth 9 VERIFIED+ORACLED it=6889 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13181.2s 17:43:08]   NEW BEST 166 gates depth 9 VERIFIED+ORACLED it=6912 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13208.8s 17:43:36]   NEW BEST 165 gates depth 9 VERIFIED+ORACLED it=7222 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13607.1s 17:50:14]   NEW BEST 162 gates depth 12 VERIFIED+ORACLED it=4748 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13609.8s 17:50:17]   NEW BEST 160 gates depth 12 VERIFIED+ORACLED it=4778 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13612.0s 17:50:19]   NEW BEST 159 gates depth 12 VERIFIED+ORACLED it=4808 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13621.2s 17:50:28]   NEW BEST 159 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=4955 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13624.4s 17:50:31]   NEW BEST 158 gates depth 11 VERIFIED+ORACLED it=4994 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13653.7s 17:51:00]   NEW BEST 158 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=5302 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13655.4s 17:51:02]   NEW BEST 158 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=5319 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13657.5s 17:51:04]   NEW BEST 157 gates depth 10 VERIFIED+ORACLED it=5339 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13660.3s 17:51:07]   NEW BEST 157 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=5393 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13738.0s 17:52:25]   NEW BEST 157 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=6737 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13763.2s 17:52:50]   NEW BEST 156 gates depth 9 VERIFIED+ORACLED it=7163 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13764.2s 17:52:51]   NEW BEST 156 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=7172 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13771.8s 17:52:59]   NEW BEST 155 gates depth 8 VERIFIED+ORACLED it=7281 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13784.0s 17:53:11]   NEW BEST 154 gates depth 11 VERIFIED+ORACLED it=7518 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13787.8s 17:53:15]   NEW BEST 154 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=7567 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13788.0s 17:53:15]   NEW BEST 154 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=7571 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13801.2s 17:53:28]   NEW BEST 152 gates depth 10 VERIFIED+ORACLED it=7745 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13807.2s 17:53:34]   NEW BEST 152 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=7803 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 13896.9s 17:55:04]   NEW BEST 152 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=9094 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14181.1s 17:59:48]   NEW BEST 151 gates depth 10 VERIFIED+ORACLED it=4392 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14181.5s 17:59:48]   NEW BEST 151 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=4395 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14192.8s 18:00:00]   NEW BEST 150 gates depth 9 VERIFIED+ORACLED it=4549 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14249.0s 18:00:56]   NEW BEST 148 gates depth 9 VERIFIED+ORACLED it=5321 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14340.0s 18:02:27]   NEW BEST 148 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=6582 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14350.2s 18:02:37]   NEW BEST 147 gates depth 9 VERIFIED+ORACLED it=6718 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14352.2s 18:02:39]   NEW BEST 147 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=6755 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14354.5s 18:02:41]   NEW BEST 146 gates depth 8 VERIFIED+ORACLED it=6790 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14532.8s 18:05:40]   ADOPTED reseed 142 gates depth 8 from reseed_final.json
+[ 14864.7s 18:11:11]   NEW BEST 141 gates depth 8 VERIFIED+ORACLED it=5944 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 14878.2s 18:11:25]   NEW BEST 140 gates depth 8 VERIFIED+ORACLED it=6104 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15003.8s 18:13:31]   NEW BEST 139 gates depth 11 VERIFIED+ORACLED it=7847 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15108.2s 18:15:15]   NEW BEST 139 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=9700 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15110.6s 18:15:17]   NEW BEST 139 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=9731 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15111.0s 18:15:18]   NEW BEST 138 gates depth 8 VERIFIED+ORACLED it=9736 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15277.0s 18:18:04]   NEW BEST 137 gates depth 9 VERIFIED+ORACLED it=2392 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15277.6s 18:18:04]   NEW BEST 136 gates depth 9 VERIFIED+ORACLED it=2402 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15278.0s 18:18:05]   NEW BEST 136 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=2406 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15279.4s 18:18:06]   NEW BEST 135 gates depth 8 VERIFIED+ORACLED it=2430 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15366.8s 18:19:34]   NEW BEST 134 gates depth 9 VERIFIED+ORACLED it=3843 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15383.6s 18:19:50]   NEW BEST 134 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=4118 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15436.4s 18:20:43]   NEW BEST 133 gates depth 9 VERIFIED+ORACLED it=5044 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15450.8s 18:20:58]   NEW BEST 133 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=5276 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15492.9s 18:21:40]   NEW BEST 132 gates depth 8 VERIFIED+ORACLED it=5984 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15496.8s 18:21:44]   NEW BEST 131 gates depth 8 VERIFIED+ORACLED it=6043 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15615.8s 18:23:43]   NEW BEST 130 gates depth 9 VERIFIED+ORACLED it=8489 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15625.0s 18:23:52]   NEW BEST 130 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=8657 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15650.6s 18:24:17]   NEW BEST 129 gates depth 9 VERIFIED+ORACLED it=9204 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15650.7s 18:24:17]   NEW BEST 129 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=9205 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15671.0s 18:24:38]   NEW BEST 128 gates depth 8 VERIFIED+ORACLED it=9584 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15779.9s 18:26:27]   NEW BEST 127 gates depth 9 VERIFIED+ORACLED it=1012 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15836.2s 18:27:23]   NEW BEST 126 gates depth 9 VERIFIED+ORACLED it=2060 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15838.4s 18:27:25]   NEW BEST 126 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=2095 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15873.7s 18:28:01]   NEW BEST 125 gates depth 13 VERIFIED+ORACLED it=2716 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15875.1s 18:28:02]   NEW BEST 125 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=2745 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15881.8s 18:28:09]   NEW BEST 125 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=2861 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15898.3s 18:28:25]   NEW BEST 124 gates depth 10 VERIFIED+ORACLED it=3178 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15898.8s 18:28:26]   NEW BEST 123 gates depth 10 VERIFIED+ORACLED it=3185 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15903.4s 18:28:30]   NEW BEST 122 gates depth 10 VERIFIED+ORACLED it=3273 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15907.6s 18:28:34]   NEW BEST 121 gates depth 10 VERIFIED+ORACLED it=3355 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15961.7s 18:29:28]   NEW BEST 120 gates depth 10 VERIFIED+ORACLED it=4502 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 15993.6s 18:30:00]   NEW BEST 119 gates depth 10 VERIFIED+ORACLED it=5215 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16010.8s 18:30:18]   NEW BEST 117 gates depth 11 VERIFIED+ORACLED it=5551 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16011.5s 18:30:18]   NEW BEST 117 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=5561 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16094.0s 18:31:41]   NEW BEST 116 gates depth 10 VERIFIED+ORACLED it=7444 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16103.4s 18:31:50]   NEW BEST 115 gates depth 10 VERIFIED+ORACLED it=7642 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16104.4s 18:31:51]   NEW BEST 114 gates depth 11 VERIFIED+ORACLED it=7660 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16137.4s 18:32:24]   NEW BEST 113 gates depth 11 VERIFIED+ORACLED it=8420 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16158.7s 18:32:45]   NEW BEST 113 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=8907 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16204.8s 18:33:32]   NEW BEST 112 gates depth 10 VERIFIED+ORACLED it=9892 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16223.3s 18:33:50]   NEW BEST 111 gates depth 11 VERIFIED+ORACLED it=10259 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16226.8s 18:33:54]   NEW BEST 110 gates depth 11 VERIFIED+ORACLED it=10344 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16227.7s 18:33:54]   NEW BEST 110 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=10361 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16290.3s 18:34:57]   NEW BEST 109 gates depth 11 VERIFIED+ORACLED it=11719 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16291.1s 18:34:58]   NEW BEST 109 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=11732 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16296.0s 18:35:03]   NEW BEST 109 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=11846 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16321.4s 18:35:28]   NEW BEST 109 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=12495 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16425.0s 18:37:12]   NEW BEST 108 gates depth 16 VERIFIED+ORACLED it=2197 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16425.9s 18:37:13]   NEW BEST 108 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=2212 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16428.5s 18:37:15]   NEW BEST 107 gates depth 16 VERIFIED+ORACLED it=2253 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16440.4s 18:37:27]   NEW BEST 107 gates depth 13 VERIFIED+ORACLED depth-tiebreak it=2507 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16440.9s 18:37:28]   NEW BEST 107 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=2513 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16469.3s 18:37:56]   NEW BEST 106 gates depth 17 VERIFIED+ORACLED it=3168 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16470.3s 18:37:57]   NEW BEST 106 gates depth 15 VERIFIED+ORACLED depth-tiebreak it=3187 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16474.8s 18:38:02]   NEW BEST 106 gates depth 14 VERIFIED+ORACLED depth-tiebreak it=3274 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16476.1s 18:38:03]   NEW BEST 106 gates depth 13 VERIFIED+ORACLED depth-tiebreak it=3299 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16488.0s 18:38:15]   NEW BEST 106 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=3566 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16488.4s 18:38:15]   NEW BEST 106 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=3570 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16762.1s 18:42:49]   NEW BEST 106 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=10543 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16770.2s 18:42:57]   NEW BEST 106 gates depth 9 VERIFIED+ORACLED depth-tiebreak it=10746 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16779.2s 18:43:06]   NEW BEST 106 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=10964 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16831.7s 18:43:58]   NEW BEST 105 gates depth 12 VERIFIED+ORACLED it=12256 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 16832.1s 18:43:59]   NEW BEST 105 gates depth 8 VERIFIED+ORACLED depth-tiebreak it=12263 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17183.9s 18:49:51]   NEW BEST 104 gates depth 10 VERIFIED+ORACLED it=7727 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17211.2s 18:50:18]   NEW BEST 103 gates depth 13 VERIFIED+ORACLED it=8438 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17212.0s 18:50:19]   NEW BEST 103 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=8455 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17254.7s 18:51:01]   NEW BEST 102 gates depth 10 VERIFIED+ORACLED it=9685 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17503.9s 18:55:11]   NEW BEST 101 gates depth 12 VERIFIED+ORACLED it=16876 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17584.1s 18:56:31]   NEW BEST 101 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=1936 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17628.0s 18:57:15]   NEW BEST 100 gates depth 13 VERIFIED+ORACLED it=3560 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17628.5s 18:57:15]   NEW BEST 100 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=3576 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17629.0s 18:57:16]   NEW BEST 100 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=3588 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17632.6s 18:57:19]   NEW BEST 99 gates depth 12 VERIFIED+ORACLED it=3703 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17633.5s 18:57:20]   NEW BEST 99 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=3734 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17706.7s 18:58:33]   NEW BEST 98 gates depth 11 VERIFIED+ORACLED it=6318 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17758.1s 18:59:25]   NEW BEST 98 gates depth 10 VERIFIED+ORACLED depth-tiebreak it=7950 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17809.0s 19:00:16]   NEW BEST 97 gates depth 14 VERIFIED+ORACLED it=9705 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17810.8s 19:00:18]   NEW BEST 97 gates depth 13 VERIFIED+ORACLED depth-tiebreak it=9772 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17813.7s 19:00:20]   NEW BEST 97 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=9857 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17814.0s 19:00:21]   NEW BEST 97 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=9863 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17832.8s 19:00:40]   NEW BEST 96 gates depth 14 VERIFIED+ORACLED it=10501 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 17890.5s 19:01:37]   NEW BEST 95 gates depth 15 VERIFIED+ORACLED it=12337 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 18124.8s 19:05:32] [lns] 591s iters=20000 cur=97 best=95 pool=4697 hot=44628 harv=989 peelgain=10464
+[ 18575.6s 19:13:02]   NEW BEST 95 gates depth 13 VERIFIED+ORACLED depth-tiebreak it=15772 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 18695.6s 19:15:02] [lns] 562s iters=20000 cur=95 best=95 pool=4186 hot=45036 harv=31 peelgain=11548
+[ 18944.3s 19:19:11]   NEW BEST 95 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=7484 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 19150.4s 19:22:37]   NEW BEST 94 gates depth 13 VERIFIED+ORACLED it=14630 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 19157.4s 19:22:44]   NEW BEST 94 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=14837 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 19285.4s 19:24:52] [lns] 552s iters=20000 cur=97 best=94 pool=4204 hot=45069 harv=192 peelgain=11319
+[ 19620.5s 19:30:27]   NEW BEST 94 gates depth 11 VERIFIED+ORACLED depth-tiebreak it=12120 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 19621.0s 19:30:28]   NEW BEST 93 gates depth 13 VERIFIED+ORACLED it=12134 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 19622.0s 19:30:29]   NEW BEST 93 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=12168 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 19811.4s 19:33:38] [lns] 478s iters=20000 cur=96 best=93 pool=4082 hot=47516 harv=35 peelgain=10776
+[ 20466.3s 19:44:33] [lns] 533s iters=20000 cur=94 best=93 pool=3989 hot=43829 harv=133 peelgain=12245
+[ 21035.3s 19:54:02] [lns] 501s iters=20000 cur=95 best=93 pool=3979 hot=48061 harv=4 peelgain=11268
+[ 21584.9s 20:03:12] [lns] 451s iters=20000 cur=93 best=93 pool=3936 hot=41669 harv=89 peelgain=10043
+[ 22216.5s 20:13:43] [lns] 483s iters=20000 cur=94 best=93 pool=4000 hot=45134 harv=30 peelgain=11404
+[ 22808.3s 20:23:35] [lns] 474s iters=20000 cur=95 best=93 pool=3947 hot=42974 harv=156 peelgain=10970
+[ 23375.3s 20:33:02] [lns] 441s iters=20000 cur=93 best=93 pool=3929 hot=41519 harv=242 peelgain=10174
+[ 23978.5s 20:43:05] [lns] 444s iters=20000 cur=96 best=93 pool=3970 hot=46665 harv=3 peelgain=10025
+[ 24669.3s 20:54:36] [lns] 535s iters=20000 cur=93 best=93 pool=3930 hot=42917 harv=88 peelgain=11354
+[ 25262.3s 21:04:29] [lns] 528s iters=20000 cur=95 best=93 pool=3941 hot=42184 harv=161 peelgain=10605
+[ 25846.4s 21:14:13] [lns] 512s iters=20000 cur=97 best=93 pool=4053 hot=46975 harv=7 peelgain=10923
+[ 26473.9s 21:24:41] [lns] 539s iters=20000 cur=97 best=93 pool=4083 hot=46594 harv=9 peelgain=11828
+[ 27039.6s 21:34:06] [lns] 505s iters=20000 cur=94 best=93 pool=3945 hot=44682 harv=97 peelgain=11369
+[ 27609.9s 21:43:37] [lns] 475s iters=20000 cur=94 best=93 pool=3939 hot=42246 harv=149 peelgain=10316
+[ 28228.6s 21:53:55] [lns] 494s iters=20000 cur=93 best=93 pool=3938 hot=41995 harv=166 peelgain=10951
+[ 28827.4s 22:03:54] [lns] 493s iters=20000 cur=96 best=93 pool=3937 hot=42336 harv=156 peelgain=11014
+[ 29371.1s 22:12:58] [lns] 436s iters=20000 cur=93 best=93 pool=3927 hot=41258 harv=139 peelgain=9901
+[ 30052.2s 22:24:19] [lns] 517s iters=20000 cur=95 best=93 pool=3966 hot=44957 harv=140 peelgain=11785
+[ 30592.0s 22:33:19] [lns] 457s iters=20000 cur=94 best=93 pool=3932 hot=43466 harv=125 peelgain=10449
+[ 30806.9s 22:36:54]   NEW BEST 92 gates depth 16 VERIFIED+ORACLED it=3053 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 31182.5s 22:43:09] [lns] 447s iters=20000 cur=94 best=92 pool=3940 hot=41351 harv=67 peelgain=10511
+[ 31803.2s 22:53:30] [lns] 468s iters=20000 cur=94 best=92 pool=3873 hot=43521 harv=3 peelgain=11274
+[ 32415.4s 23:03:42] [lns] 480s iters=20000 cur=95 best=92 pool=3889 hot=43599 harv=2 peelgain=11419
+[ 32989.5s 23:13:16] [lns] 454s iters=20000 cur=97 best=92 pool=3994 hot=48926 harv=10 peelgain=9965
+[ 33603.6s 23:23:30] [lns] 468s iters=20000 cur=93 best=92 pool=3874 hot=42545 harv=14 peelgain=11554
+[ 34178.7s 23:33:05] [lns] 443s iters=20000 cur=93 best=92 pool=3892 hot=42172 harv=5 peelgain=10765
+[ 34803.3s 23:43:30] [lns] 468s iters=20000 cur=93 best=92 pool=3893 hot=43659 harv=11 peelgain=11407
+[ 35405.9s 23:53:33] [lns] 470s iters=20000 cur=94 best=92 pool=3886 hot=43168 harv=15 peelgain=10686
+[ 36076.6s 00:04:43] [lns] 541s iters=20000 cur=94 best=92 pool=3910 hot=45464 harv=2 peelgain=11233
+[ 36660.5s 00:14:27] [lns] 525s iters=20000 cur=95 best=92 pool=3924 hot=43431 harv=10 peelgain=11616
+[ 37224.0s 00:23:51] [lns] 488s iters=20000 cur=95 best=92 pool=3904 hot=43644 harv=2 peelgain=10964
+[ 37810.3s 00:33:37] [lns] 474s iters=20000 cur=95 best=92 pool=3881 hot=42389 harv=2 peelgain=10637
+[ 38441.5s 00:44:08] [lns] 506s iters=20000 cur=93 best=92 pool=3897 hot=42630 harv=22 peelgain=11332
+[ 39049.1s 00:54:16] [lns] 513s iters=20000 cur=93 best=92 pool=3914 hot=43508 harv=42 peelgain=11238
+[ 39625.9s 01:03:53] [lns] 490s iters=20000 cur=94 best=92 pool=3885 hot=43038 harv=5 peelgain=10419
+[ 40213.5s 01:13:40] [lns] 477s iters=20000 cur=94 best=92 pool=3883 hot=42223 harv=10 peelgain=10779
+[ 40832.0s 01:23:59] [lns] 496s iters=20000 cur=97 best=92 pool=3924 hot=43491 harv=4 peelgain=11334
+[ 41422.0s 01:33:49] [lns] 486s iters=20000 cur=93 best=92 pool=3890 hot=42985 harv=18 peelgain=11358
+[ 42026.7s 01:43:53] [lns] 490s iters=20000 cur=95 best=92 pool=3878 hot=42146 harv=3 peelgain=11367
+[ 42636.1s 01:54:03] [lns] 500s iters=20000 cur=95 best=92 pool=3952 hot=44735 harv=3 peelgain=11589
+[ 43147.2s 02:02:34]   NEW BEST 92 gates depth 12 VERIFIED+ORACLED depth-tiebreak it=16828 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 43219.4s 02:03:46] [lns] 483s iters=20000 cur=93 best=92 pool=3897 hot=42967 harv=9 peelgain=11212
+[ 43762.5s 02:12:49] [lns] 426s iters=20000 cur=94 best=92 pool=3900 hot=41621 harv=57 peelgain=9989
+[ 44124.6s 02:18:51]   NEW BEST 91 gates depth 16 VERIFIED+ORACLED it=7792 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 44372.9s 02:23:00] [lns] 436s iters=20000 cur=92 best=91 pool=3872 hot=38648 harv=141 peelgain=10046
+[ 44984.9s 02:33:12] [lns] 448s iters=20000 cur=92 best=91 pool=3801 hot=40125 harv=2 peelgain=10163
+[ 45590.1s 02:43:17] [lns] 453s iters=20000 cur=92 best=91 pool=3805 hot=39299 harv=1 peelgain=10518
+[ 46184.2s 02:53:11] [lns] 447s iters=20000 cur=92 best=91 pool=3819 hot=42183 harv=3 peelgain=10037
+[ 46789.8s 03:03:17] [lns] 453s iters=20000 cur=94 best=91 pool=3805 hot=40757 harv=3 peelgain=10510
+[ 47137.4s 03:09:04]   NEW BEST 91 gates depth 14 VERIFIED+ORACLED depth-tiebreak it=8593 -> final_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[ 47408.5s 03:13:35] [lns] 471s iters=20000 cur=92 best=91 pool=3857 hot=43398 harv=3 peelgain=10945
+[ 47977.1s 03:23:04] [lns] 440s iters=20000 cur=91 best=91 pool=3807 hot=40181 harv=57 peelgain=10546
+[ 48561.6s 03:32:48] [lns] 424s iters=20000 cur=91 best=91 pool=3798 hot=39952 harv=19 peelgain=9987
+[ 49184.4s 03:43:11] [lns] 447s iters=20000 cur=92 best=91 pool=3813 hot=40583 harv=25 peelgain=10481
+[ 49792.1s 03:53:19] [lns] 455s iters=20000 cur=92 best=91 pool=3793 hot=41245 harv=23 peelgain=10729
+[ 50382.2s 04:03:09] [lns] 445s iters=20000 cur=92 best=91 pool=3803 hot=40843 harv=20 peelgain=10617
+[ 50963.0s 04:12:50] [lns] 425s iters=20000 cur=93 best=91 pool=3804 hot=39566 harv=31 peelgain=9964
+[ 51577.4s 04:23:04] [lns] 440s iters=20000 cur=92 best=91 pool=3804 hot=40426 harv=26 peelgain=10346
+[ 52206.9s 04:33:34] [lns] 469s iters=20000 cur=91 best=91 pool=3807 hot=41337 harv=62 peelgain=11536
+[ 52771.3s 04:42:58] [lns] 433s iters=20000 cur=92 best=91 pool=3811 hot=40476 harv=9 peelgain=10152
+[ 53415.8s 04:53:43] [lns] 478s iters=20000 cur=93 best=91 pool=3851 hot=42190 harv=18 peelgain=11264
+[ 54010.0s 05:03:37] [lns] 472s iters=20000 cur=92 best=91 pool=3800 hot=40598 harv=108 peelgain=11245
+[ 54606.7s 05:13:33] [lns] 469s iters=20000 cur=92 best=91 pool=3814 hot=41549 harv=12 peelgain=10822
+[ 55250.2s 05:24:17] [lns] 512s iters=20000 cur=92 best=91 pool=3798 hot=40687 harv=100 peelgain=11798
+[ 55767.0s 05:32:54] [lns] 429s iters=20000 cur=93 best=91 pool=3801 hot=41413 harv=1 peelgain=10354
+[ 56384.9s 05:43:12] [lns] 447s iters=20000 cur=91 best=91 pool=3793 hot=40723 harv=43 peelgain=10707
+[ 56982.0s 05:53:09] [lns] 444s iters=20000 cur=92 best=91 pool=3799 hot=39820 harv=44 peelgain=10532
+[ 57570.0s 06:02:57] [lns] 431s iters=20000 cur=92 best=91 pool=3795 hot=39766 harv=26 peelgain=10029
+[ 58189.0s 06:13:16] [lns] 450s iters=20000 cur=91 best=91 pool=3818 hot=41225 harv=24 peelgain=10679
+[ 58791.5s 06:23:18] [lns] 453s iters=20000 cur=94 best=91 pool=3826 hot=42985 harv=2 peelgain=10596
+[ 59385.1s 06:33:12] [lns] 446s iters=20000 cur=93 best=91 pool=3797 hot=40467 harv=31 peelgain=10569
+[ 60004.9s 06:43:32] [lns] 466s iters=20000 cur=92 best=91 pool=3798 hot=41236 harv=50 peelgain=11109
+[ 60564.4s 06:52:51] [lns] 426s iters=20000 cur=91 best=91 pool=3812 hot=40553 harv=24 peelgain=10096
+[ 61179.0s 07:03:06] [lns] 440s iters=20000 cur=92 best=91 pool=3799 hot=40868 harv=36 peelgain=10582
+[ 61763.3s 07:12:50] [lns] 424s iters=20000 cur=93 best=91 pool=3796 hot=40531 harv=32 peelgain=10303
+[ 62358.5s 07:22:45] [lns] 419s iters=20000 cur=93 best=91 pool=3808 hot=40107 harv=16 peelgain=10055
+[ 62965.2s 07:32:52] [lns] 426s iters=20000 cur=93 best=91 pool=3796 hot=40936 harv=16 peelgain=10116
+[ 63556.9s 07:42:44] [lns] 418s iters=20000 cur=92 best=91 pool=3803 hot=40536 harv=36 peelgain=10074
+[ 64178.7s 07:53:05] [lns] 439s iters=20000 cur=93 best=91 pool=3807 hot=42898 harv=6 peelgain=10508
+[ 64759.5s 08:02:46] [lns] 420s iters=20000 cur=91 best=91 pool=3806 hot=39843 harv=32 peelgain=10111
+[ 65503.0s 08:15:10] [lns] 564s iters=20000 cur=91 best=91 pool=3806 hot=41222 harv=30 peelgain=11086

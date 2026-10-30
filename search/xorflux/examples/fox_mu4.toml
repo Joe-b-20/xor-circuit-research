@@ -1,0 +1,29 @@
+# FOX Mu4 (32x32): eight workers, half with a real depth cap of 7, half uncapped.
+#
+#   python3 search/xorflux plan search/xorflux/examples/fox_mu4.toml
+#   python3 search/xorflux run search/xorflux/examples/fox_mu4.toml --out search/runs/fox4 --seconds 2h
+#
+# Relative paths in this file (targets, seeds, profiles) are relative to this file.
+
+[campaign]
+name = "fox-mu4"
+description = "FOX Mu4 gates-first, capped and uncapped workers, pull sharing."
+seed = 20261024            # worker i (counting across groups) gets seed + i * 1000003
+duration = "8h"            # default session length; --seconds overrides; omit = until stopped
+profiles = ["default"]
+sharing = "pull"           # shorthand for sharing.mode
+
+[[workers]]
+name = "cap7"
+target = "fox-mu4"         # map name (circuits/<name>/) or a .mat.txt path
+count = 4
+objective = "gates"
+depth_cap = 7              # real cap: only circuits of depth <= 7 are recorded
+seeds = ["target"]         # the target's built-in seeds (cycled over the workers)
+
+[[workers]]
+name = "free"
+target = "fox-mu4"
+count = 4
+objective = "gates"        # no depth_cap: these workers minimize gates at any depth
+seeds = ["target", "root"] # alternate: built-in seed, fresh default root

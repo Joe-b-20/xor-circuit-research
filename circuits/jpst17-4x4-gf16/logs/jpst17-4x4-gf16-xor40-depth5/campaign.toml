@@ -1,0 +1,151 @@
+# 9 NIST maps x 2 workers (uncapped, min depth + 1): bkl16-4x4-gf16 fides-midori-mantis jpst17-4x4-gf16 jpst17-4x4-gf16-inv klsw17-m-4x4-gf16 ls16-4x4-gf16 lw16-4x4-gf16 lw16-4x4-gf16-inv pride-l0
+[campaign]
+name = "nist-batch-16a"
+seed = 20261043
+duration = "30m"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "bkl16-4x4-gf16-free"
+target = "bkl16-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/bkl16-4x4-gf16/nist-g41-d5.json"]
+
+[[workers]]
+name = "bkl16-4x4-gf16-cap4"
+target = "bkl16-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/bkl16-4x4-gf16/nist-g41-d5.json"]
+
+[[workers]]
+name = "fides-midori-mantis-free"
+target = "fides-midori-mantis"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/fides-midori-mantis/nist-g24-d3.json"]
+
+[[workers]]
+name = "fides-midori-mantis-cap3"
+target = "fides-midori-mantis"
+count = 1
+objective = "gates"
+depth_cap = 3
+seeds = ["./search/seeds/fides-midori-mantis/nist-g24-d3.json"]
+
+[[workers]]
+name = "jpst17-4x4-gf16-free"
+target = "jpst17-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/jpst17-4x4-gf16/nist-g40-d6.json"]
+
+[[workers]]
+name = "jpst17-4x4-gf16-cap4"
+target = "jpst17-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/jpst17-4x4-gf16/nist-g40-d6.json"]
+
+[[workers]]
+name = "jpst17-4x4-gf16-inv-free"
+target = "jpst17-4x4-gf16-inv"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/jpst17-4x4-gf16-inv/nist-g41-d6.json"]
+
+[[workers]]
+name = "jpst17-4x4-gf16-inv-cap4"
+target = "jpst17-4x4-gf16-inv"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/jpst17-4x4-gf16-inv/nist-g41-d6.json"]
+
+[[workers]]
+name = "klsw17-m-4x4-gf16-free"
+target = "klsw17-m-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/klsw17-m-4x4-gf16/nist-g36-d8.json"]
+
+[[workers]]
+name = "klsw17-m-4x4-gf16-cap4"
+target = "klsw17-m-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/klsw17-m-4x4-gf16/nist-g36-d8.json"]
+
+[[workers]]
+name = "ls16-4x4-gf16-free"
+target = "ls16-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/ls16-4x4-gf16/nist-g44-d4.json"]
+
+[[workers]]
+name = "ls16-4x4-gf16-cap4"
+target = "ls16-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/ls16-4x4-gf16/nist-g44-d4.json"]
+
+[[workers]]
+name = "lw16-4x4-gf16-free"
+target = "lw16-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/lw16-4x4-gf16/nist-g44-d4.json"]
+
+[[workers]]
+name = "lw16-4x4-gf16-cap4"
+target = "lw16-4x4-gf16"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/lw16-4x4-gf16/nist-g44-d4.json"]
+
+[[workers]]
+name = "lw16-4x4-gf16-inv-free"
+target = "lw16-4x4-gf16-inv"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/lw16-4x4-gf16-inv/nist-g44-d6.json"]
+
+[[workers]]
+name = "lw16-4x4-gf16-inv-cap4"
+target = "lw16-4x4-gf16-inv"
+count = 1
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/lw16-4x4-gf16-inv/nist-g44-d6.json"]
+
+[[workers]]
+name = "pride-l0-free"
+target = "pride-l0"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/pride-l0/nist-g24-d4.json"]
+
+[[workers]]
+name = "pride-l0-cap3"
+target = "pride-l0"
+count = 1
+objective = "gates"
+depth_cap = 3
+seeds = ["./search/seeds/pride-l0/nist-g24-d4.json"]

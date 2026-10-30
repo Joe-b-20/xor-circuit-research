@@ -1,0 +1,25 @@
+# A/B comparison of sharing on one target: same seeds and caps, only sharing.mode differs
+# between the two groups (pull-on-restart against no sharing).  Compare their `frontier` events
+# in campaign.jsonl afterwards (each names the worker, hence the group, that found the point).
+
+[campaign]
+name = "sharing-ab"
+seed = 99
+duration = "6h"
+
+[[workers]]
+name = "pull"
+target = "fox-mu4"
+count = 4
+depth_cap = 8
+[workers.set]
+"sharing.mode" = "pull"
+"sharing.scope" = "group"   # keep the pulling arm to its own records
+
+[[workers]]
+name = "solo"
+target = "fox-mu4"
+count = 4
+depth_cap = 8
+[workers.set]
+"sharing.mode" = "off"      # independent workers: no pooled elites at restarts

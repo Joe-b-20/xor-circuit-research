@@ -1,0 +1,18 @@
+# depth profile -- depth-first objectives (objective = "depth_then_gates"), tight caps, gate limits.
+#
+# Use it for a group:  [[workers]] ... objective = "depth_then_gates"  profiles = ["depth"]
+
+[moves.depth.repair]
+weight = 1.5        # default 0.3 makes depth repair a tie-break under the gates objective; here
+                    # a shallower circuit *is* the objective, so give the depth move real time
+
+[engine]
+gate_limit_slack = 2   # with a gate_limit, let the chain go up to 2 gates over it while searching
+                       # (records still obey the limit).  Evidence: Joltik at gate_limit = seed
+                       # gates accepted nothing in 117 CPU-h; soft slack then repair is what cut
+                       # gates under depth caps (DESIGN.md section 1)
+
+[sharing]
+sample_points = 2   # restarts may draw from the best two pool points: under a tight cap the best
+                    # depth is often reached at several gate counts, and the larger one can be
+                    # the better restart basin

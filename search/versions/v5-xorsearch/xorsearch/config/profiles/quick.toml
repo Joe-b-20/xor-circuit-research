@@ -1,0 +1,15 @@
+# quick profile -- short experiments and smoke tests (seconds to minutes).
+# Faster bookkeeping so status, pool and diversity panels update within a short run.
+# Integration: add move/engine values here (smaller budgets, shorter restart timers).
+
+[campaign]
+collect_seconds = 1.0       # collect records / write status every second
+diversity_seconds = 10.0    # fleet_diversity snapshot every 10 s
+stop_grace_seconds = 10.0   # small chains checkpoint fast
+
+[worker]
+checkpoint_seconds = 10.0
+status_seconds = 1.0
+
+[sharing]
+refresh_seconds = 1.0

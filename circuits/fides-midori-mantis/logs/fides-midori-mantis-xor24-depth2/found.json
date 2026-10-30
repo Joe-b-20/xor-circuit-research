@@ -1,0 +1,29 @@
+{
+ "circuit": "fides-midori-mantis-xor24-depth2.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T10:29:39.848+00:00",
+ "seconds_into_run": 0.24102500698063523,
+ "run": "nist-batch-16a",
+ "run_id": "de724d059d924b50a0b2ad8bfae549d7",
+ "worker": "fides-midori-mantis-cap3-00",
+ "depth_cap": 3,
+ "move": "depth.repair",
+ "seed": {
+  "kind": "file",
+  "point": "24@3",
+  "by": "NIST",
+  "source": "nist-g24-d3.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "77efd1a30ed2756bc7a5050619c82df4160aeab7f9e876c87f1391eb7b684fd7",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

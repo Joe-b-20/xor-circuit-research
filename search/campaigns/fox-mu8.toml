@@ -1,0 +1,54 @@
+# FOX Mu8: 1 h on 20 workers under real depth caps 9, 10, 11 and uncapped, starting from the
+# NIST circuit in search/seeds/fox-mu8/.  Settings of the 2026-10-29 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/fox-mu8.toml --out search/runs/fox-mu8 --detach
+#
+# Relative paths in this file are relative to this file.
+
+[campaign]
+name = "fox-mu8"
+seed = 20266029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[520, 9], [519, 10]]
+
+[[workers]]
+name = "cap9"
+target = "fox-mu8"
+count = 5
+objective = "gates"
+depth_cap = 9
+seeds = ["../seeds/fox-mu8/nist-g540-d14.json"]
+[workers.set]
+"objective.soft_depth_slack" = 5
+
+[[workers]]
+name = "cap10"
+target = "fox-mu8"
+count = 5
+objective = "gates"
+depth_cap = 10
+seeds = ["../seeds/fox-mu8/nist-g540-d14.json"]
+[workers.set]
+"objective.soft_depth_slack" = 4
+
+[[workers]]
+name = "cap11"
+target = "fox-mu8"
+count = 5
+objective = "gates"
+depth_cap = 11
+seeds = ["../seeds/fox-mu8/nist-g540-d14.json"]
+[workers.set]
+"objective.soft_depth_slack" = 3
+
+[[workers]]
+name = "free"
+target = "fox-mu8"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/fox-mu8/nist-g540-d14.json"]

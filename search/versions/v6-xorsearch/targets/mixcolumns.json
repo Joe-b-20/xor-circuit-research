@@ -1,0 +1,259 @@
+{
+  "id": "mixcolumns",
+  "name": "AES MixColumns (one column, FIPS LSB-first)",
+  "generator": {
+    "generator": "mixcolumns"
+  },
+  "matrix_sha256": "2a16955dfe321e1bc8ef1a1eb9e4be319670eb21554c552f8938f7e4987c6eba",
+  "input_bit_order": "x_(8*b+r): bit r (LSB=0) of byte b, b=0..3",
+  "output_bit_order": "y_(8*b+r): bit r (LSB=0) of byte b, b=0..3",
+  "affine_output_constants": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "scope": "One AES MixColumns column over GF(2^8), polynomial 0x11b, XOR gates only. Rows generated from GF(2^8) arithmetic (xorsearch.core.target.mixcolumns).",
+  "seed_root": "repo",
+  "seed_note": "Distinct verified DAGs from records/mixcolumns (published originals and DAG collections); paths relative to the repository root.",
+  "seeds": [
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-06a60bc3b3c4.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "f2a937f1095c77e27010da95bd82f015874aa07e642de9b3fe9a7683b87a1bbf"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-1faf9e53c1f0.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "52e2e509b83e3ef61ac5256da7cbe7741dc83a371939de1e129976e9dfd96d72"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-220aae7c7fb3.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "50794b08320300a081b34cdb0c47cc5d3a0f8331c8ac64da2a4830101c5f237c"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-3f30ab5d5552.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "bab3d955df28fdda6d5657d29645244a281a3b31c0e7ae53bfe8145e082337f3"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-5d8b05ec5ee9.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "8e6d47fd06ccf40cf177f6b1072a557b64bb871b4908327ad971fb67e3f88764"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-5f3b728a13f3.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "6505ba2ca0fa0ad528c2e4d72b191b0a8456412f00ac381adbda1ae1248277f0"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-7423a629ab05.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "00898aecefdeb1937045c2306855be566c9d29bcc2213abca9076ad90364a32c"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-783bb212725d.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "c803da3ce93d76169568ec443e2a01860bff0c00e0470a38acc3146c47a79662"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-80ee02800215.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "e79edc1553657f3241eccf832b968939ca5d2b5c231c063a7d50248a969b0da6"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-b546d55f9aa7.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "1eae8330eb7fa61725f2a205169a6d990f1841952fd68aa5f0bd488cd2ba9bd9"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-b8fdfd10d5f9.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "e5875ea03d9465c18c106df7538f7dc7130837d207dfbac987c0e6671e7db82d"
+    },
+    {
+      "path": "records/mixcolumns/g88-d5/mixcolumns-g88-d5-dea7ed1626b8.json",
+      "gates": 88,
+      "depth": 5,
+      "dag_sha256": "c01d5012e1f2dbefb454edd2d33c8352ac6c1b8bac4367319c5a00514f62b969"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-1b2a9fcbb250.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "dbaf0f1b8be3aa0a8597853e232cd56b2aae9bf3e7225b4c9680549fc29c8b88"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-1faa987e7aac.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "b7a56d640c8152ed32d01a5f1b4e29617cd02417553f46835ca68f2af501f2f9"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-54aed4b0dff4.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "4c810e4bfbb23cc43fced4898c2d60f2ccc6420ed9416fcfd36abfcce44b61d9"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-7a28039c8118.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "653bedded2526dbfa61d9128cf7fb366d37e9812d54407cd89f2150a2e34ae79"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-92ced43882c8.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "633a2daaf1dc641501794138b6fa3e4b45fdb8654326af16c3ff980fbf43b4f2"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-b4555e732bd7.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "643871165ff5d5f143827b90cbfa2585ad4fb7103c3c488341081e2723af07a0"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-b7145b21b5a5.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "f8df166ac12fc02857ef28d561fc04f10c3f5d9feafc45b1c5f30edb885a5b99"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-bc8e03536d14.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "9c3d8e3d5f7df54d99efc8db445767808f260fe2da7755ebdab7f6b9f1273fd6"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-cb68e45a2a11.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "e20ef0eeebed4b0bc50979c3ffaa0cf73f154dc5a3b4c41d3b4454d49fa6beaf"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-d73b46f45175.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "464605e0d6cd8736b481331dcf26162ecf8bcd957343032a562cfa25cf90ba54"
+    },
+    {
+      "path": "records/mixcolumns/g89-d4/mixcolumns-g89-d4-ed9869020a99.json",
+      "gates": 89,
+      "depth": 4,
+      "dag_sha256": "a3d87c2ffd94c68169fe762aea7d338cde854dc3eee9de467657c87619919f76"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-0039cefd3769.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "a914e6ff810994a10cf72a887048bc1bf0439b8dec2ae5d314c6ec8e9fafafa1"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-01d2e4cbfd76.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "e6aa75d669a55fb323bd9fa0d3b9b432a49daf4c14ef6447f96705a9af0d30cf"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-075c1985e2b8.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "c946a6814ba20c148a680fe2c99a7fc30b98d9b20cd28999c2d6b005990e9ac9"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-0b4035d99a8d.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "835b6027b2b933d1836be222d8ef86b8717c25d671fe6256a77b39f48d89b096"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-1b07da74a675.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "8d0bf24668c052fe6c6de0c30d43d1c032fcc5e05a2ec76b9e19743bc44f51d0"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-1cde7c024513.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "03b7771dec9b9fb524965a6b7ba14f861ebfbc4fe40b8da17c9b8299cb273159"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-2740383c3628.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "525a41d06f1a8c53c4f5bc3da5cf654f60c3edbe3c1f233bd30017248b8330e8"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-4cf9533ee3d2.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "ee273a0cfc15c16a40f3043f54a047012488e56475db89ea55e6cd37c7c61bf0"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-8489488c85e2.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "aa40b569db36f163b3a01d9e1ab967ba6b6369d2b77e306d9fa1fad7a5a87697"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-ad168925f133.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "114a81bf07241418bdae38aa224e778651b82c0cdb03644226054d37904abbe0"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-adb7182ad9a7.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "c0dc71e37f87c668325bcee67b26cd5286d442347e6144263c6cc6bd931bd228"
+    },
+    {
+      "path": "records/mixcolumns/g97-d3/mixcolumns-g97-d3-e46aad2702f6.json",
+      "gates": 97,
+      "depth": 3,
+      "dag_sha256": "326dbf7d4171235aca1e30fd4453a801639e873a1dfb5ec002f20c5c502fd047"
+    }
+  ]
+}

@@ -1,0 +1,3341 @@
+{
+  "purpose": "Bounded correctness and proposal execution only; no discovery-rate or impossibility claim",
+  "created_utc": "2026-10-27T14:39:48.656465+00:00",
+  "python": "3.12.3",
+  "api_sha256": "5f910862d005d13f10a645babf9ba4c2d350edeab09699bfd528446e142a37b0",
+  "verifier_sha256": "e635d3415351ed39fb228029e4cae1aa66b28412439211d22bf19c53cdd45d1e",
+  "fox_profile_overrides": {
+    "v2-lns": {
+      "proposal_seconds": 0.2
+    },
+    "v2-translate": {
+      "proposal_seconds": 0.2
+    },
+    "v2-cores": {
+      "proposal_seconds": 0.2
+    },
+    "v3-component": {
+      "proposal_seconds": 0.2,
+      "move_knobs": {
+        "max_seconds": 0.2,
+        "max_nodes": 6000,
+        "max_trials": 48
+      }
+    },
+    "v3-interface": {
+      "proposal_seconds": 0.2,
+      "move_knobs": {
+        "max_seconds": 0.2,
+        "max_nodes": 6000,
+        "max_trials": 48
+      }
+    },
+    "v3-backward": {
+      "proposal_seconds": 0.2,
+      "move_knobs": {
+        "max_seconds": 0.2,
+        "max_nodes": 6000,
+        "max_trials": 48
+      }
+    }
+  },
+  "results": [
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-constructor",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "legacy-constructor",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 1,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "balanced-constructor": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "balanced-constructor",
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.045037597068585455,
+        "best_depth": 14,
+        "current_gate_count": 1156,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-constructor",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "balanced-constructor": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "balanced-constructor",
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.023367554997093976,
+        "best_depth": 14,
+        "current_gate_count": 1163,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "legacy-constructor proposal",
+          "gate_count": 1157,
+          "depth": 5
+        },
+        {
+          "note": "legacy-constructor proposal",
+          "gate_count": 1156,
+          "depth": 5
+        },
+        {
+          "note": "entry",
+          "gate_count": 1156,
+          "depth": 5
+        },
+        {
+          "note": "legacy-constructor proposal",
+          "gate_count": 1163,
+          "depth": 5
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-paar",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "legacy-paar",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "paar-frequency": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 18,
+          "construction_gates": 2,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.010402408079244196,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-paar",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "paar-frequency": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 18,
+          "construction_gates": 3,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.008887114003300667,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "construction_gates",
+        "rows"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "legacy-bp",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-bp": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 2,
+          "distance_nodes": 3228,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.012221007025800645,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-bp",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-bp": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 3,
+          "distance_nodes": 3527,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.010017649969086051,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "inverse-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "inverse-bp",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "inverse-bp": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 2,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.06393991399090737,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "inverse-bp",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "inverse-bp": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 3,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.03621074091643095,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-window",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "legacy-window",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "first-unlock": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 16,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search",
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.6047640439355746,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-window",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "first-unlock": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 7,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search",
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.30625009001232684,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "legacy-walk",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-walk": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 1,
+          "injected": 1,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.6002021350432187,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-walk",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-walk": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 2,
+          "injected": 1,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.3002667840337381,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "legacy-lns",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 0,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-lns": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 3,
+          "injected": 43,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.40923376893624663,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-lns",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-lns": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 3,
+          "injected": 33,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.19356125500053167,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "legacy-lns proposal",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "legacy-lns proposal",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "legacy-lns proposal",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "legacy-anneal3",
+      "applicable": false,
+      "reason": "depth-three catalogues are excluded above 32 inputs to bound combinatorial setup",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v2-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v2-walk",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "v2-walk": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 1,
+          "injected": 2,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.6103946649236605,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-walk",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-walk": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 1,
+          "injected": 2,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.30761483998503536,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v2-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "proposal_seconds": 0.2,
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v2-lns",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 2,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": false,
+        "operators": {
+          "v2-lns": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 3,
+          "injected": 39,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.41660111595410854,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-lns",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-lns": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 1,
+          "injected": 37,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.21199764602351934,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v2-lns proposal",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v2-anneal3",
+      "applicable": false,
+      "reason": "depth-three catalogues are excluded above 32 inputs to bound combinatorial setup",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v2-translate",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "proposal_seconds": 0.2,
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v2-translate",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 0,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "translate": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 6,
+          "constructible": 5,
+          "partitioned": 2,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 1,
+          "unchanged": 2,
+          "timed_out": 1,
+          "before": 540,
+          "after": 540,
+          "added": 1,
+          "released": 1,
+          "depth": 14,
+          "elapsed_seconds": 0.22160762804560363,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.4580374510260299,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-translate",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "translate": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 4,
+          "constructible": 4,
+          "partitioned": 3,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 1,
+          "timed_out": 0,
+          "before": 540,
+          "after": 540,
+          "added": 2,
+          "released": 2,
+          "depth": 12,
+          "elapsed_seconds": 0.17963763989973813,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.19090047595091164,
+        "best_depth": 12,
+        "current_gate_count": 540,
+        "current_depth": 12,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v2-translate proposal",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v2-translate proposal",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v2-translate proposal",
+          "gate_count": 540,
+          "depth": 12
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v2-cores",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "proposal_seconds": 0.2,
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v2-cores",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 1,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "cores": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 6,
+          "constructible": 6,
+          "partitioned": 0,
+          "joint_roots": 17,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 1,
+          "timed_out": 1,
+          "before": 541,
+          "after": 541,
+          "added": 3,
+          "released": 3,
+          "depth": 14,
+          "elapsed_seconds": 0.20772477297578007,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.4445850310148671,
+        "best_depth": 14,
+        "current_gate_count": 541,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-cores",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "cores": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 7,
+          "constructible": 7,
+          "partitioned": 0,
+          "joint_roots": 21,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 2,
+          "timed_out": 1,
+          "before": 541,
+          "after": 541,
+          "added": 1,
+          "released": 1,
+          "depth": 14,
+          "elapsed_seconds": 0.2187259040074423,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.23306775209493935,
+        "best_depth": 14,
+        "current_gate_count": 541,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v2-cores proposal",
+          "gate_count": 541,
+          "depth": 14
+        },
+        {
+          "note": "v2-cores proposal",
+          "gate_count": 541,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 541,
+          "depth": 14
+        },
+        {
+          "note": "v2-cores proposal",
+          "gate_count": 541,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v3-component",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "proposal_seconds": 0.2,
+        "move_knobs": {
+          "max_seconds": 0.2,
+          "max_nodes": 6000,
+          "max_trials": 48
+        },
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v3-component",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "component_merge": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 375,
+          "trials": 6,
+          "candidates_verified": 11,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 6,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 540,
+          "before_depth": 14,
+          "after_gates": 544,
+          "after_depth": 14,
+          "elapsed_seconds": 0.2032910860143602,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.439099473063834,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-component",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "component_merge": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 550,
+          "trials": 6,
+          "candidates_verified": 10,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 6,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 540,
+          "before_depth": 14,
+          "after_gates": 548,
+          "after_depth": 14,
+          "elapsed_seconds": 0.20265870995353907,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.21345057897269726,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v3-component proposal",
+          "gate_count": 545,
+          "depth": 14
+        },
+        {
+          "note": "v3-component proposal",
+          "gate_count": 544,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v3-component proposal",
+          "gate_count": 548,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v3-interface",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "proposal_seconds": 0.2,
+        "move_knobs": {
+          "max_seconds": 0.2,
+          "max_nodes": 6000,
+          "max_trials": 48
+        },
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v3-interface",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "interface_basis": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 3812,
+          "trials": 11,
+          "candidates_verified": 18,
+          "unchanged": 4,
+          "construction_failures": 0,
+          "consumer_failures": 2,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 11,
+          "basis_reconstructions": 18,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 540,
+          "before_depth": 14,
+          "after_gates": 545,
+          "after_depth": 14,
+          "elapsed_seconds": 0.20278713991865516,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.4202305090148002,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-interface",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "interface_basis": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 4434,
+          "trials": 11,
+          "candidates_verified": 21,
+          "unchanged": 6,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 11,
+          "basis_reconstructions": 22,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 540,
+          "before_depth": 14,
+          "after_gates": 544,
+          "after_depth": 14,
+          "elapsed_seconds": 0.2028597620083019,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.21296392404474318,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v3-interface proposal",
+          "gate_count": 542,
+          "depth": 14
+        },
+        {
+          "note": "v3-interface proposal",
+          "gate_count": 545,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v3-interface proposal",
+          "gate_count": 544,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v3-backward",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14,
+      "knobs": {
+        "proposal_seconds": 0.2,
+        "move_knobs": {
+          "max_seconds": 0.2,
+          "max_nodes": 6000,
+          "max_trials": 48
+        },
+        "max_iterations": 2
+      },
+      "metrics": {
+        "engine": "v3-backward",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 2,
+        "proposals": 2,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "backward_package": 2
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 527,
+          "trials": 4,
+          "candidates_verified": 7,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 8,
+          "foreign_parent_roles": 16,
+          "before_gates": 540,
+          "before_depth": 14,
+          "after_gates": 549,
+          "after_depth": 14,
+          "elapsed_seconds": 0.20308586908504367,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.4199983529979363,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-backward",
+        "objective": "gates",
+        "gate_limit": null,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "backward_package": 1
+        },
+        "best_gate_count": 540,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 403,
+          "trials": 4,
+          "candidates_verified": 7,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 8,
+          "foreign_parent_roles": 16,
+          "before_gates": 540,
+          "before_depth": 14,
+          "after_gates": 549,
+          "after_depth": 14,
+          "elapsed_seconds": 0.2029574669431895,
+          "proposal_depth_cap": 14
+        },
+        "elapsed_seconds": 0.2135373930213973,
+        "best_depth": 14,
+        "current_gate_count": 540,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v3-backward proposal",
+          "gate_count": 546,
+          "depth": 14
+        },
+        {
+          "note": "v3-backward proposal",
+          "gate_count": 549,
+          "depth": 14
+        },
+        {
+          "note": "entry",
+          "gate_count": 540,
+          "depth": 14
+        },
+        {
+          "note": "v3-backward proposal",
+          "gate_count": 549,
+          "depth": 14
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "fox_mu8",
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "engine": "v3-pairbank3",
+      "applicable": false,
+      "reason": "depth-three catalogues are excluded above 32 inputs to bound combinatorial setup",
+      "seed_path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "seed_file_sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "seed_gate_count": 540,
+      "seed_depth": 14,
+      "objective": "gates",
+      "gate_limit": null,
+      "depth_cap": 14
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-constructor",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-constructor",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "balanced-constructor": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "balanced-constructor",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0015669859712943435,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-constructor",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "balanced-constructor": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "balanced-constructor",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0013102099765092134,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-paar",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-paar",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "paar-frequency": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 4,
+          "construction_gates": 1,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0011329010594636202,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-paar",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 1,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "depth-deadline-squeeze": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "depth-deadline-squeeze",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0010904819937422872,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "construction_gates",
+        "rows"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-bp",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "legacy-bp": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 1,
+          "distance_nodes": 535,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.001456690952181816,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-bp",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-bp": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 2,
+          "distance_nodes": 1322,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0016262429999187589,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "inverse-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "inverse-bp",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "inverse-bp": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 1,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.00290257902815938,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "inverse-bp",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "inverse-bp": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 2,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.002911495976150036,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-window",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-window",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "first-unlock": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 18,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.005266280029900372,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-window",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "first-unlock": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 22,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0056325680343434215,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-walk",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "legacy-walk": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 1,
+          "injected": 1,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.01927744597196579,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-walk",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-walk": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 2,
+          "injected": 1,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.014930392964743078,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-lns",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "legacy-lns": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 4,
+          "injected": 28,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0033105999464169145,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-lns",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-lns": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 4,
+          "injected": 40,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0034132690634578466,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-anneal3",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "legacy-anneal3",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "legacy-anneal3": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-anneal3",
+          "fixed_parent_optimum_is_not_global": true,
+          "proposal_depth_cap": 3
+        },
+        "elapsed_seconds": 0.0019303610315546393,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "legacy-anneal3",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-anneal3": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "legacy-anneal3",
+          "fixed_parent_optimum_is_not_global": true,
+          "proposal_depth_cap": 3
+        },
+        "elapsed_seconds": 0.0015331599861383438,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v2-walk",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "v2-walk": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 1,
+          "injected": 2,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.004558163927868009,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-walk",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 1,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "depth-deadline-squeeze": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "depth-deadline-squeeze",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.001205184031277895,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v2-lns",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "v2-lns": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 4,
+          "injected": 28,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0013712539803236723,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-lns",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-lns": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 4,
+          "injected": 40,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0012476540869101882,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "pool"
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-anneal3",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v2-anneal3",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "v2-anneal3": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "v2-anneal3",
+          "fixed_parent_optimum_is_not_global": true,
+          "proposal_depth_cap": 3
+        },
+        "elapsed_seconds": 0.02379921800456941,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-anneal3",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-anneal3": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "v2-anneal3",
+          "fixed_parent_optimum_is_not_global": true,
+          "proposal_depth_cap": 3
+        },
+        "elapsed_seconds": 0.015542219043709338,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-translate",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v2-translate",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "translate": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 8,
+          "constructible": 0,
+          "partitioned": 4,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 8,
+          "unchanged": 0,
+          "timed_out": 0,
+          "before": 43,
+          "elapsed_seconds": 0.007462881971150637,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.008943242020905018,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-translate",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 1,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "depth-deadline-squeeze": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "depth-deadline-squeeze",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0014857309870421886,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-cores",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v2-cores",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "cores": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 8,
+          "constructible": 0,
+          "partitioned": 0,
+          "joint_roots": 26,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 8,
+          "unchanged": 0,
+          "timed_out": 0,
+          "before": 43,
+          "elapsed_seconds": 0.0014720269246026874,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.002780976938083768,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v2-cores",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "cores": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 8,
+          "constructible": 0,
+          "partitioned": 0,
+          "joint_roots": 26,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 8,
+          "unchanged": 0,
+          "timed_out": 0,
+          "before": 43,
+          "elapsed_seconds": 0.0014660920714959502,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.002638795063830912,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-component",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v3-component",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "component_merge": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "UNKNOWN",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 771,
+          "trials": 12,
+          "candidates_verified": 0,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 12,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 43,
+          "before_depth": 8,
+          "after_gates": null,
+          "after_depth": null,
+          "elapsed_seconds": 0.040320803062058985,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.04225165105890483,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-component",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 1,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "component_merge": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 625,
+          "trials": 18,
+          "candidates_verified": 18,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 18,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 43,
+          "before_depth": 8,
+          "after_gates": 46,
+          "after_depth": 8,
+          "elapsed_seconds": 0.040269855060614645,
+          "proposal_depth_cap": 8
+        },
+        "elapsed_seconds": 0.041733379010111094,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-interface",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v3-interface",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "interface_basis": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "UNKNOWN",
+          "search_exhaustive": false,
+          "limit_reason": "trial_limit",
+          "nodes": 1438,
+          "trials": 24,
+          "candidates_verified": 0,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 48,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 24,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 43,
+          "before_depth": 8,
+          "after_gates": null,
+          "after_depth": null,
+          "elapsed_seconds": 0.03639815701171756,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.037789101945236325,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-interface",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 1,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "depth-deadline-squeeze": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "depth-deadline-squeeze",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0014783230144530535,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-backward",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v3-backward",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "backward_package": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "UNKNOWN",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 763,
+          "trials": 12,
+          "candidates_verified": 0,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 24,
+          "foreign_parent_roles": 40,
+          "before_gates": 43,
+          "before_depth": 8,
+          "after_gates": null,
+          "after_depth": null,
+          "elapsed_seconds": 0.04034514992963523,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.04189990600571036,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-backward",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 0,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "backward_package": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "UNKNOWN",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 783,
+          "trials": 12,
+          "candidates_verified": 0,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 24,
+          "foreign_parent_roles": 42,
+          "before_gates": 43,
+          "before_depth": 8,
+          "after_gates": null,
+          "after_depth": null,
+          "elapsed_seconds": 0.040268759010359645,
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.04157364193815738,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-pairbank3",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "seed_path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+      "seed_file_sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+      "seed_gate_count": 43,
+      "seed_depth": 8,
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "depth_cap": 8,
+      "knobs": {
+        "max_iterations": 4
+      },
+      "metrics": {
+        "engine": "v3-pairbank3",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 3,
+        "applicable": true,
+        "iterations": 4,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "depth-deadline-squeeze": 3,
+          "pair-bank-first": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "pair-bank-first",
+          "mutation": "swap",
+          "proposal_depth_cap": 3
+        },
+        "elapsed_seconds": 0.030929728993214667,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "resume_metrics": {
+        "engine": "v3-pairbank3",
+        "objective": "depth_then_gates",
+        "gate_limit": 43,
+        "filtered_over_gate_limit": 0,
+        "depth_squeeze_calls": 1,
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "depth-deadline-squeeze": 1
+        },
+        "best_gate_count": 43,
+        "last_proposal": {
+          "operator": "depth-deadline-squeeze",
+          "proposal_depth_cap": 7
+        },
+        "elapsed_seconds": 0.0031099780462682247,
+        "best_depth": 8,
+        "current_gate_count": 43,
+        "current_depth": 8,
+        "stopped": false
+      },
+      "candidates": [
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        },
+        {
+          "note": "entry",
+          "gate_count": 43,
+          "depth": 8
+        }
+      ],
+      "auxiliary_keys": [
+        "pair_bank"
+      ]
+    }
+  ]
+}

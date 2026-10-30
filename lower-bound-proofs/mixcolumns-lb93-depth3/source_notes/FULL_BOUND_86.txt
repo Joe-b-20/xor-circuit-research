@@ -1,0 +1,130 @@
+An exact unrestricted depth-three lower bound of 86 XOR gates
+2026-10-16
+
+RESULT
+
+For one AES forward MixColumns column, using two-input XOR gates with
+inputs at depth zero, arbitrary sharing, and arbitrary cancellation,
+
+                         86 <= D3 <= 97.
+
+The upper bound is the included 97-gate circuit. The lower bound is an
+exact rational certificate over a complete circuit relaxation. This
+does not determine the exact full-circuit optimum.
+
+The twelve weight-seven outputs alone have exact complexity 48 at
+depth three. That separate exact result supplies new valid inequalities
+for the full problem. It is not a claim that the full optimum can be
+obtained by independently optimizing output clusters. In fact, the
+known97 circuit's weight-seven ancestry has 55 gates, showing why
+additional local work can be useful for sharing with the other outputs.
+
+1. COMPLETE CIRCUIT MODEL
+
+PROOF.md sections 2-4 give the normalization and completeness proofs.
+They are unchanged by this extension. There are 32 final output gates
+and helper gates of weights two, three, four. A normalized circuit has
+
+                         G=32+P+T+Q.
+
+All possible helpers and all possible complete output constructions
+are retained: 496 pairs, 3008 triples, 4889 quartets, and 53,280 output
+recipes. The twenty weight-five outputs retain all cancelling 3+4
+decompositions. No no-cancellation assumption is made for them.
+
+An actual circuit chooses one recipe per output. With binary helper
+variables x_h and recipe variables z_(o,r), use the valid constraints
+
+  sum_r z_(o,r) >= 1,
+  x_h >= sum_(r containing h) z_(o,r)  for each output/helper pair,
+  sum_(pairs h) x_h >= 24,
+  0<=x_h,z_(o,r)<=1.
+
+The parity premise P>=24 is proved in PROOF.md section 3 and checked
+by verify_pair_rank.py. The original model also includes the valid
+fifteen-parent inequality for the weight-seven outputs.
+
+2. THE 43 NEW INEQUALITIES
+
+Let U_b be the complete helper universe of the four weight-seven
+outputs at bit b. The corresponding selected helpers contain the actual
+ancestry of those outputs, so any nonnegative-cost lower bound for a
+local ancestry also holds for the selected helpers in U_b.
+
+For each b in {1,3,4}, add:
+  - at least twelve helpers (the exact sixteen-gate local theorem);
+  - at least six pairs and at least five triple/quartet parents;
+  - at least twelve helpers after assigning cost zero to pairs entirely
+    in either one of the two side families, separately.
+
+These are fifteen inequalities. BOUNDARY_TAX_PROOF.txt proves them.
+
+For each of the three pairs of clusters, add at least twenty-four
+helpers in the union of their universes. Add at least thirty-six
+helpers in the union of all three universes. These four inequalities
+follow from the exact 32- and 48-gate results in the two cluster notes.
+
+Finally add twenty-four weighted local inequalities. The exact weighted
+helper minima are 115 and 116 with charges scaled by ten, as checked
+in weighted_cluster_certificate.py. Each of the two inequalities can
+be mapped to any of the three isomorphic clusters. The canonical
+four-output problem also admits the reflection
+
+  a_i -> a_(-i), b_i -> b_(1-i), c_i -> c_(1-i)
+
+and swapping b and c. These permutations preserve the four-output
+problem and transfer every weighted inequality. Two weighted patterns,
+three clusters, two reflection choices, and two swap choices give
+twenty-four valid inequalities. Coefficients remain nonnegative.
+
+Thus the strengthened relaxation has 15,169 rows and 61,673 variables.
+The checker independently regenerates the original recipes and all
+43 new rows; it does not import the new model's row-generation code.
+
+3. EXACT RATIONAL CERTIFICATE
+
+Write the rows as A*p>=b, with 0<=p<=1 and objective c*p=P+T+Q.
+For any nonnegative row multiplier vector u, let
+
+  e_j=max(0,(A^T*u)_j-c_j).
+
+Then c*p >= u*b-sum_j e_j. Indeed, (A^T*u-c)*p<=sum_j e_j follows
+coordinatewise from 0<=p_j<=1, and u*A*p>=u*b follows from u>=0.
+
+certificate_86.json records nonnegative integer numerators for u with
+denominator 10^12. All checking arithmetic is integer arithmetic.
+Rounding of the numerical multipliers is repaired by subtracting every
+positive excess explicitly. The exact checked values are
+
+  raw numerator       = 53,307,334,336,938
+  repair numerator    =              2,779
+  certified numerator = 53,307,334,334,159
+  denominator         =  1,000,000,000,000.
+
+Consequently
+
+  P+T+Q >= 53.307334334159 > 53,
+
+so the integer number of helpers is at least 54. Therefore
+
+                         G>=32+54=86.
+
+The numerical optimizer only discovers multipliers. Its status and
+floating-point objective are not premises of this lower-bound proof.
+independent_check_86.py reconstructs every row and checks the complete
+integer calculation. It also verifies that the known97 construction
+satisfies all the old and new inequalities.
+
+4. WHAT IS STILL MISSING
+
+To prove the 97-gate construction optimal, one must exclude every
+integral selection with at most 64 helpers. The new certificate excludes
+only selections with at most 53 helpers. Exact optimality of the
+weight-seven subsystem does not by itself control all sharing with
+the twenty weight-five outputs, whose allowed cancellations remain
+present in the complete model.
+
+The earlier 31-gate cluster3/4 CP-SAT run returned UNKNOWN and is not
+used as evidence. The later exhaustive rational charging certificate
+is what proves that subsystem's 32-gate optimum. All failed charging
+conjectures were discarded before forming this certificate.

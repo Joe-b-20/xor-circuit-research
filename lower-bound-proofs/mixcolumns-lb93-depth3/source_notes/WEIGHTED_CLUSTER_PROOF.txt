@@ -1,0 +1,155 @@
+Exact depth-three complexity of the twelve weight-seven AES outputs: 48
+2026-10-16
+
+This is a computer-assisted exact proof for a subsystem of MixColumns.
+It allows arbitrary two-input XOR gates, sharing, and cancellation at
+depth at most three. The full 32-output optimum remains unresolved.
+
+1. WHAT IS BEING COUNTED
+
+Let C_b be the four forward MixColumns outputs at bit position b, using
+least-significant-bit-first indexing. The weight-seven outputs are
+exactly C_1, C_3, C_4. Let D3(S) count the minimum gates computing the
+clusters in S only. Inputs are at depth zero, gates have fan-in two,
+and fan-out is unrestricted.
+
+BOUNDARY_TAX_PROOF.txt proves, without restricting the circuit topology,
+
+  D3({b})=16, b=1,3,4;
+  D3({1,3,4})=16+D3({3,4}).
+
+We now prove D3({3,4})=32, hence D3({1,3,4})=48.
+
+2. THE COMPLETE SHARED-HELPER LIST
+
+For this section write A_i=x_(8i+3), C_i=x_(8i+7), indices modulo four.
+These are the two input families common to clusters 3 and 4.
+
+A weight-seven output's depth-three ancestry is cancellation-free and
+contains exactly three pair occurrences, a triple, a quartet, and the
+output. This follows from the weight argument in BOUNDARY_TAX_PROOF.txt;
+it is a consequence of depth and parity, not an imposed restriction.
+
+Enumerating all possible parents and their three pair constructions
+gives exactly the following 28 possible common helpers. There are four
+of each type and no common quartets. A signal is represented by the
+set of inputs XORed together.
+
+  helper type                         charge to C_3  charge to C_4
+  A_i+A_(i+1)                             9/10          1/10
+  A_(i+1)+C_i                             8/10          2/10
+  A_i+C_i                                 1/10          9/10
+  A_i+C_(i+1)                             8/10          2/10
+  C_i+C_(i+1)                             1/10          9/10
+  A_i+A_(i+1)+C_i                         2/10          8/10
+  A_(i+1)+C_i+C_(i+1)                     8/10          2/10
+
+Every other possible helper is charged one to its own cluster. The
+checker independently regenerates both complete helper universes and
+checks that their intersection is precisely this 28-element list.
+
+3. THE TWO FINITE WEIGHTED INEQUALITIES
+
+For every circuit computing C_3 alone, the charged cost of its helpers
+is at least 115/10. For every circuit computing C_4 alone, it is at
+least 116/10. Outputs are not included in these two helper costs.
+
+These are exact finite inequalities, checked as follows. For each
+seven-input output:
+
+  - choose its triple parent in binomial(7,3)=35 ways;
+  - its complementary quartet is determined;
+  - choose the triple's construction in three ways;
+  - choose the quartet's construction in three ways.
+
+There are exactly 315 distinct recipes. A recipe is the set of the
+five helper masks used by that complete output construction. A circuit
+on four outputs chooses one recipe for each output, so all possibilities
+occur among 315^4=9,845,600,625 recipe tuples. A shared helper is charged
+only once, by taking the union of the four recipes.
+
+The standard-library Python generator and small C++ enumerator in
+weighted_cluster_certificate.py and exact_weighted_enum.cpp enumerate
+this complete space with nonnegative-cost pruning. All charges are
+multiplied by ten and all cost arithmetic is integer arithmetic.
+
+The two permitted prunings are elementary:
+  (a) a partial union cannot become cheaper when another recipe is added;
+  (b) the extra cost of any complete extension is at least the minimum
+      extra cost of satisfying any one remaining output.
+
+The enumerator keeps an upper bound from an actual complete tuple and
+discards a branch only when one of these lower bounds is at least that
+upper bound. Recipe sorting changes the visitation order only. The
+checker requires the enumerator to report COMPLETE; a timeout would
+not certify anything. It also verifies an attaining tuple for each
+minimum directly against the regenerated recipes and integer weights.
+
+The independently regenerated exact results are:
+
+  C_3: minimum weighted helper numerator 115;
+       5,493,600 recursion candidates, 113,206,275 final-output candidates.
+  C_4: minimum weighted helper numerator 116;
+       7,137,585 recursion candidates, 235,201,050 final-output candidates.
+
+These are complete enumeration results, not numerical optimizer bounds.
+Different recipes can suggest different constructions of the same
+parent mask. This does not invalidate completeness: a real circuit is
+certainly represented, and conversely any union supplies at least one
+valid depth-two construction for each selected parent. Choose any such
+construction and reuse its result wherever required.
+
+4. COMBINE THE CHARGES AND ROUND
+
+Take any joint circuit and restrict it to the ancestries of C_3 and
+C_4. Normalize duplicate masks away, which never increases gate count
+or depth. A helper used by both clusters receives complementary charges
+whose sum is one. A helper used by only one cluster receives a charge
+at most one. Therefore the total actual number of helpers is at least
+the sum of the two charged costs:
+
+  helpers >= 115/10+116/10=231/10.
+
+There are eight distinct output gates, none reusable as an ancestor at
+depth three. Consequently
+
+  G >= 8+231/10=311/10=31.1.
+
+Because G is an integer, G>=32. The included cluster34_circuit.json
+has exactly 32 gates, independently verified at depth three. Therefore
+
+                       D3({3,4})=32.
+
+By the boundary-pair separation theorem,
+
+                       D3({1,3,4})=16+32=48.
+
+The included cluster134_circuit.json attains 48. Alternatively compose
+three copies of the explicit sixteen-gate construction. All these
+claims count actual XOR gates, not formulas, leaves, or parent slots.
+
+5. AN ADDITIONAL CLASSIFICATION CHECK
+
+verify_local_optima.py enumerates all optimal helper-mask sets for one
+four-output cluster. P>=6, H>=5 and P+H=12 leave only (P,H)=(6,6) or
+(7,5), so only 322 parent sets and 232,794 construction assignments need
+be inspected. There are 126 optimal helper sets: 18 of type (P,T,Q)
+=(6,4,2), and 108 of type (7,2,3). No optimal helper set for C_3 overlaps
+any optimal helper set for C_4 (15,876 pairs checked).
+
+This counts helper-mask sets, not wire-level realizations. It explains
+why composing two local optima gives no sharing, but it is not used as
+a substitute for the weighted proof: nonoptimal local ancestries can
+share more helpers, and the weighted proof includes all of them.
+
+REPRODUCE
+
+  python verify_boundary_tax.py
+  python verify_cluster_results.py
+  python weighted_cluster_certificate.py
+  python verify_local_optima.py
+
+Only the third command requires a C++17 compiler (g++). None requires
+an optimization solver. The reasoning plus finite checks constitute a
+computer-assisted proof; no claim is made that this is a proof-assistant
+formalization or a purely symbolic derivation of the weighted minima.

@@ -1,0 +1,41 @@
+# AES S-box bottom linear layer: 1 h on 20 workers under real depth caps 4, 5 and uncapped,
+# starting from the NIST-derived circuits in search/seeds/aes-sbox-bottom/.  Settings of the
+# 2026-10-29 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/aes-sbox-bottom.toml --out search/runs/aes-sbox-bottom --detach
+#
+# Relative paths in this file are relative to this file.
+
+[campaign]
+name = "aes-sbox-bottom"
+seed = 20263029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[28, 5], [29, 4]]
+
+[[workers]]
+name = "cap4"
+target = "aes-sbox-bottom"
+count = 7
+objective = "gates"
+depth_cap = 4
+seeds = ["../seeds/aes-sbox-bottom/nist-g38-d4.json"]
+
+[[workers]]
+name = "cap5"
+target = "aes-sbox-bottom"
+count = 7
+objective = "gates"
+depth_cap = 5
+seeds = ["../seeds/aes-sbox-bottom/nist-g28-d5.json"]
+
+[[workers]]
+name = "free"
+target = "aes-sbox-bottom"
+count = 6
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/aes-sbox-bottom/nist-g28-d5.json"]

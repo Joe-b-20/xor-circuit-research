@@ -1,0 +1,86 @@
+AES forward MixColumns: recipe-linked depth-three proof checkpoint
+2026-10-16 (America/New_York)
+
+MODEL AND RESULT
+
+Two-input XOR gates, raw inputs at depth zero, output depth at most three,
+unrestricted sharing, fan-out, and cancellation. The full optimum remains
+unresolved: 92 <= D3 <= 97. No smaller full circuit was found this turn.
+The exact minimum normalized pair count remains 26, witnessed by the
+previous verified 100-gate circuit. That is not a 100-gate full optimum.
+
+NEW VALID INEQUALITIES
+
+LINKED_CLUSTER_PROOF.txt proves inequalities that price both the union of
+helpers and the actual complete recipe selected for each output. Helper
+prices are nonnegative; recipe prices may be signed. Their right-hand sides
+come from complete integer enumeration of all four-output recipe tuples.
+The weight-five case projects all global recipes onto the cluster support;
+foreign cancellation is included, and every projection is checked.
+
+EDGE_TREE_PROOF.txt refines the parent forest inequalities by assigning a
+separate reward to each exact parent edge (a,b,output), rather than only
+to its output label. Each retained price is checked against every legal
+connected tree with distinct output labels in its stated vertex set.
+
+CANONICAL_PARENT_PROOF.txt separately gives cost-preserving private-parent
+replacement rules. These rules are NOT premises of the new certificate.
+They apply to minimum-total-gate representatives and do not preserve the
+pair count. Their numerical improvement was negligible.
+
+EXACT LOWER-BOUND ARITHMETIC
+
+The compact certificate has 16,868 rows and 61,673 variables.
+It retains 3 W7 and 5 projected W5 old local prices, 1,312 construction
+consistency inequalities, 192 forest inequalities, 58 label-priced tree
+inequalities, 22 recipe-linked cluster inequalities, and 28 edge-priced
+tree inequalities, together with the earlier foundation and P>=26.
+
+For rows A*p>=b, 0<=p<=1, and nonnegative integer multipliers v:
+
+  c*p >= [v*b - sum_j max(0,(A^T*v)_j-D*c_j)] / D.
+
+Raw numerator:       597,873,309,129,014,687
+Coefficient excess:  94,981,122,063,296
+Certified numerator: 597,778,328,006,951,391
+Denominator:         10,000,000,000,000,000
+
+Thus helpers >= 59.7778328006951391. The entire coefficient-excess
+correction is subtracted; it is about 0.009498 helper units and must not
+be dismissed as negligible rounding. It covers all dual coefficient
+violations regardless of whether they arose from numerical optimization
+or integer conversion. Every final operation is exact integer arithmetic.
+
+Integrality gives helpers >= 60, and adding 32 output gates gives G>=92.
+To get 93 by this argument would require a strictly greater than 60
+helper lower bound. The numerical master objective is never used as proof.
+
+CHECKING
+
+  python independent_check_consistent.py certificate_depth3_linked_92.json --result independent_linked_92_checks.json
+  python verify_joint_fractional.py
+  python verify_pair26_witness.py
+
+The first command rechecks the parity premise, P>=26, the eight old local
+prices, all retained parent-tree prices, all 22 new linked minima, every
+full-model coefficient, the exact dual arithmetic, and the actual
+ancestries of the 97-gate and 100-gate controls. The linked verifier uses
+an independently written threshold enumerator with a different search
+order and representation. Verification needs standard-library Python
+and a C++17 compiler named g++; numerical optimization is not a premise.
+
+The fractional witness command verifies a different statement: the full
+retained linear relaxation has an exact rational feasible point costing
+less than 60 helpers. See joint_fractional_checks.json for its exact
+numerator and denominator. This point is NOT an XOR circuit. It shows
+that linear combinations of the RETAINED inequalities cannot prove 61
+helpers. It does not rule out stronger inequalities or integer reasoning.
+
+LIMITS OF THIS CHECKPOINT
+
+The new inequalities make local helper purchases agree more closely with
+actual recipe choices, but do not force globally integral choices of
+individual masks. Counts 92 through 96 remain unexcluded. There is no
+claim that 97 is optimal, or that every possible inequality of the new
+types has been exhausted. Separate exploratory integer-count and circuit
+search records must not be interpreted as proofs of infeasibility.

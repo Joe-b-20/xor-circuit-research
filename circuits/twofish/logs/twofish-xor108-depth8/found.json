@@ -1,0 +1,29 @@
+{
+ "circuit": "twofish-xor108-depth8.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T04:37:25.514+00:00",
+ "seconds_into_run": 41.21563525800593,
+ "run": "nist-twofish",
+ "run_id": "760c0250e1df4cdeae95cec12face39a",
+ "worker": "cap8-00",
+ "depth_cap": 8,
+ "move": "depth.repair",
+ "seed": {
+  "kind": "file",
+  "point": "111@8",
+  "by": "NIST",
+  "source": "nist-g111-d8.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "e5426b66c56c321a07f5d4ba372c405993938d7bff667b9cf1d44dad7d669277",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

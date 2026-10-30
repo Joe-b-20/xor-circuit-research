@@ -1,0 +1,378 @@
+{
+ "benchmark": "aes-sbox-bottom",
+ "inputCount": 18,
+ "gates": [
+  [
+   3,
+   6
+  ],
+  [
+   4,
+   7
+  ],
+  [
+   18,
+   19
+  ],
+  [
+   15,
+   16
+  ],
+  [
+   10,
+   21
+  ],
+  [
+   9,
+   22
+  ],
+  [
+   20,
+   23
+  ],
+  [
+   0,
+   3
+  ],
+  [
+   1,
+   4
+  ],
+  [
+   25,
+   26
+  ],
+  [
+   27,
+   23
+  ],
+  [
+   20,
+   28
+  ],
+  [
+   2,
+   25
+  ],
+  [
+   19,
+   8
+  ],
+  [
+   30,
+   31
+  ],
+  [
+   12,
+   14
+  ],
+  [
+   32,
+   33
+  ],
+  [
+   20,
+   17
+  ],
+  [
+   15,
+   35
+  ],
+  [
+   34,
+   36
+  ],
+  [
+   30,
+   5
+  ],
+  [
+   38,
+   28
+  ],
+  [
+   11,
+   22
+  ],
+  [
+   34,
+   40
+  ],
+  [
+   13,
+   21
+  ],
+  [
+   12,
+   42
+  ],
+  [
+   38,
+   43
+  ],
+  [
+   32,
+   44
+  ]
+ ],
+ "outputSignals": [
+  24,
+  29,
+  37,
+  28,
+  39,
+  41,
+  45,
+  44
+ ],
+ "gateCount": 28,
+ "depth": 5,
+ "affine_output_constants": [
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  1,
+  1
+ ],
+ "scope": "linear part only",
+ "provenance": {
+  "derivation": "XOR-only tail; XNOR constants factored into explicit target affine metadata; input-wire permutation only",
+  "sources": [
+   {
+    "source_path": "data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g110-gd23-xx78-3.circ.txt",
+    "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g110-gd23-xx78-3.circ.txt",
+    "source_sha256": "f660b910a2f464882334849c5807b4f27345978139ac7894484ab419393167c9",
+    "source_cut_names": [
+     "a15",
+     "a16",
+     "a17",
+     "a18",
+     "a19",
+     "a20",
+     "a21",
+     "a22",
+     "a23",
+     "a24",
+     "a25",
+     "a26",
+     "a27",
+     "a28",
+     "a29",
+     "a30",
+     "a31",
+     "a32"
+    ],
+    "canonical_input_for_source_cut": [
+     2,
+     5,
+     11,
+     14,
+     6,
+     15,
+     0,
+     3,
+     9,
+     12,
+     1,
+     4,
+     7,
+     10,
+     13,
+     16,
+     8,
+     17
+    ],
+    "full_gate_count": 110,
+    "affine_output_constants": [
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    "full_aes_256_cases_checked": true,
+    "reattachment_256_cases_checked": true
+   },
+   {
+    "source_path": "data/slp/aes/aes-sbox/aes-sbox-a34-ad4-g110-gd22-xx76-3.circ.txt",
+    "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/aes-sbox/aes-sbox-a34-ad4-g110-gd22-xx76-3.circ.txt",
+    "source_sha256": "f4bb54511cba5f0bfe6fb42b87b27a4cedea0d3f33c8c468e6f8094b94d64613",
+    "source_cut_names": [
+     "a17",
+     "a18",
+     "a19",
+     "a20",
+     "a21",
+     "a22",
+     "a23",
+     "a24",
+     "a25",
+     "a26",
+     "a27",
+     "a28",
+     "a29",
+     "a30",
+     "a31",
+     "a32",
+     "a33",
+     "a34"
+    ],
+    "canonical_input_for_source_cut": [
+     1,
+     2,
+     4,
+     5,
+     10,
+     11,
+     13,
+     14,
+     0,
+     3,
+     6,
+     9,
+     12,
+     15,
+     7,
+     16,
+     8,
+     17
+    ],
+    "full_gate_count": 110,
+    "affine_output_constants": [
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    "full_aes_256_cases_checked": true,
+    "reattachment_256_cases_checked": true
+   },
+   {
+    "source_path": "data/slp/aes/sbox/aes-sbox-fwd-a32-ad5-g110-gd23-xx78-3.circ.txt",
+    "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/sbox/aes-sbox-fwd-a32-ad5-g110-gd23-xx78-3.circ.txt",
+    "source_sha256": "34d172f84287c8eb0163f3b1f716f076264a04d6b0eace88d55d516ed214d154",
+    "source_cut_names": [
+     "t59",
+     "t60",
+     "t61",
+     "t62",
+     "t65",
+     "t66",
+     "t70",
+     "t71",
+     "t72",
+     "t73",
+     "t78",
+     "t79",
+     "t80",
+     "t81",
+     "t82",
+     "t83",
+     "t88",
+     "t89"
+    ],
+    "canonical_input_for_source_cut": [
+     2,
+     5,
+     11,
+     14,
+     6,
+     15,
+     0,
+     3,
+     9,
+     12,
+     1,
+     4,
+     7,
+     10,
+     13,
+     16,
+     8,
+     17
+    ],
+    "full_gate_count": 110,
+    "affine_output_constants": [
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    "full_aes_256_cases_checked": true,
+    "reattachment_256_cases_checked": true
+   },
+   {
+    "source_path": "data/slp/aes/sbox/aes-sbox-fwd-a34-ad4-g110-gd23-xx76-3.circ.txt",
+    "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/sbox/aes-sbox-fwd-a34-ad4-g110-gd23-xx76-3.circ.txt",
+    "source_sha256": "4801b4fe5462130b3c2a6efe991eb54dde1ed99eef2d3f0507eeabb023ef124d",
+    "source_cut_names": [
+     "t63",
+     "t64",
+     "t65",
+     "t66",
+     "t67",
+     "t68",
+     "t69",
+     "t70",
+     "t73",
+     "t74",
+     "t75",
+     "t76",
+     "t77",
+     "t78",
+     "t83",
+     "t84",
+     "t89",
+     "t90"
+    ],
+    "canonical_input_for_source_cut": [
+     1,
+     2,
+     4,
+     5,
+     10,
+     11,
+     13,
+     14,
+     0,
+     3,
+     6,
+     9,
+     12,
+     15,
+     7,
+     16,
+     8,
+     17
+    ],
+    "full_gate_count": 110,
+    "affine_output_constants": [
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    "full_aes_256_cases_checked": true,
+    "reattachment_256_cases_checked": true
+   }
+  ]
+ }
+}

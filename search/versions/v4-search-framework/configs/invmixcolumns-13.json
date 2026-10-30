@@ -1,0 +1,29 @@
+{
+  "allocation": {
+    "invmixcolumns": 13
+  },
+  "base_seed": 20261028,
+  "chunk_seconds": 30.0,
+  "engines": "all",
+  "objective": "gates",
+  "sharing": true,
+  "pin_cpus": false,
+  "cap_cycle": [5, 6, 7, 8, 9, 14, 16, 19, 19, 20, 20, null, null],
+  "engine_knobs": {
+    "v2-lns": {"proposal_seconds": 0.1},
+    "v2-translate": {"proposal_seconds": 0.1},
+    "v2-cores": {"proposal_seconds": 0.1},
+    "v3-component": {
+      "proposal_seconds": 0.1,
+      "move_knobs": {"max_seconds": 0.1, "max_nodes": 6000, "max_trials": 48}
+    },
+    "v3-interface": {
+      "proposal_seconds": 0.1,
+      "move_knobs": {"max_seconds": 0.1, "max_nodes": 6000, "max_trials": 48}
+    },
+    "v3-backward": {
+      "proposal_seconds": 0.1,
+      "move_knobs": {"max_seconds": 0.1, "max_nodes": 6000, "max_trials": 48}
+    }
+  }
+}

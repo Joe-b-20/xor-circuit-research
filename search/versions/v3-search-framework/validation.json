@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-24",
+  "search_tests": {
+    "count": 41,
+    "passed": true,
+    "command": "python3 -m unittest discover -s search/tests -p 'test_*.py'"
+  },
+  "existing_repository_tests": {
+    "count": 17,
+    "passed": true
+  },
+  "default20_validation": {
+    "allocation": {
+      "aes_sbox_bottom": 6,
+      "fox_mu4": 8,
+      "joltik": 6
+    },
+    "settings": {
+      "allocation": {
+        "aes_sbox_bottom": 6,
+        "fox_mu4": 8,
+        "joltik": 6
+      },
+      "allow_oversubscription": false,
+      "base_seed": 20261024,
+      "cap_cycle": [
+        "seed",
+        "seed_plus_one",
+        null
+      ],
+      "chunk_seconds": 30.0,
+      "coordinator_interval_seconds": 2.0,
+      "engine_knobs": {},
+      "engines": "all",
+      "equal_point_circuits": 32,
+      "kill_grace_seconds": 2.0,
+      "parent_check_seconds": 0.5,
+      "pin_cpus": false,
+      "schema": 1,
+      "session_seconds": null,
+      "sharing": true,
+      "status_interval_seconds": 2.0,
+      "stop_grace_seconds": 30.0,
+      "terminate_grace_seconds": 5.0,
+      "worker_log_backups": 2,
+      "worker_log_bytes": 2000000
+    },
+    "source_manifest_sha256": "98462a53276a56aa4c1f86bf371a649c2ad220d0f6ccc64d2495b74cc1bc32a7",
+    "core_source_sha256": {
+      "search/run.py": "906cc8005b0e11962a6d073a0abb96f685d6b343a7d2627b04359d1e65eb2acd",
+      "search/runtime.py": "00aec3850385f94b64f06bf594c3b9accd4b8333af3bd15634188bd02e63a9e4",
+      "search/worker.py": "0bbabb3a3f05cb84f175d7cd75fbf93b791c3fb91599ac52b812a7a920067038",
+      "search/engine_api.py": "ca38304f684f7659d4408a302ad62f881085a822afcf2359416f3ece4b0cc5e3",
+      "search/target.py": "bc310de84b41bf51422ca251b4723029b91c7d23bfc0deb72c0ccbd69edb8fda"
+    },
+    "sessions": [
+      {
+        "duration_seconds": 5.648775781039149,
+        "resume": false,
+        "stop_reason": "duration elapsed",
+        "worker_returncodes": {
+          "aes_sbox_bottom-00": 0,
+          "aes_sbox_bottom-01": 0,
+          "aes_sbox_bottom-02": 0,
+          "aes_sbox_bottom-03": 0,
+          "aes_sbox_bottom-04": 0,
+          "aes_sbox_bottom-05": 0,
+          "fox_mu4-00": 0,
+          "fox_mu4-01": 0,
+          "fox_mu4-02": 0,
+          "fox_mu4-03": 0,
+          "fox_mu4-04": 0,
+          "fox_mu4-05": 0,
+          "fox_mu4-06": 0,
+          "fox_mu4-07": 0,
+          "joltik-00": 0,
+          "joltik-01": 0,
+          "joltik-02": 0,
+          "joltik-03": 0,
+          "joltik-04": 0,
+          "joltik-05": 0
+        },
+        "forced_shutdown": []
+      },
+      {
+        "duration_seconds": 2.7014840549672954,
+        "resume": true,
+        "stop_reason": "requested",
+        "worker_returncodes": {
+          "aes_sbox_bottom-00": 0,
+          "aes_sbox_bottom-01": 0,
+          "aes_sbox_bottom-02": 0,
+          "aes_sbox_bottom-03": 0,
+          "aes_sbox_bottom-04": 0,
+          "aes_sbox_bottom-05": 0,
+          "fox_mu4-00": 0,
+          "fox_mu4-01": 0,
+          "fox_mu4-02": 0,
+          "fox_mu4-03": 0,
+          "fox_mu4-04": 0,
+          "fox_mu4-05": 0,
+          "fox_mu4-06": 0,
+          "fox_mu4-07": 0,
+          "joltik-00": 0,
+          "joltik-01": 0,
+          "joltik-02": 0,
+          "joltik-03": 0,
+          "joltik-04": 0,
+          "joltik-05": 0
+        },
+        "forced_shutdown": []
+      }
+    ],
+    "verified_records": 123,
+    "all_workers_checkpointed_and_advanced_on_resume": true,
+    "local_evidence_directory": "search/runs/validation-final20",
+    "evidence_note": "Local validation campaign; runtime output is excluded from Git. Not the fresh launch campaign."
+  }
+}

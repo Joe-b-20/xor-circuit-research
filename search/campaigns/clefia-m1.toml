@@ -1,0 +1,53 @@
+# CLEFIA M1: 1 h on 20 workers under real depth caps 4, 5, 6, 10 and uncapped (minimum depth 4), starting
+# from the NIST circuit (103 gates, depth 10) in search/seeds/clefia-m1/. Settings of the
+# 2026-10-30 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/clefia-m1.toml --out search/runs/clefia-m1 --detach
+#
+# Relative paths in this file are relative to this file.
+[campaign]
+name = "nist-clefia-m1"
+seed = 20261033
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "cap4"
+target = "clefia-m1"
+count = 4
+objective = "gates"
+depth_cap = 4
+seeds = ["../seeds/clefia-m1/nist-g103-d10.json"]
+
+[[workers]]
+name = "cap5"
+target = "clefia-m1"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["../seeds/clefia-m1/nist-g103-d10.json"]
+
+[[workers]]
+name = "cap6"
+target = "clefia-m1"
+count = 4
+objective = "gates"
+depth_cap = 6
+seeds = ["../seeds/clefia-m1/nist-g103-d10.json"]
+
+[[workers]]
+name = "cap10"
+target = "clefia-m1"
+count = 4
+objective = "gates"
+depth_cap = 10
+seeds = ["../seeds/clefia-m1/nist-g103-d10.json"]
+
+[[workers]]
+name = "free"
+target = "clefia-m1"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/clefia-m1/nist-g103-d10.json"]

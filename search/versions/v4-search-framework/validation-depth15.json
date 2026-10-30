@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-27",
+  "search_tests": {
+    "passed": true,
+    "count": 55
+  },
+  "existing_repository_tests": {
+    "passed": true,
+    "count": 17
+  },
+  "allocation": {
+    "fox_mu8": 10,
+    "joltik": 5
+  },
+  "profile": "search/configs/joltik-depth-foxmu8-15.json",
+  "tested_core_sha256": {
+    "run.py": "3b1f343a997a77b40cc852ccbc390409f97c8dbf2c9ffbfc229244eab33c1e49",
+    "runtime.py": "c2cfea1525cb809ee21f44e77ddff23c378c04631d7331492d85b09dbafa2bb6",
+    "worker.py": "6860706a28ce8462ee0ddd917f0a44198f3036193ceffd819c22a86927c69698",
+    "engine_api.py": "5f910862d005d13f10a645babf9ba4c2d350edeab09699bfd528446e142a37b0",
+    "target.py": "e635d3415351ed39fb228029e4cae1aa66b28412439211d22bf19c53cdd45d1e"
+  },
+  "validation_source_manifest_sha256": "af25845299ad82c1129bc72f5b98076ef81e4982413237cfdcfa3fb9f4c260e3",
+  "sessions": [
+    {
+      "resume": false,
+      "elapsed_seconds": 7.69101246795617,
+      "stop_reason": "duration elapsed",
+      "returncodes": {
+        "fox_mu8-00": 0,
+        "fox_mu8-01": 0,
+        "fox_mu8-02": 0,
+        "fox_mu8-03": 0,
+        "fox_mu8-04": 0,
+        "fox_mu8-05": 0,
+        "fox_mu8-06": 0,
+        "fox_mu8-07": 0,
+        "fox_mu8-08": 0,
+        "fox_mu8-09": 0,
+        "joltik-00": 0,
+        "joltik-01": 0,
+        "joltik-02": 0,
+        "joltik-03": 0,
+        "joltik-04": 0
+      },
+      "forced_shutdown": []
+    },
+    {
+      "resume": true,
+      "elapsed_seconds": 3.7496303250081837,
+      "stop_reason": "requested",
+      "returncodes": {
+        "fox_mu8-00": 0,
+        "fox_mu8-01": 0,
+        "fox_mu8-02": 0,
+        "fox_mu8-03": 0,
+        "fox_mu8-04": 0,
+        "fox_mu8-05": 0,
+        "fox_mu8-06": 0,
+        "fox_mu8-07": 0,
+        "fox_mu8-08": 0,
+        "fox_mu8-09": 0,
+        "joltik-00": 0,
+        "joltik-01": 0,
+        "joltik-02": 0,
+        "joltik-03": 0,
+        "joltik-04": 0
+      },
+      "forced_shutdown": []
+    }
+  ],
+  "verified_records": 44,
+  "all_five_joltik_workers_attempted_strictly_lower_depth": true,
+  "all_saved_joltik_records_at_most_43_gates": true,
+  "local_evidence_directory": "search/runs/validation-depth15-20261027",
+  "evidence_note": "Short validation only; the fresh launch campaign is separate.",
+  "prior_stopped_run_frontier_verified": {
+    "aes_sbox_bottom": [
+      [
+        28,
+        5
+      ],
+      [
+        29,
+        4
+      ]
+    ],
+    "fox_mu4": [
+      [
+        128,
+        7
+      ],
+      [
+        129,
+        6
+      ],
+      [
+        130,
+        5
+      ],
+      [
+        141,
+        4
+      ]
+    ],
+    "joltik": [
+      [
+        43,
+        8
+      ],
+      [
+        44,
+        5
+      ],
+      [
+        45,
+        4
+      ],
+      [
+        47,
+        3
+      ]
+    ]
+  }
+}

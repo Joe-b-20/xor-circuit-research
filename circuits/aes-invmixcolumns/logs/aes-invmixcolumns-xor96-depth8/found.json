@@ -1,0 +1,28 @@
+{
+ "circuit": "aes-invmixcolumns-xor96-depth8.circ.txt",
+ "version": "v6",
+ "code": "search/versions/v6-xorsearch",
+ "found_utc": "2026-10-29T10:00:17.488+00:00",
+ "seconds_into_run": 926.3307752589462,
+ "run": "rerun-invmixcolumns",
+ "run_id": "af247ea3f0ad4003ab27b64ca7b10739",
+ "worker": "cap9-00",
+ "depth_cap": 9,
+ "move": "depth.repair",
+ "seed": {
+  "kind": "file",
+  "point": "95@9",
+  "by": "NIST",
+  "source": "invmc_nist_g95_d9.json"
+ },
+ "chain_root": "best",
+ "circuit_sha256": "4c8cc7c951f85db6ab817c00150e65e9bebf2d3c8a5d53f940724a5f33cd81d6",
+ "logs": [
+  "campaign.toml",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

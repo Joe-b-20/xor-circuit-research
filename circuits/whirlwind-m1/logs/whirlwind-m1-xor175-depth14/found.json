@@ -1,0 +1,29 @@
+{
+ "circuit": "whirlwind-m1-xor175-depth14.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T09:37:43.952+00:00",
+ "seconds_into_run": 377.72539867204614,
+ "run": "nist-batch-32b",
+ "run_id": "b3a42cc6093e47d9a0259782f3bcff62",
+ "worker": "whirlwind-m1-free-00",
+ "depth_cap": null,
+ "move": "lns.rebuild",
+ "seed": {
+  "kind": "file",
+  "point": "187@16",
+  "by": "NIST",
+  "source": "nist-g187-d16.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "e0dbc3bd4f9ec4c71532bd085d3fb800326f34e620d621f1fcabd1099a3028e4",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

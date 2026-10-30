@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "discovery_version_claim": false,
+  "modules": [
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/deadline_search.py",
+      "source_sha256": "b1bd6e6e4ea80a0a40ceacca2727d4772b36ab7e0ea08b29c36ca26b51c24fb4",
+      "adapted": "search/engines/vendor_v2/deadline_search.py",
+      "adapted_sha256": "b1bd6e6e4ea80a0a40ceacca2727d4772b36ab7e0ea08b29c36ca26b51c24fb4",
+      "changes": [
+        "None: byte-for-byte frozen generic module."
+      ]
+    },
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/structured_search.py",
+      "source_sha256": "d7dc69f883e98859bd590027d18badc54bd688d53b350a6c5696789eb206bc59",
+      "adapted": "search/engines/vendor_v2/structured_search.py",
+      "adapted_sha256": "171b048f226e25aa3a20f8b7f46482cc134a381a0254ba281ff001384f6cf15c",
+      "changes": [
+        "Package-relative deadline import; remove MixColumns core import; require explicit targets/inputs."
+      ]
+    },
+    {
+      "source": "sources/mixcolumns-v3-as-run/pipeline/deadline_search.py",
+      "source_sha256": "1eb0a0b654d7bb91dd2cbe85655d3d461263e5cbbdaf65f6e708d0c99510b4e0",
+      "adapted": "search/engines/vendor_v3/deadline_search.py",
+      "adapted_sha256": "1eb0a0b654d7bb91dd2cbe85655d3d461263e5cbbdaf65f6e708d0c99510b4e0",
+      "changes": [
+        "None: byte-for-byte frozen generic module."
+      ]
+    },
+    {
+      "source": "sources/mixcolumns-v3-as-run/pipeline/advanced_moves.py",
+      "source_sha256": "02b14bc2e46ccdb2eb02b91339db0f1bb86bef8d81c5ecaa113c7ac94158f4b2",
+      "adapted": "search/engines/vendor_v3/advanced_moves.py",
+      "adapted_sha256": "05d5ad2beb3e9254f5a2bf4d2f393da3c488d6063ecb4fc00af017202fe7eb4d",
+      "changes": [
+        "Add optional should_stop hook to existing budget checks; algorithm otherwise unchanged."
+      ]
+    },
+    {
+      "source": "sources/mixcolumns-v3-as-run/pipeline/pair_bank_search.py",
+      "source_sha256": "3b09f4f32132eb78dbba6b38859caaaec5fd6686dd7998b57dbbc1f395a0576f",
+      "adapted": "search/engines/vendor_v3/pair_bank_search.py",
+      "adapted_sha256": "442de8a4aa53eafb6a4e65a1e12c1ca3cf2dd0748e550cbda64a4be14c4d1b89",
+      "changes": [
+        "Package-relative deadline import. Only generic solve_pair_bank called; original AES-specific engine driver is not used."
+      ]
+    }
+  ],
+  "port_references": [
+    {
+      "source": "sources/mixcolumns-search/campaign_87/hunt87/constructors.py",
+      "sha256": "5561801b69466a76be44bc7af712d1bea1d0253e61889e78162aaaaa3201eb8f",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "balanced, Paar and weight-descent BP-style constructors"
+    },
+    {
+      "source": "sources/mixcolumns-search/campaign_87/hunt87/exact_window.py",
+      "sha256": "9af714b775a4cc30da5de38db4e803c7904d32ea8f9a9f5172eb340f70caa88d",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "first-unlock window search"
+    },
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/engines_baseline.py",
+      "sha256": "9bd7b49f24da1f483985bb1af5877a25695e5c6e9c2d19319b604286852f2fbe",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "historical baseline walk/LNS/partition annealer"
+    },
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/engines.py",
+      "sha256": "d24a9714428bace75840a51077bef5aff414d9d74c703320a16a933800bc5d97",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "v2 upgrade composition and persistent state"
+    },
+    {
+      "archive": "sources/invmixcolumns-source.tar.gz",
+      "member": "slp-invmc/pipeline/engines.py",
+      "sha256": "3c3dd9b53e086403c3e76db2e2a9c6722ec77a305f727986b24bb657c320a8c1",
+      "usage": "mechanism reference for new generic port; not compiled/executed"
+    },
+    {
+      "archive": "sources/invmixcolumns-source.tar.gz",
+      "member": "slp-invmc/historical/d4cd6fa4c652fb9e508cb010222fa62926704450/bp/bp5ub.c",
+      "sha256": "5dddf696f9dd3c3469276e07ca30b2619417c319e750c42a0853b54fa03868a5",
+      "usage": "mechanism reference for new generic port; not compiled/executed",
+      "review_copy": "search/engines/reference/inverse-bp5ub.c"
+    }
+  ],
+  "module_default_sources": [
+    {
+      "module": "search/engines/vendor_v2/deadline_search.py",
+      "sha256": "b1bd6e6e4ea80a0a40ceacca2727d4772b36ab7e0ea08b29c36ca26b51c24fb4",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v2/structured_search.py",
+      "sha256": "171b048f226e25aa3a20f8b7f46482cc134a381a0254ba281ff001384f6cf15c",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v3/deadline_search.py",
+      "sha256": "1eb0a0b654d7bb91dd2cbe85655d3d461263e5cbbdaf65f6e708d0c99510b4e0",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v3/advanced_moves.py",
+      "sha256": "05d5ad2beb3e9254f5a2bf4d2f393da3c488d6063ecb4fc00af017202fe7eb4d",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v3/pair_bank_search.py",
+      "sha256": "442de8a4aa53eafb6a4e65a1e12c1ca3cf2dd0748e550cbda64a4be14c4d1b89",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    }
+  ],
+  "not_equivalent_to_historical_campaigns": "Ports change sampling, dimension handling, stop budgets and scheduling. Reused generic proposal kernels preserve their scoped mechanisms; no original-discovery execution claim."
+}

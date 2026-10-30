@@ -1,0 +1,24 @@
+# FOX Mu8 (64x64, ~540 gates): a large target, run for days, detached.
+#
+#   python -m xorsearch plan xorsearch/examples/fox_mu8.toml
+#   python -m xorsearch run  xorsearch/examples/fox_mu8.toml --out ~/runs/fox8 --detach
+#   python -m xorsearch status ~/runs/fox8
+#
+# The `large` profile writes checkpoints, pool files and epochs less often and restarts a crashed
+# worker from its checkpoint instead of stopping the campaign (config/profiles/large.toml).
+
+[campaign]
+name = "fox_mu8"
+description = "FOX Mu8 gates-first under real caps 14 and 15 and uncapped, pull sharing."
+seed = 20261027
+duration = "3d"
+profiles = ["default", "large"]
+sharing = "pull"
+
+[[workers]]
+name = "mu8"
+target = "fox_mu8"
+count = 6
+objective = "gates"
+depth_cap = [14, 15, "none"]   # cycles: workers 0 and 3 capped at 14, 1 and 4 at 15, 2 and 5 free
+seeds = ["target"]

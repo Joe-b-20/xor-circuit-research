@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "checks": {
+    "source_files_byte_identical_to_original_archive": 1216,
+    "all_python_modules_syntax_checked_and_imported": 26,
+    "modules": [
+      "check_local_oracles.py",
+      "compact_joint_certificate.py",
+      "independent_check.py",
+      "independent_check_86.py",
+      "independent_check_consistent.py",
+      "independent_check_local.py",
+      "independent_edge_tree_rows.py",
+      "independent_linked_rows.py",
+      "independent_parent_rows.py",
+      "verify_boundary_tax.py",
+      "verify_cluster_results.py",
+      "verify_complete_92_exclusion.py",
+      "verify_component_conditionals.py",
+      "verify_conditioned_partition_coverage.py",
+      "verify_eight_component_tradeoff.py",
+      "verify_local_optima.py",
+      "verify_pair25.py",
+      "verify_pair26.py",
+      "verify_pair26_witness.py",
+      "verify_pair_rank.py",
+      "verify_pair_tradeoff.py",
+      "verify_partition_conditionals.py",
+      "verify_partition_crosscheck.py",
+      "verify_reduced_parent_prices.py",
+      "verify_structure.py",
+      "weighted_cluster_certificate.py"
+    ],
+    "standard_library_only_imports": true,
+    "partition_certificates": 1113,
+    "component_certificates": 17,
+    "wrapper_optimized_python_rejected_with_exit_code": 2
+  },
+  "scope": "Packaging integrity, dependency import closure, and assertion-mode guard. Mathematical verification is reported separately."
+}

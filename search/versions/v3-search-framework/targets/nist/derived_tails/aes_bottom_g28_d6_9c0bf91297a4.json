@@ -1,0 +1,204 @@
+{
+  "benchmark": "aes_sbox_bottom",
+  "inputCount": 18,
+  "gates": [
+    [
+      3,
+      6
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      18,
+      19
+    ],
+    [
+      15,
+      16
+    ],
+    [
+      10,
+      21
+    ],
+    [
+      9,
+      22
+    ],
+    [
+      20,
+      23
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      25,
+      4
+    ],
+    [
+      1,
+      26
+    ],
+    [
+      27,
+      24
+    ],
+    [
+      2,
+      25
+    ],
+    [
+      29,
+      19
+    ],
+    [
+      30,
+      8
+    ],
+    [
+      12,
+      14
+    ],
+    [
+      31,
+      32
+    ],
+    [
+      20,
+      17
+    ],
+    [
+      15,
+      34
+    ],
+    [
+      33,
+      35
+    ],
+    [
+      27,
+      23
+    ],
+    [
+      29,
+      5
+    ],
+    [
+      38,
+      37
+    ],
+    [
+      11,
+      22
+    ],
+    [
+      33,
+      40
+    ],
+    [
+      12,
+      13
+    ],
+    [
+      38,
+      21
+    ],
+    [
+      42,
+      43
+    ],
+    [
+      31,
+      44
+    ]
+  ],
+  "outputSignals": [
+    24,
+    28,
+    36,
+    37,
+    39,
+    41,
+    45,
+    44
+  ],
+  "gateCount": 28,
+  "depth": 6,
+  "affine_output_constants": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1
+  ],
+  "scope": "linear part only",
+  "provenance": {
+    "derivation": "XOR-only tail; XNOR constants factored into explicit target affine metadata; input-wire permutation only",
+    "sources": [
+      {
+        "source_path": "data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g110-gd20-xx77-4.circ.txt",
+        "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g110-gd20-xx77-4.circ.txt",
+        "source_sha256": "a3010d46df1bd5abbcd99f87302be0d3e7d5c8f621008d5b625ea68494f40d6f",
+        "source_cut_names": [
+          "a16",
+          "a17",
+          "a18",
+          "a19",
+          "a20",
+          "a21",
+          "a22",
+          "a23",
+          "a24",
+          "a25",
+          "a26",
+          "a27",
+          "a28",
+          "a29",
+          "a30",
+          "a31",
+          "a32",
+          "a33"
+        ],
+        "canonical_input_for_source_cut": [
+          12,
+          3,
+          0,
+          9,
+          14,
+          5,
+          2,
+          11,
+          16,
+          7,
+          4,
+          13,
+          1,
+          10,
+          15,
+          6,
+          17,
+          8
+        ],
+        "full_gate_count": 110,
+        "affine_output_constants": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "full_aes_256_cases_checked": true,
+        "reattachment_256_cases_checked": true
+      }
+    ]
+  }
+}

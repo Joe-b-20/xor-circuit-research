@@ -1,0 +1,224 @@
+An exact boundary-pair inequality for the weight-seven AES clusters
+2026-10-16
+
+MODEL AND STATUS
+
+Gates are two-input XORs, inputs have depth zero, and output depth is at
+most three. Fan-out and cancellation are unrestricted. This note proves
+a local optimum and an exact decomposition of the twelve weight-seven
+outputs. It does NOT prove the full 32-output 97-gate circuit optimal.
+The resulting full-circuit interval is 86 <= D3 <= 97; see
+FULL_BOUND_86.txt. The old 85 certificate remains valid separately.
+
+1. THE FOUR-OUTPUT PROBLEM
+
+Let a_0,...,a_3, b_0,...,b_3, c_0,...,c_3 be distinct inputs, indices modulo
+four, and put
+
+  Y_r = (a_0+a_1+a_2+a_3+a_r) + b_r+b_(r+1) + c_r+c_(r+1).
+
+All sums in signal expressions are XOR. In counts, sums are ordinary
+integer addition. A, B, C denote the three four-input families.
+
+Every Y_r has weight seven. At depth three it must be the XOR of a
+disjoint triple and quartet at depth two. The triple must be an input
+plus a disjoint pair, and the quartet two disjoint pairs. Thus its
+entire ancestry is cancellation-free: three pair occurrences, one
+unpaired raw-input occurrence (the anchor), two parents, one output.
+
+Delete unused gates and merge duplicate masks. Write P for the number of
+distinct pairs and H for the number of distinct triple/quartet parents
+in the four outputs' ancestry. Then G=4+P+H. A pair belongs to at most
+two outputs, since the intersection of any three outputs has size one.
+Consequently P>=6. Every triple/quartet also belongs to at most two.
+
+Join the two parents of each output by an edge labelled by that output.
+This is a simple bipartite graph (triples versus quartets) of maximum
+degree two. It is a forest: XORing the edge labels on a cycle gives
+zero, whereas no nonempty subset of these four outputs XORs to zero.
+More specifically, subsets of sizes one, two, three, four have weights
+7; 6 or 10; 5; and 4, respectively. Its components are therefore paths,
+and 5<=H<=8.
+
+2. EXACT LOCAL OPTIMUM: SIXTEEN GATES
+
+If G<=15, the preceding bounds force P=6,H=5. The parent graph is a
+four-edge path. For two vertices at distance d along it, their XOR is
+the XOR of the d intervening output labels. The subset weights above
+give the following intersection bounds:
+
+  distance 1: intersection zero;
+  distance 2 or 3: intersection at most one;
+  distance 4: intersection one for triple endpoints,
+              intersection two for quartet endpoints.
+
+A pair can be used in two parents only if their intersection contains
+both pair inputs. Therefore no construction pair can be shared except
+possibly one pair between two quartet endpoints. A T-Q-T-Q-T path has
+seven construction-pair slots and permits no such sharing. A Q-T-Q-T-Q
+path has eight slots and permits at most one saving. Both need at least
+seven distinct pairs, contradicting P=6. Hence G>=16.
+
+The following circuit attains sixteen:
+
+  depth 1 (six gates):
+    p_r=b_r+c_r, for r=0,1,2,3;
+    u=a_0+a_1; v=a_2+a_3.
+  depth 2 (six gates):
+    q_0=v+p_1; q_1=u+p_3;
+    t_0=a_1+p_0; t_1=a_0+p_2;
+    t_2=a_3+p_2; t_3=a_2+p_0.
+  depth 3 (four gates):
+    Y_0=q_0+t_0; Y_1=q_0+t_1;
+    Y_2=q_1+t_2; Y_3=q_1+t_3.
+
+3. BOUNDARY-PAIR THEOREM
+
+Let k be the number of distinct pairs wholly within C that occur in
+the four outputs' ancestry. Then
+
+                      G >= 16+k.
+
+Equivalently, with p=P-k, the claim is p+H>=12. The same claim holds
+with B and C interchanged, but the two taxes cannot simply be added.
+
+Only c_r+c_(r+1) can occur as C-pairs. Each belongs to exactly one
+output and each output uses at most one. Thus 0<=k<=4. Counting the
+twelve pair occurrences gives
+
+                      2p+k >= 12.                 (1)
+
+We need one structural fact. If an output uses a C-pair, a parent that
+contains it is private, meaning it is contained in only this output.
+Its companion parent is either private too, or is a triple with no C
+input. In the latter case every quartet adjacent to this shared triple
+is private, because it contains its output's entire C-pair. Hence an
+output using a C-pair lies in a parent-graph component of at most two
+edges.
+
+Here is a direct check of the structural fact. If the C-pair is in the
+triple, its third input is either an A input, leaving the whole B-pair
+in the quartet, or a B input, leaving all three A inputs in the quartet.
+Both leftovers are private. If the C-pair is in the quartet, its other
+two inputs are AA, BB, or AB. In the first two cases the companion
+triple contains a whole B-pair or all three A inputs, so is private.
+In the AB case the companion triple has type AAB and contains no C.
+Every other output using it has a quartet containing its whole C-pair,
+which is private. This also proves the fact for any actual choice of
+pair constructions; no assumption about preferred pairings is made.
+
+Now exhaust the four possible values of H.
+
+H=5. There is one four-edge path. The structural fact forces k=0.
+Section 2 then gives p=P>=7, hence p+H>=12.
+
+H=8. Equation (1) and k<=4 give p>=4, hence p+H>=12.
+
+H=7. If k<=3, (1) gives p>=5. The only remaining possibility violating
+the claim is k=4,p=4. Every output then uses its C-pair and two pairs
+within A union B. All four non-C pairs must occur in exactly two
+outputs. For an A or B input v, let d_v be its degree in the graph of
+these four non-C pairs and let a_v count its anchor occurrences. Then
+
+  3=2*d_v+a_v for v in A;  2=2*d_v+a_v for v in B.
+
+There are only four anchors in total. Each of the four A inputs needs
+an odd, positive number of anchors, so each has exactly one; the B
+inputs have none. Therefore all eight d_v equal one: the non-C pairs
+form a perfect matching of A union B.
+
+Every triple is now private. A triple containing C-pair is private
+already; any other triple can contain at most one edge of this matching
+and therefore has a uniquely determined anchor. The four outputs have
+different anchors, so they cannot share a triple. Every quartet is
+also private: if it contains the C-pair this is immediate, and if not,
+its companion triple contains the C-pair, so the structural fact makes
+the quartet private. All eight parents are private, contradicting H=7.
+
+H=6. There are two path components, with edge counts 1+3 or 2+2.
+In the 1+3 case, only the single-edge component can use a C-pair, so
+k<=1 and (1) gives p>=6. For 2+2, k=0 is immediate from (1).
+
+For 2+2 and k>0, choose a component containing a C-pair. Its shared
+parent is a triple with no C input. Outputs sharing any parent must
+be adjacent: opposite outputs intersect in only two inputs. A rotation
+or reflection therefore lets us label this component's outputs 0,1.
+Their intersection is {a_2,a_3,b_1,c_1}. The shared triple must be
+
+  t=a_2+a_3+b_1,
+
+and their two quartets are Y_0+t and Y_1+t. The remaining outputs 2,3
+intersect in {a_0,a_1,b_3,c_3}. Their common parent is either that
+quartet or one of its four triples. These are all five possibilities.
+
+Each of the six parents has exactly three constructions from pairs
+(three choices of the anchor for a triple; three perfect matchings
+for a quartet). Thus only 5*3^6=3645 assignments remain. The exact
+minimum number p of non-C pairs, grouped by k>0, is:
+
+  second component's common parent     k=1  k=2  k=3  k=4
+  {a_0,a_1,b_3,c_3}                       7    7    -    -
+  triple omitting a_0                     7    7    -    -
+  triple omitting a_1                     7    7    -    -
+  triple omitting b_3                     8    8    -    -
+  triple omitting c_3                     8    7    7    6
+
+Here '-' means no such assignment. Every entry is at least six, giving
+p+H>=12. The included standard-library verifier enumerates exactly
+these assignments using integer masks, without any optimization solver.
+Together with the other three cases this proves G>=16+k.
+
+4. EXACT SEPARATION OF AES CLUSTER 1
+
+Write F_b={x_(8r+b): r=0,1,2,3}. AES forward MixColumns has precisely
+the form above for its four outputs at bit b in {1,3,4}, with A=F_b,
+B=F_(b-1), C=F_7. Let D3(S) denote the minimum number of gates for
+the output clusters with bit positions in S only.
+
+Then
+
+                 D3({1,3,4}) = 16 + D3({3,4}).
+
+For the lower bound, take any circuit for these twelve outputs, and
+let A1 and A34 be the sets of gates in the respective output ancestries.
+Their input-support unions are F_0 union F_1 union F_7 and
+F_2 union F_3 union F_4 union F_7. Cancellation-free ancestry forces
+every shared gate's support to lie wholly in F_7. Since each output
+has only two F_7 inputs, such a shared gate can only be a pair.
+
+Let s=|A1 intersection A34| and let k count all F_7 pair masks in A1.
+After merging duplicate masks, s<=k, so the boundary-pair theorem gives
+
+  |A1 union A34| = |A1|+|A34|-s
+                >= (16+k)+D3({3,4})-s
+                >= 16+D3({3,4}).
+
+Conversely, compose any optimum circuit for clusters 3,4 with the
+sixteen-gate circuit in section 2 for cluster 1. This proves the
+opposite inequality and hence equality. The explicit local circuit
+uses no pure F_7 pair, so its gates cannot overlap an ancestry for
+clusters 3,4, although disjoint composition alone suffices for the
+upper bound.
+
+5. LIMITS AND REPRODUCTION
+
+The included 32-gate circuit for clusters 3,4 proves D3({3,4})<=32.
+WEIGHTED_CLUSTER_PROOF.txt now proves the matching lower bound by
+exact rational charging and complete enumeration. Thus D3({3,4})=32
+and the 48-gate twelve-output construction is optimal. This separate
+weighted proof is necessary; the boundary tax alone does not prove it.
+
+The tax cannot be charged once for B and again for C: a valid circuit
+with two A-pairs, four B-pairs, four C-pairs, four triples, four
+quartets, and four outputs has 22 gates, while 16+k_B+k_C=24.
+
+Run, from this directory:
+  python verify_boundary_tax.py
+  python verify_cluster_results.py
+
+Both use only Python's standard library. The first checks the finite
+table and structural support facts. The second independently derives
+the AES matrix, checks the local sixteen-gate construction, verifies
+the support-separation premise, and checks the saved partial circuits.
+The complete argument combines these finite checks with the reasoning
+above; the verifier's PASS is not claimed to formalize every prose step.

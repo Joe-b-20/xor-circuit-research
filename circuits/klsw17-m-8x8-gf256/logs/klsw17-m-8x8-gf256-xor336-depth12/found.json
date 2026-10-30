@@ -1,0 +1,29 @@
+{
+ "circuit": "klsw17-m-8x8-gf256-xor336-depth12.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T07:46:26.957+00:00",
+ "seconds_into_run": 714.3495347779244,
+ "run": "nist-batch-64",
+ "run_id": "1f25cdf1067943dba6e9797285fa5b89",
+ "worker": "klsw17-m-8x8-gf256-free-00",
+ "depth_cap": null,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "364@11",
+  "by": "NIST",
+  "source": "nist-g364-d11.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "2116f21d85ecb256a7448a151ce3084cd92f689cee381571bc0a171fb5df5c5e",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

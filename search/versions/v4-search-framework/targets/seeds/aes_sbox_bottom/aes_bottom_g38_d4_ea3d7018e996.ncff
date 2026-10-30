@@ -1,0 +1,51 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+% Exported by xor-circuit-lab; not a NIST-issued circuit.
+begin circuit aes_sbox_bottom
+% Linear target matrix SHA-256: 6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569
+% Gates: 38 XOR; output depth: 4
+% Linear part only; excluded affine output constants: 0 1 1 0 0 0 1 1
+Inputs: x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17
+Outputs: y0 y1 y2 y3 y4 y5 y6 y7
+Internal: t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19 t20 t21 t22 t23 t24 t25 t26 t27 t28 t29
+GateSyntax: GateName Output Inputs
+begin SLP
+XOR t0 x6 x7
+XOR t1 x4 x10
+XOR t2 x9 t1
+XOR t3 t0 t2
+XOR t4 x3 x15
+XOR t5 t4 x16
+XOR y0 t3 t5
+XOR t6 x1 x9
+XOR t7 x0 t6
+XOR t8 t0 t7
+XOR t9 x15 x16
+XOR t10 x10 t9
+XOR y1 t8 t10
+XOR t11 x0 x2
+XOR t12 t11 x14
+XOR t13 x6 x15
+XOR t14 t12 t13
+XOR t15 x8 x12
+XOR t16 t15 x17
+XOR y2 t14 t16
+XOR t17 t7 t1
+XOR y3 t17 t5
+XOR t18 x2 x5
+XOR t19 t18 t6
+XOR t20 t1 t9
+XOR y4 t19 t20
+XOR t21 t1 x11
+XOR t22 t21 t12
+XOR t23 x7 t15
+XOR t24 t23 t5
+XOR y5 t22 t24
+XOR t25 x5 x13
+XOR t26 t23 t25
+XOR t27 x4 t9
+XOR y6 t26 t27
+XOR t28 x12 t25
+XOR t29 t11 t28
+XOR y7 t29 t5
+end SLP
+end circuit

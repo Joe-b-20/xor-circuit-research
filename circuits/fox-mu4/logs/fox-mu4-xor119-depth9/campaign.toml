@@ -1,0 +1,46 @@
+[campaign]
+name = "rerun-fox_mu4"
+description = "cleaned xorsearch, 1 h on 20 workers; compare with 2026-10-28"
+seed = 20264029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[122, 6], [121, 9]]
+
+[[workers]]
+name = "cap7"
+target = "fox_mu4"
+count = 6
+objective = "gates"
+depth_cap = 7
+seeds = ["~/xor-circuit-lab/search/targets/seeds/fox_mu4/fox_mu4_g130_d13.json"]
+[workers.set]
+"objective.soft_depth_slack" = 6
+
+[[workers]]
+name = "cap9"
+target = "fox_mu4"
+count = 4
+objective = "gates"
+depth_cap = 9
+seeds = ["~/xor-circuit-lab/search/targets/seeds/fox_mu4/fox_mu4_g130_d13.json"]
+[workers.set]
+"objective.soft_depth_slack" = 4
+
+[[workers]]
+name = "cap12"
+target = "fox_mu4"
+count = 5
+objective = "gates"
+depth_cap = 12
+seeds = ["~/xor-circuit-lab/search/targets/seeds/fox_mu4/fox_mu4_g130_d13.json"]
+
+[[workers]]
+name = "free"
+target = "fox_mu4"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["~/xor-circuit-lab/search/targets/seeds/fox_mu4/fox_mu4_g130_d13.json"]

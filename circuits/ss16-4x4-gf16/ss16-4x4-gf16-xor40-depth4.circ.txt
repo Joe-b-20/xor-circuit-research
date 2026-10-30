@@ -1,0 +1,73 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-10-30T11:29:38Z
+  % Not a NIST-issued circuit
+  % Found by: XORFlux v8 (search/xorflux), run nist-batch-16b, worker ss16-4x4-gf16-cap4-00
+  % Started from: NIST 41@5 circuit (seed.json in the logs)
+  % Logs: logs/ss16-4x4-gf16-xor40-depth4/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % ss16-4x4-gf16-xor40-depth4 16 16   % ss16-4x4-gf16; 16x16 bit matrix; 2-input XOR basis
+
+## Circuit
+begin circuit ss16-4x4-gf16-xor40-depth4
+
+  % Description: y = A.x with A in ss16-4x4-gf16.mat.txt (row i = y_i, column j = x_j)
+  % Tally of variables (56): 16 inputs; 16 outputs; 24 intermediates
+  % Tally of gates (40): 40 XOR
+  % Gate depth 4
+  % Gates per gate level: 8 10 14 8
+
+Inputs: x0:x15
+Outputs: y0:y15
+Internal: t1:t24
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x2 x4
+XOR t2 x1 x7
+XOR t3 x0 x9
+XOR t4 x1 x10
+XOR t5 x6 x12
+XOR t6 x11 x13
+XOR t7 x8 x14
+XOR t8 x11 x15
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t9 t1 x8
+XOR t10 x3 t3
+XOR t11 x5 t4
+XOR t12 x0 t5
+XOR t13 t4 x12
+XOR t14 x4 t6
+XOR t15 x10 t7
+XOR t16 t3 x15
+XOR t17 x5 t8
+XOR t18 t2 t8
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t19 x5 t9
+XOR t20 x6 t10
+XOR t21 t12 t13
+XOR t22 t16 t18
+XOR t23 x2 t12
+XOR y8 x8 t12
+XOR y12 x4 t13
+XOR t24 t10 t13
+XOR y0 x0 t14
+XOR y1 t11 t15
+XOR y4 t9 x15
+XOR y15 x7 t16
+XOR y11 x3 t17
+XOR y7 x14 t18
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR y5 t11 t24
+XOR y3 t22 t24
+XOR y9 t22 y0
+XOR y6 t21 x13
+XOR y13 t19 t14
+XOR y14 t20 t7
+XOR y10 t19 t15
+XOR y2 t23 t16
+end SLP
+end circuit

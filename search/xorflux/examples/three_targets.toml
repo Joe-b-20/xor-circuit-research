@@ -1,0 +1,39 @@
+# Several targets at once, with campaign-wide, per-group and per-worker overrides.
+# Every knob can be changed here without touching code: see `python3 search/xorflux config explain`.
+
+[campaign]
+name = "three-targets"
+seed = 7
+duration = "12h"
+profiles = ["default"]
+
+[campaign.sharing]         # sharing knobs for the whole campaign
+mode = "pull"
+scope = "group"            # share only inside each [[workers]] group (lineage-only)
+
+[set]                      # campaign-wide overrides of any knob (dotted keys or nested tables)
+"worker.checkpoint_seconds" = 120.0
+"campaign.diversity_seconds" = 120.0
+
+[[workers]]
+name = "aes"
+target = "aes-sbox-bottom"
+count = 4
+depth_cap = [5, 6, "none", "none"]   # a list cycles over the group's workers
+
+[[workers]]
+name = "joltik-depth"
+target = "joltik"
+count = 4
+objective = "depth_then_gates"
+gate_limit = 43            # only record circuits with <= 43 gates
+profiles = ["depth"]       # extra profile for this group (after the campaign profiles)
+per_worker = [{}, { "worker.records_per_point" = 64 }]   # cycles: odd workers keep more DAGs
+[workers.set]              # overrides for this group only
+"sharing.sample_points" = 3
+
+[[workers]]
+name = "invmix"
+target = "aes-invmixcolumns"
+count = 2
+seeds = ["root:paar", "root:naive"]  # fresh constructor roots instead of the built-in seed

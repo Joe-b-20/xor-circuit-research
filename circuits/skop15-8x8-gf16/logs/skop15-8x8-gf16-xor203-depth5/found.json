@@ -1,0 +1,29 @@
+{
+ "circuit": "skop15-8x8-gf16-xor203-depth5.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T10:12:03.337+00:00",
+ "seconds_into_run": 2508.908753773081,
+ "run": "nist-batch-32b",
+ "run_id": "b3a42cc6093e47d9a0259782f3bcff62",
+ "worker": "skop15-8x8-gf16-cap5-00",
+ "depth_cap": 5,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "170@19",
+  "by": "NIST",
+  "source": "nist-g170-d19.json"
+ },
+ "chain_root": "naive#1262035508",
+ "circuit_sha256": "86d6053a6bad98ea49bf998bdd7f89cf34111f89f5788322330d0b742dde7ae1",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

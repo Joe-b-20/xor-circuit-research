@@ -1,0 +1,60 @@
+{
+  "id": "joltik",
+  "name": "Joltik diffusion layer",
+  "input_count": 16,
+  "output_count": 16,
+  "rows": [
+    29505,
+    33986,
+    6292,
+    12584,
+    14100,
+    18476,
+    33097,
+    4994,
+    16755,
+    49796,
+    37912,
+    10289,
+    5175,
+    11336,
+    18817,
+    33299
+  ],
+  "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+  "nist_commit": "8366158a4324ef902ce740f29ddc9f7ebb1018b2",
+  "affine_output_constants": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "matrix_source": {
+    "kind": "official NIST matrix bytes",
+    "path": "targets/nist/original/data/slp/2021-linearmaps/matrices/ciphers-16x16/Joltik.mat.txt",
+    "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/2021-linearmaps/matrices/ciphers-16x16/Joltik.mat.txt",
+    "source_sha256": "a17b03deefea686e876bb4d742144152297efa17f021a4ecf1b8173f327e683f"
+  },
+  "seeds": [
+    {
+      "path": "targets/seeds/joltik/joltik_g44_d7.json",
+      "gates": 44,
+      "depth": 7,
+      "circuit_sha256": "6bd3bc132e0aa41d9840384df3e64012d37e5bf6ae32a6bb8e6b12866d05770a",
+      "source_kind": "official NIST circuit",
+      "ncff_path": "targets/seeds/joltik/joltik_g44_d7.ncff"
+    }
+  ]
+}

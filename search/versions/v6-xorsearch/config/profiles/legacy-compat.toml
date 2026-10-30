@@ -1,0 +1,14 @@
+# legacy-compat profile -- the old search/ framework's policies on the xorsearch engine, for A/B.
+#
+# Not a recommendation: each line below is a policy the evidence (docs/evidence/) argued against.
+# It exists so a campaign can measure what the new policies are worth on the same kernels and
+# seeds: run one group with this profile and one without (examples/legacy_ab.toml) and compare
+# their frontier events.  Give both groups sharing.scope = "group" so the arms do not feed each
+# other.  The old forced adoption of better elites and the v3 structural kernels were removed
+# from xorsearch, so they cannot be compared here.
+
+[scheduler]
+mode = "fixed"           # old: fixed time slices per engine, no credit for what pays off
+
+[restart]
+enabled = false          # old: no stall restarts from fresh roots; chains ran until stopped

@@ -1,0 +1,28 @@
+{
+ "circuit": "aes-sbox-bottom-xor28-depth5.circ.txt",
+ "version": "v6",
+ "code": "search/versions/v6-xorsearch",
+ "found_utc": "2026-10-29T12:08:39.017+00:00",
+ "seconds_into_run": 1817.0955407409929,
+ "run": "rerun-aes_sbox_bottom",
+ "run_id": "8fe8f1d3f6aa44058b1d0a4f380a3f68",
+ "worker": "free-00",
+ "depth_cap": null,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "28@5",
+  "by": "NIST",
+  "source": "aes_bottom_g28_d5_686060e01e81.json"
+ },
+ "chain_root": "naive#4214483319",
+ "circuit_sha256": "e90229c24082bcbb311b804b8859c851f07079e0c2e3d47c89d07d6ea1cb0507",
+ "logs": [
+  "campaign.toml",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

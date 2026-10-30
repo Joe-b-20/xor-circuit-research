@@ -1,0 +1,43 @@
+[campaign]
+name = "bench-mixcolumns"
+description = "four search changes (slack 1, repair exit, seed repair, remove1 skip), 1 h on 20 workers; compare with 2026-10-28 and 2026-10-29"
+seed = 20261029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+
+[[workers]]
+name = "cap3"
+target = "mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 3
+seeds = ["root"]
+
+[[workers]]
+name = "cap4"
+target = "mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 4
+seeds = ["root"]
+per_worker = [{ "moves.lns.rebuild.deadline_p" = 0.05 }, { "moves.lns.rebuild.deadline_p" = 0.25 }, { "moves.lns.rebuild.deadline_p" = 0.40 }]
+
+[[workers]]
+name = "cap5"
+target = "mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 5
+seeds = ["root"]
+
+[[workers]]
+name = "free"
+target = "mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["root"]

@@ -1,0 +1,53 @@
+# Twofish: 1 h on 20 workers under real depth caps 4, 5, 6, 8 and uncapped (minimum depth 4), starting
+# from the NIST circuit (111 gates, depth 8) in search/seeds/twofish/. Settings of the
+# 2026-10-30 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/twofish.toml --out search/runs/twofish --detach
+#
+# Relative paths in this file are relative to this file.
+[campaign]
+name = "nist-twofish"
+seed = 20261031
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "cap4"
+target = "twofish"
+count = 4
+objective = "gates"
+depth_cap = 4
+seeds = ["../seeds/twofish/nist-g111-d8.json"]
+
+[[workers]]
+name = "cap5"
+target = "twofish"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["../seeds/twofish/nist-g111-d8.json"]
+
+[[workers]]
+name = "cap6"
+target = "twofish"
+count = 4
+objective = "gates"
+depth_cap = 6
+seeds = ["../seeds/twofish/nist-g111-d8.json"]
+
+[[workers]]
+name = "cap8"
+target = "twofish"
+count = 4
+objective = "gates"
+depth_cap = 8
+seeds = ["../seeds/twofish/nist-g111-d8.json"]
+
+[[workers]]
+name = "free"
+target = "twofish"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/twofish/nist-g111-d8.json"]

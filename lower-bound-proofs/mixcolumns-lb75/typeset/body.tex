@@ -1,0 +1,638 @@
+\textbf{Joe Bachir}\\
+\textbf{Submission edition: October 23, 2026}\\
+Based on review draft 1.1 of October 2, 2026. This edition consolidates the same argument and certificates in a standalone package, improves the mathematical typography, and applies the exposition clarifications listed in \texttt{\seqsplit{EDITORIAL\_CHANGES.md}}. The unchanged published note is retained in the source directory.
+
+\textbf{Status.} Computer-assisted. The mathematical argument is written out in full below; the finite facts about the fixed matrix that it uses (section 12) are computed by programs shipped next to this note, and the last two steps are exact certificates checked by programs. The argument was produced with large-language-model assistance and has been reviewed only by programs and by independent machine reviews (section 13). No human mathematician has refereed it, and nothing is formalized in a proof assistant. It is offered for review, not as an established result.
+
+\hypertarget{theorem-and-circuit-model}{%
+\section{0. Theorem and circuit model}\label{theorem-and-circuit-model}}
+
+\textbf{The map.} M is the 32 x 32 matrix over \(\mathbb F_2\) of one column of AES MixColumns (FIPS-197). Bit i of a 32-bit state, 0 \textless= i \textless= 31, is bit (i mod 8) of byte floor(i/8), least significant bit first. Output byte c is 02·b\_c + 03·b\_(c+1) + 01·b\_(c+2) + 01·b\_(c+3) (byte indices mod 4) in \(\mathbb F_{2^8}\) with reduction polynomial x\^{}8 + x\^{}4 + x\^{}3 + x + 1. \(M^{\mathsf T}\) is its transpose. The included source files \texttt{\seqsplit{source/matrix.txt}} / \texttt{\seqsplit{source/matrix.sha256}} fix M bit by bit; \texttt{\seqsplit{source/verify.py}} rebuilds it from the field arithmetic.
+
+\textbf{Circuits.} A circuit is a straight-line program over \(\mathbb F_2\): signals 0..31 are the inputs; gate k (k = 0, 1, \ldots) computes signal 32+k as the XOR of two earlier signals a, b \textless{} 32+k. The circuit computes M if each of the 32 rows of M is the coefficient vector of some signal; those 32 signals are the outputs. Nothing else is restricted: outputs may be used by later gates, intermediate values are arbitrary, cancellation (overlapping operand supports whose common contributions disappear under XOR) is allowed, there is no bound on depth or fan-out, and the outputs may appear in any order. Every gate counts, including the gate that produces an output. L(M) is the least number of gates of a circuit computing M.
+
+\textbf{Theorem.} Every circuit computing M has at least 75 gates. With the verified 88-gate circuits in this repository,
+
+\[
+75\le L(M)\le88.
+\]
+
+The theorem does not say that 88 is optimal and gives no 87-gate circuit.
+
+\textbf{Reading guide.} Sections 1-5 are elementary counting (they prove \(L(M)\ge69\)). Sections 6-9 use transposition and a bounded potential (they prove \(L(M)\ge73\) with one small rank computation). Sections 10-11 add a system of linear inequalities on ``helper types'' whose infeasibility, for every remaining count profile at 73 and 74 gates, is certified by nonnegative integer multipliers (Farkas certificates) that a standard-library program checks. Section 12 lists the finite facts, section 13 the review record, section 14 the commands.
+
+\hypertarget{conventions-normalization-gate-accounting}{%
+\section{1. Conventions, normalization, gate accounting}\label{conventions-normalization-gate-accounting}}
+
+\textbf{Masks and parity.} The \emph{mask} of a signal is its coefficient vector in \(\mathbb F_2^{32}\) over the inputs; a gate XORs the masks of its operands. A signal is \emph{odd} or \emph{even} according to the Hamming weight of its mask. The 32 inputs (unit vectors) are odd. The rows of M have weight 5 or 7, the rows of \(M^{\mathsf T}\) (= columns of M) weight 5 or 11; so all outputs are odd in both orientations, and no output is an input.
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 1.1 (normalization).} A minimum circuit has (i) all 32 + G masks distinct and nonzero, (ii) every gate used, as an operand of a later gate or as an output, (iii) each row of M carried by exactly one signal, which is a gate.
+
+\emph{Proof.} A gate duplicating an earlier mask can be deleted and its uses redirected to the earlier signal. For a zero-valued gate, propagate its value through every subsequent use using \(0\oplus u=u\) and \(0\oplus0=0\), removing the resulting wires and zero-valued or unused gates. No required output is zero, so this produces the same outputs with fewer gates. An unused gate can likewise be deleted. Thus a minimum circuit has distinct, nonzero, live gate values. Property (iii) follows from (i) and from the rows not being inputs. The same reasoning applies to a minimum circuit of \(M^{\mathsf T}\). \(\square\)
+
+A circuit with these properties is called \emph{normalized}. Throughout, C is a normalized minimum circuit of M or of \(M^{\mathsf T}\) with G gates. The \emph{boundary} B is the set of the 64 odd signals consisting of the 32 inputs and the 32 outputs; the h odd gate signals that are not outputs are the \emph{helpers}, H.
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 1.2 (gate accounting).} Let x count the gates with two odd operands, y the gates with two even operands, and h the helpers. Then
+
+\[
+G=32+x+y+h.
+\]
+
+\emph{Proof.} A gate with two odd or two even operands has an even result; a gate with one odd and one even operand has an odd result. The odd gate results are exactly the 32 outputs and the h helpers. \(\square\)
+
+\hypertarget{the-even-span-xge24-in-both-orientations}{%
+\section{\texorpdfstring{2. The even span: \(x\ge24\) in both orientations}{2. The even span: x\textbackslash ge24 in both orientations}}\label{the-even-span-xge24-in-both-orientations}}
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 2.1 (partition lemma).} Let E be the span of the masks of the even signals computed so far. Then every odd signal computed so far is congruent to an input unit vector modulo E, and E is spanned by differences e\_i + e\_j of unit vectors. Consequently E is the space of vectors with even weight on every block of a partition P of the 32 inputs, dim E = 32 - c where c is the number of blocks, and the number x of odd+odd gates satisfies x \textgreater= 32 - c.
+
+\emph{Proof.} Induction over the gates. Initially E = 0 and the odd signals are the inputs. An odd+even gate adds an element of E to a unit-congruent mask, so its result is congruent to the same unit. An even+even gate does not enlarge E. An odd+odd gate with operands congruent to e\_i and e\_j has an even result equal to e\_i + e\_j modulo the old E, so E grows by at most the span of e\_i + e\_j. A space spanned by unit differences is the within-block even-parity space of the partition ``i \textasciitilde{} j iff e\_i + e\_j in E'', whose number of blocks is c = 32 - dim E. Each odd+odd gate raises dim E by at most one. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 2.2.} Let \(b_C\) be the indicator vector of block C of the final partition. Every output row has odd intersection with exactly one block; hence the c vectors M \(b_C\) are disjoint and cover the 32 output coordinates, and the c pairs (\(b_C\), M \(b_C\)) are disjoint nonzero words of the graph code \(\mathcal C_M\) = \{ (u, M u) : u in \(\mathbb F_2^{32}\) \} that together cover all 64 coordinates.
+
+\emph{Proof.} An output o is odd, so o = e\_i + (element of E) for some input i: o has odd weight on the block of i and even weight on every other block. The coordinate of M \(b_C\) at output o is the inner product of row o with \(b_C\), i.e.~the parity of o on block C. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F1.} Neither \(\mathcal C_M\) nor \(\mathcal C_{M^{\mathsf T}}\) contains nine disjoint nonzero words covering all 64 coordinates. (Eight exist: the eight bit families 0x01010101 \textless\textless{} j are fixed by M.)
+
+\emph{How F1 is established.} All words of the graph code have even weight (every column of M is odd) and the nonzero ones have weight at least 6; the complete lists of words of weight 6 and 8 are obtained by enumerating all input halves of weight \textless= 4 and all output halves of weight \textless= 4 (one half of a word of weight \textless= 8 has weight \textless= 4): 84 and 276 words for M, 60 and 248 for \(M^{\mathsf T}\). In a nine-part partition of 64 coordinates by such words, order the parts by weight; while k \textgreater= 3 parts remain, the lightest remaining part has weight at most floor((64 - 6(9-k))/k) \textless= 9, hence \textless= 8. So the seven lightest parts belong to the short list. The program enumerates every choice of seven disjoint short words in nondecreasing weight order and tests whether the complement (itself a codeword, since (1, M 1) = (1, 1) is a codeword) splits into two disjoint nonzero codewords: it does iff the code shortened to the complement's support has dimension \textgreater= 2, i.e.~\textbar I\textbar{} - rank(M{[}rows outside O, columns in I{]}) \textgreater= 2 for its input support I and output support O. No choice splits (M: 1,485,213 search states, 62,112 final checks; \(M^{\mathsf T}\): 91,485 and 720; an independent traversal over all unordered seven-packings gives 13,165,941 and 2,936,355 states, same verdict).
+
+\Needspace{7\baselineskip}
+\textbf{Corollary 2.3.} \(c\le8\) and \(x\ge24\) for every normalized circuit of M and of \(M^{\mathsf T}\).
+
+\emph{Proof.} A partition into more than nine disjoint nonzero codewords can be merged into one with exactly nine parts: sums of disjoint codewords remain nonzero codewords and preserve disjointness and coverage. Thus F1 excludes every \(c\ge9\). Apply Lemma 2.1. \(\square\)
+
+\hypertarget{transposition-and-accumulation-trees}{%
+\section{3. Transposition and accumulation trees}\label{transposition-and-accumulation-trees}}
+
+\textbf{Fan-out.} For a signal v let \(d_v\) be the number of gates using v as an operand, plus one if v is an output (its \emph{terminal use}). In a normalized circuit every \(d_v\) \textgreater= 1. There are 2G operand uses and 32 terminal uses among 32 + G signals, so
+
+\[
+\sum_v(d_v-1)=(2G+32)-(G+32)=G.\qquad\text{(3.1)}
+\]
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 3.1 (exact transposition).} Attach an independent variable z\_j to the terminal use of output j. Define the \emph{adjoint} a(v) of every signal, in reverse order, as the XOR of a(w) over the gates w using v, plus z\_j if v is output j. Then a(input i) = (\(M^{\mathsf T}\) z)\_i, computing a(v) from its \(d_v\) contributions takes \(d_v\) - 1 XOR gates in any binary association, and the resulting circuit has exactly G gates and computes \(M^{\mathsf T}\). Hence L(\(M^{\mathsf T}\)) = L(M), and every such \emph{raw transpose} of a minimum circuit is a minimum, hence normalized, circuit of the other orientation.
+
+\emph{Proof.} a(v) is the coefficient of v in sum\_j z\_j y\_j by linearity, so a(input i) is column i of M applied to z. The gate count is (3.1). The construction in both directions gives L(\(M^{\mathsf T}\)) \textless= L(M) \textless= L(\(M^{\mathsf T}\)). A raw transpose with a removable gate would give a circuit of \(M^{\mathsf T}\) with fewer than L(\(M^{\mathsf T}\)) gates. \(\square\)
+
+\textbf{Accumulation trees.} The gates building a(v) form a binary tree whose leaves are the \(d_v\) contributions (the signals a(w) for the users w of v, and z\_j for a terminal use). Signals with \(d_v\) = 1 get no gate: their adjoint \emph{is} the single contribution, the same signal of the transpose (a \emph{wire}). Every gate of the transpose belongs to exactly one accumulation tree; v is the \emph{origin} of those gates.
+
+Contributions are odd or even as signals of the transpose (over the z's). Let \(k_v\) be the number of odd contributions at v; z\_j is odd. The parity of a(v) is \(k_v\) mod 2.
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 3.2 (even+even gates in a tree).} In any binary tree summing d terms of which k are odd, the number of odd+odd gates is floor(k/2), and the number of even+even gates is at most
+
+\[
+f(d,k)=\max\!\left(0,\,d-\left\lceil\frac{k}{2}\right\rceil-1\right),
+\]
+
+with equality exactly for the associations in which the root is the only possible odd-valued gate: pair the odd terms, sum all the even values in any order, add the leftover odd term (if k is odd) last. Such an association is called \emph{canonical}. Moreover
+
+\[
+d\le3+2f(d,k).\qquad\text{(3.2)}
+\]
+
+\emph{Proof.} Each odd+odd gate lowers the number of odd values by two, the other gate types keep it; the root's parity is k mod 2, so there are floor(k/2) odd+odd gates. Count even values: there are d - k at the start, each odd+odd gate creates one, each even+even gate consumes one net, each odd+even gate consumes one; at the end one even value remains iff k is even. So \#ee + \#oe = d - k + floor(k/2) - {[}k even{]}. If k is odd and d \textgreater= 2 the root is an odd+even gate, so \#oe \textgreater= 1; if k is even \#oe \textgreater= 0. Hence \#ee \textless= d - ceil(k/2) - 1 (for d \textgreater= 2; for d = 1 there is no gate), with equality iff \#oe = {[}k odd{]}, i.e.~iff no gate other than the root is odd. The canonical association attains it. (3.2): f(d, k) \textgreater= d - ceil(d/2) - 1 \textgreater= (d - 3)/2. \(\square\)
+
+Write \(f_v\) = f(\(d_v\), \(k_v\)) and F = sum\_v \(f_v\) over all signals, \(F_H\) = sum over helpers. For a circuit C let T(C) denote a raw transpose in which every accumulation is canonical (there may be several; everything below holds for each of them). By Lemma 3.2,
+
+\[
+y(T(C))=F,\qquad x(T(C))=\sum_v\left\lfloor\frac{k_v}{2}\right\rfloor.\qquad\text{(3.3)}
+\]
+
+\hypertarget{the-odd-signal-graph}{%
+\section{4. The odd-signal graph}\label{the-odd-signal-graph}}
+
+\textbf{Definition.} The \emph{odd graph} of a normalized circuit has one vertex per odd signal (64 boundary vertices B and h helper vertices H) and one edge per gate with exactly two odd signals in its equation: an odd+odd gate gives an edge between its two operands, an odd+even gate an edge between its odd operand and its result. The edge is \emph{labelled} by the even signal of the equation. There are x + 32 + h edges and x + y possible labels (the even signals).
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F2 (Sidon boundaries).} The 64 boundary masks are distinct, and their 2,016 pairwise XORs are distinct, for M and for \(M^{\mathsf T}\).
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.1.} The odd graph is simple; for each label the edges with that label form a matching; each label has at most one edge with both ends in B (a \emph{B-B edge}).
+
+\emph{Proof.} Two edges on the same pair \{p, q\} have the same label p + q, so the same gate equation \{p, q, l\}; two gates with the same equation would make the later result a duplicate of a signal that already existed (it is an operand of the earlier gate). At a vertex v the edge with label l goes to v + l, so the label determines the other end. Two B-B edges with label l give two boundary pairs with XOR l, contradicting F2. \(\square\)
+
+\textbf{Definitions.} A label is \emph{represented} if it has a B-B edge and \emph{missing} otherwise. Let q be the number of missing labels, counted among ALL x + y even signals (an even signal that labels no edge at all is missing), z the number of edges with both ends in H (\emph{H-H edges}), and s = q + z. For a helper i let \(r_i\) be the number of its edges to B with a represented label (\emph{represented edges}), \(u_i\) the number of its edges to B with a missing label, \(v_i\) the number of its H-H edges; (\(r_i\), \(u_i\), \(v_i\)) is the \emph{type} of the helper. A helper with \(r_i\) \textgreater= 1 is \emph{anchored}; one with \(r_i\) = 3 is \emph{full}. R = sum \(r_i\), U = sum \(u_i\).
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.2 (edge counts).} \#(B-B edges) = x + y - q; \#(H-B edges) = R + U = 32 + h - y + q - z; and
+
+\[
+\sum_{v\in H}d_v=32-y+q+z.\qquad\text{(4.1)}
+\]
+
+\emph{Proof.} Each represented label has exactly one B-B edge (Lemma 4.1). The H-B edges are the rest minus the H-H edges. A helper has degree \(d_v\) + 1 (its defining gate and one edge per use; no terminal), and the degree sum over H is \#(H-B) + 2z. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.3 (fan-out cap).} q + z \textless= 3h + 2F\_H + y - 32 \textless= 3h + 2F + y - 32.
+
+\emph{Proof.} (4.1) and (3.2) summed over the helpers. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F3 (triple multiplicity).} For both boundaries, the number of three-element subsets of B with a given XOR is at most 3. Histograms (value: number of subsets): M: 40,704 values with one subset, 360 with two, 80 with three; \(M^{\mathsf T}\): 40,320 / 504 / 112.
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.4 (represented relations).} A represented edge i-a with label l = b + c (b-c its B-B edge) gives the relation h\_i = a + b + c with a, b, c distinct boundary signals. Writing each as a formal vector H\_i + B\_a + B\_b + B\_c over the signal coordinates, the set of all represented relations of the circuit is linearly independent. Hence the \(r_i\) triples at a helper are distinct and \(r_i\) \textless= 3.
+
+\emph{Proof.} The G gate equations are independent as formal vectors (the latest signal in a nonempty combination cannot cancel). Take the subfamily consisting of all B-B edge equations and all represented H-B edge equations, add to each H-B equation H\_i + B\_a + \(E_\ell\) the reference equation \(E_\ell\) + B\_b + B\_c, then delete the reference rows; both operations preserve independence. a is not b or c since h\_i is not a boundary value. Distinct independent relations at one helper are distinct triples with XOR h\_i, so \(r_i\) \textless= 3 by F3. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F4 (adjacent full values).} Call a value \emph{full} if it has three distinct boundary-triple representations (80 values for M, 112 for \(M^{\mathsf T}\)) and \emph{repeated} if it has at least two such representations (440 / 616). For two distinct full values whose XOR is a boundary pair value, the six formal vectors H\_1 + T (three triples T of the first) and H\_2 + T' (three of the second) have rank 5 (360 such pairs for M, 504 for \(M^{\mathsf T}\)); for every other pair of full values the rank is 6 (2,800 / 5,712 pairs).
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.5 (full helpers).} Two full helpers never have XOR equal to a boundary-pair value. Equivalently, they cannot be joined by an edge carrying a represented label. A missing label meets at most one full helper through an H-B edge, so
+
+\[
+\sum_{i:r_i=3}u_i\le q.\qquad\text{(4.2)}
+\]
+
+\emph{Proof.} Two full helpers whose XOR is a boundary-pair value would carry six represented relations of rank 5, contradicting Lemma 4.4. Two full helpers i, j meeting the same missing label l through edges i-a, j-b have h\_i + h\_j = a + b. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.6 (missing pairs).} The sets of missing labels on the H-B edges of two distinct helpers intersect in at most one label. Hence
+
+\[
+\sum_i\binom{u_i}{2}\le\binom q2.\qquad\text{(4.3)}
+\]
+
+\emph{Proof.} Suppose helpers i, j both carry the missing labels l and m: edges i-a (label l), i-b (label m), j-c (label l), j-d (label m), with a != b and a != c, b != d (matchings). Then a + c = h\_i + h\_j = b + d, and F2 forces \{a, c\} = \{b, d\}, i.e.~a = d and b = c.~The four gate equations then sum to zero (each label occurs twice), contradicting the independence of gate equations. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 4.7 (incidence inequality).} Every normalized circuit of either orientation satisfies
+
+\[
+32\le2h+y+z+\binom q2.\qquad\text{(4.4)}
+\]
+
+\emph{Proof.} Let \(n_3\) be the number of full helpers. R \textless= 2h + \(n_3\) by Lemma 4.4. For the non-full helpers \(u_i\) \textless= 1 + C(\(u_i\), 2), so by (4.2), (4.3), U \textless= (h - \(n_3\)) + q + C(q, 2). Add: R + U \textless= 3h + q + C(q, 2), and R + U = 32 + h - y + q - z by Lemma 4.2. \(\square\)
+
+\hypertarget{the-global-maximum-and-the-universal-lemma-lmge69}{%
+\section{\texorpdfstring{5. The global maximum and the universal lemma: \(L(M)\ge69\)}{5. The global maximum and the universal lemma: L(M)\textbackslash ge69}}\label{the-global-maximum-and-the-universal-lemma-lmge69}}
+
+\textbf{Definition.} Y is the largest number of even+even gates of any minimum circuit of M or of \(M^{\mathsf T}\). Note y(C) \textless= Y for every minimum circuit C of either orientation, and y(T(C)) = F(C) \textless= Y by (3.3).
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 5.1 (universal lemma).} Every minimum circuit C of either orientation satisfies \(h_C+Y\ge13\).
+
+\emph{Proof.} Suppose h + Y \textless= 12. Lemma 4.3 with F \textless= Y and y \textless= Y gives q + z \textless= 3(h + Y) - 32 \textless= 4. For nonnegative integers with q + z \textless= 4, z + C(q, 2) \textless= 6 (the maxima for \(q=0\)..4 are 4, 3, 3, 4, 6). Then (4.4) with y \textless= Y gives 32 \textless= 2(h + Y) + 6 \textless= 30. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Corollary 5.2.} \(L(M)\ge69\): a circuit attaining Y has \(x\ge24\) and h + y = \(h+Y\ge13\), so G \textgreater= 32 + 24 + 13.
+
+\hypertarget{adjoint-parities-and-the-weighted-degree-identity}{%
+\section{6. Adjoint parities and the weighted-degree identity}\label{adjoint-parities-and-the-weighted-degree-identity}}
+
+Fix a normalized minimum circuit C and its adjoints a(v) (section 3); write \(a_v\) for the parity of a(v) and let x' be the number of odd+odd gates of a raw transpose, which by Lemma 3.2 is sum\_v floor(\(k_v\)/2) for any association. Let Q be the number of gates of C with odd adjoint and \(e_1\) the number of even+even gates of C with odd adjoint.
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 6.1.} Q = 2x'.
+
+\emph{Proof.} sum\_v \(k_v\) counts each odd gate adjoint at its two operands plus 32 odd terminals: 2Q + 32. sum\_v \(a_v\) counts the Q gates and the 32 inputs, whose adjoints (the rows of \(M^{\mathsf T}\)) are odd: Q + 32. And \(a_v\) = \(k_v\) mod 2, so 2 x' = sum\_v (\(k_v\) - \(a_v\)) = Q. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 6.2 (weighted degrees).} Give each edge of the odd graph the weight \(a_g\) in \{0, 1\}, where g is the result signal of its gate. Then (i) a helper has weighted degree 2 ceil(\(k_v\)/2); (ii) every boundary vertex has odd weighted degree, hence at least 1; (iii) the sum of all weighted degrees is 2(Q - \(e_1\)). Consequently
+
+\[
+\begin{aligned}
+2x'&\ge32+\sum_{v\in H}\left\lceil\frac{k_v}{2}\right\rceil+e_1,&&\text{(A)}\\
+2x'+h+y+F_H&\ge64+q+z+e_1.&&\text{(B)}
+\end{aligned}
+\]
+
+\emph{Proof.} (i) At a helper v the defining edge has weight \(a_v\) and the use edges have total weight \(k_v\); \(a_v\) = \(k_v\) mod 2. (ii) An input has no defining edge and use weight \(k_v\), which is odd since a(input) is a row of \(M^{\mathsf T}\). An output has defining weight \(a_v\) and use weight \(k_v\) - 1 (the terminal is odd and is not an edge); \(a_v\) + \(k_v\) - 1 is odd. (iii) The gates with odd adjoint are Q in number; \(e_1\) of them are even+even gates, which give no edge; the other Q - \(e_1\) give one edge of weight 1 each. (A) is (i)-(iii) halved. For (B) use ceil(\(k_v\)/2) \textgreater= \(d_v\) - \(f_v\) - 1 (from the definition of \(f_v\)) and (4.1). \(\square\)
+
+\emph{Remark (exact form).} Keeping all terms, (B) is the identity 2x' + h + y + \(F_H\) = 64 + q + z + \(e_1\) + L\_H + sum\_(v in B) (wdeg\_v - 1)/2, where L\_H counts helpers with \(d_v\) = \(k_v\) = 1 and wdeg\_v the weighted degree; and per boundary vertex (wdeg\_v - 1)/2 + \(f_v\) = max(0, \(d_v\) - 2). None of this is needed below, but it shows where the slack of (B) sits.
+
+\hypertarget{double-transposition-the-origin-identity-and-the-inverse-association}{%
+\section{7. Double transposition: the origin identity and the inverse association}\label{double-transposition-the-origin-identity-and-the-inverse-association}}
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 7.1 (origin identity).} Let D = T(C) (or any raw transpose), and let t be a gate of D built in the accumulation tree of origin v. The adjoint of t in D, i.e.~its coefficient vector over the outputs of D (indexed by the inputs of C), equals the mask of v in C.
+
+\emph{Proof.} Consider a unit perturbation injected at t. Inside the accumulation tree it reaches the root a(v) unchanged (the tree only XORs). From a(v) it propagates through the reversed network of C: a(v) contributes to a(p) and a(q) for the gate v = p + q, and so on, down to the outputs of D, which are the adjoints of the inputs of C. The number of paths (mod 2) from a(v) to a(input i) in the reversed network equals the number of paths from input i to v in C, which is bit i of the mask of v. A signal p with d\_p = 1 creates no gate: a(p) is the same signal as the single contribution, and the paths through p are counted exactly once. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 7.2.} For any raw transpose D of C and any raw transpose of D, x(T(D)) = x(C). In particular the odd+odd counts of a repeatedly transposed circuit alternate between two fixed values.
+
+\emph{Proof.} The gates of D with odd adjoint are those whose origin is odd: Q(D) = sum\_(v odd) (\(d_v\) - 1). Count the uses of odd signals of C: 2x (odd+odd gates) + (32 + h) (odd+even gates have one odd operand) + 32 (terminals) over 64 + h odd signals, so Q(D) = 2x. By Lemma 6.1 applied to D, Q(D) = 2 x(T(D)). \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 7.3 (inverse association).} For every raw transpose D of C there is an association of the reverse accumulation of D that rebuilds C gate for gate. Consequently, for canonical T, \(y(T(T(C)))\ge y(C)\).
+
+\emph{Proof.} For a signal w of C let sigma(w) be the signal of D that carries a(w): the root of w's accumulation tree if d\_w \textgreater= 2; otherwise sigma(w) = sigma(g) for the unique gate g using w, or z\_j if w is output j used only terminally. For a signal s of D let S(s) = \{ w : sigma(w) = s \}. All elements of S(s) except its latest one have fan-out 1 and are used inside S(s), so the gates of S(s) form a binary expression tree whose leaves are (i) operands p of gates of S(s) with p not in S(s) (then d\_p \textgreater= 2, otherwise p would be in S(s)) and (ii) inputs of C that belong to S(s). The uses of s in D are in bijection with these leaves: for a leaf of type (i), s is one of the d\_p contributions at p and is consumed by one gate of p's tree; for a leaf of type (ii), s is the output of D for that input and has one terminal use. By Lemma 7.1, the adjoint (in D) of the gate consuming s in p's tree is the mask of p, and the terminal use carries the unit of the input. Reverse D by associating, at every s, the contributions along the expression tree of S(s): this creates exactly the gates of S(s) with their original operand masks, \textbar leaves\textbar{} - 1 = \textbar S(s) gates\textbar{} of them. Over all s this is C. For the second claim, T(T(C)) maximizes the even+even count at every accumulation (Lemma 3.2), and the association just described has y(C) even+even gates. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 7.4 (no odd helper leaves).} In a canonical transpose D = T(C) every odd helper has fan-out \textgreater= 2, i.e.~odd-graph degree \(r+u+v\ge3\).
+
+\emph{Proof.} In a canonical association the only odd-valued gate of an accumulation tree is its root. Let t be an odd gate of D that is not an output, with exactly one user g. Then a(t) = a(g) (no terminal), so by Lemma 7.1 the origins of t and g have the same mask in C, hence are the same signal v (masks are distinct). But t is the root of v's tree, and no gate of that tree consumes the root. \(\square\)
+
+\hypertarget{the-potential-and-the-exclusion-of-69-70-71-gates}{%
+\section{8. The potential and the exclusion of 69, 70, 71 gates}\label{the-potential-and-the-exclusion-of-69-70-71-gates}}
+
+\textbf{Definition.} For a normalized circuit C let e(C) be the number of its even+even gates with odd adjoint (the \(e_1\) of section 6). Then 0 \textless= e(C) \textless= y(C) \textless= G.
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 8.1 (P0).} e(T(C)) = sum\_(v odd) \(f_v\) \textgreater= \(F_H\).
+
+\emph{Proof.} The even+even gates of T(C) are the \(f_v\) even+even gates of the accumulation trees; by Lemma 7.1 such a gate has odd adjoint iff its origin v is odd. The helpers are among the odd signals. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 8.2 (one-step inequality, P1).} For every normalized minimum circuit C,
+
+\[
+e(T(C))-e(C)\ge s(C)+96-G+x(C)-2x(T(C)).
+\]
+
+\emph{Proof.} (B) with \(e_1\) = e(C), h + y = G - 32 - x, and \(F_H\) \textless= e(T(C)). \(\square\)
+
+\textbf{The orbit.} Let \(C_0\) be a minimum circuit (of M or \(M^{\mathsf T}\)) attaining Y, and \(C_{j+1}\) = T(\(C_j\)) with any canonical choices. All \(C_j\) are minimum circuits (Lemma 3.1), alternating in orientation; by Lemma 7.2 x(\(C_j\)) alternates between a = x(\(C_0\)) and b = x(\(C_1\)).
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 8.3 (two-step drift).} \(e(C_{j+2})-e(C_j)\ge s(C_j)+s(C_{j+1})+192-2G-a-b\). If the right-hand side is \textgreater= 1 for every j, then e is unbounded, which is impossible.
+
+\Needspace{7\baselineskip}
+\textbf{Proposition 8.4.} L(M) is not 69, 70 or 71.
+
+\emph{Proof.} Let G be one of these values. By Lemma 5.1 and \(x\ge24\): 24 \textless= a \textless= G - 45. Write t = h(\(C_0\)) + Y = G - 32 - a. From (4.1) and (3.2) at \(C_0\), 2 \(F_H\) \textgreater= 32 - Y + s - 3h, so Y - \(F_H\) \textless= floor((3t - 32)/2). Since y(\(C_1\)) = F \textgreater= \(F_H\) and h(\(C_1\)) + Y \textgreater= 13, b = G - 32 - F - h(\(C_1\)) \textless= G - 45 + Y - F \textless= G - 45 + floor((3t - 32)/2). For every iterate D, (4.4) with h + y = G - 32 - x and y \textgreater= 0 gives max(s, C(s, 2)) \textgreater= z + C(q, 2) \textgreater= 96 - 2G + 2 x(D). Let m\_G(x) be the least s with max(s, C(s,2)) \textgreater= 96 - 2G + 2x. Then every two-step drift is at least m\_G(a) + m\_G(b) + 192 - 2G - a - b. A finite enumeration over all admissible (a, b) (4 pairs at \(G=69\), 12 at \(G=70\), 23 at \(G=71\)) shows this is at least 13, 9 and 3 respectively (program \texttt{\seqsplit{check72.py}}). By Lemma 8.3, contradiction. \(\square\)
+
+\hypertarget{the-steady-regime-and-the-exclusion-of-72-gates}{%
+\section{9. The steady regime and the exclusion of 72 gates}\label{the-steady-regime-and-the-exclusion-of-72-gates}}
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 9.1.} In the orbit of section 8, y(\(C_{2j}\)) = Y for all j, and y(\(C_{2j+1}\)) is nondecreasing, hence eventually equal to a constant V \textless= Y. In the \emph{tail} (all j large) the count profiles are therefore fixed:
+
+\[
+\begin{aligned}
+\text{Even phase: }&(x,y,h)=(a,Y,h_e),& h_e&=G-32-a-Y,&F&=V;\\
+\text{Odd phase: }&(x,y,h)=(b,V,h_o),& h_o&=G-32-b-V,&F&=Y.
+\end{aligned}
+\]
+
+Both phases are canonical transposes, so Lemma 7.4 applies to both.
+
+\emph{Proof.} Lemma 7.3 and the maximality of Y give y(\(C_{2j}\)) \textgreater= y(\(C_{2j-2}\)) \textgreater= \ldots{} \textgreater= Y \textgreater= y(\(C_{2j}\)); the odd subsequence is nondecreasing and bounded by Y. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Proposition 9.2.} \(L(M)\ne72\).
+
+\emph{Proof.} Let \(G=72\) and take the tail. The scalar constraints are: 24 \textless= a \textless= G - 45, 24 \textless= b, 0 \textless= Y \textless= G - 32 - a, 0 \textless= V \textless= min(Y, G - 32 - b), \(h_o\) + Y \textgreater= 13 (Lemma 5.1 at the odd phase). Lemma 4.3 at the two phases gives s\_e \textless= 3h\_e + 2V + Y - 32 and s\_o \textless= 3h\_o + 2Y + V - 32, and (4.4) gives max(s\_e, C(s\_e,2)) \textgreater= 96 - 2G + 2a + Y and max(s\_o, C(s\_o,2)) \textgreater= 96 - 2G + 2b + V. Let m(a, Y), m(b, V) be the least s satisfying these; the two-step drift is at least m(a,Y) + m(b,V) + 192 - 2G - a - b. The program \texttt{\seqsplit{check73.py}} enumerates every admissible tuple (1,010 pass the fan-out caps) and finds the drift positive except for a = b = 24, Y = V = 0. In that case every circuit of the tail has y = 0, hence e = 0, and Lemma 8.2 gives 0 \textgreater= s at every iterate: \(q=z=0\). Take an iterate of orientation \(M^{\mathsf T}\): all 32 + h of its H-B edges are represented (Lemma 4.2 with y = \(q=z=0\)), giving 32 + h independent relations H\_i + T (Lemma 4.4); every helper is anchored (degree \textgreater= 2, no H-H edges); choosing one relation per helper as a pivot and adding it to the other relations of that helper leaves 32 independent boundary relations of weight 6. Their span has dimension at most \(\rho_6\)(\(M^{\mathsf T}\)) = 28 (fact F5), a contradiction. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F5 (weight-six relations).} A zero-sum subset of B of weight 6 is the union of two disjoint boundary triples with equal XOR (weights 2 and 4 are excluded by F2). There are 60 such subsets for M, spanning a space \(R_6\) of dimension \(\rho_6\)(M) = 20, and 84 for \(M^{\mathsf T}\), with \(\rho_6\)(\(M^{\mathsf T}\)) = 28.
+
+\hypertarget{helper-types-and-the-local-inequality-system}{%
+\section{10. Helper types and the local inequality system}\label{helper-types-and-the-local-inequality-system}}
+
+From now on G is 73 or 74 and we work in the tail of Lemma 9.1. Fix one phase, with its parameters
+
+The parameters are \(h\) (helpers), \(y\) (the current even+even count), \(F\) (the even+even count of the next phase), \(q\), \(z\), and the orientation.
+
+Every helper has a type (r, u, v) with 0 \textless= r \textless= 3 (Lemma 4.4), 0 \textless= u \textless= q, 0 \textless= v \textless= min(2z, h - 1) (simplicity; v \textless= z would do), and \(r+u+v\ge3\) when the phase is a canonical transpose (Lemma 7.4; section 11 says where \(r+u+v\ge2\) is used instead). Let \(n_{r,u,v}\) \textgreater= 0 be the number of helpers of each type and put
+
+\[
+f_{\min}(r,u,v)=\max\!\left(0,\left\lfloor\frac{r+u+v-3}{2}\right\rfloor\right),
+\]
+
+so that \(f_{\min}\) \textless= \(f_v\) for a helper of that type (its fan-out is \(d_v\) = r + u + v - 1 and (3.2) holds). Define the aggregates
+
+\[
+\begin{aligned}
+W&=\sum run,&A&=\sum_{r=3}un,&Z&=\sum(r-1)_+un,\\
+E&=\sum_{r=3}(u-2)_+n,&D_0&=\sum_{r=0}(u-1)n.
+\end{aligned}
+\]
+
+Here \(D_0\) may be negative: a helper with \(r=u=0\) contributes \(-1\).
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 10.1.} Every phase satisfies the following relations (the names are those of the checking program).
+
+The rows are grouped below for readability; row numbers match the mathematical note. Every unqualified sum is over all helper types, with \(n=n_{r,u,v}\).
+
+\textbf{Basic counts and local capacities.}
+
+\[
+\begin{aligned}
+\sum n&=h,&&\text{(L1)}\\
+\sum(r+u+v)n&=32+h-y+q+z,&&\text{(L2)}\\
+\sum vn&=2z,&&\text{(L3)}\\
+\sum f_{\min}n&\le F,&&\text{(L4)}\\
+\sum\binom u2n&\le\binom q2,&&\text{(L5)}\\
+\sum_{r=3}un&\le q,&&\text{(L6)}\\
+W&\le7q,&&\text{(L7)}\\
+\sum_{r=3}(1+2f_{\min})n&\le3h+2F+y-32,&&\text{(L8)}\\
+Z&\le3q,&&\text{(L9)}\\
+\sum(u+2f_{\min})n&\le4q+2F,&&\text{(L10)}\\
+\sum_{r=3}(u+v)n&\le q+z,&&\text{(L11)}\\
+\sum(r-1)_+n&\le\rho_6.&&\text{(L12)}
+\end{aligned}
+\]
+
+The names of (L4)-(L12) in the checker are, respectively: reverse EE budget; missing pairs; full missing incidence; label rank capacity; full helper budget; weighted label capacity; even signal fan-out; full helper incidence; and boundary rank six.
+
+\textbf{Quotient and full-helper capacities.} Let \(\varepsilon_M=2\) and \(\varepsilon_{M^{\mathsf T}}=0\).
+
+\[
+\begin{aligned}
+W-2D_0&\le2y+2z+7q-2\rho,&&\text{(L13)}\\
+W+A-2D_0&\le2y+2z+7q-2\rho+\varepsilon,&&\text{(L14)}\\
+Z-D_0&\le y+z+3q-\rho,&&\text{(L15)}\\
+Z+E&\le3q.&&\text{(L16)}
+\end{aligned}
+\]
+
+For orientation \(M\), the coupled row is
+
+\[
+2Z+2E-3D_0\le3y+3z+6q-24.\qquad\text{(L17-M)}
+\]
+
+For orientation \(M^{\mathsf T}\), the coupled row and strengthened full-capacity row are
+
+\[
+\begin{aligned}
+Z+E-3D_0&\le3y+3z+3q-12,&&\text{(L17-MT)}\\
+W+A-3D_0&\le3y+3z+7q-12.&&\text{(L18)}
+\end{aligned}
+\]
+
+\textbf{Additional transpose-boundary rows.} For orientation \(M^{\mathsf T}\):
+
+\[
+\begin{aligned}
+3&\le y+\sum_{r=0}(u+v-1)n+\sum_{r=1}vn,&&\text{(L19)}\\
+9&\le3y+2z+\sum_{r=0}(3u+v-3)n.&&\text{(L20)}
+\end{aligned}
+\]
+
+If also \(q=0\):
+
+\[
+\begin{aligned}
+\sum_{r=0}n&\ge1,&&\text{(L21)}\\
+3&\le y+\sum_{r=0}(v-1)n.&&\text{(L22)}
+\end{aligned}
+\]
+
+\textbf{Missing-label packing.} Put \(N_j=\sum_{u=j}n\). The conditional rows (L23) are
+
+\[
+\begin{aligned}
+q=6:\quad N_3+3N_4+4N_5+4N_6&\le4,\\
+q=7:\quad2N_3+7N_4+12N_5+14N_6+14N_7&\le14.
+\end{aligned}
+\]
+
+where \(\rho_6\) = 20 (M) or 28 (\(M^{\mathsf T}\)) and rho = 32 - dim J = 8 (M) or 4 (\(M^{\mathsf T}\)), with J the fixed space of Lemma 10.2 chosen as in fact F9.
+
+\emph{Proof of (L1)-(L3).} Lemma 4.2 and the definition of v. \(\square\)
+
+\emph{Proof of (L4).} sum \(f_{\min}\) n \textless= \(F_H\) \textless= F, since F sums f over all signals of the phase and y(next) = F. \(\square\)
+
+\emph{Proof of (L5), (L6).} Lemmas 4.6 and 4.5. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F6 (label capacity).} For an even value l let \(C_\ell\) be the span of the formal vectors \(E_\ell\) + sum\_(b in D) B\_b over all 2- and 4-element subsets D of B with XOR l (\(E_\ell\) is one extra coordinate). Over all 637,392 such subsets, rank(\(C_\ell\)) \textless= 7 for every l; the rank histogram is 1: 578,900, 2: 18,032, 3: 5,846, 4: 778, 5: 200, 6: 108, 7: 10 for M and 1: 561,014, 2: 22,830, 3: 7,678, 4: 1,273, 5: 234, 6: 216, 7: 6 for \(M^{\mathsf T}\).
+
+\emph{Proof of (L7).} Fix a missing label l. For each helper i with an edge i-b\_i of label l and each of its \(r_i\) represented relations H\_i + T, add the gate equation H\_i + B\_(b\_i) + \(E_\ell\): the result \(E_\ell\) + T + B\_(b\_i) lies in \(C_\ell\) (T + \{b\_i\} is a 2- or 4-subset with XOR l). These sum\_i \(r_i\) vectors come from an independent family by invertible operations (Lemma 4.4's family together with the missing H-B equations is a subset of the gate equations after invertible operations), so they are independent and sum\_(i meets l) \(r_i\) \textless= 7. Summing over the q missing labels gives W \textless= 7q. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F7 (weighted capacity).} For every potential label l, every full value h\_3 with h\_3 + l in B, and every two further repeated values h\_1, h\_2 with h\_1 + l, h\_2 + l in B, and every choice of two of the triples of h\_1 and of h\_2: the seven vectors \(E_\ell\) + T + B\_b (three from h\_3, two each from h\_1, h\_2) are linearly dependent. There are 51,840 such configurations for M and 75,600 for \(M^{\mathsf T}\).
+
+\emph{Proof of (L9).} Fix a missing label l; the projected vectors of (L7) are independent of rank \textless= 7. If sum\_(i meets l, \(r_i\) \textgreater= 2) (\(r_i\) - 1) \textgreater= 4, then the incident helpers with \(r_i\) \textgreater= 2 contain either two full helpers (excluded by Lemma 4.5), or one full and two with \(r_i\) = 2 (seven independent projected vectors, excluded by F7), or four with \(r_i\) = 2 (eight independent vectors, exceeding rank 7). A helper with \(r_i\) \textgreater= 2 is a repeated value, so F7 covers every case. Hence the excess at each missing label is \textless= 3. \(\square\)
+
+\emph{Proof of (L10).} A missing label l is the even signal of at most d\_l + 1 \textless= 4 + 2 f\_l gate equations (its defining gate and its uses; (3.2)). Summing over missing labels, U \textless= 4q + 2 \(F_{\mathrm{miss}}\) where \(F_{\mathrm{miss}}\) sums f over the missing even signals; \(F_{\mathrm{miss}}\) + \(F_H\) \textless= F since helpers and even signals are disjoint. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F8 (further full-helper incompatibilities).} (i) For two disjoint pairs of full values with equal XOR, the twelve relation vectors have rank at most 10 (rank histogram 7: 180, 8: 720, 10: 288 for M; 7: 252, 8: 1,008, 10: 576 for \(M^{\mathsf T}\)). (ii) For two full values with XOR l and a third full value in l + B, the nine relation vectors have rank 8 (432 configurations for M, 864 for \(M^{\mathsf T}\)).
+
+\emph{Proof of (L8) and (L11).} By Lemma 4.4 all represented relations of the circuit are independent, so none of the configurations F4, F8(i), F8(ii) can occur among full helpers. Consequently, at a missing label l, at most one ``full event'' occurs: an H-B edge at a full helper or an H-H edge with both ends full (two full H-B incidences are adjacent by Lemma 4.5; two full-full H-H edges with label l are F8(i); one of each is F8(ii)); and a represented label has no full-full H-H edge (its two ends would be adjacent). Let \(A_{HH}\) be the number of full-full H-H edges, \(U_{\mathrm{full}}\) = sum\_(r=3) u and \(V_{\mathrm{full}}\) = sum\_(r=3) v. Then \(U_{\mathrm{full}}\) + \(A_{HH}\) \textless= q and \(V_{\mathrm{full}}\) \textless= (z - \(A_{HH}\)) + 2 \(A_{HH}\), so \(U_{\mathrm{full}}\) + \(V_{\mathrm{full}}\) \textless= q + z: this is (L11). For (L8), let \(\Delta\) = sum\_(v in H) (3 + 2 \(f_v\) - \(d_v\)) \textgreater= 0; by (4.1), s + \(\Delta\) + 2(F - \(F_H\)) = 3h + 2F + y - 32. At the full helpers, \(d_v\) = 2 + u + v, so \(n_3\) + 2 \(F_{\mathrm{full}}\) = \(U_{\mathrm{full}}\) + \(V_{\mathrm{full}}\) + \(\Delta_{\mathrm{full}}\) \textless= q + z + \(\Delta_{\mathrm{full}}\) \textless= 3h + 2F + y - 32, where \(F_{\mathrm{full}}\) sums f over full helpers and \(\Delta_{\mathrm{full}}\) their part of \(\Delta\). Replace \(f_v\) by \(f_{\min}\). \(\square\)
+
+\emph{Proof of (L12).} Choose one represented relation at every anchored helper as a pivot and add it to the other relations of that helper; the sum (\(r_i\) - 1)\_+ modified relations are independent boundary relations of weight 6, hence lie in \(R_6\) (fact F5). \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 10.2 (global elimination).} Call a missing label \emph{dark} if it has no H-B edge at an anchored helper, \emph{bright} otherwise; let \(q_D\) be the number of dark labels, \(h_0\) the number of unanchored helpers and \(U_0\) = sum\_(r=0) u (so \(D_0\) = \(U_0\) - \(h_0\)). For a missing label l let \(K_\ell\) be the span of the differences D + D' of the 2- and 4-subsets of B with XOR l (a space of boundary relations of dimension rank(\(C_\ell\)) - 1). Let J be any fixed space of boundary relations containing \(R_6\) and put \(k_\ell\) = dim((\(K_\ell\) + J)/J). Then
+
+\[
+32-\dim J\le y+z+D_0-q_D+\sum_{\ell\ \mathrm{bright}}k_\ell.\qquad\text{(G)}
+\]
+
+\emph{Proof.} Retain every represented relation and every missing H-B gate equation at an anchored helper: R + U - \(U_0\) independent vectors (Lemma 4.4's argument). Pivot one represented relation at each of the h - \(h_0\) anchored helpers; the remaining represented relations become weight-6 boundary relations (in \(R_6\)) and the remaining missing rows \(E_\ell\) + B\_b + H\_i become \(E_\ell\) + T + B\_b, forms of label l. For each bright label pivot one of its forms; the other forms of l become differences, i.e.~elements of \(K_\ell\). The residual R + U - \(U_0\) - (h - \(h_0\)) - (q - \(q_D\)) vectors are independent and lie in \(R_6\) + sum\_(l bright) \(K_\ell\), whose dimension is at most dim J + sum\_(l bright) \(k_\ell\). Substitute R + U = 32 + h - y + q - z. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F9 (quotient table).} For M take J = \(R_6\) + sum of all \(K_\ell\) with rank(\(C_\ell\)) = 7; dim J = 24. For \(M^{\mathsf T}\) take J = \(R_6\), dim J = 28. The labels with \(k_\ell\) \textgreater{} 0 (\emph{quotient-active}) and their (rank(\(C_\ell\)), \(k_\ell\)) are: M: (2, 1) for 845 labels, (3, 2) for 44, (4, 1) for 1; \(M^{\mathsf T}\): (2, 1) for 102, (4, 1) for 1. For every label, rank(\(C_\ell\)) + 2 \(k_\ell\) \textless= 7.
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F10.} No quotient-active label meets a repeated helper value: for every active l and every repeated value h, h + l is not in B.
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F11 (full helpers at rank-7 labels).} For \(M^{\mathsf T}\), none of the six labels with rank(\(C_\ell\)) = 7 is h + b for a full value h and b in B. For M, exactly four of the ten rank-7 labels are of that form (0x8181, 0x818100, 0x81000081, 0x81810000), each for exactly one full value (0x181, 0x18100, 0x81000001, 0x1810000), and for any three of these four values the nine relation vectors have rank 7.
+
+\emph{Proof of (L13)-(L15).} With W\_l = sum\_(i meets l) \(r_i\): W\_l \textless= rank(\(C_\ell\)) (proof of (L7)), W\_l = 0 at a dark label (all its incident helpers have r = 0), and rank(\(C_\ell\)) \textless= 7 - 2 \(k_\ell\) (F9). Summing over bright labels and using (G): W \textless= 7(q - \(q_D\)) - 2 sum \(k_\ell\) \textless= 7q - 7 \(q_D\) - 2(32 - dim J - y - z - \(D_0\) + \(q_D\)); dropping the nonpositive multiple of \(q_D\) gives (L13). For (L14), add A\_l (1 if a full helper meets l): if A\_l = 1 then \(k_\ell\) = 0 (F10, full values are repeated) and rank(\(C_\ell\)) \textless= 6 except for the four M labels of F11, of which at most two can meet full helpers simultaneously (three full helpers among the four values would carry nine independent relations of rank 7); so W\_l + A\_l + 2 \(k_\ell\) \textless= 7 + ex\_l with sum ex\_l \textless= 2 for M and 0 for \(M^{\mathsf T}\). For (L15): at a bright label the \(r_i\) - 1 differences T + T' at each incident helper with \(r_i\) \textgreater= 2 are independent across helpers (they are differences within an independent family) and lie in \(K_\ell\) and in \(R_6\), so Z\_l \textless= dim(\(K_\ell\) intersect J) = rank(\(C_\ell\)) - 1 - \(k_\ell\); with Z\_l \textless= 3 (L9) the table F9 gives Z\_l + \(k_\ell\) \textless= 3 in every case. Sum and use (G). \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Finite fact F12 (high-excess labels).} For each label l meeting at least one repeated value, the largest sum\_(i) (\(r_i\) - 1) over independent selections of \(r_i\) triples at the helpers i in (l + B) is at most 3; it equals 3 for a set Q of 96 labels (M) or 192 labels (\(M^{\mathsf T}\)). Every full value h has at most two labels of Q among the 64 values h + b, b in B.
+
+\emph{Proof of (L16)-(L18).} Let \(q_L\) count the selected missing labels outside Q; Z \textless= 3(q - \(q_L\)) + 2 \(q_L\) = 3q - \(q_L\). A full helper meets at most two Q labels, so at least (\(u_i\) - 2)\emph{+ of its missing labels are outside Q, and these labels are distinct across full helpers (Lemma 4.5): E \textless= \(q_L\). Adding gives (L16). For the coupled rows, the quotient-active bright labels have Z\_l = 0 and meet no full helper (F10), so they are disjoint from the labels charged for E; charging 3 for each of them, 3 for a Q label, and 2 (+1 if it pays for E) for a low label gives Z + E + 3 \(n_{\mathrm{act}}\) \textless= 3(q - \(q_D\)), where \(n_{\mathrm{act}}\) is the number of active bright labels. Since \(k_\ell\) \textless= 2 for M and \textless= 1 for \(M^{\mathsf T}\), \(n_{\mathrm{act}}\) \textgreater= ceil(d/2) resp. d where d = sum}(bright) \(k_\ell\) \textgreater= rho - y - z - \(D_0\) + \(q_D\) by (G). For M, 2Z + 2E + 3d \textless= 6(q - \(q_D\)) and substituting the bound on d gives (L17, M); for \(M^{\mathsf T}\), Z + E + 3d \textless= 3(q - \(q_D\)) gives (L17, \(M^{\mathsf T}\)). For (L18): in \(M^{\mathsf T}\) an active label has rank(\(C_\ell\)) \textless= 4 and A\_l = 0, so W\_l + A\_l + 3 \(k_\ell\) \textless= 7 at every bright label; sum and substitute d.~\(\square\)
+
+\textbf{Finite facts F13-F14 (dark-label facts and short-relation ranks, \(M^{\mathsf T}\)).} Let \(R_{10}\) be the span of all zero-sum subsets of B of weight \textless= 10; \(\rho_{10}\)(\(M^{\mathsf T}\)) = 29 (also \(\rho_8\)(\(M^{\mathsf T}\)) = 29; the weight-8, -10, -12 zero-sum subsets number 276, 1,300, 8,112, of which 736 weight-12 ones are nonzero modulo \(R_{10}\)). For an even value l let \(K^{(6)}_\ell\) be the span, modulo \(R_{10}\), of the differences of the subsets of B of even size \textless= 6 with XOR l; every nonzero element comes from a weight-12 word split into two 6-subsets of XOR l. dim \(K^{(6)}_\ell\) is 1 for 193,172 values and 2 for 5,712 values (the \emph{active} six-form labels), 0 otherwise. No active label is the XOR of a 2- or 4-subset of B. An active label is the XOR of at most one pair of distinct repeated values (632 active labels are the XOR of exactly one such pair).
+
+\emph{Proof of (L19), (L20).} Orientation \(M^{\mathsf T}\). Retain the B-B reference equations of all represented labels, the represented H-B equations, the missing H-B equations at anchored helpers, and the H-H equations with two anchored ends; this is a subset of the gate equations, hence independent. Pivot each represented label by its reference, each anchored helper by one represented relation, and then one row for each missing label that still occurs among the retained rows (\(q_A\) such labels). Let \(z_0\) count the H-H edges with an unanchored end. The residual rows number
+
+\[
+\begin{aligned}
+&(x+y-q)+R+(U-U_0)+(z-z_0)\\
+&\hspace{12mm}-(x+y-q)-(h-h_0)-q_A\\
+&=32-y+h_0-U_0-z_0+(q-q_A),
+\end{aligned}
+\]
+
+are independent, and are boundary relations: extra represented relations have weight 6; an H-H row with a represented label becomes T\_i + T\_j + B\_b + B\_c (weight \textless= 8); the rows of a missing label l are differences of its forms, where an H-B form has size \textless= 4 and an H-H form (T\_i + T\_j) size \textless= 6. A difference involving an H-B form has weight \textless= 10, so lies in \(R_{10}\). Only missing labels all of whose retained rows are H-H forms can contribute outside \(R_{10}\), and their contribution lies in \(K^{(6)}_\ell\), of dimension \textless= 2 (F13). For such an active label l, at most one retained H-H edge joins two repeated values (F13); choose it as the pivot of l if present; every other retained edge of l then has an end of represented degree r = 1 (a helper with r \textgreater= 2 is a repeated value). So the quotient contribution of l is at most the number of its retained H-H edges touching an r = 1 helper, and in total at most \(z_1\) = sum\_(r=1) v. Hence 32 - y + \(h_0\) - \(U_0\) - \(z_0\) + (q - \(q_A\)) \textless= 29 + \(z_1\), and with q \textgreater= \(q_A\), \(z_0\) \textless= sum\_(r=0) v this is (L19). For (L20), bound the contribution of an active label with m retained H-H rows by min(2, m - 1) \textless= 2m/3 instead; sum\_l m \textless= z - \(z_0\); so 32 - y + \(h_0\) - \(U_0\) - \(z_0\) \textless= 29 + 2(z - \(z_0\))/3, which multiplied by 3 is (L20). \(\square\)
+
+\emph{Proof of (L21), (L22).} Orientation \(M^{\mathsf T}\) with \(q=0\): every label is represented, so every residual row of the elimination above lies in \(R_{10}\) (weights \textless= 8): 32 - y + \(h_0\) - \(z_0\) \textless= 29, which is (L22). (L21) is part of Lemma 10.3. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 10.3 (direct exclusions).} (i) No normalized circuit of either orientation has \(q=z=0\). (ii) A canonical transpose of orientation \(M^{\mathsf T}\) with \(q=0\) has at least four unanchored helpers and z \textgreater= 8.
+
+\emph{Proof.} (i) With \(q=0\), pivot every even signal by its B-B reference and every helper by a represented relation (every helper is anchored: it has degree \textgreater= 2, no H-H edges, and every label is represented). The G - (x + y) - h = 32 residual gate equations are independent boundary relations of weight \textless= 6 (an H-B equation becomes T + B\_a + B\_b + B\_c, an even+even equation the sum of three references), so they lie in \(R_6\), of dimension 20 or 28 \textless{} 32. (ii) Let K be the set of unanchored helpers, k = \textbar K\textbar; with \(q=0\) they have only H-H edges. If k = 0, the same elimination leaves 32 independent residual relations of weight \textless= 8 (an H-H row becomes T\_i + T\_j + B\_b + B\_c), inside \(R_8\)(\(M^{\mathsf T}\)) of dimension 29. If 1 \textless= k \textless= 3: each unanchored helper has degree \textgreater= 3 (Lemma 7.4) and at most k - 1 \textless= 2 neighbours in K, so it has an anchored neighbour; pivot it by that edge, which expresses it by \textless= 5 boundary elements. Every residual row then has weight \textless= 10 except the rows of K-K edges (weight \textless= 12). Modulo \(R_{10}\) (dimension 29), the classes of the K-K edge rows sum to zero around every cycle of the graph on K (the pivot expressions cancel and the remaining labels' references have weight \textless= 6), so they span at most k - c\_K \textless= 2 dimensions (c\_K the number of components of K); 29 + 2 \textless{} 32. Hence k \textgreater= 4. Finally, for any normalized \(M^{\mathsf T}\) circuit with \(q=0\): every component of the graph on K has an edge to an anchored helper (every component of the odd graph contains an input, by the proof of Lemma 2.1 read on the graph: an odd+even gate attaches its result to its odd operand, so every odd signal is linked to an input); choose a spanning forest of K plus one anchor edge per component (k edges) as pivots for the unanchored helpers. Only z - k H-H rows remain unpivoted; every other residual row lies in \(R_6\). So 32 \textless= \(\rho_6\) + (z - k) = 28 + z - k, i.e.~z \textgreater= k + 4 \textgreater= 8. \(\square\)
+
+\Needspace{7\baselineskip}
+\textbf{Lemma 10.4 (packing rows).} (L23) holds.
+
+\emph{Proof.} The missing-label sets of the helpers with u \textgreater= 3 are subsets of a q-set pairwise intersecting in at most one element (Lemma 4.6). \(q=6\): each element lies in at most two 3-sets, so N3 \textless= 4; at most one set has size \textgreater= 4; with a 4-set every 3-set contains both outside elements, so there is at most one 3-set (3 + 1 \textless= 4); a 5- or 6-set excludes all other sets of size \textgreater= 3 (weight 4 \textless= 4). \(q=7\): each element lies in at most three 3-sets, so 2 N3 \textless= 14; one 4-set leaves three outside elements and every 3-set uses two of them, with distinct pairs, so at most three 3-sets (7 + 6 \textless= 14); two 4-sets meet in one element, cover everything and admit no further set of size \textgreater= 3 (14); a 5-set admits at most one 3-set (12 + 2); a 6- or 7-set stands alone (14). \(\square\)
+
+\hypertarget{the-exclusion-of-73-and-74-gates}{%
+\section{11. The exclusion of 73 and 74 gates}\label{the-exclusion-of-73-and-74-gates}}
+
+\textbf{The scalar domain.} With G fixed, the tail of Lemma 9.1 has parameters a, b, Y, V, \(h_e\), \(h_o\) and the constraints 24 \textless= a (hence a \textless= G - 45), 24 \textless= b \textless= G - 32, 0 \textless= Y \textless= G - 32 - a, 0 \textless= V \textless= Y, \(h_o\) \textgreater= 0, \(h_o\) + Y \textgreater= 13. Upper bounds for the two s values:
+
+\[
+S_e=3h_e+2V+Y-32,\qquad S_o=3h_o+2Y+V-32,
+\]
+
+and at \(G=74\) also, from Lemma 8.2 with e(C) \textgreater= 0 and e(T(C)) \textless= y(T(C)),
+
+\[
+\begin{aligned}
+S_e&=\min(S_e,\,2b-a+G-96+V),\\
+S_o&=\min(S_o,\,2a-b+G-96+Y).
+\end{aligned}
+\]
+
+Lower bounds: l(h, y) = the least s with 2h + y + max(s, C(s,2)) \textgreater= 32 (from (4.4)). A profile is \emph{admissible} if \(S_e\), \(S_o\) \textgreater= 0, l(\(h_e\), Y) \textless= \(S_e\), l(\(h_o\), V) \textless= \(S_o\) and l(\(h_e\), Y) + l(\(h_o\), V) \textless= a + b + 2G - 192 (otherwise Lemma 8.3 already excludes it). There are 262 admissible profiles at \(G=73\) and 1,102 at \(G=74\); each has two \emph{oriented claims} (the even phase is M or \(M^{\mathsf T}\)).
+
+\textbf{The local systems.} For a phase with parameters (h, y, F, q, z) and an orientation, the \emph{local system} consists of (L1)-(L12) over the types with \(r+u+v\ge2\) at \(G=73\), and of (L1)-(L23) over the types with \(r+u+v\ge3\) at \(G=74\), in the unknowns \(n_{r,u,v}\) \textgreater= 0.
+
+\textbf{Certificates.} Write a local system as A n \textless= b (each equality as two inequalities). A \emph{certificate} is a vector lambda of nonnegative integers with \(\lambda^{\mathsf T}A\ge0\) in every coordinate and \(\lambda^{\mathsf T}b<0\): then \(0\le(\lambda^{\mathsf T}A)n\le\lambda^{\mathsf T}b<0\) for every real n \textgreater= 0, so the system has no solution. The files \texttt{\seqsplit{CERTIFICATES74.json}} (484 certificates) and \texttt{\seqsplit{CERTIFICATES75.json}} (4,057 certificates, largest weighted right-hand side -1) contain one certificate per excluded local system. They were found by a linear-programming solver; the solver's output is not a premise, only the certificates are, and they are checked in exact integer arithmetic.
+
+\textbf{Coverage and the final test.} For each oriented claim the files state lower bounds k and l. The checker verifies that every (q, z) with q + z \textless{} k on the even phase, and every (q, z) with q + z \textless{} l on the odd phase, is excluded: by (4.4), by Lemma 10.3 (927 cases at \(G=74\)), or by a certificate. It then verifies
+
+\[
+k>S_e\quad\text{or}\quad\ell>S_o\quad\text{or}\quad k+\ell>a+b+2G-192.
+\]
+
+\Needspace{7\baselineskip}
+\textbf{Proposition 11.1.} L(M) is not 73 and not 74.
+
+\emph{Proof.} Let G be 73 or 74 and take the tail of the orbit. Its profile is admissible, so one of the oriented claims applies. Every even-phase circuit of the tail satisfies its local system (Lemma 10.1, with \(r+u+v\ge3\) by Lemma 7.4 at \(G=74\)), so its s is at least k; likewise s \textgreater= l at every odd phase. If k \textgreater{} \(S_e\) or l \textgreater{} \(S_o\) there is no admissible s at all. Otherwise every two-step drift of Lemma 8.3 is at least k + l + 192 - 2G - a - b \textgreater= 1, and e is unbounded. \(\square\)
+
+\textbf{Proof of the Theorem.} Corollary 5.2 gives \(L(M)\ge69\); Propositions 8.4, 9.2 and 11.1 exclude 69 through 74. The included 88-gate circuits are verified by \texttt{\seqsplit{source/verify.py}}. \(\square\)
+
+\hypertarget{what-the-programs-check-and-what-the-argument-must-establish}{%
+\section{12. What the programs check, and what the argument must establish}\label{what-the-programs-check-and-what-the-argument-must-establish}}
+
+In this section, paths beginning \texttt{\seqsplit{checks/}} are relative to \texttt{\seqsplit{source/lower\_bounds/}} in the package.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+item
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+established by
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+checked by program
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Lemmas 1.1-10.4, Propositions 8.4, 9.2, 11.1 (the argument) & the text above & no (stress tests only, section 13) \\
+F1 no nine-part partition (both orientations) & finite enumeration & \texttt{\seqsplit{checks/finite\_facts.py}} \\
+F2 Sidon, F3 triple multiplicities, F5 \(\rho_6\) & finite & \texttt{\seqsplit{checks/finite\_facts.py}}, \texttt{\seqsplit{checks/check73.py}} \\
+F4, F8 full-value rank facts & finite & \texttt{\seqsplit{checks/finite\_facts.py}} \\
+F6 label capacities, F7 weighted capacity & finite & \texttt{\seqsplit{checks/finite\_facts.py}} \\
+F9-F12 quotient, active, rank-7 and high-excess labels & finite & \texttt{\seqsplit{checks/finite\_facts.py}} \\
+F13 dark-label facts, F14 \(\rho_8\)(\(M^{\mathsf T}\)) = \(\rho_{10}\)(\(M^{\mathsf T}\)) = 29 & finite & \texttt{\seqsplit{checks/finite\_facts.py}}, \texttt{\seqsplit{checks/check\_dark\_source.py}} \\
+the enumerations of Propositions 8.4 and 9.2 & finite & \texttt{\seqsplit{checks/check72.py}}, \texttt{\seqsplit{checks/check73.py}} \\
+scalar domains, coverage and every certificate at \(G=73\), 74 & finite & \texttt{\seqsplit{checks/certify74.py}}, \texttt{\seqsplit{checks/independent74.py}}, \texttt{\seqsplit{checks/certify75.py}}, \texttt{\seqsplit{checks/independent75.py}} (two independent implementations each) \\
+\(L(M)\le88\) & an explicit circuit & \texttt{\seqsplit{source/verify.py}} \\
+\end{longtable}
+
+The programs compute numbers about the fixed matrix and check integer certificates. They do not, and cannot, check that the inequalities (L1)-(L23) are necessary conditions for circuits, that the two-step drift argument is sound, or that the tail of Lemma 9.1 exists: that is the mathematical content, sections 1-11, and it is what a reviewer must read.
+
+\hypertarget{provenance-and-review-record}{%
+\section{13. Provenance and review record}\label{provenance-and-review-record}}
+
+\emph{Provenance.} The argument (sections 1-11) was produced in September 2026 with large-language-model assistance under the author's direction, in successive steps (bounds 63, 67, 69, 70, 72, 73, 74, 75, each with its own documents and checkers, kept in the method repository \texttt{\seqsplit{slp-plateau-search}}). The Farkas multipliers were found with an LP solver. This note consolidates those documents into one argument; the numbered rows and finite facts are the ones the shipped checkers implement.
+
+\emph{Review.} All reviews so far were performed by programs and by machine reviews (language-model agents working with their own code), never by a human mathematician. (a) 2026-09-23: three adversarial reviews (mathematics; recomputation of every finite premise from scratch; stress tests on 14,000 circuits and 1.35 million local rewrites), all clean. (b) 2026-10-01: a from-scratch recomputation of every finite fact (\texttt{\seqsplit{checks/finite\_facts.py}}: all numbers identical, the nine-part search with the same node and leaf counts); every identity and every row of section 10 tested on 24,628 real circuits with their canonical and second transposes (\texttt{\seqsplit{checks/stress.py}}: zero violations); an independent linear-programming model written from this text that regenerates every one of the 2,204 oriented claims at \(G=74\) with the same bounds k, l (\texttt{\seqsplit{checks/lp\_regen.py}}); mutation tests of the certificate checker (every corrupted row constant, certificate or claim is rejected); and a further adversarial review that re-derived every lemma, recomputed every finite fact with a differently structured search, and ran 345,674 circuit states and 6,200 random small circuits of random matrices with no violation. The method repository records all of it.
+
+\emph{What would refute this note.} A normalized minimum circuit of M or \(M^{\mathsf T}\) violating one of (L1)-(L23) or (4.4), or a counterexample to Lemma 7.3 or 7.4; the stress tests above looked for exactly that.
+
+\hypertarget{reproduction}{%
+\section{14. Reproduction}\label{reproduction}}
+
+From the folder \texttt{\seqsplit{source/lower\_bounds/}} of this package (Python 3 standard library only; the optional LP cross-check \texttt{\seqsplit{lp\_regen.py}} needs numpy and scipy and is run only with \texttt{\seqsplit{-\/-with-lp}}). The runner stops at the first failing check and exits nonzero; a green run ends with \texttt{\seqsplit{ALL\ CHECKS\ PASSED}}.
+
+\begin{verbatim}
+sh checks/run_all.sh
+python3 ../verify.py
+\end{verbatim}
+
+The first command executes the complete standard-library proof-checking suite; the second verifies the included circuit controls, including the 88-gate witness. Expected output and every command are listed in \texttt{\seqsplit{VERIFICATION.md}} at the package root. The optional LP cross-check can be run separately:
+
+\begin{verbatim}
+sh checks/run_all.sh --with-lp
+\end{verbatim}
+
+This optional command requires NumPy and SciPy. It is not needed to verify any lower-bound certificate.
+
+Expected outputs are recorded in \texttt{\seqsplit{checks/EXPECTED\_RESULTS.md}}.
+
+\hypertarget{appendix-a.-the-finite-facts-in-numbers}{%
+\section{Appendix A. The finite facts in numbers}\label{appendix-a.-the-finite-facts-in-numbers}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+fact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+M
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^{\mathsf T}\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+F1 graph-code words of weight 6 / 8 & 84 / 276 & 60 / 248 \\
+F1 nine-part search: states / final checks / partitions & 1,485,213 / 62,112 / 0 & 91,485 / 720 / 0 \\
+F2 distinct boundary pair XORs & 2,016 & 2,016 \\
+F3 values with 1 / 2 / 3 boundary-triple representations & 40,704 / 360 / 80 & 40,320 / 504 / 112 \\
+F4 adjacent full pairs (rank 5) / non-adjacent (rank 6) & 360 / 2,800 & 504 / 5,712 \\
+F5 weight-6 zero-sum subsets / \(\rho_6\) & 60 / 20 & 84 / 28 \\
+F6 labels of capacity 1..7 & 578,900 / 18,032 / 5,846 / 778 / 200 / 108 / 10 & 561,014 / 22,830 / 7,678 / 1,273 / 234 / 216 / 6 \\
+F7 (3,2,2) seven-row configurations, all dependent & 51,840 & 75,600 \\
+F8 (i) rank histogram of twelve rows; (ii) nine rows of rank 8 & 7: 180, 8: 720, 10: 288; 432 & 7: 252, 8: 1,008, 10: 576; 864 \\
+F9 dim J; active labels (capacity, k) & 24; (2,1) 845, (3,2) 44, (4,1) 1 & 28; (2,1) 102, (4,1) 1 \\
+F10 active labels meeting a repeated value & 0 & 0 \\
+F11 rank-7 labels meeting a full value & 4 (one full value each; any three: rank 7) & 0 \\
+F12 labels with excess 1 / 2 / 3; max Q labels per full value & 17,736 / 4,604 / 96; 2 & 24,186 / 6,388 / 192; 2 \\
+F13 zero-sum subsets of weight 8 / 10 / 12; \(\rho_8\), \(\rho_{10}\); weight-12 words nonzero mod \(R_{10}\) & (248 / 1,476 / 10,216; 32, 32; not used) & 276 / 1,300 / 8,112; 29, 29; 736 \\
+F13 six-form labels with dim K6 = 1 / 2; active labels meeting a repeated pair & not used & 193,172 / 5,712; 632 (none meets two) \\
+\end{longtable}
+
+\clearpage
+
+\hypertarget{appendix-b.-notation}{%
+\section{Appendix B. Notation}\label{appendix-b.-notation}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+G, L(M) & gate count of a circuit; minimum gate count \\
+x, y, h & odd+odd gates, even+even gates, odd non-output gates (helpers) \\
+B, H & the 64 boundary signals (inputs and outputs); the h helpers \\
+\(d_v\), \(k_v\), \(f_v\) & fan-out (with terminal); odd contributions in the adjoint sum; max even+even gates of the accumulation at v \\
+F, \(F_H\) & sum of \(f_v\) over all signals (= y of the canonical transpose); over helpers \\
+T(C) & a canonical transpose of C \\
+a(v), \(a_v\) & adjoint of v; its parity \\
+q, z, s & missing labels; H-H edges; q + z \\
+(r, u, v) & helper type: represented H-B edges, missing H-B edges, H-H edges \\
+Y, V, a, b & the global maximum of y; the odd-phase y in the tail; the two alternating x counts \\
+e(C) & even+even gates with odd adjoint (the potential) \\
+W, A, Z, E, \(D_0\) & the aggregates of section 10 \\
+\(R_6\), \(R_8\), \(R_{10}\), rho & spans of zero-sum boundary subsets of weight \textless= 6, 8, 10 and their dimensions \\
+\(C_\ell\), \(K_\ell\), J, \(k_\ell\) & label forms, their differences, the fixed quotient space, the quotient rank of a label \\
+\end{longtable}

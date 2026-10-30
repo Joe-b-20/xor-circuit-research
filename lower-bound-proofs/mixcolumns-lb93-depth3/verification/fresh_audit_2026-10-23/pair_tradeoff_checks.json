@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "source": "certificate_depth3_linked_92.json",
+  "source_sha256": "47c5b0fcdbcffb085be518103d357cb64c383f0363cba48712f2089394be6bdf",
+  "rows": 16868,
+  "variables": 61673,
+  "denominator": 10000000000000000,
+  "pair_row": 15255,
+  "helper_numerator": 597778328006951391,
+  "pair_multiplier_numerator": 2499973710473077,
+  "helper_lower_bound_when_P_at_least_27": "150069575429356117/2500000000000000",
+  "reweighted_raw_numerator": 2131495970626858740,
+  "reweighted_repair_numerator": 432069609681296,
+  "reweighted_lower_numerator": 2131063901017177444,
+  "rounded_inequality": "3*P + 4*T + 4*Q >= 214",
+  "consequence": "A 92-gate normalized circuit must have P=26 and T+Q=34.",
+  "scope": "Finite row-validity premises are exactly those of the previous verified linked certificate; --full rechecks them."
+}

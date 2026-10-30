@@ -1,0 +1,1240 @@
+{
+  "source_file": "slp-invmc/pipeline/ladder_parallel.py",
+  "constants": {
+    "MODE": "fixed",
+    "FIXED_WORKER_SET": "setA",
+    "WORKER_SETS": {
+      "setA": [
+        {
+          "label": "a1_lns_106",
+          "engine": "lns",
+          "depth": null,
+          "start": "seeds/invmc_bp5ub2_106_depth21.json"
+        },
+        {
+          "label": "a2_alt_106",
+          "engine": "alt",
+          "depth": null,
+          "reseed": false,
+          "start": "seeds/invmc_bp5ub2_106_depth21.json",
+          "seeds": [
+            11,
+            12,
+            13
+          ]
+        },
+        {
+          "label": "a3_walk_106",
+          "engine": "walk",
+          "depth": null,
+          "reseed": false,
+          "start": "seeds/invmc_bp5ub2_106_depth21.json",
+          "seeds": [
+            21,
+            22,
+            23
+          ]
+        },
+        {
+          "label": "a4_alt_113",
+          "engine": "alt",
+          "depth": null,
+          "reseed": false,
+          "start": "seeds/invmc_bp5ub2_113_depth17.json",
+          "seeds": [
+            31,
+            32,
+            33
+          ]
+        },
+        {
+          "label": "a5_d6_from121",
+          "engine": "lns",
+          "depth": 6,
+          "seeds": [
+            41,
+            42,
+            43
+          ],
+          "knobs": {
+            "accept": "threshold",
+            "up_prob": 0.1,
+            "up_slack": 1,
+            "snapback": 3
+          },
+          "start": "seeds/invmc_bp5ub2_121_depth16.json"
+        },
+        {
+          "label": "a6_d5_from121",
+          "engine": "lns",
+          "depth": 5,
+          "seeds": [
+            51,
+            52,
+            53
+          ],
+          "knobs": {
+            "accept": "threshold",
+            "up_prob": 0.1,
+            "up_slack": 1,
+            "snapback": 3
+          },
+          "start": "seeds/invmc_bp5ub2_121_depth16.json"
+        }
+      ],
+      "smoke": [
+        {
+          "label": "s1_lns_106",
+          "engine": "lns",
+          "depth": null,
+          "start": "seeds/invmc_bp5ub2_106_depth21.json"
+        },
+        {
+          "label": "s2_walk_106",
+          "engine": "walk",
+          "depth": null,
+          "seeds": [
+            7,
+            8,
+            9
+          ],
+          "start": "seeds/invmc_bp5ub2_106_depth21.json"
+        }
+      ]
+    },
+    "DEPTHS": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "FINAL_UNCAPPED_DEPTH": true,
+    "MAX_WAIT_S": 900,
+    "IMPROVE_BY": 5,
+    "FIRST_RUNG_BASELINE": null,
+    "ENGINE_DEEP": "lns",
+    "SEEDS_PER_WORKER": [
+      1,
+      2,
+      3
+    ],
+    "POLL_S": 20,
+    "CHUNK_S": 600,
+    "WALK_CHUNK_S": 300,
+    "RESEED": true,
+    "LNS_KNOBS": {
+      "op_mix": {
+        "small": 0.35,
+        "coneinj": 0.45,
+        "biginj": 0.2
+      },
+      "kmax": 4,
+      "cone_lo": 2,
+      "cone_hi": 4,
+      "biginj_lo": 8,
+      "biginj_hi": 16,
+      "kshake": 12,
+      "nsamp": [
+        12,
+        12
+      ],
+      "hot_frac": 0.5,
+      "vic_cost": 3,
+      "peel_window": 6,
+      "accept": "sa",
+      "sa_T0": 1.2,
+      "sa_cool": 0.9997,
+      "sa_reheat": 4000,
+      "up_prob": 0.5,
+      "up_slack": 4,
+      "snapback": 12,
+      "harvest": true,
+      "cross_pollinate": false,
+      "pop_period_s": 120.0
+    },
+    "WALK_KNOBS": {
+      "hub_move_p": 0.3,
+      "close_hamming": 8,
+      "plateau_slack_p": 0.15,
+      "harvest": true
+    },
+    "STOP_GATES": null,
+    "STOP_DEPTH": null
+  },
+  "rng": {
+    "python": "random.Random (CPython MT19937); only seeds[0] is consumed by each lns/walk engine call",
+    "chunk_progression": "Worker increments every listed seed by 1 after each chunk, reinitializes engine RNG at next chunk",
+    "time_limit_clock": "Engine loops use time.time wall time; provenance cpu_s uses os.times user+sys+self+children",
+    "bp": "64-bit xorshift (13,7,17), seed mapping seed*0x9E3779B97F4A7C15 + 0xD1B54A32D192ED03 modulo 2^64; replace zero by1",
+    "bp_defaults": {
+      "FALLBACK": 2,
+      "RESTART_CAP_S": 30.0
+    },
+    "bp_versions": {
+      "seed_generator": {
+        "commit": "d4cd6fa4c652fb9e508cb010222fa62926704450",
+        "source_sha256": "5dddf696f9dd3c3469276e07ca30b2619417c319e750c42a0853b54fa03868a5",
+        "FALLBACK": 2,
+        "RESTART_CAP_S": null,
+        "NT": 32,
+        "MAXS": 4096,
+        "HB": 17,
+        "symmetry_mode": 0,
+        "norm_mode": 0,
+        "exact_tier_cap": "unfinished<=6 ->6; unfinished<=10 ->4; otherwise3",
+        "build_flags": null,
+        "compiler_version": null,
+        "binary_sha256": null
+      },
+      "watchdog_revision": {
+        "commit": "11bf05c5e6dca4db484a9c73db2e7a5ef48c94c7",
+        "RESTART_CAP_S": 30.0,
+        "change": "Six-sum tier removed; per-restart CPU watchdog added"
+      }
+    }
+  },
+  "runs": [
+    {
+      "run": "20260908_135156",
+      "stored_config": {
+        "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+        "min_depth": 5,
+        "oracle": "~/xor_ui/slp-invmc/tools/verify_slp_generic.py",
+        "mode": "fixed",
+        "worker_set": "smoke",
+        "started_utc": "2026-09-08T17:51:56Z",
+        "cmd": "~/anaconda3/bin/python3 ladder_parallel.py --mode fixed --workers smoke",
+        "chunk_s": 600,
+        "walk_chunk_s": 300,
+        "reseed": true,
+        "knobs": {
+          "lns": {
+            "op_mix": {
+              "small": 0.35,
+              "coneinj": 0.45,
+              "biginj": 0.2
+            },
+            "kmax": 4,
+            "cone_lo": 2,
+            "cone_hi": 4,
+            "biginj_lo": 8,
+            "biginj_hi": 16,
+            "kshake": 12,
+            "nsamp": [
+              12,
+              12
+            ],
+            "hot_frac": 0.5,
+            "vic_cost": 3,
+            "peel_window": 6,
+            "accept": "sa",
+            "sa_T0": 1.2,
+            "sa_cool": 0.9997,
+            "sa_reheat": 4000,
+            "up_prob": 0.5,
+            "up_slack": 4,
+            "snapback": 12,
+            "harvest": true,
+            "cross_pollinate": false,
+            "pop_period_s": 120.0
+          },
+          "walk": {
+            "hub_move_p": 0.3,
+            "close_hamming": 8,
+            "plateau_slack_p": 0.15,
+            "harvest": true
+          }
+        },
+        "worker_knobs": {}
+      },
+      "workers": [
+        {
+          "label": "s1_lns_106",
+          "startup": "[     0.0s 13:51:56] worker start: engine=lns depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_106_depth21.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135156/s1_lns_106.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135156/s1_lns_106.log"
+        },
+        {
+          "label": "s2_walk_106",
+          "startup": "[     0.0s 13:51:56] worker start: engine=walk depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_106_depth21.json seeds=[7, 8, 9] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135156/s2_walk_106.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260908_135156/s2_walk_106.log"
+        }
+      ],
+      "cpu_model": null,
+      "python_version": null,
+      "operating_system_version": null,
+      "compiler_version": null,
+      "python_hash_seed": null,
+      "rng_state_checkpoint": null
+    },
+    {
+      "run": "20260908_135521",
+      "stored_config": {
+        "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+        "min_depth": 5,
+        "oracle": "~/xor_ui/slp-invmc/tools/verify_slp_generic.py",
+        "mode": "fixed",
+        "worker_set": "setA",
+        "started_utc": "2026-09-08T17:55:21Z",
+        "cmd": "~/anaconda3/bin/python3 ladder_parallel.py --mode fixed --workers setA",
+        "chunk_s": 600,
+        "walk_chunk_s": 300,
+        "reseed": true,
+        "knobs": {
+          "lns": {
+            "op_mix": {
+              "small": 0.35,
+              "coneinj": 0.45,
+              "biginj": 0.2
+            },
+            "kmax": 4,
+            "cone_lo": 2,
+            "cone_hi": 4,
+            "biginj_lo": 8,
+            "biginj_hi": 16,
+            "kshake": 12,
+            "nsamp": [
+              12,
+              12
+            ],
+            "hot_frac": 0.5,
+            "vic_cost": 3,
+            "peel_window": 6,
+            "accept": "sa",
+            "sa_T0": 1.2,
+            "sa_cool": 0.9997,
+            "sa_reheat": 4000,
+            "up_prob": 0.5,
+            "up_slack": 4,
+            "snapback": 12,
+            "harvest": true,
+            "cross_pollinate": false,
+            "pop_period_s": 120.0
+          },
+          "walk": {
+            "hub_move_p": 0.3,
+            "close_hamming": 8,
+            "plateau_slack_p": 0.15,
+            "harvest": true
+          }
+        },
+        "worker_knobs": {
+          "a5_d6_from121": {
+            "accept": "threshold",
+            "up_prob": 0.1,
+            "up_slack": 1,
+            "snapback": 3
+          },
+          "a6_d5_from121": {
+            "accept": "threshold",
+            "up_prob": 0.1,
+            "up_slack": 1,
+            "snapback": 3
+          }
+        }
+      },
+      "workers": [
+        {
+          "label": "a1_lns_106",
+          "startup": "[     0.0s 13:55:21] worker start: engine=lns depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_106_depth21.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a1_lns_106.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135521/a1_lns_106.log"
+        },
+        {
+          "label": "a2_alt_106",
+          "startup": "[     0.0s 13:55:21] worker start: engine=alt depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_106_depth21.json seeds=[11, 12, 13] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a2_alt_106.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            },
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a2_alt_106.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260908_135521/a2_alt_106.log"
+        },
+        {
+          "label": "a3_walk_106",
+          "startup": "[     0.0s 13:55:21] worker start: engine=walk depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_106_depth21.json seeds=[21, 22, 23] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a3_walk_106.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260908_135521/a3_walk_106.log"
+        },
+        {
+          "label": "a4_alt_113",
+          "startup": "[     0.0s 13:55:21] worker start: engine=alt depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_113_depth17.json seeds=[31, 32, 33] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a4_alt_113.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            },
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a4_alt_113.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260908_135521/a4_alt_113.log"
+        },
+        {
+          "label": "a5_d6_from121",
+          "startup": "[     0.0s 13:55:21] worker start: engine=lns depth=6 start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_121_depth16.json seeds=[41, 42, 43] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "threshold",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a5_d6_from121.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 3,
+              "up_prob": 0.1,
+              "up_slack": 1,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135521/a5_d6_from121.log"
+        },
+        {
+          "label": "a6_d5_from121",
+          "startup": "[     0.0s 13:55:21] worker start: engine=lns depth=5 start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_121_depth16.json seeds=[51, 52, 53] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "threshold",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a6_d5_from121.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 3,
+              "up_prob": 0.1,
+              "up_slack": 1,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135521/a6_d5_from121.log"
+        }
+      ],
+      "cpu_model": null,
+      "python_version": null,
+      "operating_system_version": null,
+      "compiler_version": null,
+      "python_hash_seed": null,
+      "rng_state_checkpoint": null
+    },
+    {
+      "run": "20260908_135525",
+      "stored_config": {
+        "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+        "min_depth": 5,
+        "oracle": "~/xor_ui/slp-invmc/tools/verify_slp_generic.py",
+        "mode": "fixed",
+        "worker_set": "setA",
+        "started_utc": "2026-09-08T17:55:25Z",
+        "cmd": "~/anaconda3/bin/python3 ladder_parallel.py --mode cascade",
+        "chunk_s": 600,
+        "walk_chunk_s": 300,
+        "reseed": true,
+        "knobs": {
+          "lns": {
+            "op_mix": {
+              "small": 0.35,
+              "coneinj": 0.45,
+              "biginj": 0.2
+            },
+            "kmax": 4,
+            "cone_lo": 2,
+            "cone_hi": 4,
+            "biginj_lo": 8,
+            "biginj_hi": 16,
+            "kshake": 12,
+            "nsamp": [
+              12,
+              12
+            ],
+            "hot_frac": 0.5,
+            "vic_cost": 3,
+            "peel_window": 6,
+            "accept": "sa",
+            "sa_T0": 1.2,
+            "sa_cool": 0.9997,
+            "sa_reheat": 4000,
+            "up_prob": 0.5,
+            "up_slack": 4,
+            "snapback": 12,
+            "harvest": true,
+            "cross_pollinate": false,
+            "pop_period_s": 120.0
+          },
+          "walk": {
+            "hub_move_p": 0.3,
+            "close_hamming": 8,
+            "plateau_slack_p": 0.15,
+            "harvest": true
+          }
+        },
+        "worker_knobs": {
+          "a5_d6_from121": {
+            "accept": "threshold",
+            "up_prob": 0.1,
+            "up_slack": 1,
+            "snapback": 3
+          },
+          "a6_d5_from121": {
+            "accept": "threshold",
+            "up_prob": 0.1,
+            "up_slack": 1,
+            "snapback": 3
+          }
+        }
+      },
+      "workers": [
+        {
+          "label": "d5",
+          "startup": "[     0.0s 13:55:25] worker start: engine=lns depth=5 start=scratch seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/d5.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135525/d5.log"
+        },
+        {
+          "label": "d6",
+          "startup": "[     0.0s 13:55:45] worker start: engine=lns depth=6 start=~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/seed_from_d5.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/d6.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135525/d6.log"
+        },
+        {
+          "label": "d7",
+          "startup": "[     0.0s 13:56:05] worker start: engine=lns depth=7 start=~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/seed_from_d6.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/d7.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135525/d7.log"
+        },
+        {
+          "label": "d8",
+          "startup": "[     0.0s 13:56:45] worker start: engine=lns depth=8 start=~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/seed_from_d7.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/d8.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135525/d8.log"
+        },
+        {
+          "label": "d9",
+          "startup": "[     0.0s 13:58:45] worker start: engine=lns depth=9 start=~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/seed_from_d8.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/d9.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135525/d9.log"
+        },
+        {
+          "label": "final",
+          "startup": "[     0.0s 14:03:27] worker start: engine=lns depth=None start=~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/seed_from_d9.json seeds=[1, 2, 3] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135525/final.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260908_135525/final.log"
+        }
+      ],
+      "cpu_model": null,
+      "python_version": null,
+      "operating_system_version": null,
+      "compiler_version": null,
+      "python_hash_seed": null,
+      "rng_state_checkpoint": null
+    },
+    {
+      "run": "20260909_diverse",
+      "stored_config": {
+        "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+        "min_depth": 5,
+        "oracle": "~/xor_ui/slp-invmc/tools/verify_slp_generic.py",
+        "mode": "fixed",
+        "worker_set": "diverse",
+        "started_utc": "2026-09-09T12:35:33Z",
+        "cmd": "standalone workers from three independent lineages (literature 91, cascade 91@14, BP-variant 97@22); see runs/20260909_diverse/LAUNCHED.md",
+        "chunk_s": 600,
+        "walk_chunk_s": 300,
+        "reseed": false,
+        "knobs": {
+          "lns": {
+            "op_mix": {
+              "small": 0.35,
+              "coneinj": 0.45,
+              "biginj": 0.2
+            },
+            "kmax": 4,
+            "cone_lo": 2,
+            "cone_hi": 4,
+            "biginj_lo": 8,
+            "biginj_hi": 16,
+            "kshake": 12,
+            "nsamp": [
+              12,
+              12
+            ],
+            "hot_frac": 0.5,
+            "vic_cost": 3,
+            "peel_window": 6,
+            "accept": "sa",
+            "sa_T0": 1.2,
+            "sa_cool": 0.9997,
+            "sa_reheat": 4000,
+            "up_prob": 0.5,
+            "up_slack": 4,
+            "snapback": 12,
+            "harvest": true,
+            "cross_pollinate": false,
+            "pop_period_s": 120.0
+          },
+          "walk": {
+            "hub_move_p": 0.3,
+            "close_hamming": 8,
+            "plateau_slack_p": 0.15,
+            "harvest": true
+          }
+        },
+        "worker_knobs": {}
+      },
+      "workers": [
+        {
+          "label": "v1_walk_yuan91",
+          "startup": "[     0.0s 08:35:33] worker start: engine=walk depth=None start=seeds/invmc_yuan91.json seeds=[201, 202, 203] chunk=600s reseed=False",
+          "logged_effective_knobs": {
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "runs/20260909_diverse/v1_walk_yuan91.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260909_diverse/v1_walk_yuan91.log"
+        },
+        {
+          "label": "v2_lns_cascade91",
+          "startup": "[     0.0s 08:35:33] worker start: engine=lns depth=None start=seeds/invmc_cascade_91_depth14.json seeds=[211, 212, 213] chunk=600s reseed=False",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "runs/20260909_diverse/v2_lns_cascade91.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260909_diverse/v2_lns_cascade91.log"
+        },
+        {
+          "label": "v3_alt_bp97",
+          "startup": "[     0.0s 08:35:33] worker start: engine=alt depth=None start=seeds/invmc_bp5ub2_97_depth22.json seeds=[221, 222, 223] chunk=600s reseed=False",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "runs/20260909_diverse/v3_alt_bp97.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            },
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "runs/20260909_diverse/v3_alt_bp97.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260909_diverse/v3_alt_bp97.log"
+        }
+      ],
+      "cpu_model": null,
+      "python_version": null,
+      "operating_system_version": null,
+      "compiler_version": null,
+      "python_hash_seed": null,
+      "rng_state_checkpoint": null
+    },
+    {
+      "run": "20260909_hunt88",
+      "stored_config": {
+        "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+        "min_depth": 5,
+        "oracle": "~/xor_ui/slp-invmc/tools/verify_slp_generic.py",
+        "mode": "fixed",
+        "worker_set": "hunt88",
+        "started_utc": "2026-09-09T12:13:31Z",
+        "cmd": "standalone workers launched by the coordinator session; see runs/20260909_hunt88/LAUNCHED.md",
+        "chunk_s": 600,
+        "walk_chunk_s": 300,
+        "reseed": true,
+        "knobs": {
+          "lns": {
+            "op_mix": {
+              "small": 0.35,
+              "coneinj": 0.45,
+              "biginj": 0.2
+            },
+            "kmax": 4,
+            "cone_lo": 2,
+            "cone_hi": 4,
+            "biginj_lo": 8,
+            "biginj_hi": 16,
+            "kshake": 12,
+            "nsamp": [
+              12,
+              12
+            ],
+            "hot_frac": 0.5,
+            "vic_cost": 3,
+            "peel_window": 6,
+            "accept": "sa",
+            "sa_T0": 1.2,
+            "sa_cool": 0.9997,
+            "sa_reheat": 4000,
+            "up_prob": 0.5,
+            "up_slack": 4,
+            "snapback": 12,
+            "harvest": true,
+            "cross_pollinate": false,
+            "pop_period_s": 120.0
+          },
+          "walk": {
+            "hub_move_p": 0.3,
+            "close_hamming": 8,
+            "plateau_slack_p": 0.15,
+            "harvest": true
+          }
+        },
+        "worker_knobs": {}
+      },
+      "workers": [
+        {
+          "label": "h1_d20_from88",
+          "startup": "[     0.0s 08:13:31] worker start: engine=lns depth=20 start=seeds/invmc_walk_88_depth33.json seeds=[101, 102, 103] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "runs/20260909_hunt88/h1_d20_from88.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260909_hunt88/h1_d20_from88.log"
+        },
+        {
+          "label": "h2_d16_from88",
+          "startup": "[     0.0s 08:13:31] worker start: engine=lns depth=16 start=seeds/invmc_walk_88_depth33.json seeds=[111, 112, 113] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "runs/20260909_hunt88/h2_d16_from88.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            }
+          },
+          "log": "pipeline/runs/20260909_hunt88/h2_d16_from88.log"
+        },
+        {
+          "label": "h3_alt_from88",
+          "startup": "[     0.0s 08:13:31] worker start: engine=alt depth=None start=seeds/invmc_walk_88_depth33.json seeds=[121, 122, 123] chunk=600s reseed=True",
+          "logged_effective_knobs": {
+            "lns": {
+              "accept": "sa",
+              "biginj_hi": 16,
+              "biginj_lo": 8,
+              "cone_hi": 4,
+              "cone_lo": 2,
+              "harvest_path": "runs/20260909_hunt88/h3_alt_from88.pop.jsonl",
+              "hot_frac": 0.5,
+              "kmax": 4,
+              "kshake": 12,
+              "nsamp": [
+                12,
+                12
+              ],
+              "op_mix": {
+                "biginj": 0.2,
+                "coneinj": 0.45,
+                "small": 0.35
+              },
+              "peel_window": 6,
+              "pop_period_s": 120.0,
+              "sa_T0": 1.2,
+              "sa_cool": 0.9997,
+              "sa_reheat": 4000,
+              "snapback": 12,
+              "up_prob": 0.5,
+              "up_slack": 4,
+              "vic_cost": 3
+            },
+            "walk": {
+              "close_hamming": 8,
+              "harvest_path": "runs/20260909_hunt88/h3_alt_from88.pop.jsonl",
+              "hub_move_p": 0.3,
+              "plateau_slack_p": 0.15
+            }
+          },
+          "log": "pipeline/runs/20260909_hunt88/h3_alt_from88.log"
+        }
+      ],
+      "cpu_model": null,
+      "python_version": null,
+      "operating_system_version": null,
+      "compiler_version": null,
+      "python_hash_seed": null,
+      "rng_state_checkpoint": null
+    }
+  ],
+  "notes": [
+    "Stored cascade config mode remains fixed because write_config serializes module MODE, while CLI dispatch selects cascade. Use command/logs to establish actual mode.",
+    "Current top-level seeds now include later banked files; archived code/seeds retain launch bytes.",
+    "Reseed=False in worker dictionaries disables coordinator offers; worker config still says reseed=True and workers may adopt preexisting reseed files.",
+    "Recorded RNG seed lists are not serialized PRNG states. Fixed seeds and time budgets do not guarantee identical trajectories under different scheduling or Python versions."
+  ],
+  "historical_environment_evidence": [
+    {
+      "scope": "pipeline run provenance",
+      "host": "host",
+      "python_executable": "~/anaconda3/bin/python3",
+      "python_version": null,
+      "cpu_model": null,
+      "os_version": null
+    },
+    {
+      "scope": "fleet launch note only",
+      "logical_or_physical_core_interpretation": null,
+      "recorded_description": "20-core box",
+      "worker_processes_at_full_ramp": 12,
+      "nice_level": 19,
+      "source": "pipeline/runs/LAUNCHED.md"
+    },
+    {
+      "scope": "referee_89 check only, not established for search workers",
+      "python_version": "3.10.18",
+      "source": "controls/REFEREE_89.txt:2"
+    }
+  ],
+  "e27_construction_parameters": "sources/invmixcolumns-e27-manifest.json#effective_parameters"
+}

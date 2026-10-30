@@ -1,0 +1,204 @@
+{
+  "benchmark": "aes_sbox_bottom",
+  "inputCount": 18,
+  "gates": [
+    [
+      3,
+      4
+    ],
+    [
+      18,
+      7
+    ],
+    [
+      6,
+      19
+    ],
+    [
+      15,
+      16
+    ],
+    [
+      10,
+      21
+    ],
+    [
+      9,
+      22
+    ],
+    [
+      20,
+      23
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      25,
+      18
+    ],
+    [
+      26,
+      23
+    ],
+    [
+      20,
+      27
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      29,
+      12
+    ],
+    [
+      8,
+      30
+    ],
+    [
+      19,
+      31
+    ],
+    [
+      32,
+      14
+    ],
+    [
+      20,
+      15
+    ],
+    [
+      33,
+      34
+    ],
+    [
+      35,
+      17
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      29,
+      37
+    ],
+    [
+      38,
+      27
+    ],
+    [
+      11,
+      22
+    ],
+    [
+      33,
+      40
+    ],
+    [
+      13,
+      21
+    ],
+    [
+      38,
+      42
+    ],
+    [
+      32,
+      43
+    ],
+    [
+      12,
+      43
+    ]
+  ],
+  "outputSignals": [
+    24,
+    28,
+    36,
+    27,
+    39,
+    41,
+    44,
+    45
+  ],
+  "gateCount": 28,
+  "depth": 7,
+  "affine_output_constants": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1
+  ],
+  "scope": "linear part only",
+  "provenance": {
+    "derivation": "XOR-only tail; XNOR constants factored into explicit target affine metadata; input-wire permutation only",
+    "sources": [
+      {
+        "source_path": "data/slp/aes/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp",
+        "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp",
+        "source_sha256": "6ba4f63b832a1f4520a76cab5680e673fdd744ad2651918882eeecff7957698a",
+        "source_cut_names": [
+          "t68",
+          "t69",
+          "t70",
+          "t71",
+          "t72",
+          "t73",
+          "t74",
+          "t75",
+          "t76",
+          "t77",
+          "t78",
+          "t79",
+          "t80",
+          "t81",
+          "t82",
+          "t83",
+          "t84",
+          "t85"
+        ],
+        "canonical_input_for_source_cut": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "full_gate_count": 113,
+        "affine_output_constants": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "full_aes_256_cases_checked": true,
+        "reattachment_256_cases_checked": true
+      }
+    ]
+  }
+}

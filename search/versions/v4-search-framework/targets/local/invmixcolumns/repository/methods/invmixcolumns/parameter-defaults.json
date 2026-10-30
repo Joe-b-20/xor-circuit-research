@@ -1,0 +1,538 @@
+{
+  "scope": "Four frozen Python pipeline modules; complete dictionary .get reads and function-signature defaults, including runtime state reads. Effective worker knobs are separately logged in effective-config.json. Algorithmic literal choices remain in exact source.",
+  "sites": [
+    {
+      "file": "pipeline/engines.py",
+      "line": 79,
+      "kind": "dictionary_fallback",
+      "receiver": "pos",
+      "key_expression": "B",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 217,
+      "kind": "dictionary_fallback",
+      "receiver": "pos",
+      "key_expression": "B",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 240,
+      "kind": "function_signature",
+      "function": "_closure_core",
+      "default_expressions": {
+        "stop_at_targets": "False"
+      }
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 380,
+      "kind": "harvester_class_constant",
+      "expression": "LIMIT = 300000"
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 382,
+      "kind": "function_signature",
+      "function": "__init__",
+      "default_expressions": {
+        "glob_pat": "None",
+        "period_s": "120.0"
+      }
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 410,
+      "kind": "dictionary_fallback",
+      "receiver": "self.offsets",
+      "key_expression": "path",
+      "default_expression": "0",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 428,
+      "kind": "function_signature",
+      "function": "_extract",
+      "default_expressions": {
+        "noise": "True"
+      }
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 439,
+      "kind": "dictionary_fallback",
+      "receiver": "pos",
+      "key_expression": "t",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 457,
+      "kind": "dictionary_fallback",
+      "receiver": "pos",
+      "key_expression": "B",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 509,
+      "kind": "dictionary_fallback",
+      "receiver": "pos",
+      "key_expression": "B",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 525,
+      "kind": "function_signature",
+      "function": "_inject",
+      "default_expressions": {
+        "per_victim": "6"
+      }
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 564,
+      "kind": "dictionary_fallback",
+      "receiver": "parents",
+      "key_expression": "u",
+      "default_expression": "(0, 0)",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 567,
+      "kind": "dictionary_fallback",
+      "receiver": "children",
+      "key_expression": "p",
+      "default_expression": "[]",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 569,
+      "kind": "dictionary_fallback",
+      "receiver": "children",
+      "key_expression": "u",
+      "default_expression": "[]",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 608,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'op_mix'",
+      "default_expression": "{'small': 0.35, 'coneinj': 0.45, 'biginj': 0.2}",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 610,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'cone_lo'",
+      "default_expression": "2",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 610,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'cone_hi'",
+      "default_expression": "4",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 611,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'biginj_lo'",
+      "default_expression": "8",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 611,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'biginj_hi'",
+      "default_expression": "16",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 612,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'hot_frac'",
+      "default_expression": "0.5",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 613,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'vic_cost'",
+      "default_expression": "3",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 614,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'peel_window'",
+      "default_expression": "6",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 615,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'accept'",
+      "default_expression": "'sa'",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 616,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'sa_T0'",
+      "default_expression": "1.2",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 616,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'sa_cool'",
+      "default_expression": "0.9997",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 617,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'sa_reheat'",
+      "default_expression": "4000",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 618,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'harvest_path'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 618,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'pop_glob'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 619,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'pop_period_s'",
+      "default_expression": "120.0",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 805,
+      "kind": "function_signature",
+      "function": "_repair",
+      "default_expressions": {
+        "avail": "None",
+        "forbid": "()"
+      }
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 905,
+      "kind": "dictionary_fallback",
+      "receiver": "k",
+      "key_expression": "'harvest_path'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/engines.py",
+      "line": 1003,
+      "kind": "function_signature",
+      "function": "lift_to_cap",
+      "default_expressions": {
+        "rng": "None"
+      }
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 51,
+      "kind": "function_signature",
+      "function": "_xtime",
+      "default_expressions": {
+        "modulus": "MODULUS"
+      }
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 56,
+      "kind": "function_signature",
+      "function": "_gf_mul",
+      "default_expressions": {
+        "modulus": "MODULUS"
+      }
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 99,
+      "kind": "dictionary_fallback",
+      "receiver": "_prof",
+      "key_expression": "_w",
+      "default_expression": "0",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 132,
+      "kind": "function_signature",
+      "function": "verify",
+      "default_expressions": {
+        "max_depth": "None"
+      }
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 203,
+      "kind": "function_signature",
+      "function": "oracle_cmd",
+      "default_expressions": {
+        "max_depth": "None"
+      }
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 210,
+      "kind": "function_signature",
+      "function": "oracle_verify",
+      "default_expressions": {
+        "max_depth": "None",
+        "timeout": "120"
+      }
+    },
+    {
+      "file": "pipeline/invmc_core.py",
+      "line": 239,
+      "kind": "function_signature",
+      "function": "save",
+      "default_expressions": {
+        "extra": "None"
+      }
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 244,
+      "kind": "dictionary_fallback",
+      "receiver": "state",
+      "key_expression": "'hits'",
+      "default_expression": "()",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 265,
+      "kind": "function_signature",
+      "function": "launch",
+      "default_expressions": {
+        "seeds": "None"
+      }
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 293,
+      "kind": "dictionary_fallback",
+      "receiver": "st",
+      "key_expression": "'best_gates'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 314,
+      "kind": "dictionary_fallback",
+      "receiver": "m",
+      "key_expression": "'reseed'",
+      "default_expression": "True",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 317,
+      "kind": "dictionary_fallback",
+      "receiver": "bests",
+      "key_expression": "lbl",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 324,
+      "kind": "dictionary_fallback",
+      "receiver": "state['offer']",
+      "key_expression": "lbl",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 377,
+      "kind": "dictionary_fallback",
+      "receiver": "w",
+      "key_expression": "'start'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 384,
+      "kind": "dictionary_fallback",
+      "receiver": "w",
+      "key_expression": "'knobs'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 411,
+      "kind": "dictionary_fallback",
+      "receiver": "w",
+      "key_expression": "'seeds'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 415,
+      "kind": "dictionary_fallback",
+      "receiver": "w",
+      "key_expression": "'reseed'",
+      "default_expression": "True",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/ladder_parallel.py",
+      "line": 481,
+      "kind": "dictionary_fallback",
+      "receiver": "st",
+      "key_expression": "'best_gates'",
+      "default_expression": "None",
+      "default_explicit": false
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 66,
+      "kind": "function_signature",
+      "function": "__init__",
+      "default_expressions": {
+        "engine": "'?'",
+        "seed_desc": "'?'",
+        "cmd": "''"
+      }
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 119,
+      "kind": "function_signature",
+      "function": "_record",
+      "default_expressions": {
+        "note": "''"
+      }
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 146,
+      "kind": "function_signature",
+      "function": "improve",
+      "default_expressions": {
+        "note": "''"
+      }
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 185,
+      "kind": "dictionary_fallback",
+      "receiver": "cfg.get('worker_knobs', {})",
+      "key_expression": "label",
+      "default_expression": "{}",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 185,
+      "kind": "dictionary_fallback",
+      "receiver": "cfg",
+      "key_expression": "'worker_knobs'",
+      "default_expression": "{}",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 187,
+      "kind": "dictionary_fallback",
+      "receiver": "over",
+      "key_expression": "engine",
+      "default_expression": "{}",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 228,
+      "kind": "dictionary_fallback",
+      "receiver": "cfg",
+      "key_expression": "'chunk_s'",
+      "default_expression": "600",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 229,
+      "kind": "dictionary_fallback",
+      "receiver": "cfg",
+      "key_expression": "'walk_chunk_s'",
+      "default_expression": "300",
+      "default_explicit": true
+    },
+    {
+      "file": "pipeline/worker.py",
+      "line": 230,
+      "kind": "dictionary_fallback",
+      "receiver": "cfg",
+      "key_expression": "'reseed'",
+      "default_expression": "True",
+      "default_explicit": true
+    }
+  ]
+}

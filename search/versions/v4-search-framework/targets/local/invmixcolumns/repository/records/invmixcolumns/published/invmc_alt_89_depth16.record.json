@@ -1,0 +1,332 @@
+{
+  "record_id": "invmc_alt_89_depth16",
+  "benchmark_id": "FIPS-197-upd1:invmixcolumns:one-column:lsb-first:xor2",
+  "benchmark": "invmixcolumns",
+  "benchmark_file": "benchmarks/invmixcolumns.json",
+  "matrix_sha256": "bea4bc43daff90bd4a19af7763c628f9d422dc795c178523c4fe873221f5b93b",
+  "matrix_encoding": "32 uint32 little-endian row masks, bit j = coefficient of input j",
+  "card_file": "records/invmixcolumns/published/invmc_alt_89_depth16.record.json",
+  "circuit": {
+    "json": "records/invmixcolumns/published/invmc_alt_89_depth16.json",
+    "json_sha256": "5a3dfc1a570343308aaa4e2328a63015d33df529a56a6adc8cbb843b2a8e0def",
+    "ncff": "records/invmixcolumns/published/invmc_alt_89_depth16.circ.txt",
+    "ncff_sha256": "2b1b3d19c40735e6b1a36ad3dcd1fb95ba8bf0de36a1285eb0cda15ced234bf5",
+    "export_rule": "Exact original gate order and declared output indices; commutative XOR ports preserved"
+  },
+  "verification": {
+    "verifier": "tools/circuit.py",
+    "verifier_sha256": "bbf639095642d5e888ec9cbbe0e86c77ccc15c8b68578476facfd9572d505816",
+    "verifier_version": "xor-circuit-lab-verifier-2",
+    "method": "Chronological GF(2) mask replay against AES rebuilt from GF(2^8); all 32 basis responses",
+    "metrics": {
+      "benchmark": "invmixcolumns",
+      "gates": 89,
+      "depth": 16,
+      "all_gate_depth": 16,
+      "equivalent": true,
+      "outputs_inferred": false,
+      "outputs": [
+        67,
+        104,
+        95,
+        108,
+        120,
+        75,
+        106,
+        114,
+        86,
+        91,
+        83,
+        102,
+        117,
+        88,
+        78,
+        119,
+        84,
+        97,
+        101,
+        113,
+        107,
+        81,
+        111,
+        110,
+        92,
+        109,
+        77,
+        118,
+        112,
+        98,
+        116,
+        115
+      ],
+      "dead_gates": 0,
+      "duplicate_values": 0,
+      "matrix_sha256": "bea4bc43daff90bd4a19af7763c628f9d422dc795c178523c4fe873221f5b93b",
+      "value_set_sha256": "fb60d7d66fcb57910a0007987678c0d9036d517c8effad410e1634a32cda9df0",
+      "dag_sha256": "b33a4d818278d4cc0df5e97066844cffaa577b55a0940aa50740f2cdde609a1e",
+      "level_profile": {
+        "1": 9,
+        "2": 7,
+        "3": 5,
+        "4": 4,
+        "5": 5,
+        "6": 5,
+        "7": 6,
+        "8": 6,
+        "9": 5,
+        "10": 6,
+        "11": 5,
+        "12": 6,
+        "13": 7,
+        "14": 5,
+        "15": 5,
+        "16": 3
+      }
+    },
+    "ncff_roundtrip_equivalent": true,
+    "ncff_roundtrip_exact_operand_pairs": true,
+    "ncff_roundtrip_exact_output_indices": true
+  },
+  "provenance_class": "OURS -- own lineage, no published material (seeded from this project's own bp5ub circuits or from nothing)",
+  "source_code": {
+    "relationship": "Individually linked producing/transformation code, with per-file evidence strength",
+    "files": [
+      {
+        "archive": "sources/invmixcolumns-source.tar.gz",
+        "archive_sha256": "047dde506ca496b74443ddcfcbd5b919de9c649618e84692938d77281e00c53e",
+        "member": "slp-invmc/pipeline/runs/20260908_135521/code/engines.py",
+        "sha256": "3c3dd9b53e086403c3e76db2e2a9c6722ec77a305f727986b24bb657c320a8c1",
+        "matching_source_commit": "11bf05c5e6dca4db484a9c73db2e7a5ef48c94c7",
+        "discovery_commit": null,
+        "assessment": "Recorded run-local code snapshot; matching committed bytes, not asserted discovery commit"
+      },
+      {
+        "archive": "sources/invmixcolumns-source.tar.gz",
+        "archive_sha256": "047dde506ca496b74443ddcfcbd5b919de9c649618e84692938d77281e00c53e",
+        "member": "slp-invmc/pipeline/runs/20260908_135521/code/worker.py",
+        "sha256": "84f2b730bc2564b5f99a4db3cd715e6755fa650dc15e9506f93e5c0c6144bf7b",
+        "matching_source_commit": "11bf05c5e6dca4db484a9c73db2e7a5ef48c94c7",
+        "discovery_commit": null,
+        "assessment": "Recorded run-local code snapshot; matching committed bytes, not asserted discovery commit"
+      },
+      {
+        "archive": "sources/invmixcolumns-source.tar.gz",
+        "archive_sha256": "047dde506ca496b74443ddcfcbd5b919de9c649618e84692938d77281e00c53e",
+        "member": "slp-invmc/pipeline/runs/20260908_135521/code/invmc_core.py",
+        "sha256": "da88961b058f0a08d9b176f13df94dd6690312aed9b6a34e3f1b06f8125f0302",
+        "matching_source_commit": "11bf05c5e6dca4db484a9c73db2e7a5ef48c94c7",
+        "discovery_commit": null,
+        "assessment": "Recorded run-local code snapshot; matching committed bytes, not asserted discovery commit"
+      },
+      {
+        "archive": "sources/invmixcolumns-source.tar.gz",
+        "archive_sha256": "047dde506ca496b74443ddcfcbd5b919de9c649618e84692938d77281e00c53e",
+        "member": "slp-invmc/pipeline/runs/20260908_135521/code/ladder_parallel.py",
+        "sha256": "65ea1ad21e8bc8e2a3394147ba1012c440617017de906820aac7f020ee63900d",
+        "matching_source_commit": "11bf05c5e6dca4db484a9c73db2e7a5ef48c94c7",
+        "discovery_commit": null,
+        "assessment": "Recorded run-local code snapshot; matching committed bytes, not asserted discovery commit"
+      }
+    ],
+    "discovery_commit": null,
+    "limits": [
+      "Source-byte matching commits are not discovery commits."
+    ]
+  },
+  "configuration": {
+    "effective": {
+      "path": "methods/invmixcolumns/effective-config.json",
+      "sha256": "54358067619cb2c0b3f2a85b463a722f6e93a3ed2cb8cdfd811fc8472a5bdf31",
+      "json_pointer": "/runs/1/workers/3"
+    },
+    "defaults": {
+      "path": "methods/invmixcolumns/parameter-defaults.json",
+      "sha256": "849818ee01960f3820be917b2e49be63ade2dfb685c8365298875d438f73b963",
+      "json_pointer": null
+    },
+    "saved_values": {
+      "lns": {
+        "accept": "sa",
+        "biginj_hi": 16,
+        "biginj_lo": 8,
+        "cone_hi": 4,
+        "cone_lo": 2,
+        "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a4_alt_113.pop.jsonl",
+        "hot_frac": 0.5,
+        "kmax": 4,
+        "kshake": 12,
+        "nsamp": [
+          12,
+          12
+        ],
+        "op_mix": {
+          "biginj": 0.2,
+          "coneinj": 0.45,
+          "small": 0.35
+        },
+        "peel_window": 6,
+        "pop_period_s": 120.0,
+        "sa_T0": 1.2,
+        "sa_cool": 0.9997,
+        "sa_reheat": 4000,
+        "snapback": 12,
+        "up_prob": 0.5,
+        "up_slack": 4,
+        "vic_cost": 3
+      },
+      "walk": {
+        "close_hamming": 8,
+        "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a4_alt_113.pop.jsonl",
+        "hub_move_p": 0.3,
+        "plateau_slack_p": 0.15
+      }
+    },
+    "limits": []
+  },
+  "randomness": {
+    "implementation": "random.Random (CPython MT19937); only seeds[0] is consumed by each lns/walk engine call",
+    "seed": [
+      31,
+      32,
+      33
+    ],
+    "state_at_discovery": null,
+    "checkpoint": null,
+    "limits": [
+      "Worker increments every listed seed by 1 after each chunk, reinitializes engine RNG at next chunk",
+      "Only the first seed in the triplet is consumed by each engine call; actual continued chunk seed/state at discovery not saved."
+    ]
+  },
+  "starting_point": {
+    "description": "invmc_bp5ub2_113_depth17.json",
+    "inputs": [
+      "evidence/invmixcolumns/starting-points/invmc_bp5ub2_113_depth17.json"
+    ],
+    "construction": null
+  },
+  "execution": {
+    "historical_command": "~/anaconda3/bin/python3 ~/xor_ui/slp-invmc/pipeline/worker.py a4_alt_113 alt none ~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_113_depth17.json ~/xor_ui/slp-invmc/pipeline/runs/20260908_135521 31,32,33",
+    "historical_command_evidence": "records/invmixcolumns/provenance.json",
+    "python_executable": "~/anaconda3/bin/python3",
+    "python_version": null,
+    "software_versions": null,
+    "compiler_version": null,
+    "compiler_flags": null,
+    "cpu_model": null,
+    "operating_system": null,
+    "python_hash_seed": null,
+    "worker_processes_in_run": 6,
+    "producing_worker_processes": 1,
+    "host": "host"
+  },
+  "discovery": {
+    "timestamp": "2026-09-08T17:59:47Z",
+    "worker": "a4_alt_113",
+    "event": "depth-tiebreak it=147935",
+    "evidence": [
+      "records/invmixcolumns/provenance.json",
+      "evidence/invmixcolumns/original/pipeline/runs/20260908_135521/a4_alt_113.log",
+      "evidence/invmixcolumns/original/pipeline/runs/20260908_135521/a4_alt_113_best.json",
+      "evidence/invmixcolumns/original/pipeline/runs/20260908_135521/a4_alt_113_status.json"
+    ]
+  },
+  "original_provenance": {
+    "record": "records/invmixcolumns/published/invmc_alt_89_depth16.json",
+    "source_path": "circuits/invmc_alt_89_depth16.json",
+    "source_sha256": "5a3dfc1a570343308aaa4e2328a63015d33df529a56a6adc8cbb843b2a8e0def",
+    "source_head_commit": "7e74b71020d41c7058e9f808db35b26c255ee65c",
+    "last_commit_affecting_path": "de03d8616b74f847766874725e03afcaa58f85fc",
+    "discovery_commit": null,
+    "discovery_commit_note": "A commit records bytes; no discovery commit is inferred from file history. See original provenance and logs.",
+    "original_provenance": {
+      "engine": "alt",
+      "seed": "invmc_bp5ub2_113_depth17.json",
+      "worker": "a4_alt_113",
+      "worker_pid": 524641,
+      "host": "host",
+      "depth_cap": null,
+      "depth": 16,
+      "gates": 89,
+      "cpu_s": 265.74,
+      "wall_s": 265.7,
+      "note": "depth-tiebreak it=147935",
+      "run_dir": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521",
+      "cmd": "~/anaconda3/bin/python3 ~/xor_ui/slp-invmc/pipeline/worker.py a4_alt_113 alt none ~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_113_depth17.json ~/xor_ui/slp-invmc/pipeline/runs/20260908_135521 31,32,33",
+      "oracle": "VERDICT: VALID aes_inv_mixcolumns circuit",
+      "oracle_cmd": "~/anaconda3/bin/python3 ~/xor_ui/slp-invmc/tools/verify_slp_generic.py --target ~/xor_ui/slp-invmc/spec/invmc_matrix.json /tmp/oracle_tamwhmri.json",
+      "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+      "dead_gate_stripped": true,
+      "produced_utc": "2026-09-08T17:59:47Z",
+      "class": "OURS -- own lineage, no published material (seeded from this project's own bp5ub circuits or from nothing)",
+      "run": "pipeline/runs/20260908_135521 (FIXED setA)",
+      "launch_cmd": "cd pipeline && setsid nohup nice -n 19 python3 ladder_parallel.py --mode fixed --workers setA > runs/launch_setA.out 2>&1 < /dev/null &",
+      "oracle_cmd_reproducible": "nice -n 19 python3 tools/verify_slp_generic.py --target spec/invmc_matrix.json circuits/invmc_alt_89_depth16.json",
+      "oracle_stdout": [
+        "target=aes_inv_mixcolumns inputs=32 outputs=32 rank=32 density=472 rows_sha256=b9c0cd9a5b8e7add",
+        "target rebuilt: from GF(2^8)/0x11B column ['0xe', '0xb', '0xd', '0x9']",
+        "gates=89 depth=16 outputs_built=32/32 problems=0",
+        "VERDICT: VALID aes_inv_mixcolumns circuit"
+      ],
+      "oracle_exit": 0,
+      "depth_schedule_cmd": "nice -n 19 python3 tools/depth_schedule.py --target spec/invmc_matrix.json circuits/invmc_alt_89_depth16.json",
+      "depth_schedule_stdout": [
+        "circuit=circuits/invmc_alt_89_depth16.json.raw",
+        "target=aes_inv_mixcolumns inputs=32",
+        "(a) depth AS TRANSCRIBED           = 16   [over all 89 gates]",
+        "(a') depth as transcribed, outputs = 16   [longest input-to-output path]",
+        "    gates=89  distinct gate masks=89  duplicate-mask gates=0  dead gates=0",
+        "(b) ASAP least-fixpoint MIN DEPTH  = 16   [same mask set, 89 gates]"
+      ],
+      "banked_note": "FIRST verified 89-gate InvMixColumns circuit at depth 16. Found by a4_alt_113 at 265.74 CPU-s: NEW BEST 89@17 at it=147913, then 89@16 twenty-two iterations later through the D2 depth tie-break. Dominates every previously known point except Paar1 164@9. A DISTINCT 89-gate family from circuits/invmc_walk_89_depth25.json (Jaccard 0.299 on the mask sets).",
+      "banked_utc": "2026-09-08T18:36:41Z",
+      "fleet_note": "snapshot taken at the 40-minute mark; the fleet was left running, so the worker's own _best.json may improve after this snapshot",
+      "outputs": {
+        "0": 67,
+        "1": 104,
+        "2": 95,
+        "3": 108,
+        "4": 120,
+        "5": 75,
+        "6": 106,
+        "7": 114,
+        "8": 86,
+        "9": 91,
+        "10": 83,
+        "11": 102,
+        "12": 117,
+        "13": 88,
+        "14": 78,
+        "15": 119,
+        "16": 84,
+        "17": 97,
+        "18": 101,
+        "19": 113,
+        "20": 107,
+        "21": 81,
+        "22": 111,
+        "23": 110,
+        "24": 92,
+        "25": 109,
+        "26": 77,
+        "27": 118,
+        "28": 112,
+        "29": 98,
+        "30": 116,
+        "31": 115
+      },
+      "outputs_note": "output bit r (row 8*byte+bit) is held by signal s (gate s-32); computed by the coordinator 2026-09-08 by mask matching against spec/invmc_target_masks.json",
+      "referee": "RECORD CONFIRMED WITH CORRECTIONS — referee_89/REFEREE_REPORT.md (Fable, shared-nothing, FIPS-197 App. B/C + openssl cross-check; 0/89 single and 0/3,916 pair removals; not in-place realisable)"
+    }
+  },
+  "historical_claims": {
+    "gateCount": 89,
+    "depth": 16,
+    "model": null
+  },
+  "limits": [],
+  "source_provenance_card": {
+    "path": "records/invmixcolumns/provenance.json",
+    "sha256": "112ea70af9e707ea2f1c75e9071396011a94acaf76d79c26415c118466a3b57e",
+    "json_pointer": "/records/0"
+  }
+}

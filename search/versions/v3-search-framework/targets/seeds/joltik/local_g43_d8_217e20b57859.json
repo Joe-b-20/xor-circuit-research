@@ -1,0 +1,272 @@
+{
+  "affine_output_constants": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "benchmark": "joltik",
+  "depth": 8,
+  "gateCount": 43,
+  "gates": [
+    [
+      1,
+      7
+    ],
+    [
+      4,
+      16
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      18,
+      12
+    ],
+    [
+      17,
+      19
+    ],
+    [
+      1,
+      20
+    ],
+    [
+      2,
+      21
+    ],
+    [
+      17,
+      22
+    ],
+    [
+      8,
+      12
+    ],
+    [
+      16,
+      24
+    ],
+    [
+      9,
+      25
+    ],
+    [
+      21,
+      26
+    ],
+    [
+      10,
+      13
+    ],
+    [
+      27,
+      28
+    ],
+    [
+      23,
+      29
+    ],
+    [
+      6,
+      10
+    ],
+    [
+      16,
+      31
+    ],
+    [
+      2,
+      14
+    ],
+    [
+      0,
+      33
+    ],
+    [
+      17,
+      34
+    ],
+    [
+      32,
+      35
+    ],
+    [
+      30,
+      36
+    ],
+    [
+      32,
+      15
+    ],
+    [
+      18,
+      11
+    ],
+    [
+      39,
+      22
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      41,
+      24
+    ],
+    [
+      42,
+      13
+    ],
+    [
+      41,
+      33
+    ],
+    [
+      11,
+      44
+    ],
+    [
+      44,
+      36
+    ],
+    [
+      20,
+      38
+    ],
+    [
+      42,
+      47
+    ],
+    [
+      46,
+      48
+    ],
+    [
+      41,
+      23
+    ],
+    [
+      25,
+      35
+    ],
+    [
+      50,
+      51
+    ],
+    [
+      27,
+      49
+    ],
+    [
+      35,
+      53
+    ],
+    [
+      39,
+      28
+    ],
+    [
+      46,
+      55
+    ],
+    [
+      46,
+      23
+    ],
+    [
+      40,
+      51
+    ]
+  ],
+  "inputCount": 16,
+  "outputSignals": [
+    37,
+    38,
+    40,
+    43,
+    30,
+    45,
+    49,
+    26,
+    52,
+    54,
+    47,
+    56,
+    57,
+    55,
+    58,
+    53
+  ],
+  "scope": "linear map",
+  "provenance": {
+    "source_kind": "local search record; not NIST",
+    "origin_manifest": "targets/local/joltik_g43_d8_217e20b57859/origin.json",
+    "origin_manifest_sha256": "52889f5359d9820a53ad0e2063b984bdfa0a79b80fad0c68342cc5f006f56612",
+    "source_record_sha256": "abfb282e36bd41809f6bac51c7011eae2ee8247965086d007b5fbc7af913cebb",
+    "source_run_id": "e6717aeed5bb40a1a8778a4c511b6c83",
+    "source_commit": "be9ad9a315137a956ba17cb46dad3113e732549d",
+    "source_archive_sha256": "078a05f865cf8c041ae08a35c09b25080abfd1f31c71a999dcedac71867d3e9b",
+    "original_metadata": {
+      "affine_output_constants": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "chunk": 4856,
+      "chunk_start_state_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.rng-start.json",
+      "config_sha256": "b93308b551a7c850434f289f023325a9c1f5bea8f4c3e7fda2f34b295067fa10",
+      "engine": "v2-walk",
+      "engine_metrics": {
+        "depth": 8,
+        "engine": "v2-walk",
+        "gate_count": 43,
+        "iteration": 464457
+      },
+      "engine_seed": 40413100,
+      "imported_seed": null,
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "note": "v2-walk proposal",
+      "origin": "new_search_record",
+      "rng_evidence": "Chunk-start state is saved beside this record; callback-time RNG state is not exposed; endpoint states are saved when available",
+      "rng_state_at_discovery": null,
+      "run_id": "e6717aeed5bb40a1a8778a4c511b6c83",
+      "saved_utc": "2026-10-26T06:20:23.119+00:00",
+      "shared_offer": null,
+      "source_manifest_sha256": "b5835018014c260d2fefefce57a4834e4263c5ef3cfba24cba3f737d2532a26e",
+      "target_id": "joltik",
+      "verification_scope": "exact linear target matrix; affine output complements are excluded from XOR search",
+      "verifier_sha256": "bc310de84b41bf51422ca251b4723029b91c7d23bfc0deb72c0ccbd69edb8fda",
+      "verifier_version": "xor-linear-target-verifier-1",
+      "worker": "joltik-05"
+    }
+  }
+}

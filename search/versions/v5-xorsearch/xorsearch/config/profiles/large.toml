@@ -1,0 +1,17 @@
+# large profile -- 64+ inputs, hundreds to a thousand gates, campaigns of hours to days.
+# Checkpoints and pool files are bigger, so write them less often; keep fewer DAGs per point.
+# Integration: add move/engine values here (larger work budgets, longer stall timers).
+
+[campaign]
+collect_seconds = 5.0
+diversity_seconds = 300.0
+stop_grace_seconds = 60.0   # a large checkpoint can take a few seconds to serialise
+
+[worker]
+checkpoint_seconds = 300.0
+status_seconds = 5.0
+records_per_point = 16
+
+[sharing]
+pool_per_point = 32
+refresh_seconds = 15.0

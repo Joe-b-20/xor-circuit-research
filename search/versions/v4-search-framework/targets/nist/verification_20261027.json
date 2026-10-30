@@ -1,0 +1,84 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-10-27T14:34:41.950943+00:00",
+  "nist_commit": "8366158a4324ef902ce740f29ddc9f7ebb1018b2",
+  "nist_default_branch": "master",
+  "official_source_files": 67,
+  "verifier_version": "xor-linear-target-verifier-1",
+  "verifier_source_sha256": "e635d3415351ed39fb228029e4cae1aa66b28412439211d22bf19c53cdd45d1e",
+  "target_tests_passed": 13,
+  "built_in_seeds": [
+    {
+      "target": "aes_sbox_bottom",
+      "kind": "built-in NIST-derived seed",
+      "path": "targets/seeds/aes_sbox_bottom/aes_bottom_g28_d5_686060e01e81.json",
+      "sha256": "124262a3ce809a8b99fc06775a0637e9e9c6be906e47c46082b1075a34256ba4",
+      "gate_count": 28,
+      "depth": 5,
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "circuit_sha256": "686060e01e81961ca9be32290015b9e16be8cade1775a7013a46b0c0cc376bfe",
+      "dag_sha256": "cd3797aae418da07a28692b97746e18d687d25fbbb058b296dd938889f6dbe54",
+      "equivalent": true
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "kind": "built-in NIST-derived seed",
+      "path": "targets/seeds/aes_sbox_bottom/aes_bottom_g38_d4_ea3d7018e996.json",
+      "sha256": "059499b92532010839a5913d858748977907c16609e359444010d39952562f02",
+      "gate_count": 38,
+      "depth": 4,
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "circuit_sha256": "ea3d7018e9961471470e8cf40e20be3471232e39422549f971e96f1768b9c7a5",
+      "dag_sha256": "3f439dc3b8e8df7231bd6a5f3a7d077f4082a8163604f748ab1c0ed0193777ab",
+      "equivalent": true
+    },
+    {
+      "target": "fox_mu4",
+      "kind": "built-in NIST-derived seed",
+      "path": "targets/seeds/fox_mu4/fox_mu4_g130_d13.json",
+      "sha256": "a21d2f6f85f15e5062d3a9c92ddf7c08d7739194e3eac652c9816a7cf27f25c5",
+      "gate_count": 130,
+      "depth": 13,
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "circuit_sha256": "dda783815cb2e91154af55f88fe613476fcf40a90dbf3946d01fd3bc2cd3fd7f",
+      "dag_sha256": "b42bd94b64405521f558f45560110569bf8242629b022dfa9366ec3a9002a360",
+      "equivalent": true
+    },
+    {
+      "target": "joltik",
+      "kind": "built-in NIST-derived seed",
+      "path": "targets/seeds/joltik/joltik_g44_d7.json",
+      "sha256": "0b044f7d0226fdfb48c1189d26ca98a5bb093d1e0e7515e4fc548536b7269f11",
+      "gate_count": 44,
+      "depth": 7,
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "circuit_sha256": "6bd3bc132e0aa41d9840384df3e64012d37e5bf6ae32a6bb8e6b12866d05770a",
+      "dag_sha256": "512791b619276e2a2bc6695018e8dd713e5a8ee8219f876d243446d141fadcd3",
+      "equivalent": true
+    },
+    {
+      "target": "fox_mu8",
+      "kind": "built-in NIST-derived seed",
+      "path": "targets/seeds/fox_mu8/fox_mu8_g540_d14.json",
+      "sha256": "c5b91575ad3f7fb465b069ebeaefe79605a1e0cc7447fbbdd9350536895385a0",
+      "gate_count": 540,
+      "depth": 14,
+      "matrix_sha256": "ac1e3d1f408c638f757abfa6667514ded6435f97c80985ba5d4ac682ef562028",
+      "circuit_sha256": "8db5ecdc7a565dead4b4e53f5f863213eb906dab499a73374590aaff493b09f2",
+      "dag_sha256": "b7a63402e2d3843cb22753383d7632384e506c4e50d86f1408e672a6b68cdf6b",
+      "equivalent": true
+    }
+  ],
+  "explicit_local_seed": {
+    "path": "targets/seeds/joltik/local_g43_d8_217e20b57859.json",
+    "kind": "local search record, not NIST",
+    "sha256": "783a48c54c86cf2b95962d42321826fb0d0d7ef7e2ff7501109e38b4b99f99bc",
+    "gate_count": 43,
+    "depth": 8,
+    "dead_gates": 0,
+    "equivalent": true,
+    "circuit_sha256": "217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355",
+    "origin_manifest": "targets/local/joltik_g43_d8_217e20b57859/origin.json",
+    "origin_manifest_sha256": "52889f5359d9820a53ad0e2063b984bdfa0a79b80fad0c68342cc5f006f56612"
+  }
+}

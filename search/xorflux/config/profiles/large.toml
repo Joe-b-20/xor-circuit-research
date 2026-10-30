@@ -1,0 +1,27 @@
+# large profile -- 64+ inputs, 500+ gates (FOX Mu8: 64x64, ~540 gates), campaigns of hours to days.
+#
+# The search needs no special values: restart timers already scale with circuit size
+# (restart.size_ref / size_exponent: at 540 gates a chain gets 5.4x the stall and root time), and
+# the pair-sum counter switches itself off above engine.pairsums_max_values.  What changes is
+# I/O: checkpoints, pool files and dossiers are bigger, and a multi-day campaign should survive
+# a rare worker crash instead of stopping.  Use:  profiles = ["default", "large"]
+
+[campaign]
+collect_seconds = 5.0
+diversity_seconds = 300.0
+stop_grace_seconds = 60.0       # a large checkpoint can take a few seconds to serialise
+on_worker_failure = "restart"   # restart a crashed worker from its checkpoint (records are kept)
+max_worker_restarts = 3         # ... then stop: a crash that repeats is a bug to look at
+
+[worker]
+checkpoint_seconds = 300.0
+status_seconds = 5.0
+records_per_point = 16
+
+[sharing]
+pool_per_point = 32
+
+[telemetry]
+epoch_seconds = 300.0           # 288 epoch lines per worker and day instead of 1,440
+dossier_detail = "standard"     # drop values_before (recoverable from values_after + symdiff):
+                                # one of the two ~540-value lists less in every dossier

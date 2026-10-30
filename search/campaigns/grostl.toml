@@ -1,0 +1,53 @@
+# Grøstl: 1 h on 20 workers under real depth caps 5, 6, 7, 12 and uncapped (minimum depth 5), starting
+# from the NIST circuit (410 gates, depth 12) in search/seeds/grostl/. Settings of the
+# 2026-10-30 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/grostl.toml --out search/runs/grostl --detach
+#
+# Relative paths in this file are relative to this file.
+[campaign]
+name = "nist-grostl"
+seed = 20261032
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "cap5"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["../seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "cap6"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 6
+seeds = ["../seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "cap7"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 7
+seeds = ["../seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "cap12"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 12
+seeds = ["../seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "free"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/grostl/nist-g410-d12.json"]

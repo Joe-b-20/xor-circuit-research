@@ -1,0 +1,42 @@
+[campaign]
+name = "rerun-joltik"
+description = "cleaned xorsearch, 1 h on 20 workers; compare with 2026-10-28"
+seed = 20265029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[44, 4], [43, 6], [42, 9]]
+
+[[workers]]
+name = "cap5"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = 5
+seeds = ["~/xor-circuit-lab/search/targets/seeds/joltik/joltik_g44_d7.json"]
+
+[[workers]]
+name = "cap8"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = 8
+seeds = ["~/xor-circuit-lab/search/targets/seeds/joltik/joltik_g44_d7.json"]
+
+[[workers]]
+name = "cap9"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = 9
+seeds = ["~/xor-circuit-lab/search/targets/seeds/joltik/joltik_g44_d7.json"]
+
+[[workers]]
+name = "free"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["~/xor-circuit-lab/search/targets/seeds/joltik/joltik_g44_d7.json"]

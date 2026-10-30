@@ -1,0 +1,105 @@
+AES forward MixColumns, unrestricted two-input XOR circuits at depth <=3
+Exact pair/parent tradeoff, 2026-10-17
+
+RESULT
+
+Every minimum circuit has the previously proved lossless normal form:
+P pair helpers, T triple helpers, Q quartet helpers, and 32 output gates.
+Write H=P+T+Q and G=32+H. Arbitrary fan-out, sharing, and cancellation remain
+allowed. No byte symmetry of an actual circuit is assumed.
+
+The new integer inequality is
+
+                    3P + 4T + 4Q >= 214.                 (1)
+
+Consequently, a circuit with at least 27 normalized pairs needs at least
+93 total gates. Together with the already proved P>=26, any 92-gate
+normalized circuit must have exactly
+
+                         P=26, T+Q=34.                  (2)
+
+This does NOT rule out (2). The verified total interval remains 92<=D3<=97.
+No circuit with 96 or fewer gates was obtained by this calculation.
+
+PROOF OF (1)
+
+Use precisely the rows and finite premises of the independently verified
+certificate_depth3_linked_92.json. There are 16,868 valid rows A v >= b,
+61,673 variables, and bounds 0<=v_j<=1. The original helper objective is
+c v=H. All actual normalized circuits have integral v, with one actual
+complete recipe chosen for each output.
+
+The existing certificate has denominator D=10^16, nonnegative integer
+row multipliers u_i, and exact bounded-variable correction
+
+  R = sum_j max(0, (A^T u)_j - D*c_j).
+
+It proves H >= (u*b-R)/D = 597778328006951391/10^16.
+
+Row 15255 is the pair-count inequality P>=26. Its multiplier is
+
+                         lambda = 2499973710473077.
+
+Multiply all row multipliers by four and set the multiplier of row 15255
+to zero. The resulting multipliers are still nonnegative. Use the new
+integer objective c'v=3P+4T+4Q: coefficient 3 on pair helpers, 4 on triple
+and quartet helpers, and 0 on recipe-selection variables. Recompute the
+bounded-variable correction against this objective, using exact integers.
+The independently regenerated calculation gives
+
+  raw numerator:         2131495970626858740
+  correction numerator:      432069609681296
+  corrected numerator:   2131063901017177444
+  denominator:                    10^16.
+
+Therefore
+
+  3P+4T+4Q >= 213.1063901017177444 > 213.
+
+The left side is an integer, proving (1).
+
+The correction is essential: it is subtracted in full, with no appeal to
+floating-point feasibility or an optimizer's reported status. No additional
+finite-enumeration result is needed beyond the prior verified certificate.
+
+PROOF OF THE 92-GATE REDUCTION
+
+Since 3P+4T+4Q=4H-P, (1) gives 4H-P>=214. If G=92 then H=60, so
+P<=240-214=26. The established pair lower bound P>=26 forces P=26,
+and hence T+Q=34.
+
+An additional unrounded consequence of the same source multipliers is
+
+  H >= 59.7778328006951391 + 0.2499973710473077*(P-26).
+
+For P>=27 its right side is at least 60.0278301717424468. Thus H>=61
+by integrality, giving G>=93 directly as well.
+
+PAIR-GRAPH CONSEQUENCE
+
+The pair graph has 32 vertices, P edges, c components, and cycle rank
+beta=P-32+c. The existing odd/even argument proves c<=8. Under (2),
+nonnegative beta therefore leaves exactly these cases:
+
+                   (c,beta)=(6,0), (7,1), or (8,2).
+
+They are necessary alternatives, not exclusions. This checkpoint does not
+assume that all 26-pair circuits have the partition of the known 100-gate
+26-pair example.
+
+CHECK
+
+  python verify_pair_tradeoff.py
+
+This independently regenerates all rows, verifies the original exact
+arithmetic, identifies the pair row, recomputes the new objective and its
+full correction, and checks that the result exceeds 213. The result is
+pair_tradeoff_checks.json, status PASS.
+
+To additionally rerun every previously verified finite row-validity premise:
+
+  python verify_pair_tradeoff.py --full
+
+The proof is computer-assisted, not a proof-assistant formalization. Its new
+step is exact reweighting and integer rounding, rather than a new numerical
+optimization assertion.

@@ -1,0 +1,145 @@
+{
+  "schema": 1,
+  "discovery_version_claim": false,
+  "modules": [
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/deadline_search.py",
+      "source_sha256": "b1bd6e6e4ea80a0a40ceacca2727d4772b36ab7e0ea08b29c36ca26b51c24fb4",
+      "adapted": "search/engines/vendor_v2/deadline_search.py",
+      "adapted_sha256": "530290eac002e3b02fe27ed16ae701263540747b474ba47eef0ad3f31b7a8637",
+      "changes": [
+        "64-bit mask validation; backward-compatible 32-input default retained but adapters always pass all target inputs.",
+        "Optional depth-first objective and hard gate-budget preference; depth-mode pruning permits larger feasible candidates."
+      ],
+      "prior_adapted_sha256_32bit": "b1bd6e6e4ea80a0a40ceacca2727d4772b36ab7e0ea08b29c36ca26b51c24fb4"
+    },
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/structured_search.py",
+      "source_sha256": "d7dc69f883e98859bd590027d18badc54bd688d53b350a6c5696789eb206bc59",
+      "adapted": "search/engines/vendor_v2/structured_search.py",
+      "adapted_sha256": "9208725d95f76dcb7cfb4471dd32e6b6335179bcb09c4f7c133e4292a5b17d86",
+      "changes": [
+        "Package-relative dependency; no MixColumns core globals; explicit target/input arguments.",
+        "64-bit translation masks and support bound.",
+        "Objective-aware completion/best selection and source/proposal depth caps separated; depth improvements are not discarded for gate-only improvements."
+      ],
+      "prior_adapted_sha256_32bit": "171b048f226e25aa3a20f8b7f46482cc134a381a0254ba281ff001384f6cf15c"
+    },
+    {
+      "source": "sources/mixcolumns-v3-as-run/pipeline/deadline_search.py",
+      "source_sha256": "1eb0a0b654d7bb91dd2cbe85655d3d461263e5cbbdaf65f6e708d0c99510b4e0",
+      "adapted": "search/engines/vendor_v3/deadline_search.py",
+      "adapted_sha256": "d7bcaf55db77a6b99d23d27ebe6463c0e3c0319b76e2e632609a16c47a8f4ebb",
+      "changes": [
+        "64-bit mask validation; backward-compatible 32-input default retained but adapters always pass all target inputs.",
+        "Optional depth-first objective and hard gate-budget preference; depth-mode pruning permits larger feasible candidates."
+      ],
+      "prior_adapted_sha256_32bit": "1eb0a0b654d7bb91dd2cbe85655d3d461263e5cbbdaf65f6e708d0c99510b4e0"
+    },
+    {
+      "source": "sources/mixcolumns-v3-as-run/pipeline/advanced_moves.py",
+      "source_sha256": "02b14bc2e46ccdb2eb02b91339db0f1bb86bef8d81c5ecaa113c7ac94158f4b2",
+      "adapted": "search/engines/vendor_v3/advanced_moves.py",
+      "adapted_sha256": "081091cf484aff6fb8e467b906ad205ed6770afeab1f2e1d19eceb2704366505",
+      "changes": [
+        "Optional should_stop hook in budget checks.",
+        "64-input replay/masks and support bound.",
+        "Objective-aware candidate selection with hard budget preference; source depth cap separated from shallower proposal cap."
+      ],
+      "prior_adapted_sha256_32bit": "05d5ad2beb3e9254f5a2bf4d2f393da3c488d6063ecb4fc00af017202fe7eb4d"
+    },
+    {
+      "source": "sources/mixcolumns-v3-as-run/pipeline/pair_bank_search.py",
+      "source_sha256": "3b09f4f32132eb78dbba6b38859caaaec5fd6686dd7998b57dbbc1f395a0576f",
+      "adapted": "search/engines/vendor_v3/pair_bank_search.py",
+      "adapted_sha256": "db0b9c3dd6bf289a8b42f0c114bc3916a5501027de8b0eb04b85f958e666d312",
+      "changes": [
+        "Package-relative deadline import; generic mask/parent helpers support bit63 and up to64inputs.",
+        "Adapter disables depth-three catalogue engine above32inputs to bound setup; original unused AES-specific driver and guarded32-bit rotation remain unused."
+      ],
+      "prior_adapted_sha256_32bit": "442de8a4aa53eafb6a4e65a1e12c1ca3cf2dd0748e550cbda64a4be14c4d1b89"
+    }
+  ],
+  "port_references": [
+    {
+      "source": "sources/mixcolumns-search/campaign_87/hunt87/constructors.py",
+      "sha256": "5561801b69466a76be44bc7af712d1bea1d0253e61889e78162aaaaa3201eb8f",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "balanced, Paar and weight-descent BP-style constructors"
+    },
+    {
+      "source": "sources/mixcolumns-search/campaign_87/hunt87/exact_window.py",
+      "sha256": "9af714b775a4cc30da5de38db4e803c7904d32ea8f9a9f5172eb340f70caa88d",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "first-unlock window search"
+    },
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/engines_baseline.py",
+      "sha256": "9bd7b49f24da1f483985bb1af5877a25695e5c6e9c2d19319b604286852f2fbe",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "historical baseline walk/LNS/partition annealer"
+    },
+    {
+      "source": "sources/mixcolumns-v2-as-run/pipeline/engines.py",
+      "sha256": "d24a9714428bace75840a51077bef5aff414d9d74c703320a16a933800bc5d97",
+      "usage": "mechanism reference for new generic port; not executed",
+      "mechanism": "v2 upgrade composition and persistent state"
+    },
+    {
+      "archive": "sources/invmixcolumns-source.tar.gz",
+      "member": "slp-invmc/pipeline/engines.py",
+      "sha256": "3c3dd9b53e086403c3e76db2e2a9c6722ec77a305f727986b24bb657c320a8c1",
+      "usage": "mechanism reference for new generic port; not compiled/executed"
+    },
+    {
+      "archive": "sources/invmixcolumns-source.tar.gz",
+      "member": "slp-invmc/historical/d4cd6fa4c652fb9e508cb010222fa62926704450/bp/bp5ub.c",
+      "sha256": "5dddf696f9dd3c3469276e07ca30b2619417c319e750c42a0853b54fa03868a5",
+      "usage": "mechanism reference for new generic port; not compiled/executed",
+      "review_copy": "search/engines/reference/inverse-bp5ub.c"
+    }
+  ],
+  "module_default_sources": [
+    {
+      "module": "search/engines/vendor_v2/deadline_search.py",
+      "sha256": "530290eac002e3b02fe27ed16ae701263540747b474ba47eef0ad3f31b7a8637",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v2/structured_search.py",
+      "sha256": "9208725d95f76dcb7cfb4471dd32e6b6335179bcb09c4f7c133e4292a5b17d86",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v3/deadline_search.py",
+      "sha256": "d7bcaf55db77a6b99d23d27ebe6463c0e3c0319b76e2e632609a16c47a8f4ebb",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v3/advanced_moves.py",
+      "sha256": "081091cf484aff6fb8e467b906ad205ed6770afeab1f2e1d19eceb2704366505",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    },
+    {
+      "module": "search/engines/vendor_v3/pair_bank_search.py",
+      "sha256": "db0b9c3dd6bf289a8b42f0c114bc3916a5501027de8b0eb04b85f958e666d312",
+      "defaults": "DEFAULT_KNOBS plus function signature defaults; effective_knobs resolves all adapter-exposed controls"
+    }
+  ],
+  "not_equivalent_to_historical_campaigns": "Ports change sampling, dimension handling, stop budgets and scheduling. Reused generic proposal kernels preserve their scoped mechanisms; no original-discovery execution claim.",
+  "dimension_objective_revision": {
+    "date": "2026-10-27",
+    "maximum_inputs": 64,
+    "arithmetic": "Python exact integers; no32-bit truncation",
+    "bank_limit_default": 1024,
+    "constructor_gate_limit_default": 1024,
+    "compatibility_exceptions": [
+      "32-input implicit kernel defaults retained only for backward compatibility; all adapter calls pass target dimensions explicitly.",
+      "fixed_parent_key byte_rotation is guarded to32inputs and never requested by generic adapters.",
+      "Original engine_pairbank3 driver is not invoked; all depth-three catalogue adapters excluded above32inputs.",
+      "advanced constructor_max_new=32 is a local proposal budget, not mask width; it remains explicitly recorded."
+    ],
+    "depth_objective": "Best and callback candidates obey hard gate_limit and lexicographic depth/gates; internal trajectory may use gate_limit+max_uphill_gates.",
+    "preserved_runs": "Existing run source archives and configurations were not modified."
+  }
+}

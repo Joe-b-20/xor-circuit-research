@@ -1,0 +1,180 @@
+AES FORWARD MIXCOLUMNS: AT LEAST 93 XOR GATES AT DEPTH THREE
+2026-10-17
+
+THEOREM AND SCOPE
+
+Let D3 be the minimum number of two-input XOR gates computing the 32-bit
+AES forward MixColumns map, with raw inputs at depth zero and all gates at
+depth at most three. Arbitrary sharing, fan-out, cancellation, and asymmetric
+circuits are permitted. Then
+
+                            93 <= D3 <= 97.
+
+The upper bound is the actual circuit control_97.json, rechecked on all 32
+output masks and all gate depths. The lower bound is computer-assisted.
+This does not determine which of 93, 94, 95, 96, or 97 is optimal.
+
+1. THE LOSSLESS REDUCTION
+
+The earlier normal-form argument removes redundant gates and represents a
+minimum circuit by P distinct pair helpers, T triple helpers, Q quartet
+helpers, and 32 output gates. Output rows have weight five or seven, so none
+can be an internal gate of depth at most two. Put H=P+T+Q and G=32+H. Pairs
+can be computed directly from raw inputs; triples are pair+input, and
+quartets are sums of disjoint pairs. The complete output recipes retain all
+permitted cancellation, including a foreign cancelling input for a
+weight-five output.
+
+The previously verified inequalities are
+
+                     P >= 26,       4H-P >= 214.
+
+If G<=92, then H<=60. These inequalities force H=60 and P=26, hence T+Q=34.
+See PAIR26_PROOF.txt and PAIR_TRADEOFF_PROOF.txt. The tradeoff is proved by
+exact integer arithmetic, including the full correction for rounded dual
+coefficients; it is not an optimizer's floating-point assertion.
+
+2. ODD/EVEN PARITY GIVES THE COMPONENT CASES
+
+Build the pair graph on the 32 raw inputs, with an edge for every pair
+helper. Let c be its component count and beta its cycle rank. Then
+beta=P-32+c. The previously established bound is c<=8. At P=26 this leaves
+
+                   (c,beta) = (6,0), (7,1), or (8,2).
+
+Every odd output unfolds as one raw-input anchor plus pair signals. An
+edge contributes even parity inside its component, so each output
+intersects exactly one component oddly. If M is the MixColumns binary
+matrix and u is a component indicator, (u,Mu) is a graph-code word. All
+component words partition the 64 input/output coordinates. Every nonzero
+such word has even weight at least six.
+
+The eight-component branch was already excluded at 92 gates: P=26,c=8
+requires T+Q>=38, hence G>=96. See EIGHT_COMPONENT_PROOF.txt and its complete
+checker verify_eight_component_tradeoff.py.
+
+3. NEW CONDITIONAL COMPONENT INEQUALITIES
+
+For an actual pair component C, all crossing pairs are absent. A triple
+or quartet is absent if no depth-two construction using internal pairs
+exists. Every recipe using an absent helper is absent. Connectivity also
+forces at least |C|-1 internal edges and at least one edge across every
+proper nonempty internal cut.
+
+Add these restrictions and P<=26 to the previously verified 16,868-row
+system. Seventeen rational certificates show that their component shapes
+force H>60. Their byte rotations exclude 68 of the 84 weight-six graph-code
+words. The remaining sixteen are isolated input bits at positions 0, 2,
+3, or 6 in any of the four bytes.
+
+verify_component_conditionals.py independently reconstructs all restrictions,
+connectivity rows, and exact dual corrections. All seventeen certificates
+passed. Rotation symmetry of the actual matrix is checked. Rotation reuses
+conditional proofs; it imposes no symmetry on an unknown circuit.
+
+4. COMPLETE PARTITION ENUMERATION
+
+Sort component words by (weight, numeric mask). For six components the
+first four have weight at most fourteen: if the fourth had weight at least
+sixteen, the total would be at least 3*6+3*16>64. For seven components the
+first five have weight at most twelve, since 4*6+3*14>64. Generate every
+required short word from M and its inverse. Enumerate disjoint initial
+words; find ALL last-two-word splits by exact binary kernels, without a
+size bound on the last two words.
+
+Weight-seven outputs meeting a component in exactly two inputs force the
+pair joining them. The forced graph's cycle rank is a lower bound on the
+component's cycle rank. A certified local forest obstruction supplies
+another lower bound of one. Taking the maximum of these two bounds per
+component and summing across components is valid. Retain every partition
+with total lower-bound tax at most beta. These necessary filters cannot
+remove an actual circuit.
+
+The next-word average-weight restriction applies ONLY to the next word,
+not to later, possibly heavier words. This is the corrected rule described
+in ENUMERATION_CORRECTION.txt.
+
+Independent Python and C++ enumerators agree on the FULL canonical sets:
+
+  c=6, beta=0: 275,354 partitions;
+  c=7, beta=1:  22,060 partitions.
+
+Their canonical set SHA256 hashes are respectively
+9a870a0f7c7796957ea5b53da61b1719f822c74b7ba921761c1a784a508b0fed
+9fed126fa6440e2ecda33df7aac61fb8b2c6f92f4d6030cc96b3bc05ec559574.
+
+5. EXACT EXCLUSIONS COVER EVERY PARTITION
+
+Six components:
+  271,718 partitions contain a certified impossible forest component.
+    3,636 remaining partitions are excluded by 909 exact Farkas
+          certificates and their rotations.
+  Total: 275,354. Uncovered: zero.
+
+All forest premises were rechecked: 5,948 obstructions used during
+partition enumeration, plus 14,985 further obstructions used afterwards.
+The sets are disjoint. All 20,933 checks finished with no UNKNOWN result.
+An additional 24 parent-price certificates exclude 96 of the same 3,636
+partitions; this overlap is not counted as additional disjoint coverage.
+
+Seven components:
+   18,404 partitions are excluded by exact parent-tree prices.
+    2,840 partitions are excluded by complete pair-recipe searches
+          (710 rotation representatives).
+      816 partitions are excluded by 204 exact Farkas certificates
+          and their rotations.
+  Total: 22,060. Uncovered: zero.
+
+Pair searches use all 105 minimal recipes per weight-seven output and all
+825 per weight-five output. A search cap yields UNKNOWN, never a false
+exclusion. Every case used as an exclusion finished.
+
+For parent prices, give all internal pairs for free and list every legal
+parent edge (a,b) with a XOR b an output. The actual output-parent graph
+is a forest: a cycle would give a nontrivial dependence among independent
+output rows. Check each rational price certificate on every connected
+tree with distinct output labels. Summing over the actual forest gives
+T+Q>=sum(output prices)>34. See EIGHT_COMPONENT_PROOF.txt for the general
+argument. All new tree prices passed exact independent checking.
+
+6. THE EXACT FARKAS CONTRADICTION
+
+Fix an actual component partition. Write all regenerated valid rows as
+Av>=b, with 0<=v_j<=1. Append P<=26, H<=60, and at least |C|-1 internal
+pair edges for each component C. Let J be the variables not ruled out by
+the partition; v_j=0 for j outside J. Each certificate gives nonnegative
+INTEGER row multipliers u.
+
+For every feasible v,
+
+          u*b <= (A^T u)*v <= sum_(j in J) max(0,(A^T u)_j).
+
+The exact checker verifies the STRICT OPPOSITE inequality for each of the
+909 six-component and 204 seven-component representatives. Therefore none
+admits such a circuit. A positive stored denominator only scales the
+multipliers; the contradiction is checked entirely with integers. No
+optimizer status or numerical tolerance is a proof premise.
+
+verify_partition_conditionals.py imports neither the discovery LP nor an
+optimizer. It independently reconstructs availability, connectivity, and
+integer coefficients, then checks every certificate. All 1,113 passed.
+The frozen finite-premise source certificate has SHA256
+47c5b0fcdbcffb085be518103d357cb64c383f0363cba48712f2089394be6bdf.
+
+7. CONCLUSION AND REPRODUCTION
+
+Every hypothetical circuit with G<=92 normalizes to one of the three
+component branches, and all branches are excluded. Hence G>=93. The
+verified construction gives 93<=D3<=97.
+
+Run:
+  python verify_complete_92_exclusion.py
+
+To rerun earlier finite premises as well:
+  python verify_complete_92_exclusion.py --full
+
+The recorded final combination reused already completed individual checks
+and verified the entire coverage union and actual 97-gate circuit. All
+individual check results and logs are included. This is computer-assisted,
+not a proof-assistant formalization; the mathematical reductions and finite
+checkers remain open to independent audit.

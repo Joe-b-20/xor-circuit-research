@@ -1,0 +1,823 @@
+{
+  "status": "PASS",
+  "certificate": "certificate_depth3_linked_92.json",
+  "rows": 16868,
+  "variables": 61673,
+  "certified_helper_numerator": 597778328006951391,
+  "denominator": 10000000000000000,
+  "rounding_repair_numerator": 94981122063296,
+  "gate_lower_bound": 92,
+  "pair_lower_bound": 26,
+  "pair_bound_checked": true,
+  "local_oracles_checked": 8,
+  "consistency_inequalities": 1312,
+  "known97_satisfies_all_rows": true,
+  "parent_forest_inequalities": 192,
+  "parent_tree_inequalities": 58,
+  "known26pair_witness_satisfies_all_rows": true,
+  "pair_bound_result": {
+    "status": "PASS",
+    "pair_lower_bound": 26,
+    "component_bound_checked": true,
+    "component_bound": {
+      "short_word_weights": {
+        "6": 84,
+        "8": 276
+      },
+      "nodes": 1485213,
+      "leaves": 62112,
+      "nine_part_partitions": 0,
+      "pair_lower_bound": 24,
+      "seconds": 18.271528648998355
+    },
+    "independent_pair_recipe_counts": {
+      "825": 20,
+      "105": 12
+    },
+    "known97_pair_control": true,
+    "byte_rotation_symmetry_checked": true,
+    "forest_obstructions": {
+      "rejected_orbits": 4082,
+      "nodes": 1348913
+    },
+    "seven_component_enumeration": {
+      "blocks": 7,
+      "cycle_budget": 0,
+      "short_words": 5486,
+      "nodes": 1180812,
+      "leaves": 356026,
+      "surviving_partitions": 0,
+      "distinct_remainders": 141070
+    },
+    "eight_component_enumeration": {
+      "blocks": 8,
+      "cycle_budget": 1,
+      "short_words": 1600,
+      "nodes": 5005556,
+      "leaves": 359034,
+      "surviving_partitions": 800,
+      "distinct_remainders": 82260
+    },
+    "unicyclic_exclusion": {
+      "rejected_partitions": 800,
+      "nodes": 32651
+    },
+    "seconds": 108.67071099000168
+  },
+  "local_checks": [
+    {
+      "kind": "w7",
+      "cut": 0,
+      "minimum": 652460,
+      "nodes": 14586705,
+      "last_output_candidates": 725358060
+    },
+    {
+      "kind": "w7",
+      "cut": 1,
+      "minimum": 846484,
+      "nodes": 11186280,
+      "last_output_candidates": 296711415
+    },
+    {
+      "kind": "w7",
+      "cut": 2,
+      "minimum": 620082,
+      "nodes": 3031560,
+      "last_output_candidates": 83820870
+    },
+    {
+      "kind": "w5_projection",
+      "cut": 0,
+      "minimum": 175508,
+      "nodes": 417060,
+      "last_output_candidates": 2835630
+    },
+    {
+      "kind": "w5_projection",
+      "cut": 1,
+      "minimum": 363473,
+      "nodes": 436275,
+      "last_output_candidates": 2427075
+    },
+    {
+      "kind": "w5_projection",
+      "cut": 2,
+      "minimum": 138364,
+      "nodes": 261765,
+      "last_output_candidates": 1851255
+    },
+    {
+      "kind": "w5_projection",
+      "cut": 3,
+      "minimum": 220298,
+      "nodes": 680715,
+      "last_output_candidates": 5442570
+    },
+    {
+      "kind": "w5_projection",
+      "cut": 4,
+      "minimum": 195849,
+      "nodes": 675360,
+      "last_output_candidates": 5001885
+    }
+  ],
+  "parent_tree_checks": [
+    {
+      "cut": 0,
+      "vertices": 10,
+      "edges": 12,
+      "connected_trees_checked": 82
+    },
+    {
+      "cut": 1,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 2,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 3,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 4,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 5,
+      "vertices": 17,
+      "edges": 16,
+      "connected_trees_checked": 214
+    },
+    {
+      "cut": 6,
+      "vertices": 17,
+      "edges": 16,
+      "connected_trees_checked": 214
+    },
+    {
+      "cut": 7,
+      "vertices": 17,
+      "edges": 16,
+      "connected_trees_checked": 214
+    },
+    {
+      "cut": 8,
+      "vertices": 17,
+      "edges": 16,
+      "connected_trees_checked": 214
+    },
+    {
+      "cut": 9,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 10,
+      "vertices": 21,
+      "edges": 24,
+      "connected_trees_checked": 7692
+    },
+    {
+      "cut": 11,
+      "vertices": 21,
+      "edges": 24,
+      "connected_trees_checked": 7692
+    },
+    {
+      "cut": 12,
+      "vertices": 21,
+      "edges": 24,
+      "connected_trees_checked": 7692
+    },
+    {
+      "cut": 13,
+      "vertices": 21,
+      "edges": 24,
+      "connected_trees_checked": 7692
+    },
+    {
+      "cut": 14,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 15,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 16,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 17,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 18,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 19,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 20,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 21,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 22,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 23,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 24,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 25,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 26,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 27,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 28,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 29,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 30,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 31,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 32,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 33,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 34,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 35,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 36,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 37,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 38,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 39,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 40,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 41,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 42,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 43,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 44,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 45,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 46,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 47,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 48,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 49,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 50,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 51,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 52,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 53,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 54,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 55,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 56,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    },
+    {
+      "cut": 57,
+      "vertices": 37,
+      "edges": 43,
+      "connected_trees_checked": 4071
+    }
+  ],
+  "linked_cluster_checks": [
+    {
+      "cut": 0,
+      "kind": "w5",
+      "cluster": 2,
+      "minimum": 500033,
+      "nodes": 1870785,
+      "seconds": 0.755919
+    },
+    {
+      "cut": 1,
+      "kind": "w7",
+      "cluster": 4,
+      "minimum": 777184,
+      "nodes": 16544430,
+      "seconds": 12.0651
+    },
+    {
+      "cut": 2,
+      "kind": "w5",
+      "cluster": 6,
+      "minimum": 267258,
+      "nodes": 4349520,
+      "seconds": 2.26289
+    },
+    {
+      "cut": 3,
+      "kind": "w5",
+      "cluster": 0,
+      "minimum": 281063,
+      "nodes": 2403450,
+      "seconds": 1.24816
+    },
+    {
+      "cut": 4,
+      "kind": "w5",
+      "cluster": 7,
+      "minimum": 212996,
+      "nodes": 1506015,
+      "seconds": 0.702245
+    },
+    {
+      "cut": 5,
+      "kind": "w7",
+      "cluster": 4,
+      "minimum": 773994,
+      "nodes": 16413705,
+      "seconds": 12.0476
+    },
+    {
+      "cut": 6,
+      "kind": "w5",
+      "cluster": 0,
+      "minimum": 281064,
+      "nodes": 2487555,
+      "seconds": 1.02319
+    },
+    {
+      "cut": 7,
+      "kind": "w5",
+      "cluster": 2,
+      "minimum": 500000,
+      "nodes": 1369305,
+      "seconds": 0.491506
+    },
+    {
+      "cut": 8,
+      "kind": "w5",
+      "cluster": 6,
+      "minimum": 242506,
+      "nodes": 3562650,
+      "seconds": 1.7144
+    },
+    {
+      "cut": 9,
+      "kind": "w7",
+      "cluster": 1,
+      "minimum": 921584,
+      "nodes": 25611075,
+      "seconds": 48.8696
+    },
+    {
+      "cut": 10,
+      "kind": "w7",
+      "cluster": 3,
+      "minimum": 792856,
+      "nodes": 14735700,
+      "seconds": 8.07181
+    },
+    {
+      "cut": 11,
+      "kind": "w5",
+      "cluster": 5,
+      "minimum": 268512,
+      "nodes": 2000250,
+      "seconds": 0.902443
+    },
+    {
+      "cut": 12,
+      "kind": "w5",
+      "cluster": 6,
+      "minimum": 249591,
+      "nodes": 3797325,
+      "seconds": 1.87106
+    },
+    {
+      "cut": 13,
+      "kind": "w5",
+      "cluster": 7,
+      "minimum": 212996,
+      "nodes": 1452150,
+      "seconds": 0.637901
+    },
+    {
+      "cut": 14,
+      "kind": "w7",
+      "cluster": 1,
+      "minimum": 921584,
+      "nodes": 25624935,
+      "seconds": 32.1144
+    },
+    {
+      "cut": 15,
+      "kind": "w7",
+      "cluster": 4,
+      "minimum": 773994,
+      "nodes": 16576245,
+      "seconds": 11.1493
+    },
+    {
+      "cut": 16,
+      "kind": "w5",
+      "cluster": 0,
+      "minimum": 281064,
+      "nodes": 2265795,
+      "seconds": 0.845129
+    },
+    {
+      "cut": 17,
+      "kind": "w5",
+      "cluster": 5,
+      "minimum": 268512,
+      "nodes": 2009700,
+      "seconds": 0.839906
+    },
+    {
+      "cut": 18,
+      "kind": "w5",
+      "cluster": 6,
+      "minimum": 249591,
+      "nodes": 3797010,
+      "seconds": 1.76771
+    },
+    {
+      "cut": 19,
+      "kind": "w5",
+      "cluster": 7,
+      "minimum": 212996,
+      "nodes": 1404270,
+      "seconds": 0.606964
+    },
+    {
+      "cut": 20,
+      "kind": "w7",
+      "cluster": 1,
+      "minimum": 921584,
+      "nodes": 25686045,
+      "seconds": 30.9295
+    },
+    {
+      "cut": 21,
+      "kind": "w7",
+      "cluster": 3,
+      "minimum": 792856,
+      "nodes": 14380065,
+      "seconds": 7.537
+    }
+  ],
+  "parent_edge_tree_checks": [
+    {
+      "cut": 0,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 1,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 2,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 3,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 4,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 5,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 6,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 7,
+      "vertices": 18,
+      "edges": 20,
+      "connected_trees_checked": 844
+    },
+    {
+      "cut": 8,
+      "vertices": 10,
+      "edges": 12,
+      "connected_trees_checked": 82
+    },
+    {
+      "cut": 9,
+      "vertices": 10,
+      "edges": 12,
+      "connected_trees_checked": 82
+    },
+    {
+      "cut": 10,
+      "vertices": 10,
+      "edges": 12,
+      "connected_trees_checked": 82
+    },
+    {
+      "cut": 11,
+      "vertices": 10,
+      "edges": 12,
+      "connected_trees_checked": 82
+    },
+    {
+      "cut": 12,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 13,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 14,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 15,
+      "vertices": 14,
+      "edges": 17,
+      "connected_trees_checked": 239
+    },
+    {
+      "cut": 16,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 17,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 18,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 19,
+      "vertices": 104,
+      "edges": 118,
+      "connected_trees_checked": 73202
+    },
+    {
+      "cut": 20,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 21,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 22,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 23,
+      "vertices": 11,
+      "edges": 13,
+      "connected_trees_checked": 95
+    },
+    {
+      "cut": 24,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 25,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 26,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    },
+    {
+      "cut": 27,
+      "vertices": 17,
+      "edges": 20,
+      "connected_trees_checked": 1309
+    }
+  ]
+}

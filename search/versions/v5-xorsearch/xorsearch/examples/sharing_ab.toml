@@ -1,0 +1,26 @@
+# A/B comparison of sharing policies on one target: same seeds and caps, only sharing.mode
+# differs between the two groups.  Compare their `frontier` events in campaign.jsonl afterwards
+# (each names the worker, hence the group, that found the point).
+
+[campaign]
+name = "sharing-ab"
+seed = 99
+duration = "6h"
+
+[[workers]]
+name = "pull"
+target = "fox_mu4"
+count = 4
+depth_cap = 8
+[workers.set]
+"sharing.mode" = "pull"
+"sharing.scope" = "group"   # keep the two arms from feeding each other
+
+[[workers]]
+name = "push"
+target = "fox_mu4"
+count = 4
+depth_cap = 8
+[workers.set]
+"sharing.mode" = "push"     # old forced adoption of strictly better elites
+"sharing.scope" = "group"

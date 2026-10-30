@@ -1,0 +1,53 @@
+# ARIA: 1 h on 20 workers under real depth caps 3, 4, 5, 7 and uncapped (minimum depth 3), starting
+# from the NIST circuit (387 gates, depth 7) in search/seeds/aria/. Settings of the
+# 2026-10-30 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/aria.toml --out search/runs/aria --detach
+#
+# Relative paths in this file are relative to this file.
+[campaign]
+name = "nist-aria"
+seed = 20261030
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "cap3"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 3
+seeds = ["../seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "cap4"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 4
+seeds = ["../seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "cap5"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["../seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "cap7"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 7
+seeds = ["../seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "free"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/aria/nist-g387-d7.json"]

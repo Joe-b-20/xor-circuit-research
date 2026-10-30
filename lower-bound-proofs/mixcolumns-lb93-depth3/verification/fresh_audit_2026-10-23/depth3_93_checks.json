@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "verified_gate_interval": [
+    93,
+    97
+  ],
+  "new_lower_bound": 93,
+  "case_coverage": {
+    "6": {
+      "total_partitions": 275354,
+      "forest_component_exclusions": 271718,
+      "parent_price_exclusions": 96,
+      "farkas_exclusions": 3636,
+      "pair_recipe_exclusions": 0,
+      "uncovered": 0
+    },
+    "7": {
+      "total_partitions": 22060,
+      "forest_component_exclusions": 0,
+      "parent_price_exclusions": 18404,
+      "farkas_exclusions": 816,
+      "pair_recipe_exclusions": 2840,
+      "uncovered": 0
+    }
+  },
+  "eight_component_case": "Previously verified: P=26,c=8 requires at least 96 gates.",
+  "premise": "Previously verified P>=26 and 3P+4T+4Q>=214 reduce any <=92-gate circuit to P=26,H=60,c in {6,7,8}.",
+  "known97_rechecked": true,
+  "reused_completed_checks": false,
+  "source_certificate_checker_rerun": true,
+  "exact_optimum": "UNRESOLVED"
+}

@@ -1,0 +1,51 @@
+[campaign]
+name = "bench-invmixcolumns"
+description = "four search changes (slack 1, repair exit, seed repair, remove1 skip), 1 h on 20 workers; compare with 2026-10-28 and 2026-10-29"
+seed = 20262029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[95, 9], [92, 11], [91, 12], [90, 13], [89, 16], [88, 19]]
+"construct.mix.naive" = 0.0
+
+[[workers]]
+name = "cap9"
+target = "invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 9
+seeds = ["~/xs-campaigns/2026-10-28/seeds/invmc_nist_g95_d9.json"]
+
+[[workers]]
+name = "cap14"
+target = "invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 14
+seeds = ["~/xs-campaigns/2026-10-28/seeds/invmc_nist_g92_d13.json"]
+
+[[workers]]
+name = "cap16"
+target = "invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 16
+seeds = ["~/xs-campaigns/2026-10-28/seeds/invmc_nist_g91_d15.json"]
+
+[[workers]]
+name = "cap19"
+target = "invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 19
+seeds = ["~/xs-campaigns/2026-10-28/seeds/invmc_nist_g91_d15.json"]
+
+[[workers]]
+name = "free"
+target = "invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["~/xs-campaigns/2026-10-28/seeds/invmc_nist_g91_d15.json", "~/xs-campaigns/2026-10-28/seeds/invmc_nist_g92_d13.json", "~/xs-campaigns/2026-10-28/seeds/invmc_nist_g93_d12.json", "~/xs-campaigns/2026-10-28/seeds/invmc_nist_g96_d8.json"]

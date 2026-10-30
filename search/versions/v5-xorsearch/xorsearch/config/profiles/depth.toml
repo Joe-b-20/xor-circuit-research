@@ -1,0 +1,7 @@
+# depth profile -- depth-first objectives (objective = "depth_then_gates") and tight caps.
+# Restarts may draw from the best two pool points: under a tight cap the best gate count is often
+# reached at several depths, and the shallower-but-larger one can be the better restart basin.
+# Integration: add depth-repair / depth3 move weights here.
+
+[sharing]
+sample_points = 2

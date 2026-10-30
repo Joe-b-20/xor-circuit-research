@@ -1,0 +1,52 @@
+# FOX Mu4: 1 h on 20 workers under real depth caps 7, 9, 12 and uncapped, starting from the
+# NIST circuit in search/seeds/fox-mu4/.  Settings of the 2026-10-29 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/fox-mu4.toml --out search/runs/fox-mu4 --detach
+#
+# Relative paths in this file are relative to this file.
+
+[campaign]
+name = "fox-mu4"
+seed = 20264029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[122, 6], [121, 9]]
+
+[[workers]]
+name = "cap7"
+target = "fox-mu4"
+count = 6
+objective = "gates"
+depth_cap = 7
+seeds = ["../seeds/fox-mu4/nist-g130-d13.json"]
+[workers.set]
+"objective.soft_depth_slack" = 6
+
+[[workers]]
+name = "cap9"
+target = "fox-mu4"
+count = 4
+objective = "gates"
+depth_cap = 9
+seeds = ["../seeds/fox-mu4/nist-g130-d13.json"]
+[workers.set]
+"objective.soft_depth_slack" = 4
+
+[[workers]]
+name = "cap12"
+target = "fox-mu4"
+count = 5
+objective = "gates"
+depth_cap = 12
+seeds = ["../seeds/fox-mu4/nist-g130-d13.json"]
+
+[[workers]]
+name = "free"
+target = "fox-mu4"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/fox-mu4/nist-g130-d13.json"]

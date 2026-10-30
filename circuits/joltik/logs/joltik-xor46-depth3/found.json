@@ -1,0 +1,23 @@
+{
+ "circuit": "joltik-xor46-depth3.circ.txt",
+ "version": "v6",
+ "code": "search/versions/v6-xorsearch",
+ "found_utc": null,
+ "run": "joltik",
+ "worker": "free-03",
+ "seed": {
+  "kind": "fresh constructor root",
+  "root": "anneal3#2033258021",
+  "note": "checkpoint chain root"
+ },
+ "note": "Recovered from the worker checkpoint; the run never wrote it as a record, so it has no discovery log",
+ "circuit_sha256": "cf443ce42decfde05c667e97dff9986f3ea94c275cde825f8e1e23475ef49885",
+ "logs": [
+  "campaign.toml",
+  "checkpoint.json.gz",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "status.json"
+ ]
+}

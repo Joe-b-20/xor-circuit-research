@@ -1,0 +1,198 @@
+{
+  "kind": "local_search_record_import",
+  "not_a_nist_record": true,
+  "imported_utc": "2026-10-27T14:31:46.225048+00:00",
+  "origin_run_path": "search/runs/three-targets20",
+  "run_id": "e6717aeed5bb40a1a8778a4c511b6c83",
+  "source_commit": "be9ad9a315137a956ba17cb46dad3113e732549d",
+  "source_commit_is_exact_snapshot": true,
+  "source_archive_sha256": "078a05f865cf8c041ae08a35c09b25080abfd1f31c71a999dcedac71867d3e9b",
+  "source_manifest_sha256": "b5835018014c260d2fefefce57a4834e4263c5ef3cfba24cba3f737d2532a26e",
+  "accepted_config_sha256": "b93308b551a7c850434f289f023325a9c1f5bea8f4c3e7fda2f34b295067fa10",
+  "original_record_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.json",
+  "original_record_sha256": "abfb282e36bd41809f6bac51c7011eae2ee8247965086d007b5fbc7af913cebb",
+  "record_saved_utc": "2026-10-26T06:20:23.119+00:00",
+  "discovery_utc": "2026-10-26T06:20:23.183+00:00",
+  "worker": "joltik-05",
+  "engine": "v2-walk",
+  "chunk": 4856,
+  "engine_seed": 40413100,
+  "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+  "circuit_sha256": "217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355",
+  "dag_sha256": "16bd2ca9fd495671448122127024d96faa0fc140e478e7abf88a85f0afb18522",
+  "selected_discovery_log_line": 209,
+  "discovery_logs_scanned": [
+    {
+      "path": "workers/joltik-00/discoveries.jsonl",
+      "sha256": "863a83b85a6f8f3a0f2bba2b47fa928b2d611494a40df55644af763da7020556",
+      "bytes": 156873
+    },
+    {
+      "path": "workers/joltik-01/discoveries.jsonl",
+      "sha256": "a0a47d455971dce6e808ec85d21c01430285d9aab406fe5263717d3edc8da985",
+      "bytes": 209837
+    },
+    {
+      "path": "workers/joltik-02/discoveries.jsonl",
+      "sha256": "b8f13d56eae330a77158f76d6b046d1b431cc85826bc1decb0c226351c5fd144",
+      "bytes": 175179
+    },
+    {
+      "path": "workers/joltik-03/discoveries.jsonl",
+      "sha256": "a39525cc2d3f8c3c05871de998b7f4856fb4016a097731b46529c3782b42373a",
+      "bytes": 194351
+    },
+    {
+      "path": "workers/joltik-04/discoveries.jsonl",
+      "sha256": "6d30c3c27dc51f9e3c676da76883978817f5473e7ddc41e0113c631c1922ec42",
+      "bytes": 134093
+    },
+    {
+      "path": "workers/joltik-05/discoveries.jsonl",
+      "sha256": "e17a44f55911ace2f8773e5a533913ade0da5d5f19aa20e1c9f9bc30cb65c57d",
+      "bytes": 152133
+    }
+  ],
+  "qualifying_new_search_records": [
+    {
+      "utc": "2026-10-26T06:20:23.183+00:00",
+      "record_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.json",
+      "circuit_sha256": "217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355"
+    },
+    {
+      "utc": "2026-10-26T06:28:19.552+00:00",
+      "record_path": "workers/joltik-05/records/g43-d8-0ae03fd27b0b310fad5149309b870ca0b5b1a8d70ba6fde7b0f97de903904d6c.json",
+      "circuit_sha256": "0ae03fd27b0b310fad5149309b870ca0b5b1a8d70ba6fde7b0f97de903904d6c"
+    },
+    {
+      "utc": "2026-10-26T06:28:21.245+00:00",
+      "record_path": "workers/joltik-05/records/g43-d8-ed75800f33aa3e21e395f8d438cbcce314a12f5e4ddcf6a61a83d1865b940e20.json",
+      "circuit_sha256": "ed75800f33aa3e21e395f8d438cbcce314a12f5e4ddcf6a61a83d1865b940e20"
+    }
+  ],
+  "preserved_files": [
+    {
+      "source_path": "source.tar.gz",
+      "preserved_path": "original/source.tar.gz",
+      "sha256": "078a05f865cf8c041ae08a35c09b25080abfd1f31c71a999dcedac71867d3e9b",
+      "bytes": 182731
+    },
+    {
+      "source_path": "config.json",
+      "preserved_path": "original/config.json",
+      "sha256": "b93308b551a7c850434f289f023325a9c1f5bea8f4c3e7fda2f34b295067fa10",
+      "bytes": 486391
+    },
+    {
+      "source_path": "config.sha256",
+      "preserved_path": "original/config.sha256",
+      "sha256": "f93086d8ad81a54c2b83adebae3775844353a1333d163efb9f4f02087bcd5b20",
+      "bytes": 65
+    },
+    {
+      "source_path": "status.json",
+      "preserved_path": "original/status.json",
+      "sha256": "51a3659a6b39c43a42cbbd4996b72179d70d6df4b5c81f81cf2d7df800357a5b",
+      "bytes": 5545
+    },
+    {
+      "source_path": "workers/joltik-05/discoveries.jsonl",
+      "preserved_path": "original/workers/joltik-05/discoveries.jsonl",
+      "sha256": "e17a44f55911ace2f8773e5a533913ade0da5d5f19aa20e1c9f9bc30cb65c57d",
+      "bytes": 152133
+    },
+    {
+      "source_path": "sessions/9e546b818a02451f969ab297d7db178d.json",
+      "preserved_path": "original/sessions/9e546b818a02451f969ab297d7db178d.json",
+      "sha256": "8e90b5069ed8805282a85179a54de5e82d4a9f5b236fb641f1925032286179ec",
+      "bytes": 12846
+    },
+    {
+      "source_path": "workers/joltik-05/environment.json",
+      "preserved_path": "original/workers/joltik-05/environment.json",
+      "sha256": "53f85aadc863b4e5749ba560073fab3866166f7cb615fda5dd341c0f9bfb3b69",
+      "bytes": 30191
+    },
+    {
+      "source_path": "workers/joltik-05/environments/9e546b818a02451f969ab297d7db178d.json",
+      "preserved_path": "original/workers/joltik-05/environments/9e546b818a02451f969ab297d7db178d.json",
+      "sha256": "53f85aadc863b4e5749ba560073fab3866166f7cb615fda5dd341c0f9bfb3b69",
+      "bytes": 30191
+    },
+    {
+      "source_path": "workers/joltik-05/worker.log",
+      "preserved_path": "original/workers/joltik-05/worker.log",
+      "sha256": "7ea1d24d62a7fdc72e03cabdc7b1ed55db05b2547f2348d580dc4a424e6066c0",
+      "bytes": 21971
+    },
+    {
+      "source_path": "targets/joltik/matrix.json",
+      "preserved_path": "original/targets/joltik/matrix.json",
+      "sha256": "e35b2e0cc7229a3cd289131d5d237c15218c96c11e7909c95d109cc7365142d1",
+      "bytes": 1113
+    },
+    {
+      "source_path": "workers/joltik-00/discoveries.jsonl",
+      "preserved_path": "original/workers/joltik-00/discoveries.jsonl",
+      "sha256": "863a83b85a6f8f3a0f2bba2b47fa928b2d611494a40df55644af763da7020556",
+      "bytes": 156873
+    },
+    {
+      "source_path": "workers/joltik-01/discoveries.jsonl",
+      "preserved_path": "original/workers/joltik-01/discoveries.jsonl",
+      "sha256": "a0a47d455971dce6e808ec85d21c01430285d9aab406fe5263717d3edc8da985",
+      "bytes": 209837
+    },
+    {
+      "source_path": "workers/joltik-02/discoveries.jsonl",
+      "preserved_path": "original/workers/joltik-02/discoveries.jsonl",
+      "sha256": "b8f13d56eae330a77158f76d6b046d1b431cc85826bc1decb0c226351c5fd144",
+      "bytes": 175179
+    },
+    {
+      "source_path": "workers/joltik-03/discoveries.jsonl",
+      "preserved_path": "original/workers/joltik-03/discoveries.jsonl",
+      "sha256": "a39525cc2d3f8c3c05871de998b7f4856fb4016a097731b46529c3782b42373a",
+      "bytes": 194351
+    },
+    {
+      "source_path": "workers/joltik-04/discoveries.jsonl",
+      "preserved_path": "original/workers/joltik-04/discoveries.jsonl",
+      "sha256": "6d30c3c27dc51f9e3c676da76883978817f5473e7ddc41e0113c631c1922ec42",
+      "bytes": 134093
+    },
+    {
+      "source_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.json",
+      "preserved_path": "original/workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.json",
+      "sha256": "abfb282e36bd41809f6bac51c7011eae2ee8247965086d007b5fbc7af913cebb",
+      "bytes": 1802
+    },
+    {
+      "source_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.ncff",
+      "preserved_path": "original/workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.ncff",
+      "sha256": "ca43f3c67582014d3c094332770cd41affbb8aaab2858670ae9f25df9ba91393",
+      "bytes": 1176
+    },
+    {
+      "source_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.verification.json",
+      "preserved_path": "original/workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.verification.json",
+      "sha256": "c021a7685e52a65a635c4c4e986761688074cb2a6352d8bff968298342d0b644",
+      "bytes": 838
+    },
+    {
+      "source_path": "workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.rng-start.json",
+      "preserved_path": "original/workers/joltik-05/records/g43-d8-217e20b57859a1877db482962cc39d60c2c41144719760cd38b35aa46935c355.rng-start.json",
+      "sha256": "b3157e9450adb4742a1ed57c6e86fe11937804fd562d5a7f6ff084b4e7cd65e3",
+      "bytes": 20702
+    },
+    {
+      "source_path": "seeds/joltik/000.json",
+      "preserved_path": "original/seeds/joltik/000.json",
+      "sha256": "2152382d23ad6c0ec95caf3b491c53aa7995d8cc75fd6bc0b5ac683f8c31d013",
+      "bytes": 556
+    }
+  ],
+  "frozen_verification_sidecar_exact_match": true,
+  "rng_scope": "Original chunk-start engine/RNG state is retained. Callback-time RNG state was not recorded; no exact discovery-time state is invented.",
+  "default_seed_policy": "Explicit local override only; the built-in Joltik NIST 44-XOR/depth-7 seed remains unchanged."
+}

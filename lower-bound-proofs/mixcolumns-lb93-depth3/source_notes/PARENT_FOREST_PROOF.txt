@@ -1,0 +1,104 @@
+Output-parent forests and weighted tree inequalities for depth-three AES
+2026-10-16
+
+1. THE OUTPUT-PARENT GRAPH IS A FOREST
+
+Normalize a depth-three, two-input XOR circuit as in PROOF.md. Its helpers
+are pairs, triples and quartets; its 32 output gates all have depth three.
+For each output o, put an edge between its two actual parent signal masks
+a and b, labelled o. Thus a XOR b is the corresponding AES output row.
+The parents have opposite parity: weights 1/3 and 2/4, respectively.
+
+If the selected graph contained a cycle, XORing its edge labels would
+cancel every vertex mask twice and give zero. The edges have distinct
+output labels because each output has one selected actual construction.
+But the 32 AES output rows are linearly independent. Hence no such cycle
+exists. The independent checker reconstructs the binary AES matrix and
+verifies its rank is 32.
+
+This is a statement about actual circuits, without a cancellation ban or
+restriction on sharing. It does not require the graph of ALL possible
+parent decompositions to be acyclic.
+
+2. FOREST INEQUALITIES
+
+Let S be any subset of possible parent masks. Let E_S be the actual output
+edges whose two parents lie in S, and let e_o(S) be 1 when output o's edge
+is in E_S and 0 otherwise. The induced selected graph is a forest. If it
+has k nonempty components, its used vertices number |E_S|+k. Since
+k>=e_o(S),
+
+              |present parent vertices in S| >= |E_S| + e_o(S).
+
+Helper presence variables x_h also count selected helpers which happen not
+to be used as a parent in this graph; they can only increase the left side.
+Raw inputs are already present and cost no gate. Therefore the valid row is
+
+  sum_{h in S, weight(h)>1} x_h
+    - sum_{r: both output parents in S} z_r
+    - sum_{r: output o and both parents in S} z_r
+       >= - #{raw inputs in S}.
+
+Each output selects one actual recipe. Summing recipe variables for one
+parent edge correctly handles its alternative pair constructions.
+
+The discovery algorithm separates these inequalities by a maximum-closure
+calculation. That calculation is not trusted for the proof: the verifier
+regenerates all parent edges and rows directly from the complete recipes.
+
+3. WEIGHTED CONNECTED-TREE INEQUALITIES
+
+For a vertex set S, give each vertex h a nonnegative integer price w_h,
+and each output label o an integer reward lambda_o, which may be negative.
+Suppose every connected tree of legal parent edges inside S, with no
+repeated output label, satisfies
+
+                   sum_{h in V(tree)} w_h
+                       >= sum_{o in E(tree)} lambda_o.             (1)
+
+The actual selected forest inside S decomposes into such trees. Their
+vertex sets are disjoint, so summing (1) does not double-count any parent.
+Unused present vertices have nonnegative prices. Consequently
+
+  sum_{h in S, weight(h)>1} w_h*x_h
+    - sum_{r: both output parents in S} lambda_(output(r))*z_r
+       >= - sum_{raw inputs h in S} w_h.                           (2)
+
+Negative rewards cause no difficulty: (1) is checked as a signed integer
+inequality for each tree, and its sums remain valid. Nonnegativity is
+required for vertex prices because extra present helpers are allowed.
+
+Every connected tree can be built by starting at a vertex and adding a
+leaf along an edge whose output label has not been used. The discovery
+enumerator considers every such extension, using bitsets. The independent
+checker instead uses frozensets, fixes the smallest vertex as root, and
+enumerates every extension above that root. For sets of at most 12
+vertices, it additionally enumerates all vertex subsets and compares the
+resulting connected induced trees. No numerical solver is involved in
+checking (1).
+
+Why the small-instance induced-tree cross-check is valid: any extra legal
+edge joining two vertices of a tree with distinct labels would say that
+one AES output equals the XOR of the distinct labels on a longer tree
+path. Linear independence excludes that relation. Thus such a tree is
+already induced in the graph of possible parent edges.
+
+4. COMPLETE GRAPH AND IMPLEMENTATION BOUNDARY
+
+The graph is regenerated from all 6,120 final-parent decompositions, with
+8,043 possible vertices. No parent decomposition allowed by the depth-three
+normal form is omitted. Discovery only needed selected vertex sets; each
+resulting inequality is universal even when its S is a proper subset.
+
+parent_forest_cuts.py and parent_tree_pricing.py are discovery code.
+independent_parent_rows.py rebuilds the graph and checks the proof rows
+without importing either discovery module. The final certificate retains
+136 forest inequalities and 49 weighted tree inequalities. The largest
+retained vertex set has 104 vertices; its complete connected-tree list has
+73,202 entries. The exact verifier also checks all prices against their
+corresponding complete tree lists.
+
+Both the 97-gate circuit and the new 100-gate circuit with only 26 pair
+signals satisfy every row using their actual output ancestries. This is
+a useful implementation cross-check; the proofs above establish validity
+for all circuits in the model.

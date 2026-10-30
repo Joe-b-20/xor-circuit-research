@@ -1,0 +1,29 @@
+{
+ "circuit": "anubis-clefia-m0-xor95-depth5.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T08:58:32.045+00:00",
+ "seconds_into_run": 1553.8501760440413,
+ "run": "nist-batch-32a",
+ "run_id": "5d1f9e80678c46c4afea7b5354f995bb",
+ "worker": "anubis-clefia-m0-cap5-00",
+ "depth_cap": 5,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "98@9",
+  "by": "NIST",
+  "source": "nist-g98-d9.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "80be819795efc76262d25da129973917e29d0e42417aa5e8e8e808fbf4706d76",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

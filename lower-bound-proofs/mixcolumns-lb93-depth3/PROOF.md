@@ -1,0 +1,392 @@
+# A lower bound of 93 XOR gates for AES MixColumns at depth three
+
+**Joe Bachir | Review package | 23 October 2026**
+
+**Result:** Every two-input XOR circuit computing one AES forward MixColumns column, with inputs at depth zero and output depth at most three, uses at least **93 XOR gates**. The included 97-gate, depth-three circuit gives the interval
+
+$$93\leq D_3\leq97.$$
+
+This is a computer-assisted lower-bound proof. The mathematical reduction and finite certificates are provided for independent review. The argument permits arbitrary sharing, fan-out, cancellation, and asymmetric circuits. It does not establish that 97 is optimal, and it does not assert the existence of a 93-gate circuit.
+
+**Source locations.** Paths beginning with `technical/` denote the unchanged source tree stored
+losslessly in `technical.tar.xz`. The complete command `python3 verify_all.py` unpacks it automatically
+and checks every source hash. For direct inspection, run
+`python3 verify_all.py --extract-source review_sources`; the tree will appear under
+`review_sources/technical/`. Detailed supporting arguments remain directly readable in `source_notes/`.
+
+## 1. The map, cost model, and notation
+
+The object is a single 32-bit forward MixColumns column. The four input bytes are numbered $0,1,2,3$. Input $x_{8r+b}$ is bit $b$ of byte $r$, with the least significant bit numbered zero. The output bytes are obtained using
+
+$$
+\begin{pmatrix}
+02&03&01&01\\
+01&02&03&01\\
+01&01&02&03\\
+03&01&01&02
+\end{pmatrix}
+$$
+
+over $\mathrm{GF}(2^8)$, with reduction polynomial $X^8+X^4+X^3+X+1$ (hexadecimal `0x11b`). Let $M$ be the corresponding $32\times32$ binary matrix. A signal is identified with its 32-bit support mask; its value is the XOR of the indicated input bits. Its weight is its support's cardinality.
+
+An XOR gate computes $a\oplus b$ from two previously available signals and costs one gate. Raw inputs have depth zero; a gate has depth $1+\max(d(a),d(b))$. Wires and fan-out are free. We count all gates in the ancestors of the designated outputs. Gates outside these ancestors can be deleted. Consequently an output-depth bound is equivalent, after this deletion, to the same bound on every remaining gate.
+
+All 32 output masks are distinct and linearly independent. Twenty have weight five and twelve have weight seven. The checker independently constructs $M$ from the field arithmetic and compares it with `technical/matrix.txt`. No assumed search circuit defines the target map.
+
+Write $P,T,Q$ for the numbers of distinct pair, triple, and quartet helpers in the normal form proved next. Put
+
+$$H=P+T+Q,\qquad G=32+H.$$
+
+Here $H$ counts all non-output helpers; $T+Q$ counts the paid depth-two parents. These quantities are kept separate throughout the proof.
+
+## 2. A lossless normal form
+
+**Lemma 1.** A minimum circuit at depth at most three can be represented by distinct weight-two helpers at depth one, distinct weight-three and weight-four helpers at depth two, and 32 output gates at depth three.
+
+**Proof.** Delete unused gates and, for duplicated signal masks, retain a copy of minimum depth. Redirect its uses to that copy and topologically reorder the gates if necessary. Parent depth still strictly precedes child depth, so this does not create a cycle or increase depth. Zero signals can be eliminated: XORing zero with another signal only copies it, and a zero output is not required. A weight-one signal is already an available input. Every signal at depth at most two has weight at most four. If a weight-two signal was computed at depth two, compute it directly from its two indicated inputs instead; this costs at most the same one gate and cannot increase any later depth.
+
+A weight-three depth-two signal must therefore be a pair XOR a disjoint raw input. A weight-four depth-two signal must be the XOR of two disjoint pairs. A weight-five or weight-seven output cannot occur before depth three. It cannot feed a further useful gate, since that gate would have depth at least four. Thus all other useful gates have exactly the stated forms. This proves $G=32+P+T+Q$ without restricting the allowed cancellation of the original circuit. $\square$
+
+The possible final-parent decompositions follow from
+
+$$|a\oplus b|=|a|+|b|-2|a\cap b|.$$
+
+| Output weight | Parent weights | Intersection size |
+|---|---|---|
+| 7 | 3 and 4 | 0 |
+| 5 | 1 and 4 | 0 |
+| 5 | 3 and 2 | 0 |
+| 5 | 3 and 4 | 1 |
+
+In the last row, the intersecting input cancels and is outside the output support. Every possible such input is retained. In particular, this proof makes no cancellation-free assumption for the weight-five outputs. For a weight-seven output, cancellation-free ancestry follows from the depth and weight limits themselves: its ancestry has exactly seven distinct raw-input occurrences.
+
+## 3. Complete output recipes
+
+A **complete recipe** is the set of helper masks required by one output's final parents and their pair constructions. A shared mask appears once in this set. Every triple has three pair-plus-input constructions, and every quartet has three constructions as two disjoint pairs.
+
+There are 6,120 possible final-parent decompositions: 35 for each weight-seven output and $5+10+270=285$ for each weight-five output. Expanding all parent constructions gives the following complete finite model.
+
+| Quantity | Number |
+|---|---:|
+| Pair masks | 496 |
+| Triple masks that can be final parents | 3,008 |
+| Quartet masks that can be final parents | 4,889 |
+| Helper masks in total | 8,393 |
+| Complete recipes per weight-seven output | 315 |
+| Complete recipes per weight-five output | 2,475 |
+| Complete recipes in total | 53,280 |
+| Helper and recipe variables in total | 61,673 |
+
+For a real circuit, set $x_h=1$ exactly for the helper masks it builds, and select exactly one actual complete recipe $r$ for each output $o$, using a variable $z_{o,r}$. The valid base constraints include
+
+$$
+\sum_r z_{o,r}\geq1,\qquad
+x_h-\sum_{r\ni h}z_{o,r}\geq0\quad\text{for each fixed }(o,h),
+\qquad 0\leq x_h,z_{o,r}\leq1.
+$$
+
+The availability sum is per output. It does not charge a shared helper repeatedly across different outputs. All actual circuits map into this system. Thus every inequality proved for this relaxation also holds for actual circuits. No restriction to masks found by a heuristic is used.
+
+The independent generator `technical/independent_check.py` constructs odd parents directly, tests their even complements against the output masks, and independently regenerates their pair constructions. This provides the complete universe used by the certificates.
+
+## 4. The pair graph and the parity partition
+
+Construct an undirected graph on the 32 raw inputs with one edge for each selected pair helper. Let $c$ be its number of connected components and $\beta$ its cycle rank. Then
+
+$$\beta=P-32+c\geq0.$$
+
+Every odd output is one raw-input anchor plus a sum of selected pair masks. Each pair has even parity inside every graph component. Therefore an output intersects exactly one component oddly and all other components evenly.
+
+For a component with input indicator $u$, its indicator on the output side is $Mu$. The vectors
+
+$$w(u)=(u,Mu)\in\mathrm{GF}(2)^{64}$$
+
+are nonzero, disjoint graph-code words whose supports partition all 64 input and output coordinates. Every nonzero graph-code word has even weight at least six. Odd column parity makes the total weight even. Complete enumeration of all words of weight at most eight finds 84 words of weight six, 276 of weight eight, and no lighter nonzero word.
+
+**Lemma 2.** Such a partition has at most eight components, so $P\geq24$.
+
+To verify the finite assertion, it suffices to exclude a partition into nine words. A partition with more than nine blocks could be merged into nine, since sums of disjoint codewords remain codewords. The seven lightest words of a nine-word partition have weight at most eight: otherwise the total weight is at least $6\cdot6+3\cdot10=66>64$.
+
+Enumerate every sorted disjoint choice of those seven short words. For the remaining support $R$, let $I$ and $O$ be its input and output halves. The code shortened to $R$ is the kernel of
+
+$$M[\text{rows outside }O,\ \text{columns in }I].$$
+
+The remaining support indicator itself is a codeword. It splits into two nonzero disjoint codewords exactly when that kernel has dimension at least two. The complete checker visits 1,485,213 recursion nodes and tests 62,112 remainders; none splits. Hence $c\leq8$, and $P\geq32-c\geq24$.
+
+Generating short words is itself complete: for a word of total weight at most $2k$, at least one of its two halves has weight at most $k$. Enumerate that half from the input side using $M$ and from the output side using $M^{-1}$, then deduplicate. This observation is also used for the larger partition enumerations below.
+
+## 5. Strengthening the pair count to 26
+
+**Lemma 3.** Every normalized depth-three circuit has $P\geq26$.
+
+If $P\leq25$, the identity $\beta=P-32+c$ and $c\leq8$ leave two cases: seven components with cycle rank zero, or eight components with cycle rank at most one. Cases with still fewer pairs are included in these relaxations.
+
+For this step, discard triple and quartet costs and retain only the pair edges required by an output. The following minimal pair-recipe lists are complete.
+
+For a weight-seven output $Y$, choose its anchor $a\in Y$ and a perfect matching of the other six inputs. This gives $7\cdot15=105$ recipes.
+
+For a weight-five output, there are 15 matching recipes: choose one of five anchors and one of three matchings of the other four bits. There are also 810 cancelling recipes. Choose an anchor $a\in Y$, two of the other four bits $b,c$, and a foreign input $z\notin Y$; use pairs $\{b,z\}$, $\{c,z\}$, and the pair of the remaining two output bits. There are $5\cdot6\cdot27=810$ choices, for 825 recipes in total.
+
+These lists follow by projecting the four final-parent cases in Section 2 onto pair masks. If the cancelled input is itself the raw anchor, removing the pair containing it leaves a matching recipe already in the list. Otherwise its two occurrences form the stated length-two path through the foreign input. Every actual construction therefore contains one of the listed minimal pair recipes. Supersets may be discarded in this pair-only feasibility relaxation.
+
+For a proposed component $C$, disallow crossing pairs and project each output's allowed pair recipes onto edges inside $C$. Ignoring all outside edges only enlarges the feasible set. An exact search tests whether an acyclic internal edge set can satisfy every resulting local requirement. It branches over every viable recipe of an unsatisfied output and prunes only using forced edges, monotonicity of cycle rank, or a previously proved infeasible edge set. Limits produce an incomplete result, never an exclusion.
+
+The checker proves 4,082 component representatives to be impossible forests. Byte rotation of the actual matrix transports these exclusions to their orbits. The symmetry is checked on $M$; it is not imposed on an unknown circuit.
+
+There is a second necessary cycle lower bound. If a weight-seven output meets a component in exactly two input bits, those two bits must be paired together in its cancellation-free ancestry. For each component, take the maximum of the cycle rank of these forced edges and one when the component is a certified forest obstruction. Taking a maximum avoids charging the same necessary cycle twice. The resulting bounds may be added across disjoint components.
+
+The partition checker regenerates every short codeword needed for each case, enumerates every sorted disjoint initial choice, and solves an exact binary kernel to list all possible final two blocks. These final blocks have no artificially imposed weight bound. It obtains:
+
+| Case under $P\leq25$ | Partitions after necessary filters | Final result |
+|---|---:|---|
+| Seven components, cycle budget 0 | 0 | Excluded |
+| Eight components, cycle budget 1 | 2,848 | All rejected by complete pair-recipe search |
+
+All searches used for exclusion finish without an unresolved case. This proves Lemma 3. The full independent checker is `technical/verify_pair26.py`; it also rechecks Lemma 2.
+
+## 6. Valid inequalities for the complete helper model
+
+The next step uses a frozen certificate over 16,868 valid rows in the complete 61,673-variable model. This section explains the validity of the row families; the exact masks, integer prices, and multipliers are provided in `technical/certificate_depth3_linked_92.json`. Its SHA-256 is
+
+`47c5b0fcdbcffb085be518103d357cb64c383f0363cba48712f2089394be6bdf`.
+
+### 6.1 Local weight-seven inequalities
+
+For $b\in\{1,3,4\}$, let $C_b$ denote the four outputs at bit position $b$, and let $U_b$ be the full helper universe of their recipes. Each is isomorphic to the four-output problem
+
+$$Y_r=\left(\bigoplus_{i\ne r}a_i\right)\oplus b_r\oplus b_{r+1}\oplus c_r\oplus c_{r+1},$$
+
+with indices modulo four and three distinct families of four inputs.
+
+Its pair count is at least six: there are twelve pair occurrences, and a pair can belong to at most two outputs. The intersection of any three of the four outputs has size one, so a triple or quartet also cannot belong to three outputs. Thus the output-parent graph has maximum degree two. Its parent count is at least five, because it is a four-edge forest. In fact there must be at least twelve helpers in total. The only possible violation would have six pairs and five parents. Five parents form one four-edge path. The intersection sizes of parents along that path permit at most one reused construction pair, and only between quartet endpoints. A triple-ended path has seven pair slots with no saving; a quartet-ended path has eight with at most one saving. Either needs at least seven pairs, a contradiction.
+
+A stronger boundary statement also holds: if the four-output ancestry uses $k$ distinct pairs lying entirely in one side family, that ancestry costs at least $16+k$ gates, including outputs. Equivalently, giving such pairs zero cost still leaves at least twelve paid helpers. The proof counts pair occurrences and analyzes the four possible parent counts five through eight. Only the case of two two-edge parent paths needs finite checking: there are five choices for the other shared parent and $3^6$ construction choices, or 3,645 assignments. The included verifier checks all assignments and the structural support facts. The complete case argument is retained in `source_notes/BOUNDARY_TAX_PROOF.txt`.
+
+The boundary statement separates cluster 1 from clusters 3 and 4, since their only shared input family is family 7 and any shared helper must be a pair in that family. For clusters 3 and 4, the full intersection of their helper universes has 28 masks. Assign complementary nonnegative charges to those masks and charge every private helper one. Exact enumeration of the 315 recipes for each of four outputs gives weighted helper minima $115/10$ and $116/10$. Their sum is $231/10$; adding eight outputs and rounding gives 32 gates. Combining with the boundary statement gives 48 gates for all twelve weight-seven outputs.
+
+These facts provide 43 additional rows: 15 single-cluster rows, four rows for unions of clusters, and 24 transported weighted rows. The exact charges and the proof that shared charges sum to at most one are in `source_notes/WEIGHTED_CLUSTER_PROOF.txt`. The finite weighted enumeration checks every recipe tuple with safe nonnegative-cost pruning and verifies an attaining tuple.
+
+The base model also includes a valid fifteen-parent lower bound for the twelve weight-seven outputs. Exact support enumeration shows that any triple or quartet parents at most two of these outputs, and that whenever both endpoints of an output-parent edge can be reused, the other outputs lie in the same four-output cluster. Thus a parent-forest component spanning different clusters is an isolated edge; every other component has at most four edges. A twelve-edge forest therefore has at least three components and at least fifteen vertices. `technical/verify_structure.py` checks the finite support facts, and `source_notes/PROOF.md`, Section 6, gives their original derivation. This row has multiplier zero in the frozen source and conditional certificates, but its validity is retained in the complete base model.
+
+### 6.2 Additional local and projected prices
+
+For nonnegative helper weights $w_h$, exhaustive minimization of the weight of a union of four complete recipes gives a valid lower bound for the corresponding cluster. The frozen certificate retains three weight-seven price vectors and five weight-five price vectors, which generate 86 rows after the explicitly checked input permutations.
+
+For a weight-five cluster, project every global helper mask onto the cluster's eight-input support. A cancelling input outside the support disappears; a global recipe projects to a complete local recipe after zero/singleton masks and duplicates are removed. Each local output has 315 possibilities. If several distinct global helpers project to one local helper, their indicator sum is at least its presence indicator. Nonnegative helper weights therefore lift the local inequality to the global circuit without undercharging. Every global recipe's projection is regenerated and checked.
+
+The input permutations transport valid inequalities between isomorphic local problems. They impose no global symmetry assumption.
+
+### 6.3 Construction consistency
+
+A triple or quartet has exactly three possible pair constructions. An actual circuit makes each distinct helper using one chosen construction. If recipes for three outputs require three different constructions of that same helper, at most one of those recipe classes can describe the helper's actual construction. The resulting valid inequality is
+
+$$x_h\geq\sum_{\text{the three specified recipe classes}}z_{o,r}.$$
+
+The certificate retains 1,312 such rows. These rows use the actual selected ancestry of each output, rather than requiring that any merely available recipe be selected. All actual normalized circuits admit the required selection.
+
+### 6.4 Output-parent forests and tree prices
+
+Give each output an edge between its two actual parent masks, labelled by that output. A cycle would XOR a nonempty set of distinct output masks to zero, because its parent masks cancel in pairs. The output rows are linearly independent, so the selected graph is a forest.
+
+For any specified vertex set $S$, its selected subgraph is also a forest. Its number of present parent vertices is at least the number of selected internal edges plus the indicator that a specified output edge lies inside $S$. Subtract the free raw-input vertices to obtain a valid inequality on helper and recipe variables. The frozen certificate retains 192 such forest rows.
+
+More generally, assign nonnegative vertex prices and signed integer rewards to output labels. If every connected legal tree inside $S$, with distinct output labels, has vertex cost at least its total reward, summing over the actual forest gives a valid row. There are 58 retained rows of this kind. Another 28 rows assign rewards to exact parent edges rather than only to labels; the same argument applies.
+
+Every required tree can be grown from its smallest vertex by adjoining a leaf on an edge with an unused output label. The checker considers every such extension. For small vertex sets, a separate vertex-subset enumeration cross-checks the resulting tree list. Extra present helpers have nonnegative prices and therefore cannot invalidate the inequality. No disjointness of different proposed row families is assumed: nonnegative combinations of valid inequalities remain valid even when their supports overlap.
+
+### 6.5 Prices coupled to selected recipes
+
+The remaining 22 rows combine nonnegative helper prices $w_h$ with signed prices $p_{o,r}$ for the actual selected recipes. For four outputs, enumerate every recipe tuple and establish
+
+$$\min_{r_0,r_1,r_2,r_3}\left[\sum_{h\in\bigcup_i r_i}w_h+\sum_i p_{i,r_i}\right]=m.$$
+
+Then
+
+$$\sum_h w_hx_h+\sum_{o,r}p_{o,r}z_{o,r}\geq m$$
+
+holds for every actual circuit. Nonnegative helper prices allow extra present helpers; signed recipe prices are sound because the actual selection contains exactly one recipe per output. The weight-five rows use the same fully checked projection described above. The enumeration conservatively includes tuples that might choose conflicting constructions for a shared helper, so it cannot exclude an actual tuple by assuming unproved compatibility.
+
+### 6.6 Scope of finite verification
+
+The full command reruns the finite premises behind these rows: the component bound, pair-count bound, boundary table, weighted cluster minima, all retained local prices, all retained tree prices, and all recipe-coupled minima. It then independently regenerates the integer coefficient system and checks the frozen certificate. It also checks the 97-gate control against every regenerated row using its actual ancestries. This control is an implementation check, not a replacement for the mathematical validity arguments.
+
+The row counts are:
+
+| Row family | Rows |
+|---|---:|
+| Base model, including parity and weight-seven parent facts | 15,126 |
+| Local structural and weighted rows | 43 |
+| Additional local and projected prices | 86 |
+| Pair-count row $P\geq26$ | 1 |
+| Construction consistency | 1,312 |
+| Parent forests | 192 |
+| Label-priced parent trees | 58 |
+| Recipe-coupled cluster prices | 22 |
+| Edge-priced parent trees | 28 |
+| **Total** | **16,868** |
+
+## 7. The exact pair/helper tradeoff
+
+For a system $Av\geq b$ with $0\leq v_j\leq1$, any nonnegative integer row multipliers $u_i$ and positive denominator $D$ give
+
+$$c^Tv\geq\frac{u^Tb-\sum_j\max(0,(A^Tu)_j-Dc_j)}{D}.$$
+
+This follows coordinatewise from the variable bounds. The entire positive coefficient excess is subtracted. Numerical optimizer statuses and floating-point feasibility tolerances play no role in this verification.
+
+The frozen certificate for $H$ has $D=10^{16}$ and exact corrected numerator $597778328006951391$. Its multiplier on row 15255, the row $P\geq26$, is $\lambda=2499973710473077$.
+
+Multiply all multipliers by four, set this pair-row multiplier to zero, and change the objective to
+
+$$3P+4T+4Q=4H-P.$$
+
+All remaining multipliers are nonnegative. Regenerating all coefficients and recomputing the full upper-bound correction gives:
+
+| Exact quantity | Value |
+|---|---:|
+| Raw numerator | 2,131,495,970,626,858,740 |
+| Coefficient-excess correction | 432,069,609,681,296 |
+| Corrected numerator | 2,131,063,901,017,177,444 |
+| Denominator | 10,000,000,000,000,000 |
+
+Thus $3P+4T+4Q\geq213.1063901017177444>213$. Its left side is an integer, proving
+
+$$\boxed{4H-P\geq214.}$$
+
+Suppose now that $G\leq92$. Then $H\leq60$, and Lemma 3 gives $P\geq26$. The tradeoff forces $H=60$ and $P=26$, so $T+Q=34$. The pair-graph identity and $c\leq8$ leave precisely
+
+$$ (c,\beta)=(6,0),\ (7,1),\ (8,2).$$
+
+The rest of the proof excludes these three cases. This is the only point where the overall 92-gate hypothesis is converted into the fixed pair and parent budgets.
+
+## 8. Exhaustive component partitions
+
+To enumerate a fixed number $c$ of sorted component words, generate all short words sufficient for the first $c-2$ blocks, then solve the exact shortened-code kernel for every split of the remaining support into the last two blocks.
+
+The first four words for $c=6$ have weight at most 14, since otherwise $3\cdot6+3\cdot16>64$. The first five for $c=7$ have weight at most 12, since $4\cdot6+3\cdot14>64$. The first six for $c=8$ have weight at most 10, since $5\cdot6+3\cdot12>64$. The complete short-word counts at weights $6,8,10,12,14$ are respectively $84,276,1300,8112,46040$.
+
+The next chosen word is bounded by the average weight of the remaining blocks. That bound is applied only to the next choice, never to the persistent set of candidates available at deeper recursion. Later words may be heavier. This distinction corrects a former enumeration error, documented in Section 12.
+
+Necessary cycle filters use the maximum of forced-edge cycle rank and a certified forest-obstruction tax for each component. The six- and seven-component enumerations additionally use 17 exact single-component certificates, together with checked byte rotations. These exclude 68 of the 84 weight-six graph-code words under $P=26,H\leq60$; the remaining sixteen are single input bits at bit positions 0, 2, 3, or 6 in the four bytes.
+
+The single-component certificates disallow crossing pairs, rule out helpers with no construction from allowed pairs, and impose connectivity: a component $C$ needs at least $|C|-1$ internal edges and at least one edge across each proper nonempty internal cut. Their exact nonnegative dual sums prove $H>60$ for each excluded representative. The proof uses them only under their stated pair and helper budgets.
+
+The regenerated partition universes have sizes 275,354 for six components, 22,060 for seven components, and 110,712 for eight components. Complete set equality, rather than just equal counts, is checked against the independently generated canonical partition sets. The six- and seven-component canonical SHA-256 values are:
+
+| Components | Canonical SHA-256 |
+|---|---|
+| 6 | `9a870a0f7c7796957ea5b53da61b1719f822c74b7ba921761c1a784a508b0fed` |
+| 7 | `9fed126fa6440e2ecda33df7aac61fb8b2c6f92f4d6030cc96b3bc05ec559574` |
+
+## 9. Three exact ways to exclude a partition
+
+### 9.1 Forest and pair-recipe impossibility
+
+The exact forest search from Section 5 can rule out a component that must be a tree. More generally, for a fixed partition, allow all pairs internal to its blocks and all 105/825 minimal output recipes consistent with the partition. Search for a simultaneous recipe cover whose cycle rank does not exceed the available budget. The branching is exhaustive and cycle-rank pruning is monotone. A node or time cap returns an unresolved status, which is never accepted as an exclusion.
+
+All forest and recipe exclusions used below finish. The six-component case rechecks 20,933 forest obstructions: 5,948 used during partition generation and 14,985 further obstructions used afterward, with disjoint sets.
+
+### 9.2 Conditional parent-tree prices
+
+For a fixed component partition, give every internal pair away for free. This is a relaxation. A possible final parent is available under exactly these tests:
+
+| Parent weight | Availability with all internal pairs free |
+|---|---|
+| 1 | Always |
+| 2 | Both bits are in one component |
+| 3 | Some component contains at least two of its bits |
+| 4 | Its intersection with every component has even size |
+
+Regenerate all legal parent edges with these tests. The actual output-parent graph remains a forest. Give raw inputs and pair vertices cost zero and triples and quartets cost one. For each retained rational output-price vector, check on every connected legal tree with distinct output labels that its label-price sum is no greater than its paid-vertex cost. Summing these inequalities over the actual forest gives
+
+$$T+Q\geq\sum_{o=0}^{31}\lambda_o.$$
+
+Prices are integer numerators over a positive integer denominator; all comparisons are exact. Byte rotation transports checked certificates, without requiring a symmetric circuit.
+
+For the eight-component branch, 388 representatives cover 1,552 partitions. The minimum price sum is $75/2$, and 1,404,228 trees are checked with multiplicity across representatives. Thus these partitions require $T+Q\geq38$. The remaining 109,160 eight-component partitions fail the complete pair-recipe search. The entire branch therefore requires at least $32+26+38=96$ gates and is incompatible with $G\leq92$.
+
+For seven components, the retained price certificates prove $T+Q>34$ for 18,404 partitions. For six components, 24 price representatives cover 96 partitions, but these overlap the Farkas exclusions below and are not counted again.
+
+### 9.3 Conditional exact Farkas contradictions
+
+Fix a six- or seven-component partition. Start from the independently regenerated valid rows. Append $P\leq26$, $H\leq60$, and at least $|C|-1$ internal pairs for each component $C$. Set every unavailable helper and recipe variable to zero. Let $J$ denote the columns still allowed.
+
+For any nonnegative integer row multipliers $u$, feasibility would imply
+
+$$u^Tb\leq(A^Tu)^Tv\leq\sum_{j\in J}\max(0,(A^Tu)_j).$$
+
+Each supplied certificate proves the strict reverse inequality. The checker rebuilds helper availability from all three possible parent constructions, rebuilds recipe availability and component connectivity rows, then evaluates the contradiction in exact integer arithmetic. A positive denominator only scales the integer multipliers; it does not affect the sign of the contradiction.
+
+There are 909 six-component and 204 seven-component representatives, or 1,113 certificates in total. Their byte-rotation orbits exclude 3,636 and 816 partitions respectively. The checker imports neither the discovery optimizer nor the conditional discovery-model code.
+
+## 10. Complete coverage and conclusion
+
+The final checker constructs the union of the actual excluded canonical partition sets. It verifies that each claimed exclusion belongs to the enumerated universe and that the uncovered set is empty. It does not merely compare aggregate counts.
+
+| $c$ | Forest exclusions | Parent-price exclusions | Pair-recipe exclusions | Farkas exclusions | Total partitions | Uncovered |
+|---|---:|---:|---:|---:|---:|---:|
+| $c=6,\beta=0$ | 271,718 | 0 counted separately | 0 | 3,636 | 275,354 | 0 |
+| $c=7,\beta=1$ | 0 | 18,404 | 2,840 | 816 | 22,060 | 0 |
+| $c=8,\beta=2$ | 0 counted separately | 1,552 | 109,160 | 0 | 110,712 | 0 |
+
+The additional 96 six-component parent-price exclusions overlap the 3,636 Farkas exclusions. They are checked but do not contribute to the disjoint count in this table.
+
+Every hypothetical circuit with at most 92 gates normalizes to one of the three rows, and every row is excluded. Therefore
+
+$$\boxed{D_3\geq93.}$$
+
+The included `technical/control_97.json` contains a chronological 97-gate circuit. Its 32 output masks and all gate depths are reconstructed directly, proving $D_3\leq97$. Hence $93\leq D_3\leq97$.
+
+## 11. Reproduction and evidence
+
+Use Python 3.10 or later and a C++17 compiler available as `g++`. The proof checks use Python's standard library and compile the supplied C++ sources. No optimization solver, NumPy, SciPy, network access, or proprietary software is required.
+
+From the package root:
+
+```bash
+python3 verify_all.py
+```
+
+This runs the full proof, including the finite premises, in a fresh temporary copy of the technical subtree and saves its report and detailed log under `verification/`. It fails if any required checker fails or returns an unresolved case. Run Python normally: `python -O` disables assertions and is rejected by the wrapper.
+
+For direct inspection or a direct run of the inherited checker:
+
+```bash
+python3 verify_all.py --extract-source review_sources
+cd review_sources/technical
+python3 verify_complete_92_exclusion.py --full
+```
+
+The shorter command without `--full` checks the final component exclusions but relies on previously checked earlier premises. It is not the default recommended by this package. The inherited `--reuse-checked-results` mode is for combining prior records; it is not a fresh proof verification.
+
+The technical source and certificate files are retained byte-for-byte from the corrected 17 October 2026 archive. `verification/source_inventory.json` records their source paths and SHA-256 hashes. The presentation, wrapper, and verification instructions are new packaging material. Original check records are labelled `original_`; fresh results are labelled separately. `source_notes/` preserves the detailed original supporting arguments. Some supporting notes state the weaker global bound that was current when that local lemma was first proved; Sections 1 and 10 of this document give the package's current result.
+
+The independent verification here is computational and internal to the project. It is not external peer review or a proof-assistant formalization. The mathematical reduction, completeness of finite search procedures, and checker implementations are the principal objects offered for review.
+
+## 12. Correction history and limits
+
+The earlier recursive partition enumerator incorrectly retained a next-choice average-weight bound when passing candidate sets to later recursion. That could omit later, heavier words. The corrected code keeps the persistent candidate set and applies the average bound only to the next chosen word.
+
+The corrected eight-component subcase used to prove $P\geq26$ has 2,848 partitions, replacing the incomplete count of 800. The corrected $P=26,c=8$ universe has 110,712 partitions, replacing 104,548. All 6,164 additional partitions are covered by the exact pair-recipe exclusion. The corrected algorithms and full case sets are the ones included here. `source_notes/ENUMERATION_CORRECTION.txt` records the repair explicitly.
+
+The bound is for depth **at most three**, with raw inputs at depth zero. It has no implication that depth-four circuits require 93 gates. It does not determine any of the still possible counts 93, 94, 95, 96, or 97. The known 97-gate construction is an upper-bound witness; later fixed-parent-bank optimality results are separate and are not used to claim global optimality here.
+
+## 13. Reference and file guide
+
+The target operation is the MixColumns transformation in NIST FIPS 197, *Advanced Encryption Standard (AES)*, updated 9 May 2023, Section 5.1.3. The target matrix is independently reconstructed locally; an online resource is not needed to verify the package.
+
+| Mathematical object | Primary package location |
+|---|---|
+| Normal form and complete recipe model | Sections 2-3; `technical/independent_check.py` |
+| Pair-graph component bound | Section 4; `technical/verify_pair_rank.py` |
+| Pair lower bound $P\geq26$ | Section 5; `technical/verify_pair26.py` |
+| Boundary and weighted cluster premises | Section 6; the corresponding notes and verifiers |
+| Complete frozen row certificate | `technical/certificate_depth3_linked_92.json` |
+| Exact $4H-P\geq214$ calculation | `technical/verify_pair_tradeoff.py` |
+| Six- and seven-component universes | `technical/verify_conditioned_partition_coverage.py` |
+| Eight-component branch | `technical/verify_eight_component_tradeoff.py` |
+| Single-component certificates | `technical/component_cut_*.json` and checker |
+| The 1,113 partition contradictions | `technical/partition_cut_c*.json` and checker |
+| Final set-union coverage | `technical/verify_complete_92_exclusion.py` |
+| Construction for the upper bound | `technical/control_97.json` and Verilog export |
+| Complete fresh verification | `verify_all.py`; `verification/` |
+

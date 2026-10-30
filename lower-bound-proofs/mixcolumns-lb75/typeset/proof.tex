@@ -1,0 +1,106 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.86in,top=0.87in,bottom=0.86in,headheight=17pt,headsep=18pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont[Scale=0.82]{DejaVu Sans Mono}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{seqsplit}
+\usepackage[table]{xcolor}
+\definecolor{ink}{HTML}{152C3D}
+\definecolor{accent}{HTML}{147C80}
+\definecolor{muted}{HTML}{5C6872}
+\definecolor{wash}{HTML}{F0F5F7}
+\definecolor{line}{HTML}{D7E0E5}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.5em,topsep=4pt}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{}{0em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{ink}}{}{0em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries\color{ink}}{}{0em}{}
+\titlespacing*{\section}{0pt}{19pt}{8pt}
+\titlespacing*{\subsection}{0pt}{13pt}{5pt}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+\pretocmd{\section}{\Needspace{7\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{muted} AES MIXCOLUMNS\; /\; UNRESTRICTED LOWER BOUND 75}
+\fancyhead[R]{\sffamily\scriptsize\color{muted} REVIEW EDITION 2026-10-23}
+\fancyfoot[L]{\sffamily\scriptsize\color{muted} Joe Bachir\quad\textbullet\quad Computer-assisted review draft}
+\fancyfoot[R]{\sffamily\scriptsize\color{muted}\thepage\,/\,\pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small,baselinestretch=1.08,frame=leftline,rulecolor=\color{line},framesep=8pt,xleftmargin=9pt}
+\usepackage{upquote}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{statementbox}{colback=wash,colframe=line,boxrule=0.45pt,arc=2pt,left=12pt,right=12pt,top=10pt,bottom=10pt,before skip=14pt,after skip=13pt}
+\usepackage{xurl}
+\usepackage[unicode=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,pdfborder={0 0 0}]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={A lower bound of 75 XOR gates for AES MixColumns},pdfauthor={Joe Bachir},pdfsubject={Standalone proof and reproducibility review package},pdfkeywords={AES, MixColumns, XOR circuits, lower bounds, computer-assisted proof}}
+\urlstyle{same}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt}
+\linespread{1.055}
+\setcounter{secnumdepth}{-1}
+\setcounter{tocdepth}{1}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\pandocbounded}[1]{#1}
+\providecommand{\passthrough}[1]{#1}
+\setlength{\LTpre}{6pt}
+\setlength{\LTpost}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{document}
+\thispagestyle{plain}
+\vspace*{-3pt}
+{\sffamily\small\bfseries\color{accent} RESEARCH NOTE\quad /\quad STANDALONE REVIEW PACKAGE}\par
+\vspace{10pt}
+{\sffamily\fontsize{25}{30}\selectfont\bfseries\color{ink} A lower bound of 75 XOR gates}\par
+\vspace{6pt}
+{\sffamily\large\color{muted} Unrestricted binary XOR straight-line programs}\par
+\vspace{11pt}
+{\large Joe Bachir}\par
+{\sffamily\small\color{muted} Review edition \textbullet\ 23 October 2026}\par
+\begin{statementbox}
+{\sffamily\bfseries\color{accent} THE LOWER-BOUND STATEMENT}\par
+\vspace{3pt}
+{\Large $L(M)\ge 75$}\par
+Every binary XOR circuit computing one 32-bit column of AES forward MixColumns needs at least 75 gates. Depth, fan-out, intermediate masks, cancellation, and output reuse are unrestricted.
+\end{statementbox}
+\textbf{Proof route.} The proof combines an even-span partition bound, an odd-signal graph, exact transposition and a bounded potential. Necessary inequalities on helper types then exclude the remaining 73- and 74-gate profiles using exact integer certificates.\par
+\textbf{Fresh verification.} All fourteen finite premises were recomputed. Both certificate implementations accepted 484 certificates for the 73-gate exclusion and 4,057 for the 74-gate exclusion. The inherited stress checks passed on thirteen control circuits. The accompanying 88-gate witness was rechecked.\par
+\textbf{Reading and reproduction.} Read the proof below, then use the package's \texttt{README.md} for the file map and environment details. From the extracted package folder, run:\par
+\vspace{3pt}
+{\ttfamily\small python3 verify\_all.py}\par
+\vspace{6pt}
+\textbf{Scope of the result.} The included construction gives $75\le L(M)\le88$. This package does not establish the exact minimum.\par
+\textbf{Source and review status.} The full argument follows the public review draft 1.1 of 2 October 2026. The original source and its identity are preserved; local exposition and presentation changes are listed separately. The work was developed with AI assistance and is submitted for expert review. Exact computational checks are documented; the mathematical argument is not proof-assistant formalized.\par
+\vfill
+{\footnotesize\color{muted} Map specification: NIST FIPS 197, \S5.1.3,\
+\href{https://doi.org/10.6028/NIST.FIPS.197-upd1}{doi:10.6028/NIST.FIPS.197-upd1}. The standard defines the map; the lower-bound argument is the author's review draft.}
+\clearpage
+\begingroup
+\renewcommand{\contentsname}{Contents}
+\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\input{body.tex}
+\end{document}

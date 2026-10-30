@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "theorem": "Every normalized depth-three circuit with P=26 and c=8 has T+Q>=38, hence G>=96.",
+  "parent_prices": {
+    "representatives": 388,
+    "covered_partitions": 1552,
+    "minimum_exact_parent_bound": "75/2",
+    "integer_parent_lower_bound": 38,
+    "trees_checked_with_multiplicity": 1404228,
+    "distinct_component_graphs": 2459
+  },
+  "independent_parity_enumeration": {
+    "blocks": 8,
+    "cycle_budget": 2,
+    "short_words": 1660,
+    "nodes": 14058958,
+    "leaves": 4492324,
+    "surviving_partitions": 110712,
+    "distinct_remainders": 482241
+  },
+  "pair_recipe_exclusions": {
+    "rejected_partitions": 109160,
+    "nodes": 18722814,
+    "seconds": 172.955
+  },
+  "seconds": 243.15932800299925,
+  "forest_obstruction_sha256": "83e8044accea5de49ec364ca968c8dfc97f59da887ba56a565b7a02111594ecf",
+  "forest_premise_reused": true,
+  "scope": "This excludes the c=8 branch of the 92-gate case. The c=6 and c=7 branches are not excluded by this theorem."
+}

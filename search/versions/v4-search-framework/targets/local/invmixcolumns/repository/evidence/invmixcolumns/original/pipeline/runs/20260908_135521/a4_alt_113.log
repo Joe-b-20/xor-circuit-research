@@ -1,0 +1,743 @@
+[     0.0s 13:55:21] worker start: engine=alt depth=None start=~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_113_depth17.json seeds=[31, 32, 33] chunk=600s reseed=True
+[     0.0s 13:55:21] target=~/xor_ui/slp-invmc/spec/invmc_matrix.json MIN_DEPTH=5 oracle=~/xor_ui/slp-invmc/tools/verify_slp_generic.py
+[     0.0s 13:55:21] knobs: {"lns": {"accept": "sa", "biginj_hi": 16, "biginj_lo": 8, "cone_hi": 4, "cone_lo": 2, "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a4_alt_113.pop.jsonl", "hot_frac": 0.5, "kmax": 4, "kshake": 12, "nsamp": [12, 12], "op_mix": {"biginj": 0.2, "coneinj": 0.45, "small": 0.35}, "peel_window": 6, "pop_period_s": 120.0, "sa_T0": 1.2, "sa_cool": 0.9997, "sa_reheat": 4000, "snapback": 12, "up_prob": 0.5, "up_slack": 4, "vic_cost": 3}, "walk": {"close_hamming": 8, "harvest_path": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521/a4_alt_113.pop.jsonl", "hub_move_p": 0.3, "plateau_slack_p": 0.15}}
+[     0.0s 13:55:21]   NEW BEST 113 gates depth 17 VERIFIED+ORACLED  -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.1s 13:55:21]   NEW BEST 112 gates depth 24 VERIFIED+ORACLED it=10 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.3s 13:55:21]   NEW BEST 112 gates depth 22 VERIFIED+ORACLED depth-tiebreak it=38 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.3s 13:55:21]   NEW BEST 112 gates depth 21 VERIFIED+ORACLED depth-tiebreak it=47 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.6s 13:55:22]   NEW BEST 111 gates depth 27 VERIFIED+ORACLED it=92 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.7s 13:55:22]   NEW BEST 110 gates depth 27 VERIFIED+ORACLED it=113 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.7s 13:55:22]   NEW BEST 110 gates depth 26 VERIFIED+ORACLED depth-tiebreak it=114 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.8s 13:55:22]   NEW BEST 110 gates depth 25 VERIFIED+ORACLED depth-tiebreak it=117 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.8s 13:55:22]   NEW BEST 109 gates depth 25 VERIFIED+ORACLED it=119 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.9s 13:55:22]   NEW BEST 108 gates depth 24 VERIFIED+ORACLED it=126 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     0.9s 13:55:22]   NEW BEST 108 gates depth 23 VERIFIED+ORACLED depth-tiebreak it=136 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.0s 13:55:22]   NEW BEST 107 gates depth 25 VERIFIED+ORACLED it=148 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.1s 13:55:22]   NEW BEST 106 gates depth 25 VERIFIED+ORACLED it=163 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.3s 13:55:22]   NEW BEST 105 gates depth 34 VERIFIED+ORACLED it=189 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.3s 13:55:22]   NEW BEST 105 gates depth 33 VERIFIED+ORACLED depth-tiebreak it=195 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.5s 13:55:22]   NEW BEST 104 gates depth 34 VERIFIED+ORACLED it=236 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.6s 13:55:23]   NEW BEST 103 gates depth 35 VERIFIED+ORACLED it=252 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     1.9s 13:55:23]   NEW BEST 102 gates depth 35 VERIFIED+ORACLED it=367 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.0s 13:55:23]   NEW BEST 102 gates depth 24 VERIFIED+ORACLED depth-tiebreak it=372 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.0s 13:55:23]   NEW BEST 101 gates depth 25 VERIFIED+ORACLED it=381 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.2s 13:55:23]   NEW BEST 101 gates depth 23 VERIFIED+ORACLED depth-tiebreak it=415 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.3s 13:55:23]   NEW BEST 100 gates depth 24 VERIFIED+ORACLED it=450 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.3s 13:55:23]   NEW BEST 99 gates depth 24 VERIFIED+ORACLED it=451 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.4s 13:55:23]   NEW BEST 99 gates depth 22 VERIFIED+ORACLED depth-tiebreak it=464 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.8s 13:55:24]   NEW BEST 98 gates depth 28 VERIFIED+ORACLED it=589 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     2.8s 13:55:24]   NEW BEST 98 gates depth 27 VERIFIED+ORACLED depth-tiebreak it=606 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     3.2s 13:55:24]   NEW BEST 97 gates depth 28 VERIFIED+ORACLED it=724 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     3.2s 13:55:24]   NEW BEST 96 gates depth 27 VERIFIED+ORACLED it=726 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     3.3s 13:55:24]   NEW BEST 96 gates depth 26 VERIFIED+ORACLED depth-tiebreak it=746 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     3.4s 13:55:24]   NEW BEST 96 gates depth 25 VERIFIED+ORACLED depth-tiebreak it=749 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     3.6s 13:55:25]   NEW BEST 96 gates depth 24 VERIFIED+ORACLED depth-tiebreak it=814 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     4.4s 13:55:25]   NEW BEST 95 gates depth 30 VERIFIED+ORACLED it=1084 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     4.5s 13:55:25]   NEW BEST 95 gates depth 26 VERIFIED+ORACLED depth-tiebreak it=1086 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     4.6s 13:55:26]   NEW BEST 95 gates depth 25 VERIFIED+ORACLED depth-tiebreak it=1109 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     5.3s 13:55:26]   NEW BEST 94 gates depth 32 VERIFIED+ORACLED it=1411 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     5.5s 13:55:27]   NEW BEST 93 gates depth 32 VERIFIED+ORACLED it=1465 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     6.0s 13:55:27]   NEW BEST 93 gates depth 31 VERIFIED+ORACLED depth-tiebreak it=1681 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     7.1s 13:55:28]   NEW BEST 93 gates depth 30 VERIFIED+ORACLED depth-tiebreak it=2190 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     7.2s 13:55:28]   NEW BEST 93 gates depth 29 VERIFIED+ORACLED depth-tiebreak it=2211 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     8.7s 13:55:30]   NEW BEST 93 gates depth 28 VERIFIED+ORACLED depth-tiebreak it=2941 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     8.9s 13:55:30]   NEW BEST 93 gates depth 27 VERIFIED+ORACLED depth-tiebreak it=3046 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     9.1s 13:55:30]   NEW BEST 93 gates depth 26 VERIFIED+ORACLED depth-tiebreak it=3105 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     9.2s 13:55:30]   NEW BEST 92 gates depth 27 VERIFIED+ORACLED it=3126 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     9.7s 13:55:31]   NEW BEST 92 gates depth 23 VERIFIED+ORACLED depth-tiebreak it=3371 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[     9.9s 13:55:31]   NEW BEST 91 gates depth 29 VERIFIED+ORACLED it=3455 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    10.4s 13:55:31]   NEW BEST 91 gates depth 28 VERIFIED+ORACLED depth-tiebreak it=3732 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    10.5s 13:55:31]   NEW BEST 91 gates depth 27 VERIFIED+ORACLED depth-tiebreak it=3769 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    12.5s 13:55:33]   NEW BEST 91 gates depth 26 VERIFIED+ORACLED depth-tiebreak it=4889 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    18.1s 13:55:39]   NEW BEST 91 gates depth 23 VERIFIED+ORACLED depth-tiebreak it=8027 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    19.4s 13:55:40]   NEW BEST 91 gates depth 22 VERIFIED+ORACLED depth-tiebreak it=8724 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    19.5s 13:55:40]   NEW BEST 91 gates depth 21 VERIFIED+ORACLED depth-tiebreak it=8763 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    38.4s 13:55:59] [walk] 38s iters=20000 cur=91 best=91 harv=2827
+[    72.9s 13:56:34] [walk] 73s iters=40000 cur=91 best=91 harv=5727
+[    89.2s 13:56:50]   NEW BEST 90 gates depth 24 VERIFIED+ORACLED it=48946 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    89.3s 13:56:50]   NEW BEST 90 gates depth 23 VERIFIED+ORACLED depth-tiebreak it=49008 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[    91.2s 13:56:52]   NEW BEST 90 gates depth 22 VERIFIED+ORACLED depth-tiebreak it=50186 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   108.4s 13:57:09] [walk] 108s iters=60000 cur=90 best=90 harv=8499
+[   134.2s 13:57:35]   NEW BEST 90 gates depth 21 VERIFIED+ORACLED depth-tiebreak it=74803 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   143.7s 13:57:45] [walk] 144s iters=80000 cur=90 best=90 harv=10978
+[   178.7s 13:58:20] [walk] 179s iters=100000 cur=90 best=90 harv=13470
+[   184.8s 13:58:26]   NEW BEST 90 gates depth 17 VERIFIED+ORACLED depth-tiebreak it=103375 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   185.7s 13:58:27]   NEW BEST 90 gates depth 16 VERIFIED+ORACLED depth-tiebreak it=103869 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   213.8s 13:58:55] [walk] 214s iters=120000 cur=90 best=90 harv=15842
+[   250.7s 13:59:32] [walk] 251s iters=140000 cur=90 best=90 harv=18256
+[   265.7s 13:59:47]   NEW BEST 89 gates depth 17 VERIFIED+ORACLED it=147913 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   265.7s 13:59:47]   NEW BEST 89 gates depth 16 VERIFIED+ORACLED depth-tiebreak it=147935 -> a4_alt_113_best.json  [VERDICT: VALID aes_inv_mixcolumns circuit]
+[   286.8s 14:00:08] [walk] 287s iters=160000 cur=89 best=89 harv=20152
+[   934.9s 14:10:56] [walk] 35s iters=20000 cur=89 best=89 harv=1669
+[   969.9s 14:11:31] [walk] 70s iters=40000 cur=89 best=89 harv=3123
+[  1006.1s 14:12:07] [walk] 106s iters=60000 cur=89 best=89 harv=4473
+[  1041.6s 14:12:43] [walk] 141s iters=80000 cur=89 best=89 harv=5776
+[  3783.5s 14:58:24] [walk] 176s iters=20000 cur=89 best=89 harv=1532
+[  4664.2s 15:13:05] [walk] 156s iters=20000 cur=89 best=89 harv=1625
+[  7359.9s 15:58:01] [walk] 144s iters=20000 cur=89 best=89 harv=1621
+[  7485.0s 16:00:06] [walk] 269s iters=40000 cur=89 best=89 harv=3017
+[  8158.0s 16:11:19] [walk] 41s iters=20000 cur=89 best=89 harv=1602
+[  8205.7s 16:12:07] [walk] 89s iters=40000 cur=89 best=89 harv=3101
+[  8260.8s 16:13:02] [walk] 144s iters=60000 cur=89 best=89 harv=4501
+[  8314.7s 16:13:56] [walk] 198s iters=80000 cur=89 best=89 harv=5805
+[  8369.4s 16:14:50] [walk] 253s iters=100000 cur=89 best=89 harv=7040
+[  8414.2s 16:15:35] [walk] 298s iters=120000 cur=89 best=89 harv=8207
+[  9061.0s 16:26:22] [walk] 44s iters=20000 cur=89 best=89 harv=1681
+[  9185.5s 16:28:26] [walk] 169s iters=40000 cur=89 best=89 harv=3138
+[ 10060.1s 16:43:01] [walk] 143s iters=20000 cur=89 best=89 harv=1398
+[ 10212.3s 16:45:33] [walk] 296s iters=40000 cur=89 best=89 harv=3607
+[ 10980.4s 16:58:21] [walk] 163s iters=20000 cur=89 best=89 harv=1650
+[ 11111.8s 17:00:33] [walk] 295s iters=40000 cur=89 best=89 harv=3107
+[ 11799.5s 17:12:01] [walk] 82s iters=20000 cur=89 best=89 harv=1621
+[ 11846.7s 17:12:48] [walk] 129s iters=40000 cur=89 best=89 harv=3165
+[ 11879.7s 17:13:21] [walk] 162s iters=60000 cur=89 best=89 harv=4494
+[ 11916.4s 17:13:57] [walk] 199s iters=80000 cur=89 best=89 harv=5679
+[ 11954.4s 17:14:35] [walk] 237s iters=100000 cur=89 best=89 harv=7318
+[ 11990.1s 17:15:11] [walk] 273s iters=120000 cur=89 best=89 harv=9395
+[ 12538.3s 17:24:19] [lns] 521s iters=20000 cur=96 best=89 pool=3747 hot=41318 harv=9 peelgain=11246
+[ 12647.4s 17:26:08] [walk] 30s iters=20000 cur=89 best=89 harv=1532
+[ 12676.9s 17:26:38] [walk] 59s iters=40000 cur=89 best=89 harv=3038
+[ 12705.5s 17:27:06] [walk] 88s iters=60000 cur=89 best=89 harv=4326
+[ 12734.5s 17:27:36] [walk] 117s iters=80000 cur=89 best=89 harv=5573
+[ 12764.2s 17:28:05] [walk] 147s iters=100000 cur=89 best=89 harv=6755
+[ 12793.4s 17:28:34] [walk] 176s iters=120000 cur=89 best=89 harv=7881
+[ 12822.7s 17:29:04] [walk] 205s iters=140000 cur=89 best=89 harv=8899
+[ 12851.6s 17:29:33] [walk] 234s iters=160000 cur=89 best=89 harv=9918
+[ 12880.2s 17:30:01] [walk] 263s iters=180000 cur=89 best=89 harv=10893
+[ 12910.3s 17:30:31] [walk] 293s iters=200000 cur=89 best=89 harv=11917
+[ 13421.3s 17:39:02] [lns] 504s iters=20000 cur=93 best=89 pool=3762 hot=42649 harv=8 peelgain=11677
+[ 13548.4s 17:41:09] [walk] 31s iters=20000 cur=89 best=89 harv=1603
+[ 13579.5s 17:41:40] [walk] 62s iters=40000 cur=89 best=89 harv=3718
+[ 13611.6s 17:42:13] [walk] 94s iters=60000 cur=89 best=89 harv=6002
+[ 13642.0s 17:42:43] [walk] 124s iters=80000 cur=89 best=89 harv=8099
+[ 13673.5s 17:43:15] [walk] 156s iters=100000 cur=89 best=89 harv=10285
+[ 13704.3s 17:43:45] [walk] 187s iters=120000 cur=89 best=89 harv=12462
+[ 13735.9s 17:44:17] [walk] 218s iters=140000 cur=89 best=89 harv=14672
+[ 13766.9s 17:44:48] [walk] 249s iters=160000 cur=89 best=89 harv=16869
+[ 13799.7s 17:45:21] [walk] 282s iters=180000 cur=89 best=89 harv=19162
+[ 14311.9s 17:53:53] [lns] 494s iters=20000 cur=93 best=89 pool=3711 hot=43653 harv=6 peelgain=11368
+[ 14448.3s 17:56:09] [walk] 30s iters=20000 cur=89 best=89 harv=1626
+[ 14479.3s 17:56:40] [walk] 61s iters=40000 cur=89 best=89 harv=3052
+[ 14512.8s 17:57:14] [walk] 95s iters=60000 cur=89 best=89 harv=4977
+[ 14545.0s 17:57:46] [walk] 127s iters=80000 cur=89 best=89 harv=7251
+[ 14581.0s 17:58:22] [walk] 163s iters=100000 cur=89 best=89 harv=9449
+[ 14615.1s 17:58:56] [walk] 197s iters=120000 cur=89 best=89 harv=11720
+[ 14650.0s 17:59:31] [walk] 232s iters=140000 cur=89 best=89 harv=13652
+[ 14683.6s 18:00:05] [walk] 266s iters=160000 cur=89 best=89 harv=15745
+[ 15351.0s 18:11:12] [walk] 33s iters=20000 cur=89 best=89 harv=1594
+[ 15383.6s 18:11:45] [walk] 66s iters=40000 cur=89 best=89 harv=3027
+[ 15417.0s 18:12:18] [walk] 99s iters=60000 cur=89 best=89 harv=4497
+[ 15450.7s 18:12:52] [walk] 133s iters=80000 cur=89 best=89 harv=5857
+[ 15484.5s 18:13:25] [walk] 167s iters=100000 cur=89 best=89 harv=7087
+[ 15516.6s 18:13:58] [walk] 199s iters=120000 cur=89 best=89 harv=8211
+[ 15549.7s 18:14:31] [walk] 232s iters=140000 cur=89 best=89 harv=9184
+[ 15586.8s 18:15:08] [walk] 269s iters=160000 cur=89 best=89 harv=10284
+[ 16171.9s 18:24:53] [lns] 554s iters=20000 cur=95 best=89 pool=3794 hot=45725 harv=5 peelgain=12175
+[ 16247.1s 18:26:08] [walk] 29s iters=20000 cur=89 best=89 harv=1507
+[ 16276.7s 18:26:38] [walk] 59s iters=40000 cur=89 best=89 harv=2876
+[ 16309.8s 18:27:11] [walk] 92s iters=60000 cur=89 best=89 harv=4274
+[ 16341.5s 18:27:42] [walk] 123s iters=80000 cur=89 best=89 harv=5429
+[ 16372.5s 18:28:13] [walk] 154s iters=100000 cur=89 best=89 harv=6603
+[ 16402.8s 18:28:44] [walk] 185s iters=120000 cur=89 best=89 harv=7705
+[ 16432.8s 18:29:14] [walk] 215s iters=140000 cur=89 best=89 harv=8596
+[ 16463.6s 18:29:45] [walk] 246s iters=160000 cur=89 best=89 harv=9648
+[ 16495.1s 18:30:16] [walk] 277s iters=180000 cur=89 best=89 harv=10520
+[ 17113.2s 18:40:34] [lns] 595s iters=20000 cur=98 best=89 pool=3796 hot=45210 harv=3 peelgain=11708
+[ 17150.4s 18:41:11] [walk] 32s iters=20000 cur=89 best=89 harv=1391
+[ 17182.8s 18:41:44] [walk] 65s iters=40000 cur=89 best=89 harv=2834
+[ 17215.6s 18:42:17] [walk] 97s iters=60000 cur=89 best=89 harv=4067
+[ 17249.4s 18:42:50] [walk] 131s iters=80000 cur=89 best=89 harv=5544
+[ 17286.4s 18:43:27] [walk] 168s iters=100000 cur=89 best=89 harv=6942
+[ 17320.4s 18:44:01] [walk] 202s iters=120000 cur=89 best=89 harv=9085
+[ 17356.2s 18:44:37] [walk] 238s iters=140000 cur=89 best=89 harv=11207
+[ 17391.3s 18:45:12] [walk] 273s iters=160000 cur=89 best=89 harv=13315
+[ 18000.2s 18:55:21] [lns] 582s iters=20000 cur=96 best=89 pool=3770 hot=48535 harv=3 peelgain=12114
+[ 18048.8s 18:56:10] [walk] 31s iters=20000 cur=89 best=89 harv=1508
+[ 18083.6s 18:56:45] [walk] 65s iters=40000 cur=89 best=89 harv=2467
+[ 18119.5s 18:57:20] [walk] 101s iters=60000 cur=89 best=89 harv=3463
+[ 18151.7s 18:57:53] [walk] 133s iters=80000 cur=89 best=89 harv=4806
+[ 18184.0s 18:58:25] [walk] 166s iters=100000 cur=89 best=89 harv=6330
+[ 18214.6s 18:58:56] [walk] 196s iters=120000 cur=89 best=89 harv=7400
+[ 18247.3s 18:59:28] [walk] 229s iters=140000 cur=89 best=89 harv=8722
+[ 18278.7s 19:00:00] [walk] 260s iters=160000 cur=89 best=89 harv=9931
+[ 18315.3s 19:00:36] [walk] 297s iters=180000 cur=89 best=89 harv=10736
+[ 18912.9s 19:10:34] [lns] 595s iters=20000 cur=99 best=89 pool=3840 hot=44377 harv=11 peelgain=11898
+[ 18952.3s 19:11:13] [walk] 34s iters=20000 cur=89 best=89 harv=1550
+[ 18983.7s 19:11:45] [walk] 65s iters=40000 cur=89 best=89 harv=3644
+[ 19015.0s 19:12:16] [walk] 97s iters=60000 cur=89 best=89 harv=5940
+[ 19044.9s 19:12:46] [walk] 127s iters=80000 cur=89 best=89 harv=8128
+[ 19076.1s 19:13:17] [walk] 158s iters=100000 cur=89 best=89 harv=10299
+[ 19107.3s 19:13:48] [walk] 189s iters=120000 cur=89 best=89 harv=12484
+[ 19140.2s 19:14:21] [walk] 222s iters=140000 cur=89 best=89 harv=14676
+[ 19173.2s 19:14:54] [walk] 255s iters=160000 cur=89 best=89 harv=16727
+[ 19206.4s 19:15:27] [walk] 288s iters=180000 cur=89 best=89 harv=18851
+[ 19749.4s 19:24:30] [lns] 531s iters=20000 cur=96 best=89 pool=3780 hot=46260 harv=4 peelgain=11337
+[ 19846.8s 19:26:08] [walk] 28s iters=20000 cur=89 best=89 harv=1610
+[ 19875.9s 19:26:37] [walk] 57s iters=40000 cur=89 best=89 harv=3105
+[ 19904.5s 19:27:05] [walk] 86s iters=60000 cur=89 best=89 harv=4593
+[ 19932.7s 19:27:34] [walk] 114s iters=80000 cur=89 best=89 harv=5860
+[ 19961.6s 19:28:03] [walk] 143s iters=100000 cur=89 best=89 harv=7008
+[ 19992.0s 19:28:33] [walk] 174s iters=120000 cur=89 best=89 harv=8119
+[ 20025.4s 19:29:06] [walk] 207s iters=140000 cur=89 best=89 harv=9143
+[ 20057.2s 19:29:38] [walk] 239s iters=160000 cur=89 best=89 harv=9955
+[ 20087.6s 19:30:09] [walk] 269s iters=180000 cur=89 best=89 harv=12149
+[ 20117.6s 19:30:39] [walk] 299s iters=200000 cur=89 best=89 harv=14419
+[ 20663.2s 19:39:44] [lns] 545s iters=20000 cur=99 best=89 pool=3788 hot=44350 harv=3 peelgain=12315
+[ 20747.7s 19:41:09] [walk] 29s iters=20000 cur=89 best=89 harv=1632
+[ 20775.8s 19:41:37] [walk] 57s iters=40000 cur=89 best=89 harv=3113
+[ 20804.2s 19:42:05] [walk] 86s iters=60000 cur=89 best=89 harv=4509
+[ 20832.1s 19:42:33] [walk] 114s iters=80000 cur=89 best=89 harv=5689
+[ 20860.1s 19:43:01] [walk] 142s iters=100000 cur=89 best=89 harv=6858
+[ 20888.6s 19:43:30] [walk] 170s iters=120000 cur=89 best=89 harv=7986
+[ 20917.4s 19:43:58] [walk] 199s iters=140000 cur=89 best=89 harv=9109
+[ 20947.2s 19:44:28] [walk] 229s iters=160000 cur=89 best=89 harv=10133
+[ 20976.0s 19:44:57] [walk] 257s iters=180000 cur=89 best=89 harv=11082
+[ 21003.8s 19:45:25] [walk] 285s iters=200000 cur=89 best=89 harv=11907
+[ 21544.3s 19:54:25] [lns] 526s iters=20000 cur=92 best=89 pool=3770 hot=43875 harv=9 peelgain=11959
+[ 21647.8s 19:56:09] [walk] 29s iters=20000 cur=89 best=89 harv=1601
+[ 21676.6s 19:56:38] [walk] 58s iters=40000 cur=89 best=89 harv=3076
+[ 21705.7s 19:57:07] [walk] 87s iters=60000 cur=89 best=89 harv=4745
+[ 21735.2s 19:57:36] [walk] 117s iters=80000 cur=89 best=89 harv=6923
+[ 21767.1s 19:58:08] [walk] 148s iters=100000 cur=89 best=89 harv=9194
+[ 21797.3s 19:58:38] [walk] 179s iters=120000 cur=89 best=89 harv=11347
+[ 21828.2s 19:59:09] [walk] 210s iters=140000 cur=89 best=89 harv=13505
+[ 21858.8s 19:59:40] [walk] 240s iters=160000 cur=89 best=89 harv=15574
+[ 21888.6s 20:00:10] [walk] 270s iters=180000 cur=89 best=89 harv=17739
+[ 22390.7s 20:08:32] [lns] 472s iters=20000 cur=95 best=89 pool=3745 hot=44499 harv=7 peelgain=10655
+[ 22547.9s 20:11:09] [walk] 29s iters=20000 cur=89 best=89 harv=1692
+[ 22577.8s 20:11:39] [walk] 59s iters=40000 cur=89 best=89 harv=3275
+[ 22608.4s 20:12:09] [walk] 90s iters=60000 cur=89 best=89 harv=4665
+[ 22637.4s 20:12:38] [walk] 119s iters=80000 cur=89 best=89 harv=5917
+[ 22666.7s 20:13:08] [walk] 148s iters=100000 cur=89 best=89 harv=7111
+[ 22696.4s 20:13:37] [walk] 178s iters=120000 cur=89 best=89 harv=8230
+[ 22726.6s 20:14:08] [walk] 208s iters=140000 cur=89 best=89 harv=9246
+[ 22755.6s 20:14:37] [walk] 237s iters=160000 cur=89 best=89 harv=10182
+[ 22785.3s 20:15:06] [walk] 267s iters=180000 cur=89 best=89 harv=11085
+[ 22814.8s 20:15:36] [walk] 296s iters=200000 cur=89 best=89 harv=11908
+[ 23336.8s 20:24:18] [lns] 518s iters=20000 cur=96 best=89 pool=3766 hot=44291 harv=5 peelgain=12105
+[ 23446.7s 20:26:08] [walk] 28s iters=20000 cur=89 best=89 harv=1545
+[ 23474.9s 20:26:36] [walk] 56s iters=40000 cur=89 best=89 harv=3145
+[ 23503.8s 20:27:05] [walk] 85s iters=60000 cur=89 best=89 harv=4572
+[ 23532.2s 20:27:33] [walk] 113s iters=80000 cur=89 best=89 harv=5877
+[ 23560.2s 20:28:01] [walk] 141s iters=100000 cur=89 best=89 harv=7165
+[ 23588.8s 20:28:30] [walk] 170s iters=120000 cur=89 best=89 harv=8185
+[ 23616.9s 20:28:58] [walk] 198s iters=140000 cur=89 best=89 harv=9185
+[ 23645.6s 20:29:27] [walk] 227s iters=160000 cur=89 best=89 harv=10229
+[ 23674.8s 20:29:56] [walk] 256s iters=180000 cur=89 best=89 harv=11155
+[ 23704.7s 20:30:26] [walk] 286s iters=200000 cur=89 best=89 harv=11983
+[ 24196.5s 20:38:37] [lns] 478s iters=20000 cur=96 best=89 pool=3815 hot=47143 harv=7 peelgain=11172
+[ 24347.2s 20:41:08] [walk] 28s iters=20000 cur=89 best=89 harv=1570
+[ 24375.7s 20:41:37] [walk] 57s iters=40000 cur=89 best=89 harv=2908
+[ 24407.2s 20:42:08] [walk] 88s iters=60000 cur=89 best=89 harv=4398
+[ 24437.8s 20:42:39] [walk] 119s iters=80000 cur=89 best=89 harv=6522
+[ 24468.5s 20:43:09] [walk] 149s iters=100000 cur=89 best=89 harv=8752
+[ 24498.5s 20:43:39] [walk] 179s iters=120000 cur=89 best=89 harv=10874
+[ 24529.6s 20:44:11] [walk] 211s iters=140000 cur=89 best=89 harv=13083
+[ 24560.3s 20:44:41] [walk] 241s iters=160000 cur=89 best=89 harv=15273
+[ 24589.9s 20:45:11] [walk] 271s iters=180000 cur=89 best=89 harv=17333
+[ 25179.7s 20:55:01] [lns] 561s iters=20000 cur=94 best=89 pool=3737 hot=45872 harv=3 peelgain=12165
+[ 25254.3s 20:56:15] [walk] 35s iters=20000 cur=89 best=89 harv=1670
+[ 25292.3s 20:56:53] [walk] 73s iters=40000 cur=89 best=89 harv=2948
+[ 25328.0s 20:57:29] [walk] 109s iters=60000 cur=89 best=89 harv=4586
+[ 25365.0s 20:58:06] [walk] 146s iters=80000 cur=89 best=89 harv=6753
+[ 25402.6s 20:58:44] [walk] 183s iters=100000 cur=89 best=89 harv=8950
+[ 25439.0s 20:59:20] [walk] 220s iters=120000 cur=89 best=89 harv=11152
+[ 25477.0s 20:59:58] [walk] 258s iters=140000 cur=89 best=89 harv=13371
+[ 25515.1s 21:00:36] [walk] 296s iters=160000 cur=89 best=89 harv=15507
+[ 26070.6s 21:09:52] [lns] 551s iters=20000 cur=100 best=89 pool=3822 hot=43914 harv=21 peelgain=11603
+[ 26151.7s 21:11:13] [walk] 32s iters=20000 cur=89 best=89 harv=1468
+[ 26184.6s 21:11:46] [walk] 65s iters=40000 cur=89 best=89 harv=3389
+[ 26217.0s 21:12:18] [walk] 98s iters=60000 cur=89 best=89 harv=5525
+[ 26249.7s 21:12:51] [walk] 130s iters=80000 cur=89 best=89 harv=7696
+[ 26281.8s 21:13:23] [walk] 162s iters=100000 cur=89 best=89 harv=9999
+[ 26314.6s 21:13:56] [walk] 195s iters=120000 cur=89 best=89 harv=12153
+[ 26346.8s 21:14:28] [walk] 228s iters=140000 cur=89 best=89 harv=14358
+[ 26379.7s 21:15:01] [walk] 260s iters=160000 cur=89 best=89 harv=16619
+[ 26410.3s 21:15:31] [walk] 291s iters=180000 cur=89 best=89 harv=18684
+[ 26972.7s 21:24:54] [lns] 553s iters=20000 cur=96 best=89 pool=3788 hot=46719 harv=8 peelgain=12422
+[ 27050.8s 21:26:12] [walk] 31s iters=20000 cur=89 best=89 harv=1370
+[ 27086.3s 21:26:47] [walk] 67s iters=40000 cur=89 best=89 harv=2403
+[ 27118.0s 21:27:19] [walk] 99s iters=60000 cur=89 best=89 harv=4366
+[ 27150.8s 21:27:52] [walk] 131s iters=80000 cur=89 best=89 harv=6714
+[ 27183.0s 21:28:24] [walk] 164s iters=100000 cur=89 best=89 harv=8856
+[ 27214.4s 21:28:55] [walk] 195s iters=120000 cur=89 best=89 harv=10923
+[ 27245.2s 21:29:26] [walk] 226s iters=140000 cur=89 best=89 harv=13012
+[ 27276.7s 21:29:58] [walk] 257s iters=160000 cur=89 best=89 harv=15052
+[ 27309.3s 21:30:30] [walk] 290s iters=180000 cur=89 best=89 harv=17246
+[ 27846.1s 21:39:27] [lns] 527s iters=20000 cur=95 best=89 pool=3793 hot=44755 harv=6 peelgain=11984
+[ 27950.2s 21:41:11] [walk] 31s iters=20000 cur=89 best=89 harv=1704
+[ 27979.9s 21:41:41] [walk] 60s iters=40000 cur=89 best=89 harv=3163
+[ 28010.6s 21:42:12] [walk] 91s iters=60000 cur=89 best=89 harv=4529
+[ 28041.8s 21:42:43] [walk] 122s iters=80000 cur=89 best=89 harv=5811
+[ 28071.7s 21:43:13] [walk] 152s iters=100000 cur=89 best=89 harv=7071
+[ 28102.2s 21:43:43] [walk] 183s iters=120000 cur=89 best=89 harv=8237
+[ 28132.6s 21:44:14] [walk] 213s iters=140000 cur=89 best=89 harv=9242
+[ 28163.3s 21:44:44] [walk] 244s iters=160000 cur=89 best=89 harv=10167
+[ 28194.0s 21:45:15] [walk] 274s iters=180000 cur=89 best=89 harv=10990
+[ 28767.1s 21:54:48] [lns] 548s iters=20000 cur=94 best=89 pool=3778 hot=43813 harv=5 peelgain=11997
+[ 28853.4s 21:56:14] [walk] 34s iters=20000 cur=89 best=89 harv=1151
+[ 28885.6s 21:56:47] [walk] 66s iters=40000 cur=89 best=89 harv=3257
+[ 28915.4s 21:57:16] [walk] 96s iters=60000 cur=89 best=89 harv=5387
+[ 28950.4s 21:57:51] [walk] 131s iters=80000 cur=89 best=89 harv=7510
+[ 28987.1s 21:58:28] [walk] 168s iters=100000 cur=89 best=89 harv=9717
+[ 29021.5s 21:59:02] [walk] 202s iters=120000 cur=89 best=89 harv=11740
+[ 29055.3s 21:59:36] [walk] 236s iters=140000 cur=89 best=89 harv=13800
+[ 29087.0s 22:00:08] [walk] 267s iters=160000 cur=89 best=89 harv=15956
+[ 29117.0s 22:00:38] [walk] 297s iters=180000 cur=89 best=89 harv=17943
+[ 29634.8s 22:09:16] [lns] 515s iters=20000 cur=96 best=89 pool=3839 hot=46663 harv=8 peelgain=11698
+[ 29748.8s 22:11:10] [walk] 29s iters=20000 cur=89 best=89 harv=1588
+[ 29777.0s 22:11:38] [walk] 57s iters=40000 cur=89 best=89 harv=3105
+[ 29806.7s 22:12:08] [walk] 87s iters=60000 cur=89 best=89 harv=4341
+[ 29835.6s 22:12:37] [walk] 116s iters=80000 cur=89 best=89 harv=5633
+[ 29864.2s 22:13:05] [walk] 144s iters=100000 cur=89 best=89 harv=6828
+[ 29892.8s 22:13:34] [walk] 173s iters=120000 cur=89 best=89 harv=7964
+[ 29921.6s 22:14:03] [walk] 202s iters=140000 cur=89 best=89 harv=8849
+[ 29950.5s 22:14:31] [walk] 231s iters=160000 cur=89 best=89 harv=9793
+[ 29978.9s 22:15:00] [walk] 259s iters=180000 cur=89 best=89 harv=10677
+[ 30007.4s 22:15:28] [walk] 288s iters=200000 cur=89 best=89 harv=11636
+[ 30474.8s 22:23:16] [lns] 455s iters=20000 cur=96 best=89 pool=3703 hot=42851 harv=3 peelgain=10617
+[ 30648.4s 22:26:09] [walk] 29s iters=20000 cur=89 best=89 harv=1718
+[ 30676.9s 22:26:38] [walk] 57s iters=40000 cur=89 best=89 harv=3225
+[ 30706.9s 22:27:08] [walk] 87s iters=60000 cur=89 best=89 harv=4600
+[ 30735.8s 22:27:37] [walk] 116s iters=80000 cur=89 best=89 harv=5934
+[ 30764.2s 22:28:05] [walk] 144s iters=100000 cur=89 best=89 harv=7028
+[ 30794.4s 22:28:35] [walk] 175s iters=120000 cur=89 best=89 harv=8242
+[ 30823.4s 22:29:04] [walk] 204s iters=140000 cur=89 best=89 harv=9299
+[ 30851.6s 22:29:33] [walk] 232s iters=160000 cur=89 best=89 harv=10278
+[ 30881.4s 22:30:02] [walk] 262s iters=180000 cur=89 best=89 harv=11508
+[ 30911.3s 22:30:32] [walk] 291s iters=200000 cur=89 best=89 harv=13542
+[ 31441.8s 22:39:23] [lns] 522s iters=20000 cur=95 best=89 pool=3817 hot=47328 harv=4 peelgain=12147
+[ 31548.9s 22:41:10] [walk] 29s iters=20000 cur=89 best=89 harv=1679
+[ 31577.0s 22:41:38] [walk] 57s iters=40000 cur=89 best=89 harv=3197
+[ 31606.1s 22:42:07] [walk] 86s iters=60000 cur=89 best=89 harv=4574
+[ 31636.6s 22:42:38] [walk] 117s iters=80000 cur=89 best=89 harv=5854
+[ 31664.5s 22:43:05] [walk] 145s iters=100000 cur=89 best=89 harv=7058
+[ 31692.5s 22:43:33] [walk] 173s iters=120000 cur=89 best=89 harv=8214
+[ 31721.9s 22:44:03] [walk] 202s iters=140000 cur=89 best=89 harv=9200
+[ 31751.5s 22:44:33] [walk] 232s iters=160000 cur=89 best=89 harv=10071
+[ 31780.3s 22:45:01] [walk] 260s iters=180000 cur=89 best=89 harv=10948
+[ 31809.7s 22:45:31] [walk] 290s iters=200000 cur=89 best=89 harv=11826
+[ 32322.2s 22:54:03] [lns] 502s iters=20000 cur=94 best=89 pool=3779 hot=43334 harv=7 peelgain=12045
+[ 32448.8s 22:56:10] [walk] 29s iters=20000 cur=89 best=89 harv=1576
+[ 32477.2s 22:56:38] [walk] 57s iters=40000 cur=89 best=89 harv=2958
+[ 32506.2s 22:57:07] [walk] 86s iters=60000 cur=89 best=89 harv=4046
+[ 32535.1s 22:57:36] [walk] 115s iters=80000 cur=89 best=89 harv=5530
+[ 32564.2s 22:58:05] [walk] 144s iters=100000 cur=89 best=89 harv=6759
+[ 32595.3s 22:58:36] [walk] 175s iters=120000 cur=89 best=89 harv=8003
+[ 32624.0s 22:59:05] [walk] 204s iters=140000 cur=89 best=89 harv=9155
+[ 32652.6s 22:59:34] [walk] 233s iters=160000 cur=89 best=89 harv=10076
+[ 32682.3s 23:00:03] [walk] 262s iters=180000 cur=89 best=89 harv=11028
+[ 32711.5s 23:00:32] [walk] 292s iters=200000 cur=89 best=89 harv=11842
+[ 33251.6s 23:09:33] [lns] 532s iters=20000 cur=95 best=89 pool=3738 hot=43144 harv=10 peelgain=12006
+[ 33349.3s 23:11:10] [walk] 29s iters=20000 cur=89 best=89 harv=1724
+[ 33379.1s 23:11:40] [walk] 59s iters=40000 cur=89 best=89 harv=3088
+[ 33409.4s 23:12:10] [walk] 89s iters=60000 cur=89 best=89 harv=4413
+[ 33440.0s 23:12:41] [walk] 120s iters=80000 cur=89 best=89 harv=6502
+[ 33470.6s 23:13:12] [walk] 151s iters=100000 cur=89 best=89 harv=8439
+[ 33501.3s 23:13:42] [walk] 181s iters=120000 cur=89 best=89 harv=10512
+[ 33532.9s 23:14:14] [walk] 213s iters=140000 cur=89 best=89 harv=12732
+[ 33563.1s 23:14:44] [walk] 243s iters=160000 cur=89 best=89 harv=14947
+[ 33593.8s 23:15:15] [walk] 274s iters=180000 cur=89 best=89 harv=16894
+[ 34118.7s 23:24:00] [lns] 499s iters=20000 cur=96 best=89 pool=3784 hot=44779 harv=1 peelgain=11420
+[ 34250.1s 23:26:11] [walk] 30s iters=20000 cur=89 best=89 harv=1516
+[ 34283.2s 23:26:44] [walk] 63s iters=40000 cur=89 best=89 harv=2567
+[ 34313.7s 23:27:15] [walk] 94s iters=60000 cur=89 best=89 harv=4704
+[ 34343.9s 23:27:45] [walk] 124s iters=80000 cur=89 best=89 harv=6771
+[ 34374.3s 23:28:15] [walk] 154s iters=100000 cur=89 best=89 harv=8948
+[ 34404.5s 23:28:46] [walk] 184s iters=120000 cur=89 best=89 harv=10805
+[ 34434.7s 23:29:16] [walk] 215s iters=140000 cur=89 best=89 harv=12993
+[ 34464.8s 23:29:46] [walk] 245s iters=160000 cur=89 best=89 harv=15080
+[ 34495.5s 23:30:16] [walk] 275s iters=180000 cur=89 best=89 harv=17102
+[ 35058.9s 23:39:40] [lns] 539s iters=20000 cur=96 best=89 pool=3827 hot=44363 harv=7 peelgain=12649
+[ 35148.7s 23:41:10] [walk] 28s iters=20000 cur=89 best=89 harv=1639
+[ 35177.8s 23:41:39] [walk] 57s iters=40000 cur=89 best=89 harv=3159
+[ 35205.7s 23:42:07] [walk] 85s iters=60000 cur=89 best=89 harv=4486
+[ 35234.9s 23:42:36] [walk] 115s iters=80000 cur=89 best=89 harv=5785
+[ 35263.3s 23:43:04] [walk] 143s iters=100000 cur=89 best=89 harv=6981
+[ 35291.0s 23:43:32] [walk] 171s iters=120000 cur=89 best=89 harv=8017
+[ 35320.2s 23:44:01] [walk] 200s iters=140000 cur=89 best=89 harv=9058
+[ 35349.4s 23:44:30] [walk] 229s iters=160000 cur=89 best=89 harv=9963
+[ 35377.2s 23:44:58] [walk] 257s iters=180000 cur=89 best=89 harv=10971
+[ 35405.0s 23:45:26] [walk] 285s iters=200000 cur=89 best=89 harv=11806
+[ 35971.8s 23:54:53] [lns] 551s iters=20000 cur=95 best=89 pool=3806 hot=42863 harv=6 peelgain=11927
+[ 36054.3s 23:56:15] [walk] 34s iters=20000 cur=89 best=89 harv=1599
+[ 36089.2s 23:56:50] [walk] 69s iters=40000 cur=89 best=89 harv=3194
+[ 36123.2s 23:57:24] [walk] 103s iters=60000 cur=89 best=89 harv=4555
+[ 36157.7s 23:57:59] [walk] 137s iters=80000 cur=89 best=89 harv=5851
+[ 36193.2s 23:58:34] [walk] 173s iters=100000 cur=89 best=89 harv=7093
+[ 36225.1s 23:59:06] [walk] 205s iters=120000 cur=89 best=89 harv=8231
+[ 36255.2s 23:59:36] [walk] 235s iters=140000 cur=89 best=89 harv=9291
+[ 36284.8s 00:00:06] [walk] 264s iters=160000 cur=89 best=89 harv=10211
+[ 36317.8s 00:00:39] [walk] 297s iters=180000 cur=89 best=89 harv=11144
+[ 36883.5s 00:10:04] [lns] 563s iters=20000 cur=95 best=89 pool=3765 hot=50833 harv=5 peelgain=12528
+[ 36951.5s 00:11:12] [walk] 31s iters=20000 cur=89 best=89 harv=1672
+[ 36982.7s 00:11:44] [walk] 62s iters=40000 cur=89 best=89 harv=3144
+[ 37014.0s 00:12:15] [walk] 93s iters=60000 cur=89 best=89 harv=4461
+[ 37045.6s 00:12:47] [walk] 125s iters=80000 cur=89 best=89 harv=5668
+[ 37078.7s 00:13:20] [walk] 158s iters=100000 cur=89 best=89 harv=7423
+[ 37112.0s 00:13:53] [walk] 191s iters=120000 cur=89 best=89 harv=9509
+[ 37144.8s 00:14:26] [walk] 224s iters=140000 cur=89 best=89 harv=11753
+[ 37178.3s 00:14:59] [walk] 258s iters=160000 cur=89 best=89 harv=14150
+[ 37209.8s 00:15:31] [walk] 289s iters=180000 cur=89 best=89 harv=16319
+[ 37778.2s 00:24:59] [lns] 558s iters=20000 cur=96 best=89 pool=3784 hot=45056 harv=9 peelgain=12107
+[ 37851.9s 00:26:13] [walk] 31s iters=20000 cur=89 best=89 harv=1348
+[ 37882.4s 00:26:43] [walk] 62s iters=40000 cur=89 best=89 harv=3019
+[ 37912.8s 00:27:14] [walk] 92s iters=60000 cur=89 best=89 harv=5327
+[ 37945.0s 00:27:46] [walk] 124s iters=80000 cur=89 best=89 harv=7539
+[ 37976.6s 00:28:18] [walk] 156s iters=100000 cur=89 best=89 harv=9523
+[ 38009.3s 00:28:50] [walk] 189s iters=120000 cur=89 best=89 harv=11817
+[ 38043.1s 00:29:24] [walk] 222s iters=140000 cur=89 best=89 harv=14045
+[ 38076.1s 00:29:57] [walk] 255s iters=160000 cur=89 best=89 harv=16249
+[ 38108.2s 00:30:29] [walk] 288s iters=180000 cur=89 best=89 harv=18561
+[ 38655.1s 00:39:36] [lns] 534s iters=20000 cur=97 best=89 pool=3781 hot=42938 harv=1 peelgain=11418
+[ 38751.7s 00:41:13] [walk] 31s iters=20000 cur=89 best=89 harv=1635
+[ 38781.8s 00:41:43] [walk] 61s iters=40000 cur=89 best=89 harv=3138
+[ 38813.1s 00:42:14] [walk] 92s iters=60000 cur=89 best=89 harv=4505
+[ 38845.1s 00:42:46] [walk] 124s iters=80000 cur=89 best=89 harv=5689
+[ 38878.1s 00:43:19] [walk] 157s iters=100000 cur=89 best=89 harv=7024
+[ 38912.5s 00:43:53] [walk] 192s iters=120000 cur=89 best=89 harv=8136
+[ 38945.5s 00:44:27] [walk] 225s iters=140000 cur=89 best=89 harv=9088
+[ 38978.7s 00:45:00] [walk] 258s iters=160000 cur=89 best=89 harv=10118
+[ 39015.1s 00:45:36] [walk] 294s iters=180000 cur=89 best=89 harv=11001
+[ 39618.6s 00:55:40] [lns] 598s iters=20000 cur=99 best=89 pool=3762 hot=45659 harv=8 peelgain=12284
+[ 39652.6s 00:56:14] [walk] 32s iters=20000 cur=89 best=89 harv=1670
+[ 39682.8s 00:56:44] [walk] 62s iters=40000 cur=89 best=89 harv=3100
+[ 39712.4s 00:57:13] [walk] 91s iters=60000 cur=89 best=89 harv=4481
+[ 39742.4s 00:57:43] [walk] 121s iters=80000 cur=89 best=89 harv=5727
+[ 39773.4s 00:58:14] [walk] 152s iters=100000 cur=89 best=89 harv=6927
+[ 39806.9s 00:58:48] [walk] 186s iters=120000 cur=89 best=89 harv=8120
+[ 39844.3s 00:59:25] [walk] 223s iters=140000 cur=89 best=89 harv=10039
+[ 39880.3s 01:00:01] [walk] 259s iters=160000 cur=89 best=89 harv=12241
+[ 39915.1s 01:00:36] [walk] 294s iters=180000 cur=89 best=89 harv=14328
+[ 40452.0s 01:09:33] [lns] 531s iters=20000 cur=93 best=89 pool=3784 hot=43695 harv=6 peelgain=12523
+[ 40552.9s 01:11:14] [walk] 32s iters=20000 cur=89 best=89 harv=1691
+[ 40584.3s 01:11:45] [walk] 63s iters=40000 cur=89 best=89 harv=3913
+[ 40615.4s 01:12:16] [walk] 94s iters=60000 cur=89 best=89 harv=6106
+[ 40646.3s 01:12:47] [walk] 125s iters=80000 cur=89 best=89 harv=8058
+[ 40678.5s 01:13:20] [walk] 158s iters=100000 cur=89 best=89 harv=9746
+[ 40710.9s 01:13:52] [walk] 190s iters=120000 cur=89 best=89 harv=11171
+[ 40741.8s 01:14:23] [walk] 221s iters=140000 cur=89 best=89 harv=13149
+[ 40772.9s 01:14:54] [walk] 252s iters=160000 cur=89 best=89 harv=15234
+[ 40803.6s 01:15:25] [walk] 283s iters=180000 cur=89 best=89 harv=17241
+[ 41372.3s 01:24:53] [lns] 551s iters=20000 cur=95 best=89 pool=3797 hot=44260 harv=15 peelgain=12141
+[ 41454.9s 01:26:16] [walk] 34s iters=20000 cur=89 best=89 harv=1142
+[ 41486.5s 01:26:47] [walk] 65s iters=40000 cur=89 best=89 harv=3066
+[ 41517.4s 01:27:18] [walk] 96s iters=60000 cur=89 best=89 harv=5235
+[ 41547.4s 01:27:48] [walk] 126s iters=80000 cur=89 best=89 harv=7132
+[ 41578.7s 01:28:20] [walk] 158s iters=100000 cur=89 best=89 harv=9467
+[ 41609.0s 01:28:50] [walk] 188s iters=120000 cur=89 best=89 harv=11659
+[ 41639.8s 01:29:21] [walk] 219s iters=140000 cur=89 best=89 harv=13795
+[ 41670.5s 01:29:51] [walk] 249s iters=160000 cur=89 best=89 harv=15939
+[ 41702.5s 01:30:24] [walk] 281s iters=180000 cur=89 best=89 harv=18233
+[ 42235.3s 01:39:16] [lns] 514s iters=20000 cur=96 best=89 pool=3767 hot=46171 harv=4 peelgain=12163
+[ 42349.6s 01:41:11] [walk] 28s iters=20000 cur=89 best=89 harv=1659
+[ 42378.5s 01:41:40] [walk] 57s iters=40000 cur=89 best=89 harv=3172
+[ 42408.0s 01:42:09] [walk] 87s iters=60000 cur=89 best=89 harv=4538
+[ 42437.3s 01:42:38] [walk] 116s iters=80000 cur=89 best=89 harv=5802
+[ 42466.8s 01:43:08] [walk] 146s iters=100000 cur=89 best=89 harv=6996
+[ 42496.1s 01:43:37] [walk] 175s iters=120000 cur=89 best=89 harv=8157
+[ 42525.0s 01:44:06] [walk] 204s iters=140000 cur=89 best=89 harv=9096
+[ 42554.6s 01:44:36] [walk] 233s iters=160000 cur=89 best=89 harv=10138
+[ 42583.7s 01:45:05] [walk] 262s iters=180000 cur=89 best=89 harv=11061
+[ 42613.8s 01:45:35] [walk] 293s iters=200000 cur=89 best=89 harv=11914
+[ 43147.9s 01:54:29] [lns] 527s iters=20000 cur=94 best=89 pool=3741 hot=45456 harv=5 peelgain=11985
+[ 43250.2s 01:56:11] [walk] 29s iters=20000 cur=89 best=89 harv=1157
+[ 43279.1s 01:56:40] [walk] 58s iters=40000 cur=89 best=89 harv=2298
+[ 43308.2s 01:57:09] [walk] 87s iters=60000 cur=89 best=89 harv=3762
+[ 43337.2s 01:57:38] [walk] 116s iters=80000 cur=89 best=89 harv=5013
+[ 43367.2s 01:58:08] [walk] 146s iters=100000 cur=89 best=89 harv=6369
+[ 43396.8s 01:58:38] [walk] 175s iters=120000 cur=89 best=89 harv=7592
+[ 43426.9s 01:59:08] [walk] 205s iters=140000 cur=89 best=89 harv=8749
+[ 43456.7s 01:59:38] [walk] 235s iters=160000 cur=89 best=89 harv=9882
+[ 43487.1s 02:00:08] [walk] 266s iters=180000 cur=89 best=89 harv=10833
+[ 43517.6s 02:00:39] [walk] 296s iters=200000 cur=89 best=89 harv=11962
+[ 44055.9s 02:09:37] [lns] 534s iters=20000 cur=96 best=89 pool=3833 hot=45457 harv=10 peelgain=12288
+[ 44148.9s 02:11:10] [walk] 27s iters=20000 cur=89 best=89 harv=1586
+[ 44177.4s 02:11:38] [walk] 56s iters=40000 cur=89 best=89 harv=3155
+[ 44207.6s 02:12:09] [walk] 86s iters=60000 cur=89 best=89 harv=4508
+[ 44239.6s 02:12:41] [walk] 118s iters=80000 cur=89 best=89 harv=6069
+[ 44270.2s 02:13:11] [walk] 149s iters=100000 cur=89 best=89 harv=8411
+[ 44301.1s 02:13:42] [walk] 180s iters=120000 cur=89 best=89 harv=10598
+[ 44331.7s 02:14:13] [walk] 210s iters=140000 cur=89 best=89 harv=12641
+[ 44363.3s 02:14:44] [walk] 242s iters=160000 cur=89 best=89 harv=14913
+[ 44394.0s 02:15:15] [walk] 273s iters=180000 cur=89 best=89 harv=17033
+[ 44918.5s 02:23:59] [lns] 497s iters=20000 cur=94 best=89 pool=3702 hot=42213 harv=5 peelgain=11546
+[ 45051.0s 02:26:12] [walk] 29s iters=20000 cur=89 best=89 harv=1429
+[ 45081.0s 02:26:42] [walk] 59s iters=40000 cur=89 best=89 harv=2881
+[ 45110.6s 02:27:12] [walk] 89s iters=60000 cur=89 best=89 harv=4239
+[ 45140.8s 02:27:42] [walk] 119s iters=80000 cur=89 best=89 harv=5604
+[ 45170.9s 02:28:12] [walk] 149s iters=100000 cur=89 best=89 harv=6707
+[ 45200.9s 02:28:42] [walk] 179s iters=120000 cur=89 best=89 harv=7857
+[ 45230.5s 02:29:12] [walk] 209s iters=140000 cur=89 best=89 harv=8984
+[ 45260.6s 02:29:42] [walk] 239s iters=160000 cur=89 best=89 harv=10010
+[ 45290.1s 02:30:11] [walk] 269s iters=180000 cur=89 best=89 harv=10980
+[ 45319.8s 02:30:41] [walk] 298s iters=200000 cur=89 best=89 harv=11797
+[ 45838.6s 02:39:20] [lns] 517s iters=20000 cur=96 best=89 pool=3713 hot=45853 harv=10 peelgain=11772
+[ 45950.9s 02:41:12] [walk] 29s iters=20000 cur=89 best=89 harv=1627
+[ 45979.4s 02:41:40] [walk] 58s iters=40000 cur=89 best=89 harv=3047
+[ 46007.5s 02:42:08] [walk] 86s iters=60000 cur=89 best=89 harv=4482
+[ 46036.8s 02:42:38] [walk] 115s iters=80000 cur=89 best=89 harv=5891
+[ 46065.5s 02:43:06] [walk] 144s iters=100000 cur=89 best=89 harv=7104
+[ 46094.0s 02:43:35] [walk] 172s iters=120000 cur=89 best=89 harv=8171
+[ 46122.7s 02:44:04] [walk] 201s iters=140000 cur=89 best=89 harv=9223
+[ 46152.0s 02:44:33] [walk] 230s iters=160000 cur=89 best=89 harv=10189
+[ 46181.0s 02:45:02] [walk] 259s iters=180000 cur=89 best=89 harv=11106
+[ 46210.9s 02:45:32] [walk] 289s iters=200000 cur=89 best=89 harv=11845
+[ 46739.3s 02:54:20] [lns] 518s iters=20000 cur=96 best=89 pool=3735 hot=45938 harv=6 peelgain=11620
+[ 46850.4s 02:56:11] [walk] 29s iters=20000 cur=89 best=89 harv=1641
+[ 46879.7s 02:56:41] [walk] 58s iters=40000 cur=89 best=89 harv=3095
+[ 46909.8s 02:57:11] [walk] 88s iters=60000 cur=89 best=89 harv=5069
+[ 46940.2s 02:57:41] [walk] 118s iters=80000 cur=89 best=89 harv=7186
+[ 46971.6s 02:58:13] [walk] 150s iters=100000 cur=89 best=89 harv=9350
+[ 47004.0s 02:58:45] [walk] 182s iters=120000 cur=89 best=89 harv=11541
+[ 47036.1s 02:59:17] [walk] 214s iters=140000 cur=89 best=89 harv=13529
+[ 47072.1s 02:59:53] [walk] 250s iters=160000 cur=89 best=89 harv=14771
+[ 47103.9s 03:00:25] [walk] 282s iters=180000 cur=89 best=89 harv=16884
+[ 47610.8s 03:08:52] [lns] 489s iters=20000 cur=94 best=89 pool=3745 hot=44546 harv=2 peelgain=10914
+[ 47751.0s 03:11:12] [walk] 29s iters=20000 cur=89 best=89 harv=1592
+[ 47779.4s 03:11:40] [walk] 58s iters=40000 cur=89 best=89 harv=2933
+[ 47808.8s 03:12:10] [walk] 87s iters=60000 cur=89 best=89 harv=4363
+[ 47838.0s 03:12:39] [walk] 116s iters=80000 cur=89 best=89 harv=5628
+[ 47867.4s 03:13:08] [walk] 146s iters=100000 cur=89 best=89 harv=6854
+[ 47896.4s 03:13:37] [walk] 175s iters=120000 cur=89 best=89 harv=8078
+[ 47926.3s 03:14:07] [walk] 204s iters=140000 cur=89 best=89 harv=9178
+[ 47955.9s 03:14:37] [walk] 234s iters=160000 cur=89 best=89 harv=10115
+[ 47985.0s 03:15:06] [walk] 263s iters=180000 cur=89 best=89 harv=11044
+[ 48016.3s 03:15:37] [walk] 294s iters=200000 cur=89 best=89 harv=11884
+[ 48586.2s 03:25:07] [lns] 564s iters=20000 cur=94 best=89 pool=3814 hot=43334 harv=5 peelgain=12563
+[ 48651.9s 03:26:13] [walk] 30s iters=20000 cur=89 best=89 harv=1476
+[ 48682.6s 03:26:44] [walk] 61s iters=40000 cur=89 best=89 harv=3220
+[ 48713.6s 03:27:15] [walk] 92s iters=60000 cur=89 best=89 harv=5275
+[ 48744.9s 03:27:46] [walk] 123s iters=80000 cur=89 best=89 harv=7488
+[ 48776.0s 03:28:17] [walk] 154s iters=100000 cur=89 best=89 harv=9512
+[ 48806.6s 03:28:48] [walk] 185s iters=120000 cur=89 best=89 harv=11745
+[ 48837.9s 03:29:19] [walk] 216s iters=140000 cur=89 best=89 harv=13907
+[ 48869.2s 03:29:50] [walk] 247s iters=160000 cur=89 best=89 harv=15993
+[ 48900.2s 03:30:21] [walk] 278s iters=180000 cur=89 best=89 harv=18141
+[ 49444.2s 03:39:25] [lns] 522s iters=20000 cur=95 best=89 pool=3784 hot=43976 harv=7 peelgain=11758
+[ 49552.0s 03:41:13] [walk] 30s iters=20000 cur=89 best=89 harv=1657
+[ 49581.7s 03:41:43] [walk] 60s iters=40000 cur=89 best=89 harv=3215
+[ 49611.1s 03:42:12] [walk] 89s iters=60000 cur=89 best=89 harv=4582
+[ 49640.7s 03:42:42] [walk] 119s iters=80000 cur=89 best=89 harv=5824
+[ 49671.1s 03:43:12] [walk] 149s iters=100000 cur=89 best=89 harv=6843
+[ 49702.6s 03:43:44] [walk] 181s iters=120000 cur=89 best=89 harv=8322
+[ 49735.2s 03:44:16] [walk] 213s iters=140000 cur=89 best=89 harv=9772
+[ 49767.8s 03:44:49] [walk] 246s iters=160000 cur=89 best=89 harv=11781
+[ 49798.8s 03:45:20] [walk] 277s iters=180000 cur=89 best=89 harv=14131
+[ 50323.0s 03:54:04] [lns] 501s iters=20000 cur=97 best=89 pool=3784 hot=46828 harv=8 peelgain=11180
+[ 50451.2s 03:56:12] [walk] 29s iters=20000 cur=89 best=89 harv=1572
+[ 50479.7s 03:56:41] [walk] 58s iters=40000 cur=89 best=89 harv=3129
+[ 50509.0s 03:57:10] [walk] 87s iters=60000 cur=89 best=89 harv=4544
+[ 50538.4s 03:57:39] [walk] 116s iters=80000 cur=89 best=89 harv=5806
+[ 50568.3s 03:58:09] [walk] 146s iters=100000 cur=89 best=89 harv=6972
+[ 50599.4s 03:58:40] [walk] 177s iters=120000 cur=89 best=89 harv=8079
+[ 50632.9s 03:59:14] [walk] 211s iters=140000 cur=89 best=89 harv=9181
+[ 50666.6s 03:59:48] [walk] 244s iters=160000 cur=89 best=89 harv=10540
+[ 50700.0s 04:00:21] [walk] 278s iters=180000 cur=89 best=89 harv=12020
+[ 51224.1s 04:09:05] [lns] 502s iters=20000 cur=96 best=89 pool=3785 hot=43276 harv=7 peelgain=11564
+[ 51352.0s 04:11:13] [walk] 30s iters=20000 cur=89 best=89 harv=1622
+[ 51381.7s 04:11:43] [walk] 59s iters=40000 cur=89 best=89 harv=3125
+[ 51411.0s 04:12:12] [walk] 89s iters=60000 cur=89 best=89 harv=4523
+[ 51440.4s 04:12:41] [walk] 118s iters=80000 cur=89 best=89 harv=5833
+[ 51470.1s 04:13:11] [walk] 148s iters=100000 cur=89 best=89 harv=7015
+[ 51500.0s 04:13:41] [walk] 178s iters=120000 cur=89 best=89 harv=8181
+[ 51529.2s 04:14:10] [walk] 207s iters=140000 cur=89 best=89 harv=9222
+[ 51559.2s 04:14:40] [walk] 237s iters=160000 cur=89 best=89 harv=10225
+[ 51588.7s 04:15:10] [walk] 266s iters=180000 cur=89 best=89 harv=11076
+[ 51618.1s 04:15:39] [walk] 296s iters=200000 cur=89 best=89 harv=11861
+[ 52110.7s 04:23:52] [lns] 488s iters=20000 cur=94 best=89 pool=3758 hot=48400 harv=2 peelgain=11383
+[ 52251.2s 04:26:12] [walk] 29s iters=20000 cur=89 best=89 harv=1650
+[ 52282.6s 04:26:44] [walk] 60s iters=40000 cur=89 best=89 harv=2910
+[ 52312.8s 04:27:14] [walk] 90s iters=60000 cur=89 best=89 harv=4894
+[ 52343.5s 04:27:45] [walk] 121s iters=80000 cur=89 best=89 harv=6884
+[ 52372.0s 04:28:13] [walk] 150s iters=100000 cur=89 best=89 harv=9032
+[ 52403.6s 04:28:45] [walk] 181s iters=120000 cur=89 best=89 harv=11233
+[ 52435.2s 04:29:16] [walk] 213s iters=140000 cur=89 best=89 harv=13489
+[ 52465.7s 04:29:47] [walk] 243s iters=160000 cur=89 best=89 harv=15647
+[ 52497.0s 04:30:18] [walk] 275s iters=180000 cur=89 best=89 harv=17651
+[ 52991.6s 04:38:33] [lns] 469s iters=20000 cur=94 best=89 pool=3712 hot=41872 harv=2 peelgain=10604
+[ 53152.2s 04:41:13] [walk] 30s iters=20000 cur=89 best=89 harv=1563
+[ 53182.4s 04:41:43] [walk] 60s iters=40000 cur=89 best=89 harv=3543
+[ 53213.5s 04:42:15] [walk] 91s iters=60000 cur=89 best=89 harv=5814
+[ 53245.1s 04:42:46] [walk] 123s iters=80000 cur=89 best=89 harv=8172
+[ 53274.9s 04:43:16] [walk] 152s iters=100000 cur=89 best=89 harv=10313
+[ 53305.1s 04:43:46] [walk] 183s iters=120000 cur=89 best=89 harv=12480
+[ 53336.0s 04:44:17] [walk] 213s iters=140000 cur=89 best=89 harv=14578
+[ 53366.7s 04:44:48] [walk] 244s iters=160000 cur=89 best=89 harv=16735
+[ 53397.7s 04:45:19] [walk] 275s iters=180000 cur=89 best=89 harv=19013
+[ 53936.8s 04:54:18] [lns] 514s iters=20000 cur=93 best=89 pool=3771 hot=42623 harv=10 peelgain=12004
+[ 54051.6s 04:56:13] [walk] 29s iters=20000 cur=89 best=89 harv=1583
+[ 54080.6s 04:56:42] [walk] 58s iters=40000 cur=89 best=89 harv=2875
+[ 54109.2s 04:57:10] [walk] 87s iters=60000 cur=89 best=89 harv=4324
+[ 54138.0s 04:57:39] [walk] 115s iters=80000 cur=89 best=89 harv=5615
+[ 54166.1s 04:58:07] [walk] 143s iters=100000 cur=89 best=89 harv=6810
+[ 54198.2s 04:58:39] [walk] 176s iters=120000 cur=89 best=89 harv=8189
+[ 54228.7s 04:59:10] [walk] 206s iters=140000 cur=89 best=89 harv=10460
+[ 54259.8s 04:59:41] [walk] 237s iters=160000 cur=89 best=89 harv=12707
+[ 54290.0s 05:00:11] [walk] 267s iters=180000 cur=89 best=89 harv=15005
+[ 54320.5s 05:00:41] [walk] 298s iters=200000 cur=89 best=89 harv=17103
+[ 54842.5s 05:09:24] [lns] 520s iters=20000 cur=98 best=89 pool=3765 hot=41608 harv=9 peelgain=11688
+[ 54950.9s 05:11:12] [walk] 28s iters=20000 cur=89 best=89 harv=1663
+[ 54980.6s 05:11:42] [walk] 58s iters=40000 cur=89 best=89 harv=3170
+[ 55012.0s 05:12:13] [walk] 89s iters=60000 cur=89 best=89 harv=5321
+[ 55043.7s 05:12:45] [walk] 121s iters=80000 cur=89 best=89 harv=7578
+[ 55072.3s 05:13:13] [walk] 150s iters=100000 cur=89 best=89 harv=9629
+[ 55103.8s 05:13:45] [walk] 181s iters=120000 cur=89 best=89 harv=11925
+[ 55135.6s 05:14:17] [walk] 213s iters=140000 cur=89 best=89 harv=14197
+[ 55166.8s 05:14:48] [walk] 244s iters=160000 cur=89 best=89 harv=16294
+[ 55197.3s 05:15:18] [walk] 275s iters=180000 cur=89 best=89 harv=18403
+[ 55741.1s 05:24:22] [lns] 518s iters=20000 cur=96 best=89 pool=3778 hot=44131 harv=8 peelgain=11472
+[ 55851.4s 05:26:12] [walk] 29s iters=20000 cur=89 best=89 harv=1556
+[ 55880.7s 05:26:42] [walk] 58s iters=40000 cur=89 best=89 harv=2988
+[ 55910.1s 05:27:11] [walk] 87s iters=60000 cur=89 best=89 harv=4262
+[ 55939.1s 05:27:40] [walk] 116s iters=80000 cur=89 best=89 harv=5650
+[ 55971.8s 05:28:13] [walk] 149s iters=100000 cur=89 best=89 harv=6925
+[ 56004.7s 05:28:46] [walk] 182s iters=120000 cur=89 best=89 harv=8490
+[ 56037.6s 05:29:19] [walk] 215s iters=140000 cur=89 best=89 harv=9961
+[ 56068.0s 05:29:49] [walk] 245s iters=160000 cur=89 best=89 harv=12092
+[ 56097.2s 05:30:18] [walk] 274s iters=180000 cur=89 best=89 harv=14260
+[ 56609.7s 05:38:51] [lns] 487s iters=20000 cur=94 best=89 pool=3739 hot=46786 harv=10 peelgain=11028
+[ 56751.8s 05:41:13] [walk] 29s iters=20000 cur=89 best=89 harv=1623
+[ 56780.8s 05:41:42] [walk] 58s iters=40000 cur=89 best=89 harv=3154
+[ 56810.9s 05:42:12] [walk] 88s iters=60000 cur=89 best=89 harv=4550
+[ 56840.6s 05:42:42] [walk] 118s iters=80000 cur=89 best=89 harv=5821
+[ 56869.8s 05:43:11] [walk] 147s iters=100000 cur=89 best=89 harv=6978
+[ 56898.6s 05:43:40] [walk] 176s iters=120000 cur=89 best=89 harv=8064
+[ 56928.3s 05:44:09] [walk] 205s iters=140000 cur=89 best=89 harv=9151
+[ 56958.1s 05:44:39] [walk] 235s iters=160000 cur=89 best=89 harv=10088
+[ 56987.1s 05:45:08] [walk] 264s iters=180000 cur=89 best=89 harv=10946
+[ 57016.1s 05:45:37] [walk] 293s iters=200000 cur=89 best=89 harv=11790
+[ 57543.2s 05:54:24] [lns] 520s iters=20000 cur=96 best=89 pool=3746 hot=44345 harv=3 peelgain=11934
+[ 57652.0s 05:56:13] [walk] 29s iters=20000 cur=89 best=89 harv=1575
+[ 57684.3s 05:56:45] [walk] 61s iters=40000 cur=89 best=89 harv=3202
+[ 57715.5s 05:57:16] [walk] 92s iters=60000 cur=89 best=89 harv=5245
+[ 57746.7s 05:57:48] [walk] 124s iters=80000 cur=89 best=89 harv=7450
+[ 57777.8s 05:58:19] [walk] 155s iters=100000 cur=89 best=89 harv=9632
+[ 57808.9s 05:58:50] [walk] 186s iters=120000 cur=89 best=89 harv=11751
+[ 57839.8s 05:59:21] [walk] 217s iters=140000 cur=89 best=89 harv=13840
+[ 57870.9s 05:59:52] [walk] 248s iters=160000 cur=89 best=89 harv=15999
+[ 57902.4s 06:00:23] [walk] 279s iters=180000 cur=89 best=89 harv=18176
+[ 58476.2s 06:09:57] [lns] 553s iters=20000 cur=94 best=89 pool=3753 hot=44271 harv=1 peelgain=12907
+[ 58552.5s 06:11:14] [walk] 29s iters=20000 cur=89 best=89 harv=1666
+[ 58580.8s 06:11:42] [walk] 58s iters=40000 cur=89 best=89 harv=3161
+[ 58609.8s 06:12:11] [walk] 87s iters=60000 cur=89 best=89 harv=4449
+[ 58639.5s 06:12:41] [walk] 116s iters=80000 cur=89 best=89 harv=5681
+[ 58668.7s 06:13:10] [walk] 145s iters=100000 cur=89 best=89 harv=6874
+[ 58697.8s 06:13:39] [walk] 175s iters=120000 cur=89 best=89 harv=7935
+[ 58727.9s 06:14:09] [walk] 205s iters=140000 cur=89 best=89 harv=9294
+[ 58760.3s 06:14:41] [walk] 237s iters=160000 cur=89 best=89 harv=11420
+[ 58791.0s 06:15:12] [walk] 268s iters=180000 cur=89 best=89 harv=13611
+[ 58821.9s 06:15:43] [walk] 299s iters=200000 cur=89 best=89 harv=15773
+[ 59334.9s 06:24:16] [lns] 512s iters=20000 cur=96 best=89 pool=3790 hot=45499 harv=2 peelgain=11917
+[ 59451.4s 06:26:12] [walk] 28s iters=20000 cur=89 best=89 harv=1509
+[ 59481.2s 06:26:42] [walk] 58s iters=40000 cur=89 best=89 harv=3019
+[ 59510.8s 06:27:12] [walk] 87s iters=60000 cur=89 best=89 harv=4252
+[ 59542.5s 06:27:43] [walk] 119s iters=80000 cur=89 best=89 harv=5816
+[ 59573.6s 06:28:15] [walk] 150s iters=100000 cur=89 best=89 harv=8018
+[ 59604.9s 06:28:46] [walk] 182s iters=120000 cur=89 best=89 harv=10060
+[ 59636.8s 06:29:18] [walk] 214s iters=140000 cur=89 best=89 harv=12404
+[ 59668.2s 06:29:49] [walk] 245s iters=160000 cur=89 best=89 harv=14535
+[ 59700.0s 06:30:21] [walk] 277s iters=180000 cur=89 best=89 harv=16704
+[ 60219.3s 06:39:00] [lns] 496s iters=20000 cur=98 best=89 pool=3742 hot=46628 harv=2 peelgain=11341
+[ 60352.9s 06:41:14] [walk] 30s iters=20000 cur=89 best=89 harv=1706
+[ 60380.5s 06:41:41] [walk] 57s iters=40000 cur=89 best=89 harv=3188
+[ 60410.5s 06:42:11] [walk] 87s iters=60000 cur=89 best=89 harv=4475
+[ 60439.3s 06:42:40] [walk] 116s iters=80000 cur=89 best=89 harv=5738
+[ 60467.9s 06:43:09] [walk] 144s iters=100000 cur=89 best=89 harv=6931
+[ 60497.5s 06:43:38] [walk] 174s iters=120000 cur=89 best=89 harv=8089
+[ 60527.5s 06:44:08] [walk] 204s iters=140000 cur=89 best=89 harv=9148
+[ 60558.0s 06:44:39] [walk] 235s iters=160000 cur=89 best=89 harv=10165
+[ 60587.2s 06:45:08] [walk] 264s iters=180000 cur=89 best=89 harv=11018
+[ 60617.7s 06:45:39] [walk] 294s iters=200000 cur=89 best=89 harv=11820
+[ 61146.3s 06:54:27] [lns] 523s iters=20000 cur=95 best=89 pool=3788 hot=45319 harv=4 peelgain=11681
+[ 61252.7s 06:56:14] [walk] 29s iters=20000 cur=89 best=89 harv=1591
+[ 61282.1s 06:56:43] [walk] 59s iters=40000 cur=89 best=89 harv=3174
+[ 61312.3s 06:57:13] [walk] 89s iters=60000 cur=89 best=89 harv=4595
+[ 61342.0s 06:57:43] [walk] 118s iters=80000 cur=89 best=89 harv=5950
+[ 61371.6s 06:58:13] [walk] 148s iters=100000 cur=89 best=89 harv=7121
+[ 61401.6s 06:58:43] [walk] 178s iters=120000 cur=89 best=89 harv=8247
+[ 61433.8s 06:59:15] [walk] 210s iters=140000 cur=89 best=89 harv=9763
+[ 61465.2s 06:59:46] [walk] 242s iters=160000 cur=89 best=89 harv=11769
+[ 61496.8s 07:00:18] [walk] 273s iters=180000 cur=89 best=89 harv=13831
+[ 62047.3s 07:09:28] [lns] 524s iters=20000 cur=95 best=89 pool=3777 hot=46221 harv=6 peelgain=11512
+[ 62153.4s 07:11:14] [walk] 30s iters=20000 cur=89 best=89 harv=1639
+[ 62182.9s 07:11:44] [walk] 59s iters=40000 cur=89 best=89 harv=2994
+[ 62211.6s 07:12:13] [walk] 88s iters=60000 cur=89 best=89 harv=4221
+[ 62241.0s 07:12:42] [walk] 117s iters=80000 cur=89 best=89 harv=5649
+[ 62269.8s 07:13:11] [walk] 146s iters=100000 cur=89 best=89 harv=6839
+[ 62299.1s 07:13:40] [walk] 175s iters=120000 cur=89 best=89 harv=8010
+[ 62332.1s 07:14:13] [walk] 209s iters=140000 cur=89 best=89 harv=9178
+[ 62363.6s 07:14:45] [walk] 240s iters=160000 cur=89 best=89 harv=11272
+[ 62395.8s 07:15:17] [walk] 272s iters=180000 cur=89 best=89 harv=13440
+[ 62943.0s 07:24:24] [lns] 519s iters=20000 cur=93 best=89 pool=3688 hot=42155 harv=5 peelgain=12126
+[ 63053.4s 07:26:14] [walk] 30s iters=20000 cur=89 best=89 harv=1680
+[ 63082.4s 07:26:43] [walk] 59s iters=40000 cur=89 best=89 harv=3083
+[ 63112.0s 07:27:13] [walk] 88s iters=60000 cur=89 best=89 harv=4523
+[ 63141.3s 07:27:42] [walk] 118s iters=80000 cur=89 best=89 harv=5872
+[ 63173.9s 07:28:15] [walk] 150s iters=100000 cur=89 best=89 harv=7467
+[ 63205.1s 07:28:46] [walk] 181s iters=120000 cur=89 best=89 harv=9624
+[ 63237.0s 07:29:18] [walk] 213s iters=140000 cur=89 best=89 harv=11825
+[ 63267.4s 07:29:48] [walk] 244s iters=160000 cur=89 best=89 harv=13769
+[ 63297.3s 07:30:18] [walk] 274s iters=180000 cur=89 best=89 harv=15596
+[ 63835.4s 07:39:16] [lns] 512s iters=20000 cur=96 best=89 pool=3788 hot=51054 harv=3 peelgain=12089
+[ 63952.6s 07:41:14] [walk] 29s iters=20000 cur=89 best=89 harv=1596
+[ 63981.0s 07:41:42] [walk] 57s iters=40000 cur=89 best=89 harv=2994
+[ 64009.5s 07:42:11] [walk] 86s iters=60000 cur=89 best=89 harv=4356
+[ 64038.2s 07:42:39] [walk] 114s iters=80000 cur=89 best=89 harv=5638
+[ 64067.1s 07:43:08] [walk] 143s iters=100000 cur=89 best=89 harv=6853
+[ 64096.3s 07:43:37] [walk] 173s iters=120000 cur=89 best=89 harv=7826
+[ 64125.1s 07:44:06] [walk] 201s iters=140000 cur=89 best=89 harv=8924
+[ 64158.3s 07:44:39] [walk] 234s iters=160000 cur=89 best=89 harv=10230
+[ 64189.4s 07:45:10] [walk] 266s iters=180000 cur=89 best=89 harv=12439
+[ 64219.9s 07:45:41] [walk] 296s iters=200000 cur=89 best=89 harv=14579
+[ 64745.8s 07:54:27] [lns] 522s iters=20000 cur=94 best=89 pool=3793 hot=44288 harv=2 peelgain=12501
+[ 64854.4s 07:56:15] [walk] 30s iters=20000 cur=89 best=89 harv=1608
+[ 64885.4s 07:56:46] [walk] 61s iters=40000 cur=89 best=89 harv=3756
+[ 64916.7s 07:57:18] [walk] 93s iters=60000 cur=89 best=89 harv=6005
+[ 64945.4s 07:57:46] [walk] 122s iters=80000 cur=89 best=89 harv=8363
+[ 64976.2s 07:58:17] [walk] 152s iters=100000 cur=89 best=89 harv=10717
+[ 65008.0s 07:58:49] [walk] 184s iters=120000 cur=89 best=89 harv=12906
+[ 65039.5s 07:59:20] [walk] 216s iters=140000 cur=89 best=89 harv=15086
+[ 65070.7s 07:59:52] [walk] 247s iters=160000 cur=89 best=89 harv=17226
+[ 65102.1s 08:00:23] [walk] 278s iters=180000 cur=89 best=89 harv=19401
+[ 65709.2s 08:10:30] [lns] 585s iters=20000 cur=95 best=89 pool=3807 hot=43672 harv=11 peelgain=12247
+[ 65758.6s 08:11:20] [walk] 35s iters=20000 cur=89 best=89 harv=1677
+[ 65794.4s 08:11:55] [walk] 70s iters=40000 cur=89 best=89 harv=3262
+[ 65830.9s 08:12:32] [walk] 107s iters=60000 cur=89 best=89 harv=4701
+[ 65871.2s 08:13:12] [walk] 147s iters=80000 cur=89 best=89 harv=5833
+[ 65911.9s 08:13:53] [walk] 188s iters=100000 cur=89 best=89 harv=8253
+[ 65958.5s 08:14:40] [walk] 234s iters=120000 cur=89 best=89 harv=10724
+[ 66001.8s 08:15:23] [walk] 278s iters=140000 cur=89 best=89 harv=12969
+[ 66667.1s 08:26:28] [walk] 43s iters=20000 cur=89 best=89 harv=1604
+[ 66708.5s 08:27:09] [walk] 84s iters=40000 cur=89 best=89 harv=3215
+[ 66749.7s 08:27:51] [walk] 125s iters=60000 cur=89 best=89 harv=4592
+[ 66790.4s 08:28:31] [walk] 166s iters=80000 cur=89 best=89 harv=5890
+[ 66827.7s 08:29:09] [walk] 203s iters=100000 cur=89 best=89 harv=7100
+[ 66874.2s 08:29:55] [walk] 250s iters=120000 cur=89 best=89 harv=8263
+[ 66915.3s 08:30:36] [walk] 291s iters=140000 cur=89 best=89 harv=9314
+[ 67587.5s 08:41:48] [walk] 63s iters=20000 cur=89 best=89 harv=1549
+[ 67650.6s 08:42:52] [walk] 126s iters=40000 cur=89 best=89 harv=3059
+[ 67709.4s 08:43:50] [walk] 185s iters=60000 cur=89 best=89 harv=4250
+[ 67769.0s 08:44:50] [walk] 244s iters=80000 cur=89 best=89 harv=5628
+[ 67823.8s 08:45:45] [walk] 299s iters=100000 cur=89 best=89 harv=6758
+[ 68478.2s 08:56:39] [walk] 53s iters=20000 cur=89 best=89 harv=1618
+[ 68533.4s 08:57:34] [walk] 109s iters=40000 cur=89 best=89 harv=3084
+[ 68586.0s 08:58:27] [walk] 161s iters=60000 cur=89 best=89 harv=4550
+[ 68637.6s 08:59:19] [walk] 213s iters=80000 cur=89 best=89 harv=5733
+[ 68685.1s 09:00:06] [walk] 260s iters=100000 cur=89 best=89 harv=6855
+[ 69375.1s 09:11:36] [walk] 50s iters=20000 cur=89 best=89 harv=1659
+[ 69423.4s 09:12:24] [walk] 99s iters=40000 cur=89 best=89 harv=3149
+[ 69474.5s 09:13:15] [walk] 150s iters=60000 cur=89 best=89 harv=4552
+[ 69526.8s 09:14:08] [walk] 202s iters=80000 cur=89 best=89 harv=5739
+[ 69580.8s 09:15:02] [walk] 256s iters=100000 cur=89 best=89 harv=6918
+[ 70275.1s 09:26:36] [walk] 50s iters=20000 cur=89 best=89 harv=1633
+[ 70322.3s 09:27:23] [walk] 97s iters=40000 cur=89 best=89 harv=3133
+[ 70376.5s 09:28:17] [walk] 152s iters=60000 cur=89 best=89 harv=4493
+[ 70426.1s 09:29:07] [walk] 201s iters=80000 cur=89 best=89 harv=6558
+[ 70475.7s 09:29:57] [walk] 251s iters=100000 cur=89 best=89 harv=8894
+[ 70522.8s 09:30:44] [walk] 298s iters=120000 cur=89 best=89 harv=10989
+[ 71190.3s 09:41:51] [walk] 65s iters=20000 cur=89 best=89 harv=1427
+[ 71238.5s 09:42:39] [walk] 113s iters=40000 cur=89 best=89 harv=2975
+[ 71285.6s 09:43:27] [walk] 161s iters=60000 cur=89 best=89 harv=4320
+[ 71327.8s 09:44:09] [walk] 203s iters=80000 cur=89 best=89 harv=5537
+[ 71377.2s 09:44:58] [walk] 252s iters=100000 cur=89 best=89 harv=6627

@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "common_helper_count": 28,
+  "price_numerators": [
+    9,
+    8,
+    1,
+    8,
+    1,
+    2,
+    8
+  ],
+  "denominator": 10,
+  "local_enumerations": [
+    {
+      "cluster": 3,
+      "weighted_helper_minimum": 115,
+      "denominator": 10,
+      "nodes": 5493600,
+      "last_output_candidates": 113206275,
+      "attaining_helper_masks": [
+        132,
+        32776,
+        34816,
+        34948,
+        524420,
+        525312,
+        558088,
+        67110912,
+        134743040,
+        142606336,
+        142868480,
+        2147483656,
+        2214594568
+      ]
+    },
+    {
+      "cluster": 4,
+      "weighted_helper_minimum": 116,
+      "denominator": 10,
+      "nodes": 7137585,
+      "last_output_candidates": 235201050,
+      "attaining_helper_masks": [
+        2064,
+        2176,
+        4104,
+        4112,
+        34944,
+        557056,
+        1052688,
+        8945664,
+        134217856,
+        142606336,
+        142610448,
+        269484032,
+        269486096,
+        269488136,
+        2147483656,
+        2148007936,
+        2281701512,
+        2416443392
+      ]
+    }
+  ],
+  "joint_gate_lower_bound_rational": [
+    311,
+    10
+  ],
+  "joint_gate_lower_bound_integer": 32,
+  "qualification": "The rational bound is verified by complete enumeration, not by an optimizer status."
+}

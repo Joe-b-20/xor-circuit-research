@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "date": "2026-10-23",
+  "started_at_utc": "2026-10-23T16:06:30.470000+00:00",
+  "finished_at_utc": "2026-10-23T16:23:09.219287+00:00",
+  "wall_seconds": 998.749,
+  "command": [
+    "python3",
+    "verify_complete_92_exclusion.py",
+    "--full"
+  ],
+  "execution_location": "Freshly extracted original proof archive; the complete standalone technical dependency set is byte-identical to those audited files.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "source_archive_sha256": "007792f8be74bba470ad534b6149cc1f8d6c1374acf34e02a880b67fbc3d229b",
+  "standalone_technical_files_matched_to_audited_source": 1186,
+  "result": {
+    "status": "PASS",
+    "verified_gate_interval": [
+      93,
+      97
+    ],
+    "new_lower_bound": 93,
+    "case_coverage": {
+      "6": {
+        "total_partitions": 275354,
+        "forest_component_exclusions": 271718,
+        "parent_price_exclusions": 96,
+        "farkas_exclusions": 3636,
+        "pair_recipe_exclusions": 0,
+        "uncovered": 0
+      },
+      "7": {
+        "total_partitions": 22060,
+        "forest_component_exclusions": 0,
+        "parent_price_exclusions": 18404,
+        "farkas_exclusions": 816,
+        "pair_recipe_exclusions": 2840,
+        "uncovered": 0
+      }
+    },
+    "eight_component_case": "Previously verified: P=26,c=8 requires at least 96 gates.",
+    "premise": "Previously verified P>=26 and 3P+4T+4Q>=214 reduce any <=92-gate circuit to P=26,H=60,c in {6,7,8}.",
+    "known97_rechecked": true,
+    "reused_completed_checks": false,
+    "source_certificate_checker_rerun": true,
+    "exact_optimum": "UNRESOLVED"
+  },
+  "partition_farkas_certificates_checked": 1113,
+  "single_component_certificates_checked": 17,
+  "eight_component_partition_total": 110712,
+  "eight_component_price_coverage": 1552,
+  "eight_component_pair_recipe_exclusions": 109160,
+  "forest_obstructions_rechecked": 20933,
+  "seven_component_pair_orbits_rechecked": 710,
+  "full_log_sha256": "76dcd41677d3848c47bb2e456bc8dff26c6137ba47b169e4d1ef34f976b642e2",
+  "verification_scope": "Fresh exact computational replay and source integrity checking; mathematical reductions and checkers remain subject to independent review. No external peer review or proof-assistant formalization claimed."
+}

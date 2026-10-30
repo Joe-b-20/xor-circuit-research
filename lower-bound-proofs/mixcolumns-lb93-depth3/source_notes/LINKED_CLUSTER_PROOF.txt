@@ -1,0 +1,65 @@
+Exact local construction prices coupled to actual output recipes
+
+The previous local inequalities price a cluster's available helper masks.
+They do not necessarily force these masks to arise from the same choices
+as the global circuit's selected output recipes. The following refinement
+couples both quantities and remains valid for all normalized circuits.
+
+For a four-output cluster, let r_0,...,r_3 be its selected complete recipes.
+Let U be the union of their paid helper masks. Assign nonnegative integer
+prices w_h to helpers and arbitrary integer prices p_(b,r) to recipes.
+Compute by complete enumeration
+
+       m = min [ sum_(h in union_b r_b) w_h + sum_b p_(b,r_b) ].
+
+For every actual simultaneous selection this implies
+
+       sum_h w_h*x_h + sum_(b,r) p_(b,r)*z_(b,r) >= m.
+
+Nonnegative helper prices allow additional paid helpers to increase the
+left side. Recipe prices may be negative: exactly one recipe is selected
+for each output. No incompatible choices are assumed to be executable;
+the oracle conservatively enumerates ALL recipe tuples, including tuples
+with differing construction choices for a shared helper. Enlarging this
+set can only lower m, so it cannot invalidate the inequality.
+
+For weight-seven clusters all ancestors lie within the cluster support,
+since the depth-three unfolded construction is cancellation-free.
+
+For weight-five clusters project every helper mask onto the eight inputs
+in the cluster's output supports. A foreign cancelling input outside this
+support disappears from both parents. The resulting recipe consists of
+the projected helper masks of weight at least two, with duplicates removed.
+It is one of the complete 315 local recipes for the corresponding output.
+
+To see this explicitly, a cancelling output (z+a+b)+(z+c+d+e), where
+z is outside the cluster support, becomes (a+b)+(c+d+e). The quartet's
+construction projects to c+(d+e), after renaming c if necessary. The old
+triple projects to the pair a+b. The recipe contains precisely these
+three helpers. Noncancelling recipes and cancellation inside the support
+are unchanged. The checker independently verifies this projection for
+every complete global recipe of every weight-five output.
+
+Several global helpers can project to the same local helper. Sum the
+corresponding x variables when lifting a helper coefficient; their sum
+is at least the presence of that projected helper. This uses w_h>=0.
+Map each global output recipe to its unique projected local recipe for
+the recipe coefficient. Different global helpers that collapse to the
+same local mask may have different constructions; the conservative oracle
+still includes the resulting tuple, as required.
+
+Discovery uses byte-rotation-invariant helper prices and recipe prices.
+The complete 315 choices for byte zero index recipe orbits; each other
+byte's choices map back by rotation. The integer checker reconstructs
+these maps, all recipe options, and every full-model coefficient.
+
+The restricted profile master is ONLY a price-discovery tool. Its objective
+is not a valid unrestricted lower bound. Each proposed price vector is
+replaced with its complete integer enumeration minimum, then a dual is
+lifted to the full original model. The same exact coefficient-excess
+correction used in FULL_BOUND_92.txt applies without change.
+
+Independent checking uses a separate threshold enumerator that reverses
+the output order, represents selected helpers by bitsets, and proves that
+no recipe tuple is strictly below the claimed minimum. It does not import
+the profile master, its columns, or the discovery enumerator.

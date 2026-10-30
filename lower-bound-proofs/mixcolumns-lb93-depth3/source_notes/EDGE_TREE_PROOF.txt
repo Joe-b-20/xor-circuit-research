@@ -1,0 +1,39 @@
+Prices for exact output-parent edges
+
+PARENT_FOREST_PROOF.txt proves that a circuit's selected output-parent
+edges form a forest. Its earlier weighted-tree inequalities assign a
+reward to an OUTPUT LABEL. A stronger version assigns a separate reward
+to each legal edge e=(a,b,o), where a XOR b is output o.
+
+For any vertex set S, choose nonnegative vertex prices w_h and arbitrary
+signed integer edge rewards lambda_e. Check for EVERY connected legal
+tree within S with distinct output labels that
+
+                sum_(h in V(tree)) w_h >= sum_(e in E(tree)) lambda_e.
+
+The actual selected edges inside S form a forest. Decompose it into its
+nonempty connected trees. Their vertex sets are disjoint, so summing the
+checked inequalities does not charge any parent twice. Extra present
+helpers only increase the left side, since vertex prices are nonnegative.
+Thus the full-circuit inequality is
+
+ sum_(paid h in S) w_h*x_h - sum_(recipes r) lambda_(parent_edge(r))*z_r
+                >= -sum_(raw inputs h in S) w_h.
+
+Recipes whose edge is outside S have reward zero. This is universal for
+actual normalized depth-three circuits, with unrestricted sharing and
+cancellation. It imposes no canonical private-parent restriction.
+
+Completeness of tree checking is as in PARENT_FOREST_PROOF.txt. Starting
+from every root and adjoining a leaf with a new output label generates
+every required tree. Such a tree is induced: an additional legal edge
+between its vertices would equate its output row with the XOR of a
+distinct-label path of length greater than one, contradicting independence
+of the 32 AES output rows. Consequently the vertices uniquely determine
+the edge set, which the independent checker reconstructs explicitly.
+
+Discovery's selected vertex sets need not cover the entire parent graph;
+each resulting inequality is valid for all circuits separately. Discovery
+may skip an expensive set, but every retained inequality must be checked
+on its complete finite tree list. The independent checker regenerates
+the full parent graph from independently regenerated output recipes.

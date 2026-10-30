@@ -1,0 +1,66 @@
+{
+  "allocation": {
+    "joltik": 5,
+    "fox_mu8": 10
+  },
+  "base_seed": 20261027,
+  "chunk_seconds": 30.0,
+  "engines": "all",
+  "sharing": true,
+  "pin_cpus": false,
+  "target_overrides": {
+    "joltik": {
+      "seed_paths": [
+        "targets/seeds/joltik/local_g43_d8_217e20b57859.json"
+      ],
+      "objective": "depth_then_gates",
+      "gate_limit": 43,
+      "cap_cycle": [
+        8
+      ]
+    },
+    "fox_mu8": {
+      "objective": "gates",
+      "cap_cycle": [
+        14,
+        15,
+        null
+      ],
+      "engine_knobs": {
+        "v2-lns": {
+          "proposal_seconds": 0.2
+        },
+        "v2-translate": {
+          "proposal_seconds": 0.2
+        },
+        "v2-cores": {
+          "proposal_seconds": 0.2
+        },
+        "v3-component": {
+          "proposal_seconds": 0.2,
+          "move_knobs": {
+            "max_seconds": 0.2,
+            "max_nodes": 6000,
+            "max_trials": 48
+          }
+        },
+        "v3-interface": {
+          "proposal_seconds": 0.2,
+          "move_knobs": {
+            "max_seconds": 0.2,
+            "max_nodes": 6000,
+            "max_trials": 48
+          }
+        },
+        "v3-backward": {
+          "proposal_seconds": 0.2,
+          "move_knobs": {
+            "max_seconds": 0.2,
+            "max_nodes": 6000,
+            "max_trials": 48
+          }
+        }
+      }
+    }
+  }
+}

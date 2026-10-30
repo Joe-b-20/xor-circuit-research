@@ -1,0 +1,62 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-10-30T00:38:12Z
+  % Not a NIST-issued circuit
+  % Found by: xorsearch v6 (search/versions/v6-xorsearch), run rerun-aes_sbox_bottom, worker cap5-06
+  % Started from: NIST 28@5 circuit (seed.json in the logs)
+  % Logs: logs/aes-sbox-bottom-xor29-depth4/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % aes-sbox-bottom-xor29-depth4 8 18   % AES S-box bottom linear layer; 18 inputs, 8 outputs; 2-input XOR/XNOR basis
+
+## Circuit
+begin circuit aes-sbox-bottom-xor29-depth4
+
+  % Description: y = A.x + c with A and c in aes-sbox-bottom.mat.txt
+  % Tally of variables (47): 18 inputs; 8 outputs; 21 intermediates
+  % Tally of gates (29): 26 XOR; 3 XNOR
+  % Gate depth 4
+  % Gates per gate level: 8 8 7 6
+
+Inputs: x0:x17
+Outputs: y0:y7
+Internal: t1:t21
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x0 x1
+XOR t2 x0 x2
+XOR t3 x3 x4
+XOR t4 x3 x5
+XOR t5 x9 x15
+XOR t6 x12 x15
+XOR t7 x10 x16
+XOR t8 x13 x16
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t9 t1 t3
+XOR t10 t2 t4
+XOR t11 t3 x7
+XOR t12 t2 x8
+XOR t13 x14 t6
+XOR t14 x11 t7
+XOR t15 t5 t7
+XOR t16 t6 t8
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t17 x6 t11
+XOR t18 x6 t12
+XOR t19 t11 t12
+XOR y3 t9 t15
+XNOR y7 t10 t16
+XOR t20 t13 t14
+XOR t21 t13 x17
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR y4 t10 y3
+XNOR y1 t17 y3
+XOR y0 t17 t15
+XOR y6 t19 y7
+XOR y5 t19 t20
+XNOR y2 t18 t21
+end SLP
+end circuit

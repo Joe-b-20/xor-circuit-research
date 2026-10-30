@@ -1,0 +1,29 @@
+{
+ "circuit": "ss17-8x8-gf256-xor418-depth5.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T08:15:37.782+00:00",
+ "seconds_into_run": 2510.253742403933,
+ "run": "nist-batch-64",
+ "run_id": "1f25cdf1067943dba6e9797285fa5b89",
+ "worker": "ss17-8x8-gf256-cap5-00",
+ "depth_cap": 5,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "418@9",
+  "by": "NIST",
+  "source": "nist-g418-d9.json"
+ },
+ "chain_root": "bp#579088437",
+ "circuit_sha256": "bee1e5e002d5e1299e653b99d3fcec2199e51aa601ca3c5a61abbe5590b7f1e5",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

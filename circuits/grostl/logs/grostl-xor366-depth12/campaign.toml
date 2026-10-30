@@ -1,0 +1,47 @@
+# grostl: NIST 410@12, min depth 5; caps [5, 6, 7, 12, None]
+[campaign]
+name = "nist-grostl"
+seed = 20261032
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "cap5"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["./search/seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "cap6"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 6
+seeds = ["./search/seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "cap7"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 7
+seeds = ["./search/seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "cap12"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = 12
+seeds = ["./search/seeds/grostl/nist-g410-d12.json"]
+
+[[workers]]
+name = "free"
+target = "grostl"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/grostl/nist-g410-d12.json"]

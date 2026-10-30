@@ -1,0 +1,150 @@
+AES forward MixColumns: a conditional depth-three lower bound
+2026-10-17
+
+THEOREM
+
+For every normalized two-input XOR circuit computing forward MixColumns
+at depth at most three, if P=26 and its pair graph has c=8 connected
+components, then T+Q>=38. Hence its gate count is at least
+
+                       G=32+26+38=96.
+
+P,T,Q count distinct pair, triple, and quartet helpers in the lossless
+normal form. Fan-out, sharing, and cancellation are unrestricted. No
+symmetry is imposed on the circuit. The theorem is conditional: it does
+not exclude six- or seven-component 26-pair circuits.
+
+1. ODD/EVEN PARITY IDENTIFIES THE FINITE PARTITION CASES
+
+Every output has odd weight, and its unfolded depth-three ancestry has one
+raw-input anchor plus pair signals. Pair edges lie inside graph components.
+Thus each output intersects exactly one pair component oddly. If M is the
+32-by-32 forward MixColumns binary matrix, each component indicator u gives
+a graph-code word (u,M*u). These words partition all 64 coordinates.
+
+The independent row computation verifies that M has rank 32 and all row
+and column parities are odd. Every nonzero graph-code word has even weight
+at least six, by the previous verified graph-code lemma.
+
+For P=26,c=8 the graph cycle rank is beta=P-32+c=2. For each component C,
+weight-seven outputs meeting C in exactly two bits force the pair edge
+joining those bits. The cycle rank of this forced graph is a lower bound
+on the component cycle rank. A previously certified local forest
+obstruction gives another lower bound of one. Taking the maximum of these
+bounds per component, then adding over disjoint components, is valid.
+
+Enumerate every eight-word partition subject to total lower-bound tax <=2.
+The first six sorted words have weight at most ten, because otherwise
+5*6+3*12>64. All short words are generated from M and its inverse; all
+splits of the last remaining support are found by exact binary kernels.
+There are 110,712 partitions after this necessary tax filter. The corrected
+Python and C++ enumerators agree on the full set.
+
+For 109,160 partitions, no pair-recipe cover with cycle rank <=2 exists.
+The exact checker considers all 105 minimal pair recipes for each of the
+12 weight-seven outputs and all 825 for each of the 20 weight-five outputs.
+The latter include every possible foreign cancellation bit. Branching
+covers every viable recipe of a chosen unsatisfied output. Forced edges
+and cycle-rank monotonicity give safe pruning. All cases finish; no timeout
+or UNKNOWN is interpreted as infeasibility.
+
+The remaining 1,552 partitions form 388 orbits under cyclic byte rotation.
+The actual matrix symmetry is verified before rotating certificates. This
+only reuses conditional proofs; it does not restrict circuit symmetry.
+
+2. MAKE EVERY INTERNAL PAIR FREE
+
+Fix one remaining component partition. Give the circuit all possible pairs
+whose endpoints lie in a common component, at zero cost. This can only
+make constructing the final parents easier.
+
+A normalized parent has weight at most four. Its availability in this
+relaxation is determined exactly by intersections with the components:
+
+  weight 1: always available;
+  weight 2: its two bits lie in one component;
+  weight 3: at least two of its bits lie in one component;
+  weight 4: its intersection with every component has even size.
+
+For weight three, use the internal pair and the remaining raw input. For
+weight four, use two disjoint internal pairs; the intersection patterns
+are either four bits in one component or two in each of two components.
+The converses follow because a depth-two triple is pair+input and a
+quartet is the sum of two disjoint pairs. These tests retain every actual
+parent and permit extra ones.
+
+For each output y, list all parent edges (a,b) with a XOR b=y, where a has
+weight one or three and b has weight two or four, and both pass the tests.
+Before filtering there are exactly 6,120 edges across the 32 outputs.
+This list is regenerated independently of the discovery recipe generator.
+
+3. THE ACTUAL OUTPUT-PARENT GRAPH IS A FOREST
+
+Its vertices are distinct final-parent signals; each output contributes
+one edge joining its actual parents and labeled by that output. Each label
+appears once. If there were a cycle, XORing its edge labels would cancel
+every vertex and give zero. That would be a nonempty linear dependence
+among distinct output rows. M has rank 32, so no such cycle exists.
+
+Thus the graph is a disjoint union of trees with distinct output labels.
+Assign vertex cost zero to raw inputs and pairs, and one to triples and
+quartets. Its total paid-vertex cost is at most T+Q.
+
+4. EXACT TREE PRICES
+
+For each of the 388 representative partitions the certificate gives signed
+rational output prices lambda_0,...,lambda_31. The independent checker
+regenerates all legal parent edges and enumerates every connected tree
+whose edge labels are distinct. It checks the exact integer inequality
+
+       sum(lambda_o over labels of tree F)
+          <= number of triple/quartet vertices in F.             (1)
+
+Prices are stored as integers over a positive common denominator. All
+checking is integer arithmetic; numerical LP results are not trusted.
+The independent enumeration grows rooted trees by every boundary edge with
+a fresh output label. For graph components of at most 12 vertices a second
+brute-force vertex-subset check verifies the same tree list.
+
+Summing (1) over the actual output-parent forest counts each output label
+exactly once, and each paid parent vertex at most once. Consequently
+
+                   T+Q >= sum_o lambda_o.
+
+The smallest exact certificate sum among all 388 representatives is 75/2.
+The checker verifies 1,404,228 trees with multiplicity across all
+representatives, using 2,459 distinct cached component graphs. Therefore
+
+                       T+Q >= 75/2,
+
+and integrality gives T+Q>=38. Together with the exact pair exclusions,
+this covers every possible P=26,c=8 circuit and proves the theorem.
+
+5. WHAT THIS REMOVES FROM THE 92-GATE CASE
+
+The previously verified exact inequality 3P+4T+4Q>=214, together with P>=26,
+forces every 92-gate normalized circuit to have P=26,T+Q=34. The established
+component bound c<=8 then leaves (c,beta)=(6,0),(7,1),(8,2).
+The new theorem rules out (8,2), because 34<38. The remaining cases are
+
+                       (c,beta)=(6,0) or (7,1).
+
+They have not been excluded. The verified unrestricted interval is still
+92<=D3<=97. A 96-gate circuit in the eight-component branch is also not
+excluded by this theorem.
+
+REPRODUCTION
+
+  python verify_eight_component_tradeoff.py
+
+This independently checks the prices, the local forest obstructions, the
+complete partition generation, and all remaining pair exclusions. It
+requires only Python's standard library and a C++17 compiler.
+
+The recorded PASS used --reuse-forest-premise, alongside a completed fresh
+full verify_pair26.py run. The reused obstruction file's SHA256 is recorded
+in eight_component_tradeoff_checks.json. The default command above reruns
+that premise itself.
+
+All finite checks completed. This is a computer-assisted proof with explicit
+mathematical reductions, not a proof-assistant formalization.

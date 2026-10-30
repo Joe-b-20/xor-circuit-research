@@ -1,0 +1,122 @@
+{
+  "run": "search/runs/validation-invmixcolumns13-20261028",
+  "profile": "search/configs/invmixcolumns-13.json",
+  "source_manifest_sha256": "824a0b08db617ecbed6f51f78010d3af61acbafb0e5272c12976788beef2c7c1",
+  "workers": 13,
+  "first_chunks": {
+    "invmixcolumns-00": 1,
+    "invmixcolumns-01": 1,
+    "invmixcolumns-02": 1,
+    "invmixcolumns-03": 1,
+    "invmixcolumns-04": 1,
+    "invmixcolumns-05": 1,
+    "invmixcolumns-06": 1,
+    "invmixcolumns-07": 1,
+    "invmixcolumns-08": 1,
+    "invmixcolumns-09": 1,
+    "invmixcolumns-10": 1,
+    "invmixcolumns-11": 1,
+    "invmixcolumns-12": 1
+  },
+  "resumed_chunks": {
+    "invmixcolumns-00": 2,
+    "invmixcolumns-01": 2,
+    "invmixcolumns-02": 2,
+    "invmixcolumns-03": 2,
+    "invmixcolumns-04": 2,
+    "invmixcolumns-05": 2,
+    "invmixcolumns-06": 2,
+    "invmixcolumns-07": 2,
+    "invmixcolumns-08": 2,
+    "invmixcolumns-09": 2,
+    "invmixcolumns-10": 2,
+    "invmixcolumns-11": 2,
+    "invmixcolumns-12": 2
+  },
+  "verification": {
+    "verified": true,
+    "records": 17,
+    "source_manifest_sha256": "824a0b08db617ecbed6f51f78010d3af61acbafb0e5272c12976788beef2c7c1"
+  },
+  "sessions": [
+    {
+      "resume": true,
+      "stop_reason": "requested",
+      "elapsed_seconds": 2.9593088959809393,
+      "returncodes": {
+        "invmixcolumns-00": 0,
+        "invmixcolumns-01": 0,
+        "invmixcolumns-02": 0,
+        "invmixcolumns-03": 0,
+        "invmixcolumns-04": 0,
+        "invmixcolumns-05": 0,
+        "invmixcolumns-06": 0,
+        "invmixcolumns-07": 0,
+        "invmixcolumns-08": 0,
+        "invmixcolumns-09": 0,
+        "invmixcolumns-10": 0,
+        "invmixcolumns-11": 0,
+        "invmixcolumns-12": 0
+      },
+      "forced_shutdown": [],
+      "error": null
+    },
+    {
+      "resume": false,
+      "stop_reason": "duration elapsed",
+      "elapsed_seconds": 7.600814705947414,
+      "returncodes": {
+        "invmixcolumns-00": 0,
+        "invmixcolumns-01": 0,
+        "invmixcolumns-02": 0,
+        "invmixcolumns-03": 0,
+        "invmixcolumns-04": 0,
+        "invmixcolumns-05": 0,
+        "invmixcolumns-06": 0,
+        "invmixcolumns-07": 0,
+        "invmixcolumns-08": 0,
+        "invmixcolumns-09": 0,
+        "invmixcolumns-10": 0,
+        "invmixcolumns-11": 0,
+        "invmixcolumns-12": 0
+      },
+      "forced_shutdown": [],
+      "error": null
+    }
+  ],
+  "core_sha256": {
+    "run.py": "eae5f226f12603ebcb2fc5c3728b00e38b3b8e81bfb8e0da9886fb4fb33515c3",
+    "runtime.py": "c2cfea1525cb809ee21f44e77ddff23c378c04631d7331492d85b09dbafa2bb6",
+    "worker.py": "6860706a28ce8462ee0ddd917f0a44198f3036193ceffd819c22a86927c69698",
+    "engine_api.py": "5f910862d005d13f10a645babf9ba4c2d350edeab09699bfd528446e142a37b0",
+    "target.py": "f0f43caa16f750168f1cc28294e49942431e0c70bc1ffae3a5c55ab9f1a48d43"
+  },
+  "date": "2026-10-28",
+  "search_tests": {
+    "passed": true,
+    "count": 64
+  },
+  "existing_repository_tests": {
+    "passed": true,
+    "count": 17
+  },
+  "engine_smoke": {
+    "path": "search/engines/invmixcolumns-smoke.json",
+    "sha256": "326b2d83ce32da9615e4bccf54571e8e4a87e7570d09c9a116bc64ad7a6a6f40",
+    "applicable_cases": 42,
+    "excluded_cases": 9,
+    "verified_callbacks": 138
+  },
+  "stopped_previous_run_audit": {
+    "path": "search/reports/joltik-depth-foxmu8-15-20261028.json",
+    "sha256": "4737e0caabd06589c24c0c2b66b24fca5468b754f64f9f245b98c1bc6775f58a",
+    "verified_records": 3776
+  },
+  "repository_verification": {
+    "circuits": 44,
+    "bank_reconstructions": 8,
+    "nist_controls": 11,
+    "record_index": true,
+    "errors": []
+  }
+}

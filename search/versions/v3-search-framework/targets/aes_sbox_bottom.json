@@ -1,0 +1,105 @@
+{
+  "id": "aes_sbox_bottom",
+  "name": "AES S-box Boyar\u2013Peralta bottom linear layer",
+  "input_count": 18,
+  "output_count": 8,
+  "rows": [
+    100056,
+    100035,
+    184645,
+    99867,
+    99894,
+    122269,
+    111024,
+    110637
+  ],
+  "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+  "affine_output_constants": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1
+  ],
+  "output_bit_order": "S0 is most significant AES output bit",
+  "input_names": [
+    "z0",
+    "z1",
+    "z2",
+    "z3",
+    "z4",
+    "z5",
+    "z6",
+    "z7",
+    "z8",
+    "z9",
+    "z10",
+    "z11",
+    "z12",
+    "z13",
+    "z14",
+    "z15",
+    "z16",
+    "z17"
+  ],
+  "output_names": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7"
+  ],
+  "scope": "Linear part only. Add the recorded affine output constants when reconnecting to the original nonlinear S-box.",
+  "matrix_source": {
+    "kind": "symbolic extraction from pinned official full S-box; no standalone NIST bottom matrix exists in the pinned tree",
+    "path": "targets/nist/original/data/slp/aes/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp",
+    "cut_inputs": [
+      "t68",
+      "t69",
+      "t70",
+      "t71",
+      "t72",
+      "t73",
+      "t74",
+      "t75",
+      "t76",
+      "t77",
+      "t78",
+      "t79",
+      "t80",
+      "t81",
+      "t82",
+      "t83",
+      "t84",
+      "t85"
+    ],
+    "source_url": "https://github.com/usnistgov/Circuits/blob/8366158a4324ef902ce740f29ddc9f7ebb1018b2/data/slp/aes/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp"
+  },
+  "nist_commit": "8366158a4324ef902ce740f29ddc9f7ebb1018b2",
+  "seeds": [
+    {
+      "path": "targets/seeds/aes_sbox_bottom/aes_bottom_g28_d5_686060e01e81.json",
+      "gates": 28,
+      "depth": 5,
+      "circuit_sha256": "686060e01e81961ca9be32290015b9e16be8cade1775a7013a46b0c0cc376bfe",
+      "source_kind": "derived from pinned NIST full S-box tail",
+      "pareto": true,
+      "ncff_path": "targets/seeds/aes_sbox_bottom/aes_bottom_g28_d5_686060e01e81.ncff"
+    },
+    {
+      "path": "targets/seeds/aes_sbox_bottom/aes_bottom_g38_d4_ea3d7018e996.json",
+      "gates": 38,
+      "depth": 4,
+      "circuit_sha256": "ea3d7018e9961471470e8cf40e20be3471232e39422549f971e96f1768b9c7a5",
+      "source_kind": "derived from pinned NIST full S-box tail",
+      "pareto": true,
+      "ncff_path": "targets/seeds/aes_sbox_bottom/aes_bottom_g38_d4_ea3d7018e996.ncff"
+    }
+  ]
+}

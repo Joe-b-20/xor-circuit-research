@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "local_gate_count": 16,
+  "separation": "D3({1,3,4}) = 16 + D3({3,4})",
+  "saved_circuits": [
+    {
+      "file": "cluster1_free7_circuit.json",
+      "gates": 20,
+      "outputs": [
+        1,
+        9,
+        17,
+        25
+      ],
+      "depth": 3
+    },
+    {
+      "file": "cluster34_circuit.json",
+      "gates": 32,
+      "outputs": [
+        3,
+        4,
+        11,
+        12,
+        19,
+        20,
+        27,
+        28
+      ],
+      "depth": 3
+    },
+    {
+      "file": "cluster134_circuit.json",
+      "gates": 48,
+      "outputs": [
+        1,
+        3,
+        4,
+        9,
+        11,
+        12,
+        17,
+        19,
+        20,
+        25,
+        27,
+        28
+      ],
+      "depth": 3
+    }
+  ],
+  "qualification": "Partial circuits are upper bounds only."
+}

@@ -1,0 +1,249 @@
+{
+  "spec": "AES MixColumns (forward), a 32x32 GF(2) linear map. Column matrix [[2,3,1,1],[1,2,3,1],[1,1,2,3],[3,1,1,2]] over GF(2^8) with reduction polynomial 0x11b.",
+  "note": "sha256_circuit_json is over the exact circuit JSON file bytes as written. sha256_canonical_gates is SHA-256 over the exact UTF-8 bytes of the compact JSON string {\"inputCount\":32,\"gates\":[...]} with keys in that order; reproduce it with scripts/reproduce_canonical_hashes.py.",
+  "circuits": [
+    {
+      "id": "mixcolumns_89gates_depth10",
+      "inputCount": 32,
+      "gateCount": 89,
+      "depth": 10,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "73aa8c40e88cbfe406b35a8628fd4d74e78a62755a9f902a33d5f21f10be34c6",
+      "sha256_circuit_json": "d85a45e0870b6a4c8e644dec54185450d0b3b0f9c93b3a7d9f242b644a834595",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 10,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "claim": "Historical claim as of 2026-07-10, superseded (see PRIOR_ART.md Corrections; this circuit is dominated by mixcolumns_89gates_depth5): used fewer 2-input XOR gates than the then-smallest published counts (91 XORs, Lin et al., CT-RSA 2021, s-XOR; 92, Maximov); no optimality claim."
+    },
+    {
+      "id": "mixcolumns_98gates_depth3",
+      "inputCount": 32,
+      "gateCount": 98,
+      "depth": 3,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "6326c8956e058db486da558246512fa4a809fc8aeddac5e370d19a34fdba1214",
+      "sha256_circuit_json": "da2a1bcbe0b988aaca158587b791c97f77193d886bf8bd3ee417ee231b5b014f",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 3,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "claim": "Uses fewer 2-input XOR gates than the 99-gate depth-3 AES MixColumns point reported by Shi, Feng, and Xu (ToSC 2023). Depth 3 is the known minimum depth for this map (an output depending on w inputs needs depth at least ceil(log2(w)), and MixColumns has outputs of weight 7); we do not make an optimality claim on the gate count."
+    },
+    {
+      "id": "mixcolumns_91gates_depth6",
+      "inputCount": 32,
+      "gateCount": 91,
+      "depth": 6,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "5cc2f57df9c2f2ddac9e74cd6591090ca16a8ce498d49391aaf0ec483929cde9",
+      "sha256_circuit_json": "9f9e933eb566779364bf800fec107831568f36db4aba7d3997d05e147a593a6e",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 6,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "claim": "Historical claim as of 2026-07-10, superseded (see PRIOR_ART.md Corrections; this circuit is dominated by mixcolumns_89gates_depth5): matched the then-smallest published XOR count (91, Lin et al., CT-RSA 2021) at depth 6, one gate fewer than Maximov's depth-6 92; no optimality claim."
+    },
+    {
+      "id": "mixcolumns_97gates_depth3",
+      "inputCount": 32,
+      "gateCount": 97,
+      "depth": 3,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "e4c4e678c4b7c22d889c6e060b43859c111b82b953d6d9b43c49c079c0545b56",
+      "sha256_circuit_json": "c1a5899f682e87222bfa84d833233ac874e8d47819e3336d0e85760d14be9f5d",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 3,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "claim": "Uses two fewer 2-input XOR gates at depth 3 than the 99-gate depth-3 record of Shi, Feng, and Xu (ToSC 2023). Depth 3 is the known minimum depth for this map; we do not make an optimality claim on the gate count."
+    },
+    {
+      "id": "mixcolumns_91gates_depth4",
+      "inputCount": 32,
+      "gateCount": 91,
+      "depth": 4,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "9cf029f08ebc36848c94b2d9c8bbd51f2695737a9af4c976fb7c7f016ef283a7",
+      "sha256_circuit_json": "883da457b3224916664f85ec12c1b940cab96c6632586a334709f375cb8cbf3d",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 4,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "provenance": "Own lineage, from scratch. Found 2026-08-01T00:37:38Z by the cascade search of the method repository, in a directory whose every root is a pure function of an integer seed; no circuit file, harvest, archive, repel mask or population from any other run entered it, and cross-pollination was off. Supersedes mixcolumns_92gates_depth4 at depth 4 within this repository; that circuit is retained. Two further verified 91-gate depth-4 circuits exist in independent lineages (mask-Jaccard 0.433 and 0.358 against this one); this is the one shipped because it is own-lineage and from scratch, so the provenance statement that 97 @ 3 and 91 @ 4 are from scratch needs no new argument. All 91 of its gates are live and its 91 gate masks are distinct, so it is not a 90 with a dead gate.",
+      "claim": "Uses six fewer 2-input XOR gates than the only published depth-4 AES MixColumns circuit we are aware of (97 gates: Osvik and Canright, ePrint 2024/1076, Appendix G); we do not make an optimality claim, and in particular 90 gates at depth 4 is undecided, not refuted."
+    },
+    {
+      "id": "mixcolumns_92gates_depth4",
+      "inputCount": 32,
+      "gateCount": 92,
+      "depth": 4,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "e79bfccf5322fe8933242b47b53e94e73163615c70d5c45c9721e27ac86fd97d",
+      "sha256_circuit_json": "5174fab91f81084d274fa9278b5f8a98f3cd4b580e38d05f8ab9a384404f0067",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 4,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "claim": "Uses five fewer 2-input XOR gates than the only published depth-4 AES MixColumns circuit we are aware of (97 gates: Osvik and Canright, ePrint 2024/1076, Appendix G); we do not make an optimality claim. Updated 2026-08-29: superseded at its depth within this repository by mixcolumns_91gates_depth4 (one fewer gate, same depth). It is retained, not withdrawn, and its original claim stands as made. It is not a dead-gate strip of the 91: all 92 of its gates are live."
+    },
+    {
+      "id": "mixcolumns_89gates_depth5",
+      "inputCount": 32,
+      "gateCount": 89,
+      "depth": 5,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "c3b972af282d25e8313a510f5cf840472401c6268bd28cda889593fc3379f064",
+      "sha256_circuit_json": "9a79842111c6954ca6955db5cb602d7667f843aac8e52bdef86db3568bdcc972",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 5,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "claim": "Uses five fewer 2-input XOR gates than the published depth-5 point (94, Osvik and Canright, ePrint 2024/1076, Appendix F), and is the smallest count at depth <= 5 among published circuits and among this project's own-lineage circuits. Updated 2026-07-29: it is no longer the smallest count at depth 5 in this repository - mixcolumns_88gates_depth5 has 88 gates at the same depth - but that circuit is derived from published work, so this 89 remains the depth-5 point of the frontier reachable with no imported material. We do not make an optimality claim. See PRIOR_ART.md Corrections. Updated 2026-07-30: the second half of that 2026-07-29 update no longer holds. mixcolumns_88gates_depth5_fromscratch has 88 gates at depth 5 on a lineage with no imported material, so this 89 is no longer the depth-5 point of any frontier stated here and is dominated at its depth. It is retained, not withdrawn, and its original claim stands as made."
+    },
+    {
+      "id": "mixcolumns_88gates_depth5",
+      "inputCount": 32,
+      "gateCount": 88,
+      "depth": 5,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "91d45c57d638dc5832a23eaf7721ba80d07bc0566769c47b56bd5566ae4eabff",
+      "sha256_circuit_json": "979c01a00b4be500e2e27f04cf60a592fa097853de6892dead2f5c0dbaf4ce25",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 5,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "provenance": "DERIVED FROM PUBLISHED WORK. Its seed chain passes through Jean's published 88-gate circuit (ePrint 2026/1481), so it is not an independent construction and Jean is credited for the material it descends from. The full chain, mask-identity checked at every link: Jean's transcribed 88 -> rho^2-symmetrized and peeled to 95 -> orbit-walked to 92 -> unioned with a 91 of this project's own lineage -> an exactly rho^2-symmetric 90 at depth 9 -> the hunt87 orbit seed (mask-identical to that 90, Jaccard 1.000) -> orbit worker o1, cycle 129 -> polish worker o_polish, restart 71 -> 88 at depth 6 at walk iteration 38447 (worker run-time t = 127003.3 s, 2026-07-29 09:39:14 -0400) -> this 88 at depth 5 at walk iteration 40419 (t = 127007.5 s, 2026-07-29 09:39:18 -0400), 4.2 s later by the walk's Pareto depth tie-break. All wall-clock times here are local, UTC-04:00, not UTC; the worker process these run-times are measured from started 2026-07-27 22:22:30 -0400, so t exceeds 35 h. Found by this project's search (slp-plateau-search v3.0.0, campaign 87, hunt87 fleet). Untouched run archive: evidence/campaign87_run_2026-07-29_got_88at5_derived/ in https://github.com/Joe-b-20/slp-plateau-search, whose PROVENANCE.md opens with this derived lineage (source file there: evidence/circuits/mixcolumns_88gates_depth5.json).",
+      "claim": "Derived from published work: its seed chain passes through Jean's 88 (ePrint 2026/1481) - see provenance - so nothing here is claimed as an independent construction, and 88 is not a new count in any case (Jean has priority). What the circuit is: 88 gates at depth 5, the shallowest 88-gate circuit this project holds, six fewer gates than the published depth-5 point (94, Osvik and Canright, ePrint 2024/1076, Appendix F). It is also not a new construction relative to this repository: it shares 75 of its 88 internal masks with mixcolumns_89gates_depth5 (Jaccard 0.735, the highest overlap between any two circuits here), so it is best described as that depth-5 89's own basin reached at 88 gates. No optimality claim. Updated 2026-07-30: mixcolumns_88gates_depth5_fromscratch reaches the same (88, 5) point on a lineage with no imported material, and supersedes this circuit as the circuit that establishes that point. This one is retained, not withdrawn: it is still verified, still six gates below the published depth-5 point, and its derived-work disclosure above stands unchanged. It is no longer the shallowest 88 this project holds outright - it shares that depth with the from-scratch circuit."
+    },
+    {
+      "id": "mixcolumns_88gates_depth5_fromscratch",
+      "inputCount": 32,
+      "gateCount": 88,
+      "depth": 5,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "4fb3ba75a5e3208c8d853b0e26e289cdc979305a5c040ea38e3488db239df6ad",
+      "sha256_circuit_json": "298e9b5011761599e03b134600fb850cdf8219d98eed515313631564ddb397c3",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 5,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "provenance": "Found by this project's own search from scratch, with no imported material anywhere in the chain: fleet worker c_naive, session 5 of that worker's log (launched 2026-07-29 15:35:00 -0400), restart 16 of that session, rooted in randomized balanced XOR trees over the 32 raw inputs (root naive#1958, i.e. constructors.build(\"naive\", 1958), no seeded circuit), which rebuilds to exactly the logged 146 gates at depth 3. Chain: root -> 88 gates at depth 6 at walk iteration 33873 (worker run-time t = 69192.7 s, 2026-07-30 10:48:12 -0400) -> this 88 at depth 5 at walk iteration 37155 (t = 69198.8 s, 2026-07-30 10:48:19 -0400), 6.1 s later by the walk's Pareto depth tie-break. All wall-clock times here are local, UTC-04:00, not UTC; t is measured from that session's start, so it is 19.22 h at the find. Quote the session as well as the restart - the log holds five worker sessions and 58 restarts in total, and there is an earlier restart 16 in a different session. Why nothing imported can be in that chain, strongest fact first: the ROOT reads nothing. The root spec was constructor:naive, and the constructor branch of the archived worker's root generator calls only constructors.build(name, seed) - it has no file-reading path at all, and every branch of that generator that can open a circuit off disk is a different branch, unreachable under this spec. The producing engine reads nothing either: both the 88 at depth 6 and this circuit came out of walk chunks, and engine_walk has no candidate pool and no disk read path. The cross-pollination route is closed five ways: the knob (pop_glob) has exactly one writer repo-wide (worker.py:133); hunt_worker.py never sets it; the merge helper's single call site is guarded on that knob being set; the supervisor never launches worker.py at all, so no worker in this fleet had cross-pollination available; and the untouched log contains zero of the lines the engine emits when a merge brings material in. Family repulsion was off (repel=False on the session's start line), each restart carries its own local context (observable: restart 16 opens at cur=93 best=93, worse than restart 15's 92, so nothing carried over), there are no reseed files and no context adoption, and the worker never imports the archive module. Four corroborations a skeptic can recheck: (a) all five code files are byte-identical to the already-audited archive of mixcolumns_88gates_depth6 and predate this run by two days; (b) that published log archive is a byte-exact prefix of the live log and already contains this session's repel=False start line; (c) the mask set is line 35285 of the worker's own harvest file c_naive.pop.jsonl and appears in zero of the fleet's other fifteen harvest files (sixteen in total); (d) the RNG seed is arithmetically forced by the clock - seed 1958 at this restart implies 242 prior chunks, predicting t = 65340 s against 65349 s logged, 0.014 % off. It is not an isolated point: 135 distinct own-lineage 88-gate depth-5 mask sets were harvested in the same pocket, all oracle-verified, every one of them first appearing at or after that line (the record is one of the 135). Found in campaign 87, hunt87 fleet (slp-plateau-search v3.1.0). Untouched run archive: evidence/campaign87_run_2026-07-30_got_88at5_fromscratch/ in https://github.com/Joe-b-20/slp-plateau-search (source file there: evidence/circuits/mixcolumns_88gates_depth5_fromscratch.json).",
+      "claim": "Realizes AES MixColumns in 88 two-input XOR gates at depth 5. This is NOT a new gate-count record: 88 is the existing best-known count, published by Jean (ePrint 2026/1481, posted 2026-07-23), and Jean has priority. What changed on 2026-07-30 is whose lineage reaches the (88, 5) point: it is now reached by a circuit found from scratch, rooted in a randomized XOR tree over the 32 raw inputs, rather than only by mixcolumns_88gates_depth5, whose seed chain runs through Jean's published work. That removes THIS PROJECT'S dependence on that circuit at the depth-5 point; it does not beat it. The consequence is that the two frontiers this repository used to state collapse into one: 97 @ 3, 92 @ 4, 88 @ 5, entirely on this project's own lineage and with no imported material. Comparisons: it dominates Jean's 88 at depth 7 (equal count, two levels shallower - with the standing caveat that depth 7 is this project's own measurement of its own transcription, because that note states no depth), improves on the published depth-5 point (94, Osvik and Canright, ePrint 2024/1076, Appendix F) by six gates, and dominates this project's own 88s at depths 6, 7 and 8 and its 89 at depth 5. Its depth 5 is forced, not merely observed: the ASAP least-fixpoint schedule over its own mask set - the shallowest schedule any circuit on that mask set admits - still puts 11 of its 32 output bits (rows 1, 7, 12, 13, 17, 18, 21, 25, 27, 28, 31) at depth 5, so it cannot be rescheduled to depth 4. It is a construction distinct from every other circuit here: the most internal masks it shares with any of them is 45, against the superseded mixcolumns_98gates_depth3 (Jaccard 0.319), while the largest Jaccard it reaches is 0.323, against mixcolumns_88gates_depth6 (43 masks) - which is also the largest against any other 88; the two maxima fall on different circuits because the 98 is a bigger mask set, and both are far below the 0.7 same-family threshold, and it shares 42 of 88 masks with Jean's circuit, 32 of which are the forced output targets, leaving 10 of 56 free masks in common. What no imported material does NOT claim: not method independence (the engines and knobs were tuned over a campaign that did read published circuits), not disjointness from Jean's circuit, not landscape independence, not optimality, and not bit-reproducibility of the descent - the root is exactly reproducible, the trajectory is not. Its remove-2 shell (1,540 windows) and remove-3 shell (27,720 windows) are exhaustively empty, so any 87-gate circuit differs from it by at least 4 masks. 87 was not found, and no optimality claim is made."
+    },
+    {
+      "id": "mixcolumns_88gates_depth6",
+      "inputCount": 32,
+      "gateCount": 88,
+      "depth": 6,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "462a149979fe0ab39173e6aa70c1728fe55cb24b380ea0b2241ffaa6301a8c4c",
+      "sha256_circuit_json": "45d6957669cd3e63af93a936c17b784fcc37ece7ef84c51d30df4eb01ed1f84a",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 6,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "provenance": "Found by this project's own search from scratch, with no imported material anywhere in the chain: fleet worker c_naive, restart 18, rooted in randomized balanced XOR trees over the 32 raw inputs (root naive#2163, no seeded circuit), then root -> 89 gates -> 88 gates at depth 7 at walk iteration 37270 (worker run-time t = 68238.2 s, 2026-07-28 17:19:45 -0400) -> this 88 at depth 6 at walk iteration 37501 (t = 68238.7 s, 2026-07-28 17:19:45 -0400), 0.5 s later by the walk's Pareto depth tie-break. All wall-clock times here are local, UTC-04:00, not UTC; the worker process these run-times are measured from started 2026-07-27 22:22:27 -0400, so t is 18.96 h at the find. Why nothing imported can be in that chain, strongest fact first: the ROOT reads nothing. The worker's root spec was constructor:naive, and the constructor branch of the archived worker's root generator calls only constructors.build(name, seed) -- it has no file-reading path at all, and every branch of that generator that can open a circuit off disk is a different branch, unreachable under this spec. All 38 restarts logged in the session that produced this circuit opened on a naive#<seed> root, and root naive#2163 rebuilds to exactly the logged 139 gates at depth 3. The remaining routes were audited closed as well, and are stated as two-part arguments because the fleet launcher as run is not archived: the hunt worker never mentions the cross-pollination knob (pop_glob) anywhere AND its untouched log contains none of the lines the engine emits when a merge brings material in; family repulsion was off; and a per-restart local context means no global-best carryover. Knobs alone would not settle it -- the derived 88 at depth 5 in this file had identical knobs and imported material still reached it, through its root. This is the first 88 this project has found from scratch; the 88 at depth 7 remains its independently found match of Jean's published point. Found in campaign 87, hunt87 fleet (slp-plateau-search v3.0.0). Untouched run archive: evidence/campaign87_run_2026-07-28_got_88at6_fromscratch/ in https://github.com/Joe-b-20/slp-plateau-search (source file there: evidence/circuits/mixcolumns_88gates_depth6.json).",
+      "claim": "Realizes AES MixColumns in 88 two-input XOR gates at depth 6. This is NOT a new gate-count record: 88 is the existing best-known count, published by Jean (ePrint 2026/1481, posted 2026-07-23, who has priority) and independently matched by mixcolumns_88gates_depth7 in this repository. What this circuit does is improve the published depth-count Pareto frontier at its depth: it dominates Jean's 88 (equal count, one level shallower - with the standing caveat that depth 7 is this project's own measurement of its own transcription, because that paper states no depth), and it uses four fewer gates than the published depth-6 point (92: Maximov, ePrint 2019/833; also Xiang et al., ToSC 2020(2), s-XOR). It is a construction distinct from every other circuit here: its highest internal-mask overlap with any of them is 47 masks (Jaccard 0.362, against the superseded mixcolumns_89gates_depth10; the highest against any 88 here is 43 masks, Jaccard 0.323). 87 was not found, and no optimality claim is made. Updated 2026-07-30: dominated within this repository by mixcolumns_88gates_depth5_fromscratch (same count, one level shallower, also from scratch). It is retained: it still improves on the published depth-6 point by four gates, it is a different family from that circuit (43 shared masks, Jaccard 0.323), and it remains the first 88 this project found from scratch."
+    },
+    {
+      "id": "mixcolumns_88gates_depth7",
+      "inputCount": 32,
+      "gateCount": 88,
+      "depth": 7,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "76bac50ab0e4a7dd54578e77f57f6d08e96a8803aff72dba2c3f5fadaaa06ee1",
+      "sha256_circuit_json": "6e823ad8cc8953fc8859e37f7000e8054a16ab769118c8f878f116ff3d72852a",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 7,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "provenance": "Found by this project's own search (slp-plateau-search v2.0.0, campaign 87, merged engine, worker w10_sym94; the 88-gate size first appeared at walk iteration 45614, at depth 11, on 2026-07-26 22:08:19, and the walk's Pareto depth tie-break reached this depth-7 circuit at walk iteration 47436, 5.3 s later), on this project's own lineage and with no imported material: from-scratch 97 at depth 3 -> 89 at depth 6 -> 89 at depth 5 -> an exactly rho^2-symmetric 94 at depth 5 -> walk drift to 88 at depth 7. Untouched run archive: evidence/campaign87_run_2026-07-26_got_88at7/ in https://github.com/Joe-b-20/slp-plateau-search (source file there: evidence/circuits/mixcolumns_88gates_depth7.json).",
+      "claim": "Matches, and does not beat, the published count floor: 88 gates at depth 7 is the same (depth, count) point as Jean, ePrint 2026/1481 (that paper states no depth; depth 7 is this project's measurement of its own transcription). The circuit is an independent one, found by this project's search on its own lineage; it shares 61 of 88 internal masks with Jean's circuit (Jaccard 0.530), as measured in the method repository. Jean has priority; no optimality claim. Updated 2026-07-29: this circuit is now dominated by mixcolumns_88gates_depth6 (same count, one level shallower, also on this project's own lineage); it is kept as the independent replication of Jean's published point."
+    },
+    {
+      "id": "mixcolumns_88gates_depth8",
+      "inputCount": 32,
+      "gateCount": 88,
+      "depth": 8,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "3a23e2f2b2f3835cab74ba23800088bb03ab4ee3f076f2b9a826c78cd84f8ef1",
+      "sha256_circuit_json": "66bd373ab30c91e435f907176ffbab347c748b7ce80236bc4b692409eec2a54f",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 8,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench"
+      },
+      "provenance": "DERIVED FROM PUBLISHED WORK. This circuit's seed chain passes through Jean's published 88-gate circuit (ePrint 2026/1481): Jean's 88 was rho^2-symmetrized and peeled to 95, orbit-walked to 92, unioned with a 91 of this project's own lineage to give a rho^2-symmetric 90 at depth 9, which was then descended to this 88 at depth 8. It is therefore not an independent from-scratch construction, and Jean is credited accordingly. Found by this project's search (slp-plateau-search v2.0.0, campaign 87, hunt-deeper, worker d3_orb90a, 2026-07-27; the 88-gate size first appeared at walk iteration 99444, at depth 10, and the depth tie-break reached this depth-8 circuit at walk iteration 100049, 1.2 s later). Untouched run archive: evidence/campaign87_run_2026-07-27_got_88at8_thirdfamily/ in https://github.com/Joe-b-20/slp-plateau-search (source file there: evidence/circuits/mixcolumns_88gates_depth8_thirdfamily.json).",
+      "claim": "Derived from published work (see provenance: its seed chain passes through Jean's 88, ePrint 2026/1481). A third distinct 88-gate construction, at Jaccard 0.455 to Jean's 88 and 0.544 to this repository's 88 at depth 7, both well below the 0.7 same-family threshold used in the method repository. It is dominated by mixcolumns_88gates_depth7 (same gate count, greater depth), so it improves nothing; kept as a verified, documented distinct construction. No optimality claim. Updated 2026-07-29: also dominated by mixcolumns_88gates_depth6 and by mixcolumns_88gates_depth5."
+    },
+    {
+      "id": "mixcolumns_102gates_cf",
+      "inputCount": 32,
+      "gateCount": 102,
+      "depth": 5,
+      "outputCount": 32,
+      "outputConvention": "output j (j in 0..31) is MixColumns output bit j; bit j = bit (j mod 8) of state byte (j div 8), least-significant-bit-first within each byte. It is produced at internal signal index outputSignals[j].",
+      "sha256_canonical_gates": "27af52030fb70af9aa92ca430391e55be0c02c0aabc6487962c3ca7f84f0640c",
+      "sha256_circuit_json": "ded0a186062bae38217a3363b973c4b8466c7819a386960db0f49b3d4056b675",
+      "verified": {
+        "allOutputsCorrect": true,
+        "everyGateIs2InputXOR": true,
+        "everyParentIndexSmaller": true,
+        "measuredDepth": 5,
+        "cancellationFree": true,
+        "cancellingGateCount": 0,
+        "method": "checked against AES MixColumns rebuilt from GF(2^8) in verify.py, and against 32 basis-vector responses in the Verilog testbench. Cancellation-freeness was checked separately by replaying the gate list over input-dependency bitsets and confirming that for every one of the 102 gates the two operand masks are disjoint (mask[a] AND mask[b] = 0), i.e. the number of cancelling gates kappa is 0; all 102 gates are live and all 32 output masks are present."
+      },
+      "provenance": "This project: the cancellation-free incumbent found 2026-08-15 by the beat88 campaign (a search campaign of this project, named in its method repository). Independently re-verified from the raw JSON on 2026-08-29: 102 gates, 32 of 32 targets covered, kappa = 0 cancelling gates, depth 5. Published with its matching lower bound at bounds/cf_gte92/ in https://github.com/Joe-b-20/slp-plateau-search, which holds this same circuit as cf_102gates_depth5.json, the L_cf >= 92 price certificate it is bracketed by, and check_cancellation_free.py, a standalone checker that recomputes kappa from any circuit file. It supersedes the project's earlier CP-SAT cancellation-free upper bound of 103 gates, which was a one-gate regression rather than a first.",
+      "claim": "best known cancellation-free 2-input XOR circuit for MixColumns; with the certified lower bound L_cf >= 92 this brackets 92 <= L_cf(M) <= 102"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+ "circuit": "bkl16-4x4-gf256-xor102-depth4.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T08:36:32.365+00:00",
+ "seconds_into_run": 195.69268522399943,
+ "run": "nist-batch-32a",
+ "run_id": "5d1f9e80678c46c4afea7b5354f995bb",
+ "worker": "bkl16-4x4-gf256-cap4-00",
+ "depth_cap": 4,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "107@6",
+  "by": "NIST",
+  "source": "nist-g107-d6.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "651778d8140299b6b044962d6ae7d46e5713eb5fc8b63ada0853bbed90b1e228",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

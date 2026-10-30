@@ -1,0 +1,29 @@
+{
+ "circuit": "clefia-m1-xor100-depth9.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T06:59:29.350+00:00",
+ "seconds_into_run": 1434.3502885720227,
+ "run": "nist-clefia-m1",
+ "run_id": "d2d394ccda154f5da7840870b825a5f1",
+ "worker": "cap10-01",
+ "depth_cap": 10,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "103@10",
+  "by": "NIST",
+  "source": "nist-g103-d10.json"
+ },
+ "chain_root": "best",
+ "circuit_sha256": "02376dbb84ac6ab82b967fda254df7e04909f6685f0d02156577e96ac21830b5",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

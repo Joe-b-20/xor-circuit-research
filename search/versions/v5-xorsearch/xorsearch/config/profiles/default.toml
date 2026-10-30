@@ -1,0 +1,11 @@
+# default profile -- deliberately empty.
+#
+# Every knob's built-in default lives next to the code that reads it (a `KNOBS = Section(...)`
+# declaration).  This profile is applied first in every campaign (`profiles = ["default"]`), so it
+# is the place to change a default for *all* your campaigns without touching code.  Example:
+#
+#   [worker]
+#   checkpoint_seconds = 120.0
+#
+# See every knob with:      python -m xorsearch config show
+# Explain one (or a group): python -m xorsearch config explain sharing

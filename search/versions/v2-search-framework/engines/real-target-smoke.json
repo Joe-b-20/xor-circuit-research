@@ -1,0 +1,6480 @@
+{
+  "purpose": "Bounded correctness/operator smoke, not search quality or discovery-rate benchmark",
+  "api_sha256": "ca38304f684f7659d4408a302ad62f881085a822afcf2359416f3ece4b0cc5e3",
+  "verifier_sha256": "bc310de84b41bf51422ca251b4723029b91c7d23bfc0deb72c0ccbd69edb8fda",
+  "seed": 20261024,
+  "depth_cap": null,
+  "seconds": 0.45,
+  "max_iterations": 8,
+  "resume_seconds": 0.08,
+  "resume_iterations": 1,
+  "results": [
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "legacy-constructor",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-constructor",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 8,
+        "changed": 8,
+        "uphill": 4,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "balanced-constructor": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "balanced-constructor"
+        },
+        "elapsed_seconds": 0.011055714974645525,
+        "best_depth": 5,
+        "current_gate_count": 56,
+        "current_depth": 4,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-constructor",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "balanced-constructor": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "balanced-constructor"
+        },
+        "elapsed_seconds": 0.0012313459883444011,
+        "best_depth": 5,
+        "current_gate_count": 58,
+        "current_depth": 4,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 56,
+        "depth": 4
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              7,
+              4
+            ],
+            [
+              9,
+              16
+            ],
+            [
+              18,
+              19
+            ],
+            [
+              15,
+              3
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              21,
+              22
+            ],
+            [
+              20,
+              23
+            ],
+            [
+              0,
+              7
+            ],
+            [
+              22,
+              25
+            ],
+            [
+              1,
+              15
+            ],
+            [
+              19,
+              27
+            ],
+            [
+              26,
+              28
+            ],
+            [
+              2,
+              12
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              30,
+              31
+            ],
+            [
+              17,
+              14
+            ],
+            [
+              8,
+              15
+            ],
+            [
+              33,
+              34
+            ],
+            [
+              32,
+              35
+            ],
+            [
+              19,
+              21
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              38,
+              39
+            ],
+            [
+              37,
+              40
+            ],
+            [
+              1,
+              16
+            ],
+            [
+              15,
+              5
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              2,
+              10
+            ],
+            [
+              4,
+              9
+            ],
+            [
+              45,
+              46
+            ],
+            [
+              44,
+              47
+            ],
+            [
+              8,
+              11
+            ],
+            [
+              49,
+              25
+            ],
+            [
+              16,
+              14
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              51,
+              52
+            ],
+            [
+              50,
+              53
+            ],
+            [
+              15,
+              4
+            ],
+            [
+              45,
+              55
+            ],
+            [
+              54,
+              56
+            ],
+            [
+              12,
+              8
+            ],
+            [
+              4,
+              16
+            ],
+            [
+              58,
+              59
+            ],
+            [
+              7,
+              5
+            ],
+            [
+              15,
+              13
+            ],
+            [
+              61,
+              62
+            ],
+            [
+              60,
+              63
+            ],
+            [
+              16,
+              0
+            ],
+            [
+              65,
+              30
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              67,
+              43
+            ],
+            [
+              66,
+              68
+            ]
+          ],
+          "gate_count": 52,
+          "depth": 4
+        }
+      ]
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "legacy-paar",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-paar",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "paar-frequency": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 2,
+          "construction_gates": 8
+        },
+        "elapsed_seconds": 0.0012131750117987394,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-paar",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "paar-frequency": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 2,
+          "construction_gates": 9
+        },
+        "elapsed_seconds": 0.0006741539691574872,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "rows"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "legacy-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-bp",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-bp": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 8,
+          "distance_nodes": 2225,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.005758645012974739,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-bp",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-bp": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 9,
+          "distance_nodes": 2230,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.001311823958531022,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "inverse-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "inverse-bp",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "inverse-bp": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 8,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.010636765975505114,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "inverse-bp",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "inverse-bp": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 9,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.0022226739674806595,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "legacy-window",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-window",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "first-unlock": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 6,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search"
+        },
+        "elapsed_seconds": 0.005480855994392186,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-window",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "first-unlock": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 6,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search"
+        },
+        "elapsed_seconds": 0.001167448004707694,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "legacy-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-walk",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-walk": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 1,
+          "injected": 1
+        },
+        "elapsed_seconds": 0.032706614991184324,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-walk",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-walk": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 2,
+          "injected": 1
+        },
+        "elapsed_seconds": 0.004334133991505951,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "legacy-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-lns",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 8,
+        "changed": 4,
+        "uphill": 2,
+        "callbacks": 5,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-lns": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 2,
+          "injected": 40
+        },
+        "elapsed_seconds": 0.014287412981502712,
+        "best_depth": 5,
+        "current_gate_count": 30,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-lns",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-lns": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 1,
+          "injected": 33
+        },
+        "elapsed_seconds": 0.002559556975029409,
+        "best_depth": 5,
+        "current_gate_count": 29,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 7,
+      "distinct_metric_pairs": 3,
+      "verified_current": {
+        "gate_count": 30,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "engine": "legacy-anneal3",
+      "applicable": false,
+      "reason": "partition model requires every row support <= 8"
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v2-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-walk",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "v2-walk": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 1,
+          "injected": 2
+        },
+        "elapsed_seconds": 0.023066041991114616,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-walk",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-walk": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 2,
+          "injected": 2
+        },
+        "elapsed_seconds": 0.0028866869979538023,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v2-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-lns",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 6,
+        "changed": 5,
+        "uphill": 1,
+        "callbacks": 8,
+        "resumed_rng": false,
+        "operators": {
+          "v2-lns": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 3,
+          "injected": 33
+        },
+        "elapsed_seconds": 0.1021575600025244,
+        "best_depth": 5,
+        "current_gate_count": 29,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-lns",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "v2-lns": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 1,
+          "injected": 37
+        },
+        "elapsed_seconds": 0.01578975300071761,
+        "best_depth": 5,
+        "current_gate_count": 29,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 10,
+      "distinct_metric_pairs": 5,
+      "verified_current": {
+        "gate_count": 29,
+        "depth": 5
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "engine": "v2-anneal3",
+      "applicable": false,
+      "reason": "partition model requires every row support <= 8"
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v2-translate",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-translate",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 6,
+        "changed": 6,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "translate": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 7,
+          "constructible": 4,
+          "partitioned": 3,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 3,
+          "unchanged": 1,
+          "timed_out": 0,
+          "before": 29,
+          "after": 28,
+          "added": 0,
+          "released": 1,
+          "depth": 7,
+          "elapsed_seconds": 0.023035073012579232
+        },
+        "elapsed_seconds": 0.2405359210097231,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-translate",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "translate": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 8,
+          "constructible": 5,
+          "partitioned": 5,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 3,
+          "unchanged": 3,
+          "timed_out": 0,
+          "before": 28,
+          "after": 29,
+          "added": 3,
+          "released": 2,
+          "depth": 7,
+          "elapsed_seconds": 0.03136750601697713
+        },
+        "elapsed_seconds": 0.03265184705378488,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v2-cores",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-cores",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 4,
+        "changed": 4,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "cores": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 8,
+          "constructible": 8,
+          "partitioned": 0,
+          "joint_roots": 18,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 7,
+          "timed_out": 0,
+          "before": 28,
+          "after": 29,
+          "added": 2,
+          "released": 1,
+          "depth": 5,
+          "elapsed_seconds": 0.0422250060364604
+        },
+        "elapsed_seconds": 0.2536827009753324,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-cores",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "cores": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 8,
+          "constructible": 8,
+          "partitioned": 0,
+          "joint_roots": 29,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 6,
+          "timed_out": 0,
+          "before": 28,
+          "after": 29,
+          "added": 1,
+          "released": 0,
+          "depth": 5,
+          "elapsed_seconds": 0.039107605000026524
+        },
+        "elapsed_seconds": 0.0402771370136179,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 3,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v3-component",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-component",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "component_merge": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 711,
+          "trials": 18,
+          "candidates_verified": 35,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 18,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 29,
+          "before_depth": 5,
+          "after_gates": 30,
+          "after_depth": 5,
+          "elapsed_seconds": 0.04019676201278344
+        },
+        "elapsed_seconds": 0.3364394530071877,
+        "best_depth": 5,
+        "current_gate_count": 29,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-component",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "component_merge": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 841,
+          "trials": 8,
+          "candidates_verified": 12,
+          "unchanged": 0,
+          "construction_failures": 2,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 8,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 29,
+          "before_depth": 5,
+          "after_gates": 34,
+          "after_depth": 6,
+          "elapsed_seconds": 0.04020575503818691
+        },
+        "elapsed_seconds": 0.041608736966736615,
+        "best_depth": 5,
+        "current_gate_count": 29,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 4,
+      "verified_current": {
+        "gate_count": 29,
+        "depth": 5
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v3-interface",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-interface",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 4,
+        "changed": 4,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "interface_basis": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 1210,
+          "trials": 17,
+          "candidates_verified": 33,
+          "unchanged": 10,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 17,
+          "basis_reconstructions": 33,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 28,
+          "before_depth": 5,
+          "after_gates": 29,
+          "after_depth": 7,
+          "elapsed_seconds": 0.04172929603373632
+        },
+        "elapsed_seconds": 0.3283120600390248,
+        "best_depth": 5,
+        "current_gate_count": 28,
+        "current_depth": 5,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-interface",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "interface_basis": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 1553,
+          "trials": 20,
+          "candidates_verified": 38,
+          "unchanged": 4,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 20,
+          "basis_reconstructions": 38,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 28,
+          "before_depth": 5,
+          "after_gates": 30,
+          "after_depth": 7,
+          "elapsed_seconds": 0.040213208994828165
+        },
+        "elapsed_seconds": 0.04141893400810659,
+        "best_depth": 5,
+        "current_gate_count": 30,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 5,
+      "verified_current": {
+        "gate_count": 28,
+        "depth": 5
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "matrix_sha256": "6a2a15b9921418f0f3aa5affdd14254d505c49e57856b10fc4a064f83e64b569",
+      "engine": "v3-backward",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-backward",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 4,
+        "changed": 4,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "backward_package": 8
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 706,
+          "trials": 15,
+          "candidates_verified": 29,
+          "unchanged": 2,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 30,
+          "foreign_parent_roles": 44,
+          "before_gates": 30,
+          "before_depth": 6,
+          "after_gates": 30,
+          "after_depth": 7,
+          "elapsed_seconds": 0.040198505972512066
+        },
+        "elapsed_seconds": 0.32062771904747933,
+        "best_depth": 5,
+        "current_gate_count": 30,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-backward",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "backward_package": 1
+        },
+        "best_gate_count": 28,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 752,
+          "trials": 15,
+          "candidates_verified": 28,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 30,
+          "foreign_parent_roles": 42,
+          "before_gates": 30,
+          "before_depth": 7,
+          "after_gates": 31,
+          "after_depth": 7,
+          "elapsed_seconds": 0.040209135971963406
+        },
+        "elapsed_seconds": 0.04151832603383809,
+        "best_depth": 5,
+        "current_gate_count": 30,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 7,
+      "verified_current": {
+        "gate_count": 30,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "aes_sbox_bottom",
+      "engine": "v3-pairbank3",
+      "applicable": false,
+      "reason": "archived pair-bank model requires row weights five or seven"
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "legacy-constructor",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-constructor",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 8,
+        "changed": 8,
+        "uphill": 3,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "balanced-constructor": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "balanced-constructor"
+        },
+        "elapsed_seconds": 0.014805835962761194,
+        "best_depth": 13,
+        "current_gate_count": 205,
+        "current_depth": 4,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-constructor",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "balanced-constructor": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "balanced-constructor"
+        },
+        "elapsed_seconds": 0.004020666005089879,
+        "best_depth": 13,
+        "current_gate_count": 205,
+        "current_depth": 4,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 205,
+        "depth": 4
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              0,
+              31
+            ],
+            [
+              8,
+              16
+            ],
+            [
+              32,
+              33
+            ],
+            [
+              24,
+              9
+            ],
+            [
+              1,
+              31
+            ],
+            [
+              35,
+              36
+            ],
+            [
+              17,
+              37
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              25,
+              18
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              31,
+              11
+            ],
+            [
+              3,
+              19
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              26,
+              44
+            ],
+            [
+              12,
+              27
+            ],
+            [
+              20,
+              4
+            ],
+            [
+              31,
+              47
+            ],
+            [
+              46,
+              48
+            ],
+            [
+              21,
+              5
+            ],
+            [
+              28,
+              13
+            ],
+            [
+              50,
+              51
+            ],
+            [
+              6,
+              14
+            ],
+            [
+              29,
+              22
+            ],
+            [
+              53,
+              54
+            ],
+            [
+              15,
+              30
+            ],
+            [
+              7,
+              23
+            ],
+            [
+              56,
+              57
+            ],
+            [
+              0,
+              23
+            ],
+            [
+              15,
+              12
+            ],
+            [
+              59,
+              60
+            ],
+            [
+              61,
+              11
+            ],
+            [
+              10,
+              14
+            ],
+            [
+              63,
+              35
+            ],
+            [
+              62,
+              64
+            ],
+            [
+              9,
+              23
+            ],
+            [
+              66,
+              33
+            ],
+            [
+              25,
+              1
+            ],
+            [
+              14,
+              13
+            ],
+            [
+              68,
+              69
+            ],
+            [
+              67,
+              70
+            ],
+            [
+              17,
+              9
+            ],
+            [
+              72,
+              39
+            ],
+            [
+              8,
+              26
+            ],
+            [
+              14,
+              15
+            ],
+            [
+              74,
+              75
+            ],
+            [
+              73,
+              76
+            ],
+            [
+              12,
+              14
+            ],
+            [
+              23,
+              27
+            ],
+            [
+              78,
+              79
+            ],
+            [
+              8,
+              18
+            ],
+            [
+              81,
+              3
+            ],
+            [
+              80,
+              82
+            ],
+            [
+              12,
+              8
+            ],
+            [
+              23,
+              4
+            ],
+            [
+              84,
+              85
+            ],
+            [
+              13,
+              10
+            ],
+            [
+              28,
+              11
+            ],
+            [
+              14,
+              19
+            ],
+            [
+              88,
+              89
+            ],
+            [
+              87,
+              90
+            ],
+            [
+              86,
+              91
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              5,
+              29
+            ],
+            [
+              93,
+              94
+            ],
+            [
+              8,
+              13
+            ],
+            [
+              20,
+              9
+            ],
+            [
+              97,
+              75
+            ],
+            [
+              96,
+              98
+            ],
+            [
+              95,
+              99
+            ],
+            [
+              8,
+              6
+            ],
+            [
+              12,
+              10
+            ],
+            [
+              101,
+              102
+            ],
+            [
+              13,
+              21
+            ],
+            [
+              104,
+              75
+            ],
+            [
+              103,
+              105
+            ],
+            [
+              9,
+              30
+            ],
+            [
+              106,
+              107
+            ],
+            [
+              15,
+              31
+            ],
+            [
+              8,
+              10
+            ],
+            [
+              9,
+              13
+            ],
+            [
+              110,
+              111
+            ],
+            [
+              22,
+              14
+            ],
+            [
+              7,
+              11
+            ],
+            [
+              113,
+              114
+            ],
+            [
+              112,
+              115
+            ],
+            [
+              109,
+              116
+            ],
+            [
+              3,
+              15
+            ],
+            [
+              118,
+              2
+            ],
+            [
+              16,
+              1
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              24,
+              7
+            ],
+            [
+              121,
+              122
+            ],
+            [
+              120,
+              123
+            ],
+            [
+              119,
+              124
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              15,
+              5
+            ],
+            [
+              126,
+              127
+            ],
+            [
+              8,
+              17
+            ],
+            [
+              25,
+              0
+            ],
+            [
+              129,
+              130
+            ],
+            [
+              128,
+              131
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              133,
+              126
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              18,
+              26
+            ],
+            [
+              135,
+              136
+            ],
+            [
+              134,
+              137
+            ],
+            [
+              19,
+              15
+            ],
+            [
+              139,
+              4
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              27,
+              0
+            ],
+            [
+              141,
+              142
+            ],
+            [
+              140,
+              143
+            ],
+            [
+              20,
+              3
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              145,
+              146
+            ],
+            [
+              4,
+              15
+            ],
+            [
+              148,
+              88
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              149,
+              150
+            ],
+            [
+              147,
+              151
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              21,
+              0
+            ],
+            [
+              153,
+              154
+            ],
+            [
+              29,
+              7
+            ],
+            [
+              126,
+              156
+            ],
+            [
+              5,
+              12
+            ],
+            [
+              157,
+              158
+            ],
+            [
+              155,
+              159
+            ],
+            [
+              146,
+              133
+            ],
+            [
+              30,
+              5
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              162,
+              163
+            ],
+            [
+              13,
+              22
+            ],
+            [
+              164,
+              165
+            ],
+            [
+              161,
+              166
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              168,
+              32
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              169,
+              170
+            ],
+            [
+              23,
+              14
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              172,
+              173
+            ],
+            [
+              171,
+              174
+            ],
+            [
+              23,
+              20
+            ],
+            [
+              22,
+              7
+            ],
+            [
+              176,
+              177
+            ],
+            [
+              178,
+              18
+            ],
+            [
+              24,
+              19
+            ],
+            [
+              180,
+              129
+            ],
+            [
+              179,
+              181
+            ],
+            [
+              0,
+              9
+            ],
+            [
+              17,
+              16
+            ],
+            [
+              183,
+              184
+            ],
+            [
+              25,
+              7
+            ],
+            [
+              22,
+              21
+            ],
+            [
+              186,
+              187
+            ],
+            [
+              185,
+              188
+            ],
+            [
+              16,
+              18
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              190,
+              191
+            ],
+            [
+              23,
+              22
+            ],
+            [
+              26,
+              17
+            ],
+            [
+              193,
+              194
+            ],
+            [
+              192,
+              195
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              177,
+              197
+            ],
+            [
+              20,
+              16
+            ],
+            [
+              199,
+              27
+            ],
+            [
+              198,
+              200
+            ],
+            [
+              21,
+              12
+            ],
+            [
+              7,
+              20
+            ],
+            [
+              202,
+              203
+            ],
+            [
+              28,
+              18
+            ],
+            [
+              205,
+              43
+            ],
+            [
+              204,
+              206
+            ],
+            [
+              16,
+              22
+            ],
+            [
+              207,
+              208
+            ],
+            [
+              19,
+              17
+            ],
+            [
+              210,
+              193
+            ],
+            [
+              21,
+              16
+            ],
+            [
+              212,
+              47
+            ],
+            [
+              29,
+              13
+            ],
+            [
+              213,
+              214
+            ],
+            [
+              211,
+              215
+            ],
+            [
+              20,
+              30
+            ],
+            [
+              17,
+              22
+            ],
+            [
+              217,
+              218
+            ],
+            [
+              219,
+              212
+            ],
+            [
+              5,
+              18
+            ],
+            [
+              221,
+              172
+            ],
+            [
+              220,
+              222
+            ],
+            [
+              18,
+              17
+            ],
+            [
+              31,
+              22
+            ],
+            [
+              224,
+              225
+            ],
+            [
+              23,
+              16
+            ],
+            [
+              227,
+              139
+            ],
+            [
+              21,
+              6
+            ],
+            [
+              228,
+              229
+            ],
+            [
+              226,
+              230
+            ]
+          ],
+          "gate_count": 200,
+          "depth": 4
+        }
+      ]
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "legacy-paar",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-paar",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "paar-frequency": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 5,
+          "construction_gates": 8
+        },
+        "elapsed_seconds": 0.0033515249961055815,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-paar",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "paar-frequency": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 5,
+          "construction_gates": 9
+        },
+        "elapsed_seconds": 0.0018814969807863235,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "rows"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "legacy-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-bp",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-bp": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 8,
+          "distance_nodes": 2845,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.008937161008361727,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-bp",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-bp": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 9,
+          "distance_nodes": 2867,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.002791582955978811,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "inverse-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "inverse-bp",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "inverse-bp": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 8,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.0566855359938927,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "inverse-bp",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "inverse-bp": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 9,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.010275955020915717,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "legacy-window",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-window",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "first-unlock": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 6,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search"
+        },
+        "elapsed_seconds": 0.11006895202444866,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-window",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "first-unlock": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 5,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search"
+        },
+        "elapsed_seconds": 0.010770762048196048,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "legacy-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-walk",
+        "applicable": true,
+        "iterations": 3,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-walk": 3
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 2,
+          "injected": 1
+        },
+        "elapsed_seconds": 0.4500928170164116,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-walk",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-walk": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 1,
+          "injected": 1
+        },
+        "elapsed_seconds": 0.08008549903752282,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "legacy-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-lns",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 8,
+        "changed": 2,
+        "uphill": 1,
+        "callbacks": 3,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-lns": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 4,
+          "injected": 36
+        },
+        "elapsed_seconds": 0.13409219298046082,
+        "best_depth": 13,
+        "current_gate_count": 131,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-lns",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-lns": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 2,
+          "injected": 36
+        },
+        "elapsed_seconds": 0.017970521992538124,
+        "best_depth": 13,
+        "current_gate_count": 131,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 5,
+      "distinct_metric_pairs": 2,
+      "verified_current": {
+        "gate_count": 131,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "engine": "legacy-anneal3",
+      "applicable": false,
+      "reason": "partition model requires every row support <= 8"
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v2-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-walk",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "v2-walk": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 1,
+          "injected": 2
+        },
+        "elapsed_seconds": 0.14581370004452765,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-walk",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-walk": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 2,
+          "injected": 2
+        },
+        "elapsed_seconds": 0.020383104973006994,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v2-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-lns",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 5,
+        "changed": 2,
+        "uphill": 0,
+        "callbacks": 6,
+        "resumed_rng": false,
+        "operators": {
+          "v2-lns": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 2,
+          "injected": 39
+        },
+        "elapsed_seconds": 0.3196341499569826,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-lns",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-lns": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 1,
+          "injected": 38
+        },
+        "elapsed_seconds": 0.04310987301869318,
+        "best_depth": 13,
+        "current_gate_count": 130,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 7,
+      "distinct_metric_pairs": 2,
+      "verified_current": {
+        "gate_count": 130,
+        "depth": 13
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "engine": "v2-anneal3",
+      "applicable": false,
+      "reason": "partition model requires every row support <= 8"
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v2-translate",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-translate",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 6,
+        "changed": 6,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "translate": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 4,
+          "constructible": 3,
+          "partitioned": 1,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 0,
+          "timed_out": 1,
+          "before": 132,
+          "after": 132,
+          "added": 1,
+          "released": 1,
+          "depth": 13,
+          "elapsed_seconds": 0.04024188203038648
+        },
+        "elapsed_seconds": 0.33319428499089554,
+        "best_depth": 13,
+        "current_gate_count": 132,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-translate",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "translate": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 4,
+          "constructible": 3,
+          "partitioned": 2,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 2,
+          "timed_out": 1,
+          "before": 132,
+          "after": 133,
+          "added": 3,
+          "released": 2,
+          "depth": 13,
+          "elapsed_seconds": 0.04134091699961573
+        },
+        "elapsed_seconds": 0.04444903804687783,
+        "best_depth": 13,
+        "current_gate_count": 132,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 132,
+        "depth": 13
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v2-cores",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-cores",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 7,
+        "changed": 7,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "cores": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 4,
+          "constructible": 3,
+          "partitioned": 0,
+          "joint_roots": 14,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 1,
+          "timed_out": 0,
+          "before": 131,
+          "after": 131,
+          "added": 5,
+          "released": 5,
+          "depth": 13,
+          "elapsed_seconds": 0.03940783499274403
+        },
+        "elapsed_seconds": 0.32030762801878154,
+        "best_depth": 13,
+        "current_gate_count": 131,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-cores",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "cores": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 4,
+          "constructible": 3,
+          "partitioned": 0,
+          "joint_roots": 12,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 0,
+          "timed_out": 0,
+          "before": 131,
+          "after": 131,
+          "added": 2,
+          "released": 2,
+          "depth": 13,
+          "elapsed_seconds": 0.03936630400130525
+        },
+        "elapsed_seconds": 0.04220663197338581,
+        "best_depth": 13,
+        "current_gate_count": 131,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 3,
+      "verified_current": {
+        "gate_count": 131,
+        "depth": 13
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v3-component",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-component",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 3,
+        "changed": 3,
+        "uphill": 3,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "component_merge": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 287,
+          "trials": 5,
+          "candidates_verified": 9,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 5,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 134,
+          "before_depth": 13,
+          "after_gates": 137,
+          "after_depth": 13,
+          "elapsed_seconds": 0.040677083015907556
+        },
+        "elapsed_seconds": 0.334456165030133,
+        "best_depth": 13,
+        "current_gate_count": 137,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-component",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "component_merge": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 242,
+          "trials": 8,
+          "candidates_verified": 14,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 8,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 137,
+          "before_depth": 13,
+          "after_gates": 139,
+          "after_depth": 13,
+          "elapsed_seconds": 0.04089554800884798
+        },
+        "elapsed_seconds": 0.04381354700308293,
+        "best_depth": 13,
+        "current_gate_count": 137,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 7,
+      "verified_current": {
+        "gate_count": 137,
+        "depth": 13
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v3-interface",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-interface",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "interface_basis": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 1083,
+          "trials": 8,
+          "candidates_verified": 15,
+          "unchanged": 4,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 8,
+          "basis_reconstructions": 15,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 137,
+          "before_depth": 14,
+          "after_gates": 139,
+          "after_depth": 14,
+          "elapsed_seconds": 0.040666242013685405
+        },
+        "elapsed_seconds": 0.33542307297466323,
+        "best_depth": 13,
+        "current_gate_count": 137,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-interface",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "interface_basis": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 1103,
+          "trials": 8,
+          "candidates_verified": 15,
+          "unchanged": 4,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 8,
+          "basis_reconstructions": 15,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 137,
+          "before_depth": 14,
+          "after_gates": 139,
+          "after_depth": 14,
+          "elapsed_seconds": 0.04061451501911506
+        },
+        "elapsed_seconds": 0.043612087960354984,
+        "best_depth": 13,
+        "current_gate_count": 137,
+        "current_depth": 14,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 137,
+        "depth": 14
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "matrix_sha256": "d48d0571690c03a28305fcbec547b9f6eab0f3a29c12bf9b20c695f0b371524f",
+      "engine": "v3-backward",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-backward",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 3,
+        "changed": 3,
+        "uphill": 3,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "backward_package": 8
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 293,
+          "trials": 5,
+          "candidates_verified": 9,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 10,
+          "foreign_parent_roles": 14,
+          "before_gates": 136,
+          "before_depth": 13,
+          "after_gates": 141,
+          "after_depth": 13,
+          "elapsed_seconds": 0.04066952201537788
+        },
+        "elapsed_seconds": 0.334037940017879,
+        "best_depth": 13,
+        "current_gate_count": 136,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-backward",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "backward_package": 1
+        },
+        "best_gate_count": 130,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 302,
+          "trials": 6,
+          "candidates_verified": 11,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 12,
+          "foreign_parent_roles": 20,
+          "before_gates": 136,
+          "before_depth": 13,
+          "after_gates": 138,
+          "after_depth": 13,
+          "elapsed_seconds": 0.04060135898180306
+        },
+        "elapsed_seconds": 0.04320233699399978,
+        "best_depth": 13,
+        "current_gate_count": 136,
+        "current_depth": 13,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 8,
+      "verified_current": {
+        "gate_count": 136,
+        "depth": 13
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "fox_mu4",
+      "engine": "v3-pairbank3",
+      "applicable": false,
+      "reason": "archived pair-bank model requires row weights five or seven"
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-constructor",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-constructor",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 8,
+        "changed": 8,
+        "uphill": 4,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "balanced-constructor": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "balanced-constructor"
+        },
+        "elapsed_seconds": 0.005322436976712197,
+        "best_depth": 7,
+        "current_gate_count": 69,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-constructor",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "balanced-constructor": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "balanced-constructor"
+        },
+        "elapsed_seconds": 0.0013812750112265348,
+        "best_depth": 7,
+        "current_gate_count": 67,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 69,
+        "depth": 3
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              13,
+              12
+            ],
+            [
+              16,
+              14
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              0,
+              9
+            ],
+            [
+              18,
+              19
+            ],
+            [
+              17,
+              20
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              15,
+              6
+            ],
+            [
+              22,
+              23
+            ],
+            [
+              24,
+              7
+            ],
+            [
+              4,
+              7
+            ],
+            [
+              26,
+              12
+            ],
+            [
+              2,
+              11
+            ],
+            [
+              27,
+              28
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              8,
+              12
+            ],
+            [
+              13,
+              31
+            ],
+            [
+              30,
+              32
+            ],
+            [
+              2,
+              12
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              34,
+              35
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              4,
+              37
+            ],
+            [
+              36,
+              38
+            ],
+            [
+              30,
+              28
+            ],
+            [
+              14,
+              40
+            ],
+            [
+              15,
+              0
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              44,
+              6
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              37,
+              12
+            ],
+            [
+              46,
+              47
+            ],
+            [
+              18,
+              1
+            ],
+            [
+              14,
+              4
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              50,
+              51
+            ],
+            [
+              49,
+              52
+            ],
+            [
+              9,
+              7
+            ],
+            [
+              54,
+              2
+            ],
+            [
+              15,
+              14
+            ],
+            [
+              55,
+              56
+            ],
+            [
+              4,
+              12
+            ],
+            [
+              3,
+              10
+            ],
+            [
+              58,
+              59
+            ],
+            [
+              15,
+              60
+            ],
+            [
+              13,
+              5
+            ],
+            [
+              62,
+              4
+            ],
+            [
+              0,
+              11
+            ],
+            [
+              63,
+              64
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              2,
+              66
+            ],
+            [
+              12,
+              10
+            ],
+            [
+              0,
+              4
+            ],
+            [
+              68,
+              69
+            ],
+            [
+              67,
+              70
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              11,
+              72
+            ],
+            [
+              35,
+              73
+            ],
+            [
+              8,
+              11
+            ],
+            [
+              7,
+              75
+            ],
+            [
+              14,
+              0
+            ],
+            [
+              76,
+              77
+            ],
+            [
+              15,
+              9
+            ],
+            [
+              69,
+              79
+            ],
+            [
+              80,
+              1
+            ]
+          ],
+          "gate_count": 66,
+          "depth": 3
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-paar",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-paar",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "paar-frequency": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 2,
+          "construction_gates": 8
+        },
+        "elapsed_seconds": 0.0011754879960790277,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-paar",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "paar-frequency": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "paar-frequency",
+          "completed": false,
+          "contracted_frequency": 2,
+          "construction_gates": 9
+        },
+        "elapsed_seconds": 0.0007931150030344725,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 7
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "rows"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-bp",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-bp": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 8,
+          "distance_nodes": 2391,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.005838368961121887,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-bp",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-bp": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-bp",
+          "completed": false,
+          "construction_gates": 9,
+          "distance_nodes": 2429,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.0015727769932709634,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 7
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "inverse-bp",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "inverse-bp",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "inverse-bp": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 8,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.015444194024894387,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "inverse-bp",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "inverse-bp": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "inverse-bp",
+          "completed": false,
+          "construction_gates": 9,
+          "distance_nodes": 0,
+          "distance_is_upper_bound": true
+        },
+        "elapsed_seconds": 0.003165960020851344,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 7
+      },
+      "auxiliary_keys": [
+        "construction_gates",
+        "distances"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-window",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-window",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "first-unlock": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 14,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search"
+        },
+        "elapsed_seconds": 0.023312829027418047,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-window",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "first-unlock": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "first-unlock",
+          "windows": 1,
+          "candidates": 12,
+          "search_exhaustive": false,
+          "scope": "selected window; anchored bounded search"
+        },
+        "elapsed_seconds": 0.0033584300545044243,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-walk",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-walk": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 2,
+          "injected": 1
+        },
+        "elapsed_seconds": 0.11777355300728232,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-walk",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-walk": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-walk",
+          "victims": 2,
+          "injected": 1
+        },
+        "elapsed_seconds": 0.01568554696859792,
+        "best_depth": 7,
+        "current_gate_count": 44,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 2,
+      "distinct_metric_pairs": 1,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 7
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-lns",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 7,
+        "changed": 2,
+        "uphill": 0,
+        "callbacks": 4,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-lns": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 4,
+          "injected": 38
+        },
+        "elapsed_seconds": 0.019963669998105615,
+        "best_depth": 6,
+        "current_gate_count": 44,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-lns",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-lns": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-lns",
+          "victims": 1,
+          "injected": 33
+        },
+        "elapsed_seconds": 0.003732762997969985,
+        "best_depth": 6,
+        "current_gate_count": 44,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "callback_checks": 6,
+      "distinct_metric_pairs": 4,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 6
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              8,
+              15
+            ],
+            [
+              0,
+              16
+            ],
+            [
+              1,
+              17
+            ],
+            [
+              9,
+              18
+            ],
+            [
+              13,
+              15
+            ],
+            [
+              5,
+              20
+            ],
+            [
+              19,
+              21
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              5,
+              14
+            ],
+            [
+              12,
+              24
+            ],
+            [
+              23,
+              25
+            ],
+            [
+              22,
+              26
+            ],
+            [
+              23,
+              10
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              11,
+              17
+            ],
+            [
+              2,
+              31
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              33,
+              12
+            ],
+            [
+              0,
+              34
+            ],
+            [
+              35,
+              29
+            ],
+            [
+              32,
+              36
+            ],
+            [
+              3,
+              17
+            ],
+            [
+              35,
+              38
+            ],
+            [
+              33,
+              21
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              34,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              24,
+              32
+            ],
+            [
+              38,
+              46
+            ],
+            [
+              6,
+              38
+            ],
+            [
+              33,
+              19
+            ],
+            [
+              49,
+              36
+            ],
+            [
+              35,
+              26
+            ],
+            [
+              14,
+              29
+            ],
+            [
+              42,
+              52
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              31,
+              40
+            ],
+            [
+              22,
+              45
+            ],
+            [
+              43,
+              48
+            ],
+            [
+              31,
+              57
+            ],
+            [
+              31,
+              52
+            ]
+          ],
+          "gate_count": 44,
+          "depth": 6
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "legacy-anneal3",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "legacy-anneal3",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 6,
+        "changed": 6,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "legacy-anneal3": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-anneal3",
+          "fixed_parent_optimum_is_not_global": true
+        },
+        "elapsed_seconds": 0.006157496012747288,
+        "best_depth": 7,
+        "current_gate_count": 64,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "legacy-anneal3",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "legacy-anneal3": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "legacy-anneal3",
+          "fixed_parent_optimum_is_not_global": true
+        },
+        "elapsed_seconds": 0.0013804900227114558,
+        "best_depth": 7,
+        "current_gate_count": 63,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 5,
+      "verified_current": {
+        "gate_count": 64,
+        "depth": 3
+      },
+      "auxiliary_keys": [
+        "partitions"
+      ],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              9,
+              14
+            ],
+            [
+              16,
+              13
+            ],
+            [
+              0,
+              6
+            ],
+            [
+              8,
+              12
+            ],
+            [
+              18,
+              19
+            ],
+            [
+              17,
+              20
+            ],
+            [
+              1,
+              10
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              23,
+              6
+            ],
+            [
+              22,
+              24
+            ],
+            [
+              2,
+              11
+            ],
+            [
+              4,
+              12
+            ],
+            [
+              27,
+              7
+            ],
+            [
+              26,
+              28
+            ],
+            [
+              8,
+              13
+            ],
+            [
+              5,
+              12
+            ],
+            [
+              31,
+              3
+            ],
+            [
+              30,
+              32
+            ],
+            [
+              2,
+              10
+            ],
+            [
+              34,
+              13
+            ],
+            [
+              4,
+              9
+            ],
+            [
+              36,
+              19
+            ],
+            [
+              35,
+              37
+            ],
+            [
+              2,
+              14
+            ],
+            [
+              3,
+              11
+            ],
+            [
+              40,
+              5
+            ],
+            [
+              39,
+              41
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              43,
+              44
+            ],
+            [
+              15,
+              45
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              47,
+              19
+            ],
+            [
+              1,
+              48
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              50,
+              44
+            ],
+            [
+              0,
+              5
+            ],
+            [
+              52,
+              14
+            ],
+            [
+              51,
+              53
+            ],
+            [
+              16,
+              2
+            ],
+            [
+              23,
+              55
+            ],
+            [
+              3,
+              10
+            ],
+            [
+              57,
+              27
+            ],
+            [
+              15,
+              58
+            ],
+            [
+              4,
+              11
+            ],
+            [
+              60,
+              5
+            ],
+            [
+              0,
+              13
+            ],
+            [
+              61,
+              62
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              64,
+              0
+            ],
+            [
+              22,
+              31
+            ],
+            [
+              65,
+              66
+            ],
+            [
+              6,
+              10
+            ],
+            [
+              11,
+              13
+            ],
+            [
+              68,
+              69
+            ],
+            [
+              3,
+              70
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              7,
+              11
+            ],
+            [
+              72,
+              73
+            ],
+            [
+              14,
+              74
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              36,
+              15
+            ],
+            [
+              76,
+              77
+            ]
+          ],
+          "gate_count": 63,
+          "depth": 3
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-walk",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-walk",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": false,
+        "operators": {
+          "v2-walk": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 2,
+          "injected": 2
+        },
+        "elapsed_seconds": 0.03771802905248478,
+        "best_depth": 6,
+        "current_gate_count": 44,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-walk",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "v2-walk": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "v2-walk",
+          "victims": 1,
+          "injected": 2
+        },
+        "elapsed_seconds": 0.004087111039552838,
+        "best_depth": 6,
+        "current_gate_count": 44,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "callback_checks": 3,
+      "distinct_metric_pairs": 2,
+      "verified_current": {
+        "gate_count": 44,
+        "depth": 6
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              8,
+              15
+            ],
+            [
+              0,
+              16
+            ],
+            [
+              9,
+              17
+            ],
+            [
+              1,
+              18
+            ],
+            [
+              13,
+              15
+            ],
+            [
+              5,
+              20
+            ],
+            [
+              19,
+              21
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              5,
+              14
+            ],
+            [
+              12,
+              24
+            ],
+            [
+              23,
+              25
+            ],
+            [
+              22,
+              26
+            ],
+            [
+              23,
+              10
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              11,
+              17
+            ],
+            [
+              2,
+              31
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              33,
+              12
+            ],
+            [
+              0,
+              34
+            ],
+            [
+              35,
+              29
+            ],
+            [
+              32,
+              36
+            ],
+            [
+              3,
+              17
+            ],
+            [
+              35,
+              38
+            ],
+            [
+              33,
+              21
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              34,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              24,
+              32
+            ],
+            [
+              38,
+              46
+            ],
+            [
+              6,
+              38
+            ],
+            [
+              33,
+              19
+            ],
+            [
+              49,
+              36
+            ],
+            [
+              35,
+              26
+            ],
+            [
+              14,
+              29
+            ],
+            [
+              42,
+              52
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              31,
+              40
+            ],
+            [
+              22,
+              45
+            ],
+            [
+              43,
+              48
+            ],
+            [
+              31,
+              57
+            ],
+            [
+              31,
+              52
+            ]
+          ],
+          "gate_count": 44,
+          "depth": 6
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-lns",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-lns",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 6,
+        "changed": 3,
+        "uphill": 1,
+        "callbacks": 6,
+        "resumed_rng": false,
+        "operators": {
+          "v2-lns": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 2,
+          "injected": 36
+        },
+        "elapsed_seconds": 0.1504493579850532,
+        "best_depth": 6,
+        "current_gate_count": 45,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-lns",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "v2-lns": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "v2-lns",
+          "victims": 1,
+          "injected": 34
+        },
+        "elapsed_seconds": 0.01428836997365579,
+        "best_depth": 6,
+        "current_gate_count": 46,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "callback_checks": 8,
+      "distinct_metric_pairs": 5,
+      "verified_current": {
+        "gate_count": 45,
+        "depth": 6
+      },
+      "auxiliary_keys": [
+        "pool"
+      ],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              8,
+              15
+            ],
+            [
+              0,
+              16
+            ],
+            [
+              1,
+              17
+            ],
+            [
+              9,
+              18
+            ],
+            [
+              13,
+              15
+            ],
+            [
+              5,
+              20
+            ],
+            [
+              19,
+              21
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              5,
+              14
+            ],
+            [
+              12,
+              24
+            ],
+            [
+              23,
+              25
+            ],
+            [
+              22,
+              26
+            ],
+            [
+              23,
+              10
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              11,
+              17
+            ],
+            [
+              2,
+              31
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              33,
+              12
+            ],
+            [
+              0,
+              34
+            ],
+            [
+              35,
+              29
+            ],
+            [
+              32,
+              36
+            ],
+            [
+              3,
+              17
+            ],
+            [
+              35,
+              38
+            ],
+            [
+              33,
+              21
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              34,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              24,
+              32
+            ],
+            [
+              38,
+              46
+            ],
+            [
+              6,
+              38
+            ],
+            [
+              33,
+              19
+            ],
+            [
+              49,
+              36
+            ],
+            [
+              35,
+              26
+            ],
+            [
+              14,
+              29
+            ],
+            [
+              42,
+              52
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              31,
+              40
+            ],
+            [
+              22,
+              45
+            ],
+            [
+              43,
+              48
+            ],
+            [
+              31,
+              57
+            ],
+            [
+              31,
+              52
+            ]
+          ],
+          "gate_count": 44,
+          "depth": 6
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-anneal3",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-anneal3",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 8,
+        "changed": 8,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "v2-anneal3": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "v2-anneal3",
+          "fixed_parent_optimum_is_not_global": true
+        },
+        "elapsed_seconds": 0.10017506702570245,
+        "best_depth": 7,
+        "current_gate_count": 59,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-anneal3",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "v2-anneal3": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "v2-anneal3",
+          "fixed_parent_optimum_is_not_global": true
+        },
+        "elapsed_seconds": 0.01598934200592339,
+        "best_depth": 7,
+        "current_gate_count": 58,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 5,
+      "verified_current": {
+        "gate_count": 59,
+        "depth": 3
+      },
+      "auxiliary_keys": [
+        "partitions"
+      ],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              0,
+              8
+            ],
+            [
+              9,
+              13
+            ],
+            [
+              16,
+              17
+            ],
+            [
+              6,
+              14
+            ],
+            [
+              19,
+              12
+            ],
+            [
+              18,
+              20
+            ],
+            [
+              6,
+              10
+            ],
+            [
+              22,
+              7
+            ],
+            [
+              1,
+              15
+            ],
+            [
+              23,
+              24
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              7,
+              12
+            ],
+            [
+              26,
+              27
+            ],
+            [
+              28,
+              11
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              30,
+              8
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              31,
+              32
+            ],
+            [
+              4,
+              9
+            ],
+            [
+              34,
+              10
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              36,
+              32
+            ],
+            [
+              35,
+              37
+            ],
+            [
+              30,
+              11
+            ],
+            [
+              2,
+              14
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              16,
+              42
+            ],
+            [
+              15,
+              43
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              27,
+              45
+            ],
+            [
+              1,
+              46
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              48,
+              4
+            ],
+            [
+              16,
+              19
+            ],
+            [
+              49,
+              50
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              40,
+              52
+            ],
+            [
+              53,
+              15
+            ],
+            [
+              3,
+              15
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              55,
+              56
+            ],
+            [
+              4,
+              57
+            ],
+            [
+              0,
+              4
+            ],
+            [
+              59,
+              5
+            ],
+            [
+              11,
+              13
+            ],
+            [
+              60,
+              61
+            ],
+            [
+              59,
+              2
+            ],
+            [
+              48,
+              56
+            ],
+            [
+              63,
+              64
+            ],
+            [
+              22,
+              61
+            ],
+            [
+              3,
+              66
+            ],
+            [
+              7,
+              11
+            ],
+            [
+              16,
+              68
+            ],
+            [
+              14,
+              69
+            ],
+            [
+              1,
+              9
+            ],
+            [
+              59,
+              71
+            ],
+            [
+              72,
+              15
+            ]
+          ],
+          "gate_count": 58,
+          "depth": 3
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-translate",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-translate",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 4,
+        "changed": 4,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "translate": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 8,
+          "constructible": 5,
+          "partitioned": 3,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 2,
+          "unchanged": 1,
+          "timed_out": 1,
+          "before": 45,
+          "after": 47,
+          "added": 3,
+          "released": 1,
+          "depth": 7,
+          "elapsed_seconds": 0.040345641027670354
+        },
+        "elapsed_seconds": 0.2906227129860781,
+        "best_depth": 6,
+        "current_gate_count": 45,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-translate",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "translate": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "translate",
+          "attempted": 8,
+          "constructible": 5,
+          "partitioned": 5,
+          "joint_roots": 0,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 2,
+          "unchanged": 0,
+          "timed_out": 1,
+          "before": 45,
+          "after": 47,
+          "added": 3,
+          "released": 1,
+          "depth": 6,
+          "elapsed_seconds": 0.04014184599509463
+        },
+        "elapsed_seconds": 0.04171007499098778,
+        "best_depth": 6,
+        "current_gate_count": 45,
+        "current_depth": 6,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 7,
+      "verified_current": {
+        "gate_count": 45,
+        "depth": 6
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              8,
+              15
+            ],
+            [
+              0,
+              16
+            ],
+            [
+              1,
+              17
+            ],
+            [
+              9,
+              18
+            ],
+            [
+              13,
+              15
+            ],
+            [
+              5,
+              20
+            ],
+            [
+              19,
+              21
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              23,
+              12
+            ],
+            [
+              5,
+              14
+            ],
+            [
+              24,
+              25
+            ],
+            [
+              22,
+              26
+            ],
+            [
+              23,
+              10
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              11,
+              17
+            ],
+            [
+              2,
+              31
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              33,
+              12
+            ],
+            [
+              0,
+              34
+            ],
+            [
+              35,
+              29
+            ],
+            [
+              32,
+              36
+            ],
+            [
+              3,
+              17
+            ],
+            [
+              35,
+              38
+            ],
+            [
+              33,
+              21
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              34,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              25,
+              32
+            ],
+            [
+              38,
+              46
+            ],
+            [
+              6,
+              38
+            ],
+            [
+              33,
+              19
+            ],
+            [
+              49,
+              36
+            ],
+            [
+              35,
+              26
+            ],
+            [
+              14,
+              29
+            ],
+            [
+              42,
+              52
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              31,
+              40
+            ],
+            [
+              22,
+              45
+            ],
+            [
+              43,
+              48
+            ],
+            [
+              31,
+              57
+            ],
+            [
+              31,
+              52
+            ]
+          ],
+          "gate_count": 44,
+          "depth": 6
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v2-cores",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v2-cores",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 5,
+        "changed": 5,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "cores": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 6,
+          "constructible": 5,
+          "partitioned": 0,
+          "joint_roots": 18,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 0,
+          "timed_out": 0,
+          "before": 45,
+          "after": 45,
+          "added": 2,
+          "released": 2,
+          "depth": 7,
+          "elapsed_seconds": 0.03906303195981309
+        },
+        "elapsed_seconds": 0.3143364869756624,
+        "best_depth": 6,
+        "current_gate_count": 45,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v2-cores",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "cores": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "cores",
+          "attempted": 6,
+          "constructible": 5,
+          "partitioned": 0,
+          "joint_roots": 21,
+          "degenerate": 0,
+          "weight_rejected": 0,
+          "construction_rejected": 0,
+          "unchanged": 0,
+          "timed_out": 0,
+          "before": 45,
+          "after": 46,
+          "added": 5,
+          "released": 4,
+          "depth": 8,
+          "elapsed_seconds": 0.03876038599992171
+        },
+        "elapsed_seconds": 0.0400308360112831,
+        "best_depth": 6,
+        "current_gate_count": 45,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 7,
+      "verified_current": {
+        "gate_count": 45,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              8,
+              15
+            ],
+            [
+              0,
+              16
+            ],
+            [
+              9,
+              17
+            ],
+            [
+              1,
+              18
+            ],
+            [
+              13,
+              15
+            ],
+            [
+              5,
+              20
+            ],
+            [
+              19,
+              21
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              5,
+              14
+            ],
+            [
+              23,
+              24
+            ],
+            [
+              12,
+              25
+            ],
+            [
+              22,
+              26
+            ],
+            [
+              23,
+              10
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              11,
+              17
+            ],
+            [
+              2,
+              31
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              33,
+              12
+            ],
+            [
+              0,
+              34
+            ],
+            [
+              35,
+              29
+            ],
+            [
+              32,
+              36
+            ],
+            [
+              3,
+              17
+            ],
+            [
+              35,
+              38
+            ],
+            [
+              33,
+              21
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              34,
+              43
+            ],
+            [
+              42,
+              44
+            ],
+            [
+              24,
+              32
+            ],
+            [
+              38,
+              46
+            ],
+            [
+              6,
+              38
+            ],
+            [
+              33,
+              19
+            ],
+            [
+              49,
+              36
+            ],
+            [
+              35,
+              26
+            ],
+            [
+              14,
+              29
+            ],
+            [
+              42,
+              52
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              31,
+              40
+            ],
+            [
+              22,
+              45
+            ],
+            [
+              43,
+              48
+            ],
+            [
+              31,
+              57
+            ],
+            [
+              31,
+              52
+            ]
+          ],
+          "gate_count": 44,
+          "depth": 6
+        }
+      ]
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-component",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-component",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "component_merge": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 664,
+          "trials": 7,
+          "candidates_verified": 13,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 7,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 45,
+          "before_depth": 7,
+          "after_gates": 47,
+          "after_depth": 7,
+          "elapsed_seconds": 0.04031097196275368
+        },
+        "elapsed_seconds": 0.3265590040246025,
+        "best_depth": 7,
+        "current_gate_count": 45,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-component",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "component_merge": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "component_merge",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 746,
+          "trials": 6,
+          "candidates_verified": 10,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 6,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 45,
+          "before_depth": 7,
+          "after_gates": 53,
+          "after_depth": 7,
+          "elapsed_seconds": 0.04023561900248751
+        },
+        "elapsed_seconds": 0.04166118399007246,
+        "best_depth": 7,
+        "current_gate_count": 45,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 8,
+      "verified_current": {
+        "gate_count": 45,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-interface",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-interface",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 2,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "interface_basis": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 2292,
+          "trials": 21,
+          "candidates_verified": 41,
+          "unchanged": 4,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 21,
+          "basis_reconstructions": 41,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 49,
+          "before_depth": 7,
+          "after_gates": 50,
+          "after_depth": 7,
+          "elapsed_seconds": 0.040309228003025055
+        },
+        "elapsed_seconds": 0.3261664820020087,
+        "best_depth": 7,
+        "current_gate_count": 49,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-interface",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "interface_basis": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "interface_basis",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 2297,
+          "trials": 21,
+          "candidates_verified": 41,
+          "unchanged": 7,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 21,
+          "basis_reconstructions": 41,
+          "deliberate_collisions": 0,
+          "package_roles": 0,
+          "foreign_parent_roles": 0,
+          "before_gates": 49,
+          "before_depth": 7,
+          "after_gates": 50,
+          "after_depth": 7,
+          "elapsed_seconds": 0.04025856399675831
+        },
+        "elapsed_seconds": 0.041521703999023885,
+        "best_depth": 7,
+        "current_gate_count": 50,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 5,
+      "verified_current": {
+        "gate_count": 49,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-backward",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-backward",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 8,
+        "accepted": 1,
+        "changed": 1,
+        "uphill": 1,
+        "callbacks": 9,
+        "resumed_rng": false,
+        "operators": {
+          "backward_package": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 610,
+          "trials": 13,
+          "candidates_verified": 25,
+          "unchanged": 2,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 26,
+          "foreign_parent_roles": 42,
+          "before_gates": 44,
+          "before_depth": 7,
+          "after_gates": 45,
+          "after_depth": 7,
+          "elapsed_seconds": 0.04028852900955826
+        },
+        "elapsed_seconds": 0.3267247860203497,
+        "best_depth": 7,
+        "current_gate_count": 45,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-backward",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 1,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 2,
+        "resumed_rng": true,
+        "operators": {
+          "backward_package": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "backward_package",
+          "status": "FOUND",
+          "search_exhaustive": false,
+          "limit_reason": "time_limit",
+          "nodes": 623,
+          "trials": 14,
+          "candidates_verified": 26,
+          "unchanged": 0,
+          "construction_failures": 0,
+          "consumer_failures": 0,
+          "constructor_gate_limits": 0,
+          "basis_matrices": 0,
+          "basis_reconstructions": 0,
+          "deliberate_collisions": 0,
+          "package_roles": 28,
+          "foreign_parent_roles": 48,
+          "before_gates": 45,
+          "before_depth": 7,
+          "after_gates": 46,
+          "after_depth": 8,
+          "elapsed_seconds": 0.040268226992338896
+        },
+        "elapsed_seconds": 0.041659376001916826,
+        "best_depth": 7,
+        "current_gate_count": 45,
+        "current_depth": 7,
+        "stopped": false
+      },
+      "callback_checks": 11,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 45,
+        "depth": 7
+      },
+      "auxiliary_keys": [],
+      "non_dominated_smoke_witnesses": []
+    },
+    {
+      "target": "joltik",
+      "matrix_sha256": "9190373ebe4882ad07b68892119babb183524d88f5b9ae2095adcb0f91a32415",
+      "engine": "v3-pairbank3",
+      "applicable": true,
+      "reason": "generic linear target; no MixColumns symmetry or field assumption",
+      "metrics": {
+        "engine": "v3-pairbank3",
+        "applicable": true,
+        "iterations": 8,
+        "proposals": 5,
+        "accepted": 2,
+        "changed": 2,
+        "uphill": 1,
+        "callbacks": 6,
+        "resumed_rng": false,
+        "operators": {
+          "pair-bank-first": 8
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "pair-bank-first",
+          "mutation": "swap",
+          "method": "pair-bank-first",
+          "proposal_bank_pairs": 45,
+          "live_pairs": 18,
+          "eligible_splits": 458,
+          "considered_splits": 916,
+          "sweeps_started": 2,
+          "elapsed_s": 0.011616175994277,
+          "optimality_proved": false
+        },
+        "elapsed_seconds": 0.09298474399838597,
+        "best_depth": 7,
+        "current_gate_count": 56,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "resumed_metrics": {
+        "engine": "v3-pairbank3",
+        "applicable": true,
+        "iterations": 1,
+        "proposals": 0,
+        "accepted": 0,
+        "changed": 0,
+        "uphill": 0,
+        "callbacks": 1,
+        "resumed_rng": true,
+        "operators": {
+          "pair-bank-first": 1
+        },
+        "best_gate_count": 44,
+        "last_proposal": {
+          "operator": "pair-bank-first",
+          "mutation": "remove"
+        },
+        "elapsed_seconds": 0.003670496982522309,
+        "best_depth": 7,
+        "current_gate_count": 56,
+        "current_depth": 3,
+        "stopped": false
+      },
+      "callback_checks": 7,
+      "distinct_metric_pairs": 6,
+      "verified_current": {
+        "gate_count": 56,
+        "depth": 3
+      },
+      "auxiliary_keys": [
+        "pair_bank"
+      ],
+      "non_dominated_smoke_witnesses": [
+        {
+          "gates": [
+            [
+              8,
+              9
+            ],
+            [
+              16,
+              6
+            ],
+            [
+              0,
+              12
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              18,
+              19
+            ],
+            [
+              17,
+              20
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              10,
+              15
+            ],
+            [
+              22,
+              23
+            ],
+            [
+              6,
+              24
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              11
+            ],
+            [
+              26,
+              27
+            ],
+            [
+              3,
+              7
+            ],
+            [
+              29,
+              12
+            ],
+            [
+              28,
+              30
+            ],
+            [
+              3,
+              13
+            ],
+            [
+              5,
+              8
+            ],
+            [
+              32,
+              33
+            ],
+            [
+              12,
+              34
+            ],
+            [
+              16,
+              12
+            ],
+            [
+              10,
+              13
+            ],
+            [
+              26,
+              37
+            ],
+            [
+              36,
+              38
+            ],
+            [
+              27,
+              5
+            ],
+            [
+              2,
+              14
+            ],
+            [
+              40,
+              41
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              44,
+              15
+            ],
+            [
+              43,
+              45
+            ],
+            [
+              22,
+              36
+            ],
+            [
+              33,
+              6
+            ],
+            [
+              0,
+              4
+            ],
+            [
+              1,
+              14
+            ],
+            [
+              49,
+              50
+            ],
+            [
+              48,
+              51
+            ],
+            [
+              9,
+              15
+            ],
+            [
+              53,
+              7
+            ],
+            [
+              41,
+              54
+            ],
+            [
+              18,
+              3
+            ],
+            [
+              49,
+              23
+            ],
+            [
+              56,
+              57
+            ],
+            [
+              49,
+              32
+            ],
+            [
+              40,
+              59
+            ],
+            [
+              1,
+              10
+            ],
+            [
+              61,
+              5
+            ],
+            [
+              18,
+              26
+            ],
+            [
+              62,
+              63
+            ],
+            [
+              27,
+              6
+            ],
+            [
+              65,
+              37
+            ],
+            [
+              44,
+              29
+            ],
+            [
+              27,
+              14
+            ],
+            [
+              67,
+              68
+            ],
+            [
+              49,
+              22
+            ],
+            [
+              70,
+              54
+            ]
+          ],
+          "gate_count": 56,
+          "depth": 3
+        }
+      ]
+    }
+  ]
+}

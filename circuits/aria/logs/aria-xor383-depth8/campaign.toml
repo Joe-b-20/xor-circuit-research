@@ -1,0 +1,47 @@
+# aria: NIST 387@7, min depth 3; caps [3, 4, 5, 7, None]
+[campaign]
+name = "nist-aria"
+seed = 20261030
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "cap3"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 3
+seeds = ["./search/seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "cap4"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 4
+seeds = ["./search/seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "cap5"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["./search/seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "cap7"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = 7
+seeds = ["./search/seeds/aria/nist-g387-d7.json"]
+
+[[workers]]
+name = "free"
+target = "aria"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["./search/seeds/aria/nist-g387-d7.json"]

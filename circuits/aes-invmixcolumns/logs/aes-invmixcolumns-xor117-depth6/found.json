@@ -1,0 +1,47 @@
+{
+ "circuit": "aes-invmixcolumns-xor117-depth6.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "polish_of": {
+  "circuit": "aes-invmixcolumns-xor118-depth6.circ.txt",
+  "removed": 1,
+  "exact": true,
+  "found": {
+   "circuit": "aes-invmixcolumns-xor118-depth6.circ.txt",
+   "version": "v5",
+   "code": "search/versions/v5-xorsearch",
+   "found_utc": "2026-10-28T18:24:06.737+00:00",
+   "seconds_into_run": 0.3689604540122673,
+   "run": "ab-invmixcolumns",
+   "run_id": "66cbbae6636c4bc0aafa16d1f70b77b6",
+   "worker": "invmixcolumns-00",
+   "depth_cap": null,
+   "move": "walk.window",
+   "seed": {
+    "kind": "file",
+    "point": "119@5",
+    "by": "NIST",
+    "source": "target:nist_g119_d5"
+   },
+   "chain_root": "seed",
+   "circuit_sha256": "f50106da603a68d71324c53794bd3eb6c928c000f035e1f07471f011b90b49cb",
+   "logs": [
+    "campaign.toml",
+    "events.jsonl.gz",
+    "plan.json.gz",
+    "record.json",
+    "verification.json"
+   ]
+  }
+ },
+ "circuit_sha256": "dcc9d74aa70581727b7770060e438b8d1cc3da5655ebe5d18e73c863ecfc52fe",
+ "logs": [
+  "campaign.toml",
+  "events.jsonl.gz",
+  "original-circuit.txt",
+  "plan.json.gz",
+  "polish.json",
+  "record.json",
+  "verification.json"
+ ]
+}

@@ -1,0 +1,772 @@
+PASS matrix, depth-3 control: P=27,T=20,Q=18; all inherited LP rows satisfied
+PASS weight-7 lemma: all helper fanouts <=2, 24 double-sharing cases internal to clusters, sharp parent count 15
+{
+  "status": "PASS",
+  "decomposition_checks": 60,
+  "construction_assignments": 3645,
+  "table": [
+    {
+      "second_component": "shared_quartet",
+      "minimum_non_C_pairs_by_k": {
+        "1": 7,
+        "2": 7
+      }
+    },
+    {
+      "second_component": "shared_triple_omits_A0",
+      "minimum_non_C_pairs_by_k": {
+        "1": 7,
+        "2": 7
+      }
+    },
+    {
+      "second_component": "shared_triple_omits_A1",
+      "minimum_non_C_pairs_by_k": {
+        "1": 7,
+        "2": 7
+      }
+    },
+    {
+      "second_component": "shared_triple_omits_B7",
+      "minimum_non_C_pairs_by_k": {
+        "1": 8,
+        "2": 8
+      }
+    },
+    {
+      "second_component": "shared_triple_omits_C11",
+      "minimum_non_C_pairs_by_k": {
+        "1": 8,
+        "2": 7,
+        "3": 7,
+        "4": 6
+      }
+    }
+  ],
+  "claim": "For one W7 cluster, gate count >=16 + number of C-family pair gates in its ancestry.",
+  "qualification": "The table checks the finite H=6 case; the other cases are justified in the written proof."
+}
+{
+  "status": "PASS",
+  "local_gate_count": 16,
+  "separation": "D3({1,3,4}) = 16 + D3({3,4})",
+  "saved_circuits": [
+    {
+      "file": "cluster1_free7_circuit.json",
+      "gates": 20,
+      "outputs": [
+        1,
+        9,
+        17,
+        25
+      ],
+      "depth": 3
+    },
+    {
+      "file": "cluster34_circuit.json",
+      "gates": 32,
+      "outputs": [
+        3,
+        4,
+        11,
+        12,
+        19,
+        20,
+        27,
+        28
+      ],
+      "depth": 3
+    },
+    {
+      "file": "cluster134_circuit.json",
+      "gates": 48,
+      "outputs": [
+        1,
+        3,
+        4,
+        9,
+        11,
+        12,
+        17,
+        19,
+        20,
+        25,
+        27,
+        28
+      ],
+      "depth": 3
+    }
+  ],
+  "qualification": "Partial circuits are upper bounds only."
+}
+{
+  "status": "PASS",
+  "common_helper_count": 28,
+  "price_numerators": [
+    9,
+    8,
+    1,
+    8,
+    1,
+    2,
+    8
+  ],
+  "denominator": 10,
+  "local_enumerations": [
+    {
+      "cluster": 3,
+      "weighted_helper_minimum": 115,
+      "denominator": 10,
+      "nodes": 5493600,
+      "last_output_candidates": 113206275,
+      "attaining_helper_masks": [
+        132,
+        32776,
+        34816,
+        34948,
+        524420,
+        525312,
+        558088,
+        67110912,
+        134743040,
+        142606336,
+        142868480,
+        2147483656,
+        2214594568
+      ]
+    },
+    {
+      "cluster": 4,
+      "weighted_helper_minimum": 116,
+      "denominator": 10,
+      "nodes": 7137585,
+      "last_output_candidates": 235201050,
+      "attaining_helper_masks": [
+        2064,
+        2176,
+        4104,
+        4112,
+        34944,
+        557056,
+        1052688,
+        8945664,
+        134217856,
+        142606336,
+        142610448,
+        269484032,
+        269486096,
+        269488136,
+        2147483656,
+        2148007936,
+        2281701512,
+        2416443392
+      ]
+    }
+  ],
+  "joint_gate_lower_bound_rational": [
+    311,
+    10
+  ],
+  "joint_gate_lower_bound_integer": 32,
+  "qualification": "The rational bound is verified by complete enumeration, not by an optimizer status."
+}
+PASS parity partition premise {"short_word_weights": {"6": 84, "8": 276}, "nodes": 1485213, "leaves": 62112, "nine_part_partitions": 0, "pair_lower_bound": 24, "seconds": 14.125612019000982}
+FOREST OBSTRUCTIONS PASS {"rejected_orbits": 4082, "nodes": 1348913}
+PARITY ENUMERATION {"blocks": 7, "cycle_budget": 0, "short_words": 5486, "nodes": 8562660, "leaves": 2936998, "surviving_partitions": 0, "distinct_remainders": 695385}
+PARITY ENUMERATION {"blocks": 8, "cycle_budget": 1, "short_words": 1600, "nodes": 6566068, "leaves": 1225018, "surviving_partitions": 2848, "distinct_remainders": 145332}
+UNICYCLIC EXCLUSION PASS {"rejected_partitions": 2848, "nodes": 111364}
+{
+  "status": "PASS",
+  "pair_lower_bound": 26,
+  "component_bound_checked": true,
+  "component_bound": {
+    "short_word_weights": {
+      "6": 84,
+      "8": 276
+    },
+    "nodes": 1485213,
+    "leaves": 62112,
+    "nine_part_partitions": 0,
+    "pair_lower_bound": 24,
+    "seconds": 14.125612019000982
+  },
+  "independent_pair_recipe_counts": {
+    "825": 20,
+    "105": 12
+  },
+  "known97_pair_control": true,
+  "byte_rotation_symmetry_checked": true,
+  "forest_obstructions": {
+    "rejected_orbits": 4082,
+    "nodes": 1348913
+  },
+  "seven_component_enumeration": {
+    "blocks": 7,
+    "cycle_budget": 0,
+    "short_words": 5486,
+    "nodes": 8562660,
+    "leaves": 2936998,
+    "surviving_partitions": 0,
+    "distinct_remainders": 695385
+  },
+  "eight_component_enumeration": {
+    "blocks": 8,
+    "cycle_budget": 1,
+    "short_words": 1600,
+    "nodes": 6566068,
+    "leaves": 1225018,
+    "surviving_partitions": 2848,
+    "distinct_remainders": 145332
+  },
+  "unicyclic_exclusion": {
+    "rejected_partitions": 2848,
+    "nodes": 111364
+  },
+  "seconds": 138.40610944699802
+}
+EXACT LOCAL PASS w7 0 minimum 652460
+EXACT LOCAL PASS w7 1 minimum 846484
+EXACT LOCAL PASS w7 2 minimum 620082
+EXACT LOCAL PASS w5_projection 0 minimum 175508
+EXACT LOCAL PASS w5_projection 1 minimum 363473
+EXACT LOCAL PASS w5_projection 2 minimum 138364
+EXACT LOCAL PASS w5_projection 3 minimum 220298
+EXACT LOCAL PASS w5_projection 4 minimum 195849
+LINKED EXACT PASS 0 w5 2 500033
+LINKED EXACT PASS 1 w7 4 777184
+LINKED EXACT PASS 2 w5 6 267258
+LINKED EXACT PASS 3 w5 0 281063
+LINKED EXACT PASS 4 w5 7 212996
+LINKED EXACT PASS 5 w7 4 773994
+LINKED EXACT PASS 6 w5 0 281064
+LINKED EXACT PASS 7 w5 2 500000
+LINKED EXACT PASS 8 w5 6 242506
+LINKED EXACT PASS 9 w7 1 921584
+LINKED EXACT PASS 10 w7 3 792856
+LINKED EXACT PASS 11 w5 5 268512
+LINKED EXACT PASS 12 w5 6 249591
+LINKED EXACT PASS 13 w5 7 212996
+LINKED EXACT PASS 14 w7 1 921584
+LINKED EXACT PASS 15 w7 4 773994
+LINKED EXACT PASS 16 w5 0 281064
+LINKED EXACT PASS 17 w5 5 268512
+LINKED EXACT PASS 18 w5 6 249591
+LINKED EXACT PASS 19 w5 7 212996
+LINKED EXACT PASS 20 w7 1 921584
+LINKED EXACT PASS 21 w7 3 792856
+EDGE TREE EXACT PASS 0 11 95
+EDGE TREE EXACT PASS 1 11 95
+EDGE TREE EXACT PASS 2 11 95
+EDGE TREE EXACT PASS 3 11 95
+EDGE TREE EXACT PASS 4 18 844
+EDGE TREE EXACT PASS 5 18 844
+EDGE TREE EXACT PASS 6 18 844
+EDGE TREE EXACT PASS 7 18 844
+EDGE TREE EXACT PASS 8 10 82
+EDGE TREE EXACT PASS 9 10 82
+EDGE TREE EXACT PASS 10 10 82
+EDGE TREE EXACT PASS 11 10 82
+EDGE TREE EXACT PASS 12 14 239
+EDGE TREE EXACT PASS 13 14 239
+EDGE TREE EXACT PASS 14 14 239
+EDGE TREE EXACT PASS 15 14 239
+EDGE TREE EXACT PASS 16 104 73202
+EDGE TREE EXACT PASS 17 104 73202
+EDGE TREE EXACT PASS 18 104 73202
+EDGE TREE EXACT PASS 19 104 73202
+EDGE TREE EXACT PASS 20 11 95
+EDGE TREE EXACT PASS 21 11 95
+EDGE TREE EXACT PASS 22 11 95
+EDGE TREE EXACT PASS 23 11 95
+EDGE TREE EXACT PASS 24 17 1309
+EDGE TREE EXACT PASS 25 17 1309
+EDGE TREE EXACT PASS 26 17 1309
+EDGE TREE EXACT PASS 27 17 1309
+{
+  "status": "PASS",
+  "certificate": "certificate_depth3_linked_92.json",
+  "rows": 16868,
+  "variables": 61673,
+  "certified_helper_numerator": 597778328006951391,
+  "denominator": 10000000000000000,
+  "rounding_repair_numerator": 94981122063296,
+  "gate_lower_bound": 92,
+  "pair_lower_bound": 26,
+  "pair_bound_checked": true,
+  "local_oracles_checked": 8,
+  "consistency_inequalities": 1312,
+  "known97_satisfies_all_rows": true,
+  "parent_forest_inequalities": 192,
+  "parent_tree_inequalities": 58,
+  "known26pair_witness_satisfies_all_rows": true
+}
+{
+  "status": "PASS",
+  "source": "certificate_depth3_linked_92.json",
+  "source_sha256": "47c5b0fcdbcffb085be518103d357cb64c383f0363cba48712f2089394be6bdf",
+  "rows": 16868,
+  "variables": 61673,
+  "denominator": 10000000000000000,
+  "pair_row": 15255,
+  "helper_numerator": 597778328006951391,
+  "pair_multiplier_numerator": 2499973710473077,
+  "helper_lower_bound_when_P_at_least_27": "150069575429356117/2500000000000000",
+  "reweighted_raw_numerator": 2131495970626858740,
+  "reweighted_repair_numerator": 432069609681296,
+  "reweighted_lower_numerator": 2131063901017177444,
+  "rounded_inequality": "3*P + 4*T + 4*Q >= 214",
+  "consequence": "A 92-gate normalized circuit must have P=26 and T+Q=34.",
+  "scope": "Finite row-validity premises are exactly those of the previous verified linked certificate; --full rechecks them."
+}
+PARENT PRICE PASS 50 minimum 75/2 cached components 1411
+PARENT PRICE PASS 100 minimum 75/2 cached components 2127
+PARENT PRICE PASS 150 minimum 75/2 cached components 2268
+PARENT PRICE PASS 200 minimum 75/2 cached components 2360
+PARENT PRICE PASS 250 minimum 75/2 cached components 2408
+PARENT PRICE PASS 300 minimum 75/2 cached components 2439
+PARENT PRICE PASS 350 minimum 75/2 cached components 2459
+ALL PARENT PRICES PASS {"representatives": 388, "covered_partitions": 1552, "minimum_exact_parent_bound": "75/2", "integer_parent_lower_bound": 38, "trees_checked_with_multiplicity": 1404228, "distinct_component_graphs": 2459}
+PARITY ENUMERATION {"blocks": 8, "cycle_budget": 2, "short_words": 1660, "nodes": 14058958, "leaves": 4492324, "surviving_partitions": 110712, "distinct_remainders": 482241}
+{
+  "status": "PASS",
+  "theorem": "Every normalized depth-three circuit with P=26 and c=8 has T+Q>=38, hence G>=96.",
+  "parent_prices": {
+    "representatives": 388,
+    "covered_partitions": 1552,
+    "minimum_exact_parent_bound": "75/2",
+    "integer_parent_lower_bound": 38,
+    "trees_checked_with_multiplicity": 1404228,
+    "distinct_component_graphs": 2459
+  },
+  "independent_parity_enumeration": {
+    "blocks": 8,
+    "cycle_budget": 2,
+    "short_words": 1660,
+    "nodes": 14058958,
+    "leaves": 4492324,
+    "surviving_partitions": 110712,
+    "distinct_remainders": 482241
+  },
+  "pair_recipe_exclusions": {
+    "rejected_partitions": 109160,
+    "nodes": 18722814,
+    "seconds": 170.831
+  },
+  "seconds": 274.7781560370022,
+  "forest_obstruction_sha256": "83e8044accea5de49ec364ca968c8dfc97f59da887ba56a565b7a02111594ecf",
+  "forest_premise_reused": false,
+  "scope": "This excludes the c=8 branch of the 92-gate case. The c=6 and c=7 branches are not excluded by this theorem."
+}
+CONDITIONAL PASS {"file": "component_cut_2.json", "component": 2, "component_word_weight": 6, "helper_lower_bound": "60120700091003/1000000000000", "gate_lower_bound": 93, "rotations": [2, 512, 131072, 33554432]}
+CONDITIONAL PASS {"file": "component_cut_16.json", "component": 16, "component_word_weight": 6, "helper_lower_bound": "60217915004851/1000000000000", "gate_lower_bound": 93, "rotations": [16, 4096, 1048576, 268435456]}
+CONDITIONAL PASS {"file": "component_cut_32.json", "component": 32, "component_word_weight": 6, "helper_lower_bound": "60169048248657/1000000000000", "gate_lower_bound": 93, "rotations": [32, 8192, 2097152, 536870912]}
+CONDITIONAL PASS {"file": "component_cut_257.json", "component": 257, "component_word_weight": 6, "helper_lower_bound": "60457052375837/1000000000000", "gate_lower_bound": 93, "rotations": [257, 65792, 16777217, 16842752]}
+CONDITIONAL PASS {"file": "component_cut_514.json", "component": 514, "component_word_weight": 6, "helper_lower_bound": "3773915169793/62500000000", "gate_lower_bound": 93, "rotations": [514, 131584, 33554434, 33685504]}
+CONDITIONAL PASS {"file": "component_cut_1028.json", "component": 1028, "component_word_weight": 6, "helper_lower_bound": "485117007137/8000000000", "gate_lower_bound": 93, "rotations": [1028, 263168, 67108868, 67371008]}
+CONDITIONAL PASS {"file": "component_cut_2056.json", "component": 2056, "component_word_weight": 6, "helper_lower_bound": "60853543853907/1000000000000", "gate_lower_bound": 93, "rotations": [2056, 526336, 134217736, 134742016]}
+CONDITIONAL PASS {"file": "component_cut_4112.json", "component": 4112, "component_word_weight": 6, "helper_lower_bound": "605076192571/10000000000", "gate_lower_bound": 93, "rotations": [4112, 1052672, 268435472, 269484032]}
+CONDITIONAL PASS {"file": "component_cut_8224.json", "component": 8224, "component_word_weight": 6, "helper_lower_bound": "60581842172717/1000000000000", "gate_lower_bound": 93, "rotations": [8224, 2105344, 536870944, 538968064]}
+CONDITIONAL PASS {"file": "component_cut_16448.json", "component": 16448, "component_word_weight": 6, "helper_lower_bound": "60534067537443/1000000000000", "gate_lower_bound": 93, "rotations": [16448, 4210688, 1073741888, 1077936128]}
+CONDITIONAL PASS {"file": "component_cut_65793.json", "component": 65793, "component_word_weight": 6, "helper_lower_bound": "60422867736851/1000000000000", "gate_lower_bound": 93, "rotations": [65793, 16777473, 16842753, 16843008]}
+CONDITIONAL PASS {"file": "component_cut_131586.json", "component": 131586, "component_word_weight": 6, "helper_lower_bound": "12107587604191/200000000000", "gate_lower_bound": 93, "rotations": [131586, 33554946, 33685506, 33686016]}
+CONDITIONAL PASS {"file": "component_cut_263172.json", "component": 263172, "component_word_weight": 6, "helper_lower_bound": "30399829615749/500000000000", "gate_lower_bound": 93, "rotations": [263172, 67109892, 67371012, 67372032]}
+CONDITIONAL PASS {"file": "component_cut_526344.json", "component": 526344, "component_word_weight": 6, "helper_lower_bound": "61001971741717/1000000000000", "gate_lower_bound": 94, "rotations": [526344, 134219784, 134742024, 134744064]}
+CONDITIONAL PASS {"file": "component_cut_1052688.json", "component": 1052688, "component_word_weight": 6, "helper_lower_bound": "61009803934709/1000000000000", "gate_lower_bound": 94, "rotations": [1052688, 268439568, 269484048, 269488128]}
+CONDITIONAL PASS {"file": "component_cut_2105376.json", "component": 2105376, "component_word_weight": 6, "helper_lower_bound": "60580260439637/1000000000000", "gate_lower_bound": 93, "rotations": [2105376, 536879136, 538968096, 538976256]}
+CONDITIONAL PASS {"file": "component_cut_4210752.json", "component": 4210752, "component_word_weight": 6, "helper_lower_bound": "60458689837659/1000000000000", "gate_lower_bound": 93, "rotations": [4210752, 1073758272, 1077936192, 1077952512]}
+{
+  "status": "PASS",
+  "source_sha256": "47c5b0fcdbcffb085be518103d357cb64c383f0363cba48712f2089394be6bdf",
+  "verified_representatives": 17,
+  "excluded_components_including_rotations": 68,
+  "scope": "If P=26 and any listed set is an actual pair-graph component, the circuit has at least 93 gates. This does not cover all possible component cases.",
+  "records": [
+    {
+      "file": "component_cut_2.json",
+      "component": 2,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60120700091003/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        2,
+        512,
+        131072,
+        33554432
+      ]
+    },
+    {
+      "file": "component_cut_16.json",
+      "component": 16,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60217915004851/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        16,
+        4096,
+        1048576,
+        268435456
+      ]
+    },
+    {
+      "file": "component_cut_32.json",
+      "component": 32,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60169048248657/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        32,
+        8192,
+        2097152,
+        536870912
+      ]
+    },
+    {
+      "file": "component_cut_257.json",
+      "component": 257,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60457052375837/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        257,
+        65792,
+        16777217,
+        16842752
+      ]
+    },
+    {
+      "file": "component_cut_514.json",
+      "component": 514,
+      "component_word_weight": 6,
+      "helper_lower_bound": "3773915169793/62500000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        514,
+        131584,
+        33554434,
+        33685504
+      ]
+    },
+    {
+      "file": "component_cut_1028.json",
+      "component": 1028,
+      "component_word_weight": 6,
+      "helper_lower_bound": "485117007137/8000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        1028,
+        263168,
+        67108868,
+        67371008
+      ]
+    },
+    {
+      "file": "component_cut_2056.json",
+      "component": 2056,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60853543853907/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        2056,
+        526336,
+        134217736,
+        134742016
+      ]
+    },
+    {
+      "file": "component_cut_4112.json",
+      "component": 4112,
+      "component_word_weight": 6,
+      "helper_lower_bound": "605076192571/10000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        4112,
+        1052672,
+        268435472,
+        269484032
+      ]
+    },
+    {
+      "file": "component_cut_8224.json",
+      "component": 8224,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60581842172717/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        8224,
+        2105344,
+        536870944,
+        538968064
+      ]
+    },
+    {
+      "file": "component_cut_16448.json",
+      "component": 16448,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60534067537443/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        16448,
+        4210688,
+        1073741888,
+        1077936128
+      ]
+    },
+    {
+      "file": "component_cut_65793.json",
+      "component": 65793,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60422867736851/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        65793,
+        16777473,
+        16842753,
+        16843008
+      ]
+    },
+    {
+      "file": "component_cut_131586.json",
+      "component": 131586,
+      "component_word_weight": 6,
+      "helper_lower_bound": "12107587604191/200000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        131586,
+        33554946,
+        33685506,
+        33686016
+      ]
+    },
+    {
+      "file": "component_cut_263172.json",
+      "component": 263172,
+      "component_word_weight": 6,
+      "helper_lower_bound": "30399829615749/500000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        263172,
+        67109892,
+        67371012,
+        67372032
+      ]
+    },
+    {
+      "file": "component_cut_526344.json",
+      "component": 526344,
+      "component_word_weight": 6,
+      "helper_lower_bound": "61001971741717/1000000000000",
+      "gate_lower_bound": 94,
+      "rotations": [
+        526344,
+        134219784,
+        134742024,
+        134744064
+      ]
+    },
+    {
+      "file": "component_cut_1052688.json",
+      "component": 1052688,
+      "component_word_weight": 6,
+      "helper_lower_bound": "61009803934709/1000000000000",
+      "gate_lower_bound": 94,
+      "rotations": [
+        1052688,
+        268439568,
+        269484048,
+        269488128
+      ]
+    },
+    {
+      "file": "component_cut_2105376.json",
+      "component": 2105376,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60580260439637/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        2105376,
+        536879136,
+        538968096,
+        538976256
+      ]
+    },
+    {
+      "file": "component_cut_4210752.json",
+      "component": 4210752,
+      "component_word_weight": 6,
+      "helper_lower_bound": "60458689837659/1000000000000",
+      "gate_lower_bound": 93,
+      "rotations": [
+        4210752,
+        1073758272,
+        1077936192,
+        1077952512
+      ]
+    }
+  ]
+}
+SHORT WORDS PASS 6 55812
+PARITY ENUMERATION {"blocks": 6, "cycle_budget": 0, "short_words": 20802, "nodes": 7662852, "leaves": 4432187, "surviving_partitions": 275354, "distinct_remainders": 1148884}
+{
+  "status": "PASS",
+  "components": 6,
+  "cycle_budget": 0,
+  "enumeration": {
+    "blocks": 6,
+    "cycle_budget": 0,
+    "short_words": 20802,
+    "nodes": 7662852,
+    "leaves": 4432187,
+    "surviving_partitions": 275354,
+    "distinct_remainders": 1148884
+  },
+  "cpp_set_matches": true,
+  "canonical_sha256": "9a870a0f7c7796957ea5b53da61b1719f822c74b7ba921761c1a784a508b0fed",
+  "seconds": 117.58809764000034,
+  "scope": "Complete parity-partition coverage after previously verified component exclusions; partitions are not yet all excluded."
+}
+{
+  "representatives": 24,
+  "covered_partitions": 96,
+  "minimum_exact_parent_bound": "4302083/125000",
+  "integer_parent_lower_bound": 35,
+  "trees_checked_with_multiplicity": 245309,
+  "distinct_component_graphs": 3136,
+  "status": "PASS",
+  "components": 6,
+  "seconds": 2.643461687999661,
+  "scope": "Every covered partition needs T+Q>=35, hence at least 93 gates when P=26. Other partitions are unresolved by these prices."
+}
+SHORT WORDS PASS 7 9772
+PARITY ENUMERATION {"blocks": 7, "cycle_budget": 1, "short_words": 9024, "nodes": 5471486, "leaves": 1371736, "surviving_partitions": 22060, "distinct_remainders": 223076}
+{
+  "status": "PASS",
+  "components": 7,
+  "cycle_budget": 1,
+  "enumeration": {
+    "blocks": 7,
+    "cycle_budget": 1,
+    "short_words": 9024,
+    "nodes": 5471486,
+    "leaves": 1371736,
+    "surviving_partitions": 22060,
+    "distinct_remainders": 223076
+  },
+  "cpp_set_matches": true,
+  "canonical_sha256": "9fed126fa6440e2ecda33df7aac61fb8b2c6f92f4d6030cc96b3bc05ec559574",
+  "seconds": 20.325894904999586,
+  "scope": "Complete parity-partition coverage after previously verified component exclusions; partitions are not yet all excluded."
+}
+PARENT PRICE PASS 500 minimum 273/8 cached components 6633
+PARENT PRICE PASS 1000 minimum 273/8 cached components 7247
+PARENT PRICE PASS 1500 minimum 273/8 cached components 7307
+PARENT PRICE PASS 2000 minimum 273/8 cached components 8420
+PARENT PRICE PASS 2500 minimum 273/8 cached components 8929
+PARENT PRICE PASS 3000 minimum 273/8 cached components 9056
+PARENT PRICE PASS 3500 minimum 273/8 cached components 9104
+PARENT PRICE PASS 4000 minimum 273/8 cached components 9163
+PARENT PRICE PASS 4500 minimum 273/8 cached components 9163
+{
+  "representatives": 4619,
+  "covered_partitions": 18404,
+  "minimum_exact_parent_bound": "273/8",
+  "integer_parent_lower_bound": 35,
+  "trees_checked_with_multiplicity": 28166029,
+  "distinct_component_graphs": 9163,
+  "status": "PASS",
+  "components": 7,
+  "seconds": 99.03000302600049,
+  "scope": "Every covered partition needs T+Q>=35, hence at least 93 gates when P=26. Other partitions are unresolved by these prices."
+}
+PARTITION FARKAS PASS 20
+PARTITION FARKAS PASS 40
+PARTITION FARKAS PASS 60
+PARTITION FARKAS PASS 80
+PARTITION FARKAS PASS 100
+PARTITION FARKAS PASS 120
+PARTITION FARKAS PASS 140
+PARTITION FARKAS PASS 160
+PARTITION FARKAS PASS 180
+PARTITION FARKAS PASS 200
+PARTITION FARKAS PASS 220
+PARTITION FARKAS PASS 240
+PARTITION FARKAS PASS 260
+PARTITION FARKAS PASS 280
+PARTITION FARKAS PASS 300
+PARTITION FARKAS PASS 320
+PARTITION FARKAS PASS 340
+PARTITION FARKAS PASS 360
+PARTITION FARKAS PASS 380
+PARTITION FARKAS PASS 400
+PARTITION FARKAS PASS 420
+PARTITION FARKAS PASS 440
+PARTITION FARKAS PASS 460
+PARTITION FARKAS PASS 480
+PARTITION FARKAS PASS 500
+PARTITION FARKAS PASS 520
+PARTITION FARKAS PASS 540
+PARTITION FARKAS PASS 560
+PARTITION FARKAS PASS 580
+PARTITION FARKAS PASS 600
+PARTITION FARKAS PASS 620
+PARTITION FARKAS PASS 640
+PARTITION FARKAS PASS 660
+PARTITION FARKAS PASS 680
+PARTITION FARKAS PASS 700
+PARTITION FARKAS PASS 720
+PARTITION FARKAS PASS 740
+PARTITION FARKAS PASS 760
+PARTITION FARKAS PASS 780
+PARTITION FARKAS PASS 800
+PARTITION FARKAS PASS 820
+PARTITION FARKAS PASS 840
+PARTITION FARKAS PASS 860
+PARTITION FARKAS PASS 880
+PARTITION FARKAS PASS 900
+PARTITION FARKAS PASS 920
+PARTITION FARKAS PASS 940
+PARTITION FARKAS PASS 960
+PARTITION FARKAS PASS 980
+PARTITION FARKAS PASS 1000
+PARTITION FARKAS PASS 1020
+PARTITION FARKAS PASS 1040
+PARTITION FARKAS PASS 1060
+PARTITION FARKAS PASS 1080
+PARTITION FARKAS PASS 1100
+{
+  "status": "PASS",
+  "verified_certificates": 1113,
+  "source_sha256": "47c5b0fcdbcffb085be518103d357cb64c383f0363cba48712f2089394be6bdf",
+  "scope": "Each listed actual component partition is impossible at P=26,H<=60. Unlisted partitions are not excluded by these checks."
+}
+{
+  "status": "PASS",
+  "verified_gate_interval": [
+    93,
+    97
+  ],
+  "new_lower_bound": 93,
+  "case_coverage": {
+    "6": {
+      "total_partitions": 275354,
+      "forest_component_exclusions": 271718,
+      "parent_price_exclusions": 96,
+      "farkas_exclusions": 3636,
+      "pair_recipe_exclusions": 0,
+      "uncovered": 0
+    },
+    "7": {
+      "total_partitions": 22060,
+      "forest_component_exclusions": 0,
+      "parent_price_exclusions": 18404,
+      "farkas_exclusions": 816,
+      "pair_recipe_exclusions": 2840,
+      "uncovered": 0
+    }
+  },
+  "eight_component_case": "Previously verified: P=26,c=8 requires at least 96 gates.",
+  "premise": "Previously verified P>=26 and 3P+4T+4Q>=214 reduce any <=92-gate circuit to P=26,H=60,c in {6,7,8}.",
+  "known97_rechecked": true,
+  "reused_completed_checks": false,
+  "source_certificate_checker_rerun": true,
+  "exact_optimum": "UNRESOLVED"
+}

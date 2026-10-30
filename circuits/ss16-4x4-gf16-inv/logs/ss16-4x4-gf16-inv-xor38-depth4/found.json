@@ -1,0 +1,29 @@
+{
+ "circuit": "ss16-4x4-gf16-inv-xor38-depth4.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T10:58:35.505+00:00",
+ "seconds_into_run": 0.48015264398418367,
+ "run": "nist-batch-16b",
+ "run_id": "464b77d6c24e4762af168224cbbdaa43",
+ "worker": "ss16-4x4-gf16-inv-cap4-00",
+ "depth_cap": 4,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "38@6",
+  "by": "NIST",
+  "source": "nist-g38-d6.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "faf0071f30152c819bbcd315902cce9a846a7601a11318affbf3b2118585deb6",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

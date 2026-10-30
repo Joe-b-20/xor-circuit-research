@@ -1,0 +1,49 @@
+# AES MixColumns: 1 h on 20 workers, five per real depth cap 3, 4, 5 and uncapped, all from
+# fresh random roots (no seed circuits).  Settings of the 2026-10-29 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/aes-mixcolumns.toml --out search/runs/aes-mixcolumns --detach
+#
+# Relative paths in this file are relative to this file.
+
+[campaign]
+name = "aes-mixcolumns"
+seed = 20261029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+
+[[workers]]
+name = "cap3"
+target = "aes-mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 3
+seeds = ["root"]
+
+[[workers]]
+name = "cap4"
+target = "aes-mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 4
+seeds = ["root"]
+per_worker = [{ "moves.lns.rebuild.deadline_p" = 0.05 }, { "moves.lns.rebuild.deadline_p" = 0.25 }, { "moves.lns.rebuild.deadline_p" = 0.40 }]
+
+[[workers]]
+name = "cap5"
+target = "aes-mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 5
+seeds = ["root"]
+
+[[workers]]
+name = "free"
+target = "aes-mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["root"]

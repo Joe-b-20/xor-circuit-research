@@ -1,0 +1,34 @@
+[campaign]
+name = "rerun-aes_sbox_bottom"
+description = "cleaned xorsearch, 1 h on 20 workers; compare with 2026-10-28"
+seed = 20263029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[28, 5], [29, 4]]
+
+[[workers]]
+name = "cap4"
+target = "aes_sbox_bottom"
+count = 7
+objective = "gates"
+depth_cap = 4
+seeds = ["~/xor-circuit-lab/search/targets/seeds/aes_sbox_bottom/aes_bottom_g38_d4_ea3d7018e996.json"]
+
+[[workers]]
+name = "cap5"
+target = "aes_sbox_bottom"
+count = 7
+objective = "gates"
+depth_cap = 5
+seeds = ["~/xor-circuit-lab/search/targets/seeds/aes_sbox_bottom/aes_bottom_g28_d5_686060e01e81.json"]
+
+[[workers]]
+name = "free"
+target = "aes_sbox_bottom"
+count = 6
+objective = "gates"
+depth_cap = "none"
+seeds = ["~/xor-circuit-lab/search/targets/seeds/aes_sbox_bottom/aes_bottom_g28_d5_686060e01e81.json"]

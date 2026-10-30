@@ -1,0 +1,18 @@
+# quick profile -- short experiments and smoke tests (seconds to minutes).
+#
+# Only bookkeeping changes: status, pool, diversity and epoch panels update within a short run.
+# The search itself (moves, acceptance, restarts) keeps its defaults, so what a quick run finds
+# is comparable with a long run.  Use:  profiles = ["default", "quick"]  or  quick --profile quick
+
+[campaign]
+collect_seconds = 1.0       # collect records / write status.json every second
+diversity_seconds = 10.0    # fleet_diversity snapshot every 10 s
+stop_grace_seconds = 10.0   # small chains checkpoint fast
+
+[worker]
+checkpoint_seconds = 10.0
+status_seconds = 1.0
+
+[telemetry]
+epoch_seconds = 10.0        # per-move counters every 10 s instead of 60 s (one epoch per minute
+                            # leaves a 60-s run with nothing to plot)

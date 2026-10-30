@@ -1,0 +1,29 @@
+{
+ "circuit": "skop15-4x4-gf16-xor45-depth4.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-30T10:59:07.998+00:00",
+ "seconds_into_run": 34.18729983200319,
+ "run": "nist-batch-16b",
+ "run_id": "464b77d6c24e4762af168224cbbdaa43",
+ "worker": "skop15-4x4-gf16-cap4-00",
+ "depth_cap": 4,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "44@7",
+  "by": "NIST",
+  "source": "nist-g44-d7.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "4cb47120e020e4f125286a3c4b4ce5c556fdfc953f7f5cf26ddf4e2b68cfac2e",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

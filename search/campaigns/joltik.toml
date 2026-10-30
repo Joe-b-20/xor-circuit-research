@@ -1,0 +1,48 @@
+# Joltik diffusion layer: 1 h on 20 workers under real depth caps 5, 8, 9 and uncapped, starting
+# from the NIST circuit in search/seeds/joltik/.  Settings of the 2026-10-29 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/joltik.toml --out search/runs/joltik --detach
+#
+# Relative paths in this file are relative to this file.
+
+[campaign]
+name = "joltik"
+seed = 20265029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[44, 4], [43, 6], [42, 9]]
+
+[[workers]]
+name = "cap5"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = 5
+seeds = ["../seeds/joltik/nist-g44-d7.json"]
+
+[[workers]]
+name = "cap8"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = 8
+seeds = ["../seeds/joltik/nist-g44-d7.json"]
+
+[[workers]]
+name = "cap9"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = 9
+seeds = ["../seeds/joltik/nist-g44-d7.json"]
+
+[[workers]]
+name = "free"
+target = "joltik"
+count = 5
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/joltik/nist-g44-d7.json"]

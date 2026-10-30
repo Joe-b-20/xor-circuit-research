@@ -1,0 +1,62 @@
+xor-circuit-research
+Copyright 2026 Joe Bachir
+
+Licensed under the Apache License, Version 2.0 (LICENSE), except for the parts listed below.
+
+
+Parts under their own license (MIT, same author)
+-------------------------------------------------
+- lower-bound-proofs/mixcolumns-lb75/                 (LICENSE in that folder)
+- lower-bound-proofs/mixcolumns-lb93-depth3/supplement/ (LICENSE in that folder)
+- search/versions/v1-mixcolumns-pipeline/             (LICENSE in that folder)
+- search/versions/v2-search-framework/, v3-..., v4-...  (licenses/legacy-v2-v3.txt and its
+  scope note in each folder)
+
+
+Data from NIST (usnistgov/Circuits)
+-----------------------------------
+This repository uses data from the circuit repository of the National Institute of Standards
+and Technology (NIST): https://github.com/usnistgov/Circuits, at commits
+8366158a4324ef902ce740f29ddc9f7ebb1018b2 (seeds of the first maps, 2026-10) and
+0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f (the 53 maps added 2026-10-30), and NIST's list of
+circuits,
+https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits. NIST is the source of
+that data. NIST's terms for its data are at https://www.nist.gov/open/license.
+
+Files derived from it, and how they were changed (2026-10-30 unless noted):
+- circuits/<map>/<map>.mat.txt for the 53 maps of data/slp/2021-linearmaps: the matrices,
+  renamed to one folder per map; a few rewritten from NIST's "EQUAL" form into 0/1 rows.
+- search/seeds/<map>/nist-g<G>-d<D>.json: NIST's circuits for those maps and for AES
+  InvMixColumns, the AES S-box bottom layer, FOX MU4/MU8 and Joltik, converted from NIST's
+  circuit format into this repository's JSON format; each file names its NIST source. The
+  S-box bottom seeds are the XOR-only tails of NIST S-box circuits, with XNOR constants moved
+  into the map's affine constants and input wires permuted.
+- The NIST columns of circuits/README.md: gate counts and depths read from NIST's files and
+  its list of circuits.
+- search/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
+  repository files (targets/nist/), as those versions used them (2026-10-24 to 10-28), and a
+  saved copy of NIST's list-of-circuits web page (v4, targets/nist/invmixcolumns/).
+
+Not every file in NIST's repository was made by NIST. Some circuits in those verbatim copies
+are external contributions or come from published papers (for example AES S-box circuits
+contributed by Milad Nasr, and circuits from github.com/umizame/S-box_29-AND,
+github.com/xiangzejun/Optimizing_Implementations_of_Linear_Layers and
+github.com/rub-hgi/shorter_linear_slps_for_mds_matrices, the last under the MIT license).
+They keep their authors' rights and terms; this repository's licenses do not cover them.
+
+
+Circuits from published work
+----------------------------
+Some seed circuits and comparison circuits kept in search/versions/ were transcribed from
+published papers, including J. Jean (IACR ePrint 2026/1481) and the papers of Xiang et al.
+and Yuan et al. They are credited in the files that hold them, keep their
+authors' rights, and are not covered by this repository's licenses.
+
+
+Redactions
+----------
+Before release, local home-directory paths, temporary paths and the machine's hostname were
+replaced in run logs and archived run state (by "~", "<tmp>" and "host"). Hashes that cover
+changed files were recomputed; the two rebuilt archives in
+search/versions/v4-search-framework/targets/local/invmixcolumns/repository/sources/ record
+their original hashes in their manifests.

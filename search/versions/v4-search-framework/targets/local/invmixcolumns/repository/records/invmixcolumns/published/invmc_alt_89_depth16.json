@@ -1,0 +1,441 @@
+{
+ "gateCount": 89,
+ "depth": 16,
+ "gates": [
+  [
+   12,
+   28
+  ],
+  [
+   19,
+   27
+  ],
+  [
+   13,
+   21
+  ],
+  [
+   2,
+   10
+  ],
+  [
+   1,
+   17
+  ],
+  [
+   6,
+   22
+  ],
+  [
+   7,
+   23
+  ],
+  [
+   7,
+   15
+  ],
+  [
+   8,
+   24
+  ],
+  [
+   32,
+   4
+  ],
+  [
+   33,
+   11
+  ],
+  [
+   34,
+   29
+  ],
+  [
+   35,
+   18
+  ],
+  [
+   36,
+   25
+  ],
+  [
+   37,
+   30
+  ],
+  [
+   39,
+   31
+  ],
+  [
+   43,
+   5
+  ],
+  [
+   44,
+   26
+  ],
+  [
+   45,
+   0
+  ],
+  [
+   46,
+   14
+  ],
+  [
+   47,
+   23
+  ],
+  [
+   48,
+   37
+  ],
+  [
+   49,
+   19
+  ],
+  [
+   51,
+   38
+  ],
+  [
+   52,
+   3
+  ],
+  [
+   53,
+   39
+  ],
+  [
+   54,
+   56
+  ],
+  [
+   55,
+   28
+  ],
+  [
+   55,
+   40
+  ],
+  [
+   56,
+   42
+  ],
+  [
+   57,
+   52
+  ],
+  [
+   57,
+   16
+  ],
+  [
+   58,
+   59
+  ],
+  [
+   60,
+   17
+  ],
+  [
+   61,
+   32
+  ],
+  [
+   63,
+   40
+  ],
+  [
+   64,
+   20
+  ],
+  [
+   64,
+   41
+  ],
+  [
+   65,
+   9
+  ],
+  [
+   65,
+   45
+  ],
+  [
+   66,
+   34
+  ],
+  [
+   67,
+   0
+  ],
+  [
+   68,
+   21
+  ],
+  [
+   69,
+   43
+  ],
+  [
+   70,
+   10
+  ],
+  [
+   71,
+   44
+  ],
+  [
+   72,
+   46
+  ],
+  [
+   73,
+   62
+  ],
+  [
+   73,
+   24
+  ],
+  [
+   74,
+   48
+  ],
+  [
+   76,
+   77
+  ],
+  [
+   76,
+   49
+  ],
+  [
+   79,
+   63
+  ],
+  [
+   79,
+   36
+  ],
+  [
+   80,
+   60
+  ],
+  [
+   80,
+   52
+  ],
+  [
+   81,
+   72
+  ],
+  [
+   82,
+   33
+  ],
+  [
+   85,
+   35
+  ],
+  [
+   87,
+   50
+  ],
+  [
+   87,
+   55
+  ],
+  [
+   88,
+   75
+  ],
+  [
+   89,
+   55
+  ],
+  [
+   90,
+   83
+  ],
+  [
+   90,
+   56
+  ],
+  [
+   91,
+   70
+  ],
+  [
+   93,
+   74
+  ],
+  [
+   93,
+   6
+  ],
+  [
+   94,
+   62
+  ],
+  [
+   95,
+   82
+  ],
+  [
+   96,
+   100
+  ],
+  [
+   96,
+   57
+  ],
+  [
+   97,
+   85
+  ],
+  [
+   99,
+   78
+  ],
+  [
+   99,
+   51
+  ],
+  [
+   100,
+   41
+  ],
+  [
+   103,
+   61
+  ],
+  [
+   104,
+   71
+  ],
+  [
+   105,
+   47
+  ],
+  [
+   106,
+   53
+  ],
+  [
+   107,
+   68
+  ],
+  [
+   108,
+   58
+  ],
+  [
+   110,
+   55
+  ],
+  [
+   110,
+   62
+  ],
+  [
+   111,
+   105
+  ],
+  [
+   112,
+   66
+  ],
+  [
+   113,
+   94
+  ],
+  [
+   114,
+   57
+  ],
+  [
+   117,
+   69
+  ]
+ ],
+ "provenance": {
+  "engine": "alt",
+  "seed": "invmc_bp5ub2_113_depth17.json",
+  "worker": "a4_alt_113",
+  "worker_pid": 524641,
+  "host": "host",
+  "depth_cap": null,
+  "depth": 16,
+  "gates": 89,
+  "cpu_s": 265.74,
+  "wall_s": 265.7,
+  "note": "depth-tiebreak it=147935",
+  "run_dir": "~/xor_ui/slp-invmc/pipeline/runs/20260908_135521",
+  "cmd": "~/anaconda3/bin/python3 ~/xor_ui/slp-invmc/pipeline/worker.py a4_alt_113 alt none ~/xor_ui/slp-invmc/pipeline/seeds/invmc_bp5ub2_113_depth17.json ~/xor_ui/slp-invmc/pipeline/runs/20260908_135521 31,32,33",
+  "oracle": "VERDICT: VALID aes_inv_mixcolumns circuit",
+  "oracle_cmd": "~/anaconda3/bin/python3 ~/xor_ui/slp-invmc/tools/verify_slp_generic.py --target ~/xor_ui/slp-invmc/spec/invmc_matrix.json /tmp/oracle_tamwhmri.json",
+  "target": "~/xor_ui/slp-invmc/spec/invmc_matrix.json",
+  "dead_gate_stripped": true,
+  "produced_utc": "2026-09-08T17:59:47Z",
+  "class": "OURS -- own lineage, no published material (seeded from this project's own bp5ub circuits or from nothing)",
+  "run": "pipeline/runs/20260908_135521 (FIXED setA)",
+  "launch_cmd": "cd pipeline && setsid nohup nice -n 19 python3 ladder_parallel.py --mode fixed --workers setA > runs/launch_setA.out 2>&1 < /dev/null &",
+  "oracle_cmd_reproducible": "nice -n 19 python3 tools/verify_slp_generic.py --target spec/invmc_matrix.json circuits/invmc_alt_89_depth16.json",
+  "oracle_stdout": [
+   "target=aes_inv_mixcolumns inputs=32 outputs=32 rank=32 density=472 rows_sha256=b9c0cd9a5b8e7add",
+   "target rebuilt: from GF(2^8)/0x11B column ['0xe', '0xb', '0xd', '0x9']",
+   "gates=89 depth=16 outputs_built=32/32 problems=0",
+   "VERDICT: VALID aes_inv_mixcolumns circuit"
+  ],
+  "oracle_exit": 0,
+  "depth_schedule_cmd": "nice -n 19 python3 tools/depth_schedule.py --target spec/invmc_matrix.json circuits/invmc_alt_89_depth16.json",
+  "depth_schedule_stdout": [
+   "circuit=circuits/invmc_alt_89_depth16.json.raw",
+   "target=aes_inv_mixcolumns inputs=32",
+   "(a) depth AS TRANSCRIBED           = 16   [over all 89 gates]",
+   "(a') depth as transcribed, outputs = 16   [longest input-to-output path]",
+   "    gates=89  distinct gate masks=89  duplicate-mask gates=0  dead gates=0",
+   "(b) ASAP least-fixpoint MIN DEPTH  = 16   [same mask set, 89 gates]"
+  ],
+  "banked_note": "FIRST verified 89-gate InvMixColumns circuit at depth 16. Found by a4_alt_113 at 265.74 CPU-s: NEW BEST 89@17 at it=147913, then 89@16 twenty-two iterations later through the D2 depth tie-break. Dominates every previously known point except Paar1 164@9. A DISTINCT 89-gate family from circuits/invmc_walk_89_depth25.json (Jaccard 0.299 on the mask sets).",
+  "banked_utc": "2026-09-08T18:36:41Z",
+  "fleet_note": "snapshot taken at the 40-minute mark; the fleet was left running, so the worker's own _best.json may improve after this snapshot",
+  "outputs": {
+   "0": 67,
+   "1": 104,
+   "2": 95,
+   "3": 108,
+   "4": 120,
+   "5": 75,
+   "6": 106,
+   "7": 114,
+   "8": 86,
+   "9": 91,
+   "10": 83,
+   "11": 102,
+   "12": 117,
+   "13": 88,
+   "14": 78,
+   "15": 119,
+   "16": 84,
+   "17": 97,
+   "18": 101,
+   "19": 113,
+   "20": 107,
+   "21": 81,
+   "22": 111,
+   "23": 110,
+   "24": 92,
+   "25": 109,
+   "26": 77,
+   "27": 118,
+   "28": 112,
+   "29": 98,
+   "30": 116,
+   "31": 115
+  },
+  "outputs_note": "output bit r (row 8*byte+bit) is held by signal s (gate s-32); computed by the coordinator 2026-09-08 by mask matching against spec/invmc_target_masks.json",
+  "referee": "RECORD CONFIRMED WITH CORRECTIONS \u2014 referee_89/REFEREE_REPORT.md (Fable, shared-nothing, FIPS-197 App. B/C + openssl cross-check; 0/89 single and 0/3,916 pair removals; not in-place realisable)"
+ }
+}

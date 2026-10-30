@@ -1,0 +1,31 @@
+# A/B test of the xorsearch policies against the old search/ framework's policies, on the same
+# kernels, target, caps and seed circuits.  The "legacy" group runs with the legacy-compat profile
+# (fixed scheduler, no stall restarts); "new" runs the defaults.  sharing.scope = "group" keeps the
+# arms from feeding each other.
+#
+#   python -m xorsearch run xorsearch/examples/legacy_ab.toml --out ~/runs/ab --seconds 2h --detach
+#   jq -r 'select(.ev=="frontier") | "\(.t|floor)s \(.point.gates)@\(.point.depth) \(.group)"' ~/runs/ab/campaign.jsonl
+#
+# One frontier is kept per target, so a point is credited to the arm that found it first; the
+# per-worker events.jsonl files hold each arm's own best-over-time.
+
+[campaign]
+name = "legacy-ab"
+seed = 4242
+duration = "2h"
+
+[set]
+"sharing.scope" = "group"
+
+[[workers]]
+name = "new"
+target = "fox_mu4"
+count = 2
+depth_cap = [7, "none"]
+
+[[workers]]
+name = "legacy"
+target = "fox_mu4"
+count = 2
+depth_cap = [7, "none"]
+profiles = ["legacy-compat"]

@@ -1,0 +1,64 @@
+Enumeration correction and independent audit, 2026-10-17
+
+THE ERROR
+
+A partition consists of sorted disjoint graph-code words. At a recursion
+node with remaining support weight R and k remaining words, the next word
+has weight at most floor(R/k). The bound need not hold for later words:
+a small next word leaves a larger average for those that follow.
+
+The old Python code intersected the persistent candidate set with this
+weight bound, then passed that filtered set recursively. It could therefore
+omit valid partitions. Both verify_pair25.py and verify_pair26.py used this
+pattern. The prior saved PASS records did not establish exhaustiveness.
+
+THE REPAIR
+
+Use a separate variable eligible for the next-word choices, keeping the
+original candidates for recursion:
+
+  eligible = candidates & next_weight_mask & remaining_cycle_mask
+  for j in eligible:
+      recurse(candidates & compatibility[j], ...)
+
+The compatibility mask already requires index greater than j, so retaining
+candidates does not introduce duplicate orderings. Later words now remain
+available even when heavier than the current next-word bound.
+
+AUDIT RESULTS
+
+verify_pair_rank.py does not use this bug-prone bitset filter. It uses an
+ordered loop and recurses by index into the full list. A fresh complete run
+again found zero nine-component parity partitions, establishing c<=8.
+
+Corrected verify_pair25.py: PASS. Zero eight-component forced-edge-forest
+partitions; 2,554,272 recursion nodes and 399,570 six-word leaves.
+
+Corrected verify_pair26.py, including its full c<=8 premise: PASS.
+All 4,082 forest-obstruction representatives rechecked, 1,348,913 nodes.
+Seven components, zero cycle budget: zero partitions.
+Eight components, one cycle budget: 2,848 partitions, all rejected by the
+complete pair-recipe checker, with 111,364 nodes and no unresolved cases.
+The earlier count of 800 was incomplete. P>=26 survives the correction.
+
+For the new P=26,c=8 proof, corrected Python and independently implemented
+C++ enumeration produce exactly the same set of 110,712 partitions. The
+comparison uses canonical sorted component lists, not just equal counts.
+See corrected_partition_crosscheck.json for the canonical set digest.
+The old discovery list had 104,548 entries. All 6,164 omitted entries fail
+the exact pair-recipe check; none needs a new parent-price certificate.
+
+The final eight-component checker independently regenerated all 110,712
+partitions, checked all 388 parent-price representatives, and rejected all
+109,160 remaining partitions by complete pair-recipe search. Status PASS.
+
+The frozen linked-92 certificate and its arithmetic were unchanged.
+The repaired P>=26 premise restores its justification; the verified global
+interval remains 92..97. This repair does not establish the exact optimum.
+
+HISTORICAL FILES
+
+Older checkpoints and saved logs retain their earlier, incomplete counts.
+The before-weight-fix source copies in scratch and the initial failed
+new-proof run are debugging records, not current proof checkers. Current
+checkers and corrected results are named explicitly in README_CURRENT.txt.

@@ -1,0 +1,58 @@
+# AES InvMixColumns: 1 h on 20 workers under real depth caps 9, 14, 16, 19 and uncapped, each
+# group starting from NIST circuits (search/seeds/aes-invmixcolumns/).  Settings of the
+# 2026-10-29 campaigns.
+#
+#   python3 search/xorflux run search/campaigns/aes-invmixcolumns.toml --out search/runs/aes-invmixcolumns --detach
+#
+# Relative paths in this file are relative to this file.
+
+[campaign]
+name = "aes-invmixcolumns"
+seed = 20262029
+duration = "1h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"scheduler.reference" = [[95, 9], [92, 11], [91, 12], [90, 13], [89, 16], [88, 19]]
+"construct.mix.naive" = 0.0
+
+[[workers]]
+name = "cap9"
+target = "aes-invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 9
+seeds = ["../seeds/aes-invmixcolumns/nist-g95-d9.json"]
+
+[[workers]]
+name = "cap14"
+target = "aes-invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 14
+seeds = ["../seeds/aes-invmixcolumns/nist-g92-d13.json"]
+
+[[workers]]
+name = "cap16"
+target = "aes-invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 16
+seeds = ["../seeds/aes-invmixcolumns/nist-g91-d15.json"]
+
+[[workers]]
+name = "cap19"
+target = "aes-invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 19
+seeds = ["../seeds/aes-invmixcolumns/nist-g91-d15.json"]
+
+[[workers]]
+name = "free"
+target = "aes-invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["../seeds/aes-invmixcolumns/nist-g91-d15.json", "../seeds/aes-invmixcolumns/nist-g92-d13.json", "../seeds/aes-invmixcolumns/nist-g93-d12.json", "../seeds/aes-invmixcolumns/nist-g96-d8.json"]

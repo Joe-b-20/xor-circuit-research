@@ -1,0 +1,166 @@
+AES forward MixColumns, depth at most three: P >= 26
+2026-10-16; enumeration corrected and reverified 2026-10-17
+
+MODEL
+
+Two-input XOR gates, raw inputs at depth zero, arbitrary sharing, fan-out,
+and cancellation. The lossless normalization in PROOF.md gives distinct
+pair signals at depth one, triples and quartets at depth two, and 32 output
+gates at depth three. Let P count the normalized pairs. The result is P>=26.
+This does not assert that P=26 is attainable or determine the full optimum.
+
+1. WHY ONLY TWO CASES NEED EXCLUDING
+
+The graph of pair signals has 32 vertices, P edges, and c components. Its
+cycle rank is beta=P-32+c. The parity argument shows that each output meets
+exactly one component oddly. Thus the component words (u,M*u) partition
+the 64 input/output coordinates. The previously proved finite graph-code
+lemma gives c<=8; verify_pair_rank.py independently rechecks this lemma.
+
+If P<=25, then c>=32-P>=7. Hence either:
+
+  c=7, beta=0: every component is a tree;
+  c=8, beta<=1: at most one independent cycle in the entire graph.
+
+These two cases cover P<=25, including P=24. No extra symmetry or restriction
+on circuit topology has been imposed.
+
+2. A COMPLETE NECESSARY PAIR-RECIPE LIST
+
+Forget the cost of triples and quartets and retain only pair signals needed
+by an output. Superset pair recipes can be discarded: if a smaller recipe
+is available, the pair-only feasibility question is already satisfied.
+The following lists are complete, including cancellation.
+
+For a weight-seven output Y, choose its raw-input anchor a in Y and a perfect
+matching of the six remaining bits. These are the 7*15=105 pair recipes.
+The unfolded ancestry has seven distinct leaves, so there is no cancellation.
+
+For a weight-five output Y, the minimal recipes are:
+
+  (i) Choose an anchor a in Y and match the other four bits into two pairs.
+      This gives 5*3=15 recipes.
+
+  (ii) Choose an anchor a in Y, two bits b,c among the remaining four, and
+       a foreign bit z outside Y. Use pairs {b,z}, {c,z}, and the pair of
+       the other two output bits. This gives 5*6*27=810 recipes.
+
+To see completeness, the final-parent cases are 1+4, disjoint 3+2, or
+overlapping 3+4 with one cancelled foreign bit z. The first two give (i).
+In the cancelling case, write the triple as an anchor plus a pair, and
+the quartet as two disjoint pairs. If the anchor is z, the three pairs
+form a matching of Y union {z}; dropping the pair containing z leaves a
+recipe of type (i). Otherwise the two pairs containing z form a path
+through z, and the third pair is disjoint, giving (ii). Conversely these
+recipes can be realized at depth three: for (ii), form the triple from
+{b,z} plus anchor a, and the quartet from {c,z} and the remaining pair.
+
+The independent checker generates these 105/825 lists directly, without
+using the complete helper-model recipe generator. They agree with its
+pair projections after superset removal. Their validity is unrestricted:
+all 27 possible foreign cancellation bits are included for every Y.
+
+3. LOCAL FOREST OBSTRUCTIONS
+
+For a proposed pair-graph component C, no selected pair may cross C. For
+each output recipe, discard it if it uses a crossing pair, then retain
+only its pairs lying inside C. The outside pairs are deliberately ignored.
+Every actual circuit with C as a component must satisfy the resulting
+local requirements. This is a relaxation, so local infeasibility excludes C.
+
+The checker searches exactly for an acyclic set of internal pairs supporting
+at least one projected recipe for every output. It only prunes when:
+
+  - adding a recipe exceeds the allowed cycle rank;
+  - an output has no remaining viable recipe; or
+  - the same already-proved-infeasible edge set is revisited.
+
+An edge in every viable recipe of an unsatisfied output is forced. Otherwise
+the search branches over every viable recipe of one unsatisfied output.
+Cycle rank cannot decrease when edges are added. These rules are exhaustive.
+Search limits produce INCOMPLETE, never a proof of exclusion.
+
+forest_obstruction_cover.txt contains 4,082 component representatives. The
+checker rejects every one as a forest, with 1,348,913 total search nodes.
+Only rejected components are used. The byte rotation of AES maps every
+output to another output and preserves pair constructions; the checker
+verifies this permutation of the actual AES rows. Thus every rotation of
+a certified component is also a forest obstruction.
+
+For any C, define a lower bound on its necessary cycle rank:
+
+  t(C)=max(beta(F(C)), 1 if C is a certified forest obstruction, else 0),
+
+where F(C) consists of the forced pair edges C intersect Y whenever a
+weight-seven output Y meets C in exactly two inputs. The forced-edge
+argument is proved in PAIR25_PROOF.txt. Taking a maximum, rather than a
+sum, avoids double-counting the same cycle. Across different components,
+these cycle-rank lower bounds may be added.
+
+4. INDEPENDENT COMPLETE PARTITION ENUMERATION
+
+Every nonzero graph-code word (u,M*u) has even weight at least six. All
+words of weight at most twelve are independently regenerated by enumerating
+input and output halves of weight at most six, using M and its inverse.
+At least one half of any such word has weight at most six. The counts are:
+
+  total weight:       6      8      10      12
+  number of words:  84    276    1300    8112.
+
+For seven sorted words partitioning 64 coordinates, the first five have
+weight at most twelve: otherwise 4*6+3*14>64. For eight sorted words, the
+first six have weight at most ten: otherwise 5*6+3*12>64.
+
+The Python verifier independently enumerates these sorted disjoint short
+words, respecting the total cycle budget. For the remaining support R with
+input half I and output half O, it solves over GF(2)
+
+                M[rows outside O, columns in I] * v = 0.
+
+Every solution is a graph-code word supported inside R. The verifier lists
+every vector of this exact kernel and tests each proper word with its
+complement in R. This exhausts the final two blocks, even when their
+weights exceed the short-word cutoff. It does not read the discovery
+partition files or assume their counts.
+
+Seven components, cycle budget zero:
+  short words after filtering:  5,486
+  search nodes:                 8,562,660
+  five-word leaves:             2,936,998
+  distinct remainders:            695,385
+  surviving partitions:                 0.
+
+Eight components, cycle budget one:
+  short words after filtering:  1,600
+  search nodes:                 6,566,068
+  six-word leaves:              1,225,018
+  distinct remainders:            145,332
+  surviving partitions:             2,848.
+
+For each of those 2,848 partitions, the complete pair-recipe search allows
+every internal pair and all 105/825 output recipes consistent with the
+partition. It rejects all 2,848 with cycle budget one, in 111,364 search nodes.
+There are no timeouts or unresolved cases in the verification.
+
+Both possible cases for P<=25 are therefore impossible. Hence P>=26.
+
+5. VERIFICATION AND SCOPE
+
+  python verify_pair26.py
+
+Requires standard-library Python and g++ with C++17. The default invocation
+also rechecks the earlier c<=8 premise. The 97-gate circuit is reconstructed
+and all of its outputs and depths are checked; its 27 pair signals satisfy
+every regenerated output-recipe requirement.
+
+This is a computer-assisted proof with explicit mathematical reductions and
+complete finite checking. It is not a proof-assistant formalization. No
+optimization solver's infeasibility status is used as a premise. P>=26
+alone is not a claim of 26-pair attainability or full circuit optimality.
+
+CORRECTION NOTICE (2026-10-17)
+
+The former recursive Python weight filter could omit later, heavier words.
+The current checker uses the weight bound only for the next selected word.
+The counts above are from a complete corrected rerun, status PASS. See
+ENUMERATION_CORRECTION.txt; the earlier saved verification was incomplete.
