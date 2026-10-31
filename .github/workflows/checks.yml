@@ -21,6 +21,8 @@ jobs:
           python-version: "3.12"
       - name: Check every circuit against its map (standard library only, no search code)
         run: python3 circuits/check.py
+      - name: Check every S-box circuit against FIPS-197 by truth table (standard library only)
+        run: python3 nonlinear/check.py
 
   tests:
     name: XORFlux tests (Python ${{ matrix.python }})
@@ -37,3 +39,5 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Unit tests (includes the second verifier over every XOR-only circuit)
         run: python3 -m unittest discover -s search/xorflux/tests -t search
+      - name: boolcirc tests (nonlinear/)
+        run: python3 -m unittest discover -s nonlinear/boolcirc/tests -t nonlinear

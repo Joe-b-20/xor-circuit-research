@@ -46,6 +46,7 @@ each circuit are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).
 | [circuits/](circuits/README.md) | the smallest circuit our search found at each depth, per map, in NIST's file format, each with its logs and the version that found it, next to NIST's circuits; an independent checker |
 | [search/](search/README.md) | XORFlux, an adaptive search for size- and depth-efficient XOR circuits: [how it works](search/HOW-IT-WORKS.md), [how to use it](search/USAGE.md) and [the path to the current version](search/HISTORY.md) |
 | [lower-bound-proofs/](lower-bound-proofs/README.md) | two proofs: AES MixColumns needs at least 75 XOR gates, and at least 93 at depth 3 |
+| [nonlinear/](nonlinear/README.md) | beyond linear maps: NIST's AES S-box circuits imported verbatim and verified by truth table, their four NIST metrics, the AND skeleton, and the mathematical groundwork for the nonlinear extension of XORFlux |
 
 **Proof status:** the lower-bound proofs were developed with language-model assistance and
 have not been peer reviewed; their checkers replay the finite computations, not the
@@ -59,8 +60,9 @@ matrices from the literature).
 
 ## Checks
 
-Every push runs the independent circuit checker (`python3 circuits/check.py`) and the XORFlux
-test suite on GitHub ([checks](.github/workflows/checks.yml)). The lower-bound checkers run
+Every push runs the independent circuit checker (`python3 circuits/check.py`), the XORFlux
+test suite and the S-box circuit checker and tests (`python3 nonlinear/check.py`) on GitHub
+([checks](.github/workflows/checks.yml)). The lower-bound checkers run
 separately ([proofs](.github/workflows/proofs.yml)): the quick checks on every change to
 `lower-bound-proofs/`, the full depth-3 replay (12 minutes on GitHub's runners) monthly and on
 request.
