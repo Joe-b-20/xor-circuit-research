@@ -1,0 +1,76 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-10-31T09:00:36Z
+  % Not a NIST-issued circuit
+  % Found by: XORFlux v8 (search/xorflux), run gaps16, worker ssaes-cap5-00
+  % Started from: NIST 43@5 circuit (seed.json in the logs)
+  % Logs: logs/small-scale-aes-xor42-depth5/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % small-scale-aes-xor42-depth5 16 16   % small-scale-aes; 16x16 bit matrix; 2-input XOR basis
+
+## Circuit
+begin circuit small-scale-aes-xor42-depth5
+
+  % Description: y = A.x with A in small-scale-aes.mat.txt (row i = y_i, column j = x_j)
+  % Tally of variables (58): 16 inputs; 16 outputs; 26 intermediates
+  % Tally of gates (42): 42 XOR
+  % Gate depth 5
+  % Gates per gate level: 9 10 10 8 5
+
+Inputs: x0:x15
+Outputs: y0:y15
+Internal: t1:t26
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x0 x4
+XOR t2 x3 x7
+XOR t3 x5 x9
+XOR t4 x2 x10
+XOR t5 x5 x13
+XOR t6 x2 x14
+XOR t7 x6 x14
+XOR t8 x7 x15
+XOR t9 x11 x15
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t10 t1 t2
+XOR t11 t1 t3
+XOR t12 x6 t3
+XOR t13 x1 t5
+XOR t14 x11 t6
+XOR t15 t5 t6
+XOR t16 x0 t8
+XOR t17 x8 t8
+XOR t18 x12 t9
+XOR t19 t7 t8
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t20 x1 t10
+XOR t21 t12 t4
+XOR t22 x9 t13
+XOR y15 t2 t14
+XOR y10 t12 t15
+XOR y12 t10 t17
+XOR y3 t14 t19
+XOR t23 x12 t16
+XOR y8 t1 t18
+XOR t24 x8 t18
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR y0 y12 t23
+XOR y4 t16 t24
+XOR y1 t20 t22
+XOR y14 t21 t22
+XOR y6 t21 t7
+XOR t25 t4 y15
+XOR t26 t11 t23
+XOR y9 t13 t24
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 5
+XOR y5 t26 y9
+XOR y2 y14 t15
+XOR y7 t25 t19
+XOR y13 t20 t26
+XOR y11 t25 t9
+end SLP
+end circuit

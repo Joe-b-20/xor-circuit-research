@@ -1,0 +1,29 @@
+{
+ "circuit": "small-scale-aes-xor42-depth5.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-10-31T01:39:21.871+00:00",
+ "seconds_into_run": 912.0073245509993,
+ "run": "gaps16",
+ "run_id": "a0a7ee762dcc4c32ae02ffe014ac5ae6",
+ "worker": "ssaes-cap5-00",
+ "depth_cap": 5,
+ "move": "depth.repair",
+ "seed": {
+  "kind": "file",
+  "point": "43@5",
+  "by": "NIST",
+  "source": "nist-g43-d5.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "a9a37f35f45f6864ba0cc8333059a8cf4999e8088d78eee9ea75d66346cc2dbe",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

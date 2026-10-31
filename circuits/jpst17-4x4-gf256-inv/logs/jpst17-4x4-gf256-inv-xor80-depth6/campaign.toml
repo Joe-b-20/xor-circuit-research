@@ -1,0 +1,45 @@
+# Points where NIST is still ahead or unmatched on 16x16/32x32 maps, 3 h.
+[campaign]
+name = "gaps16"
+seed = 20261032
+duration = "3h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "ssaes-cap5"
+target = "small-scale-aes"
+count = 2
+objective = "gates"
+depth_cap = 5
+seeds = ["/home/joebachir20/xor-circuit-research/search/seeds/small-scale-aes/nist-g43-d5.json", "seeds/small-scale-aes/ours-g44-d4.json", "seeds/small-scale-aes/ours-g42-d6.json"]
+[workers.set]
+"scheduler.reference" = [[42, 5]]
+
+[[workers]]
+name = "jpinv-cap6-5"
+target = "jpst17-4x4-gf256-inv"
+count = 2
+objective = "gates"
+depth_cap = [6, 5]
+seeds = ["/home/joebachir20/xor-circuit-research/search/seeds/jpst17-4x4-gf256-inv/nist-g83-d6.json", "seeds/jpst17-4x4-gf256-inv/ours-g84-d4.json", "seeds/jpst17-4x4-gf256-inv/ours-g80-d7.json"]
+[workers.set]
+"scheduler.reference" = [[82, 6], [83, 5]]
+
+[[workers]]
+name = "qarma64-shallow"
+target = "qarma64"
+count = 1
+objective = "depth_then_gates"
+gate_limit = 24
+profiles = ["depth"]
+seeds = ["/home/joebachir20/xor-circuit-research/search/seeds/qarma64/nist-g24-d8.json"]
+
+[[workers]]
+name = "qarma128-shallow"
+target = "qarma128"
+count = 1
+objective = "depth_then_gates"
+gate_limit = 48
+profiles = ["depth"]
+seeds = ["/home/joebachir20/xor-circuit-research/search/seeds/qarma128/nist-g48-d6.json"]

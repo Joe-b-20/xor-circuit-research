@@ -51,7 +51,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 
 ## Circuits
 
-192 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128). Sizes are inputs × outputs; notes are [below the tables](#notes).
+201 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128). Sizes are inputs × outputs; notes are [below the tables](#notes).
 
 ## AES
 
@@ -73,7 +73,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 | Depth | Gates | Found by | NIST | Logs |
 |---:|---:|---|---:|---|
 | 5 | [168](aes-invmixcolumns/aes-invmixcolumns-xor168-depth5.circ.txt) | v4 + polish ¹ | [119](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor119-depth5.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor168-depth5/) |
-| 6 | [117](aes-invmixcolumns/aes-invmixcolumns-xor117-depth6.circ.txt) | v5 + polish | [106](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor106-depth6.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor117-depth6/) |
+| 6 | [104](aes-invmixcolumns/aes-invmixcolumns-xor104-depth6.circ.txt) | v8 ⁵ | [106](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor106-depth6.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor104-depth6/) |
 | 7 | [101](aes-invmixcolumns/aes-invmixcolumns-xor101-depth7.circ.txt) | v7 | [102](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor102-depth7.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor101-depth7/) |
 | 8 | [96](aes-invmixcolumns/aes-invmixcolumns-xor96-depth8.circ.txt) | v6 | 96 | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor96-depth8/) |
 | 9 | [94](aes-invmixcolumns/aes-invmixcolumns-xor94-depth9.circ.txt) | v7 | 95 | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor94-depth9/) |
@@ -102,11 +102,11 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 |---|---:|---|---|---|
 | [fides-midori-mantis](fides-midori-mantis/) | 32 | 24@3 | [24@2](fides-midori-mantis/fides-midori-mantis-xor24-depth2.circ.txt) | v8 |
 | [joltik](joltik/) | 72 | 44@7 | [46@3](joltik/joltik-xor46-depth3.circ.txt)¹³, [44@4](joltik/joltik-xor44-depth4.circ.txt), [43@6](joltik/joltik-xor43-depth6.circ.txt), [42@9](joltik/joltik-xor42-depth9.circ.txt) | v6 |
-| [pride-l0](pride-l0/) | 32 | 24@4 | — |  |
+| [pride-l0](pride-l0/) | 32 | 24@4 | [24@2](pride-l0/pride-l0-xor24-depth2.circ.txt)⁶ | v8 |
 | [prince-m0](prince-m0/) | 32 | 24@4 | [24@2](prince-m0/prince-m0-xor24-depth2.circ.txt) | v8 |
 | [qarma64](qarma64/) | 32 | 24@8 | — |  |
 | [skinny](skinny/) | 16 | 12@2 | — |  |
-| [small-scale-aes](small-scale-aes/) | 72 | 43@5 | [44@4](small-scale-aes/small-scale-aes-xor44-depth4.circ.txt), [42@6](small-scale-aes/small-scale-aes-xor42-depth6.circ.txt) | v8 |
+| [small-scale-aes](small-scale-aes/) | 72 | 43@5 | [44@4](small-scale-aes/small-scale-aes-xor44-depth4.circ.txt), [42@5](small-scale-aes/small-scale-aes-xor42-depth5.circ.txt) | v8 |
 
 ### MDS 4×4 over GF(2⁴)
 
@@ -144,7 +144,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 |---|---:|---|---|---|
 | [bkl16-4x4-gf256](bkl16-4x4-gf256/) | 136 | 107@6 | [102@4](bkl16-4x4-gf256/bkl16-4x4-gf256-xor102-depth4.circ.txt), [101@5](bkl16-4x4-gf256/bkl16-4x4-gf256-xor101-depth5.circ.txt) | v8 |
 | [jpst17-4x4-gf256](jpst17-4x4-gf256/) | 122 | 82@7 | [82@4](jpst17-4x4-gf256/jpst17-4x4-gf256-xor82-depth4.circ.txt), [78@6](jpst17-4x4-gf256/jpst17-4x4-gf256-xor78-depth6.circ.txt) | v8 |
-| [jpst17-4x4-gf256-inv](jpst17-4x4-gf256-inv/) | 136 | 83@6 | [94@3](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor94-depth3.circ.txt)⁴, [84@4](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor84-depth4.circ.txt)⁴, [80@7](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor80-depth7.circ.txt) | v8 |
+| [jpst17-4x4-gf256-inv](jpst17-4x4-gf256-inv/) | 136 | 83@6 | [94@3](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor94-depth3.circ.txt)⁴, [84@4](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor84-depth4.circ.txt)⁴, [82@5](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor82-depth5.circ.txt), [80@6](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor80-depth6.circ.txt) | v8 |
 | [klsw17-m-4x4-gf256](klsw17-m-4x4-gf256/) | 184 | 72@7 | [72@4](klsw17-m-4x4-gf256/klsw17-m-4x4-gf256-xor72-depth4.circ.txt), [64@6](klsw17-m-4x4-gf256/klsw17-m-4x4-gf256-xor64-depth6.circ.txt) | v8 |
 | [klsw17-m-4x4-gf256-inv](klsw17-m-4x4-gf256-inv/) | 128 | 78@5 | [76@4](klsw17-m-4x4-gf256-inv/klsw17-m-4x4-gf256-inv-xor76-depth4.circ.txt), [75@5](klsw17-m-4x4-gf256-inv/klsw17-m-4x4-gf256-inv-xor75-depth5.circ.txt), [74@6](klsw17-m-4x4-gf256-inv/klsw17-m-4x4-gf256-inv-xor74-depth6.circ.txt) | v8 |
 | [ls16-4x4-gf256](ls16-4x4-gf256/) | 128 | 109@5 | [103@4](ls16-4x4-gf256/ls16-4x4-gf256-xor103-depth4.circ.txt) | v8 |
@@ -174,8 +174,8 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 |---|---:|---|---|---|
 | [fox-mu8](fox-mu8/) | 1257 | 540@14 | [1078@5](fox-mu8/fox-mu8-xor1078-depth5.circ.txt)², [605@6](fox-mu8/fox-mu8-xor605-depth6.circ.txt), [599@7](fox-mu8/fox-mu8-xor599-depth7.circ.txt)², [539@8](fox-mu8/fox-mu8-xor539-depth8.circ.txt)², [512@9](fox-mu8/fox-mu8-xor512-depth9.circ.txt), [506@10](fox-mu8/fox-mu8-xor506-depth10.circ.txt), [505@11](fox-mu8/fox-mu8-xor505-depth11.circ.txt) | v3, v6, v7 |
 | [grostl](grostl/) | 1112 | 410@12 | [502@5](grostl/grostl-xor502-depth5.circ.txt), [455@8](grostl/grostl-xor455-depth8.circ.txt), [405@10](grostl/grostl-xor405-depth10.circ.txt), [368@11](grostl/grostl-xor368-depth11.circ.txt), [366@12](grostl/grostl-xor366-depth12.circ.txt), [362@13](grostl/grostl-xor362-depth13.circ.txt), [360@14](grostl/grostl-xor360-depth14.circ.txt), [358@15](grostl/grostl-xor358-depth15.circ.txt), [350@16](grostl/grostl-xor350-depth16.circ.txt) | v8 |
-| [khazad](khazad/) | 1232 | 366@18 | [478@6](khazad/khazad-xor478-depth6.circ.txt), [345@15](khazad/khazad-xor345-depth15.circ.txt) | v8 |
-| [whirlpool-maelstrom](whirlpool-maelstrom/) | 840 | 425@11 | [416@6](whirlpool-maelstrom/whirlpool-maelstrom-xor416-depth6.circ.txt), [398@9](whirlpool-maelstrom/whirlpool-maelstrom-xor398-depth9.circ.txt) | v8 |
+| [khazad](khazad/) | 1232 | 366@18 | [1055@5](khazad/khazad-xor1055-depth5.circ.txt)³, [478@6](khazad/khazad-xor478-depth6.circ.txt), [477@8](khazad/khazad-xor477-depth8.circ.txt), [460@9](khazad/khazad-xor460-depth9.circ.txt), [433@10](khazad/khazad-xor433-depth10.circ.txt), [432@11](khazad/khazad-xor432-depth11.circ.txt), [345@15](khazad/khazad-xor345-depth15.circ.txt) | v8 |
+| [whirlpool-maelstrom](whirlpool-maelstrom/) | 840 | 425@11 | [759@5](whirlpool-maelstrom/whirlpool-maelstrom-xor759-depth5.circ.txt)³, [416@6](whirlpool-maelstrom/whirlpool-maelstrom-xor416-depth6.circ.txt), [395@8](whirlpool-maelstrom/whirlpool-maelstrom-xor395-depth8.circ.txt), [394@9](whirlpool-maelstrom/whirlpool-maelstrom-xor394-depth9.circ.txt) | v8 |
 
 ### MDS 8×8 over GF(2⁸)
 
@@ -218,6 +218,12 @@ its logs keep the original circuit (`original-circuit.txt`) and `polish.json`.
 (`search/xorflux/moves/depth3.py`), a constructor made for depth 3 rather than part of the
 general search. ⁴ Found by the search from an `anneal3` start.
 
+⁵ Found on 2026-10-31 by a cap-6 worker that started from NIST's 107@6 (an earlier revision of
+its 106@6); the chain restarted from another worker's 105@6, itself found from NIST's 106@6.
+No earlier run had started from NIST's depth-5, -6 or -7 InvMixColumns circuits.
+
+⁶ The fides-midori-mantis 24@2 circuit: the two maps have the same matrix.
+
 How long each search ran, and on what hardware: [SEARCH-TIME.md](SEARCH-TIME.md).
 
 The maps added from NIST's repository on 2026-10-30 were searched from NIST's circuits, and
@@ -225,4 +231,5 @@ only points that no NIST circuit matches with as few gates at no more depth are 
 them. A map with "—" has no such point yet.
 
 Two pairs of maps have the same matrix: pride-l0 and fides-midori-mantis, and
-skop15-4x4-gf16-inv and joltik. Each folder lists what was searched under its own name.
+skop15-4x4-gf16-inv and joltik. Each folder lists what was searched under its own name, except
+pride-l0, whose 24@2 is the circuit found for fides-midori-mantis (⁶).

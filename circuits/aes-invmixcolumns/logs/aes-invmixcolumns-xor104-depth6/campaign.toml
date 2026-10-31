@@ -1,0 +1,56 @@
+# AES low-depth gaps, 8 h.  InvMixColumns at caps 5/6/7 starting from NIST 119@5, 106@6
+# (and 107@6), 102@7 -- never used as seeds before -- and our own 168@5, 117@6, 101@7;
+# MixColumns cap 4 from our 89@4 and NIST 90@4.  The largest InvMixColumns row weight is 19,
+# so depth 5 is the lowest possible depth for it.
+[campaign]
+name = "aes-lowdepth"
+seed = 20261031
+duration = "8h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"construct.mix.naive" = 0.0
+"restart.stall_seconds" = 1500.0
+
+[[workers]]
+name = "inv-cap5"
+target = "aes-invmixcolumns"
+count = 6
+objective = "gates"
+depth_cap = 5
+seeds = ["seeds/aes-invmixcolumns/nist-g119-d5.json", "seeds/aes-invmixcolumns/nist-g119-d5.json", "seeds/aes-invmixcolumns/ours-g168-d5.json"]
+per_worker = [{"restart.w_fresh" = 0.05, "restart.w_elite" = 0.35, "restart.w_shared" = 0.3, "restart.w_best" = 0.3}, {}, {"restart.w_fresh" = 0.05, "restart.w_elite" = 0.35, "restart.w_shared" = 0.3, "restart.w_best" = 0.3}]
+[workers.set]
+"scheduler.reference" = [[118, 5], [112, 5]]
+
+[[workers]]
+name = "inv-cap6"
+target = "aes-invmixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 6
+seeds = ["seeds/aes-invmixcolumns/nist-g106-d6.json", "seeds/aes-invmixcolumns/nist-g107-d6.json", "seeds/aes-invmixcolumns/nist-g106-d6.json", "seeds/aes-invmixcolumns/ours-g117-d6.json"]
+per_worker = [{"restart.w_fresh" = 0.05, "restart.w_elite" = 0.35, "restart.w_shared" = 0.3, "restart.w_best" = 0.3}, {}]
+[workers.set]
+"scheduler.reference" = [[105, 6], [100, 6]]
+
+[[workers]]
+name = "inv-cap7"
+target = "aes-invmixcolumns"
+count = 1
+objective = "gates"
+depth_cap = 7
+seeds = ["seeds/aes-invmixcolumns/nist-g102-d7.json", "seeds/aes-invmixcolumns/ours-g101-d7.json"]
+[workers.set]
+"scheduler.reference" = [[100, 7], [97, 7]]
+
+[[workers]]
+name = "mc-cap4"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = 4
+seeds = ["seeds/aes-mixcolumns/ours-g89-d4.json", "seeds/aes-mixcolumns/nist-g90-d4.json"]
+[workers.set]
+"scheduler.reference" = [[88, 4]]
