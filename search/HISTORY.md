@@ -122,20 +122,21 @@ circuit later shrunk by v8's polish stays credited to the version that found it.
 
 | Version | What | Ran | Code | Circuits |
 |---|---|---|---|---:|
-| v1 | MixColumns-only pipeline (aes_search 2.0.0) | 2026-10-21/22 | [versions/v1-mixcolumns-pipeline](versions/v1-mixcolumns-pipeline/) | 1 |
+| v1 | MixColumns-only pipeline (aes_search 2.0.0) | 2026-10-21/22 | [versions/v1-mixcolumns-pipeline](versions/v1-mixcolumns-pipeline/) | 0 (kept: its 89@4 came first) |
 | v2 | multi-engine search framework | 2026-10-24/27 | [versions/v2-search-framework](versions/v2-search-framework/) | 1 |
 | v3 | the same framework, depth-focused campaign | 2026-10-27/28 | [versions/v3-search-framework](versions/v3-search-framework/) | 2 |
 | v4 | the same framework, InvMixColumns campaign | 2026-10-28 | [versions/v4-search-framework](versions/v4-search-framework/) | 1 |
 | v5 | first `xorsearch`: one chain per worker | 2026-10-28 | [versions/v5-xorsearch](versions/v5-xorsearch/) | 1 |
 | v6 | `xorsearch` as run on 2026-10-29 | 2026-10-29 | [versions/v6-xorsearch](versions/v6-xorsearch/) | 16 |
 | v7 | v6 plus depth slack 1, repair exit, seed repair, remove-one dead skip | 2026-10-29/30 | [versions/v7-xorsearch](versions/v7-xorsearch/) | 10 |
-| v8 | current: v7 plus the own-depth polish of new points below the search cap; renamed XORFlux | 2026-10-30 | [xorflux/](xorflux/) | 160 |
+| v8 | current: v7 plus the own-depth polish of new points below the search cap; renamed XORFlux | 2026-10-30 | [xorflux/](xorflux/) | 171 |
 
 **v1 (Oct 20–22): a better MixColumns pipeline.** aes_search 2.0.0 kept the July engine and
 added deadline-aware reconstruction, coordinated translations, joint triple/quartet cores and
 remove-1/add-2 expansion, on 20 workers split by depth. Its run found 90@4 at 11.3 h and 89@4
 at about 14.5 h, then nothing for 11 h. The 89@4 grew from the July 91@4 lineage, so it is not
-a from-scratch result. Its successor, aes_search 3.0.0 (physical merges, invertible interfaces,
+a from-scratch result. On 2026-10-31 v8, seeded with the same July 91@4, found an 89@4 in 15
+minutes with a dossier that replays the move; that circuit replaced v1's in circuits/. Its successor, aes_search 3.0.0 (physical merges, invertible interfaces,
 pair-bank depth-3 search, proof-guided LNS), ran 475 CPU-h and found **no** improvement; 80% of
 its exact calls returned unknown.
 

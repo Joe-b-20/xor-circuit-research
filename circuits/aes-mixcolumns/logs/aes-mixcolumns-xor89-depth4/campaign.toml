@@ -1,0 +1,36 @@
+# Control for the adopt-on-improve test: v8 search behaviour (prototype code with both search
+# changes off: sharing.adopt_seconds = 0, engine.archive_past_cap = false), plus the
+# coordinator-only watcher so both campaigns log the same diversity data.
+# InvMixColumns depth 5 from our 168@5 only (no NIST 119@5); MixColumns depth 4 from NIST 90@4
+# and the July 91@4, hunting 89@4.  Same campaign seed as adopt.toml.
+[campaign]
+name = "control"
+seed = 20261101
+duration = "8h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"construct.mix.naive" = 0.0
+"restart.stall_seconds" = 1500.0
+"campaign.watch" = true
+
+[[workers]]
+name = "inv-cap5"
+target = "aes-invmixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 5
+seeds = ["seeds/inv-ours-g168-d5.json"]
+[workers.set]
+"scheduler.reference" = [[127, 5], [119, 5]]
+
+[[workers]]
+name = "mc-cap4"
+target = "aes-mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 4
+seeds = ["seeds/mc-nist-g90-d4.json", "seeds/mc-july-g91-d4.json"]
+[workers.set]
+"scheduler.reference" = [[89, 4], [88, 4]]

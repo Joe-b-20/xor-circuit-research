@@ -62,7 +62,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 | Depth | Gates | Found by | NIST | Logs |
 |---:|---:|---|---:|---|
 | 3 | [97](aes-mixcolumns/aes-mixcolumns-xor97-depth3.circ.txt) | v7, `anneal3` constructor ³ | [97](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-mixcols/aes-mixcols-xor97-depth3.circ.txt) | [logs](aes-mixcolumns/logs/aes-mixcolumns-xor97-depth3/) |
-| 4 | [89](aes-mixcolumns/aes-mixcolumns-xor89-depth4.circ.txt) | v1 | [90](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-mixcols/aes-mixcols-xor90-depth4.circ.txt) | [logs](aes-mixcolumns/logs/aes-mixcolumns-xor89-depth4/) |
+| 4 | [89](aes-mixcolumns/aes-mixcolumns-xor89-depth4.circ.txt) | v8 | [90](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-mixcols/aes-mixcols-xor90-depth4.circ.txt) | [logs](aes-mixcolumns/logs/aes-mixcolumns-xor89-depth4/) |
 | 5 | [88](aes-mixcolumns/aes-mixcolumns-xor88-depth5.circ.txt) | v7 | [88](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-mixcols/aes-mixcols-xor88-depth5.circ.txt) | [logs](aes-mixcolumns/logs/aes-mixcolumns-xor88-depth5/) |
 | 6 | — |  | 92 |  |
 

@@ -1,26 +1,29 @@
 {
  "circuit": "aes-mixcolumns-xor89-depth4.circ.txt",
- "version": "v1",
- "code": "search/versions/v1-mixcolumns-pipeline",
- "found_utc": "2026-10-21T17:28:16+00:00",
- "run": "long20",
- "worker": "07_d4_own91",
+ "version": "v8",
+ "code": "v9 prototype copy, v9 changes off",
+ "found_utc": "2026-10-31T15:14:18.017+00:00",
+ "seconds_into_run": 914.0764635350788,
+ "run": "control",
+ "run_id": "1ec6fd2c2657464c8cefee42e5137050",
+ "worker": "mc-cap4-01",
+ "depth_cap": 4,
+ "move": "walk.remove1",
  "seed": {
   "kind": "file",
   "point": "91@4",
   "by": "us",
-  "source": "mixcolumns_91gates_depth4.json"
+  "source": "mc-july-g91-d4.json"
  },
- "note": null,
- "circuit_sha256": "78719126835500943424f27f03ac40cd342a2b246ca4c02c589c73a2458b4395",
+ "chain_root": "seed",
+ "circuit_sha256": "2f1a427535279890dd8250018863fe2904f6823dfa941449830847e5b99627c0",
  "logs": [
-  "best.json",
-  "config.json",
-  "frontier.json",
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
   "record.json",
   "seed.json",
-  "session.json",
-  "status.json",
-  "worker.log"
+  "verification.json"
  ]
 }

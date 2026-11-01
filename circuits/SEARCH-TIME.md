@@ -41,7 +41,6 @@ kernel; v1 records only the CPU count.
 
 | Run | Version | Start (UTC) | Wall time | Workers | Worker-h | CPU-h | Oversubscribed | Circuits |
 |---|---|---|---:|---:|---:|---:|---|---:|
-| long20 | v1 | 2026-10-21 01:23 | ~39.8 h | 20 | ~796.3 | — | last 5.5 h on 10 threads | 1 |
 | three-targets20 | v2 | 2026-10-24 16:25 | 69.9 h | 20 | 1,398.7 | — | no | 1 |
 | joltik-depth-foxmu8-15 | v3 | 2026-10-27 15:03 | 22.2 h | 15 | 332.4 | — | no | 2 |
 | invmixcolumns-13 | v4 | 2026-10-28 13:28 | 1.4 h | 13 | 18.5 | — | no | 1 |
@@ -65,8 +64,9 @@ kernel; v1 records only the CPU count.
 | aes-lowdepth | v8 | 2026-10-31 01:24 | 7.6 h | 13 | 98.4 | 98.1 | no | 1 |
 | gaps16 | v8 | 2026-10-31 01:24 | 2.9 h | 6 | 17.2 | 17.2 | no | 3 |
 | wide64 | v8 | 2026-10-31 04:16 | 4.7 h | 6 | 28.2 | 28.1 | no | 8 |
+| control | v8 | 2026-10-31 15:00 | 7.7 h | 10 | 76.8 | 75.9 | no | 1 |
 
-Together: 24 runs, about 3,010 worker-hours, for 201 circuits. v1–v4 used about 2,550 of those worker-hours for 5 circuits; v6–v8 used about 465 for 196. Another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
+Together: 24 runs, about 2,290 worker-hours, for 201 circuits. v2–v4 used about 1,750 of those worker-hours for 4 circuits; v6–v8 used about 540 for 197. The v1 run long20 (about 796 worker-hours), whose 89@4 was replaced by v8's on 2026-10-31, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
 totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute).
 
 ## Circuits
@@ -84,7 +84,7 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [aes-invmixcolumns 89@15](aes-invmixcolumns/aes-invmixcolumns-xor89-depth15.circ.txt) | v6 | rerun-invmixcolumns | 40 min | 39 min | 38.1 | exact |  |
 | [aes-invmixcolumns 88@17](aes-invmixcolumns/aes-invmixcolumns-xor88-depth17.circ.txt) | v6 | rerun-invmixcolumns | 1.2 h | 1.2 h | 38.1 | exact |  |
 | [aes-mixcolumns 97@3](aes-mixcolumns/aes-mixcolumns-xor97-depth3.circ.txt) | v7 | bench-mixcolumns | 10 s | 10 s | 18.4 | exact | built by the `anneal3` constructor; no search move |
-| [aes-mixcolumns 89@4](aes-mixcolumns/aes-mixcolumns-xor89-depth4.circ.txt) | v1 | long20 | ~14.5 h (13.9 h–16.1 h) | ~14.5 h | ~796.3 | estimate |  |
+| [aes-mixcolumns 89@4](aes-mixcolumns/aes-mixcolumns-xor89-depth4.circ.txt) | v8 | control | 15 min | 14 min | 76.8 | exact | from our July 91@4; one remove-one move, replayable from its dossier |
 | [aes-mixcolumns 88@5](aes-mixcolumns/aes-mixcolumns-xor88-depth5.circ.txt) | v7 | bench-mixcolumns | 35 min | 33 min | 18.4 | exact |  |
 | [aes-sbox-bottom 29@4](aes-sbox-bottom/aes-sbox-bottom-xor29-depth4.circ.txt) | v6 | rerun-aes_sbox_bottom | 4 s | 4 s | 18.9 | exact |  |
 | [aes-sbox-bottom 28@5](aes-sbox-bottom/aes-sbox-bottom-xor28-depth5.circ.txt) | v6 | rerun-aes_sbox_bottom | 29 min | 28 min | 18.9 | exact |  |
@@ -284,8 +284,11 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
   constructor ran, and its own run time is seconds.
 - **Polish.** "+ polish" circuits are older circuits shrunk by v8's exact own-depth polish
   in well under a second; the times are those of the original circuit.
-- **v1 (aes-mixcolumns 89@4).** The first session's stop time was overwritten when the run
-  was resumed. The time is reconstructed from a worker log line and the worker's chunk
-  count; the run did not start from scratch (its seeds include a 91@4 found in July 2026).
+- **aes-mixcolumns 89@4** was found by the control side of an A/B test of proposed v9
+  changes. That side ran a copy of v8 holding the proposed code with every change switched
+  off, so its search is v8's; the frozen source is part of the run. It replaced the v1 89@4
+  (run long20, after about 14.5 h, with no record of the move that found it). Both grew
+  from the July 91@4. The run was resumed for 20 more hours after its first 8 h session;
+  the run numbers here are that first session's.
 - **v4 (aes-invmixcolumns 168@5)** was recovered from a worker's final checkpoint, so only
   the run length bounds when it was found.
