@@ -43,7 +43,6 @@ kernel; v1 records only the CPU count.
 |---|---|---|---:|---:|---:|---:|---|---:|
 | three-targets20 | v2 | 2026-10-24 16:25 | 69.9 h | 20 | 1,398.7 | — | no | 1 |
 | joltik-depth-foxmu8-15 | v3 | 2026-10-27 15:03 | 22.2 h | 15 | 332.4 | — | no | 2 |
-| invmixcolumns-13 | v4 | 2026-10-28 13:28 | 1.4 h | 13 | 18.5 | — | no | 1 |
 | rerun-invmixcolumns | v6 | 2026-10-29 09:45 | 1.9 h | 20 | 38.1 | 37.8 | no | 4 |
 | rerun-aes_sbox_bottom | v6 | 2026-10-29 11:39 | 57 min | 20 | 18.9 | 18.8 | no | 2 |
 | rerun-fox_mu4 | v6 | 2026-10-29 12:36 | 57 min | 20 | 18.9 | 18.6 | no | 4 |
@@ -65,15 +64,16 @@ kernel; v1 records only the CPU count.
 | gaps16 | v8 | 2026-10-31 01:24 | 2.9 h | 6 | 17.2 | 17.2 | no | 3 |
 | wide64 | v8 | 2026-10-31 04:16 | 4.7 h | 6 | 28.2 | 28.1 | no | 8 |
 | control | v8 | 2026-10-31 15:00 | 7.7 h | 10 | 76.8 | 75.9 | no | 1 |
+| adopt | v9 prototype | 2026-10-31 15:00 | running | 10 | — | — | no | 1 |
 
-Together: 24 runs, about 2,290 worker-hours, for 201 circuits. v2–v4 used about 1,750 of those worker-hours for 4 circuits; v6–v8 used about 540 for 197. The v1 run long20 (about 796 worker-hours), whose 89@4 was replaced by v8's on 2026-10-31, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
+Together, without the adopt run, which is still running: 23 runs, about 2,270 worker-hours, for 200 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 540 for 197. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
 totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute).
 
 ## Circuits
 
 | Circuit | Version | Run | Found after | Finder CPU | Run worker-h | Status | Note |
 |---|---|---|---:|---:|---:|---|---|
-| [aes-invmixcolumns 168@5](aes-invmixcolumns/aes-invmixcolumns-xor168-depth5.circ.txt) | v4 | invmixcolumns-13 | unknown (≤ 1.4 h) | ? | ~18.5 | upper bound | + polish of 170@5; from a checkpoint |
+| [aes-invmixcolumns 118@5](aes-invmixcolumns/aes-invmixcolumns-xor118-depth5.circ.txt) | v9 prototype | adopt | 42.3 h | 41.8 h | — (running) | exact | from our 168@5; adopted another worker's 119@5 4.5 s before |
 | [aes-invmixcolumns 104@6](aes-invmixcolumns/aes-invmixcolumns-xor104-depth6.circ.txt) | v8 | aes-lowdepth | 1.3 h | 1.3 h | 98.4 | exact | from NIST 107@6, restarted from another worker's 105@6 (from NIST 106@6) |
 | [aes-invmixcolumns 101@7](aes-invmixcolumns/aes-invmixcolumns-xor101-depth7.circ.txt) | v7 | gap-2026-10-30 | 39 min | 39 min | 10.9 | exact |  |
 | [aes-invmixcolumns 96@8](aes-invmixcolumns/aes-invmixcolumns-xor96-depth8.circ.txt) | v6 | rerun-invmixcolumns | 15 min | 15 min | 38.1 | exact |  |
@@ -290,5 +290,7 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
   (run long20, after about 14.5 h, with no record of the move that found it). Both grew
   from the July 91@4. The run was resumed for 20 more hours after its first 8 h session;
   the run numbers here are that first session's.
-- **v4 (aes-invmixcolumns 168@5)** was recovered from a worker's final checkpoint, so only
-  the run length bounds when it was found.
+- **aes-invmixcolumns 118@5** was found by the adopt side of the same A/B test as the
+  MixColumns 89@4, 42.3 h of wall time into the run (three sessions; 44.7 h on the run's
+  fast clock). The run was still in its third session when the circuit was added; its run
+  numbers are filled in when it ends. It replaced our v4 168@5 (run invmixcolumns-13).

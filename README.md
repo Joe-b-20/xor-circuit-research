@@ -20,7 +20,7 @@ depth. NIST's circuits are those of its
 | Map | Ours | NIST |
 |---|---|---|
 | AES MixColumns | **89@4** | 90@4 |
-| AES InvMixColumns | **104@6**, **89@15**, **88@17** | 106@6, 91@15, 90@20 |
+| AES InvMixColumns | **118@5**, **104@6**, **89@15**, **88@17** | 119@5, 106@6, 91@15, 90@20 |
 | ARIA | **384@4** | 387@7 |
 | Twofish | **108@8** | 111@8 |
 | CLEFIA M1 | **99@10** | 103@10 |
@@ -33,9 +33,9 @@ depth. NIST's circuits are those of its
 | KLSW17 4×4 MDS over GF(2⁸) | **64@6** | 72@7 |
 
 For 46 of the 53 maps taken from NIST's repository, we have a circuit with fewer gates than
-NIST's at the same or a lower depth. NIST is ahead elsewhere: for example its InvMixColumns
-119@5, against our 168@5 (depth 5 is the lowest possible for InvMixColumns, whose heaviest
-row has 19 ones). Our MixColumns 97@3 and 88@5 equal NIST's. We
+NIST's at the same or a lower depth; on the other maps NIST is ahead at some depths. Our
+InvMixColumns 118@5 is at the lowest depth possible for InvMixColumns, whose heaviest row has
+19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. We
 don't claim any circuit is optimal or the best known. The complete comparison, map by map and
 depth by depth, is in [circuits/](circuits/README.md#circuits); the time and hardware behind
 each circuit are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).

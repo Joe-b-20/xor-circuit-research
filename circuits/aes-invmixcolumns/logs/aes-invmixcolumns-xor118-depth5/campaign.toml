@@ -1,0 +1,37 @@
+# Adopt-on-improve test (v9 prototype): every worker restarts from a strictly better verified
+# circuit of its group as soon as one is pooled (checked every 10 s); the archive keeps sampling
+# the best level past the record cap; the watcher logs per-group distances.
+# Identical to control.toml otherwise, including the campaign seed.
+[campaign]
+name = "adopt"
+seed = 20261101
+duration = "8h"
+profiles = ["default"]
+sharing = "pull"
+
+[set]
+"construct.mix.naive" = 0.0
+"restart.stall_seconds" = 1500.0
+"campaign.watch" = true
+"sharing.adopt_seconds" = 10.0
+"engine.archive_past_cap" = true
+
+[[workers]]
+name = "inv-cap5"
+target = "aes-invmixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 5
+seeds = ["seeds/inv-ours-g168-d5.json"]
+[workers.set]
+"scheduler.reference" = [[127, 5], [119, 5]]
+
+[[workers]]
+name = "mc-cap4"
+target = "aes-mixcolumns"
+count = 5
+objective = "gates"
+depth_cap = 4
+seeds = ["seeds/mc-nist-g90-d4.json", "seeds/mc-july-g91-d4.json"]
+[workers.set]
+"scheduler.reference" = [[89, 4], [88, 4]]

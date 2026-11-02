@@ -1,0 +1,252 @@
+diff -ruN a/xorflux/campaign/coordinator.py b/xorflux/campaign/coordinator.py
+--- a/xorflux/campaign/coordinator.py
++++ b/xorflux/campaign/coordinator.py
+@@ -28,6 +28,7 @@
+ """
+ from __future__ import annotations
+ 
++import json
+ import os
+ import signal
+ import subprocess
+@@ -42,7 +43,7 @@
+                          read_jsonl, stop_requested, utc_now)
+ from .freeze import (PACKAGE_ROOT, THREAD_ENV, available_cpus, environment, frozen_settings, frozen_target,
+                      verify_freeze)
+-from .records import check_record, dominates, load_backend, score
++from .records import check_record, circuit_values, dominates, load_backend, score
+ from .sharing import PoolBook
+ 
+ KNOBS = Section("campaign", "Coordinator: supervision, collection, diversity and freezing.", {
+@@ -55,6 +56,10 @@
+                               "taken after two collections, so short runs have one).", min=1),
+     "collapse_distance": Knob(0.05, "collapse_alarm when the mean pairwise Jaccard distance between "
+                               "worker best DAGs of one target falls below this.", min=0, max=1),
++    "watch": Knob(False, "v9 prototype: with each fleet_diversity snapshot, log group_watch "
++                  "(per group: each worker's chain and best distance, on helper values, to its "
++                  "group's seeds and to the nearest other worker) and append the value sets to "
++                  "watch/<group>.jsonl."),
+     "stop_grace_seconds": Knob(30.0, "After STOP, how long workers get to checkpoint and exit.", min=0),
+     "terminate_grace_seconds": Knob(5.0, "After SIGTERM, how long before SIGKILL.", min=0),
+     "kill_grace_seconds": Knob(2.0, "After SIGKILL, how long to wait for the exit status.", min=0),
+@@ -208,8 +213,85 @@
+                                    distinct_best_dags=len(dags), workers=list(bests))
+             self.collapsed[key] = collapsed
+         self.diversity = out
++        if getattr(self, "watch", False) and announce:
++            self.group_watch()
+         return out
+ 
++    # ---- v9 prototype: per-group watcher -----------------------------------------------------
++    @staticmethod
++    def _helpers(values, outputs) -> frozenset:
++        """Non-input, non-output values (inputs are the unit vectors)."""
++        return frozenset(v for v in values if v & (v - 1)) - outputs
++
++    @staticmethod
++    def _jd(a, b) -> float:
++        union = len(a | b)
++        return 1.0 - len(a & b) / union if union else 0.0
++
++    def _group_seeds(self, wids) -> list[frozenset]:
++        seeds, seen = [], set()
++        for wid in wids:
++            seed = self.specs[wid].get("seed") or {}
++            sha = seed.get("sha256")
++            if seed.get("kind") != "file" or sha in seen or sha not in self.plan.get("seeds", {}):
++                continue
++            seen.add(sha)
++            circuit = read_json(self.run_dir / self.plan["seeds"][sha]["snapshot"], {}) or {}
++            if circuit.get("gates") is not None:
++                n = self.targets[self.specs[wid]["target"]].n_inputs
++                seeds.append(frozenset(circuit_values(circuit, n)))
++        return seeds
++
++    def group_watch(self) -> None:
++        groups: dict[str, list[str]] = {}
++        for wid, spec in self.specs.items():
++            groups.setdefault(spec["group"], []).append(wid)
++        (self.run_dir / "watch").mkdir(exist_ok=True)
++        if not hasattr(self, "_seed_cache"):
++            self._seed_cache = {}
++        for group, wids in groups.items():
++            key = self.specs[wids[0]]["target"]
++            outputs = frozenset(r for r in self.targets[key].rows if r & (r - 1))
++            if group not in self._seed_cache:
++                self._seed_cache[group] = [self._helpers(s, outputs) for s in self._group_seeds(wids)]
++            seeds = self._seed_cache[group]
++            chains, bests, raw = {}, {}, {}
++            for wid in wids:
++                data = read_json(self.run_dir / "workers" / wid / "chain.json", {}) or {}
++                if data.get("chain_values") is not None:
++                    chains[wid] = self._helpers(data["chain_values"], outputs)
++                if data.get("best_values") is not None:
++                    bests[wid] = self._helpers(data["best_values"], outputs)
++                raw[wid] = data
++            rows = []
++            for wid in wids:
++                row = {"worker": wid}
++                for name, sets in (("chain", chains), ("best", bests)):
++                    if wid not in sets:
++                        continue
++                    s = sets[wid]
++                    row[name + "_gates"] = len(s) + len(outputs)
++                    if seeds:
++                        row[name + "_seed"] = round(min(self._jd(s, x) for x in seeds), 4)
++                    others = [self._jd(s, sets[o]) for o in sets if o != wid]
++                    if others:
++                        row[name + "_peer"] = round(min(others), 4)
++                rows.append(row)
++            summary = {}
++            for name, sets in (("chains", chains), ("bests", bests)):
++                ds = [self._jd(sets[a], sets[b]) for i, a in enumerate(sets) for b in list(sets)[i + 1:]]
++                if ds:
++                    summary[name] = {"mean": round(sum(ds) / len(ds), 4), "min": round(min(ds), 4),
++                                     "max": round(max(ds), 4), "pairs": len(ds)}
++            self.log.write("group_watch", group=group, target=key, workers=rows, **summary)
++            with open(self.run_dir / "watch" / f"{group}.jsonl", "a", encoding="utf-8") as fh:
++                stamp = utc_now()
++                for wid in wids:
++                    data = raw[wid]
++                    fh.write(json.dumps({"utc": stamp, "worker": wid, "t": data.get("t"),
++                                         "steps": data.get("steps"), "chain": data.get("chain_values"),
++                                         "best": data.get("best_values")}, separators=(",", ":")) + "\n")
++
+ 
+ # --------------------------------------------------------------------------------------------
+ # Supervisor
+@@ -390,6 +472,7 @@
+             log = self.backend.event_log(self.run_dir / "campaign.jsonl", self.settings, t0)
+             collector = Collector(self.run_dir, self.plan, self.backend, self.targets,
+                                   self.settings["sharing.pool_per_point"], log, self.cfg.collapse_distance)
++            collector.watch = self.cfg.watch
+         except BaseException:
+             self.lock.release()  # nothing started yet; never leave a lock behind
+             raise
+diff -ruN a/xorflux/campaign/sharing.py b/xorflux/campaign/sharing.py
+--- a/xorflux/campaign/sharing.py
++++ b/xorflux/campaign/sharing.py
+@@ -44,6 +44,9 @@
+                           "best this-many feasible pool points (by the worker's objective).", min=1),
+     "exclude_own": Knob(True, "Never hand a worker its own records (they are already in its "
+                         "archive, the engine's 'elite' restart source)."),
++    "adopt_seconds": Knob(0.0, "v9 prototype: every this many seconds, a worker whose pool holds "
++                          "a feasible circuit strictly better than its worker best restarts from "
++                          "it at once (0: off, v8's pull-on-stall only).", min=0),
+ })
+ 
+ 
+@@ -254,6 +257,37 @@
+         return None
+ 
+ 
++def _better(self, worker_key, exclude_keys=(), rng=None) -> dict | None:
++    """v9 prototype: a distinct pooled circuit at the best feasible point (real depth cap),
++    only when that point is strictly better than ``worker_key``; else None."""
++    if getattr(self, "mode", "off") == "off":
++        return None
++    self.refresh()
++    cap, limit = self.spec.get("depth_cap"), self.spec.get("gate_limit")
++    points = [p for p in self._points
++              if (cap is None or p["depth"] <= cap) and (limit is None or p["gates"] <= limit)]
++    if not points:
++        return None
++    kind = self.spec["objective"]
++    best = min(points, key=lambda p: objective_key(kind, p["gates"], p["depth"]))
++    if worker_key is not None and objective_key(kind, best["gates"], best["depth"]) >= tuple(worker_key):
++        return None
++    exclude = exclude_keys if isinstance(exclude_keys, (set, frozenset)) else set(exclude_keys)
++    entries = [e for e in best["entries"] if self._eligible(e)]
++    if rng is not None:
++        rng.shuffle(entries)
++    for entry in entries:
++        elite = self._load(entry, exclude)
++        if elite is not None:
++            self.stats["samples"] += 1
++            self._note(elite)
++            return elite
++    return None
++
++
++Pool.better = _better
++
++
+ class NullPool(Pool):
+     """No campaign (``xorflux quick``): nothing to sample."""
+ 
+diff -ruN a/xorflux/engine/dossier.py b/xorflux/engine/dossier.py
+--- a/xorflux/engine/dossier.py
++++ b/xorflux/engine/dossier.py
+@@ -100,13 +100,18 @@
+ 
+     def _sample_best_point(self, move_name) -> None:
+         """Every ``record_stride``-th kept move at the worker-best point: record a new DAG."""
+-        if len(self._best_seen) >= self._records_per_point:
++        capped = len(self._best_seen) >= self._records_per_point
++        if capped and not self._archive_past_cap:
+             return
+         self._at_best += 1
+         if self._at_best < self._record_stride:
+             return
+         self._at_best = 0
+         key = self.state.key()
++        if capped:      # v9 prototype: the archive keeps seeing the plateau; no record file
++            self.archive.offer(key, self.cur_g, self.cur_d, self.cur_key, True,
++                               f"sample{self.chain_seq}")
++            return
+         h = hash(key)
+         if h in self._best_seen:
+             return
+diff -ruN a/xorflux/engine/loop.py b/xorflux/engine/loop.py
+--- a/xorflux/engine/loop.py
++++ b/xorflux/engine/loop.py
+@@ -118,6 +118,10 @@
+         "records_per_point": Knob(32, "Distinct DAGs sampled at each worker-best point (records "
+                                   "held 90-154 distinct DAGs per best point; restarts and the "
+                                   "pool draw on them).", min=0),
++        "archive_past_cap": Knob(False, "v9 prototype: after records_per_point distinct DAGs at "
++                                 "the worker-best point, keep offering every record_stride-th "
++                                 "kept state there to the archive (no record files). False: v8, "
++                                 "whose archive stops changing at a level it does not improve."),
+         "plateau_key_every": Knob(8, "Kept neutral moves between state keys passed to the "
+                                   "plateau tracker (a key costs 8-50 us).", min=1),
+         "plateau_event_min": Knob(50, "Plateaus shorter than this many proposals close without "
+@@ -284,6 +288,8 @@
+         self._repair_expired = False    # a repair ran out: revert at the next periodic check
+         self._repair_misses = 0         # expired repairs in a row with nothing to revert to
+         self._repair_exit = settings["restart.repair_exit"]
++        self._adopt_seconds = settings.values.get("sharing.adopt_seconds", 0.0) or 0.0   # v9 prototype
++        self._next_adopt = 0.0
+         self._n = target.n_inputs
+         cfg = settings.view("engine")
+         self._proposal_work = cfg.proposal_work or None
+@@ -297,6 +303,7 @@
+         self._depth_window = cfg.depth_window
+         self._record_stride = cfg.record_stride
+         self._records_per_point = cfg.records_per_point
++        self._archive_past_cap = cfg.archive_past_cap
+         self._plateau_key_every = cfg.plateau_key_every
+         self._plateau_event_min = cfg.plateau_event_min
+         self._canonical = cfg.canonical_checkpoint
+@@ -815,6 +822,21 @@
+                     self._repair_misses += 1
+                     if self._repair_exit and self._repair_misses >= self._repair_exit:
+                         self._restart("repair_exhausted")
++        if self._adopt_seconds and self.pool is not None and t >= self._next_adopt:
++            # v9 prototype: adopt a strictly better pooled circuit at once.
++            self._next_adopt = t + self._adopt_seconds
++            better = getattr(self.pool, "better", None)
++            elite = better(self.worker_best_key, self._pool_exclude(), self.rng) if better else None
++            if elite is not None:
++                self.counters["pulls"] += 1
++                self.recorder.event("pull", record=elite.get("record"), dag=elite.get("dag_sha256"),
++                                    point=score(elite.get("gates"), elite.get("depth")),
++                                    donor=elite.get("donor"), adopt=True)
++                if self._restart("adopt", forced=(_seed_values(elite, self._n), "shared",
++                                                  self._shared_root(elite), elite.get("donor"))):
++                    if self.recorder.epoch_due():
++                        self.recorder.epoch(self.epoch_fields())
++                    return
+         # Only a feasible chain best can hold the worker best: an infeasible 89@5 chain best
+         # under cap 3 compared "<=" the 98@3 worker best and got the incumbent's 3x stall
+         # allowance and root-age exemption (no restarts in 2 h on 19 of 20 workers).

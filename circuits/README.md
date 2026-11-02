@@ -45,7 +45,7 @@ output equals its matrix row and that the gate count and depth match the file na
 | `events.jsonl.gz`, `worker.log`, `discoveries.jsonl.gz` | the worker's log |
 | `plan.json.gz`, `campaign.toml`, `config.json` | the run's frozen settings |
 | `seed.json` | the circuit the worker started from |
-| `checkpoint.json.gz` | the worker checkpoint, for the two circuits that exist only there (¹) |
+| `checkpoint.json.gz` | the worker checkpoint, for the circuit that exists only there (¹) |
 
 Older versions wrote fewer files; each `found.json` lists what is there.
 
@@ -72,7 +72,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 
 | Depth | Gates | Found by | NIST | Logs |
 |---:|---:|---|---:|---|
-| 5 | [168](aes-invmixcolumns/aes-invmixcolumns-xor168-depth5.circ.txt) | v4 + polish ¹ | [119](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor119-depth5.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor168-depth5/) |
+| 5 | [118](aes-invmixcolumns/aes-invmixcolumns-xor118-depth5.circ.txt) | v9 prototype ⁷ | [119](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor119-depth5.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor118-depth5/) |
 | 6 | [104](aes-invmixcolumns/aes-invmixcolumns-xor104-depth6.circ.txt) | v8 ⁵ | [106](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor106-depth6.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor104-depth6/) |
 | 7 | [101](aes-invmixcolumns/aes-invmixcolumns-xor101-depth7.circ.txt) | v7 | [102](https://github.com/usnistgov/Circuits/blob/master/data/slp/aes/aes-invmixcols/aes-invmixcols-xor102-depth7.circ.txt) | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor101-depth7/) |
 | 8 | [96](aes-invmixcolumns/aes-invmixcolumns-xor96-depth8.circ.txt) | v6 | 96 | [logs](aes-invmixcolumns/logs/aes-invmixcolumns-xor96-depth8/) |
@@ -223,6 +223,15 @@ its 106@6); the chain restarted from another worker's 105@6, itself found from N
 No earlier run had started from NIST's depth-5, -6 or -7 InvMixColumns circuits.
 
 ⁶ The fides-midori-mantis 24@2 circuit: the two maps have the same matrix.
+
+⁷ Found on 2026-11-02, after 42.3 h, by the adopt side of an A/B test of proposed v9
+changes, run from our 168@5 only (NIST's 119@5 was not a seed; on helper values the two
+circuits are 0.83 apart). The prototype is v8 plus adopt-on-improve (a worker restarts from
+a strictly better circuit of its group as soon as one is pooled), archive sampling past the
+record cap, and a log-only diversity watcher; `v9-prototype.diff` in the logs applies to
+v8. One worker reached 119@5 from a shared 120@5; another adopted it 4.5 s later and removed
+one more gate 2.3 s after that. Both dossiers are in the logs and replay exactly. It
+replaces our v4 168@5.
 
 How long each search ran, and on what hardware: [SEARCH-TIME.md](SEARCH-TIME.md).
 

@@ -1,0 +1,37 @@
+{
+ "circuit": "aes-invmixcolumns-xor118-depth5.circ.txt",
+ "version": "v9 prototype",
+ "code": "v8 plus adopt-on-improve; v9-prototype.diff in the logs",
+ "found_utc": "2026-11-02T12:18:06.419+00:00",
+ "seconds_into_run": 160807.58046980808,
+ "run": "adopt",
+ "run_id": "3c12a49b46084485a2d96e0e37350ca0",
+ "worker": "inv-cap5-01",
+ "depth_cap": 5,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "168@5",
+  "by": "us",
+  "source": "inv-ours-g168-d5.json"
+ },
+ "chain_root": "shared:workers/inv-cap5-03/records/g119-d5-6d81052eef3c4e9e.json",
+ "circuit_sha256": "9bc2f9eac8faa7ca94ff30313a808ac7d0197bbe3028dff1aed293001a460067",
+ "logs": [
+  "campaign.toml",
+  "donor-dossier.json",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "v9-prototype.diff",
+  "verification.json"
+ ],
+ "donor": {
+  "worker": "inv-cap5-03",
+  "record": "workers/inv-cap5-03/records/g119-d5-6d81052eef3c4e9e.json",
+  "dossier": "donor-dossier.json",
+  "note": "the 119@5 this worker adopted 2.3 s before the 118@5"
+ }
+}

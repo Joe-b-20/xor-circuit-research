@@ -125,11 +125,12 @@ circuit later shrunk by v8's polish stays credited to the version that found it.
 | v1 | MixColumns-only pipeline (aes_search 2.0.0) | 2026-10-21/22 | [versions/v1-mixcolumns-pipeline](versions/v1-mixcolumns-pipeline/) | 0 (kept: its 89@4 came first) |
 | v2 | multi-engine search framework | 2026-10-24/27 | [versions/v2-search-framework](versions/v2-search-framework/) | 1 |
 | v3 | the same framework, depth-focused campaign | 2026-10-27/28 | [versions/v3-search-framework](versions/v3-search-framework/) | 2 |
-| v4 | the same framework, InvMixColumns campaign | 2026-10-28 | [versions/v4-search-framework](versions/v4-search-framework/) | 1 |
+| v4 | the same framework, InvMixColumns campaign | 2026-10-28 | [versions/v4-search-framework](versions/v4-search-framework/) | 0 (kept: its 168@5 was our first depth-5 InvMixColumns) |
 | v5 | first `xorsearch`: one chain per worker | 2026-10-28 | [versions/v5-xorsearch](versions/v5-xorsearch/) | 1 |
 | v6 | `xorsearch` as run on 2026-10-29 | 2026-10-29 | [versions/v6-xorsearch](versions/v6-xorsearch/) | 16 |
 | v7 | v6 plus depth slack 1, repair exit, seed repair, remove-one dead skip | 2026-10-29/30 | [versions/v7-xorsearch](versions/v7-xorsearch/) | 10 |
 | v8 | current: v7 plus the own-depth polish of new points below the search cap; renamed XORFlux | 2026-10-30 | [xorflux/](xorflux/) | 171 |
+| v9 prototype | v8 plus adopt-on-improve, archive sampling past the record cap, a log-only watcher | 2026-10-31/11-02 | [diff against v8](../circuits/aes-invmixcolumns/logs/aes-invmixcolumns-xor118-depth5/v9-prototype.diff) | 1 |
 
 **v1 (Oct 20–22): a better MixColumns pipeline.** aes_search 2.0.0 kept the July engine and
 added deadline-aware reconstruction, coordinated translations, joint triple/quartet cores and
@@ -177,6 +178,17 @@ could go at their own depth (5 of 32 kept circuits lost 1–2 gates), because th
 removals at its deeper search cap. v8 adds an exact branch and bound (`engine/polish.py`) at
 no measurable speed cost, and was run on all 53 NIST linear maps. Renamed XORFlux with no code
 change; the logs of its runs still say `xorsearch`.
+
+**v9 prototype (Oct 31 – Nov 2): adopt-on-improve.** A proposal to restart workers from the
+circuits farthest from their seeds was dropped before it ran: distance favours worse
+circuits, and workers started from the same circuit already ended 0.81–0.86 apart. What was
+tested instead, as an A/B run of 10 workers per side from the same code (the control side
+with the changes off, so v8's search), is adopt-on-improve: every worker restarts from a
+strictly better verified circuit of its group as soon as one is pooled. On InvMixColumns at
+depth 5, from our 168@5, the adopt side reached 120@5 in 4.1 h and 118@5 at 42.3 h, below
+NIST's 119@5; the control side reached 121@5. On MixColumns at depth 4 the control side kept
+the July 91@4 line and found 89@4 in 15 minutes, while the adopt side moved all its workers
+to NIST's 90@4 in the first seconds and stayed there. It is not part of `xorflux/`.
 
 ## Failed experiments and dead ends
 
