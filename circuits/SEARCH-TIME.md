@@ -63,17 +63,17 @@ kernel; v1 records only the CPU count.
 | aes-lowdepth | v8 | 2026-10-31 01:24 | 7.6 h | 13 | 98.4 | 98.1 | no | 1 |
 | gaps16 | v8 | 2026-10-31 01:24 | 2.9 h | 6 | 17.2 | 17.2 | no | 3 |
 | wide64 | v8 | 2026-10-31 04:16 | 4.7 h | 6 | 28.2 | 28.1 | no | 8 |
-| control | v8 | 2026-10-31 15:00 | 7.7 h | 10 | 76.8 | 75.9 | no | 1 |
-| adopt | v9 prototype | 2026-10-31 15:00 | running | 10 | — | — | no | 1 |
+| control | v8 | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.2 | no | 1 |
+| adopt | v9 prototype | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.3 | no | 1 |
 
-Together, without the adopt run, which is still running: 23 runs, about 2,270 worker-hours, for 200 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 540 for 197. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
+Together: 24 runs, about 3,100 worker-hours, for 201 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 920 for 197, and the v9 prototype about 455 for 1. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
 totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute).
 
 ## Circuits
 
 | Circuit | Version | Run | Found after | Finder CPU | Run worker-h | Status | Note |
 |---|---|---|---:|---:|---:|---|---|
-| [aes-invmixcolumns 118@5](aes-invmixcolumns/aes-invmixcolumns-xor118-depth5.circ.txt) | v9 prototype | adopt | 42.3 h | 41.8 h | — (running) | exact | from our 168@5; adopted another worker's 119@5 4.5 s before |
+| [aes-invmixcolumns 118@5](aes-invmixcolumns/aes-invmixcolumns-xor118-depth5.circ.txt) | v9 prototype | adopt | 42.3 h | 41.8 h | 454.8 | exact | from our 168@5; adopted another worker's 119@5 4.5 s before |
 | [aes-invmixcolumns 104@6](aes-invmixcolumns/aes-invmixcolumns-xor104-depth6.circ.txt) | v8 | aes-lowdepth | 1.3 h | 1.3 h | 98.4 | exact | from NIST 107@6, restarted from another worker's 105@6 (from NIST 106@6) |
 | [aes-invmixcolumns 101@7](aes-invmixcolumns/aes-invmixcolumns-xor101-depth7.circ.txt) | v7 | gap-2026-10-30 | 39 min | 39 min | 10.9 | exact |  |
 | [aes-invmixcolumns 96@8](aes-invmixcolumns/aes-invmixcolumns-xor96-depth8.circ.txt) | v6 | rerun-invmixcolumns | 15 min | 15 min | 38.1 | exact |  |
@@ -84,7 +84,7 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [aes-invmixcolumns 89@15](aes-invmixcolumns/aes-invmixcolumns-xor89-depth15.circ.txt) | v6 | rerun-invmixcolumns | 40 min | 39 min | 38.1 | exact |  |
 | [aes-invmixcolumns 88@17](aes-invmixcolumns/aes-invmixcolumns-xor88-depth17.circ.txt) | v6 | rerun-invmixcolumns | 1.2 h | 1.2 h | 38.1 | exact |  |
 | [aes-mixcolumns 97@3](aes-mixcolumns/aes-mixcolumns-xor97-depth3.circ.txt) | v7 | bench-mixcolumns | 10 s | 10 s | 18.4 | exact | built by the `anneal3` constructor; no search move |
-| [aes-mixcolumns 89@4](aes-mixcolumns/aes-mixcolumns-xor89-depth4.circ.txt) | v8 | control | 15 min | 14 min | 76.8 | exact | from our July 91@4; one remove-one move, replayable from its dossier |
+| [aes-mixcolumns 89@4](aes-mixcolumns/aes-mixcolumns-xor89-depth4.circ.txt) | v8 | control | 15 min | 14 min | 454.8 | exact | from our July 91@4; one remove-one move, replayable from its dossier |
 | [aes-mixcolumns 88@5](aes-mixcolumns/aes-mixcolumns-xor88-depth5.circ.txt) | v7 | bench-mixcolumns | 35 min | 33 min | 18.4 | exact |  |
 | [aes-sbox-bottom 29@4](aes-sbox-bottom/aes-sbox-bottom-xor29-depth4.circ.txt) | v6 | rerun-aes_sbox_bottom | 4 s | 4 s | 18.9 | exact |  |
 | [aes-sbox-bottom 28@5](aes-sbox-bottom/aes-sbox-bottom-xor28-depth5.circ.txt) | v6 | rerun-aes_sbox_bottom | 29 min | 28 min | 18.9 | exact |  |
@@ -288,9 +288,8 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
   changes. That side ran a copy of v8 holding the proposed code with every change switched
   off, so its search is v8's; the frozen source is part of the run. It replaced the v1 89@4
   (run long20, after about 14.5 h, with no record of the move that found it). Both grew
-  from the July 91@4. The run was resumed for 20 more hours after its first 8 h session;
-  the run numbers here are that first session's.
+  from the July 91@4. The run had three sessions (7.7, 19.6 and 18.2 h of wall time).
 - **aes-invmixcolumns 118@5** was found by the adopt side of the same A/B test as the
   MixColumns 89@4, 42.3 h of wall time into the run (three sessions; 44.7 h on the run's
-  fast clock). The run was still in its third session when the circuit was added; its run
-  numbers are filled in when it ends. It replaced our v4 168@5 (run invmixcolumns-13).
+  fast clock). The run had the same three sessions as the control side. It replaced our v4
+  168@5 (run invmixcolumns-13).
