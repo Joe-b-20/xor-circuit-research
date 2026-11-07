@@ -1,0 +1,56 @@
+== corrected landing table (measured)
+T = 40 chains; product plateaus = 215 (was 212); unresolved non-product keys = 8; Q_j = {1: 212, 2: 3}; incidences U = 218
+repeated (>=2 chains):
+   p22526234e0c65e84 size 3403620 chains ['A/free-05/0', 'C/free-00/0'] from ['p22526234e0c65e84']
+   p943c008e56986b92 size 3119985 chains ['A/free-05/0', 'C/free-00/0'] from ['p943c008e56986b92']
+   p38493cb932a1fe78 size 815265 chains ['C/free-00/0', 'C/free-03/0'] from ['p38493cb932a1fe78']
+
+== Chao2 (estimated; lower bound under heterogeneity)
+Chao2 classic: N = 7518, 95% CI [2703, 21653]
+Chao2 bias-corrected: N = 5667, 95% CI [1598, 21713]
+coverage C_hat = 0.0282
+  stratum size>=100000: S=35 Q1=32 Q2=3 -> Chao2 bc 156 [60, 609], classic 201 [85, 593]
+  stratum size<100000: S=180 Q1=180 Q2=0 -> Chao2 bc 15887 [11917, 21201]
+  stratum size>=30000: S=60 Q1=57 Q2=3 -> Chao2 bc 449 [150, 1741], classic 588 [228, 1716]
+  stratum size<30000: S=155 Q1=155 Q2=0 -> Chao2 bc 11792 [8657, 16082]
+D2: incidence pairs in different chains 22,611, coincidences 3, D2 = 7,537, 95% [2,579, 36,548] (estimated)
+chain-pair meetings 2: N_eff = 11,306, 95% [3,130, 93,353]; {('A/free-05/0', 'C/free-00/0'): 2, ('C/free-00/0', 'C/free-03/0'): 1}
+
+== size model, E[#chains] = lambda*size^alpha, zero-truncated Poisson (estimated)
+corrected, 215 product plateaus: alpha_hat = 1.37, profile 95% CI [0.55, 3.30], LR vs alpha=0: 15.91 (p=6.6e-05)
+    alpha= 0.00: logL gap 15.91, N_HT = 7,848
+    alpha= 0.50: logL gap 4.43, N_HT = 22,867
+    alpha= 0.75: logL gap 1.76, N_HT = 81,773
+    alpha= 1.00: logL gap 0.49, N_HT = 412,972
+    alpha= 1.37: logL gap 0.00, N_HT = 6,779,961
+corrected, 2101 pair counted once (sens.py clustering variant): alpha_hat = 1.19, profile 95% CI [0.40, 3.15], LR vs alpha=0: 9.59 (p=0.002)
+    alpha= 0.00: logL gap 9.59, N_HT = 11,700
+    alpha= 0.50: logL gap 2.35, N_HT = 34,070
+    alpha= 0.75: logL gap 0.76, N_HT = 121,256
+    alpha= 1.00: logL gap 0.11, N_HT = 608,392
+    alpha= 1.19: logL gap 0.00, N_HT = 2,431,045
++ 8 unresolved as singletons of size 30000: alpha_hat = 1.38, profile 95% CI [0.60, 3.30], LR vs alpha=0: 16.12 (p=5.9e-05)
+    alpha= 0.00: logL gap 16.12, N_HT = 8,437
+    alpha= 0.50: logL gap 4.60, N_HT = 23,914
+    alpha= 0.75: logL gap 1.84, N_HT = 83,730
+    alpha= 1.00: logL gap 0.52, N_HT = 417,234
+    alpha= 1.38: logL gap 0.00, N_HT = 7,365,046
++ 8 unresolved as singletons of size 300000: alpha_hat = 1.45, profile 95% CI [0.60, 3.40], LR vs alpha=0: 15.93 (p=6.6e-05)
+    alpha= 0.00: logL gap 15.93, N_HT = 8,437
+    alpha= 0.50: logL gap 4.78, N_HT = 25,159
+    alpha= 0.75: logL gap 2.08, N_HT = 89,211
+    alpha= 1.00: logL gap 0.69, N_HT = 440,418
+    alpha= 1.45: logL gap 0.00, N_HT = 13,347,234
++ 8 unresolved as singletons of size 3e+06: alpha_hat = 1.12, profile 95% CI [0.40, 3.15], LR vs alpha=0: 12.45 (p=0.00042)
+    alpha= 0.00: logL gap 12.45, N_HT = 8,437
+    alpha= 0.50: logL gap 2.36, N_HT = 29,905
+    alpha= 0.75: logL gap 0.62, N_HT = 124,547
+    alpha= 1.00: logL gap 0.05, N_HT = 702,554
+    alpha= 1.12: logL gap 0.00, N_HT = 1,731,074
++ 8 unresolved as singletons of size 1e+07: alpha_hat = 0.66, profile 95% CI [0.25, 1.35], LR vs alpha=0: 9.43 (p=0.0021)
+    alpha= 0.00: logL gap 9.43, N_HT = 8,437
+    alpha= 0.50: logL gap 0.42, N_HT = 35,872
+    alpha= 0.75: logL gap 0.11, N_HT = 190,638
+    alpha= 1.00: logL gap 1.21, N_HT = 1,424,012
+    alpha= 0.66: logL gap 0.00, N_HT = 99,330
+total states on the 215 product plateaus = 32,880,384 (measured)

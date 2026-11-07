@@ -1,0 +1,138 @@
+Giant / closure keys of hunt/plateaus.json: exact identity, sizes, corrected estimates
+=====================================================================================
+2026-11-07.  [M] = measured (exact computation), [E] = estimated (model / estimator output).
+Read-only on the repo and on hunt/ and estimate/; every output is in this directory.
+
+Files
+  list.py      -> entries.json   the 18 non-product keys: seed state, chain, sample (step 1)
+  resolve.py   -> resolve.jsonl, resolve.log, pl_<key>.json   (step 2: pes_lib.compress, see below)
+  recheck.py   membership re-check of the unresolved seeds against everything resolved
+               (original records kept in resolve.jsonl.orig)
+  table.py     -> table.out      the per-entry table below + appendix with all 18 seed value sets
+  reestimate.py -> reestimate.out, landing_table_corrected.txt   (step 3)
+
+Method
+  * The 18 keys = 16 "giant-<hash>" + 2 p-keyed "closure" keys.  All 18 had the same failure in
+    hunt/plateaus.py: compress's factor phase hit time_limit=180 s, so the fallback closure was cut
+    at 1 state (stored size 1, identity = seed only) [M].
+  * Each seed was first tested for exact membership (any of the 4 byte rotations, Plateau.contains)
+    in all 264 product plateaus of plateaus.json (212 sprint + 52 pre-sprint) and in every plateau
+    resolved so far; only non-members were compressed:
+    compress(sp, seed, verify_limit=20000 (as plateaus.py), closure_limit=300000, time_limit=900),
+    sp = make_space("mc", None), one process under nice 12, one fan memo shared across seeds.
+    Order: one seed per chain first, then the rest; no new compress after 5,400 s of wall time.
+  * Canonical key = plateaus.py key_of (h64 of the min-over-rotations sorted value union), so a
+    resolved key equal to a catalogue key IS the same plateau.
+  * Why some take long: compress checks time only between factor groups, and these plateaus have
+    one coupled factor with 3e3-7e4 local choices (each choice = one remove1 fan, ~0.04 s here);
+    such a group is explored to the end, then any coupling restart re-runs the groups (10-17
+    restarts seen).  Fans are only computed at neutral-reachable states, so #fans is a [M] lower
+    bound on plateau size for a failed attempt.
+  * Resolved products with size > 20,000 are "pairwise" verified (factor phase consistent, not every
+    member fanned) -- the same standard plateaus.py applied to all large catalogue plateaus.
+
+1. The 18 entries  [M]
+----------------------
+ #  entry                   chain        t(s)  seed   outcome                 canonical key       exact size = factors
+                                                depth
+ 1  pc0c31eb7788d5c66       B/free-01/0    297   9    member of catalogue     p1a1e1853d7e2cb81   120,285 = 33x15x3^5
+ 2  p5d74d61aab10fa15       A/free-05/0    332   9    member of catalogue     pce9227a62d5504c7   2,555,145 = 18927x15x3x3
+ 3  giant-b62890a94bf6752b  B/free-03/3   1497   8    member of catalogue     p69cb37674171dd5c   29,403 = 9801x3
+ 4  giant-bc45c2eae32bf95c  B/free-04/6   3177   9    member of #9 (recheck)  p80424727ddf34e79   188,568 = 62856x3
+ 5  giant-35b911534303da6a  A/free-00/0   3214   7    member of catalogue     p39a24fcb08666cfd   617,220 = 22860x3x3x3
+ 6  giant-1393f1a8bd6aecfd  B/free-04/8   4347   8    UNRESOLVED (a)          -                   >= 41,214
+ 7  giant-65a97cf7b1af99f1  B/free-04/9   4888   8    compress, pairwise      pe8f63ba6db5b6c10   93,474 = 3462x3x3x3   NEW
+ 8  giant-7148dc0745bc4cd6  C/free-01/0    930  12    compress, pairwise      p55f9dc07f8b3409b   623,052 = 69228x3x3   NEW
+ 9  giant-a39cdf21f2696dc4  B/free-04/6   3207   9    compress, pairwise      p80424727ddf34e79   188,568 = 62856x3     NEW
+10  giant-04446d02ca3fe489  B/free-04/6   3237   9    member of #9            p80424727ddf34e79   188,568 = 62856x3
+11  giant-efe1a88f4347a29b  B/free-04/6   3267   8    UNRESOLVED (b)          -                   ?
+12  giant-9355a46efd5e4177  B/free-04/6   3328   8    UNRESOLVED (b)          -                   ?
+13  giant-be71f205b5983c94  B/free-04/6   3358   8    UNRESOLVED (b)          -                   ?
+14  giant-da3b9809ba057633  B/free-04/6   3388   8    UNRESOLVED (b)          -                   ?
+15  giant-d2fa754021980a68  B/free-04/6   3448   8    UNRESOLVED (b)          -                   ?
+16  giant-d1d4489d905fd88a  B/free-04/8   4407   8    member of catalogue     p8481a82aebc429b0   25,515 = 21x15x3^4
+17  giant-2d4c9d1a7df6225f  C/free-01/0    990  15    UNRESOLVED (b)          -                   ?
+18  giant-70ffa7ef13970d16  C/free-01/0   1020  10    UNRESOLVED (b)          -                   ?
+  Each entry is exactly one 88 sample (t = chain time of the sample, samples.jsonl for A/B,
+  samplesC/samples.jsonl for C); full seed value sets in table.out (appendix) and entries.json.
+  Coincidences: every "member of catalogue" hit is a catalogue plateau visited ONLY by the same
+  chain (the chain's later samples reached the same plateau from a seed compress could handle), and
+  #4/#9/#10 are three consecutive samples of B/free-04/6.  No entry coincides with a plateau of any
+  other chain, and no two chains share a resolved giant.
+  (a) #6: compress ran 1,483 s (16 restarts, 41,214 member states fanned) and stopped in the factor
+      phase; not a member of any known or resolved plateau.  Size >= 41,214 [M lower bound].
+  (b) #11-15, #17, #18: not compressed (wall budget), but tested exactly: NOT members (any rotation)
+      of any of the 264 catalogue products nor of the 3 new ones, in particular #11-15 are not on
+      p80424727 although they follow #4/#9/#10 in the same chain.  Size and identity unknown; >= 1
+      state, and they behave like the others (180 s factor phase not enough), so very likely >= ~3e4.
+
+  Count: the 10 resolved entries are 8 distinct plateaus [M] -- 5 already in the catalogue, 3 new
+  (93,474; 188,568; 623,052).  The 8 unresolved are between 2 and 8 further plateaus (#11-15 come
+  from one chain, #17-18 from one chain, #6 alone; we cannot tell whether e.g. #11-15 are one
+  plateau).  So the 18 keys are 10 to 16 distinct plateaus, of which 3 + (2..8) are new.  Resolved
+  sizes: 25,515 to 2,555,145, median ~190,000 -- large, as review2 suspected, but none above the
+  largest known (3,403,620).
+
+2. Corrected estimates (8 unresolved excluded; with them as singletons below)  [E]
+---------------------------------------------------------------------------------
+  Corrected landing table: landing_table_corrected.txt (same columns as estimate/landing_table.txt).
+  T = 40 chains (unchanged).  Product plateaus S = 215 (was 212) [M]; Q1 = 212 (209), Q2 = 3 (3),
+  incidences U = 218 (215) [M].  The 3 repeats are unchanged (3.40e6, 3.12e6, 815,265).
+
+                                   excluded giants (estimate.out / recount)   corrected (this run)
+  Chao2 classic                    7,310   [2,629, 21,055]                    7,518  [2,703, 21,653]
+  Chao2 bias-corrected             5,510   [1,555, 21,114]                    5,667  [1,598, 21,713]
+  coverage C_hat                   0.0286                                     0.0282
+  D2 (inverse Simpson, 3 coinc.)   7,323   [2,500, 35,500] (21,968 pairs)     7,537  [2,579, 36,548] (22,611 pairs)
+  chain-pair N_eff (2 meetings)    ~11,000 [3,041, 90,698]                    11,306 [3,130, 93,353]
+  stratum size >= 1e5, Chao2 bc    139 [55, 543]                              156 [60, 609]
+  alpha (all 3 repeats)            1.34-1.35 [0.55, 3.25]                     1.37 [0.55, 3.30]
+  alpha (2101 pair counted once)   1.15 [0.40, 3.10]                          1.19 [0.40, 3.15]
+  N_HT alpha = 0.50                22,058                                     22,867
+  N_HT alpha = 0.75                79,101                                     81,773
+  N_HT alpha = 1.00                402,570                                    412,972
+  N_HT alpha = alpha_hat           5.25e6 (1.34)                              6.78e6 (1.37)
+  (alpha: zero-truncated Poisson profile likelihood, 95 % LR interval, exactly as estimate.py /
+  sens.py; grid [-2, 5].  LR vs alpha=0: 15.91, p = 6.6e-5, unchanged.  N_HT = sum 1/(1-exp(-lambda
+  s^alpha)) with lambda refit per alpha, as estimate.py.)
+
+  Sensitivity, 8 unresolved added as singletons of one hypothetical size (reestimate.out):
+     size 3e4: alpha 1.38 [0.60, 3.30]; N_HT 0.75/1.0 = 83,730 / 417,234
+     size 3e5: alpha 1.45 [0.60, 3.40]; N_HT 0.75/1.0 = 89,211 / 440,418
+     size 3e6: alpha 1.12 [0.40, 3.15]; N_HT 0.75/1.0 = 124,547 / 702,554
+     size 1e7: alpha 0.66 [0.25, 1.35]; N_HT 0.75/1.0 = 190,638 / 1,424,012
+  Treating all 8 as separate plateaus is the pessimistic end (they are 2-8 plateaus), and the
+  resolved giants of the same kind are all <= 2.6e6, so the 1e7 row (the review2 "alpha -> 0.5"
+  scenario) is no longer realistic; 3e4-3e6 is the plausible range.
+
+What changed  [E]
+  Almost nothing.  Resolving the giants adds 3 new singleton plateaus and turns 7 "possible new
+  plateaus" into repeat visits by the same chain (which carry no incidence information).  No giant
+  is a cross-chain coincidence, so Q2 stays 3, Chao2 and D2 move by ~3 %, and alpha stays ~1.35
+  [0.55, 3.3].  The review2 swing (alpha 1.35 -> 0.5) required 18 independent singletons of size
+  ~1e7; the facts are: 10 of 18 resolved into 8 plateaus of 2.6e4-2.6e6 (3 new), and the remaining
+  8 move alpha only within 1.1-1.45 for sizes 3e4-3e6.
+
+3. The "plausibly 3e4-5e5 plateaus" statement
+---------------------------------------------
+That range came from the size-weighted HT at alpha 0.75-1.0 (79k-403k), with alpha 0.75-1.0 taken
+from the small-plateau signature repeats (alpha_check), and it was flagged as conditional on the
+excluded giants.  With the giants resolved it survives essentially unchanged: at alpha 0.75 / 1.0
+the corrected HT gives 81,773 / 412,972 [E], and with the 8 unresolved giants as singletons of any
+realistic size (3e4-3e6) 83,730-124,547 / 417,234-702,554 [E].  The upper end may stretch from
+~4e5 to ~7e5 only if all 8 unresolved keys are distinct plateaus of ~3e6 states; the lower end
+(3e4) is untouched, since it is set by the alpha 0.5 HT (22,867 [E]) and by D2 / Chao2, which the
+giants barely move (no new cross-chain coincidence).  The catalogue-only alpha remains ~1.35
+[0.55, 3.3] and therefore still does not constrain N by itself; the dependence on alpha (not on the
+giants) is what makes the estimate uncertain.  The review2 caveat "conditional on excluding the
+giants" can be dropped: "of order 1e5, plausibly 3e4-5e5 (up to ~7e5 if the 8 still-unresolved
+giant keys are all distinct multi-million plateaus)".
+
+Unresolved and why
+  #6 (B/free-04/8): factor phase did not finish in 1,483 s (>= 41,214 states, 16 restarts).
+  #11-15 (B/free-04/6), #17-18 (C/free-01/0): not compressed, wall budget (5,400 s of compress
+  used; machine at load ~22 on 20 threads); exact non-membership in all 267 known products checked.
+  To finish them: remove their lines from resolve.jsonl and run resolve.py again (it skips entries
+  already in resolve.jsonl and reloads pl_*.json), then reestimate.py; expect
+  roughly 2-40 min per seed at this load (a39c took 1,057 s with bc45's fans cached; 7148 took
+  2,525 s), i.e. 1-3 h for the 8.

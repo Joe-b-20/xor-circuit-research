@@ -373,6 +373,20 @@ signatures).
   node-level meeting count implies >= ~3e4 even after a generous over-splitting correction).
   "Landing probability" is really a VISIT exponent (landing or hop). The search cannot enumerate
   the level.
+- Giants resolved (giants agent, 19:50 UTC, `giants/REPORT.txt`): the 18 giant entries all failed
+  the same way in `plateaus.py` (factor phase hit 180 s on one large coupled factor of 3e3-7e4
+  choices, fallback closure stopped at 1 state). With closure_limit 3e5 and 900 s, 10 of 18 are
+  resolved exactly: 5 are members of already-catalogued plateaus (1.2e5-2.6e6 states, each visited
+  by the same chain only), 3 are new plateaus (93,474 = 3462x3^3; 623,052 = 69228x3^2; 188,568 =
+  62856x3), so 8 distinct plateaus, none shared across chains; 8 entries stay unresolved (one
+  >= 41,214 states, seven not compressed for lack of wall time; all seven are provably outside the
+  267 known products). Corrected estimates [estimated]: Chao2 7,518 [2,703, 21,653]; D2 7,537
+  [2,579, 36,548]; chain-pair N_eff 11,306 [3,130, 93,353]; alpha 1.37 [0.55, 3.30]; size-weighted
+  totals 22,867 / 81,773 / 412,972 at alpha 0.5 / 0.75 / 1.0. Adding the 8 unresolved as separate
+  single-chain plateaus of 3e4-3e6 states moves alpha within 1.12-1.45. The review's alpha = 0.5
+  scenario needed giants of ~1e7 states; the resolved ones are all <= 2.6e6, so it is no longer
+  realistic. "Plausibly 3e4-5e5" survives (upper end to ~7e5 only if all 8 unresolved are distinct
+  ~3e6 plateaus); the remaining uncertainty is alpha, not the giants, and the R2 caveat is dropped.
 - Next measurement (no new search): the exact catalogue on the remaining ~1,390 sampled 88
   states takes chains from 40 to 146 and chain pairs from 22k to 1.27M, expected ~100
   coincidences instead of 3, pinning alpha and N; ~1-2 min per state single-threaded (a day on one
@@ -646,8 +660,9 @@ at k = 5, 6.
   wandering expectation for ~1.3e5 effective nodes (null model); the graph says nothing about
   connectivity. Survived: 0 remove1 down-exits at all 1,869 states (recomputed), hop locality,
   the ~44/h floor. Wording fixed in F11, UNDERSTANDING 4 and 8.
-- F12 WEAKENED: the alpha fit and the 1e5 centre are conditional on excluding 18 giant entries of
-  unknown size (alpha 1.35 -> 0.95 or 0.50 if they are large singletons) and on the effort ratio
+- F12 WEAKENED (caveat since resolved, see the F12 giants bullet): the alpha fit and the 1e5 centre
+  were conditional on excluding 18 giant entries of unknown size (alpha 1.35 -> 0.95 or 0.50 if they
+  were large singletons; they are <= 2.6e6 states and unshared) and on the effort ratio
   behind the signature alpha (HT 79k-400k). The floor is not "distribution-free": it assumes
   independent, exchangeable chains (17 of 40 catalogued chains share 6 first roots; no same-root
   pair shared a plateau). Chao2/D2 reproduce exactly; the chain-pair floor is >= 3,041.
