@@ -118,6 +118,15 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   L12*/L7*/(I)/(Q0)) and a rich-label lemma, all with written proofs citing package lemmas, zero
   violations on 316 circuits; survivors at 75: 1,508 -> 1,313 (keys 1,134 -> 681). Under
   independent check (qcheck agent, xhigh). No bound improvement claimed.
+- 21:46-23:56 UTC (after the WSL restart; agent waves 3-4): F18 CONFIRMED and CERTIFIED (1,772 Farkas
+  certificates, independent checker); F19 literature (no published bound above 32; 75 and 93 new);
+  F20 odd-helper theorems replayed, h = 0/1 re-proved; F21 hub lemma + dark split (1,313 -> 996
+  survivors), CONFIRMED by qrealcheck; F22 depth-4: no general bound above 75, G >= 89 SAT-proved over
+  the 89 family's vocabulary; F23 mobile-part SAT (no one-factor or small two-factor 87 rewrite of 4
+  plateaus); F24 depth-3 proofs replayed here (93 PASS; Ordinary Union default PASS); F25 cross-map
+  explanations separated (unsearched band excluded, 4x4 floor supported); F26 sharing identity is a
+  tautology (no bound by that route; group minima re-proved). Review 3 applied; UNDERSTANDING rewritten
+  23:00. Corrections: F17 interpretation (R3), F15 P2 population, F14 final numbers.
 - 15:55 UTC, estimate agent (F12): landing probability ~ proportional to plateau size; at least
   ~2,500 exact 88 plateaus (95 %), order of magnitude 1e5; coverage 0.029. Next measurement:
   exact catalogue of the remaining ~1,390 sampled states (~1 core-day).
