@@ -64,8 +64,12 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   baseline [measured, crossmap]. The numeric extrapolation built on this (gain per ln(time)
   from each map's late slope) did NOT survive the prediction tests: 1 hit, 1 beaten, 3
   over-predictions on 5 maps (F9). What held is coarser: maps over 8x8 matrices gain several
-  gates per worker-hour at NIST's depth whatever their property profile (7 of 7 tried), maps
-  over 4x4 matrices at NIST's depth gain 0-1 (F7, F9) [measured].
+  gates per worker-hour at NIST's depth whatever their property profile (16 of 19 trials on
+  the sweep's 12 maps plus X1/pt's; F10), maps over 4x4 matrices at NIST's depth gain 0-1
+  (1 of 6; F7, F9) [measured]. Where the gain comes from, on the one map that gained 26
+  gates (klsw17-m-8x8-gf256 347@6 -> 321@10): a depth band nobody had searched; the gates
+  minimum of several maps sits at a middle depth, not the deepest searched (F10) [measured,
+  3 maps; mechanism conjectured].
 - Small maps with proved optima (69 maps, 6-16 inputs, 5-34 gates): v8 reaches the optimum in
   1,380 of 1,380 runs within 60 s, median 3 iterations [measured, bench]. The minima form ONE
   plateau under the real moves in all 15 fully enumerated maps; the fragmentation seen earlier
