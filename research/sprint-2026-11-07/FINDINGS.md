@@ -112,6 +112,10 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   | A | 23 | 17 (74 %) | 1.40 | 240 s | 1,800 s |
   | B | 88 | 41 (47 %) | 3.39 | 240 s | 300 s |
 
+- Final (A stopped at 3 h, B at 5.2 h): A 31 chains, 25 reached 88 (81 %), 1.51 arrivals per
+  worker-hour; B 209 chains, 90 reached 88 (43 %), 3.15 per worker-hour, median root->88
+  234 s in both. Root constructor does not predict reaching 88 in B: bp 16/38, naive 31/77,
+  anneal3 23/54, paar 20/40 [measured].
 - Prediction stated before the run (B >= 1.5x arrivals per worker-hour): confirmed. The cost: B
   gives up on 53 % of chains at 89 that A would have carried to 88 (A's slowest arrival took
   1,200 s; B restarts 300 s after the last improvement). Per-chain success falls, arrivals rise.
