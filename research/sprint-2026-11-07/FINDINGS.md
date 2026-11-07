@@ -481,6 +481,29 @@ established. Inverse: depth >= 5 is established (output weights 19 vs depth-4 su
 must be new relative to them. A claim of 87 impossibility is open: neither search failures nor
 the available identities prove it (owner's status guide).
 
+## F14. Hunt D (depth window 2 / 4 / none, 4 MixColumns workers each, same first roots, 13 h from 15:06 UTC): predictions registered at 2.4 h, before the data decide [in progress]
+
+Predictions written at 17:35 UTC (the 2.4 h snapshot below was seen; nothing later):
+- P1 (from hunt C, F8): DN (no window) reaches 88 at least 1.2x as often per worker-hour as D0.
+  At 2.4 h: D0 1.74, D4 1.63, DN 1.51 arrivals per worker-hour (15/14/13 chains): P1 is
+  already behind; if the 13 h totals keep DN/D0 below 1.2 it is refuted and hunt C's 1.94 vs
+  1.51 was noise, as the review said.
+- P2 (from the F8 mechanism, "the window limits migration through 89"): DN visits more DISTINCT
+  88 plateaus per worker-hour than D0 (cheap identity v3, upper bound). At 2.4 h: D0 20.8, D4
+  28.2, DN 27.4 per worker-hour (199/270/262 signatures from 272/344/280 states); per worker
+  (same first roots) DN > D0 on 3 of 4 workers, D0 > DN on free-00 (100 vs 40). Prediction: the
+  13 h ratio DN/D0 is >= 1.2 and holds on at least 3 of 4 paired workers.
+- P3: the 88 states DN and D4 land on are deeper than D0's (window off = depth free). At 2.4 h
+  the modal depth is 8 in all arms but DN/D4 have tails to 13-14 and D0 stops at 11.
+  Prediction: the fraction of 88 states at depth >= 10 is at least twice D0's in DN.
+- P4 (from F11): chains of different arms share almost no plateau even with the same first
+  root: at 2.4 h 2 signatures of 729 are shared, both between D0/free-02 and D4/free-03
+  (different roots). Prediction: fewer than 2 % of signatures are shared across arms at 13 h.
+- P5: no arm produces an 87 (0 of 729 states below 88 so far). A single 87 refutes this and
+  is harvested at once.
+Analysis scripts: `hunt/descents.py hunt/runsD` (arrivals, depths, restarts) and
+`hunt/sigD.py runsD samplesD/samples.jsonl 13` (identity, pairing). Final numbers at ~04:10 UTC.
+
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
 An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:
