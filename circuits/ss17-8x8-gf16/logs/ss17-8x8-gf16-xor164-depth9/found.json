@@ -1,0 +1,29 @@
+{
+ "circuit": "ss17-8x8-gf16-xor164-depth9.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-11-07T08:42:27.498+00:00",
+ "seconds_into_run": 746.4050615420019,
+ "run": "predtest-pt1",
+ "run_id": "79a0e50ff08949aea96a818979b49b66",
+ "worker": "ss17-8x8-gf16-01",
+ "depth_cap": 10,
+ "move": "lns.rebuild",
+ "seed": {
+  "kind": "file",
+  "point": "178@10",
+  "by": "NIST",
+  "source": "target:nist-g178-d10"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "66b2475f6251ffc3a4f4c895f003719b80e4c9837ebeea1290f9b7e26188aba3",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

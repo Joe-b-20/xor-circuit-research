@@ -1,0 +1,29 @@
+{
+ "circuit": "grostl-xor404-depth10.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-11-07T06:16:52.663+00:00",
+ "seconds_into_run": 14.681720096999925,
+ "run": "x1a-fresh-vs-nist",
+ "run_id": "c634aeb7c03b44b5a9f520e98d059e32",
+ "worker": "grostl-nist-00",
+ "depth_cap": 12,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "410@12",
+  "by": "NIST",
+  "source": "target:nist-g410-d12"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "c7dd3e489ae6408dba652ff13d6015ae43a091af314dfccba848f5fb8c268190",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

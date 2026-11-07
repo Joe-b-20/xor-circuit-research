@@ -1,0 +1,83 @@
+# X1 (crossmap agent's discriminating experiment): fresh roots vs NIST-seeded, same depth cap
+# (NIST's depth), same compute, on 8 maps spanning the gain range. One v8 worker per arm, 1 h,
+# no sharing. Baseline-weakness index W = (NIST - fresh)/NIST per map; compare with the seeded gain.
+# Prediction under the "baseline effect" reading of MixColumns: fresh-root MixColumns at cap 5
+# reaches 88 (W = 0) while the other maps have W > 0 of the order of their seeded gains.
+
+[campaign]
+name = "x1a-fresh-vs-nist"
+seed = 20261108
+duration = "1h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+
+[[workers]]
+name = "grostl-fresh"
+target = "grostl"
+count = 1
+objective = "gates"
+depth_cap = 12
+seeds = ["root"]
+
+[[workers]]
+name = "grostl-nist"
+target = "grostl"
+count = 1
+objective = "gates"
+depth_cap = 12
+seeds = ["target"]
+
+[[workers]]
+name = "skop15-8x8-gf16-fresh"
+target = "skop15-8x8-gf16"
+count = 1
+objective = "gates"
+depth_cap = 19
+seeds = ["root"]
+
+[[workers]]
+name = "skop15-8x8-gf16-nist"
+target = "skop15-8x8-gf16"
+count = 1
+objective = "gates"
+depth_cap = 19
+seeds = ["target"]
+
+[[workers]]
+name = "klsw17-m-8x8-gf256-inv-fresh"
+target = "klsw17-m-8x8-gf256-inv"
+count = 1
+objective = "gates"
+depth_cap = 12
+seeds = ["root"]
+
+[[workers]]
+name = "klsw17-m-8x8-gf256-inv-nist"
+target = "klsw17-m-8x8-gf256-inv"
+count = 1
+objective = "gates"
+depth_cap = 12
+seeds = ["target"]
+
+[[workers]]
+name = "lw16-4x4-gf256-inv-circ-fresh"
+target = "lw16-4x4-gf256-inv-circ"
+count = 1
+objective = "gates"
+depth_cap = 7
+seeds = ["root"]
+
+[[workers]]
+name = "lw16-4x4-gf256-inv-circ-nist"
+target = "lw16-4x4-gf256-inv-circ"
+count = 1
+objective = "gates"
+depth_cap = 7
+seeds = ["target"]
+

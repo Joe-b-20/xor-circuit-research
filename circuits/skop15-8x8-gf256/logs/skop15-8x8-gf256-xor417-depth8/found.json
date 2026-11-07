@@ -1,0 +1,29 @@
+{
+ "circuit": "skop15-8x8-gf256-xor417-depth8.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-11-07T14:20:30.829+00:00",
+ "seconds_into_run": 1162.9054649410027,
+ "run": "sweep-sw2",
+ "run_id": "81c78fd0e8a249c1848ce73a61cd0df9",
+ "worker": "skop15-8x8-gf256-00",
+ "depth_cap": 8,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "418@8",
+  "by": "us",
+  "source": "skop15-8x8-gf256-g418-d8.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "277e4b782de571fbeeac2f9112d7c119be8128c7273ab467da55597356fe2d8e",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

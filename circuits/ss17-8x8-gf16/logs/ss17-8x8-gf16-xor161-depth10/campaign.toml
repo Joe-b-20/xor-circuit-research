@@ -1,0 +1,30 @@
+[campaign]
+name = "predtest-pt1"
+seed = 20261103
+duration = "2h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "skop15-8x8-gf16"
+target = "skop15-8x8-gf16"
+count = 2
+objective = "gates"
+depth_cap = 19
+seeds = ["seeds/skop15-8x8-gf16-g146-d14.json", "target"]
+
+[[workers]]
+name = "ss17-8x8-gf16"
+target = "ss17-8x8-gf16"
+count = 2
+objective = "gates"
+depth_cap = 10
+seeds = ["seeds/ss17-8x8-gf16-g167-d10.json", "target"]
+
+[[workers]]
+name = "klsw17-m-8x8-gf256-inv"
+target = "klsw17-m-8x8-gf256-inv"
+count = 2
+objective = "gates"
+depth_cap = 12
+seeds = ["seeds/klsw17-m-8x8-gf256-inv-g346-d12.json", "target"]

@@ -1,0 +1,29 @@
+{
+ "circuit": "ss17-8x8-gf256-xor390-depth8.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-11-07T14:29:28.065+00:00",
+ "seconds_into_run": 1646.4036141860051,
+ "run": "sweep-sw2",
+ "run_id": "81c78fd0e8a249c1848ce73a61cd0df9",
+ "worker": "ss17-8x8-gf256-00",
+ "depth_cap": 9,
+ "move": "lns.rebuild",
+ "seed": {
+  "kind": "file",
+  "point": "392@8",
+  "by": "us",
+  "source": "ss17-8x8-gf256-g392-d8.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "0f99a532a89861b0728e4bfdfda2a886ae8466aef4ed33dd801de00def47690c",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

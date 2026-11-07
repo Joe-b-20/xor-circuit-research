@@ -1,0 +1,95 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-11-07T15:06:42Z
+  % Not a NIST-issued circuit
+  % Found by: XORFlux v8 (search/xorflux), run x1b-fresh-vs-nist, worker small-scale-aes-fresh-00
+  % Started from: a fresh root (naive#515817747)
+  % Logs: logs/small-scale-aes-xor63-depth3/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % small-scale-aes-xor63-depth3 16 16   % small-scale-aes; 16x16 bit matrix; 2-input XOR basis
+
+## Circuit
+begin circuit small-scale-aes-xor63-depth3
+
+  % Description: y = A.x with A in small-scale-aes.mat.txt (row i = y_i, column j = x_j)
+  % Tally of variables (79): 16 inputs; 16 outputs; 47 intermediates
+  % Tally of gates (63): 63 XOR
+  % Gate depth 3
+  % Gates per gate level: 29 18 16
+
+Inputs: x0:x15
+Outputs: y0:y15
+Internal: t1:t47
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x2 x3
+XOR t2 x3 x4
+XOR t3 x4 x5
+XOR t4 x1 x6
+XOR t5 x2 x7
+XOR t6 x3 x7
+XOR t7 x0 x8
+XOR t8 x1 x8
+XOR t9 x4 x8
+XOR t10 x3 x9
+XOR t11 x1 x10
+XOR t12 x3 x10
+XOR t13 x5 x10
+XOR t14 x0 x11
+XOR t15 x3 x11
+XOR t16 x9 x11
+XOR t17 x0 x12
+XOR t18 x8 x12
+XOR t19 x11 x12
+XOR t20 x0 x13
+XOR t21 x6 x13
+XOR t22 x7 x13
+XOR t23 x9 x14
+XOR t24 x11 x14
+XOR t25 x1 x15
+XOR t26 x4 x15
+XOR t27 x5 x15
+XOR t28 x6 x15
+XOR t29 x7 x15
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t30 x5 t10
+XOR t31 t3 x9
+XOR t32 t4 t13
+XOR t33 t5 x11
+XOR t34 x1 t16
+XOR t35 x7 t18
+XOR t36 x2 t21
+XOR t37 t6 t20
+XOR t38 t9 t22
+XOR t39 t19 x13
+XOR t40 x2 t23
+XOR t41 t12 x14
+XOR t42 t1 t24
+XOR t43 t7 t26
+XOR t44 t8 t27
+XOR t45 x10 t28
+XOR t46 x11 t26
+XOR t47 t17 t25
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR y0 t2 t35
+XOR y4 t14 t35
+XOR y1 t31 t37
+XOR y14 t11 t36
+XOR y5 t34 t38
+XOR y2 t32 x14
+XOR y6 t13 t40
+XOR y15 x7 t42
+XOR y10 t21 t40
+XOR y12 x3 t43
+XOR y3 t33 t28
+XOR y7 t15 t45
+XOR y13 t30 t47
+XOR y8 t17 t46
+XOR y9 t39 t44
+XOR y11 t41 t29
+end SLP
+end circuit

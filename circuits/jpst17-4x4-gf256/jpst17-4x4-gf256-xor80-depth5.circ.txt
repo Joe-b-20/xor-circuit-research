@@ -1,0 +1,114 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-11-07T15:06:42Z
+  % Not a NIST-issued circuit
+  % Found by: XORFlux v8 (search/xorflux), run x1b-fresh-vs-nist, worker jpst17-4x4-gf256-nist-00
+  % Started from: NIST 82@7 circuit (seed.json in the logs)
+  % Logs: logs/jpst17-4x4-gf256-xor80-depth5/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % jpst17-4x4-gf256-xor80-depth5 32 32   % jpst17-4x4-gf256; 32x32 bit matrix; 2-input XOR basis
+
+## Circuit
+begin circuit jpst17-4x4-gf256-xor80-depth5
+
+  % Description: y = A.x with A in jpst17-4x4-gf256.mat.txt (row i = y_i, column j = x_j)
+  % Tally of variables (112): 32 inputs; 32 outputs; 48 intermediates
+  % Tally of gates (80): 80 XOR
+  % Gate depth 5
+  % Gates per gate level: 19 17 23 12 9
+
+Inputs: x0:x31
+Outputs: y0:y31
+Internal: t1:t48
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x1 x8
+XOR t2 x5 x12
+XOR t3 x9 x16
+XOR t4 x0 x17
+XOR t5 x2 x19
+XOR t6 x13 x20
+XOR t7 x4 x21
+XOR t8 x14 x22
+XOR t9 x17 x24
+XOR t10 x11 x25
+XOR t11 x19 x25
+XOR t12 x3 x26
+XOR t13 x8 x27
+XOR t14 x21 x28
+XOR t15 x15 x29
+XOR t16 x23 x29
+XOR t17 x7 x30
+XOR t18 x4 x31
+XOR t19 x13 x31
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t20 x3 t4
+XOR t21 t1 x18
+XOR t22 x10 t5
+XOR t23 x7 t7
+XOR t24 t2 x22
+XOR t25 x6 t8
+XOR t26 t2 x23
+XOR t27 t1 t9
+XOR t28 x18 t11
+XOR t29 t3 x26
+XOR t30 t11 t12
+XOR t31 x0 t13
+XOR t32 x9 t13
+XOR t33 t6 x30
+XOR t34 t16 t17
+XOR t35 x12 t18
+XOR t36 t14 t19
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t37 x10 t20
+XOR t38 x11 t21
+XOR t39 x14 t23
+XOR t40 x15 t24
+XOR t41 x6 t26
+XOR y17 t20 t10
+XOR y2 t22 t28
+XOR y25 t29 t30
+XOR y10 x2 t29
+XOR y18 t21 x26
+XOR y3 t10 t30
+XOR y0 x16 t31
+XOR y19 t5 t32
+XOR y1 t27 t32
+XOR y21 t23 t15
+XOR y6 t25 x29
+XOR y13 t26 t15
+XOR y29 t33 t34
+XOR y14 x6 t33
+XOR y22 t24 x30
+XOR y7 t15 t34
+XOR y4 x20 t35
+XOR y5 x5 t36
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR y9 t38 t28
+XOR y26 t37 t12
+XOR t42 t37 y0
+XOR y27 t38 t31
+XOR t43 t4 y19
+XOR t44 x1 y1
+XOR t45 t3 y1
+XOR t46 t41 t14
+XOR y30 t39 t17
+XOR t47 t39 y4
+XOR y31 t40 t35
+XOR t48 t6 y5
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 5
+XOR y16 t42 t44
+XOR y8 y27 t45
+XOR y24 t43 y1
+XOR y11 x8 t42
+XOR y20 t47 t36
+XOR y12 y31 t48
+XOR y28 t7 t46
+XOR y15 x12 t47
+XOR y23 t46 y5
+end SLP
+end circuit
