@@ -246,6 +246,63 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   predictor that held. New circuits: anubis-clefia-m0 91@8/92@6, khazad 340@15/344@14,
   fox-mu8 500@11/504@10, skop15-4x4-gf256-inv 89@5.
 
+## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
+
+An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:
+
+- F1: by 25 min, 11 of the 12 first chains were at 88 (median 414 s), not 4 of 12 (that was
+  the state at ~4 min). root->89 in 13-162 s stands. All hunt arms (A, B, C) start from the SAME
+  six constructor roots (shared campaign seed), so "12 independent descents" are 6 roots x 2
+  walks. The comparison with July's 2,234 s median spans an engine ~20x faster per step: it
+  says nothing about iterations; "the kernel changed the picture" is a [guess].
+- UNDERSTANDING 2 "any root reaches <= 89 in under 3 min": 77-85 % do; all within 7-11 min.
+- F5: the catalogue covers only the earliest states (A worker-clock 332-4,893 s, B 148-4,888 s,
+  C 91-1,021 s: about 18 worker-hours, not 60). Giants were keyed by their seed state and so
+  could never be re-found; 5 of 18 giant/closure entries are duplicates of later product
+  plateaus (230 -> <= 225). Repeats DO exist: 3 catalogued plateaus were reached by two chains,
+  2 of them across arms (A free-05 / C free-00, different roots), all on the largest plateaus
+  (0.8-3.4 M states); no 3^7 plateau was ever re-found. 29 pairs of plateaus differ by exactly
+  2 values each (adjacent cores); at Jaccard 0.9 the 282 entries collapse to 232 components.
+  The pre-sprint plateaus sit at depth 5-7 and the hunt's mostly at 7-10, so "zero overlap with
+  the 52 known" is largely a different depth stratum (18 hunt plateaus at depth <= 6 are the
+  comparable sample). "The 88 level is far larger than any sample" stands; "zero overlap,
+  zero repeats" does not.
+- F5 update (hops): consecutive plateaus along a chain differ by a median 31-38 % of values;
+  only 6-13 % of hops are 2-value re-pairings: the hops are real changes of core. Confirmed.
+- F2: 1,425 of 1,425 single-value 3-choice factors over 264 product plateaus XOR to zero.
+- F6: on the full data B/A = 2.1x arrivals per worker-hour (3.15 vs 1.51; 2.15x per
+  iteration), not 2.4x (the 2 h snapshot). Iterations per worker-hour were within 4 % across
+  arms A/B/C despite changing co-tenants, so per-worker-hour rates are fair. B's per-chain
+  median root->88 is censored by its own 300 s rule and is not comparable with A's.
+- F8 hunt C vs A: 35/40 vs 25/31 chains and 1.94 vs 1.51 arrivals per worker-hour is a rate
+  ratio of 1.29 with a Poisson interval of roughly 0.8-2.2 (Fisher p ~ 0.5): inside the noise,
+  not merely "not controlled". The shared roots allowed a paired reading that was not used.
+- F8 bench: the sign tests and McNemar are correct (failures counted as infinite, which is
+  conservative). But restricted to seeds BOTH arms solved, the per-seed iteration ratio is 0.59
+  on mc_gf16 (22 pairs) and 0.93-0.98 on mc_gf8b and p1f: on two of the three maps "half the
+  iterations" is the default's failures pulling its median to infinity, i.e. a success-rate
+  effect, not a speed-up on seeds both solve. Corrected statement: depth_window=none succeeds
+  far more often within the budget on mc_gf8b and p1f (0.65 -> 0.97, 0.62 -> 1.00) and is
+  faster per seed on mc_gf16 only. All uncapped; for the per-depth record table it may be a
+  loss, and no capped test exists.
+- F9: the score (1 hit, 1 beaten, 3 misses) is right and rule B / the khazad-fox-mu8 test were
+  fixed before the runs (not hindsight). But over the 7 tested maps Spearman of realised gain
+  with size (k) is only +0.56, and skop15-8x8-gf16 gained 0 in 4 worker-hours, so "8x8 maps
+  gain several gates whatever their profile" is 4 of 5. Run-to-run spread is ~3 gates on
+  64x64 maps and ~1 gate on 4x4 maps at NIST's depth, so predictions and gains of 1-3 gates
+  are not distinguishable from repeats of the same search.
+- F4: rw_max and log(direct) correlate at +0.92 across the 49 batch maps; the row-weight
+  partial (+0.41) rests on little residual variation and was never tested on fresh evidence:
+  tag it [in-sample]. F7 X1 numbers reproduce; n = 1 per cell; "compute-limited, not
+  search-limited" is a [guess].
+- Missed by the sprint, now adopted as next experiments: (1) landing probability scales with
+  plateau size, so arm C (which lands on huge coupled products) may find FEWER distinct cores
+  per worker-hour than A: a size-weighted capture-recapture estimate over all sampled states is
+  the right instrument (sig.py, relaunched 13:32 UTC); (2) the 88 level is a connected graph
+  of cores under the +1 band, and whether an 87 is reachable is a property of that graph
+  (down-exits, distance from where descents land), not of its node count: draw it from the
+  sampled transitions; (3) use the shared first roots of hunt D as a paired design.
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,

@@ -77,8 +77,13 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   "more distinct plateaus" prediction stays untested. pt1/pt2 (F9): crossmap's numeric rule
   scored 1 hit, 1 beaten, 3 over-predictions; the surviving predictor is matrix size. kste1
   PES on kste's 49 plateaus: 8 plateaus' +1 passes complete, 56 joins, 0 lower states at
-  4.6 h. Catalogue: 656 states -> 230 new 88 plateaus, zero overlap with the 52 pre-sprint or
-  between arms.
+  4.6 h. Catalogue: 479 usable states -> <= 225 new 88 plateaus (giants double-counted),
+  3 repeats (2 across arms) on the largest plateaus, none on the 52 pre-sprint ones (which
+  sit at depth 5-7; the hunt's mostly at 7-10). See FINDINGS R for the review's corrections.
+- 13:30 UTC: adversarial review (`review/REPORT.txt`) corrected F1 counts, F5 "zero
+  overlap" (3 repeats; catalogue covers ~18 worker-hours, not 60), F6 (2.1x, not 2.4x), F8
+  (hunt C vs A inside noise; bench effect is success-rate on 2 of 3 maps, speed on 1), F9
+  (8x8 generalisation is 4 of 5). All recorded in FINDINGS R; sig.py relaunched.
 
 ## 4. Rejected explanations and failed approaches (this sprint)
 
@@ -88,14 +93,18 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   not distinct cores.
 - "The 88 level is a small set of families" (implicit in earlier work that kept finding the
   same 49-63 plateaus from the same seeds): wrong; fresh descents never land on known plateaus.
+- "Zero overlap, zero repeats between independent descents" (my F5/F8 wording): overstated;
+  3 repeats exist, on the largest plateaus, as a basin-size argument predicts (review, FINDINGS R).
+- "depth_window=none halves the iterations on all three analogues": on two of them it is a
+  success-rate effect (seeds the default never solves); per-seed speed-up only on mc_gf16.
 - kste's "88-XOR barrier": not a proof; its floors are corpus minima and its SAT scopes do not
   contain our circuits (F3).
 
 ## 5. Unresolved questions (ranked by how much they would change what we do)
 
-1. Does the set of MC 88 plateaus saturate under repeated independent descents? After 230
-   catalogued plateaus from ~60 worker-hours with zero repeats the answer is "not at this
-   scale": the 88 level is far larger than any sample we can take, so an 87 reachable from some
+1. Does the set of MC 88 plateaus saturate under repeated independent descents? After ~225
+   catalogued plateaus from ~18 worker-hours with 3 repeats (all on the largest plateaus) the
+   answer is "not at this scale": the 88 level is far larger than any sample we can take, so an 87 reachable from some
    88 plateau cannot be excluded by sampling. Next: a cheap plateau identity (core hash) to
    measure the rate from all 1,900 sampled states, and the C-vs-A distinct-plateau question.
 2. What is the barrier height from the 88 level to any 87, if one exists? (PES: > +1 from 49
@@ -120,7 +129,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | ~14:55 | `sweep/runs/sw{1,2}`, `sweep/driver.log`; harvest afterwards |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
 | hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | ~14:55 | ~03:55 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
-| sig.py over all 1,869 hunt 88 states (A/B/C) | 1 | 13:12 | ~13:45 | `hunt/sig.log`, `hunt/sigs.json` |
+| sig.py over all 1,869 hunt 88 states (A/B/C); first launch died silently, relaunched as a tracked task | 1 | 13:32 | ~14:15 | `hunt/sig.log`, `hunt/sigs.json` |
 
 Harvest at the end: `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py x1/runs/x1a x1/runs/x1b predtest/runs/pt1 predtest/runs/pt2` (dry run; `--apply` adds via circuits/add.py), then `python3 circuits/check.py`. Already known new circuits: grostl 364@11, klsw17-m-8x8-gf256-inv 327@12, ss16-4x4-gf256 96@5.
 

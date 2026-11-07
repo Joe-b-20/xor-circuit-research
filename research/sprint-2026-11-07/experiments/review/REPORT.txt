@@ -1,0 +1,178 @@
+ADVERSARIAL REVIEW of the sprint 2026-11-07 findings (F1-F9, CHECKPOINT 3-5, UNDERSTANDING)
+Reviewer: separate agent, 2026-11-07 13:20-14:40 UTC.  Scripts in ~/xs-campaigns/2026-11-07-sprint/review/
+(f1_load.py, f1b.py, f5.py, f5b.py, f5c.py, f5d.py, f5e.py, bench.py, f9.py, f9b.py, roots.sh); every number
+below names the script.  Nothing outside review/ was modified; no run was started or stopped.
+Not checkable from the data: F3 (literature, kste corpus), the kste1 PES outcome (still running), and the
+cheap identity sig.py: CHECKPOINT 6 lists it as running since 13:12 UTC, but no process exists and
+hunt/sigs.json was never written (sig.log holds one line).  Its validation result does not exist.
+
+A. CLAIMS EXAMINED
+
+1. F1 "every chain reached <= 89 within 10-162 s; 4 of 12 reached 88 within 50-216 s (first 25 min)"
+   [f1_load.py: exact s_since_root from 'improve' events of each worker's first chain]
+   root->89: A 13,132,162,128,121,143 s; B 85,97,40,41,121,41 s  -> "10-162 s" is right (13-162).
+   root->88: A 1047,1186,946,1153,167,318 s; B 414,216,176,50,-,236 s.  By 25 min, 11 of 12 first
+   chains were at 88 (median 414 s), not 4 of 12.  "4 of 12 within 50-216 s" is the state at about
+   t = 4 min; the label "first 25 min" is wrong.  The descents.py numbers (A: 25 of 31 chains, med 240 s,
+   max 1,200 s; B: 90 of 209, med 234 s; C: 35 of 40, med 300 s) reproduce exactly.
+   Caveat 1: the "12 fresh-root chains" are 6 roots: A, B and C all start from the same six roots
+   (bp#1633385816, paar#3202925120, bp#786734015, anneal3#755763889, naive#2647449301, paar#3629876899;
+   roots.sh), the campaign seed being shared.  Walks differ, roots do not.
+   Caveat 2 (July comparison): the July figure (median 2,234 s, c_naive, 07-30) is the v1/G2 engine
+   with naive roots only and LNS taking 78 % of wall time; the catalog says the merged engine is
+   17.5-21.9x faster per step.  2,234 s / 20 is about the 100-400 s seen now.  So the wall-time
+   comparison mostly measures raw speed; "the incremental kernel changed the picture" is a [guess],
+   and nothing shows that 88 is cheaper in ITERATIONS than in July.
+   Verdict: SURVIVES as "88 is minutes from a root"; the quoted counts are stale; the July
+   attribution is untested.
+
+2. UNDERSTANDING 2 "any constructor root reaches <= 89 in under 3 minutes" [f1b.py, epochs]
+   Within 180 s: A 24/31 (77 %), B 167/206 (81 %), C 34/40 (85 %); max 402 / 430 / 680 s.
+   Verdict: OVERSTATED; "median about 110 s, four in five within 3 min, all within 7-11 min".
+
+3. F5 plateau identity and "0 landings on known plateaus / zero overlap between arms"
+   [f5.py, f5b.py, f5d.py, f5e.py on hunt/plateaus.json]
+   a) Catalogue: 282 entries = 264 products + 16 "giant" + 2 "closure"; 230 first seen by the hunt
+      (A 117, B 83, C 30), 52 pre-sprint.  "656 states" counts 177 record files with no usable
+      values (key None); real catalogued states: 479 (A 286, B 135, C 59, minus a few records).
+   b) Giants are keyed by their seed hash and store ONE state, so a giant can never be re-found.
+      5 of the 18 giant/closure entries are duplicates: their stored state lies inside a product
+      plateau catalogued 30-65 s later (pc0c31eb in p1a1e185; p5d74d61 in pce9227a; giant-b62890a
+      in p69cb376; giant-35b9115 in p39a24fc, members 10; giant-d1d4489 in p8481a82).  230 -> <= 225.
+   c) Near-duplicates: 198 pairs with Jaccard >= 0.8 modulo rotation; 29 pairs differ in exactly 2
+      values each side (adjacent plateaus, core Jaccard median 0.92).  Union-find: 282 entries
+      collapse to 271 components at Jaccard 0.95, 232 at 0.9, 203 at 0.85.  The plateau count
+      overstates the number of distinct cores by roughly 10-20 %, depending on the threshold.
+   d) Coverage: the catalogue holds the earliest states only: A worker-clock 332-4,893 s of
+      9,903; B 148-4,888 s of 17,150; C 91-1,021 s of 10,801.  That is about 16 worker-hours of
+      A/B plus 1.7 of C, not the "~60 worker-hours" of CHECKPOINT 5 (the sampled states
+      exist: A 620, B 475, C 774 distinct 88 hashes, but 336 / 342 / 715 were never catalogued).
+   e) Repeats DO exist: 3 catalogued plateaus were reached by two different chains, 2 of them by
+      chains in different arms (A free-05 chain 0 and C free-00 chain 0, different roots), on
+      products of 3,119,985 / 3,403,620 / 815,265 states.  "0 landings on any other arm's plateau"
+      (F8 arm-C paragraph) and "zero overlap ... between arms" (CHECKPOINT 3) are wrong.  The
+      repeats all fall on the largest plateaus, as a basin-size argument predicts; small 3^7
+      plateaus were never re-found.  First-88 states: 40 chains, 40 distinct plateaus (confirmed).
+   f) Pre-sprint overlap: 0 strict landings (every catalogue log says 0) and no hunt-pre pair above
+      Jaccard 0.86, so the hunt region is genuinely disjoint from the PES store.  But the two
+      populations differ in depth: representative members of the 52 pre-sprint plateaus are at
+      depth 5 (10), 6 (36), 7 (6); hunt plateaus at 7-10 mostly (only 18 of 230 at depth <= 6; C has
+      none).  "Zero overlap" is therefore mostly "different depth stratum", and the comparable
+      sample is 18 hunt plateaus against 46 pre-sprint ones.
+   g) UNDERSTANDING 4 says "44 new in 50 min, 2 overlaps with 52 known": the logs say 0; the 2 is
+      kste's count (F3) transplanted.
+   Verdict: "the 88 level is far larger than the sample" SURVIVES; "zero overlap", "zero
+   repeats", "60 worker-hours" and the plateau counts are OVERSTATED (points b-e).
+
+4. F5 update "a chain hops between 88 plateaus ... distinct cores" [f5c.py]
+   Consecutive distinct plateaus along a chain: A 137 transitions, B 68, C 31; Jaccard of the two
+   value sets median 0.69 / 0.69 / 0.62; 53-58 % of hops change more than 30 % of the values, only
+   6-13 % are 2-value re-pairings.  Busiest chains: A free-05 chain 0, 22 distinct plateaus in 58
+   samples.  Verdict: SURVIVES (the hops are real changes of core, not spellings).
+
+5. F2 "every 3-way factor XORs to zero" [f5c.py]: 1,425 of 1,425 single-value 3-choice factors
+   over the 264 product plateaus (179 coupled factors not of that form).  SURVIVES, now on 264.
+
+6. F6 "2.4x more arrivals at 88 per worker-hour" [f1_load.py, descents.py]
+   Final: A 25 arrivals / 16.50 worker-h = 1.51; B 90 / 28.58 = 3.15: 2.09x (headline 2.4x is the
+   2 h snapshot).  Per 1e6 iterations: A 0.211, B 0.453 (2.15x).  Load: iteration rate per worker
+   A 1,812-2,305 it/s by hour, B 1,723-2,117; iterations per worker-hour A 7.19 M, B 6.95 M,
+   C 6.97 M: within 4 %, so per-worker-hour rates are fair on delivered compute despite the
+   changing co-tenants (bench runs 03:48-05:28 at 3 procs, kste SAT, x1 from 06:16, kste1 + pt1/pt2
+   during C).  "Median root->88 234 s in both": B's distribution is censored by its own 300 s rule
+   (max 850 s vs A's 1,200 s, and A's first chains needed 946-1,186 s on 4 of 6 roots), so the two
+   medians are not comparable.  Verdict: SURVIVES at 2.1x; the headline and the median claim are
+   overstated.
+
+7. F8 hunt C vs A "88 % vs 81 %, 1.94 vs 1.51 arrivals per worker-hour" [f1_load.py]
+   Reproduced (35/40 vs 25/31; 18.00 vs 16.50 worker-h, equal it/s).  But 35 vs 25 events at those
+   exposures is a rate ratio of 1.29 with a 95 % interval of roughly 0.77-2.2 (Poisson), and
+   35/40 vs 25/31 gives Fisher p about 0.5.  The arms share the first six roots (point 1), which
+   would have allowed a paired reading; it was not used.  Verdict: UNTESTABLE as stated; the
+   difference is within noise, not only "not controlled".
+
+8. F8 bench replication "depth_window=none reaches the reference in 0.43-0.50x the iterations on
+   all three maps; fewer in 28 of 40 pairs" [bench.py on variants_r12.csv, variants_r12_ref.csv]
+   Recomputed exactly: mc_gf16 0.46, 28/10/2 (sign p 0.0051); mc_gf8b 0.43, 28/12 (p 0.0166);
+   mc_gf16_p1f 0.50, 28/12 (p 0.0166); P 0.68/0.82, 0.65/0.97, 0.62/1.00.  McNemar and sign test
+   are correct exact two-sided tests; failures count as infinite, which is conservative.
+   Censoring: restricted to seeds BOTH arms solved, the per-seed iteration ratio is 0.59 on
+   mc_gf16 (22 pairs) but 0.98 on mc_gf8b (25 pairs) and 0.93 on p1f (25 pairs).  On two of the
+   three maps the "half the iterations" is almost entirely the default's failures pulling its
+   median to infinity, i.e. a success-rate effect, not a speed-up on seeds both solve.  The budget
+   asymmetry runs against dwnone (its failed runs bought 153 k vs 161 k iterations in 120 s on
+   mc_gf16), so 0.46 is not an artefact in its favour; P within the smallest failed budget is
+   0.55 vs 0.78 (mc_gf16), 0.65 vs 0.95 (gf8b), 0.60 vs 0.97 (p1f).  dw4/dw6 reproduce (15/5
+   p 0.041; 13/6 p 0.17).  p1f's reference is the best of the same 80 runs (acknowledged).
+   Verdict: SURVIVES as "dwnone succeeds far more often within the budget on gf8b and p1f, and is
+   faster per seed on mc_gf16 only"; "0.43-0.50x iterations on all three" is OVERSTATED.
+
+9. F9 score "1 hit, 1 beaten, 3 misses" [f9.py: status.json of pt1/pt2]
+   ss17 161@10 (hit), klsw17-inv 330@12 (beaten), skop15-8x8-gf16 146@14 (miss), skop15-4x4-inv
+   88@6 (miss; 87@7 found above the cap), anubis 91@8 (miss), khazad 340@15, fox-mu8 500@11: correct.
+   "Size is the predictor that held": rule B (rank-sum of log direct, k, NIST depth slack) and the
+   khazad/fox-mu8 discriminating test were fixed in crossmap/REPORT 6 before the runs, so this is
+   NOT hindsight.  But its strength is modest [f9b.py, 7 maps]: Spearman with realised gain, rule A
+   -0.42, rule B +0.47, k alone +0.56 (relative gain: -0.29, +0.34, +0.40).  "Maps over 8x8
+   matrices gain several gates ... whatever their property profile" is contradicted inside the same
+   test by skop15-8x8-gf16 (0 gates in 4 worker-hours; rule A #1, rule B #8).  Verdict:
+   SURVIVES weakly; the 8x8 generalisation is OVERSTATED (4 of 5).
+
+10. F4 "size and row weight predict gain; row weight survives size control" [f9.py, crossmap/corr.txt]
+   On the 49 batch maps gain_any_rel vs log(direct) rho -0.80, vs rw_max -0.83, but rw_max vs
+   log(direct) is +0.92: the two are nearly the same variable, and the partial +0.41 rests on the
+   little residual variation; no fresh test of row weight was run (pt1/pt2 test size and the slope
+   rule only).  4x4 batch maps: median gain 3.3 % (0-11 %); 8x8: 8 % (5-14 %).  Verdict:
+   in-sample [measured]; the row-weight part should be tagged as untested; mechanism is [guess]
+   (correctly tagged).
+
+11. F7 X1 [f9.py]: numbers reproduce (grostl 364@11, klsw 327@12, ss16 96@5, MC 89@5 fresh).  One
+   worker-hour per arm per map, n = 1.  Note pt1's 4 shared worker-hours on klsw gave 330 where
+   X1's single hour gave 327: run-to-run spread of about 3 gates on 64x64 maps, which is the size
+   of the rule's whole predicted gain for the 4x4 maps (2-3 gates).  "Compute-limited, not
+   search-limited" is a [guess] (one seeded hour each).
+
+12. Tags and hindsight found: F1 kernel attribution ([measured] -> [guess]); F5/F8 "zero overlap
+   between arms" ([measured] -> wrong, 2 repeats); CHECKPOINT 5 "60 worker-hours" (18); F5
+   "independent descents" (six roots shared by A, B, C); UNDERSTANDING 4 "2 overlaps with 52 known"
+   (0); CHECKPOINT 6 sig.py "running" (dead, no output); F8 "0.43-0.50x" (success effect on two
+   maps); F9 "whatever their property profile" (4 of 5).  F2, F6 (at 2.1x), F9's score, and the
+   bench arithmetic hold as tagged.
+
+B. THREE MOST IMPORTANT CORRECTIONS
+
+1. Plateau catalogue (F5, CHECKPOINT 3/5): give giants a real identity (5 of 18 are duplicates of
+   later products), state that the catalogue covers the first ~82 min of A/B and 17 min of C
+   (~18 worker-hours), report the 3 cross-chain repeats (2 cross-arm) on the three largest
+   plateaus, and say that the pre-sprint comparison is across depth strata.  "Vast" stands;
+   "zero" does not.
+2. Depth window (F8): split the effect into success within budget (established on gf8b, p1f) and
+   per-seed speed (established on mc_gf16 only, ratio 0.59; 0.93-0.98 elsewhere).  Hunt C vs A
+   (1.94 vs 1.51) is inside the noise (rate ratio 1.29, interval ~0.8-2.2); say so rather than
+   "not controlled".
+3. Descent numbers (F1, F6): 11 of 12 first chains reached 88 within 20 min (median 414 s), not 4
+   of 12; B's per-chain median is censored by design; 2.4x is 2.1x on the full data; the July
+   comparison spans an engine generation 20x faster per step and says nothing about iterations.
+
+C. WHAT THE CONCLUSIONS MISS
+
+- Basin size.  The only repeats are on plateaus of 0.8-3.4 M states, none on 3^7 ones.  Landing
+  probability scales with plateau size, so the "diagonal discovery curve" is a property of the
+  small-plateau majority, and arm C (which lands on big coupled products) may be finding FEWER
+  distinct cores per worker-hour than A, not more.  A capture-recapture estimate of the number of
+  88 cores, weighted by size, is the right instrument; it needs the cheap identity over all
+  1,869 sampled states, and that job (sig.py) is not running.
+- The plateau graph.  Half of the hops along a chain change more than 30 % of the values and
+  another fifth are 2-value swaps: the 88 level is a connected graph of cores under the +1 band,
+  and whether an 87 is reachable is a property of that graph (which cores have down-exits, how
+  far they are from where descents land), not of the number of nodes.  The sprint has the data
+  to draw it (transitions with Jaccard and size) and has not.
+- Paired design.  A, B and C share their first six roots.  Per-root comparisons of time to 88,
+  landing plateau and depth were available for free and would have removed root variance from
+  F6 and F8; later restarts use different roots, so this holds only for the first chain.
+- Noise floor.  Run-to-run spread is about 3 gates on 64x64 maps and 1 gate on 4x4 maps at
+  NIST's depth, so "predictions" of 2-3 gates (rules for 4x4 maps) and "gains" of 1 gate are
+  not distinguishable from repeats of the same search.
+- Depth.  Neither the hunt (depth-5 88s in 2 + 7 + 0 chains) nor the bench (no 42@5 reproduced)
+  reaches the shallow records; depth_window=none makes this worse.  For the record table, which is
+  per depth, the established bench effect may be a loss, and no capped test exists.
