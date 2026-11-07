@@ -82,6 +82,9 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   other chain had reached (15 of 15). The vocabulary grew from 303 to 643 values modulo rotation
   (340 new words over 76 plateaus, 28 of which added none). Shapes: 49 x 3^7, 13 x 33·3^5,
   11 x 3^8, 10 x 15·3^5, 4 x 3^6, plus coupled products up to 3.4 M states and 3 giants.
+- UPDATE 06:50 UTC: 344 states catalogued -> 107 new plateaus (A 72, B 35), still 0 on the 52
+  pre-sprint plateaus; 20 of 20 chains' first 88 states on 20 distinct plateaus; vocabulary
+  303 -> 783 (480 new words over 107 plateaus, 48 adding none). Discovery curve: diagonal.
 - CORRECTION to F2's consequence and to F6's reading: a chain at 88 is not stuck re-spelling
   one circuit. Through +1 steps (acceptance allows cost <= chain best + 2) it hops between 88
   plateaus about once every 1-2 minutes: an A-arm chain visited 17 distinct plateaus in 24 min,
