@@ -1,0 +1,29 @@
+sampled 200 margin [(-7, 1), (-6, 6), (-5, 16), (-4, 29), (-3, 33), (-2, 41), (-1, 62), (0, 12)] EB [(0, 12), (1, 62), (2, 41), (3, 33), (4, 29), (5, 16), (6, 6), (7, 1)] LH Counter({0: 200}) drift13 Counter({0: 200})
+kste 100 margin [(-6, 1), (-5, 4), (-4, 2), (-3, 71), (-2, 4), (-1, 15), (0, 3)] EB [(0, 3), (1, 15), (2, 4), (3, 71), (4, 2), (5, 4), (6, 1)] LH Counter({0: 100}) drift13 Counter({0: 100})
+repo 3 margin [(-36, 1), (-4, 1), (-1, 1)] EB [(1, 1), (4, 1), (36, 1)] LH Counter({0: 3}) drift13 Counter({0: 3})
+bridge 303: profile period-2 from step1: Counter({True: 289, False: 14})  from step0: Counter({False: 302, True: 1})
+repo:xor88-depth5 bridge recon C (x,y,q,z,F,E_B)= (24, 16, 14, 2, 17, 0) true= (24, 16, 14, 2, 17, 0) recon info {'n_multi': 0, 'max_cands': 1, 'even_with_ee': 16, 'even_with_oo': 24, 'even_both': 0, 'repairs': 0} variants (x,y) set: [(24, 16)]
+repo:xor89-depth4 bridge recon C (x,y,q,z,F,E_B)= (26, 12, 11, 4, 14, 4) true= (26, 12, 11, 4, 14, 4) recon info {'n_multi': 0, 'max_cands': 1, 'even_with_ee': 12, 'even_with_oo': 26, 'even_both': 0, 'repairs': 0} variants (x,y) set: [(24, 14), (26, 12)]
+repo:xor97-depth3 bridge recon C (x,y,q,z,F,E_B)= (26, 20, 16, 0, 17, 11) true= (26, 20, 16, 0, 17, 11) recon info {'n_multi': 2, 'max_cands': 2, 'even_with_ee': 20, 'even_with_oo': 26, 'even_both': 0, 'repairs': 0} variants (x,y) set: [(26, 20)]
+w2 not all represented: sample:A:c2777ac97d3ec986 step 2 M w2 15 rep 14
+w2 not all represented: sample:A:c2777ac97d3ec986 step 4 M w2 15 rep 14
+w2 not all represented: sample:A:02029264062898f0 step 1 Mt w2 20 rep 19
+w2 not all represented: sample:A:02029264062898f0 step 3 Mt w2 20 rep 19
+w2 not all represented: sample:A:02029264062898f0 step 5 Mt w2 20 rep 19
+w2 not all represented: sample:D:2874726c4c026899 step 1 Mt w2 19 rep 17
+w2 not all represented: sample:D:2874726c4c026899 step 3 Mt w2 19 rep 17
+w2 not all represented: sample:D:2874726c4c026899 step 5 Mt w2 19 rep 17
+w2 not all represented: repo:xor89-depth4 step 0 M w2 26 rep 24
+w2 not all represented: repo:xor89-depth4 step 2 M w2 26 rep 24
+w2 not all represented: repo:xor89-depth4 step 4 M w2 26 rep 24
+w2 not all represented: repo:xor97-depth3 step 0 M w2 26 rep 24
+w2 not all represented: repo:xor97-depth3 step 2 M w2 26 rep 24
+w2 not all represented: repo:xor97-depth3 step 4 M w2 26 rep 24
+bridge 303 phases with w2 != w2_rep: {('sample', 1): 18, ('sample', 3): 18, ('sample', 5): 18, ('sample', 2): 2, ('sample', 4): 2, ('kste', 1): 1, ('kste', 3): 1, ('kste', 5): 1}
+sample:A:02029264062898f0 bridge tail (margin,EB,LH,drift) (-4, 4, 0, 0) | mine (-4, 4, 0, 0) | mine alternatives raw margins [-4, -4, -4]
+kste:1 bridge tail (margin,EB,LH,drift) (-5, 5, 0, 0) | mine (-6, 6, 0, 0) | mine alternatives raw margins [-5, -5, -6]
+repo:xor89-depth4 bridge tail (margin,EB,LH,drift) (-4, 4, 0, 0) | mine (-1, 1, 0, 0) | mine alternatives raw margins [-4, -2, -2, -2, -1, -2, -1, -2, -1, -1, 0, -2, 0, -1]
+repo:xor97-depth3 bridge tail (margin,EB,LH,drift) (-36, 36, 0, 0) | mine (-34, 34, 0, 0) | mine alternatives raw margins [-34, -35, -35, -35, -35, -36, -36, -36, -36, -35, -35, -34, -35, -35, -34]
+sample:D:e6d1bfdc803f8960 bridge tail (margin,EB,LH,drift) (-3, 3, 0, 0) | mine (-3, 3, 0, 0) | mine alternatives raw margins [-3, -3, -3]
+mobility (engine gates, neutral, downs, w2, w2 mobile, mobile total): [(88, 14, 0, 18, 1, 7), (88, 14, 0, 17, 0, 7), (88, 14, 0, 18, 0, 7), (88, 14, 0, 18, 1, 7), (88, 14, 0, 18, 0, 7), (88, 14, 0, 18, 0, 7), (88, 14, 0, 19, 2, 7), (88, 14, 0, 18, 0, 7), (88, 20, 0, 18, 0, 10), (88, 14, 0, 17, 0, 7), (88, 29, 0, 14, 1, 11), (88, 20, 0, 18, 0, 10), (88, 14, 0, 18, 0, 7), (88, 14, 0, 18, 1, 7), (88, 16, 0, 17, 0, 8), (88, 20, 0, 13, 0, 9), (88, 14, 0, 19, 1, 7), (88, 18, 0, 15, 0, 9), (88, 27, 0, 14, 0, 11), (88, 18, 0, 15, 0, 9), (88, 10, 0, 20, 0, 5), (88, 10, 0, 20, 0, 5), (88, 22, 0, 15, 0, 8), (88, 10, 0, 20, 0, 5), (88, 14, 0, 14, 0, 7), (88, 8, 0, 20, 0, 4), (88, 12, 0, 14, 0, 6), (88, 19, 0, 20, 0, 7), (88, 21, 0, 15, 2, 10), (88, 15, 0, 20, 0, 6)]
+w2 mobile hist: Counter({0: 23, 1: 5, 2: 2}) improving moves: Counter({0: 30})

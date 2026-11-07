@@ -271,10 +271,11 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   The 75 proof's rows leave 1,508 of 7,416 oriented claims open at G = 75, 1,313 with the sprint's two
   new row families (F18: proofs independently checked, 1,772 exact Farkas certificates with complete
   coverage of the 195 newly excluded claims, independent checker, mutation-tested) and 996 with
-  the hub and dark-label rows of F21 (claimed, under independent check, no certificates); real 88 circuits violate no package row, sit 0-7 units below the drift budget and leave
-  every capacity row (L1)-(L23) slack >= 10 (only Lemma 7.4 and two of the new rows are tight), so
-  that machinery needs new content (realizability of low-Y/V/q profiles) rather than sharpening
-  (F16-F18). The exact scoped route (F13) can grow: k >= 11 helper windows, the plateau's mobile
+  the hub and dark-label rows of F21 (claimed, under independent check, no certificates); real 88 circuits violate no package row and leave every capacity row (L1)-(L23) slack >= 10
+  (only Lemma 7.4 and two of the new rows are tight); the drift identity has no slack for any circuit
+  of any gate count (margin = -(E_B + L_H) <= 0; real 88s lose only 0-7 units there), so the missing
+  content is entirely in the local rows: realizability of low-Y/V/q profiles, not sharpening
+  (F16-F18, bridgecheck). The exact scoped route (F13) can grow: k >= 11 helper windows, the plateau's mobile
   part, seeds from other plateaus.
 - Why the 88 cores are so numerous and (on the resolved exits) sealed at +1: a counting consequence
   of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure? The

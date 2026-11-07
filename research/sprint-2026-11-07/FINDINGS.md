@@ -722,16 +722,24 @@ at k = 5, 6.
 ## F17. Where real 88 circuits live in the 75 proof's space (bridge agent, high effort, `bridge/REPORT.md`) [measured with the package's own code]
 
 - Corpus: 200 sampled 88s (distinct mod rotation, from hunt A/B/C/D), 100 kste 88s, the repo 88@5,
-  89@4 and 97@3 (true gate lists). A value set determines the gate list almost uniquely (290 of 303
-  circuits have exactly one admissible parent pair per value; the rest one ambiguous value), and the
-  alternatives move x, y, q, z, F by <= 1. All 303 circuits x 6 orbit phases pass every package
+  89@4 and 97@3 (true gate lists). A value set determines the gate list almost uniquely for 88s (35
+  of 40 unique under full acyclic enumeration, alternatives move x, y, q, z, F by <= 1), but the
+  controls are more ambiguous than the bridge's min-depth family counted (89@4: 15 reconstructions
+  spanning x 24-26, y 12-14; 97@3: 16) [bridgecheck]. The side claim "every weight-2 value is a
+  represented label" is false (fails in 21 of the 303 circuits' own data); harmless downstream. All 303 circuits x 6 orbit phases pass every package
   assertion; no row (L1)-(L23) is violated [measured].
-- The canonical-transpose orbit is period 2 from the first transpose on in all 303 circuits. With the
-  package's exact identity this gives s_e + s_o = a + b + 2G - 192 - E_B, where E_B (boundary excess
-  fan-out of the two phases) is 0..7 for real 88s: real circuits sit 0-7 units BELOW the drift budget
-  the proof must exceed, 12 of 200 exactly on it [derived + verified 303/303]. The potential/drift
-  mechanism therefore saturates exactly at real 88 circuits; it cannot be the lever that excludes 88
-  or 87 without new content.
+- Corrected by the independent check (`bridgecheck/REPORT.md`): the orbit's scalar profile (x, y, h,
+  s, F, E_B, e) is 2-periodic from the first transpose in 303/303 circuits, but the circuits
+  themselves are not (C_1 = C_3 in 17 of 40) and (q, z, types) only from step 2; what the identity
+  needs, e(C_{j+2}) = e(C_j), holds in every case. The identity s_e + s_o = a + b + 2G - 192 - E_B -
+  L_H (E_B = sum over the 64 boundary signals of max(0, d_v - 2), L_H = 0 at canonical phases) is
+  the package's exact form of Lemma 8.2 and holds for EVERY circuit of every gate count (the 97@3
+  has margin -36): the drift step has no slack at any G. What is specific to real 88s is only that
+  E_B is small (0-7; 12 of 200 hunt circuits at 0), i.e. Lemma 8.2 loses 0-7 units on them
+  [derived + verified 40/40 and 303/303]. So "the drift mechanism saturates at real 88s" was
+  over-read: the missing content is entirely in the local rows (provable k + l of ~1-2 against a
+  true budget - E_B of 28-33 on real circuits); E_B is not a variable of the local systems and
+  cannot become a row, and E_B <= 7 transfers nothing to a hypothetical 87.
 - Real 88 tail profiles: a 24-26, b 24-27, Y 14-19, V 10-17, h_e 13-17, h_o 14-20, q 10-16, z 0-7,
   s 12-18 per phase; even phase M^T in 72 % (94 % of kste). The 1,508 survivors at G = 75 have Y <=
   11, V <= 8, q <= 10: disjoint from real circuits in Y and V. Real helpers are 85-90 % of types
@@ -896,6 +904,14 @@ computed values that are neither inputs nor outputs).
   decide the hub family (hub value x witness set x label choice x hub triple, filtered by
   independence, FM ranks, O1, degree <= 2); not started. The integer oracle was not run on the final
   system. The bound is 75; 996 claims survive by LP status.
+
+## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
+
+- F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h
+  16-23, weight-2 rigidity); interpretation corrected: margin = -(E_B + L_H) <= 0 for every circuit
+  of every gate count, so nothing "saturates" specifically at 88; reconstruction ambiguity of the
+  controls under-counted; "weight-2 values are represented labels" false. Applied in F17 and
+  UNDERSTANDING 8.
 
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
