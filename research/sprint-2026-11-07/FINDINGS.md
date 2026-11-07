@@ -589,6 +589,48 @@ at k = 5, 6.
   pair at a time; records clustering into few entry events. Depth-4 only: the small plateau, the
   immobile first layer, the single family.
 
+## F16. The unrestricted lower bound 75 and what 76 would take (lb76 agent, xhigh effort, `lb76/REPORT.md`) [replayed / derived / read]
+
+- The shipped 75 proof replays: ALL CHECKS PASSED, 484 + 4,057 exact certificates, complete coverage,
+  13 circuit controls, 137 s under nice on the loaded machine [replayed]. Scope: unrestricted
+  straight-line circuits of 2-input XOR gates computing one MixColumns column (32x32); depth, fan-out,
+  cancellation, intermediate values unrestricted; every gate counts. Architecture in plain terms (the
+  report's section 1): lossless normalization of a minimum circuit; gates split by parity of mask
+  weight (G = 32 + x + y + h, x >= 24 from a finite fact); canonical transposition and a potential
+  e(C) that must drift by >= 1 per two-step cycle unless the "tail" profile is excluded; for each
+  scalar profile and orientation a local linear system (L1)-(L23) on helper-type counts whose
+  infeasibility is certified by integer Farkas vectors; coverage by k + l > budget with budget =
+  a + b + 2G - 192.
+- Where 74 enters [derived]: nowhere in the rows or lemmas; only through the scalar domain, two
+  fan-out caps and the drift budget, which grows by exactly 2 per extra gate. At G = 74 the exclusion
+  is razor-thin: 1,307 of 2,204 oriented claims are closed only by k + l > budget with margin exactly 1.
+- At G = 75 with the package's own rows [replayed, 49 s]: 3,708 scalar states, 7,416 oriented claims,
+  1,508 SURVIVE (1,134 local systems stay LP-feasible); at G = 76: 4,549 of 13,634. So regenerating
+  certificates at 75 is minutes of compute and provably insufficient: strength, not cost, is the
+  obstacle. The archive's five later campaigns (30 Sep to 24 Oct) added ~15 new row families and got
+  the survivors from 1,508 to 509 (push6, whose 698 + 301 exact exclusions replayed here), all ending
+  with exact, often integral helper-type witnesses: the count relaxation is intrinsically too coarse;
+  the missing content is realizability of masks, labels and chronology.
+- The claimed 76 of 29-30 Sep exists only as a one-page status note (`bound_76_status.md`): same
+  skeleton (3,708/7,416 domain), ~20 new inequality families, a 772-case realizability split, 50,048
+  + 2,445 certificates, a 948 MB package "kept by the author", no human review. It cannot be
+  reconstructed or judged from the note. Decisive action: locate that package and audit it; its
+  verifier (claimed ~6 min on 8 cores) and the checks in the report's section 9 say what "verified"
+  must mean.
+- Odd-helper parity theorems [read, not checked; proofs for h = 0, 1 and the needed zip are absent from
+  the archive; checkers not run]: in the same unrestricted model, h = 0 odd non-output helpers => G >=
+  92, h = 1 => 91, h = 2 => 90 (23 Sep theorem), hence any circuit with <= 89 gates has >= 3 odd
+  helpers; the upper half h <= G - 56 follows from x >= 24 [derived]. Not a lever for 76: all survivors
+  at 75 have 8-19 odd helpers per phase and the h-general form of the accounting is already Lemma 4.4.
+  Our own 88 circuits have 16-24 odd non-output helpers (mode 20; 2,821 sampled states, `oddhelpers.py`)
+  [measured], far inside the window, so these theorems do not constrain the circuits the search sees.
+- The 88-level knowledge (plateaus as products of 3-input-tree pairings; G = 108 + delta - S with the
+  sharing cap open) offers no proof lever for 76 [guess]: a 76 by that route needs a universal
+  S - delta <= 32, unrelated to the parity/potential machinery.
+- Go/no-go: regenerate at 75 with shipped rows: no-go (baseline only); locate and audit the Sep package:
+  go, conditional on the package existing (the only route to 76 within weeks); new universal rows to 0
+  survivors: no-go within a sprint; odd-helper accounting and 88-level identity: no-go for 76.
+
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, 17:40-18:50 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-
