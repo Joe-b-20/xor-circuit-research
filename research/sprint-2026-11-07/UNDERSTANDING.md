@@ -38,6 +38,10 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Acceptance. Neutral moves kept; uphill +1 while cost <= chain best + 2; a depth window of 2
   above the chain best [from code]. This lets a chain at 88 climb to 89 and fall into a
   different 88 plateau: an A-arm chain visited 6+ distinct 88 plateaus in 30 min (F5 data).
+  The window is the one acceptance knob with an established effect: removing it halves the
+  iterations to the reference on three MixColumns analogues (F8, replicated concurrently) and
+  on MixColumns itself raised the share of chains reaching 88 from 81 % to 88 % and arrivals
+  per worker-hour from 1.51 to 1.94 (hunt C, one run; hunt D is the controlled 3-arm test).
 - Restarts. v8 restarts a chain 900 s after its last improvement, 1,800 s while it holds the
   worker best. On MixColumns uncapped from fresh roots, restarting after 300 s gives 2.4x more
   independent arrivals at 88 per worker-hour at the price of abandoning half the chains at 89
@@ -57,7 +61,11 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   worker-hours (F4). What predicts the gain, after controlling for circuit size: heavy rows
   (more shared sub-sums for remove1 coincidences to find) and how much sharing greedy
   constructors leave behind (base/direct); plus NIST's depth slack, which is a property of the
-  baseline [measured, crossmap].
+  baseline [measured, crossmap]. The numeric extrapolation built on this (gain per ln(time)
+  from each map's late slope) did NOT survive the prediction tests: 1 hit, 1 beaten, 3
+  over-predictions on 5 maps (F9). What held is coarser: maps over 8x8 matrices gain several
+  gates per worker-hour at NIST's depth whatever their property profile (7 of 7 tried), maps
+  over 4x4 matrices at NIST's depth gain 0-1 (F7, F9) [measured].
 - Small maps with proved optima (69 maps, 6-16 inputs, 5-34 gates): v8 reaches the optimum in
   1,380 of 1,380 runs within 60 s, median 3 iterations [measured, bench]. The minima form ONE
   plateau under the real moves in all 15 fully enumerated maps; the fragmentation seen earlier
@@ -119,8 +127,13 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Search knobs (F8): on the reliability benchmark only removing the depth window had an
   established effect (half the iterations to the reference on small-scale-aes, deeper
   circuits, 10-40 % more CPU per iteration); stall timers, LNS and expand weights showed
-  nothing beyond load noise. The depth window is also what limits a MixColumns chain's
-  migration between 88 plateaus (F5); hunt arm C measures that.
+  nothing beyond load noise. The concurrent replication (F8, 3 maps x 40 seeds) established
+  0.43-0.50x iterations on all three analogues and a higher success rate within 120 s on two
+  (0.65 -> 0.97, 0.62 -> 1.00). Mechanism (tested on MixColumns by hunt C, F8): the window is
+  what limits a chain's migration between 88 plateaus through 89 states; without it chains
+  reach 88 more often and land on much larger coupled plateaus. Whether that yields more
+  DISTINCT 88 plateaus per worker-hour is open (the exact catalogue could not keep up with C;
+  the cheap identity `hunt/sig.py` and hunt D are the answer).
 - What differs between small analogues and MixColumns is not "recipes per value" (similar) but
   the share of all values one XOR away from the current set: 0.4-0.96 at <= 9 bits, ~1.5e-6
   for MixColumns [measured, bench]. That is why single-plateau connectivity and 100 % success at
@@ -143,3 +156,5 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   The bit-slice block floors (3, 20, 10, 24, 10, 16) hold for every known 88 but are not proved.
 - The exact per-depth picture: 88 exists at depth 5 and 89 at depth 4; whether 88@4 exists.
 - A predictor of which fresh root reaches 88 (none found; constructor type is a weak one).
+- Whether removing the depth window buys distinct 88 plateaus or only faster re-arrival at
+  ones of the same kind (hunt D, 3 arms, 13 h, ends ~04:00 UTC 11-08).
