@@ -1,0 +1,82 @@
+# X1 (crossmap agent's discriminating experiment): fresh roots vs NIST-seeded, same depth cap
+# (NIST's depth), same compute, on 8 maps spanning the gain range. One v8 worker per arm, 1 h,
+# no sharing. Baseline-weakness index W = (NIST - fresh)/NIST per map; compare with the seeded gain.
+# Prediction under the "baseline effect" reading of MixColumns: fresh-root MixColumns at cap 5
+# reaches 88 (W = 0) while the other maps have W > 0 of the order of their seeded gains.
+
+[campaign]
+name = "x1b-fresh-vs-nist"
+seed = 20261108
+duration = "1h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+
+[[workers]]
+name = "ss16-4x4-gf256-fresh"
+target = "ss16-4x4-gf256"
+count = 1
+objective = "gates"
+depth_cap = 6
+seeds = ["root"]
+
+[[workers]]
+name = "ss16-4x4-gf256-nist"
+target = "ss16-4x4-gf256"
+count = 1
+objective = "gates"
+depth_cap = 6
+seeds = ["target"]
+
+[[workers]]
+name = "jpst17-4x4-gf256-fresh"
+target = "jpst17-4x4-gf256"
+count = 1
+objective = "gates"
+depth_cap = 7
+seeds = ["root"]
+
+[[workers]]
+name = "jpst17-4x4-gf256-nist"
+target = "jpst17-4x4-gf256"
+count = 1
+objective = "gates"
+depth_cap = 7
+seeds = ["target"]
+
+[[workers]]
+name = "aes-mixcolumns-fresh"
+target = "aes-mixcolumns"
+count = 1
+objective = "gates"
+depth_cap = 5
+seeds = ["root"]
+
+[[workers]]
+name = "aes-mixcolumns-nist"
+target = "aes-mixcolumns"
+count = 1
+objective = "gates"
+depth_cap = 5
+seeds = ["seeds/mc-g88-d5.json"]
+
+[[workers]]
+name = "small-scale-aes-fresh"
+target = "small-scale-aes"
+count = 1
+objective = "gates"
+depth_cap = 5
+seeds = ["root"]
+
+[[workers]]
+name = "small-scale-aes-nist"
+target = "small-scale-aes"
+count = 1
+objective = "gates"
+depth_cap = 5
+seeds = ["target"]

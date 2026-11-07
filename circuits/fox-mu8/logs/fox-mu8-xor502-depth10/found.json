@@ -1,0 +1,29 @@
+{
+ "circuit": "fox-mu8-xor502-depth10.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-11-07T13:30:15.722+00:00",
+ "seconds_into_run": 2052.5407574939964,
+ "run": "sweep-sw1",
+ "run_id": "d08b6506d02e474babe02fe3c4de6833",
+ "worker": "fox-mu8-00",
+ "depth_cap": 14,
+ "move": "lns.rebuild",
+ "seed": {
+  "kind": "file",
+  "point": "505@11",
+  "by": "us",
+  "source": "fox-mu8-g505-d11.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "c7f261f7f1b93ba7667360a91de4651a38dd50ecef1fcb2a3e4682cf4ef73560",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

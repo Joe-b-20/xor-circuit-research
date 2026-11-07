@@ -1,0 +1,38 @@
+[campaign]
+name = "predtest-pt2"
+seed = 20261103
+duration = "2h"
+profiles = ["default"]
+sharing = "pull"
+
+[[workers]]
+name = "skop15-4x4-gf256-inv"
+target = "skop15-4x4-gf256-inv"
+count = 2
+objective = "gates"
+depth_cap = 6
+seeds = ["seeds/skop15-4x4-gf256-inv-g88-d6.json", "target"]
+
+[[workers]]
+name = "anubis-clefia-m0"
+target = "anubis-clefia-m0"
+count = 2
+objective = "gates"
+depth_cap = 9
+seeds = ["seeds/anubis-clefia-m0-g92-d8.json", "target"]
+
+[[workers]]
+name = "khazad"
+target = "khazad"
+count = 2
+objective = "gates"
+depth_cap = 18
+seeds = ["seeds/khazad-g345-d15.json", "target"]
+
+[[workers]]
+name = "fox-mu8"
+target = "fox-mu8"
+count = 2
+objective = "gates"
+depth_cap = 14
+seeds = ["seeds/fox-mu8-g505-d11.json", "target"]

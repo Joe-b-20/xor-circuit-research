@@ -1,0 +1,54 @@
+[campaign]
+name = "sweep-sw1"
+seed = 20261110
+duration = "1h"
+profiles = ["default"]
+sharing = "off"
+
+[[workers]]
+name = "grostl"
+target = "grostl"
+count = 1
+objective = "gates"
+depth_cap = 16
+seeds = ["seeds/grostl-g350-d16.json", "target"]
+
+[[workers]]
+name = "khazad"
+target = "khazad"
+count = 1
+objective = "gates"
+depth_cap = 18
+seeds = ["seeds/khazad-g345-d15.json", "target"]
+
+[[workers]]
+name = "whirlpool-maelstrom"
+target = "whirlpool-maelstrom"
+count = 1
+objective = "gates"
+depth_cap = 11
+seeds = ["seeds/whirlpool-maelstrom-g394-d9.json", "target"]
+
+[[workers]]
+name = "fox-mu8"
+target = "fox-mu8"
+count = 1
+objective = "gates"
+depth_cap = 14
+seeds = ["seeds/fox-mu8-g505-d11.json", "target"]
+
+[[workers]]
+name = "jpst17-8x8-gf256-inv"
+target = "jpst17-8x8-gf256-inv"
+count = 1
+objective = "gates"
+depth_cap = 11
+seeds = ["seeds/jpst17-8x8-gf256-inv-g493-d11.json", "target"]
+
+[[workers]]
+name = "bkl16-8x8-gf256"
+target = "bkl16-8x8-gf256"
+count = 1
+objective = "gates"
+depth_cap = 10
+seeds = ["seeds/bkl16-8x8-gf256-g442-d10.json", "target"]

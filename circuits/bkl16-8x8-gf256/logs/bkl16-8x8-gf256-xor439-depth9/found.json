@@ -1,0 +1,29 @@
+{
+ "circuit": "bkl16-8x8-gf256-xor439-depth9.circ.txt",
+ "version": "v8",
+ "code": "search/xorflux",
+ "found_utc": "2026-11-07T13:01:53.606+00:00",
+ "seconds_into_run": 519.9531917139975,
+ "run": "sweep-sw1",
+ "run_id": "d08b6506d02e474babe02fe3c4de6833",
+ "worker": "bkl16-8x8-gf256-00",
+ "depth_cap": 10,
+ "move": "walk.remove1",
+ "seed": {
+  "kind": "file",
+  "point": "442@10",
+  "by": "us",
+  "source": "bkl16-8x8-gf256-g442-d10.json"
+ },
+ "chain_root": "seed",
+ "circuit_sha256": "7bd7b1bd1aaa1a9b8e17dbd66ebd4d3f5cceb0426b8e2d4c4b393a00d36768cc",
+ "logs": [
+  "campaign.toml",
+  "dossier.json",
+  "events.jsonl.gz",
+  "plan.json.gz",
+  "record.json",
+  "seed.json",
+  "verification.json"
+ ]
+}

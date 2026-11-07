@@ -65,13 +65,62 @@ kernel; v1 records only the CPU count.
 | wide64 | v8 | 2026-10-31 04:16 | 4.7 h | 6 | 28.2 | 28.1 | no | 8 |
 | control | v8 | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.2 | no | 1 |
 | adopt | v9 prototype | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.3 | no | 1 |
+| x1a-fresh-vs-nist | v8 | 2026-11-07 06:16 | 1.0 h | 8 | 8.0 | 8.6 | yes (shared machine) | 11 |
+| x1b-fresh-vs-nist | v8 | 2026-11-07 07:22 | 1.0 h | 8 | 8.0 | 8.7 | yes (shared machine) | 4 |
+| predtest-pt1 | v8 | 2026-11-07 08:28 | 2.0 h | 6 | 12.0 | 13.0 | yes (shared machine) | 5 |
+| predtest-pt2 | v8 | 2026-11-07 10:39 | 2.0 h | 8 | 16.0 | 17.6 | yes (shared machine) | 5 |
+| sweep-sw1 | v8 | 2026-11-07 12:52 | 1.0 h | 6 | 6.0 | 6.7 | yes (shared machine) | 6 |
+| sweep-sw2 | v8 | 2026-11-07 13:58 | 1.0 h | 6 | 6.0 | 6.7 | yes (shared machine) | 12 |
 
-Together: 24 runs, about 3,100 worker-hours, for 201 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 920 for 197, and the v9 prototype about 455 for 1. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
+Together: 30 runs, about 3,150 worker-hours, for 207 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 980 for 203, and the v9 prototype about 455 for 1. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
 totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute).
 
 ## Circuits
 
 | Circuit | Version | Run | Found after | Finder CPU | Run worker-h | Status | Note |
+| [anubis-clefia-m0 92@6](anubis-clefia-m0/anubis-clefia-m0-xor92-depth6.circ.txt) | v8 | predtest-pt2 | 18 min | 19 min | 16.0 | exact | from our 92@8 |
+| [anubis-clefia-m0 91@8](anubis-clefia-m0/anubis-clefia-m0-xor91-depth8.circ.txt) | v8 | predtest-pt2 | 10 min | 11 min | 16.0 | exact | from our 92@8 |
+| [bkl16-8x8-gf256 439@9](bkl16-8x8-gf256/bkl16-8x8-gf256-xor439-depth9.circ.txt) | v8 | sweep-sw1 | 9 min | 9 min | 6.0 | exact | from our 442@10 |
+| [fox-mu8 502@10](fox-mu8/fox-mu8-xor502-depth10.circ.txt) | v8 | sweep-sw1 | 34 min | 38 min | 6.0 | exact | from our 505@11 |
+| [grostl 404@10](grostl/grostl-xor404-depth10.circ.txt) | v8 | x1a-fresh-vs-nist | 15 s | < 1 min | 8.0 | exact | from NIST 410@12 |
+| [grostl 364@11](grostl/grostl-xor364-depth11.circ.txt) | v8 | x1a-fresh-vs-nist | 55 min | 58 min | 8.0 | exact | from NIST 410@12, restarted from the worker's best |
+| [grostl 349@15](grostl/grostl-xor349-depth15.circ.txt) | v8 | sweep-sw1 | 14 min | 16 min | 6.0 | exact | from our 350@16 |
+| [jpst17-4x4-gf256 80@5](jpst17-4x4-gf256/jpst17-4x4-gf256-xor80-depth5.circ.txt) | v8 | x1b-fresh-vs-nist | 9 min | 9 min | 8.0 | exact | from NIST 82@7 |
+| [jpst17-8x8-gf256-inv 494@10](jpst17-8x8-gf256-inv/jpst17-8x8-gf256-inv-xor494-depth10.circ.txt) | v8 | sweep-sw1 | 26 min | 28 min | 6.0 | exact | from our 493@11, restarted from the worker's best |
+| [khazad 344@14](khazad/khazad-xor344-depth14.circ.txt) | v8 | predtest-pt2 | 45 min | 48 min | 16.0 | exact | from our 345@15 |
+| [khazad 340@15](khazad/khazad-xor340-depth15.circ.txt) | v8 | predtest-pt2 | 50 min | 55 min | 16.0 | exact | from NIST 366@18 |
+| [klsw17-m-8x8-gf16-0x13-inv 164@10](klsw17-m-8x8-gf16-0x13-inv/klsw17-m-8x8-gf16-0x13-inv-xor164-depth10.circ.txt) | v8 | sweep-sw2 | 19 min | 21 min | 6.0 | exact | from our 163@12, restarted from the worker's best |
+| [klsw17-m-8x8-gf16-0x13-inv 163@11](klsw17-m-8x8-gf16-0x13-inv/klsw17-m-8x8-gf16-0x13-inv-xor163-depth11.circ.txt) | v8 | sweep-sw2 | 13 min | 15 min | 6.0 | exact | from our 163@12, restarted from the worker's best |
+| [klsw17-m-8x8-gf256 346@8](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor346-depth8.circ.txt) | v8 | sweep-sw2 | 4 s | < 1 min | 6.0 | exact | from our 347@6 |
+| [klsw17-m-8x8-gf256 327@9](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor327-depth9.circ.txt) | v8 | sweep-sw2 | 22 min | 25 min | 6.0 | exact | from our 347@6, restarted from the worker's best |
+| [klsw17-m-8x8-gf256 321@10](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor321-depth10.circ.txt) | v8 | sweep-sw2 | 58 min | 1.1 h | 6.0 | exact | from our 347@6, restarted from the worker's best |
+| [klsw17-m-8x8-gf256-inv 868@5](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor868-depth5.circ.txt) | v8 | x1a-fresh-vs-nist | 23 s | < 1 min | 8.0 | exact | fresh roots |
+| [klsw17-m-8x8-gf256-inv 338@11](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor338-depth11.circ.txt) | v8 | predtest-pt1 | 34 min | 36 min | 12.0 | exact | from NIST 368@12, restarted from the worker's best |
+| [klsw17-m-8x8-gf256-inv 327@12](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor327-depth12.circ.txt) | v8 | x1a-fresh-vs-nist | 37 min | 39 min | 8.0 | exact | from NIST 368@12, restarted from the worker's best |
+| [klsw17-m-8x8-gf256-inv 326@13](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor326-depth13.circ.txt) | v8 | x1a-fresh-vs-nist | 50 min | 53 min | 8.0 | exact | from NIST 368@12, restarted from the worker's best |
+| [ls16-8x8-gf256 403@8](ls16-8x8-gf256/ls16-8x8-gf256-xor403-depth8.circ.txt) | v8 | sweep-sw2 | 42 min | 46 min | 6.0 | exact | from our 404@8 |
+| [lw16-4x4-gf256-inv-circ 126@3](lw16-4x4-gf256-inv-circ/lw16-4x4-gf256-inv-circ-xor126-depth3.circ.txt) | v8 | x1a-fresh-vs-nist | 0 s | < 1 min | 8.0 | exact | fresh roots |
+| [skop15-4x4-gf256-inv 89@5](skop15-4x4-gf256-inv/skop15-4x4-gf256-inv-xor89-depth5.circ.txt) | v8 | predtest-pt2 | 1.8 h | 2.0 h | 16.0 | exact | from our 88@6 |
+| [skop15-8x8-gf16 196@7](skop15-8x8-gf16/skop15-8x8-gf16-xor196-depth7.circ.txt) | v8 | x1a-fresh-vs-nist | 7 s | < 1 min | 8.0 | exact | fresh roots |
+| [skop15-8x8-gf16 174@8](skop15-8x8-gf16/skop15-8x8-gf16-xor174-depth8.circ.txt) | v8 | x1a-fresh-vs-nist | 52 s | < 1 min | 8.0 | exact | fresh roots |
+| [skop15-8x8-gf16 166@9](skop15-8x8-gf16/skop15-8x8-gf16-xor166-depth9.circ.txt) | v8 | x1a-fresh-vs-nist | 7 min | 8 min | 8.0 | exact | fresh roots |
+| [skop15-8x8-gf16 158@10](skop15-8x8-gf16/skop15-8x8-gf16-xor158-depth10.circ.txt) | v8 | x1a-fresh-vs-nist | 42 min | 46 min | 8.0 | exact | fresh roots |
+| [skop15-8x8-gf16 157@11](skop15-8x8-gf16/skop15-8x8-gf16-xor157-depth11.circ.txt) | v8 | x1a-fresh-vs-nist | 32 min | 34 min | 8.0 | exact | fresh roots |
+| [skop15-8x8-gf256 417@8](skop15-8x8-gf256/skop15-8x8-gf256-xor417-depth8.circ.txt) | v8 | sweep-sw2 | 19 min | 22 min | 6.0 | exact | from our 418@8 |
+| [skop15-8x8-gf256 416@9](skop15-8x8-gf256/skop15-8x8-gf256-xor416-depth9.circ.txt) | v8 | sweep-sw2 | 35 min | 38 min | 6.0 | exact | from our 418@8 |
+| [skop15-8x8-gf256-inv 323@12](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor323-depth12.circ.txt) | v8 | sweep-sw2 | 59 min | 1.1 h | 6.0 | exact | from our 331@13, restarted from the worker's best |
+| [skop15-8x8-gf256-inv 322@13](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor322-depth13.circ.txt) | v8 | sweep-sw2 | 44 min | 49 min | 6.0 | exact | from our 331@13, restarted from the worker's best |
+| [small-scale-aes 63@3](small-scale-aes/small-scale-aes-xor63-depth3.circ.txt) | v8 | x1b-fresh-vs-nist | 0 s | < 1 min | 8.0 | exact | fresh roots |
+| [ss16-4x4-gf256 103@3](ss16-4x4-gf256/ss16-4x4-gf256-xor103-depth3.circ.txt) | v8 | x1b-fresh-vs-nist | 13 s | < 1 min | 8.0 | exact | fresh roots |
+| [ss16-4x4-gf256 96@5](ss16-4x4-gf256/ss16-4x4-gf256-xor96-depth5.circ.txt) | v8 | x1b-fresh-vs-nist | 3 min | 3 min | 8.0 | exact | fresh roots |
+| [ss17-8x8-gf16 174@8](ss17-8x8-gf16/ss17-8x8-gf16-xor174-depth8.circ.txt) | v8 | predtest-pt1 | 56 s | < 1 min | 12.0 | exact | from NIST 178@10 |
+| [ss17-8x8-gf16 164@9](ss17-8x8-gf16/ss17-8x8-gf16-xor164-depth9.circ.txt) | v8 | predtest-pt1 | 12 min | 13 min | 12.0 | exact | from NIST 178@10 |
+| [ss17-8x8-gf16 161@10](ss17-8x8-gf16/ss17-8x8-gf16-xor161-depth10.circ.txt) | v8 | predtest-pt1 | 1.2 h | 1.3 h | 12.0 | exact | from NIST 178@10, restarted from the worker's best |
+| [ss17-8x8-gf16 160@11](ss17-8x8-gf16/ss17-8x8-gf16-xor160-depth11.circ.txt) | v8 | predtest-pt1 | 1.5 h | 1.6 h | 12.0 | exact | from NIST 178@10, restarted from the worker's best |
+| [ss17-8x8-gf256 390@8](ss17-8x8-gf256/ss17-8x8-gf256-xor390-depth8.circ.txt) | v8 | sweep-sw2 | 27 min | 31 min | 6.0 | exact | from our 392@8 |
+| [ss17-8x8-gf256 389@10](ss17-8x8-gf256/ss17-8x8-gf256-xor389-depth10.circ.txt) | v8 | sweep-sw2 | 47 min | 53 min | 6.0 | exact | from our 392@8 |
+| [whirlpool-maelstrom 391@9](whirlpool-maelstrom/whirlpool-maelstrom-xor391-depth9.circ.txt) | v8 | sweep-sw1 | 51 min | 56 min | 6.0 | exact | from our 394@9 |
+| [whirlpool-maelstrom 390@10](whirlpool-maelstrom/whirlpool-maelstrom-xor390-depth10.circ.txt) | v8 | sweep-sw1 | 44 min | 48 min | 6.0 | exact | from our 394@9 |
 |---|---|---|---:|---:|---:|---|---|
 | [aes-invmixcolumns 118@5](aes-invmixcolumns/aes-invmixcolumns-xor118-depth5.circ.txt) | v9 prototype | adopt | 42.3 h | 41.8 h | 454.8 | exact | from our 168@5; adopted another worker's 119@5 4.5 s before |
 | [aes-invmixcolumns 104@6](aes-invmixcolumns/aes-invmixcolumns-xor104-depth6.circ.txt) | v8 | aes-lowdepth | 1.3 h | 1.3 h | 98.4 | exact | from NIST 107@6, restarted from another worker's 105@6 (from NIST 106@6) |
@@ -89,9 +138,6 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [aes-sbox-bottom 29@4](aes-sbox-bottom/aes-sbox-bottom-xor29-depth4.circ.txt) | v6 | rerun-aes_sbox_bottom | 4 s | 4 s | 18.9 | exact |  |
 | [aes-sbox-bottom 28@5](aes-sbox-bottom/aes-sbox-bottom-xor28-depth5.circ.txt) | v6 | rerun-aes_sbox_bottom | 29 min | 28 min | 18.9 | exact |  |
 | [anubis-clefia-m0 95@5](anubis-clefia-m0/anubis-clefia-m0-xor95-depth5.circ.txt) | v8 | nist-batch-32a | 25 min | 22 min | 21.4 | exact |  |
-| [anubis-clefia-m0 94@6](anubis-clefia-m0/anubis-clefia-m0-xor94-depth6.circ.txt) | v8 | nist-batch-32a | 32 min | 29 min | 21.4 | exact |  |
-| [anubis-clefia-m0 93@7](anubis-clefia-m0/anubis-clefia-m0-xor93-depth7.circ.txt) | v8 | nist-batch-32a | 32 min | 29 min | 21.4 | exact |  |
-| [anubis-clefia-m0 92@8](anubis-clefia-m0/anubis-clefia-m0-xor92-depth8.circ.txt) | v8 | nist-batch-32a | 41 min | 37 min | 21.4 | exact |  |
 | [aria 416@3](aria/aria-xor416-depth3.circ.txt) | v8 | nist-aria | 1 min | 1 min | 20.0 | exact | built by the `anneal3` constructor; no search move |
 | [aria 384@4](aria/aria-xor384-depth4.circ.txt) | v8 | nist-aria | 3 min | 3 min | 20.0 | exact |  |
 | [aria 383@8](aria/aria-xor383-depth8.circ.txt) | v8 | nist-aria | 15 min | 14 min | 20.0 | exact |  |
@@ -102,8 +148,6 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [bkl16-8x8-gf256 725@4](bkl16-8x8-gf256/bkl16-8x8-gf256-xor725-depth4.circ.txt) | v8 | nist-batch-64 | 3 s | 3 s | 19.5 | exact | built by the `naive` constructor; no search move |
 | [bkl16-8x8-gf256 494@5](bkl16-8x8-gf256/bkl16-8x8-gf256-xor494-depth5.circ.txt) | v8 | nist-batch-64 | 58 min | 55 min | 19.5 | exact |  |
 | [bkl16-8x8-gf256 456@8](bkl16-8x8-gf256/bkl16-8x8-gf256-xor456-depth8.circ.txt) | v8 | nist-batch-64 | 8 min | 8 min | 19.5 | exact |  |
-| [bkl16-8x8-gf256 443@9](bkl16-8x8-gf256/bkl16-8x8-gf256-xor443-depth9.circ.txt) | v8 | nist-batch-64 | 56 min | 55 min | 19.5 | exact |  |
-| [bkl16-8x8-gf256 442@10](bkl16-8x8-gf256/bkl16-8x8-gf256-xor442-depth10.circ.txt) | v8 | nist-batch-64 | 57 min | 56 min | 19.5 | exact |  |
 | [clefia-m1 113@4](clefia-m1/clefia-m1-xor113-depth4.circ.txt) | v8 | nist-clefia-m1 | 20 min | 20 min | 19.6 | exact |  |
 | [clefia-m1 105@5](clefia-m1/clefia-m1-xor105-depth5.circ.txt) | v8 | nist-clefia-m1 | 6 min | 6 min | 19.6 | exact |  |
 | [clefia-m1 103@6](clefia-m1/clefia-m1-xor103-depth6.circ.txt) | v8 | nist-clefia-m1 | 1 min | 1 min | 19.6 | exact |  |
@@ -123,17 +167,10 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [fox-mu8 599@7](fox-mu8/fox-mu8-xor599-depth7.circ.txt) | v3 | joltik-depth-foxmu8-15 | 4.2 h | ~4.2 h | 332.4 | exact time, CPU estimated | + polish of 601@7 |
 | [fox-mu8 539@8](fox-mu8/fox-mu8-xor539-depth8.circ.txt) | v3 | joltik-depth-foxmu8-15 | 21.9 h | ~21.9 h | 332.4 | exact time, CPU estimated | + polish of 540@8 |
 | [fox-mu8 512@9](fox-mu8/fox-mu8-xor512-depth9.circ.txt) | v7 | gap-2026-10-30 | 10 min | 10 min | 10.9 | exact |  |
-| [fox-mu8 506@10](fox-mu8/fox-mu8-xor506-depth10.circ.txt) | v6 | rerun-fox_mu8 | 54 min | 53 min | 18.8 | exact |  |
-| [fox-mu8 505@11](fox-mu8/fox-mu8-xor505-depth11.circ.txt) | v6 | rerun-fox_mu8 | 44 min | 43 min | 18.8 | exact |  |
 | [grostl 502@5](grostl/grostl-xor502-depth5.circ.txt) | v8 | nist-grostl | 58 min | 56 min | 19.8 | exact |  |
 | [grostl 455@8](grostl/grostl-xor455-depth8.circ.txt) | v8 | nist-grostl | 4 min | 4 min | 19.8 | exact |  |
-| [grostl 405@10](grostl/grostl-xor405-depth10.circ.txt) | v8 | nist-grostl | 38 s | 36 s | 19.8 | exact |  |
-| [grostl 368@11](grostl/grostl-xor368-depth11.circ.txt) | v8 | nist-grostl | 46 min | 45 min | 19.8 | exact |  |
-| [grostl 366@12](grostl/grostl-xor366-depth12.circ.txt) | v8 | nist-grostl | 47 min | 45 min | 19.8 | exact |  |
 | [grostl 362@13](grostl/grostl-xor362-depth13.circ.txt) | v8 | nist-grostl | 59 min | 57 min | 19.8 | exact |  |
 | [grostl 360@14](grostl/grostl-xor360-depth14.circ.txt) | v8 | nist-grostl | 59 min | 57 min | 19.8 | exact |  |
-| [grostl 358@15](grostl/grostl-xor358-depth15.circ.txt) | v8 | nist-grostl | 47 min | 46 min | 19.8 | exact |  |
-| [grostl 350@16](grostl/grostl-xor350-depth16.circ.txt) | v8 | nist-grostl | 51 min | 50 min | 19.8 | exact |  |
 | [joltik 46@3](joltik/joltik-xor46-depth3.circ.txt) | v6 | rerun-joltik | 44 min | 44 min | 18.8 | exact | built by the `anneal3` constructor; no search move; from a checkpoint |
 | [joltik 44@4](joltik/joltik-xor44-depth4.circ.txt) | v6 | rerun-joltik | 41 min | 41 min | 18.8 | exact |  |
 | [joltik 43@6](joltik/joltik-xor43-depth6.circ.txt) | v6 | rerun-joltik | 12 s | 11 s | 18.8 | exact |  |
@@ -152,7 +189,6 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [jpst17-4x4-gf256-inv 80@6](jpst17-4x4-gf256-inv/jpst17-4x4-gf256-inv-xor80-depth6.circ.txt) | v8 | gaps16 | 9 min | 9 min | 17.2 | exact |  |
 | [jpst17-8x8-gf256-inv 1027@5](jpst17-8x8-gf256-inv/jpst17-8x8-gf256-inv-xor1027-depth5.circ.txt) | v8 | nist-batch-64 | 10 s | 9 s | 19.5 | exact | built by the `naive` constructor; no search move |
 | [jpst17-8x8-gf256-inv 641@6](jpst17-8x8-gf256-inv/jpst17-8x8-gf256-inv-xor641-depth6.circ.txt) | v8 | nist-batch-64 | 57 min | 53 min | 19.5 | exact |  |
-| [jpst17-8x8-gf256-inv 496@10](jpst17-8x8-gf256-inv/jpst17-8x8-gf256-inv-xor496-depth10.circ.txt) | v8 | nist-batch-64 | 50 min | 49 min | 19.5 | exact |  |
 | [jpst17-8x8-gf256-inv 493@11](jpst17-8x8-gf256-inv/jpst17-8x8-gf256-inv-xor493-depth11.circ.txt) | v8 | nist-batch-64 | 54 min | 52 min | 19.5 | exact |  |
 | [jpst17-8x8-gf256-inv 492@12](jpst17-8x8-gf256-inv/jpst17-8x8-gf256-inv-xor492-depth12.circ.txt) | v8 | nist-batch-64 | 58 min | 56 min | 19.5 | exact |  |
 | [khazad 1055@5](khazad/khazad-xor1055-depth5.circ.txt) | v8 | wide64 | 22 min | 22 min | 28.2 | exact | built by the `naive` constructor; no search move |
@@ -161,7 +197,6 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [khazad 460@9](khazad/khazad-xor460-depth9.circ.txt) | v8 | wide64 | 15 min | 14 min | 28.2 | exact |  |
 | [khazad 433@10](khazad/khazad-xor433-depth10.circ.txt) | v8 | wide64 | 4.2 h | 4.2 h | 28.2 | exact |  |
 | [khazad 432@11](khazad/khazad-xor432-depth11.circ.txt) | v8 | wide64 | 4.5 h | 4.4 h | 28.2 | exact |  |
-| [khazad 345@15](khazad/khazad-xor345-depth15.circ.txt) | v8 | nist-batch-64 | 30 min | 29 min | 19.5 | exact |  |
 | [klsw17-m-4x4-gf16 36@4](klsw17-m-4x4-gf16/klsw17-m-4x4-gf16-xor36-depth4.circ.txt) | v8 | nist-batch-16a | 4 s | 3 s | 8.67 | exact |  |
 | [klsw17-m-4x4-gf16 32@6](klsw17-m-4x4-gf16/klsw17-m-4x4-gf16-xor32-depth6.circ.txt) | v8 | nist-batch-16a | 2 s | 1 s | 8.67 | exact |  |
 | [klsw17-m-4x4-gf256 72@4](klsw17-m-4x4-gf256/klsw17-m-4x4-gf256-xor72-depth4.circ.txt) | v8 | nist-batch-32a | 8 s | 7 s | 21.4 | exact |  |
@@ -173,26 +208,14 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [klsw17-m-8x8-gf16-0x13 171@9](klsw17-m-8x8-gf16-0x13/klsw17-m-8x8-gf16-0x13-xor171-depth9.circ.txt) | v8 | nist-batch-32a | 10 s | 8 s | 21.4 | exact |  |
 | [klsw17-m-8x8-gf16-0x13 161@10](klsw17-m-8x8-gf16-0x13/klsw17-m-8x8-gf16-0x13-xor161-depth10.circ.txt) | v8 | nist-batch-32a | 19 min | 17 min | 21.4 | exact |  |
 | [klsw17-m-8x8-gf16-0x13-inv 191@6](klsw17-m-8x8-gf16-0x13-inv/klsw17-m-8x8-gf16-0x13-inv-xor191-depth6.circ.txt) | v8 | nist-batch-32a | 56 min | 50 min | 21.4 | exact |  |
-| [klsw17-m-8x8-gf16-0x13-inv 176@11](klsw17-m-8x8-gf16-0x13-inv/klsw17-m-8x8-gf16-0x13-inv-xor176-depth11.circ.txt) | v8 | nist-batch-32a | 2 s | 2 s | 21.4 | exact |  |
-| [klsw17-m-8x8-gf16-0x13-inv 163@12](klsw17-m-8x8-gf16-0x13-inv/klsw17-m-8x8-gf16-0x13-inv-xor163-depth12.circ.txt) | v8 | nist-batch-32a | 58 min | 52 min | 21.4 | exact |  |
 | [klsw17-m-8x8-gf16-0x13-inv 162@13](klsw17-m-8x8-gf16-0x13-inv/klsw17-m-8x8-gf16-0x13-inv-xor162-depth13.circ.txt) | v8 | nist-batch-32a | 54 min | 49 min | 21.4 | exact |  |
 | [klsw17-m-8x8-gf256 347@6](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor347-depth6.circ.txt) | v8 | nist-batch-64 | 56 min | 54 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256 336@12](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor336-depth12.circ.txt) | v8 | nist-batch-64 | 12 min | 11 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256 329@13](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor329-depth13.circ.txt) | v8 | nist-batch-64 | 23 min | 23 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256 327@14](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor327-depth14.circ.txt) | v8 | nist-batch-64 | 47 min | 46 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256 326@15](klsw17-m-8x8-gf256/klsw17-m-8x8-gf256-xor326-depth15.circ.txt) | v8 | nist-batch-64 | 56 min | 55 min | 19.5 | exact |  |
 | [klsw17-m-8x8-gf256-inv 490@6](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor490-depth6.circ.txt) | v8 | nist-batch-64 | 52 min | 50 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256-inv 361@11](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor361-depth11.circ.txt) | v8 | nist-batch-64 | 2 min | 1 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256-inv 346@12](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor346-depth12.circ.txt) | v8 | nist-batch-64 | 7 min | 6 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256-inv 345@13](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor345-depth13.circ.txt) | v8 | nist-batch-64 | 6 min | 6 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256-inv 331@14](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor331-depth14.circ.txt) | v8 | nist-batch-64 | 28 min | 27 min | 19.5 | exact |  |
-| [klsw17-m-8x8-gf256-inv 329@15](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor329-depth15.circ.txt) | v8 | nist-batch-64 | 32 min | 31 min | 19.5 | exact |  |
 | [klsw17-m-8x8-gf256-inv 325@16](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor325-depth16.circ.txt) | v8 | nist-batch-64 | 56 min | 55 min | 19.5 | exact |  |
 | [klsw17-m-8x8-gf256-inv 324@21](klsw17-m-8x8-gf256-inv/klsw17-m-8x8-gf256-inv-xor324-depth21.circ.txt) | v8 | nist-batch-64 | 55 min | 54 min | 19.5 | exact |  |
 | [ls16-4x4-gf16 43@3](ls16-4x4-gf16/ls16-4x4-gf16-xor43-depth3.circ.txt) | v8 | nist-batch-16a | 4 s | 3 s | 8.67 | exact |  |
 | [ls16-4x4-gf256 103@4](ls16-4x4-gf256/ls16-4x4-gf256-xor103-depth4.circ.txt) | v8 | nist-batch-32a | 16 min | 14 min | 21.4 | exact |  |
 | [ls16-8x8-gf256 411@5](ls16-8x8-gf256/ls16-8x8-gf256-xor411-depth5.circ.txt) | v8 | nist-batch-64 | 46 min | 45 min | 19.5 | exact |  |
-| [ls16-8x8-gf256 404@8](ls16-8x8-gf256/ls16-8x8-gf256-xor404-depth8.circ.txt) | v8 | nist-batch-64 | 30 min | 29 min | 19.5 | exact |  |
 | [lw16-4x4-gf16 43@3](lw16-4x4-gf16/lw16-4x4-gf16-xor43-depth3.circ.txt) | v8 | nist-batch-16a | 7 s | 7 s | 8.67 | exact |  |
 | [lw16-4x4-gf16-inv 44@4](lw16-4x4-gf16-inv/lw16-4x4-gf16-inv-xor44-depth4.circ.txt) | v8 | nist-batch-16a | 3 min | 3 min | 8.67 | exact |  |
 | [lw16-4x4-gf16-inv 43@7](lw16-4x4-gf16-inv/lw16-4x4-gf16-inv-xor43-depth7.circ.txt) | v8 | nist-batch-16a | 7 min | 7 min | 8.67 | exact |  |
@@ -227,11 +250,8 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [skop15-8x8-gf16-inv 163@10](skop15-8x8-gf16-inv/skop15-8x8-gf16-inv-xor163-depth10.circ.txt) | v8 | nist-batch-32b | 52 min | 47 min | 21.3 | exact |  |
 | [skop15-8x8-gf256 712@5](skop15-8x8-gf256/skop15-8x8-gf256-xor712-depth5.circ.txt) | v8 | nist-batch-64 | 26 s | 24 s | 19.5 | exact |  |
 | [skop15-8x8-gf256 447@6](skop15-8x8-gf256/skop15-8x8-gf256-xor447-depth6.circ.txt) | v8 | nist-batch-64 | 58 min | 55 min | 19.5 | exact |  |
-| [skop15-8x8-gf256 418@8](skop15-8x8-gf256/skop15-8x8-gf256-xor418-depth8.circ.txt) | v8 | nist-batch-64 | 49 min | 48 min | 19.5 | exact |  |
 | [skop15-8x8-gf256-inv 726@5](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor726-depth5.circ.txt) | v8 | nist-batch-64 | 9 s | 8 s | 19.5 | exact |  |
 | [skop15-8x8-gf256-inv 408@6](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor408-depth6.circ.txt) | v8 | nist-batch-64 | 49 min | 46 min | 19.5 | exact |  |
-| [skop15-8x8-gf256-inv 333@12](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor333-depth12.circ.txt) | v8 | nist-batch-64 | 3 min | 3 min | 19.5 | exact |  |
-| [skop15-8x8-gf256-inv 331@13](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor331-depth13.circ.txt) | v8 | nist-batch-64 | 5 min | 5 min | 19.5 | exact |  |
 | [skop15-8x8-gf256-inv 318@14](skop15-8x8-gf256-inv/skop15-8x8-gf256-inv-xor318-depth14.circ.txt) | v8 | nist-batch-64 | 48 min | 47 min | 19.5 | exact |  |
 | [small-scale-aes 44@4](small-scale-aes/small-scale-aes-xor44-depth4.circ.txt) | v8 | nist-batch-16b | 28 s | 27 s | 7.69 | exact |  |
 | [small-scale-aes 42@5](small-scale-aes/small-scale-aes-xor42-depth5.circ.txt) | v8 | gaps16 | 15 min | 15 min | 17.2 | exact |  |
@@ -239,20 +259,13 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [ss16-4x4-gf16-inv 38@4](ss16-4x4-gf16-inv/ss16-4x4-gf16-inv-xor38-depth4.circ.txt) | v8 | nist-batch-16b | 0.5 s | 0.3 s | 7.69 | exact |  |
 | [ss16-4x4-gf16-inv 37@5](ss16-4x4-gf16-inv/ss16-4x4-gf16-inv-xor37-depth5.circ.txt) | v8 | nist-batch-16b | 24 s | 24 s | 7.69 | exact |  |
 | [ss16-4x4-gf256 98@4](ss16-4x4-gf256/ss16-4x4-gf256-xor98-depth4.circ.txt) | v8 | nist-batch-32b | 14 min | 12 min | 21.3 | exact |  |
-| [ss16-4x4-gf256 97@6](ss16-4x4-gf256/ss16-4x4-gf256-xor97-depth6.circ.txt) | v8 | nist-batch-32b | 8 min | 7 min | 21.3 | exact |  |
 | [ss16-4x4-gf256-inv 92@5](ss16-4x4-gf256-inv/ss16-4x4-gf256-inv-xor92-depth5.circ.txt) | v8 | nist-batch-32b | 2 min | 1 min | 21.3 | exact |  |
 | [ss16-4x4-gf256-inv 91@8](ss16-4x4-gf256-inv/ss16-4x4-gf256-inv-xor91-depth8.circ.txt) | v8 | nist-batch-32b | 55 s | 51 s | 21.3 | exact |  |
 | [ss16-4x4-gf256-inv 90@9](ss16-4x4-gf256-inv/ss16-4x4-gf256-inv-xor90-depth9.circ.txt) | v8 | nist-batch-32b | 3 min | 3 min | 21.3 | exact |  |
 | [ss16-4x4-gf256-inv 88@10](ss16-4x4-gf256-inv/ss16-4x4-gf256-inv-xor88-depth10.circ.txt) | v8 | nist-batch-32b | 40 min | 36 min | 21.3 | exact |  |
 | [ss17-8x8-gf16 335@4](ss17-8x8-gf16/ss17-8x8-gf16-xor335-depth4.circ.txt) | v8 | nist-batch-32b | 16 s | 12 s | 21.3 | exact |  |
 | [ss17-8x8-gf16 194@5](ss17-8x8-gf16/ss17-8x8-gf16-xor194-depth5.circ.txt) | v8 | nist-batch-32b | 40 min | 35 min | 21.3 | exact |  |
-| [ss17-8x8-gf16 175@8](ss17-8x8-gf16/ss17-8x8-gf16-xor175-depth8.circ.txt) | v8 | nist-batch-32b | 4 min | 4 min | 21.3 | exact |  |
-| [ss17-8x8-gf16 174@9](ss17-8x8-gf16/ss17-8x8-gf16-xor174-depth9.circ.txt) | v8 | nist-batch-32b | 4 min | 3 min | 21.3 | exact |  |
-| [ss17-8x8-gf16 167@10](ss17-8x8-gf16/ss17-8x8-gf16-xor167-depth10.circ.txt) | v8 | nist-batch-32b | 50 min | 45 min | 21.3 | exact |  |
-| [ss17-8x8-gf16 166@11](ss17-8x8-gf16/ss17-8x8-gf16-xor166-depth11.circ.txt) | v8 | nist-batch-32b | 22 min | 20 min | 21.3 | exact |  |
-| [ss17-8x8-gf16 165@13](ss17-8x8-gf16/ss17-8x8-gf16-xor165-depth13.circ.txt) | v8 | nist-batch-32b | 37 min | 33 min | 21.3 | exact |  |
 | [ss17-8x8-gf256 418@5](ss17-8x8-gf256/ss17-8x8-gf256-xor418-depth5.circ.txt) | v8 | nist-batch-64 | 41 min | 39 min | 19.5 | exact |  |
-| [ss17-8x8-gf256 392@8](ss17-8x8-gf256/ss17-8x8-gf256-xor392-depth8.circ.txt) | v8 | nist-batch-64 | 29 min | 28 min | 19.5 | exact |  |
 | [twofish 141@4](twofish/twofish-xor141-depth4.circ.txt) | v8 | nist-twofish | 11 min | 10 min | 20.0 | exact |  |
 | [twofish 119@5](twofish/twofish-xor119-depth5.circ.txt) | v8 | nist-twofish | 23 min | 23 min | 20.0 | exact |  |
 | [twofish 109@7](twofish/twofish-xor109-depth7.circ.txt) | v8 | nist-twofish | 27 s | 26 s | 20.0 | exact |  |
@@ -262,7 +275,6 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [whirlpool-maelstrom 759@5](whirlpool-maelstrom/whirlpool-maelstrom-xor759-depth5.circ.txt) | v8 | wide64 | 17 s | < 1 min | 28.2 | exact | built by the `naive` constructor; no search move |
 | [whirlpool-maelstrom 416@6](whirlpool-maelstrom/whirlpool-maelstrom-xor416-depth6.circ.txt) | v8 | nist-batch-64 | 48 min | 46 min | 19.5 | exact |  |
 | [whirlpool-maelstrom 395@8](whirlpool-maelstrom/whirlpool-maelstrom-xor395-depth8.circ.txt) | v8 | wide64 | 3.8 h | 3.8 h | 28.2 | exact | searched from our 416@6 |
-| [whirlpool-maelstrom 394@9](whirlpool-maelstrom/whirlpool-maelstrom-xor394-depth9.circ.txt) | v8 | wide64 | 3.9 h | 3.9 h | 28.2 | exact |  |
 | [whirlwind-m0 187@6](whirlwind-m0/whirlwind-m0-xor187-depth6.circ.txt) | v8 | nist-batch-32b | 55 min | 48 min | 21.3 | exact |  |
 | [whirlwind-m0 170@14](whirlwind-m0/whirlwind-m0-xor170-depth14.circ.txt) | v8 | nist-batch-32b | 3 min | 2 min | 21.3 | exact |  |
 | [whirlwind-m0 165@15](whirlwind-m0/whirlwind-m0-xor165-depth15.circ.txt) | v8 | nist-batch-32b | 31 min | 28 min | 21.3 | exact |  |

@@ -1,0 +1,202 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Timestamp (UTC): 2026-11-07T15:06:43Z
+  % Not a NIST-issued circuit
+  % Found by: XORFlux v8 (search/xorflux), run predtest-pt1, worker ss17-8x8-gf16-01
+  % Started from: NIST 178@10 circuit (seed.json in the logs)
+  % Logs: logs/ss17-8x8-gf16-xor164-depth9/
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % ss17-8x8-gf16-xor164-depth9 32 32   % ss17-8x8-gf16; 32x32 bit matrix; 2-input XOR basis
+
+## Circuit
+begin circuit ss17-8x8-gf16-xor164-depth9
+
+  % Description: y = A.x with A in ss17-8x8-gf16.mat.txt (row i = y_i, column j = x_j)
+  % Tally of variables (196): 32 inputs; 32 outputs; 132 intermediates
+  % Tally of gates (164): 164 XOR
+  % Gate depth 9
+  % Gates per gate level: 21 17 21 16 22 23 20 16 8
+
+Inputs: x0:x31
+Outputs: y0:y31
+Internal: t1:t132
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 x9 x11
+XOR t2 x8 x12
+XOR t3 x5 x14
+XOR t4 x4 x15
+XOR t5 x7 x15
+XOR t6 x10 x17
+XOR t7 x2 x18
+XOR t8 x3 x19
+XOR t9 x5 x20
+XOR t10 x6 x21
+XOR t11 x10 x22
+XOR t12 x7 x23
+XOR t13 x14 x25
+XOR t14 x0 x26
+XOR t15 x11 x26
+XOR t16 x0 x27
+XOR t17 x24 x29
+XOR t18 x12 x30
+XOR t19 x22 x30
+XOR t20 x1 x31
+XOR t21 x13 x31
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t22 x3 t5
+XOR t23 x17 t8
+XOR t24 x8 t9
+XOR t25 x9 t9
+XOR t26 x6 t11
+XOR t27 x21 t12
+XOR t28 t6 t13
+XOR t29 x20 t15
+XOR t30 t12 t14
+XOR t31 t8 x27
+XOR t32 x24 t16
+XOR t33 t15 x29
+XOR t34 t9 t18
+XOR t35 x8 t19
+XOR t36 t2 t20
+XOR t37 t5 x31
+XOR t38 x28 t21
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t39 x1 t23
+XOR t40 x2 t24
+XOR t41 x19 t25
+XOR t42 x5 t26
+XOR t43 t25 t27
+XOR t44 t7 t29
+XOR t45 x18 t30
+XOR t46 t3 t31
+XOR t47 t4 t31
+XOR t48 x9 t32
+XOR t49 t26 x28
+XOR t50 t27 x28
+XOR t51 t28 x28
+XOR t52 t22 t35
+XOR t53 x18 t35
+XOR t54 t31 t19
+XOR t55 t2 t37
+XOR t56 x16 t36
+XOR t57 t7 t37
+XOR t58 x3 t38
+XOR t59 x4 t38
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR t60 x17 t44
+XOR t61 x22 t44
+XOR t62 x4 t45
+XOR t63 t40 t47
+XOR t64 x23 t46
+XOR t65 x15 t51
+XOR t66 t44 t17
+XOR t67 t43 t18
+XOR t68 t28 t52
+XOR t69 t10 t54
+XOR t70 t48 t53
+XOR t71 t1 t55
+XOR t72 x13 t56
+XOR t73 t9 t56
+XOR t74 t33 t58
+XOR t75 t53 t59
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 5
+XOR t76 t8 t61
+XOR t77 t53 t69
+XOR t78 t10 t64
+XOR t79 x14 t65
+XOR t80 t48 t65
+XOR t81 t6 t66
+XOR t82 t63 t33
+XOR y18 x26 t68
+XOR t83 x16 t70
+XOR t84 t48 t67
+XOR t85 t28 t69
+XOR t86 t71 t75
+XOR t87 t4 t72
+XOR t88 t23 t73
+XOR t89 t60 t20
+XOR t90 x27 t71
+XOR t91 t64 t36
+XOR t92 t49 t74
+XOR t93 t46 t74
+XOR t94 x30 t72
+XOR t95 t68 t73
+XOR t96 t45 t75
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 6
+XOR t97 t84 t85
+XOR t98 t49 t80
+XOR t99 t39 t79
+XOR t100 t12 t81
+XOR y30 t42 t82
+XOR t101 t64 t84
+XOR t102 t79 t67
+XOR y15 t93 t96
+XOR t103 t40 t88
+XOR t104 x3 t88
+XOR t105 t79 t58
+XOR y27 t30 t88
+XOR t106 t43 t89
+XOR t107 t85 t94
+XOR y19 t62 t90
+XOR t108 t83 t75
+XOR t109 t76 t92
+XOR t110 t42 t92
+XOR y3 t81 t37
+XOR t111 t82 t87
+XOR t112 t50 t92
+XOR y23 t54 t87
+XOR y5 t86 t89
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 7
+XOR t113 t100 t82
+XOR y11 t62 t99
+XOR t114 t103 t108
+XOR t115 t105 t108
+XOR t116 t61 t100
+XOR y8 t58 t111
+XOR y13 x2 t102
+XOR t117 t1 t102
+XOR y22 t66 t101
+XOR y28 t46 t107
+XOR y10 t98 t57
+XOR y29 t51 t106
+XOR t118 t6 t108
+XOR t119 t17 t104
+XOR y6 t78 t109
+XOR t120 t62 t112
+XOR t121 t99 t109
+XOR t122 t97 t95
+XOR t123 t34 t110
+XOR y1 t83 t110
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 8
+XOR t124 t77 t114
+XOR t125 t94 t123
+XOR t126 t78 t116
+XOR t127 t79 t116
+XOR t128 t107 t120
+XOR y31 t115 t117
+XOR y7 t97 t117
+XOR y0 t113 t117
+XOR t129 t121 t96
+XOR y20 t114 t91
+XOR t130 t2 t118
+XOR t131 x23 t121
+XOR y14 t14 t120
+XOR y12 t41 t122
+XOR y2 t80 t122
+XOR t132 t10 t123
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 9
+XOR y24 t32 t124
+XOR y16 t104 t130
+XOR y25 x1 t126
+XOR y17 t124 t128
+XOR y26 t125 t129
+XOR y9 t119 t132
+XOR y21 t6 t131
+XOR y4 t127 t56
+end SLP
+end circuit
