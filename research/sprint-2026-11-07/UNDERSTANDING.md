@@ -287,7 +287,10 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   (F16-F18, bridgecheck). The exact scoped route (F13) can grow: k >= 11 helper windows, the plateau's mobile
   part, seeds from other plateaus.
 - Why the 88 cores are so numerous and (on the resolved exits) sealed at +1: a counting consequence
-  of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure? The
+  of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure? (The
+  group-sharing identity G = 108 + delta - S is an exact tautology and cannot bound G by itself: every
+  known 88 pays 17-44 defect gates to share 37-64 units across the eight bit groups, no group is ever
+  realised minimally, F26.) The
   bit-slice block floors (3, 20, 10, 24, 10, 16) hold for the kste corpus and ~1,000 of our 88s under
   one reading of "block" (kste/REPORT.txt) but are not proved; SAT on the sub-maps gives only >= 9,
   12, 13 on three blocks.

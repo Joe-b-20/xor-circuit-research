@@ -1,0 +1,63 @@
+repo 88@5: file-wiring S=41; over 200 random wirings S in [41,41], 1 distinct wirings
+repo 89@4: file-wiring S=35; over 200 random wirings S in [35,43], 14 distinct wirings
+repo 97@3: file-wiring S=36; over 200 random wirings S in [36,38], 16 distinct wirings
+300 random samples: greedy S mean 43.34; min-over-31-wirings S: min 37 median 43.0 mean 43.28 max 50 hist {37: 7, 38: 9, 39: 9, 40: 25, 41: 51, 42: 39, 43: 35, 44: 22, 45: 19, 46: 23, 47: 32, 48: 12, 49: 13, 50: 4}
+   => min-wiring delta = S_min - 20: min 17 median 23.0 mean 23.28
+triple (5, 6, 7): min |union of cones| over all samples+repo = 33  (sum of minima 36)
+triple (0, 6, 7): min |union of cones| over all samples+repo = 33  (sum of minima 36)
+triple (0, 1, 7): min |union of cones| over all samples+repo = 35  (sum of minima 40)
+triple (0, 1, 2): min |union of cones| over all samples+repo = 35  (sum of minima 40)
+triple (2, 3, 4): min |union of cones| over all samples+repo = 42  (sum of minima 44)
+triple (3, 4, 5): min |union of cones| over all samples+repo = 42  (sum of minima 44)
+triple (0, 2, 5): min |union of cones| over all samples+repo = 39  (sum of minima 36)
+triple (1, 3, 4): min |union of cones| over all samples+repo = 48  (sum of minima 48)
+
+repo 88@5 shared gates (k>=2): mask bits | groups | inside supp of all its groups?
+  depth 1 mask [3, 11] groups [3, 4] inside=True 
+  depth 1 mask [4, 12] groups [4, 5] inside=True 
+  depth 1 mask [5, 13] groups [5, 6] inside=True 
+  depth 1 mask [7, 15] groups [0, 1, 3, 4, 7] inside=True 
+  depth 1 mask [10, 18] groups [2, 3] inside=True 
+  depth 1 mask [4, 20] groups [4, 5] inside=True 
+  depth 1 mask [14, 22] groups [6, 7] inside=True 
+  depth 1 mask [16, 24] groups [0, 1] inside=True 
+  depth 1 mask [1, 25] groups [1, 2] inside=True 
+  depth 1 mask [17, 25] groups [1, 2] inside=True 
+  depth 1 mask [2, 26] groups [2, 3] inside=True 
+  depth 1 mask [18, 26] groups [2, 3] inside=True 
+  depth 1 mask [19, 27] groups [3, 4] inside=True 
+  depth 1 mask [20, 28] groups [4, 5] inside=True 
+  depth 1 mask [13, 29] groups [5, 6] inside=True 
+  depth 1 mask [6, 30] groups [6, 7] inside=True 
+  depth 1 mask [14, 30] groups [6, 7] inside=True 
+  depth 1 mask [15, 31] groups [0, 1, 3, 4, 7] inside=True 
+  depth 1 mask [23, 31] groups [0, 1, 3, 4, 7] inside=True 
+  depth 2 mask [7, 8, 15] groups [0, 1] inside=True 
+  depth 2 mask [3, 7, 11, 15] groups [3, 4] inside=True 
+  depth 2 mask [9, 17, 25] groups [1, 2] inside=True 
+  depth 2 mask [3, 11, 27] groups [3, 4] inside=True 
+  depth 2 mask [13, 21, 29] groups [5, 6] inside=True 
+  depth 2 mask [3, 15, 31] groups [3, 4] inside=True 
+  depth 2 mask [15, 16, 31] groups [0, 1] inside=True 
+  depth 2 mask [16, 23, 24, 31] groups [0, 1] inside=True 
+  depth 2 mask [19, 23, 27, 31] groups [3, 4] inside=True 
+  depth 3 mask [0, 7, 8, 15] groups [0, 1] inside=True 
+  depth 3 mask [1, 9, 17, 25] groups [1, 2] inside=True 
+  depth 3 mask [5, 13, 21, 29] groups [5, 6] inside=True 
+  depth 3 mask [8, 15, 16, 31] groups [0, 1] inside=True 
+  shared gates whose mask lies inside every sharing group's support: 32 of 32
+
+all samples: shared gates 143490, with mask inside all sharing groups' supports 136270 (95.0%)
+most common k>=3 shared gates (groups, mask bits): count
+  (0, 1, 3, 4, 7) (23, 31): 2329
+  (0, 1, 3, 4, 7) (7, 15): 2192
+  (0, 1, 3, 4, 7) (7, 31): 2172
+  (0, 1, 3, 4, 7) (15, 23): 2118
+  (0, 1, 3, 4, 7) (7, 23): 1194
+  (0, 1, 3, 4, 7) (15, 31): 958
+  (0, 1, 3, 4, 7) (7, 15, 23, 31): 684
+  (0, 1, 4, 7) (7, 15, 23, 31): 538
+  (1, 2, 3) (2, 18): 473
+  (1, 2, 3) (10, 26): 434
+  (0, 1, 3, 4, 7) (15, 23, 31): 218
+  (0, 1, 3, 4, 7) (7, 23, 31): 211

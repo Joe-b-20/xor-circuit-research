@@ -1057,6 +1057,44 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
 - Most informative run (12 threads, 1 h): the six sw2 maps twice, from the new bests and as exact
   repeats of sw2 with a different RNG seed; the predictions of each reading are listed in the report.
 
+## F26. The sharing identity G = 108 + delta - S cannot give a bound above 75 (sharing agent, xhigh; `sharing/REPORT.md`) [proved / finite-checked / measured, as marked]
+
+- The identity made exact [proved]: with C_g the cone of group g's four output gates (group = bit j of
+  the four output bytes), k(v) the number of cones containing gate v, S = sum_v (k(v) - 1), delta =
+  sum_g (|C_g| - m_g) and D the dead gates, G = 108 + delta - S + |D| for every circuit; delta >= 0 needs
+  only that the m_g are exact minima; block disjointness is not needed. Read with S = "gates used by
+  >= 2 groups" it is false whenever some k(v) >= 3 (every real circuit has k = 5 gates). It is a
+  tautology: S - delta = 108 - G, so "S <= c + delta" IS "G >= 108 - c". The archive's (delta, S) =
+  (25, 36) is the repo 97@3 (108 + 25 - 36 = 97), not the 88; the 88@5 gives (21, 41).
+- Group minima 12,16,12,16,16,12,12,12 re-proved independently [proved + finite-checked]: two
+  isomorphism types (A: 8 support inputs, weight-5 rows; B: 12 inputs, weight-7); lower bounds by the
+  transposition identity C(A) = C(A^T) + n - m plus one gate per distinct non-basis column; upper
+  bounds by explicit verified circuits. (The sprint's value-set SAT could not even finish the 8-input
+  11-gate UNSAT: the proof carries it.)
+- Measurements on 4,314 distinct sampled 88s and the repo circuits [measured]: S 37-64 (median 43),
+  delta 17-44 (median 23), S - delta = 20 always, no dead gates, NO group ever realised minimally
+  (delta_g >= 1 for all g in all circuits, >= 3 for the type-B groups 1, 3, 4); k-distribution 62 % /
+  33 % / 3.3 % for k = 1 / 2 / 5 (the k = 5 gates are bit-7 input pairs shared by five groups); 95 %
+  of shared gates have masks inside every user's support, 5 % are cancellation sharing; every cone is
+  irredundant (the extra gates are not "minimum circuit plus helpers").
+- Proved structure: |union of cones over K| >= m_K, so |C_g ∩ C_h| <= s_gh + delta_g + delta_h; a
+  defect-free group's cone lies inside its support, so defect-free groups share only masks in the
+  support intersection (nothing across the 13 disjoint pairs); inside-support circuits have k(v) <= 5
+  with equality only on 11 masks; support-disjoint families are exact direct sums (m_{2,4,6} = 40).
+- Sub-map minima [finite-checked, closure-deficiency DFS on the transposed map]: exact m_{1,3} =
+  m_{1,4} = 32 and six pairs at 28 = 12 + 16 despite sharing four inputs (zero sharing potential);
+  bounds for the others; total pairwise sharing potential <= 24 (21 of 28 pairs have zero). A
+  hypothetical defect-free circuit would need G >= 84, but with defects the same computation gives only
+  G >= 84 - 6 delta: vacuous.
+- Verdict: no bound above 75 by this route, and not in principle at the pairwise level: every cap on
+  sharing has the form "shared <= potential + defects" and cancels against the identity's + delta;
+  defects are free (17-44 in every known 88) and one defective bit-7 pair buys four units of S. The
+  proved constraints on an 87 (S = 21 + delta; sum |C_g| = 108 + delta; the sub-map inequalities;
+  defect-paid sharing across zero-potential pairs) are satisfied by every 88 the search produces, so
+  they filter nothing. Heuristic facts [measured / conjecture]: an 87 resembling the 88s has delta >= 14
+  and S >= 35; one not resembling them would need a minimally realised group or cross-support
+  cancellation, both unobserved.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
