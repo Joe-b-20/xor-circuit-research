@@ -631,7 +631,7 @@ at k = 5, 6.
   go, conditional on the package existing (the only route to 76 within weeks); new universal rows to 0
   survivors: no-go within a sprint; odd-helper accounting and 88-level identity: no-go for 76.
 
-## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, 17:40-18:50 UTC)
+## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-
   wandering expectation for ~1.3e5 effective nodes (null model); the graph says nothing about

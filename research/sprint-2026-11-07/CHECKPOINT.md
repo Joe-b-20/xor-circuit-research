@@ -104,12 +104,12 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   components, 8 of 1,454 nodes shared by two chains), 0 down-exits in 1,869 states, hops
   change ~30 % of helpers, ~44 plateau changes per chain-hour is a floor (68 % of hops have no
   89 sample; the walk lives on the 88+89 band).
-- 19:15 UTC, lb76 agent (F16): the 75 proof replays (137 s); its rows leave 1,508 of 7,416 cases
+- 17:50 UTC, lb76 agent (F16): the 75 proof replays (137 s); its rows leave 1,508 of 7,416 cases
   open at G = 75, so 76 needs new universal inequalities (October campaigns got to 509 survivors
   and stopped); a claimed complete 76 (29-30 Sep, 948 MB) is NOT in the archive: locating it is the
   one route to a bound improvement within weeks. Odd-helper theorems (h <= 2 => G >= 90) do not
   touch 75 or our 88s (16-24 odd helpers).
-- 16:00 UTC, estimate agent (F12): landing probability ~ proportional to plateau size; at least
+- 15:55 UTC, estimate agent (F12): landing probability ~ proportional to plateau size; at least
   ~2,500 exact 88 plateaus (95 %), order of magnitude 1e5; coverage 0.029. Next measurement:
   exact catalogue of the remaining ~1,390 sampled states (~1 core-day).
 - 16:20 UTC, sat agent (F13): value-set SAT formulation (UNSAT => no <= 87 circuit contains the
@@ -159,7 +159,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | done 15:05, harvested | `sweep/runs/sw{1,2}`, `sweep/driver.log`; FINDINGS F10 |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
 | agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt` (done 16:00, F12), `graph/REPORT.txt` (done 15:50, F11), `sat/REPORT.txt` (done 16:20, F13; overnight batch see below) |
-| agents (17:10 start): inventory of the import (opus, done 18:05), lb76 feasibility (xhigh, done 19:15, F16), q89 89@4 study (high, done 19:05, F15); review2 of F11-F13/I (high, done 18:50, R2); giants (opus, compress of 18 giant entries, running) | 1-3 | 17:10 | ~20:30 | `import/INVENTORY.md`, `lb76/REPORT.md`, `q89/REPORT.md`, `review2/REPORT.txt`, `giants/REPORT.txt` |
+| agents (17:10 start): inventory of the import (opus, done 17:30), lb76 feasibility (xhigh, done 17:50, F16), q89 89@4 study (high, done 17:45, F15); review2 of F11-F13/I (high, done 17:45, R2); giants (opus, compress of 18 giant entries, running) | 1-3 | 17:10 | ~20:30 | `import/INVENTORY.md`, `lb76/REPORT.md`, `q89/REPORT.md`, `review2/REPORT.txt`, `giants/REPORT.txt` |
 | SAT batch: scoped 87 refutations, stage 1 output windows (1,800 s), stage 2 one-seed k = 9-10 (900 s), stage 3 two-seed windows (900 s), 7 circuits; single core nice 10; open-ended | 1 | 16:50 | stop with `touch sat/STOP` (stages 1-2 ~12-17 h) | `sat/batch.log`, `python3 sat/batch_summary.py`, `sat/FOUND_87` appears if any instance is SAT (then verify `sat/found/`, harvest, commit) |
 | hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | ~04:06 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
 | sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |
