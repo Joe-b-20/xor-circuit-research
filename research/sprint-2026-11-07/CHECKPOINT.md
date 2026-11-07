@@ -186,7 +186,13 @@ Harvest recipe (done 15:15 for x1a, x1b, pt1, pt2, sw1, sw2; repeat for hunt D/E
 5. ASK THE USER: locate the 29-30 Sep "76 extension" package (948 MB, 4,842 files, SHA-256
    manifest; `import/zip/research/AES_Residual_Inference_2026_10_02/aes_inference/reference/
    bound_76_status.md`); if found, audit it per `lb76/REPORT.md` section 9 before any claim.
-6. If threads free up (kste1 ends ~00:30; hunt E takes 8 of them 01:00-03:40): start the exact
+6. Compute window plan: 00:30 kste1 ends (record its final counts in F3/I.1); 01:00-03:40 hunt E
+   (4+4 threads, scheduled); ~04:06 hunt D ends -> final F14 numbers (P1-P5, Q1-Q5) and then, on
+   the 20 freed threads until ~06:30: `sat/batch2.sh 12` (Q5 windows on hunt D states, 20 more
+   circuits, two-seed windows; being prepared by the sat agent) and `giants/catalogue_all.sh 8`
+   (exact catalogue of all sampled 88 states + 8 unresolved giants; being prepared). A qbound agent
+   (xhigh) is attempting a universal q >= c inequality on the 75 proof's quantities (F17 lead).
+   Earlier note on free threads: start the exact
    catalogue of the remaining sampled 88 states (`estimate/REPORT.txt` next measurement; use
    `hunt/plateaus.py` machinery) on 2-4 cores at nice 15; it can outlive the sprint.
 7. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint (rejected
