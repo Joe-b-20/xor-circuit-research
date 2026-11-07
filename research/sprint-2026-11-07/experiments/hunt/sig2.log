@@ -1,0 +1,16 @@
+88 states: 1869
+validation fans done in 162 s on 479 states
+v1: 230 exact plateaus -> 375 signatures; split 59 (of which size>1e5: 14); merged 1
+v2: 230 exact plateaus -> 336 signatures; split 46 (of which size>1e5: 13); merged 3
+v3: 230 exact plateaus -> 375 signatures; split 59 (of which size>1e5: 14); merged 1
+v4: 230 exact plateaus -> 348 signatures; split 47 (of which size>1e5: 14); merged 1
+all fans done in 43 s
+arm  88-states  distinct(v3)  per-worker-h  shared-with-other-arms  depth-dist
+A      620        497         30.12        2   {5: 1, 6: 79, 7: 149, 8: 267, 9: 103, 10: 15, 11: 5, 13: 1}
+B      475        400         13.99        2   {6: 20, 7: 113, 8: 192, 9: 120, 10: 29, 11: 1}
+C      774        706         39.22        2   {6: 8, 7: 130, 8: 268, 9: 187, 10: 83, 11: 44, 12: 32, 13: 13, 14: 5, 15: 3, 16: 1}
+  A discovery (states, distinct v3): [(100, 79), (200, 154), (300, 228), (400, 309), (500, 399), (600, 484), (620, 497)]
+  B discovery (states, distinct v3): [(100, 80), (200, 153), (300, 237), (400, 334), (475, 400)]
+  C discovery (states, distinct v3): [(100, 91), (200, 186), (300, 283), (400, 379), (500, 456), (600, 544), (700, 635), (774, 706)]
+signatures seen by more than one worker: 5 of 1600
+wrote sigs2.json

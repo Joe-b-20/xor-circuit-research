@@ -218,6 +218,22 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   (1.94 vs 1.51), more 88 sample-states per worker-hour (43 vs 34), and a different kind of
   landing (large coupled products). Settling it needs a cheaper plateau identity (hash of the
   remove1-neutral core without enumerating factors), left as a next experiment.
+- Cheap identity (13:35-14:00 UTC, `hunt/sig.py`, `hunt/sig2.py`, logs `sig.log`, `sig2.log`):
+  one remove1 fan per state, identity = the state plus every value a neutral move can add (the
+  1-step closure's value set), modulo rotation. Validated on the 479 catalogued states: it
+  never merges distinct exact plateaus (1 merge of 375) but SPLITS 59 of 230 exact plateaus
+  into 2 signatures (46 with the core-only variant, 47 with a 2-step closure; 13-14 of the split
+  ones are coupled products > 1e5 states, the rest ordinary products whose members see
+  different fans). So the signature count is an upper bound on distinct plateaus, inflated by
+  at most 1.63x (375/230) and more on the large coupled plateaus that arm C favours.
+  Applied to all 1,869 sampled 88 states: A 620 states -> 497 signatures (30 per delivered
+  worker-hour), B 475 -> 400 (14; B spends less time at 88 by design), C 774 -> 706 (39);
+  new-signature rate per sampled state A 0.80, B 0.84, C 0.91; discovery curves linear to the
+  end in every arm (no saturation); 5 signatures of 1,600 seen by more than one worker.
+  Reading: C delivers 1.3x the distinct signatures of A per worker-hour, but since its
+  plateaus split more, the true ratio of distinct cores lies somewhere between ~0.8 and 1.3:
+  the F8 prediction stays UNDECIDED. Hunt D (concurrent, shared first roots) plus this
+  identity is the next reading; an exact identity for coupled products is the missing tool.
 
 ## F9. Testing the crossmap predictions (pt1, 3 maps x 2 workers x 2 h, seeds = our best at the cap + NIST's) [measured]
 
