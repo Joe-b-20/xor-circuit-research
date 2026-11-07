@@ -1,0 +1,37 @@
+circuit repo depth 5: core 49, mobile 7, neutral moves 14, downs []; 7 components; ambiguous splits: 61 values
+  c0  mobile 1 roots 1 (targets 1)  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=0084088c
+  c1  mobile 1 roots 1 (targets 1)  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=01818000
+  c2  mobile 1 roots 1 (targets 0)  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=03010002
+  c3  mobile 1 roots 1 (targets 0)  k= 8 tW= 4 free=3 forced_extra=6 leaves=9  mobile=08080000
+  c4  mobile 1 roots 1 (targets 0)  k= 5 tW= 2 free=2 forced_extra=3 leaves=6  mobile=84008004
+  c5  mobile 1 roots 1 (targets 0)  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=88008800
+  c6  mobile 1 roots 1 (targets 1)  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=888c0400
+  whole mobile part: k=23 tW=10 free=12 forced_extra=9 leaves=21
+2026-11-07 17:16:50 run repo levels=['1', '2'] limit=120 pool=full: 26 instances (k histogram [(2, 1), (3, 2), (4, 3), (5, 2), (6, 3), (7, 4), (8, 4), (9, 3), (11, 2), (12, 2)])
+2026-11-07 17:16:50 repo           M:c0                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.1s (solve 0.02) cl=15412 prior=None
+2026-11-07 17:16:51 repo           M:c1                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.04) cl=31082 prior=None
+2026-11-07 17:16:51 repo           M:c6                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.04) cl=31058 prior=None
+2026-11-07 17:16:51 repo           M:c0+c6                lvl=2   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.29) cl=46731 prior=['UNSAT', 60.0]
+2026-11-07 17:16:52 repo           M:c2                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.19) cl=46743 prior=['UNSAT', 60.0]
+2026-11-07 17:16:52 repo           M:c5                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.25) cl=46743 prior=['UNSAT', 60.0]
+2026-11-07 17:16:52 repo           M:c0+c1                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.5s (solve 0.28) cl=62633 prior=['UNSAT', 900]
+2026-11-07 17:16:53 repo           M:c1+c6                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        1.0s (solve 0.83) cl=78621 prior=None
+2026-11-07 17:16:55 repo           M:c4                   lvl=1   k= 5 tW= 2 free=2 pool=full UNSAT        1.5s (solve 1.34) cl=62480 prior=['UNSAT', 60.0]
+2026-11-07 17:16:56 repo           M:c0+c2                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.5s (solve 1.33) cl=78430 prior=['UNSAT', 900]
+2026-11-07 17:16:58 repo           M:c0+c5                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.9s (solve 1.75) cl=78430 prior=['UNSAT', 900]
+2026-11-07 17:17:02 repo           M:c1+c2                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.2s (solve 2.96) cl=94576 prior=None
+2026-11-07 17:17:05 repo           M:c1+c5                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.3s (solve 3.09) cl=94576 prior=['UNSAT', 900]
+2026-11-07 17:17:09 repo           M:c2+c6                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.8s (solve 3.54) cl=94504 prior=None
+2026-11-07 17:17:17 repo           M:c4+c6                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        7.9s (solve 7.68) cl=94323 prior=['UNSAT', 900]
+2026-11-07 17:17:37 repo           M:c1+c4                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       20.3s (solve 20.14) cl=110577 prior=['UNSAT', 900]
+2026-11-07 17:17:52 repo           M:c2+c5                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       15.5s (solve 15.84) cl=110521 prior=['UNSAT', 900]
+2026-11-07 17:18:05 repo           M:c3                   lvl=1   k= 8 tW= 4 free=3 pool=full UNSAT       12.4s (solve 11.99) cl=110563 prior=None
+2026-11-07 17:18:17 repo           M:c5+c6                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       12.0s (solve 11.76) cl=110535 prior=None
+2026-11-07 17:19:41 repo           M:c0+c3                lvl=2   k= 9 tW= 4 free=4 pool=full UNSAT       84.2s (solve 83.92) cl=126630 prior=['UNSAT', 900]
+2026-11-07 17:21:43 repo           M:c2+c4                lvl=2   k= 9 tW= 4 free=4 pool=full TIMEOUT    122.4s (solve None) cl=None prior=None
+2026-11-07 17:23:46 repo           M:c4+c5                lvl=2   k= 9 tW= 4 free=4 pool=full TIMEOUT    122.4s (solve None) cl=None prior=None
+2026-11-07 17:25:48 repo           M:c1+c3                lvl=2   k=11 tW= 6 free=4 pool=full TIMEOUT    122.4s (solve None) cl=None prior=None
+2026-11-07 17:27:51 repo           M:c3+c5                lvl=2   k=11 tW= 5 free=5 pool=full TIMEOUT    122.4s (solve None) cl=None prior=None
+2026-11-07 17:29:53 repo           M:c2+c3                lvl=2   k=12 tW= 6 free=5 pool=full TIMEOUT    122.7s (solve None) cl=None prior=None
+2026-11-07 17:31:56 repo           M:c3+c4                lvl=2   k=12 tW= 5 free=6 pool=full TIMEOUT    122.3s (solve None) cl=None prior=None
+2026-11-07 17:31:56 run complete repo

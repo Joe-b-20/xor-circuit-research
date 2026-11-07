@@ -1,0 +1,92 @@
+
+## 4. What is now excluded that the window families did not cover [proved as stated; outcomes measured]
+
+Each UNSAT row says: no <= 87 circuit contains K = S \ W for that circuit and that W (the W lists are
+in `results.jsonl`).  Put together per circuit:
+
+* Level 1 complete on four circuits (26 of 26 factors UNSAT): for every plateau factor i of the repo
+  88@5, sampleC:1011, sampleA:2667 and sampleA:884, every <= 87 circuit misses a value outside W_i.
+  In plateau language: no 87 is "the plateau with one factor rewritten", whatever the rewrite (any
+  values, any re-sharing with the kept 76-86 values, one gate less).  The sat/ one-seed windows said
+  this for the factors whose mobile-seeded window had k <= 8 under wiring closure; the factors with
+  helper roots and k = 9-12 under wiring closure (e.g. repo c3, sampleA:1773 c1) were open there and
+  the k = 8-9 ones are closed here (any-pair closure; the weaker-but-finished form).
+* Level 2: every pair with free <= 3 (44 of 44 across the four circuits) and the repo pairs with
+  free = 4 that finished at 600 s are UNSAT: no 87 keeps everything outside W_i u W_j.  So an 87 that
+  keeps the core cannot be a re-pairing or re-sharing confined to two factors' windows of these kinds.
+  Pairs with free >= 4 (mostly a helper-root factor with another helper-root factor) are the open
+  set: 6 on the repo at 120 s (the two k = 9 ones closed at 600 s in 166-187 s; the k = 11 one timed out at 600 s; three not yet retried), 5 on sampleC:1011, 8 on
+  sampleA:2667, 5 on sampleA:884 (one closed by the sat/ batch at 900 s).
+* Combination [proved]: if every level-1 and every level-2 instance of a circuit is UNSAT, then any
+  <= 87 circuit V that contains the kept core K_all (the values outside the whole mobile window) must
+  miss values from at least THREE different factor windows W_i (otherwise V would contain some K_ij).
+  With the present partial level 2, the statement is: the set of factor windows an 87 ⊇ K_all
+  touches is not contained in any single W_i nor in any UNSAT pair W_i u W_j.
+* Not covered, as before: an 87 that drops a core value (the fixed part of this scope by definition),
+  an 87 on another plateau, and the open pairs above.  The whole-mobile-part instance (the direct
+  form of scope (c), k = 21-32, free = 10-17) is queued but was not reached; the decomposition replaces
+  it by the conjunction over all levels, and levels >= 3 have free 4-8, i.e. they sit at or beyond the
+  present frontier.  So "the plateau's mobile part cannot be done with one fewer gate" is proved only
+  in its one- and two-factor forms, not in full.
+
+Contrast with the sat/ families: family A/C/B windows are seeded by a value or an output block and
+never isolate "a factor"; the satmob windows are the plateau's own factors, so each UNSAT is a
+statement about a plateau move class (re-pair factor i; re-pair and re-share i with j) rather than
+about a neighbourhood of a value.  Coverage [checked: coverage.py]: the union of the UNSAT windows is
+21-24 of 88 values per circuit, containing all mobile helpers, 4-6 core helpers (the helper roots and
+what they force) and 10-12 outputs; it never contains the deep core (that is the scope's fixed part).
+
+## 5. Frontier [measured]
+
+* free <= 3: every instance finishes, 0.02-71 s wall under load (k up to 10).
+* free = 4: 120 s solves 1 of 17 (84 s); 600 s solved the two k = 9 repo retries in 166-187 s but not the k = 11 one (6 forced outputs).  The
+  600 s limit is the right one for free = 4 on this machine (900-1800 s if more than ~8 k values
+  are forced, as on the k = 11 pairs) [guess from the measured growth 3 -> 4: x5-10 per free value].
+* free >= 5: nothing finished at 120 s (8 instances); expected 600-6000 s each [guess], i.e. the
+  regime of the sat/ k = 9 helper windows.
+* Hardness tracks free = k - 1 - tW and not k, as predicted in sat/REPORT.txt section 4: k = 10 with
+  free 3 (sampleA:884 c0+c2, 71 s) is easier than k = 9 with free 4 (84-187 s or timeout).
+* Instance size stays small (k = 12: ~175k clauses, pairwise at-most-one dominated); the barrier is
+  search.  The two encoding improvements listed in sat/REPORT.txt section 5 (ladder at-most-one, full
+  lex order on independent gates) are untried and are the cheapest lever for free >= 5.
+
+## 6. What is running and what to run with more cores
+
+Still running when this was written (`campaign3.sh`, nohup, one child at a time, nice 8, idempotent,
+`satmob/STOP` stops it between instances; `results.jsonl` / `run.log` grow accordingly): the remaining
+repo pair retries at 600 s; then sampleA:1626 and sampleA:1773 levels 1-2 at 120 s; then repo triples
+at 120 s; the whole mobile part of the repo at 600 s (full pool, then span pool); repo triples and
+all five samples' pairs at 600 s.  Expected [guess]: the whole-mobile instance times out at 600 s
+under either pool; the span-pool one is the first thing to retry at 3600 s because its pool is 20-25
+constants instead of ~115.
+
+With 12 cores for a few hours (same code, `mob.py run CID LEVELS LIMIT [span]`, shard by circuit):
+1. All pairs with free 4-7 on the six analysed circuits at 1800 s (about 40 instances, ~20 h worst case
+   serial, 2 h on 12 cores): completes level 2, which turns the combination statement of section 4
+   into "an 87 keeping the core touches >= 3 factor windows" for each circuit.
+2. Repo triples (34; free 2-8) at 1800 s, free-ascending; the free <= 4 half first (14 instances).
+3. The whole mobile part, span pool, at 3600 s on all six circuits (6 instances) -- the weaker
+   statement "no 87 keeps the core and builds the re-paired part from the trees' own leaves", which
+   is exactly the plateau-move language; then full pool with the ladder encoding.
+4. The coupled plateaus of the kste corpus (radices 33, 45, 108: factors with several trees sharing
+   values; F2) -- there the components are genuinely larger than 1+1 and the factor encoding does
+   something the one-seed windows cannot; `mob.py analyze kste:<i>` gives their sizes in seconds.
+5. Encoding: ladder at-most-one and full lex symmetry (sat/REPORT.txt section 5, items 1-2) before
+   any run at >= 1800 s; the free >= 5 regime is where they pay.
+
+Findings
+ F1 [measured] 26 of 26 single plateau factors on four structurally different 88 circuits are UNSAT:
+    no 87 is one rewritten factor of these plateaus.
+ F2 [measured] 44 of 44 factor pairs with <= 3 free values (and the repo free = 4 pairs finished at
+    600 s) are UNSAT: no 87 is a two-factor re-pairing/re-sharing of these kinds.
+ F3 [checked] On all six circuits analysed every mobile->consumer component is 1 mobile + 1 root (one
+    2+1 on sampleC:1011): the decomposition of MOBILE_ENCODING.md collapses to "one factor at a time",
+    and the whole mobile part is only reached as the conjunction over all levels (free 4-17), so
+    scope (c) in full remains out of reach of this encoding at 600 s.
+ F4 [measured] Hardness is governed by free = k - 1 - tW: free <= 3 solves in <= 71 s, free = 4 in
+    84-187 s at best, free >= 5 does not finish at 120 s.
+Rejected
+ - "the mobile part is cheap once factored": the factors are cheap; their union is not (F3).
+Open
+ - pairs with free >= 4 on the four circuits (section 4), everything at level >= 3, the whole mobile
+   part (both pools), sampleA:1626 / sampleA:1773 (analysed, instances queued).

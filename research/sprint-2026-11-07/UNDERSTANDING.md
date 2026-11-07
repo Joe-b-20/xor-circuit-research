@@ -187,7 +187,9 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   1,084 two-seed windows k <= 9 on the repo circuit) are refuted, 0 satisfiable, 16 timeouts; the
   union of removed values over the repo circuit's refuted windows covers 81 of its 88 values (72-74
   for the other circuits), so any 87 differs from each of these circuits in at least one value of
-  each refuted kept set [measured, `sat/`]. None of this bears on 87s away from these 37 circuits.
+  each refuted kept set [measured, `sat/`]. On four plateaus the mobile part was also attacked: no 87 is a one-factor rewrite or a
+  two-factor rewrite with <= 3 free values of those plateaus (F23). None of this bears on 87s away
+  from these circuits.
 - Waits on InvMixColumns descents are time in dead rooms (small sealed plateaus) until a large move
   lands in a rich one; no local score predicts which state is productive [measured, 2026-11-03-waits,
   InvMC]. A reading: a room is one circuit, and "productive" is a property of the circuit's +1

@@ -940,6 +940,32 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   single-pair exchanges; a full depth-4 bound needs conditioning on the pair-graph partition as the
   depth-3 proof does. Conjecture [weak support]: D4 = 89.
 
+## F23. SAT on the plateau's mobile part: no 87 is a one-factor or small two-factor rewrite of four 88 plateaus (satmob agent, high; `satmob/REPORT.md`) [measured; exclusions proved as stated by the sat87 encoding]
+
+- Structure [checked, pes_lib.fan on the repo 88@5 and 5 hunt states; no down moves]: cores 47-50
+  values, mobile 6-9; the mobile -> consumer graph splits into components that are ALL "1 mobile
+  helper + 1 root" (one 2 + 1 component on one circuit): exactly F2's 3-way factors, seen from the SAT
+  side. Roots are outputs (14 of 43) or core helpers (29 of 43). Per-factor windows: output root ->
+  k = 2-3 removed values, free = 0; helper root -> k = 4-12, free = 1-5. The whole mobile part forces
+  k = 21-32, free 10-17, and is reached only as the conjunction over all levels.
+- Instances are exactly sat87's I(K, |W| - 1) (full pool, distinctness, sound symmetry breaks), so
+  UNSAT means "no <= 87 circuit of any depth or wiring contains K" [proved by reuse of F13's
+  encoding]; sanity: m = k is SAT and decodes to a verified 88@5.
+- Results [measured, one nice-8 child at a time, 120 s then 600 s retries; 94 distinct instances: 72
+  UNSAT, 22 timeouts, 0 SAT]: level 1: 26 of 26 single factors UNSAT on 4 circuits; level 2: 44 of 44
+  factor pairs with free <= 3 UNSAT; free = 4: 3 UNSAT (84-187 s), 14 timeouts; free >= 5: 8 timeouts.
+  Hardness tracks free = k - 1 - t_W here.
+- What is excluded beyond the window families: for these four plateaus, no 87 is "the plateau with
+  one factor rewritten" (any new values, any re-sharing with the kept set), nor a two-factor
+  re-pairing/re-sharing with <= 3 free values. Not excluded: the open free >= 4 pairs, three or more
+  factors at once, the whole mobile part, 87s that drop a core value, and other plateaus.
+- Frontier: free <= 3 in <= 71 s; free = 4 needs 600 s or more; free >= 5 untouched. A continuing
+  campaign (`satmob/campaign3.sh`, one process, idempotent, `satmob/STOP` to end) runs the remaining
+  600 s retries, two more circuits, repo triples and the whole mobile part (full, then span pool).
+  With more cores: all free 4-7 pairs at 1,800 s (~40 instances) would complete level 2 and give the
+  statement "an 87 keeping the core touches >= 3 factor windows"; then the kste coupled plateaus
+  (radices 33/45/108), where components are genuinely larger.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h

@@ -1,0 +1,113 @@
+# satmob: factor-structured exact (SAT) search for an 87 on the plateau's mobile part
+
+Folder: `~/xs-campaigns/2026-11-07-sprint/satmob/` (nothing written in the repository or in `sat/`).
+Implements `sat/MOBILE_ENCODING.md` on top of `sat/sat87.py` (imported unchanged).  One solver child
+at a time, `nice -n 8`, CaDiCaL 1.9.5 via pysat, on a machine at load 21-25 on 20 threads (two SAT
+campaigns, a 6-process catalogue and other agents' jobs), so wall times are pessimistic by roughly 2x
+against an idle core [guess from the load average].  Work window 2026-11-07 17:10 - 18:45 (WSL clock,
+EST).  Labels: [proved] argument given; [checked] exact computation, script named; [measured] run
+data; [guess].
+
+Files: `mob.py` (core/mobile via `pes_lib.fan`, mobile->consumer graph, components, windows, instance
+generation, driver, SAT handling), `solve_child.py` (sat87.encode + optional operand-pool restriction
+by unit clauses, CaDiCaL), `campaign3.sh` (the sequence; still running when this was written, see
+section 6), `analyze_samples.py`, `spans.py` (leaf-span intersections), `coverage.py`, `summarize.py`
+(the tables below), `comp_<cid>.json` (per circuit: fan output, components, windows), `results.jsonl`
+(one line per instance: sat87's schema + `family`, `level`, `pool`, `component`, `leaves`,
+`prior_sat_campaign`), `run.log` (human log), `found/` and `FOUND_87` (empty: no SAT), `STOP` (create
+it to stop the campaign between instances).
+
+## 0. Result in one line
+
+No 87.  Every instance the solver finished is UNSAT [measured]: all 26 single factors of four
+structurally different 88 circuits (repo 88@5, sampleC:1011, sampleA:2667, sampleA:884) and every pair
+of factors with <= 3 free values (44 of 44), plus the repo pairs with 4 free values that finished at
+600 s; the remaining pairs (free 4-7) time out at 120 s (section 3).  Consequence [proved, section 4]:
+an 87 that keeps the plateau core of any of these four circuits cannot be a rewrite of one factor,
+nor of two factors with <= 3 free values; the whole-mobile-part instance itself (k = 21-32) was not
+reached within the budget and stays open.
+
+## 1. What was computed [checked: `mob.py analyze`, `comp_*.json`]
+
+For a circuit S (88 values = 56 helpers + 32 outputs; wiring = the file's for the repo 88@5, the greedy
+any-pair wiring `sat87.wiring_from_values` for hunt samples):
+
+1. `pes_lib.fan(make_space("mc", None), helpers)` gives the remove1-neutral moves (R, A); the MOBILE
+   helpers M = union of the removed sets R, the CORE C = helpers \ M.  No down move at any of the six
+   circuits analysed (as in the sat/ campaign).  fan takes < 1 s per circuit here.
+2. Mobile -> consumer graph: an edge m -- u for every value u of S that uses m as an operand under the
+   wiring.  Its connected components are the plateau factors: on all six circuits analysed EVERY
+   component is one mobile helper plus one consumer root, except one component of sampleC:1011 with
+   two mobile helpers and one root (a coupled factor).  This is F2 (3-way factor = re-pairing of an
+   unshared 3-input tree) seen from the wiring side: the mobile value is the tree's intermediate and
+   its only user is the tree's root.  Roots are outputs (14 of 43 components) or core helpers (29): a
+   helper root is in C by the definition "untouched by neutral moves" (its value stays, only its
+   recipe changes).
+3. Window of a set of components: seeds = their mobile values and roots; W = seeds, plus helpers whose
+   users (under the wiring) all lie in W (dead cone), plus everything INPUTS u (S \ W) can no longer
+   compute by ANY pair (least fixpoint, wiring independent; `run_scopes.window` with ANYPAIR=1, i.e.
+   the minimal forced removal used by sat/dsizes.py).  K = S \ W is then split-closed (asserted before
+   every instance).  `forced_extra` = |W| - |seeds|: when the root is a core helper, its own users
+   cannot be rebuilt without it and are dragged in, typically with 2-6 outputs.
+4. Instances: level 1 = one component, level 2 = a pair, level 3 = a triple, "all" = every component
+   (the whole mobile part, scope (c) of sat/).  Identical W from different index sets are merged (on
+   the repo, 2 of the 21 pairs have the same W as a single, because that single's forced closure
+   already swallows the other factor).  Each instance is exactly sat87's I(K, |W| - 1) with K = S \ W,
+   distinctness and the two sound symmetry breaks on, no pool restriction unless `pool = span` is
+   stated (no production run used it yet; see section 2).
+
+Per-component k, tW (outputs in W) and free = k - 1 - tW are listed in component order c0, c1, ...;
+`values with >1 split` counts values of S with more than one XOR split inside INPUTS u S (the wiring
+ambiguity of a value set; it does not affect any instance's meaning, only which consumers the graph
+sees, and the any-pair closure repairs any wiring dependence of W).
+
+Reading of the sizes [checked]: a 3-way factor whose root is an output gives k = 2-3, free = 0 (the
+instance asks whether that output is one XOR of two kept values); a factor whose root is a core helper
+drags that helper's dependents in: k = 4-12, free = 1-5.  The whole mobile part is k = 21-32 with free
+= 10-17 on these six circuits (the same numbers as sat/dsizes.py).  So the decomposition does what
+the design note promised for levels 1 and 2 (free <= 3 for most instances) but the union over all
+levels is not cheaper than the whole: level >= 3 instances already have free 4-8 (repo: 34 triples,
+free 2-8; 33 quadruples, free 4-10).
+
+Leaf-span structure [checked: spans.py]: for a pair of factors (i, j), dim(span(L_i) ^ span(L_j)) over
+GF(2) (L = the window's leaves) is 0 for 11 of 21 repo pairs, 11/15 on sampleC:1011, 8/15 on
+sampleA:2667, 13/21 on sampleA:884, 15/28 on sampleA:1626, 14/36 on sampleA:1773.  A zero intersection
+means no value lies in both trees' leaf spans; it does not by itself exclude a shared new gate in the
+full-pool instance (a shared gate may lie outside both spans and cancel later) [guess: such sharing is
+unlikely to save a gate, but the solver, not this argument, is what decides].
+
+## 2. Exact meaning of every instance [proved: sat87 docstring, section 1 of sat/REPORT.txt]
+
+For circuit S, window W, K = S \ W (INPUTS u K split-closed), I(K, |W| - 1) is SAT iff there is a
+split-closed value set V with K u TARGETS <= V and |V| <= 87.  Therefore
+
+* UNSAT (pool = full): no circuit with <= 87 XOR gates, of any depth, with any helper values, has a
+  value set containing K.  Equivalently every <= 87 circuit (if any exists) misses at least one of
+  the 88 - k values of K.  This is exactly the statement of the sat/ campaign's windows; only the
+  choice of W differs (plateau factors instead of a seed value).
+* Level 1, component i: K_i = everything but factor i's intermediate, its root and what the root's
+  removal forces.  UNSAT: no 87 keeps all the other factors and the rest of the core and re-does
+  factor i (with any re-sharing against the kept values) in one gate less.
+* Level 2, pair (i, j): UNSAT: no 87 keeps everything outside W_i u W_j; this is the cross-factor
+  re-sharing case between two trees (a value shared by the two trees would be a new gate).
+* Level 3 likewise for three trees.  "all": K_all = the core minus what the helper roots force
+  (65-67 values): UNSAT would say that every 87 abandons a value of the core itself -- the case the
+  sat/ campaign could not reach (two 120 s timeouts at k = 24, 25).  Not reached here either (queued).
+* pool = span (WEAKER, recorded separately in `pool`): the same CNF plus unit clauses forbidding, for
+  every new gate, every constant operand (input or kept value) outside the GF(2) span of the window's
+  leaves (the kept operands that W's gates read under the wiring).  New gates remain allowed as
+  operands.  UNSAT then only says: no <= 87 circuit contains K AND builds its |W| - 1 new values from
+  the leaves' span.  SAT would still be a genuine circuit.  Implemented and sanity-tested; no
+  production instance had run with it when this report was written (it is queued for the whole
+  mobile part of the repo circuit).
+* Sanity [checked]: for repo component c3 (k = 8) the instance with m = k (one more gate) is SAT under
+  both pools and the decoded circuit re-checks as an 88@5 by `sat87.check_circuit` and by the 32 unit
+  vectors (full pool 43 s wall, span pool 3 s; span pool = 9 constants, 1,648 unit clauses).
+* Cross-reference: every row records the sat/ campaigns' result on the identical (circuit, W) if one
+  exists (`prior_sat_campaign`; read-only access to sat/results*.jsonl).  For an output root the
+  any-pair closure equals the wiring closure, so many level-1/2 windows coincide with family A/B
+  windows of the sat/ batches (all agree: UNSAT there too).  Where they differ the satmob window is
+  smaller: a smaller W means a larger kept set K, i.e. a cheaper instance but a WEAKER statement; e.g.
+  repo factor c3 is k = 8 here (UNSAT in 12 s) and k = 9 as the wiring-closure window A:v=08080000
+  (timed out at 60 s in sat/).  One satmob timeout (sampleA:884 c1+c5, k = 9) is settled UNSAT by
+  the sat/ batch at 900 s on the identical W.
