@@ -90,16 +90,18 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   vast: about 18 worker-hours of catalogued descents gave <= 225 distinct plateaus with 3
   repeats, all three on the largest plateaus (0.8-3.4 M states; landing probability grows
   roughly in proportion to plateau size, so the small ones are under-sampled; capture-recapture
-  on chains gives at least ~2,500 plateaus and an order of magnitude of 1e5, with ~97 % of
-  the landing probability on plateaus never seen) (F5, F12, R) [estimated]. The 52 pre-sprint plateaus sit at depth
+  on chains gives at least ~2,500 plateaus (assuming independent chains; node-level meetings
+  suggest >= 3e4) and plausibly 3e4-5e5, with ~97 % of the visit probability on plateaus never
+  seen) (F5, F12, R2) [estimated]. The 52 pre-sprint plateaus sit at depth
   5-7, the hunt's mostly at 7-10, so "no overlap" with them is mostly a different depth
   stratum. Every RESOLVED +1 exit from every plateau checked (49 by PES mc24, 19 so far in
   kste1) goes home or to another 88, but 56 % of the +1 descents were cut at their state
   bound before landing and are unresolved, and the +2 band is essentially unexplored (I.1). The transition graph of the 88 level, drawn from 146
   chains' hops (F11): 139 components, 133 of them a single chain's trail, 8 nodes of 1,454
   entered by two chains, 0 down-exits in 1,869 sampled states; hops change ~30 % of the
-  helpers, so each chain explores the neighbourhood of where it landed and the neighbourhoods
-  do not meet [measured]. The walk lives on the 88+89 band (39-45 % of sampled instants at
+  helpers; the 8 cross-chain meetings among 1,462 visits are what independent wandering over
+  ~1e5 effective nodes predicts (null model, review 2), so the sampled graph says nothing about
+  whether the neighbourhoods connect [measured + model]. The walk lives on the 88+89 band (39-45 % of sampled instants at
   89, ~12 departures to 89 per second [guess from ledgers]); 30 s sampling sees a floor of ~44
   plateau changes per chain-hour. So the search's failure
   below 88 is not slowness or bad decisions: its move set has no down-step from any 88 core
@@ -108,7 +110,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   search cannot find 87 (FINDINGS I.1 states exactly what is and is not established).
 - Whether an 87 exists is therefore a global question about the map (lower bound 75, no
   published proof of 88; the kste "barrier" argument is scoped to known circuits, F3). More
-  local search time cannot settle it; exact or structural methods can. First step taken (F13):
+  local search time can settle it only by finding an 87, at a rate this data cannot estimate
+  (97 % of the landing mass is on unseen plateaus); only exact or structural methods can settle
+  it negatively. First step taken (F13):
   a SAT formulation that, for a kept subset K of an 88 circuit, decides whether ANY circuit
   with <= 87 gates contains K (no depth, pool or wiring restriction); 43 such sets of 79-84
   values on three circuits are refuted in seconds, windows of 9-10 removed values are the
@@ -197,7 +201,8 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Whether the 88 cores form one connected graph under the +1 band: as sampled at 30 s they do
   not (F11: 139 components for 146 chains); finer sampling (every ~1 s, or logging every
   88 <-> 89 transition in the engine) is needed to see whether trails meet between samples.
-  No core with a down-exit has been seen anywhere (0 of 1,869 states, 0 of 282 plateaus).
+  No core with a down-exit has been seen anywhere (0 of 1,869 sampled states, exhaustive remove1;
+  0 at any fanned member of the 282 catalogued plateaus, every member for the 155 of <= 2e4 states).
 - Why the gates minimum of a map sits at a middle depth (F10: klsw17-m-8x8-gf256 321@10 beats
   everything at depth 12-15; grostl 349@15 vs 350@16): a budget effect of the depth window, a
   property of the map, or under-search of the deeper band.

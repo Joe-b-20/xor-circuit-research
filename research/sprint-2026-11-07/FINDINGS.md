@@ -298,7 +298,7 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   dropped a point recorded by two runs with the same gates@depth (fox-mu8 500@11, pt2 and sw1),
   since each record "dominated" the other; fixed in `harvest_sprint.py` [implementation].
 
-## F11. The 88 level as the walk sees it: a set of disjoint chain trails, no down-exit anywhere (graph agent, `graph/REPORT.txt`) [measured]
+## F11. The 88 level as the walk sees it: a sparse sample of chain trails (8 meetings, as independent wandering on ~1e5 nodes predicts); no down-exit at any of 1,869 sampled states (graph agent, `graph/REPORT.txt`; corrected by review 2) [measured]
 
 Nodes = cheap plateau identities (v3 signatures merged by exact key where catalogued: 1,600
 signatures -> 1,454 nodes, an upper bound on exact plateaus, ~900-1,000 [guess]); directed edges =
@@ -320,17 +320,26 @@ with an 88 sample, 1,462 visits, 1,418 hops).
   walking inside a node: neighbouring plateaus share ~70 % of their core; the reviewer's 31-38 %
   reproduces.
 - Down-exits: none. 0 samples, records or engine events below 88 in any arm; `pes_lib.fan` on
-  all 1,869 sampled 88 states gives 0 states with a down move (10-28 neutral moves each, mode 16).
+  all 1,869 sampled 88 states gives 0 states with a down move (8-44 neutral moves each, mode 16;
+  the TOPK = 16 candidate cut never bound, so the check is exhaustive for remove1 at those
+  states [review 2, `review2/fans.py`]). For the catalogued plateaus the statement is exhaustive
+  for every member of the 155 plateaus of <= 2e4 states and for the fanned members (seed and
+  factor-local closures) of the other 127.
 - Landings are not special: first 88 nodes (146 chains, 146 distinct nodes) and later nodes have
   the same size median (6,561 states) and depth median (8); only 2 first nodes were ever entered by
   another chain. Later visits drift deeper (tail to depth 16 in arm C).
-- Reading: the discovery curve is linear (C: 774 states -> 706 signatures), so a longer walk adds
-  nodes at ~44 per chain-hour without saturating and, since no sampled or catalogued state has a
-  down-exit, cannot find an 87 by re-sampling what it has seen [measured]. Hops are local, so a
-  longer walk grows the neighbourhood of its landing point rather than reaching another region
-  [guess]. This is the strongest statement the sprint has on why the search stalls at 88: not
-  slowness, not bad acceptance decisions, but a move set whose 88 states have no down-step, on a
-  level whose size the walk cannot exhaust.
+- Reading (corrected, R2): the 8 cross-chain meetings among 1,462 visits are exactly what 146
+  chains wandering INDEPENDENTLY over ~1.3e5 effective nodes would produce (null model,
+  `review2/nullmodel.py`: 387 meetings expected if only the 1,454 seen nodes existed, 127 at
+  7,300, 10.4 at 1e5; hunt D at 2.4 h gives the same 1.3e5 out of sample). So "disjoint trails"
+  is the sampling-sparsity consequence of the level's size (F12), not a second fact, and the
+  sampled graph carries no information about connectivity: isolated trails and one connected web
+  sampled at 1 % fit equally. What stands: at every sampled 88 state the remove1 move has no
+  down-step [measured, exhaustive, re-run by review 2 on all 1,869 states], and the level holds
+  1-2 orders of magnitude more plateaus than the walk has sampled [estimated]. Whether some
+  unsampled 88 state has a down-step, or a path through 89+ reaches 87, is open; this data does
+  not bear on it. "Hops are local so a chain stays in its neighbourhood" stays a [guess]: 30 %
+  change per hop at 44+ hops per hour turns the helper set over completely within hours.
 - What 30 s sampling cannot see: departures to 89 shorter than an interval, hence the true number
   of plateau changes per hour, and whether chains pass through common nodes between samples.
 
@@ -356,9 +365,14 @@ signatures).
   1.0 / 1.34 gives 22k / 79k / 400k / 5.3M (upper ends unbounded). Sample coverage 0.029: ~97 % of
   landing probability is on plateaus never seen. Signature companion: Chao2 254k [110k, 588k],
   ~156k after the 1.63x over-split, an overstatement since big plateaus split 2.2-2.3x.
-- Verdict: a few hundred large plateaus take most of the landings; the long tail of small ones
-  makes up most of the count; order of magnitude 1e5 exact 88 plateaus reachable by this search
-  (plausibly 3e4-5e5), floor ~2,500 at 95 %. The search cannot enumerate the level.
+- Verdict (with review 2's conditions): a few hundred large plateaus take most of the visits; the
+  long tail of small ones makes up most of the count; plausibly 3e4-5e5 exact 88 plateaus (the
+  central 1e5 moves by an order of magnitude either way depending on the 18 excluded giant
+  entries' true sizes and on the effort ratio behind the signature alpha), floor >= ~2,500 at
+  95 % assuming only independent, exchangeable chains (a chain-pair analysis gives >= 3,041; the
+  node-level meeting count implies >= ~3e4 even after a generous over-splitting correction).
+  "Landing probability" is really a VISIT exponent (landing or hop). The search cannot enumerate
+  the level.
 - Next measurement (no new search): the exact catalogue on the remaining ~1,390 sampled 88
   states takes chains from 40 to 146 and chain pairs from 22k to 1.27M, expected ~100
   coincidences instead of 3, pinning alpha and N; ~1-2 min per state single-threaded (a day on one
@@ -366,6 +380,11 @@ signatures).
 
 ## F13. Scoped exact search for an 87 around our 88 circuits: 43 refutations, 8 timeouts, no 87 (sat agent, `sat/REPORT.txt`, `sat/sat87.py`) [measured]
 
+- Batch status (`sat/batch_summary.py`, read at the time of this edit):
+    family          UNSAT  SAT  TIMEOUT  other  hardest solved k
+    stage1/A          131    0        0      0  8
+    stage1/C           22    0        2      0  12
+    total 155 instances: UNSAT 153, SAT 0, TIMEOUT 2, wall 1.9 h; hardest UNSAT k overall: 12
 - Formulation (value-set form): keep a subset K of an 88 circuit's values such that inputs ∪ K is
   split-closed (every kept value is the XOR of two earlier ones); remove W, k = |W|; ask CaDiCaL
   (via pysat) for m = k-1 new gates, each the XOR of two distinct available values, such that every
@@ -374,7 +393,10 @@ signatures).
   with <= 87 gates, of any depth and any helper values, contains K. No pool restriction (kste's
   scoped refutations restrict the candidate pool), no wiring assumption; strictly stronger than
   remove1 flatness on the same window. Encoding validated: m = k is SAT and the decoded circuit
-  re-verifies as 88@5.
+  re-verifies as 88@5. Review 2 re-derived the soundness (the equivalence rests on a fresh-split
+  padding lemma, not on duplicates; the operand ladder and the consecutive-gate lex break are
+  sound; UNSAT does not depend on the pruning constraints: 4 windows re-solved UNSAT under all
+  four (distinct, symbreak) settings). "Contains K" means value containment in any wiring.
 - Outcomes on three structurally different 88 circuits (repo 88@5; two hunt states with different
   cores, depth 12 and 8): 51 instances, 43 UNSAT, 8 timeouts (60-120 s), 0 SAT. Repo circuit:
   all 27 one-seed windows (a value's upward closure plus dead helpers) with k = 4..8 UNSAT in
@@ -385,8 +407,9 @@ signatures).
   and was not refuted.
 - Frontier at 60 s on a loaded machine: k <= 8 for helper windows, k <= 9 for output blocks;
   instances are small (6k variables, 128k clauses at k = 9), so the barrier is search. Hardness
-  tracks the number of free (non-output) new values rather than k [measured on 51 instances;
-  prediction stated in the report].
+  was first read as tracking the number of free (non-output) new values rather than k; the
+  running batch refutes that strong form (free = 1 climbs from 0.6 s at k = 4-5 to 1,257 s at
+  k = 12): both k and the free count matter [measured, review 2].
 - What this does and does not say: an 87, if it exists, shares no refuted 79-84-value kept set
   with these three circuits; it may still share a smaller part, or lie near another plateau. The
   machinery (one core, exact, strictly stronger than the walk's view) is the right instrument for
@@ -400,7 +423,8 @@ the complete remove1 neighbourhood (remove any one helper, repair with one exact
 no state with fewer gates [checked, exhaustive per state, F11]; (b) for the 88 plateaus whose +1
 band PES explored (mc24: 49 plateaus; kste1: 19 compressed so far), every RESOLVED +1 exit
 descent ends on the home plateau or on another 88 plateau, and none ends below 88; but 56 % of
-the +1 descents (kste1 at 17:27 UTC: 18,622 of 33,364; mc24 plateaus: ~55-60 %) were CUT at the
+the +1 descents (kste1 at 17:33 UTC: 18,734 of 33,594 = 55.8 %; mc24: 58-66 % per completed
+plateau, 60-64 % pooled) were CUT at the
 descent's state bound before landing anywhere and are unresolved [measured; `pes2_tasks.py:
 classify`, the bound is `cfg.bound_plus1` visited states]; the +2 band was descended for 0 of
 13,212 classes on the Barrier-Tree plateau and LNS rebuilds for 4 combinations [owner's export,
@@ -436,8 +460,9 @@ NOT a proof of disconnection: chains hop through 89 states that the sampler most
 components would merge if two chains ever passed through one node between samples. The
 population estimate (F12) assumes independent chains, a landing probability proportional to
 size^alpha with alpha fitted from about six coincidences, and unseen plateaus resembling the seen
-small ones; its distribution-free part is the floor (effective number >= ~2,500 at 95 %), its
-model part is the order of magnitude (1e5, 3e4-5e5).
+small ones; the part free of assumptions on the landing distribution (it still assumes independent,
+exchangeable chains) is the floor (effective number >= ~2,500 at 95 %, conservative: the
+node-level meetings imply >= ~3e4), its model part is the order of magnitude (3e4-5e5).
 
 **I.4 The SAT exclusions (F13), stated exactly.** Fixed: a kept set K of values from one
 specific 88 circuit, chosen so that inputs ∪ K is split-closed (79-84 of its 88 values). Free:
@@ -501,8 +526,42 @@ Predictions written at 17:35 UTC (the 2.4 h snapshot below was seen; nothing lat
   (different roots). Prediction: fewer than 2 % of signatures are shared across arms at 13 h.
 - P5: no arm produces an 87 (0 of 729 states below 88 so far). A single 87 refutes this and
   is harvested at once.
-Analysis scripts: `hunt/descents.py hunt/runsD` (arrivals, depths, restarts) and
-`hunt/sigD.py runsD samplesD/samples.jsonl 13` (identity, pairing). Final numbers at ~04:10 UTC.
+Registered by review 2 at 17:40 UTC (seen: the 2.4 h snapshot, nothing later):
+- Q1 (tests F11's reading): with P = cross-chain distinct-node incidence pairs over all D chains
+  at 13 h and M = v3 nodes entered by >= 2 chains, M = P / 1.3e5 within the Poisson 95 % interval
+  (P ~ 6e6 -> M ~ 46, [33, 61]). Below: genuine locality of trails; above: hubs; inside: one pool
+  sparsely sampled.
+- Q2: P / M at 13 h lies in [5e4, 3e5].
+- Q3: among D's shared v3 nodes that are exactly catalogued, at least half have >= 1e5 states; the
+  first-landing plateaus of D's chains are pairwise distinct (<= 1 repeat among ~200 chains).
+- Q4: `pes_lib.fan` on every sampled 88 state of D: 0 down moves, 0 TOPK binds.
+- Q5: for 10 random D 88 states, every one-seed window with k <= 8 is UNSAT within 60 s and every
+  byte block with free <= 1 and k <= 10 within 120 s (a SAT is an 87; a different timeout pattern
+  shows the frontier is circuit-dependent).
+Analysis scripts: `hunt/descents.py hunt/runsD` (arrivals, depths, restarts),
+`hunt/sigD.py runsD samplesD/samples.jsonl 13` (identity, pairing), `review2/dnull.py` (null
+model), `review2/fans.py` (fans). Final numbers at ~04:10 UTC.
+
+## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, 17:40-18:50 UTC)
+
+- F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-
+  wandering expectation for ~1.3e5 effective nodes (null model); the graph says nothing about
+  connectivity. Survived: 0 remove1 down-exits at all 1,869 states (recomputed), hop locality,
+  the ~44/h floor. Wording fixed in F11, UNDERSTANDING 4 and 8.
+- F12 WEAKENED: the alpha fit and the 1e5 centre are conditional on excluding 18 giant entries of
+  unknown size (alpha 1.35 -> 0.95 or 0.50 if they are large singletons) and on the effort ratio
+  behind the signature alpha (HT 79k-400k). The floor is not "distribution-free": it assumes
+  independent, exchangeable chains (17 of 40 catalogued chains share 6 first roots; no same-root
+  pair shared a plateau). Chao2/D2 reproduce exactly; the chain-pair floor is >= 3,041.
+- F13 SURVIVED on soundness (equivalence via fresh splits, symmetry breaks, UNSAT independent of
+  pruning); its "hardness tracks free values not k" prediction is refuted in strong form; counts
+  updated from the batch.
+- I.1/UNDERSTANDING: five sentences that could be read as "87 is unreachable by heuristic search"
+  were replaced (F11 reading, UNDERSTANDING 4 x2, F11 title, UNDERSTANDING 8); mc24 unresolved is
+  58-66 % per completed plateau, 60-64 % pooled (kste1 56 % correct).
+- Hindsight: F11-F13 had no pre-registered predictions; F14 P1-P5 and Q1-Q5 are the pre-registered
+  tests for hunt D. Next measurements adopted: re-run compress on the 18 giant seeds with larger
+  limits (identity + size), exact catalogue of all sampled states, Q1-Q5 at 04:10 UTC.
 
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
