@@ -529,7 +529,10 @@ best at the cap plus NIST's; several 8x8 maps' best were at other depths, so the
 never been searched, e.g. klsw17-m-8x8-gf256 347@6 -> 321@10); (iii) 4x4 maps already sat at
 the floor the search can reach (X1: fresh roots reach the repo best within the hour on every
 4x4 map); (iv) run-to-run spread (~3 gates on 64x64 maps, ~1 on 4x4) makes 1-3-gate gains on
-large maps indistinguishable from repeats. (i)-(iii) are not separated by the present data: all
+large maps indistinguishable from repeats. F25 (23:50 UTC) separates them on the existing run data: (ii) is excluded as a general mechanism,
+(iii) is supported for 4x4 maps, prior worker-hours were equal across classes so (i) is untestable
+in its literal form, and the gains follow a log-decaying curve from ordinary one-hour endpoints.
+Before F25 the text read: (i)-(iii) are not separated by the present data: all
 three predict the observation. Distinguishing tests: a second worker-hour on each sweep map
 from its new best (if (i), gains continue at a similar rate; if (ii), they stop once the band
 is searched); a 4x4 map given a depth band it was never searched at (if (ii), it gains too);
@@ -1020,6 +1023,39 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
 - Together with F16 (75 replayed) and F20 (odd-helper checkers replayed): every bound the sprint
   quotes as established has now been machine-replayed here; what remains "read, not checked" is the
   mathematics of the reductions, in every case.
+
+## F25. The 8x8-vs-4x4 gain pattern, explanations separated on existing data (xmapsep agent, high; `xmapsep/REPORT.md`, tables in `xmapsep/table.md`, `table2.md`) [measured; reading tagged]
+
+- Observation reproduced from the 27 trials' run directories (one bookkeeping change: sw1 khazad is
+  343@16 under cap 18, gain 2). Honest count after the spread: 7-9 of 20 8x8-matrix trials gained more
+  than same-seed repeats differ (1-3 gates on 64x64 maps; 0-1 on 4x4), 0 of 7 4x4 trials.
+- (i) prior worker-hours: both classes had the same prior search (median 2 worker-hours per map, 0 at
+  exactly NIST's depth for 21 of 27 trials, same 2026-10-30 protocol); gain is uncorrelated with prior
+  hours (rho 0.00 within 8x8) and the size effect is unchanged after partialling them out (rho
+  +0.63..+0.67, p < 0.001). The literal form is untestable with no variance in the predictor and
+  excluded as the class explanation; 4x4 maps did have ~3.7x the prior iterations per seed gate
+  (faster engine), collinear with size.
+- (ii) unsearched depth band: EXCLUDED as a general mechanism. Seed depth slack does not predict gain
+  (gain >= 3: 5 of 10 with slack vs 5 of 10 without; rho -0.04); three of the four largest gains came
+  from seeds at the cap with our circuits at the result depth; the "4x4 map at an unsearched band" test
+  has effectively run three times (slack 2, 1, 1: gains 0, 0, 1). The one fitting trial (klsw17-m-8x8-
+  gf256 347@6 -> 321@10) is a weak-comparison-point effect: the map went from 4.7 % to 11.8 % below
+  NIST, the ordinary 10-12 % that NIST-seeded chains reach on other 8x8 maps in 1-4 worker-hours; within
+  8x8, relative gain vs the pre-trial gap below NIST has rho -0.60 (p 0.005).
+- (iii) 4x4 maps at the floor: SUPPORTED. On all 5 X1 4x4 maps the fresh root, NIST's circuit and ours
+  end within 0-1 gate; the fresh root reaches the repo count in 20-216 s and nothing follows; all 7 4x4
+  trials made their last drop within the first 31 % of the run (median 2 %). On the 3 X1 8x8 maps the
+  three starts end at different numbers (grostl 582 / 364 / 366; klsw17-inv 398 / 327 / 346).
+- Within-run shape: 8x8 trials: 3 still improving at the end, 7 slowing, 8 plateaued, 2 no drop; 4x4:
+  all plateaued; rho(gain, lateness of last drop) +0.71. Every curve decelerates: 165 gates removed in
+  the first half of the 8x8 runs, 27 in the second half, 5 in the final quarter; the 2 h pt runs' second
+  hour gave about a quarter of the first.
+- Reading [guess on these measurements]: the 8x8 pre-trial circuits were ordinary one-hour endpoints of
+  chains that mostly ran at other depths; each trial is a 2nd-5th worker-hour on a log-decaying curve;
+  "compute-limited" is true only in the sense that the curve has not flattened; "unsearched band" is
+  needed for no trial; prior-optimization differences and the floor explain the class split.
+- Most informative run (12 threads, 1 h): the six sw2 maps twice, from the new bests and as exact
+  repeats of sw2 with a different RNG seed; the predictions of each reading are listed in the report.
 
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 

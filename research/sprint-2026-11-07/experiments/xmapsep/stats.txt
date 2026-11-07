@@ -1,0 +1,223 @@
+====================================================================================================
+SPEARMAN rank correlations of gain at the cap (gates, floored at 0) with candidate predictors
+  n = 27 all trials; n = 20 8x8-matrix maps; n = 7 4x4 maps.  [measured: trials.csv]
+====================================================================================================
+predictor                     all rho       p    8x8 rho       p    4x4 rho       p   note
+wh_cap                           0.03   0.888       0.00   0.992      -0.26   0.576    (i) prior worker-h at exactly this cap
+wh_cap1                          0.03   0.888       0.00   0.992      -0.26   0.576    (i) prior worker-h at cap +-1
+wh_ge                            0.22   0.275       0.06   0.810       0.00   1.000    (i) prior worker-h with cap >= this cap or uncapped
+wh_total                         0.29   0.148       0.08   0.737       0.00   1.000    (i) prior worker-h on the map, any cap
+log_wh_total                     0.29   0.148       0.08   0.737       0.00   1.000    (i) log10 prior worker-h on map
+wh_total_it                      0.03   0.882       0.06   0.812       0.00   1.000    (i') prior worker-iterations on map (hours x trial it/s)
+wh_total_it_per_gate            -0.17   0.385       0.01   0.975      -0.32   0.490    (i') prior iterations per gate of the seed
+worker_h                        -0.06   0.778       0.23   0.338       0.30   0.513    trial compute (worker-h in this trial)
+seed_slack                       0.07   0.724      -0.04   0.878       0.00   1.000    (ii) cap - depth of our best seed (0 = seed sits at the cap)
+nearest_prior_depth_dist         0.26   0.185       0.26   0.278       0.65   0.117    (ii) |depth of result - nearest prior circuit depth|
+n_in                             0.67   0.000       0.40   0.077       0.26   0.576    size: inputs
+repo_best_g                      0.51   0.007       0.07   0.770       0.80   0.032    size: gates of our best at <= cap
+it_per_s                        -0.53   0.004      -0.17   0.462      -0.32   0.490    iteration rate (inverse size proxy)
+pre_gap_vs_nist                 -0.15   0.449      -0.62   0.004       0.47   0.282    (iii) how far below NIST at the cap our seed already was, (NIST-ours)/NIST
+depth_drift                      0.22   0.277       0.44   0.051      -0.42   0.350    depth of our pre-trial any-depth best minus the cap (>0: earlier search drifted deeper)
+abs_drift                        0.36   0.063       0.36   0.118      -0.25   0.587    |depth drift|
+
+Same, outcome = relative gain (gates gained / gates of our best at <= cap):
+predictor                     all rho       p    8x8 rho       p
+wh_cap                          -0.05   0.806      -0.01   0.972  
+wh_cap1                         -0.05   0.806      -0.01   0.972  
+wh_ge                            0.10   0.607       0.06   0.811  
+wh_total                         0.18   0.367       0.09   0.696  
+log_wh_total                     0.18   0.367       0.09   0.696  
+wh_total_it                      0.04   0.862       0.08   0.725  
+wh_total_it_per_gate            -0.12   0.567       0.04   0.882  
+worker_h                         0.07   0.725       0.23   0.319  
+seed_slack                       0.03   0.879      -0.04   0.873  
+nearest_prior_depth_dist         0.35   0.070       0.32   0.164  
+n_in                             0.50   0.009       0.38   0.098  
+repo_best_g                      0.33   0.098       0.01   0.952  
+it_per_s                        -0.38   0.052      -0.17   0.462  
+pre_gap_vs_nist                 -0.13   0.507      -0.60   0.005  
+depth_drift                      0.23   0.241       0.45   0.049  
+abs_drift                        0.30   0.130       0.37   0.110  
+
+PARTIAL rank correlations (residual ranks), gain vs size (n_in) and vs class controlling for (i)/(ii):
+  control ['wh_cap']                               gain~n_in rho +0.67 p 0.000;  gain~is8x8 rho +0.54 p 0.003
+  control ['wh_total']                             gain~n_in rho +0.63 p 0.000;  gain~is8x8 rho +0.49 p 0.009
+  control ['seed_slack']                           gain~n_in rho +0.67 p 0.000;  gain~is8x8 rho +0.54 p 0.004
+  control ['wh_cap', 'seed_slack']                 gain~n_in rho +0.67 p 0.000;  gain~is8x8 rho +0.54 p 0.004
+  control ['wh_total', 'seed_slack']               gain~n_in rho +0.63 p 0.000;  gain~is8x8 rho +0.50 p 0.008
+  control ['wh_total_it_per_gate']                 gain~n_in rho +0.66 p 0.000;  gain~is8x8 rho +0.53 p 0.005
+  control ['wh_total_it_per_gate', 'seed_slack']   gain~n_in rho +0.65 p 0.000;  gain~is8x8 rho +0.52 p 0.005
+  and the reverse: gain vs prior hours controlling for size
+  gain~wh_cap                 | n_in : all rho +0.04 p 0.850;  8x8 rho -0.02 p 0.946
+  gain~wh_total               | n_in : all rho +0.05 p 0.790;  8x8 rho -0.03 p 0.885
+  gain~wh_total_it_per_gate   | n_in : all rho +0.10 p 0.623;  8x8 rho +0.06 p 0.813
+  gain~seed_slack             | n_in : all rho +0.03 p 0.878;  8x8 rho +0.03 p 0.892
+
+====================================================================================================
+2x2 TABLES (Fisher exact, two-sided)  [measured: trials.csv]
+====================================================================================================
+class x gain>=1 (all 27)
+                               gain >= 1      no gain
+   8x8 maps                           16            4
+   4x4 maps                            2            5      Fisher p = 0.023
+class x gain>=3 (all 27)
+                               gain >= 3    gain <= 2
+   8x8 maps                           10           10
+   4x4 maps                            0            7      Fisher p = 0.026
+(i) prior hours at exactly the cap x gain>=1 (all 27)
+                               gain >= 1      no gain
+   prior h at cap > 0                  4            2
+   prior h at cap = 0                 14            7      Fisher p = 1.000
+(i) prior hours at the cap x gain>=3 (8x8 only)
+                               gain >= 3    gain <= 2
+   prior h at cap > 0                  2            3
+   prior h at cap = 0                  8            7      Fisher p = 1.000
+(i) prior hours on the map (any cap) x gain>=3 (8x8 only; 2 h = the batch protocol)
+                               gain >= 3    gain <= 2
+   prior h on map > 2.5                5            4
+   prior h on map <= 2.5               5            6      Fisher p = 1.000
+(ii) seed depth slack x gain>=3 (8x8 only)
+                               gain >= 3    gain <= 2
+   seed below cap (slack>0)            5            5
+   seed at cap (slack=0)               5            5      Fisher p = 1.000
+(ii) seed depth slack x gain>=1 (8x8 only)
+                               gain >= 1      no gain
+   seed below cap (slack>0)            8            2
+   seed at cap (slack=0)               8            2      Fisher p = 1.000
+(ii) seed depth slack x gain>=1 (all 27)
+                               gain >= 1      no gain
+   seed below cap (slack>0)            9            4
+   seed at cap (slack=0)               9            5      Fisher p = 1.000
+(ii) result depth band (+-1) empty before the trial x gain>=3 (all 27)
+                               gain >= 3    gain <= 2
+   result band empty before            1            0
+   result band had a circuit            9           17      Fisher p = 0.370
+
+Gap below NIST at the cap, before and after the trial, by class [measured: trials.csv]:
+  8x8: before median 6.2% [4.7-14.6]; after median 7.4% [5.6-14.9]
+  4x4: before median 4.9% [0.0-7.9]; after median 4.9% [0.0-7.9]
+  per trial (8x8), sorted by gain: klsw17-m-8x8-gf256:4.7->11.8%; klsw17-m-8x8-gf256-inv:6.0->11.1%; klsw17-m-8x8-gf256-inv:6.0->10.3%; skop15-8x8-gf256-inv:4.9->7.5%; ss17-8x8-gf16:6.2->9.6%; khazad:5.7->7.1%; fox-mu8:6.5->7.4%; fox-mu8:6.5->7.4%; whirlpool-maelstrom:7.3->8.2%; bkl16-8x8-gf256:5.0->5.6%; grostl:10.7->11.2%; khazad:5.7->6.3%; ss17-8x8-gf256:6.2->6.7%; grostl:14.6->14.9%; skop15-8x8-gf256:6.1->6.3%; ls16-8x8-gf256:5.4->5.6%; skop15-8x8-gf16:14.1->11.2%; skop15-8x8-gf16:14.1->14.1%; jpst17-8x8-gf256-inv:6.6->6.6%; klsw17-m-8x8-gf16-0x13-inv:7.4->7.4%
+  per trial (4x4): lw16-4x4-gf256-inv-circ:7.9->7.9%; ss16-4x4-gf256:6.7->7.7%; jpst17-4x4-gf256:4.9->4.9%; aes-mixcolumns:0.0->0.0%; small-scale-aes:2.3->2.3%; skop15-4x4-gf256-inv:3.3->3.3%; anubis-clefia-m0:6.1->7.1%
+  Spearman gain_rel vs pre_gap (8x8): SignificanceResult(statistic=-0.5973555891006049, pvalue=0.005416398299597629)
+  Spearman post_gap vs pre_gap (8x8): SignificanceResult(statistic=0.45574417041355664, pvalue=0.04343891532991478)
+
+Mann-Whitney U, gain 8x8 vs 4x4: MannwhitneyuResult(statistic=119.0, pvalue=0.006029494858705875)
+Mann-Whitney U, relative gain 8x8 vs 4x4: MannwhitneyuResult(statistic=102.0, pvalue=0.07574137874551064)
+
+Prior search received, by class (median [min-max]) [measured: prior_wh.csv via trials.csv]:
+  wh_cap                 8x8:        0.0 [0.0-4.0]   4x4:        0.0 [0.0-6.0]
+  wh_cap1                8x8:        0.0 [0.0-4.0]   4x4:        0.0 [0.0-6.5]
+  wh_ge                  8x8:        1.0 [1.0-14.0]   4x4:        1.0 [0.0-6.5]
+  wh_total               8x8:        2.0 [2.0-214.0]   4x4:        2.0 [0.0-7.0]
+  wh_total_it            8x8:     1742.0 [918.0-107856.0]   4x4:     3312.0 [0.0-17822.0]
+  wh_total_it_per_gate   8x8:        9.6 [2.1-213.6]   4x4:       35.2 [0.0-424.3]
+  it_per_s               8x8:      575.0 [338.0-899.0]   4x4:     1705.0 [1390.0-2546.0]
+  repo_best_g            8x8:      348.5 [146.0-505.0]   4x4:       88.0 [42.0-97.0]
+
+====================================================================================================
+WITHIN-RUN: last drop of the (seeded) workers' own best at <= cap, as a fraction of the run; gains by half
+  klass: still improving = last drop in the final quarter; slowing = in the third quarter; plateaued = first half
+====================================================================================================
+run  map                         cls gain t_last/dur klass            own h1 own h2 own q4 drops q4 start ->   end
+sw2  klsw17-m-8x8-gf256          8x8   26       0.96 still improving      20      6      3        3   347 ->  321@10
+x1a  klsw17-m-8x8-gf256-inv      8x8   19       0.61 slowing              38      3      0        0   368 ->  327@12
+pt1  klsw17-m-8x8-gf256-inv      8x8   16       0.92 still improving      14      2      1        4   346 ->  330@12
+sw2  skop15-8x8-gf256-inv        8x8    9       0.74 slowing               8      1      0        0   331 ->  322@13
+pt1  ss17-8x8-gf16               8x8    6       0.59 slowing               5      1      0        0   167 ->  161@10
+pt2  khazad                      8x8    5       0.32 plateaued             5      0      0        0   345 ->  340@15
+pt2  fox-mu8                     8x8    5       0.75 still improving       1      4      1        1   505 ->  500@11
+sw1  fox-mu8                     8x8    5       0.49 plateaued             5      0      0        0   505 ->  500@11
+sw1  whirlpool-maelstrom         8x8    4       0.73 slowing               2      2      0        0   394 ->  390@10
+sw1  bkl16-8x8-gf256             8x8    3       0.12 plateaued             3      0      0        0   442 ->   439@9
+x1a  grostl                      8x8    2       0.74 slowing              40      6      0        0   410 ->  364@11
+sw1  khazad                      8x8    2       0.75 slowing               1      1      0        0   345 ->  343@16
+sw2  ss17-8x8-gf256              8x8    2       0.46 plateaued             2      0      0        0   392 ->   390@8
+sw1  grostl                      8x8    1       0.10 plateaued             1      0      0        0   350 ->  349@15
+sw2  skop15-8x8-gf256            8x8    1       0.32 plateaued             1      0      0        0   418 ->   417@8
+sw2  ls16-8x8-gf256              8x8    1       0.69 slowing               0      1      0        0   404 ->   403@8
+x1a  skop15-8x8-gf16             8x8   -5       0.36 plateaued            19      0      0        0   170 ->  151@13
+pt1  skop15-8x8-gf16             8x8    0       0.46 plateaued             0      0      0        0   146 ->  146@14
+sw1  jpst17-8x8-gf256-inv        8x8    0        nan no drop               0      0      0        0   493 ->  493@11
+sw2  klsw17-m-8x8-gf16-0x13-inv  8x8    0        nan no drop               0      0      0        0   163 ->  163@11
+x1b  ss16-4x4-gf256              4x4    1       0.20 plateaued             7      0      0        0   104 ->    96@5
+pt2  anubis-clefia-m0            4x4    1       0.09 plateaued             1      0      0        0    92 ->    91@8
+x1a  lw16-4x4-gf256-inv-circ     4x4    0       0.01 plateaued             7      0      0        0    89 ->    82@5
+x1b  jpst17-4x4-gf256            4x4    0       0.02 plateaued             4      0      0        0    82 ->    78@6
+x1b  aes-mixcolumns              4x4    0        nan no drop               0      0      0        0    88 ->    88@5
+x1b  small-scale-aes             4x4    0       0.31 plateaued             1      0      0        0    43 ->    42@5
+pt2  skop15-4x4-gf256-inv        4x4    0       0.01 plateaued             0      0      0        0    88 ->    88@6
+
+  8x8: still improving 3, slowing 7, plateaued 8, no drop 2
+  4x4: still improving 0, slowing 0, plateaued 6, no drop 1
+  among 8x8 trials with gain >= 3: still improving 3, slowing 4, plateaued 3
+  among 8x8 trials with gain <= 2: still improving 0, slowing 3, plateaued 5
+  Spearman gain vs frac_last_drop (all): SignificanceResult(statistic=0.7121059798803623, pvalue=9.494038834498014e-05)
+  Second-half share of the own gain, 8x8 trials with own gain > 0: grostl:6/46, skop15:0/19, klsw17:3/41, ss17:1/6, klsw17:2/16, khazad:0/5, fox:4/5, grostl:0/1, khazad:1/2, whirlpool:2/4, fox:0/5, bkl16:0/3, klsw17:6/26, skop15:0/1, skop15:1/9, ss17:0/2, ls16:1/1
+  8x8 totals: first half 165 gates, second half 27, final quarter 5 (own-best series, seeded workers)
+
+pt trials (2 h per worker): gates gained from the start seed in hour 1 vs hour 2 (merged own-best series):
+  pt1 skop15-8x8-gf16             hour1 0  hour2 0  last drop at 3333.0 s of 7200
+  pt1 ss17-8x8-gf16               hour1 5  hour2 1  last drop at 4232.0 s of 7200
+  pt1 klsw17-m-8x8-gf256-inv      hour1 14  hour2 2  last drop at 6608.0 s of 7200
+  pt2 skop15-4x4-gf256-inv        hour1 0  hour2 0  last drop at 64.0 s of 7200
+  pt2 anubis-clefia-m0            hour1 1  hour2 0  last drop at 617.0 s of 7200
+  pt2 khazad                      hour1 5  hour2 0  last drop at 2275.0 s of 7200
+  pt2 fox-mu8                     hour1 1  hour2 4  last drop at 5417.0 s of 7200
+
+====================================================================================================
+REPEATS AND SEED COMPARISONS  [measured: workers.csv]
+====================================================================================================
+Per-worker results (pt trials have two workers per map: one started from our best, one from NIST's):
+  x1a grostl-fresh-00                    start root           -> 582@12   drops  62 first imp       s, last drop  3393 s, restarts 130
+  x1a grostl-nist-00                     start NIST 410@12    -> 364@11   drops  44 first imp     5 s, last drop  2682 s, restarts 8
+  x1a skop15-8x8-gf16-fresh-00           start root           -> 157@11   drops  47 first imp       s, last drop   801 s, restarts 0
+  x1a skop15-8x8-gf16-nist-00            start NIST 170@19    -> 151@13   drops  19 first imp     0 s, last drop  1304 s, restarts 0
+  x1a klsw17-m-8x8-gf256-inv-fresh-00    start root           -> 398@12   drops 381 first imp       s, last drop  3574 s, restarts 48
+  x1a klsw17-m-8x8-gf256-inv-nist-00     start NIST 368@12    -> 327@12   drops  40 first imp     6 s, last drop  2203 s, restarts 5
+  x1a lw16-4x4-gf256-inv-circ-fresh-00   start root           -> 82@5     drops  41 first imp       s, last drop    54 s, restarts 2
+  x1a lw16-4x4-gf256-inv-circ-nist-00    start NIST 89@7      -> 82@5     drops   7 first imp     1 s, last drop    31 s, restarts 1
+  x1b ss16-4x4-gf256-fresh-00            start root           -> 96@5     drops   8 first imp       s, last drop    78 s, restarts 2
+  x1b ss16-4x4-gf256-nist-00             start NIST 104@6     -> 97@5     drops   7 first imp     2 s, last drop   724 s, restarts 2
+  x1b jpst17-4x4-gf256-fresh-00          start root           -> 78@6     drops  12 first imp       s, last drop   216 s, restarts 1
+  x1b jpst17-4x4-gf256-nist-00           start NIST 82@7      -> 78@6     drops   4 first imp     2 s, last drop    85 s, restarts 1
+  x1b aes-mixcolumns-fresh-00            start root           -> 89@5     drops  18 first imp       s, last drop   243 s, restarts 35
+  x1b aes-mixcolumns-nist-00             start ours 88@5      -> 88@5     drops   0 first imp       s, last drop       s, restarts 2
+  x1b small-scale-aes-fresh-00           start root           -> 42@5     drops  17 first imp       s, last drop    20 s, restarts 2
+  x1b small-scale-aes-nist-00            start NIST 43@5      -> 42@5     drops   1 first imp  1117 s, last drop  1117 s, restarts 2
+  pt1 skop15-8x8-gf16-00                 start ours 146@14    -> 146@14   drops   0 first imp       s, last drop       s, restarts 2
+  pt1 skop15-8x8-gf16-01                 start NIST 170@19    -> 146@14   drops  20 first imp     1 s, last drop  3333 s, restarts 1
+  pt1 ss17-8x8-gf16-00                   start ours 167@10    -> 165@9    drops   2 first imp    23 s, last drop  1962 s, restarts 3
+  pt1 ss17-8x8-gf16-01                   start NIST 178@10    -> 161@10   drops  17 first imp     3 s, last drop  4232 s, restarts 4
+  pt1 klsw17-m-8x8-gf256-inv-00          start ours 346@12    -> 331@12   drops  15 first imp    45 s, last drop  7077 s, restarts 15
+  pt1 klsw17-m-8x8-gf256-inv-01          start NIST 368@12    -> 330@12   drops  36 first imp    10 s, last drop  6608 s, restarts 18
+  pt2 skop15-4x4-gf256-inv-00            start ours 88@6      -> 88@6     drops   0 first imp       s, last drop       s, restarts 20
+  pt2 skop15-4x4-gf256-inv-01            start NIST 91@6      -> 88@6     drops   3 first imp     6 s, last drop    64 s, restarts 27
+  pt2 anubis-clefia-m0-00                start ours 92@8      -> 91@8     drops   1 first imp   617 s, last drop   617 s, restarts 4
+  pt2 anubis-clefia-m0-01                start NIST 98@9      -> 91@8     drops   5 first imp     1 s, last drop  5248 s, restarts 4
+  pt2 khazad-00                          start ours 345@15    -> 342@16   drops   3 first imp   268 s, last drop  3558 s, restarts 0
+  pt2 khazad-01                          start NIST 366@18    -> 340@15   drops  25 first imp     9 s, last drop  2275 s, restarts 0
+  pt2 fox-mu8-00                         start ours 505@11    -> 500@11   drops   5 first imp   185 s, last drop  5417 s, restarts 0
+  pt2 fox-mu8-01                         start NIST 540@14    -> 508@11   drops  32 first imp    12 s, last drop  3543 s, restarts 0
+
+Same map, same cap, independent runs (natural repeats):
+  klsw17-m-8x8-gf256-inv cap 12 from NIST 368@12:
+     x1a:klsw17-m-8x8-gf256-inv-nist-00        3601 s -> 327@12   (last drop 2203 s)
+     pt1:klsw17-m-8x8-gf256-inv-01             7200 s -> 330@12   (last drop 6608 s)
+  klsw17-m-8x8-gf256-inv cap 12 from ours 346@12:
+     pt1:klsw17-m-8x8-gf256-inv-00             7201 s -> 331@12   (last drop 7077 s)
+  khazad cap 18 from ours 345@15:
+     pt2:khazad-00                             7201 s -> 342@16   (last drop 3558 s)
+     sw1:khazad-00                             3601 s -> 343@16   (last drop 2693 s)
+  khazad cap 18 from NIST 366@18:
+     pt2:khazad-01                             7201 s -> 340@15   (last drop 2275 s)
+  fox-mu8 cap 14 from ours 505@11:
+     pt2:fox-mu8-00                            7201 s -> 500@11   (last drop 5417 s)
+     sw1:fox-mu8-00                            3601 s -> 500@11   (last drop 1776 s)
+  fox-mu8 cap 14 from NIST 540@14:
+     pt2:fox-mu8-01                            7201 s -> 508@11   (last drop 3543 s)
+  skop15-8x8-gf16 cap 19 from NIST 170@19:
+     x1a:skop15-8x8-gf16-nist-00               3600 s -> 151@13   (last drop 1304 s)
+     pt1:skop15-8x8-gf16-01                    7201 s -> 146@14   (last drop 3333 s)
+  grostl from NIST 410@12 (cap 12 x1a; cap 16 sw1 had ours 350@16):
+     x1a:grostl-nist-00                        3600 s -> 364@11   (last drop 2682 s)
+     sw1:grostl-00                             3600 s -> 349@15   (last drop 377 s)

@@ -125,9 +125,12 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   on 64x64 maps (R); on 4x4 maps 2 of 7 trials gained one gate (F7, F9, F10) [measured]. Where the
   gain came from on the map that gained 26 gates (klsw17-m-8x8-gf256 347@6 -> 321@10): a depth band
   nobody had searched; the gates minimum of several maps sits at a middle depth, not the deepest
-  searched (F10) [measured, 3 maps; mechanism conjectured]. Compute-limited, under-searched depth band
-  and prior-optimization differences all predict the 8x8-vs-4x4 pattern and are not separated by the
-  present data (FINDINGS I.5 lists the distinguishing runs; none has run).
+  searched (F10) [measured, 3 maps; mechanism conjectured]. Separated on the existing run data (F25): "unsearched depth band" is excluded as a general
+  mechanism (seed slack does not predict gain; the 26-gate case is a weak-comparison-point effect); 4x4
+  maps sit at the floor the search reaches (fresh root, NIST's circuit and ours converge within 0-1
+  gate in minutes); both classes had equal prior worker-hours, and the 8x8 gains are the 2nd-5th hour
+  of a log-decaying curve from ordinary one-hour endpoints (165 / 27 / 5 gates removed in the first
+  half / second half / final quarter of the runs) [measured; reading tagged guess].
 - Small maps with proved optima (69 maps, 6-16 inputs, 5-34 gates): v8 reaches the optimum in 1,380
   of 1,380 runs within 60 s, median 3 iterations [measured, bench]. The minima form ONE plateau under
   the real moves in all 15 fully enumerated maps; the fragmentation seen earlier came from depth caps
@@ -302,6 +305,6 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
 - Why the gates minimum of a map sits at a middle depth (F10: klsw17-m-8x8-gf256 321@10 beats
   everything at depth 12-15; grostl 349@15 vs 350@16): a budget effect of the depth window, a
   property of the map, or under-search of the deeper band.
-- Which of compute limits, an unsearched depth band or prior optimization explains the 8x8-vs-4x4
-  gain pattern (FINDINGS I.5: a second worker-hour per sweep map from its new best; a 4x4 map at an
-  unsearched depth; repeats from the same seed).
+- How fast the log-decaying gain curve on 8x8 maps flattens (F25: the second hour gives about a
+  quarter of the first; the most informative run is the six sw2 maps twice, from the new bests and as
+  seeded repeats).
