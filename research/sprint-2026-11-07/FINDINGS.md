@@ -588,6 +588,15 @@ at k = 5, 6.
 - Transfer to the unrestricted 87 question: plateau = product of re-pairings; first-layer motion one
   pair at a time; records clustering into few entry events. Depth-4 only: the small plateau, the
   immobile first layer, the single family.
+- P2 TESTED and FALSIFIED (18:40 UTC, `q89/s16_p2.py`): 12 distinct 90@4 states carry the 89's exact
+  26-pair first layer (none is a run record; all are pinned-completion outputs of the foundation
+  studies); 0 of 12 lie in L0's +1 band (0 in B1 of 16,173 states; no direct remove1 step down;
+  bounded descents of 5,000 states reach no <= 89 state; one is provably outside, trapped in a
+  9-state 90-plateau). Eleven share one alternative level-2/3 realisation over x0, x1, x7-x9,
+  x15-x17, x23-x25, x31 that costs one gate more. So the first layer is necessary (all data) but
+  not sufficient for the 89 family: the same first layer supports at least two 90-level families
+  not connected to L0 under the capped moves. This matches the 6:4 split of pinned completions and
+  the 840 s the v9c arrival still needed after landing on a first-layer-equal 90 [measured].
 
 ## F16. The unrestricted lower bound 75 and what 76 would take (lb76 agent, xhigh effort, `lb76/REPORT.md`) [replayed / derived / read]
 
