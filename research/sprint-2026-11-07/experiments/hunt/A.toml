@@ -1,0 +1,28 @@
+# Hunt arm A: v8 baseline, AES MixColumns uncapped, fresh roots only, no sharing.
+# Every descent is an independent sample; records sample the plateau at the worker best so that
+# the 88 plateaus reached can be identified offline (record_stride / records_per_point).
+
+[campaign]
+name = "hunt-A-v8default"
+seed = 20261107
+duration = "8h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+
+[[workers]]
+name = "free"
+target = "aes-mixcolumns"
+count = 6
+objective = "gates"
+depth_cap = "none"
+seeds = ["root"]

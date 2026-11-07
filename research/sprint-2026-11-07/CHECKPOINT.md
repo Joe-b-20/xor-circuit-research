@@ -1,0 +1,88 @@
+# Sprint 2026-11-07: living checkpoint
+
+Owner: autonomous research sprint (Claude), started 2026-11-07 03:00 UTC, hard stop ~2026-11-08
+06:00 UTC. Branch `sprint-2026-11-07-linear-maps`. Raw data: `~/xs-campaigns/2026-11-07-sprint/`
+(agent brief `BRIEF.md` there). Findings are collected in [FINDINGS.md](FINDINGS.md) as they
+are established; this file is the state of play. Evidence tags: [proved] [checked] [measured]
+[cited] [guess].
+
+## 1. State of code and experiments
+
+- Baseline search: repo v8 (`search/xorflux`), unchanged. Prototypes v9a-f, v10 live outside the
+  repo in `~/xs-campaigns/v9-proto`, `v10-proto` (read-only this sprint unless a change is kept).
+- Machine: 20 threads, 31 GB. No other jobs were running at the start (the user stopped everything
+  at 02:19 UTC).
+- **Hunt A/B** (launched 03:16 UTC, 8 h, repo v8, AES MixColumns uncapped, fresh roots only, no
+  sharing, 6 + 6 workers): `hunt/runs/A` = v8 defaults; `hunt/runs/B` = stall 300 s and
+  incumbent_factor 1 (restart sooner once at the bottom). Chain states of at most 89 gates are
+  sampled every 30 s by `hunt/sampler.py` into `hunt/samples.jsonl`; `hunt/descents.py` gives
+  the descent statistics; `hunt/plateaus.py` identifies the 88 plateaus reached (PES compression,
+  modulo byte rotation) and writes `hunt/plateaus.json`, flagging any remove1 down-exit.
+  Purpose: (a) the discovery curve of distinct 88 plateaus against worker-hours (does the set of
+  88 plateaus saturate?), (b) B's hypothesis that time at a sealed 88 plateau is wasted, (c) an
+  87 lottery with every descent.
+- **Agents** (started 03:35 UTC): `crossmap/` (map properties vs search outcomes over the 59 maps,
+  with a falsifiable ranking of maps for further gain), `bench/` (benchmark of small maps with
+  exact optima from SAT, plus `run_bench.py` harness for engine variants), `lit/` (literature:
+  best known MixColumns counts, bounds, methods, exact-optimality results).
+
+## 2. What was already known at the start (inherited; see the sources before trusting)
+
+- A circuit is exactly its value set; plateaus (remove1-neutral closures) are exact Cartesian
+  products of small independent factors: MC 88@5 = 3^7, MC 89@4 = 3^4, InvMC 118@5 = 5·5·2·2·2
+  [checked, 2026-11-05-views/plateau, 2026-11-05-exit]. A 3-way factor is a 3-input XOR tree
+  whose intermediate is unshared [guess, to be checked this sprint].
+- remove1 never leaves an 88 (or 118) plateau downward [checked]. +1 exits from 49 MC 88 plateaus
+  go home or join other 88 plateaus at ceiling 89 (groups of 16/16/7/2); no 87 from +1 or partial
+  +2/lns passes (PES mc24, ~19 h) [checked/measured].
+- MC 89@4 is one level-1 set (one family up to rotation); every 90@4 ever visited sits on a
+  different level-1 set; one pair swapped costs ~+3 [measured]. InvMC 118@5 has 23 level-1 sets.
+- Waits are time in dead rooms; drops are big moves landing in rich rooms; no local predictor of a
+  productive state was found among ~20 candidates; copying walkers onto the newest best is the
+  strongest lever on InvMC descents [measured, 2026-11-03-waits].
+- Implementation: no-op remove1 calls take ~35 % of proposal CPU; depth.repair is a no-op at the
+  minimum depth; star-memory blocking 67-92 % [measured, v10-proto].
+- More workers than threads add no compute [measured, 2026-11-06-layout].
+- Compute history: >10,000 core-hours on MixColumns since June; no 87. Lower bound 75 [proof in
+  repo, not peer reviewed].
+
+## 3. New findings this sprint (summary; details in FINDINGS.md)
+
+- 03:40 UTC, hunt first 25 min [measured, descents.py]: from fresh roots, uncapped, v8 reaches
+  <= 89 in every chain within 10-162 s and 88 in 4 of 12 chains within 50-216 s. This is far
+  faster than the July figure (every 88 within 3,855 s of its root, median 2,234 s): descending
+  to 88 is cheap; the whole difficulty is below 88.
+
+## 4. Rejected explanations and failed approaches (this sprint)
+
+- none yet
+
+## 5. Unresolved questions (ranked by how much they would change what we do)
+
+1. Does the set of MC 88 plateaus saturate under repeated independent descents (finite, small
+   landscape at 88) or keep growing? Decides whether an 87 reachable from the 88 level could have
+   been missed.
+2. What is the barrier height from the 88 level to any 87, if one exists? (PES: > +1 from 49
+   plateaus; +2 partial.)
+3. Which map properties predict the search's gap to the optimum (bench + crossmap).
+4. Is the "3-way factor = unshared 3-input tree" reading of the plateau products right, and does
+   the number of factors predict anything (exits, descents)?
+
+## 6. Active jobs and how to inspect them
+
+| Job | Cores | Started (UTC) | Ends | Inspect |
+|---|---|---|---|---|
+| hunt A, B | 12 | 03:16 | 11:16 | `python3 search/xorflux status ~/xs-campaigns/2026-11-07-sprint/hunt/runs/{A,B}`; `hunt/descents.py hunt/runs` |
+| sampler | ~0 | 03:25 | with hunt | `hunt/samples.jsonl` |
+| agent crossmap | <=2 | 03:35 | ~06:30 | `crossmap/REPORT.txt` |
+| agent bench | <=6 | 03:35 | ~08:30 | `bench/REPORT.txt` (first version ~05:30) |
+| agent lit | 0 | 03:35 | ~04:30 | `lit/REPORT.txt` |
+
+## 7. Next actions
+
+1. At ~1 h of hunt: run `plateaus.py`, read the discovery curve and arm comparison; decide whether
+   B's restart policy wins (arrivals at 88 per worker-hour).
+2. When `bench/` reports: run v8 vs v10 vs a short-stall variant on the benchmark; this is the
+   fair instrument for "better search decisions".
+3. Test 2-3 of crossmap's predictions with 1 h runs on 4 workers each.
+4. Keep the checkpoint and FINDINGS.md current; commit at each milestone.
