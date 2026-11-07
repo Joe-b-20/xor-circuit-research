@@ -1,6 +1,7 @@
 # Linear maps and the XORFlux search: what we understand (sprint 2026-11-07)
 
-Status: DRAFT, updated during the sprint (last 06:00 UTC). Every statement carries an evidence
+Status: DRAFT, updated during the sprint (last 15:40 UTC; an adversarial re-derivation of
+F1-F9 is folded in, see FINDINGS R). Every statement carries an evidence
 tag: [proved] [checked] [measured] [cited] [guess]. Four kinds of object are kept apart: the
 MAP (the matrix), the CIRCUIT (a value set), the SEARCH PROCEDURE (moves, acceptance,
 restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
@@ -38,20 +39,23 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Acceptance. Neutral moves kept; uphill +1 while cost <= chain best + 2; a depth window of 2
   above the chain best [from code]. This lets a chain at 88 climb to 89 and fall into a
   different 88 plateau: an A-arm chain visited 6+ distinct 88 plateaus in 30 min (F5 data).
-  The window is the one acceptance knob with an established effect: removing it halves the
-  iterations to the reference on three MixColumns analogues (F8, replicated concurrently) and
-  on MixColumns itself raised the share of chains reaching 88 from 81 % to 88 % and arrivals
-  per worker-hour from 1.51 to 1.94 (hunt C, one run; hunt D is the controlled 3-arm test).
+  The window is the one acceptance knob with an established effect: removing it makes the
+  search succeed far more often within the budget on two MixColumns analogues (0.65 -> 0.97,
+  0.62 -> 1.00) and faster per seed on the third (0.59x iterations) (F8, replicated
+  concurrently, 3 maps x 40 seeds). On MixColumns itself hunt C's 88 % vs 81 % of chains
+  reaching 88 and 1.94 vs 1.51 arrivals per worker-hour are inside the noise (rate ratio
+  1.29, interval ~0.8-2.2); hunt D (3 arms, same first roots, 13 h) is the controlled test.
 - Restarts. v8 restarts a chain 900 s after its last improvement, 1,800 s while it holds the
-  worker best. On MixColumns uncapped from fresh roots, restarting after 300 s gives 2.4x more
-  independent arrivals at 88 per worker-hour at the price of abandoning half the chains at 89
-  (F6) [measured]. Whether that is "better" depends on the objective (sampling many plateaus:
+  worker best. On MixColumns uncapped from fresh roots, restarting after 300 s gives 2.1x more
+  arrivals at 88 per worker-hour (3.15 vs 1.51, full 5 h; 2.15x per iteration) at the price
+  of abandoning half the chains at 89 (F6) [measured]. Whether that is "better" depends on the objective (sampling many plateaus:
   yes; finishing a given descent: no).
 - Sharing / copying. On InvMixColumns descents, copying every worker onto the newest best is
   the strongest lever found (2026-11-03-waits; 2026-11-04-12h copy-only arm) [measured]; it
   collapses diversity, which is exactly what a discovery objective does not want.
-- Roots. Any constructor root (naive, Paar, BP, anneal3) reaches <= 89 in under 3 minutes and
-  88 in 74 % of chains given 20 minutes (F1, F6) [measured]. In the small-map benchmark the
+- Roots. From a constructor root (naive, Paar, BP, anneal3) 77-85 % of chains reach <= 89
+  within 3 minutes and all within 11; 11 of 12 first chains were at 88 by 25 minutes (median
+  414 s) (F1, R) [measured, 6 roots x 2 walks]. In the small-map benchmark the
   first root is already optimal in 15-56 % of runs depending on the constructor [measured,
   bench].
 
@@ -83,9 +87,13 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 ## 4. Where it fails or stalls and why
 
 - MixColumns at 88. Descent is cheap; the whole difficulty is below 88 (F1). The 88 level is
-  vast: each independent descent lands on a new plateau (44 new in 50 min, 2 overlaps with 52
-  known; the kste corpus adds 49 more, 2 shared) (F5). Every +1 exit from every plateau checked
-  (49 by PES, plus the kste plateaus to come) goes home or to another 88. So the search's failure
+  vast: about 18 worker-hours of catalogued descents gave <= 225 distinct plateaus with 3
+  repeats, all three on the largest plateaus (0.8-3.4 M states; landing probability grows
+  with plateau size, so the small ones are under-sampled and the total is far larger; a
+  capture-recapture estimate is in progress) (F5, R). The 52 pre-sprint plateaus sit at depth
+  5-7, the hunt's mostly at 7-10, so "no overlap" with them is mostly a different depth
+  stratum. Every +1 exit from every plateau checked (49 by PES, plus the kste plateaus in
+  kste1) goes home or to another 88. So the search's failure
   below 88 is not slowness or bad decisions: its move set has no down-step from any 88 core
   found so far, and the number of cores is far beyond what sampling can exhaust.
 - Whether an 87 exists is therefore a global question about the map (lower bound 75, no
@@ -115,8 +123,10 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 
 ## 6. What properties of a map matter
 
-- Established across the 59 maps (F4): circuit size; max/mean row weight; sharing left by greedy
-  constructors (base/direct). Not predictive after size: field, matrix dimension, inverse,
+- Established across the 59 maps (F4): circuit size. Max/mean row weight and the sharing left
+  by greedy constructors (base/direct) correlate with the gain but at +0.92 with each other
+  and with little residual variation after size: [in-sample] until tested on fresh maps.
+  Not predictive after size: field, matrix dimension, inverse,
   involutory, circulant/dyadic. On the small proved maps: Paar gap to the optimum and helper
   count predict iterations to optimum; number of inputs does not [measured, bench].
 - MixColumns is mid-class in every measured property; its outcome is explained by its baseline
@@ -126,8 +136,10 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   32x32 map tried, and 89@5 / 88 uncapped on MixColumns; the seeded gains over NIST there are
   the baseline's slack, which is zero for MixColumns (F7). On 64x64 maps one worker-hour from a
   fresh root is far from the frontier, but one NIST-seeded worker-hour beat the repo's circuits
-  on two maps (grostl 364@11, klsw17-m-8x8-gf256-inv 327@12): those maps are compute-limited,
-  not search-limited (F7).
+  on two maps (grostl 364@11, klsw17-m-8x8-gf256-inv 327@12), and the sweep then beat the
+  repo's circuits on 10 of 12 further 8x8-matrix maps in one worker-hour each (F10): those
+  maps are compute-limited, not search-limited [measured gains; the reading is a guess with
+  n = 1 per cell].
 - Search knobs (F8): on the reliability benchmark only removing the depth window had an
   established effect (half the iterations to the reference on small-scale-aes, deeper
   circuits, 10-40 % more CPU per iteration); stall timers, LNS and expand weights showed
@@ -161,4 +173,13 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - The exact per-depth picture: 88 exists at depth 5 and 89 at depth 4; whether 88@4 exists.
 - A predictor of which fresh root reaches 88 (none found; constructor type is a weak one).
 - Whether removing the depth window buys distinct 88 plateaus or only faster re-arrival at
-  ones of the same kind (hunt D, 3 arms, 13 h, ends ~04:00 UTC 11-08).
+  ones of the same kind (hunt D, 3 arms, same first roots, 13 h, ends ~04:06 UTC 11-08), and
+  whether it helps at all under a depth cap (hunt E, cap 5, ~01:00-03:40 UTC).
+- How many 88 plateaus there are (order of magnitude): the 3 repeats in ~225 catalogued
+  plateaus all fell on the largest ones, so a plain capture-recapture count is only a lower
+  bound; a size-weighted estimate is being computed (`estimate/REPORT.txt`).
+- Whether the 88 cores form one connected graph under the +1 band, and where the descents
+  land in it relative to any core with a down-exit (reviewer's point; not drawn yet).
+- Why the gates minimum of a map sits at a middle depth (F10: klsw17-m-8x8-gf256 321@10 beats
+  everything at depth 12-15; grostl 349@15 vs 350@16): a budget effect of the depth window, a
+  property of the map, or under-search of the deeper band.
