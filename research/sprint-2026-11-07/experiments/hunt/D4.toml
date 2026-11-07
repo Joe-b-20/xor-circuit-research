@@ -1,0 +1,30 @@
+# Hunt D, arm D4: v8 defaults with engine.depth_window = 4 (default 2).  13 h, 4 workers.
+# Bench (section 12, 20 seeds): window 4 reached the reference in 0.90 of runs vs 0.65, median
+# iterations 54k vs 95k; here the question is whether it keeps the gate/depth trade milder than
+# "none" on MixColumns while giving the same mobility between 88 plateaus.
+
+[campaign]
+name = "hunt-D4-window4"
+seed = 20261108
+duration = "13h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+"engine.depth_window" = 4
+
+[[workers]]
+name = "free"
+target = "aes-mixcolumns"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["root"]

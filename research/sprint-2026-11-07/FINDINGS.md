@@ -181,6 +181,21 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   between time windows for the same knobs) is larger than any knob effect. v10-proto was worse
   than depth_window=none in its window and not established against default.
 - Not established either way: stall 20/60 s, LNS x2, expand x3.
+- Replication (bench agent, 11:48-13:12 UTC, both arms concurrent, 3 processes each, seeds
+  0-39, 120 s per run, machine load 20-23; `bench/REPORT.txt` section 12,
+  `bench/results/variants_r12*`): depth_window=none reaches the reference in 0.43-0.50x the
+  iterations on all three maps (mc_gf16 0.46 [0.22-0.82]; mc_gf16_p1f, a circulant(2,3,1,1)
+  over GF(16) with row weights 5/7 like MixColumns, 0.50; mc_gf8b 0.43); fewer iterations in
+  28 of 40 seed pairs on each map (sign test p 0.005-0.017). Success within 120 s: established
+  higher on mc_gf8b (0.65 -> 0.97) and mc_gf16_p1f (0.62 -> 1.00), not on small-scale-aes
+  (0.68 -> 0.82, interval -0.04..+0.33). Costs: up to 28 % slower iterations, circuits about one
+  level deeper (median 9-11 vs 8-10). depth_window 4 and 6 (20 seeds, mc_gf16 only): 0.90 vs
+  0.65 success, median iterations 54k/34k vs 95k; suggestive, not established. All uncapped;
+  a wider window trades depth for gates, so depth-capped targets may not benefit.
+  Status of the knob: the one search-procedure change this sprint with an established effect
+  on the MixColumns analogues, consistent with hunt C on MixColumns itself (88 % vs 81 % of
+  chains reaching 88, 1.94 vs 1.51 arrivals per worker-hour; one run each, not a controlled
+  comparison because C ran alongside different jobs than A).
 - Reading, tied to F5: the depth window (2 levels above the chain best) limits which +1 states
   a chain may pass through; on MixColumns those +1 states are how a chain migrates between 88
   plateaus. Prediction: hunt arm C (A with depth_window none) finds more distinct 88 plateaus

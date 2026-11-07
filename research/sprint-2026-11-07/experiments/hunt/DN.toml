@@ -1,0 +1,28 @@
+# Hunt D, arm DN: v8 defaults with engine.depth_window = none (= arm C), run concurrently with
+# D0 and D4 so the three arms share the same machine conditions.  13 h, 4 workers.
+
+[campaign]
+name = "hunt-DN-nowindow"
+seed = 20261108
+duration = "13h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+"engine.depth_window" = "none"
+
+[[workers]]
+name = "free"
+target = "aes-mixcolumns"
+count = 4
+objective = "gates"
+depth_cap = "none"
+seeds = ["root"]
