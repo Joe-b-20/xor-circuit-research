@@ -1,0 +1,32 @@
+pes_lib space cap_real 4 -> search cap 4
+repo state via pes_lib: gates 89 depth 4 neutral 8 downs 0 topk binds 0
+cap-4 closure of repo 89@4: 81 states, complete=True, neutral moves per state {8: 81}, down moves total 0, outcome depths {4: 648}, binds 0, 10s
+closure == the 81 unrotated record states: False  |L0 & REC81| = 0  rotated record states in L0: 81
+constant helpers in all 81 states: 53; variable values: 12; occurrences: {27: 12}
+slots (mutually exclusive groups): [3, 3, 3, 3]  distinct choice tuples: 81 of 81
+   slot: ['x2+x7+x10+x15', 'x2+x10+x27', 'x7+x15+x27']
+   slot: ['x11+x19+x20', 'x11+x15+x19+x23', 'x15+x20+x23']
+   slot: ['x11+x18+x26', 'x11+x23+x31', 'x18+x23+x26+x31']
+   slot: ['x3+x4+x27', 'x4+x7+x31', 'x3+x7+x27+x31']
+levels of variable values in repo state: {'x11+x15+x19+x23': 2, 'x11+x23+x31': 2, 'x7+x15+x27': 2, 'x4+x7+x31': 2}
+
+space cap_real 5 -> search cap 6
+  member fan: gates 89 depth 4 neutral 15 by outcome depth {5: 7, 4: 8} downs 0 binds 0
+  member fan: gates 89 depth 4 neutral 15 by outcome depth {5: 7, 4: 8} downs 0 binds 0
+  member fan: gates 89 depth 4 neutral 15 by outcome depth {5: 7, 4: 8} downs 0 binds 0
+  bounded closure at cap 5: reached 1531 after 400 expansions (20s), complete=False, downs seen 0, depths of expanded {4: 33, 5: 349, 6: 18}
+
+space cap_real None -> search cap None
+  member fan: gates 89 depth 4 neutral 15 by outcome depth {5: 7, 4: 8} downs 0 binds 0
+  member fan: gates 89 depth 4 neutral 15 by outcome depth {5: 7, 4: 8} downs 0 binds 0
+  member fan: gates 89 depth 4 neutral 15 by outcome depth {5: 7, 4: 8} downs 0 binds 0
+  bounded closure at cap None: reached 1763 after 400 expansions (22s), complete=False, downs seen 0, depths of expanded {4: 33, 5: 337, 6: 17, 7: 7, 9: 2, 8: 4}
+
+own value-set remove1 model at cap 4 (all admissible single repairs, greedy trim):
+  member: own neutral 1, own down 0, pes_lib neutral 8; own==pes False; own-pes 1 pes-own 8; own neutral in L0: 1  (21s)
+     own-only neutral outcome: removed [] added [] in L0
+  member: own neutral 1, own down 0, pes_lib neutral 8; own==pes False; own-pes 1 pes-own 8; own neutral in L0: 1  (20s)
+     own-only neutral outcome: removed [] added [] in L0
+  member: own neutral 1, own down 0, pes_lib neutral 8; own==pes False; own-pes 1 pes-own 8; own neutral in L0: 1  (15s)
+     own-only neutral outcome: removed [] added [] in L0
+total 108 s

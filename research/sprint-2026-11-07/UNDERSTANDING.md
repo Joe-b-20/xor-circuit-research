@@ -253,8 +253,9 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   plateau of 81 circuits = 4 slots x 3 re-pairings over a 53-value core, carries one 26-pair first
   layer that none of 5,798 distinct 90@4 states shares; the walk moves a first layer one pair at a
   time, so entry is rare (two entry events in all recorded cap-4 runs; the cap-4 core-hour total is
-  not computed); the first layer is necessary but not sufficient (12 first-layer-equal 90@4 states lie
-  outside the family's +1 band); uncapped the family is no trap (F15); 26 first-layer gates is not
+  not computed); the first layer is necessary but not sufficient (of 26 recorded 90@4 states carrying it, the
+  8 that ended their runs at 90 do not connect to the family under remove1, while 11 transient
+  ones do; q89check); uncapped the family is no trap (F15); 26 first-layer gates is not
   proved necessary; InvMC has 23 level-1 sets in its 118 family); the MixColumns 88 vocabulary (303
   helper values mod rotation over the 52 pre-sprint plateaus, growing by ~3-4 words per new plateau
   with more than half of new plateaus adding none: 303 -> 947 over 200 hunt plateaus, vocab.log).

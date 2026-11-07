@@ -1,0 +1,23 @@
+repo 89@4: gates 89 helpers 57
+
+=== 89@4: files scanned 620, accepted 526, rejected {'not MixColumns (targets missing)': 95}
+  accepted by campaign: {'2026-10-31-adopt': 156, '2026-10-31-long': 32, '2026-11-03-12h': 2, '2026-11-03-waits': 7, '2026-11-04-12h': 317, '2026-11-04-mc87': 11, 'repo': 1}
+  distinct helper sets (= distinct value sets): 90
+  distinct modulo Z4 byte rotation: 81  classes with >1 member: 9
+  depth (least levels) histogram: {4: 90}  unreachable-value states: 0
+  profiles: [((26, 22, 29, 12), 90)]  (distinct profiles: 1 )
+  distinct level-1 sets: 2  first-layer size histogram: {26: 90}
+
+=== 90@4: files scanned 13220, accepted 13141, rejected {'not MixColumns (targets missing)': 79}
+  accepted by campaign: {'2026-10-29-bench': 64, '2026-10-29-hunt2-89at4': 265, '2026-10-29-hunt89at4': 252, '2026-10-29': 40, '2026-10-31-adopt': 254, '2026-10-31-long': 32, '2026-11-02-v9b': 352, '2026-11-02-v9c': 416, '2026-11-02-why': 256, '2026-11-03-12h': 320, '2026-11-03-v9e': 192, '2026-11-04-12h': 1152, '2026-11-06-layout': 1890, '2026-11-06-w500': 7656}
+  distinct helper sets (= distinct value sets): 5798
+  distinct modulo Z4 byte rotation: 5796  classes with >1 member: 2
+  depth (least levels) histogram: {4: 5798}  unreachable-value states: 0
+  profiles: [((23, 25, 29, 13), 1569), ((23, 25, 30, 12), 795), ((23, 24, 30, 13), 561), ((23, 26, 29, 12), 348), ((24, 24, 31, 11), 251), ((23, 24, 29, 14), 216)]  (distinct profiles: 60 )
+  distinct level-1 sets: 183  first-layer size histogram: {21: 4, 22: 161, 23: 4075, 24: 1277, 25: 209, 26: 72}
+
+89@4 states by first layer (rotation of the repo 89's L1 by s bits): {0: 81, 8: 9}
+90@4: states whose L1 equals the 89's L1 under some rotation: {}
+90@4: histogram of max overlap with the 89's 26 pairs over rotations: {24: 72, 23: 82, 21: 16, 20: 18, 19: 338, 18: 2150, 17: 2943, 16: 127, 15: 20, 14: 19, 13: 13}
+90@4: states with 26 first-layer gates: 72  distinct L1 sets among them: 1
+   26-set vs the 89's L1: missing ['x1+x8', 'x8+x24'] extra ['x0+x16', 'x8+x16']  max overlap over rotations 24

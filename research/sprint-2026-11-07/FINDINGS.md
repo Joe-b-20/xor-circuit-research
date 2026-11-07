@@ -675,6 +675,18 @@ at k = 5, 6.
   not sufficient for the 89 family: the same first layer supports at least two 90-level families
   not connected to L0 under the capped moves. This matches the 6:4 split of pinned completions and
   the 840 s the v9c arrival still needed after landing on a first-layer-equal 90 [measured].
+- Independent check (q89check, 23:30 UTC, `q89check/REPORT.md`): claims (1), (2), (3) CONFIRMED with
+  own code (526 files -> 90 -> 81 mod rotation; closure 81 complete, 8 neutral moves, 0 down, 53-value
+  core, 4 x 3 slots, reproduced both with pes_lib at cap 4 and with an independent value-set model;
+  90@4: 5,798 states, first layers {21: 4, 22: 161, 23: 4,075, 24: 1,277, 25: 209, 26: 72}, none equal
+  to the 89's under any rotation). P2 corrected in scope: scanning every g = 90, d = 4 best event in
+  the pinned-completion logs gives 26 distinct 90@4 states with the 89's first layer (not 12); of
+  the 26, 1 is in B1, 3 have a direct remove1 step into L0 and 11 descend to L0 by bounded remove1
+  BFS (all among the 18 transient states of runs that ended at 89), 4 sit in 9-state 90-pockets, 11
+  were cut at 3,000. The 8 run-final traps (the population P2 was about) all fail to connect, so
+  "necessary but not sufficient" stands; the wording "no 90@4 over this first layer connects to
+  L0" would be false (11 of 26 on disk are in L0's remove1 basin). The >= 3,096 / >= 6,117 closures
+  are budget-dependent lower bounds, and "plateau = 81" is about single-value repairs.
 
 ## F16. The unrestricted lower bound 75 and what 76 would take (lb76 agent, xhigh effort, `lb76/REPORT.md`) [replayed / derived / read]
 
@@ -968,6 +980,9 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
 
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
+- F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
+  first-layer-equal 90@4 states on disk, 11 of them in the family's remove1 basin; the 8 run-final
+  traps are not). Applied in F15 and UNDERSTANDING 7.
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h
   16-23, weight-2 rigidity); interpretation corrected: margin = -(E_B + L_H) <= 0 for every circuit
   of every gate count, so nothing "saturates" specifically at 88; reconstruction ambiguity of the
