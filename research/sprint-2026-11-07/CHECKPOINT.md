@@ -129,7 +129,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | ~14:55 | `sweep/runs/sw{1,2}`, `sweep/driver.log`; harvest afterwards |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
 | hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | ~14:55 | ~03:55 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
-| sig.py over all 1,869 hunt 88 states (A/B/C); first launch died silently, relaunched as a tracked task | 1 | 13:32 | ~14:15 | `hunt/sig.log`, `hunt/sigs.json` |
+| sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |
+| hunt E: cap-5 MixColumns, E0 default vs EN depth_window none, 4+4 workers, 2.5 h (review point "depth") | 8 | after kste1 ends (~01:00 11-08) | ~03:40 | `hunt/runsE/{E0,EN}`, `hunt/driverE.log`, sampler `hunt/samplesE/samples.jsonl`; `hunt/descents.py hunt/runsE` |
 
 Harvest at the end: `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py x1/runs/x1a x1/runs/x1b predtest/runs/pt1 predtest/runs/pt2` (dry run; `--apply` adds via circuits/add.py), then `python3 circuits/check.py`. Already known new circuits: grostl 364@11, klsw17-m-8x8-gf256-inv 327@12, ss16-4x4-gf256 96@5.
 

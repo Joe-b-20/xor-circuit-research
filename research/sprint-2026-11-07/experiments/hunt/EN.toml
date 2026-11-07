@@ -1,0 +1,28 @@
+# Hunt E, arm EN: v8 with engine.depth_window = none, MixColumns at depth cap 5, fresh roots,
+# 4 workers, 2.5 h, concurrent with E0 (same campaign seed, so the same first roots).
+
+[campaign]
+name = "hunt-EN-cap5-nowindow"
+seed = 20261109
+duration = "2.5h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+"engine.depth_window" = "none"
+
+[[workers]]
+name = "cap5"
+target = "aes-mixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["root"]

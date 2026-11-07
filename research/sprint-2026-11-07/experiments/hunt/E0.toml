@@ -1,0 +1,29 @@
+# Hunt E, arm E0: v8 defaults, MixColumns at depth cap 5, fresh roots, 4 workers, 2.5 h.
+# Control for EN.  Question (review C, "depth"): does removing the depth window, which trades
+# depth for gates uncapped, still help when the target is a depth-capped record (88@5)?
+# Outcome: per chain, time to <= 90@5, 89@5, 88@5; arrivals per worker-hour.
+
+[campaign]
+name = "hunt-E0-cap5-default"
+seed = 20261109
+duration = "2.5h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+
+[[workers]]
+name = "cap5"
+target = "aes-mixcolumns"
+count = 4
+objective = "gates"
+depth_cap = 5
+seeds = ["root"]
