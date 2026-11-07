@@ -91,4 +91,23 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   classes claimed) and a README arguing an "88-XOR barrier" from a bit-slice block decomposition
   plus SAT/MITM refutations of 87 in stated scopes (73 "double-optimal" circuits; sub-DAGs; a
   1,607-signal pool; a tropical DP). None of the refutations is a general proof; the scopes are
-  circuit classes around known 88s. Being checked by the `kste/` agent against our plateaus.
+  circuit classes around known 88s.
+- kste agent results (2026-11-07 05:20 UTC, `kste/REPORT.txt`, own parser and checker) [checked]:
+  - all 18,938 published circuits are exact 88-gate MixColumns circuits (same bit convention
+    as ours); 17,462 distinct value sets, 17,337 modulo rotation; depths 5-12.
+  - they lie on only **49 plateaus** (remove1 closures as products); one plateau of 60·3^6
+    states holds 64 % of the corpus; the 47 circuits of circuits_1.txt each seed a plateau and
+    the rest are walks around them. The 46 depth-5 circuits lie on 2 plateaus, one of which is
+    our `mc88_other44`. Overall overlap with us: 2 of their plateaus touched by our runs; our
+    repo 88@5, NIST's 88@5 and 536 of 539 live hunt states are on none of theirs.
+  - the README's "1,607-signal pool" cannot be reproduced (their helpers give 1,073 values,
+    1,702 closed under rotation); 315 of 389 hunt samples use helpers outside even that pool,
+    so their "UNSAT at <= 87 on the pool" does not cover our region.
+  - the six block "floors" (3, 20, 10, 24, 10, 16) are exactly the corpus minima under one
+    reading (classify each value by the input bit positions it touches); all our 88s respect
+    them too (a regularity of known 88s, not a proof). Read as sub-maps of output bits, SAT gives
+    only weaker bounds (>= 9, 12, 13 on three blocks; the claimed values timed out).
+  - no encodings, logs or proofs are in the repo; none of the four refutations can be rerun.
+  - J. Jean's PDF could not be fetched (bot check); depth and method unknown.
+  - Conclusion: 87 remains open; the public evidence is "many 88s, all sealed at +1", the
+    same picture as ours, from an independent generator in a largely different region.
