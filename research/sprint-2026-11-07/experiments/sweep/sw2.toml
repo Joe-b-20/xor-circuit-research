@@ -1,0 +1,54 @@
+[campaign]
+name = "sweep-sw2"
+seed = 20261110
+duration = "1h"
+profiles = ["default"]
+sharing = "off"
+
+[[workers]]
+name = "klsw17-m-8x8-gf256"
+target = "klsw17-m-8x8-gf256"
+count = 1
+objective = "gates"
+depth_cap = 11
+seeds = ["seeds/klsw17-m-8x8-gf256-g347-d6.json", "target"]
+
+[[workers]]
+name = "skop15-8x8-gf256"
+target = "skop15-8x8-gf256"
+count = 1
+objective = "gates"
+depth_cap = 8
+seeds = ["seeds/skop15-8x8-gf256-g418-d8.json", "target"]
+
+[[workers]]
+name = "skop15-8x8-gf256-inv"
+target = "skop15-8x8-gf256-inv"
+count = 1
+objective = "gates"
+depth_cap = 13
+seeds = ["seeds/skop15-8x8-gf256-inv-g331-d13.json", "target"]
+
+[[workers]]
+name = "ss17-8x8-gf256"
+target = "ss17-8x8-gf256"
+count = 1
+objective = "gates"
+depth_cap = 9
+seeds = ["seeds/ss17-8x8-gf256-g392-d8.json", "target"]
+
+[[workers]]
+name = "ls16-8x8-gf256"
+target = "ls16-8x8-gf256"
+count = 1
+objective = "gates"
+depth_cap = 9
+seeds = ["seeds/ls16-8x8-gf256-g404-d8.json", "target"]
+
+[[workers]]
+name = "klsw17-m-8x8-gf16-0x13-inv"
+target = "klsw17-m-8x8-gf16-0x13-inv"
+count = 1
+objective = "gates"
+depth_cap = 12
+seeds = ["seeds/klsw17-m-8x8-gf16-0x13-inv-g163-d12.json", "target"]
