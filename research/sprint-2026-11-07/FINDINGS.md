@@ -577,8 +577,10 @@ with it; the data on disk are complete to that point):
 - Null model (Q1, Q2): 2,095,065 cross-chain incidence pairs, 10 shared nodes, N_eff ~ 2.1e5;
   expectation at 1.3e5 is 16.1 (Poisson 95 % ~ [9, 25]): inside, at the low edge. Q1 does not
   reject the one-pool reading; a mild deficit of meetings is compatible with the data but not
-  established. Q2 (P/M in [5e4, 3e5]) holds. Q3 needs the exact catalogue (running). Q4: fans on
-  all D states below (see the addendum line). Q5 is stage 1 of the SAT campaign batch2 (running).
+  established. Q2 (P/M in [5e4, 3e5]) holds. Q3 needs the exact catalogue (running). Q4 CONFIRMED:
+  `pes_lib.fan` on all 2,445 sampled D 88 states: 0 states with a down move, 0 TOPK binds, neutral
+  moves 8/16/40 (min/median/max) [measured, `q4.sh`]. Q5 is stage 1 of the SAT campaign batch2
+  (running since 21:46).
 - Reading: removing the depth window changes WHERE chains land (much deeper 88 plateaus) more
   than how often they arrive or how many distinct plateaus they visit per worker-hour. The
   analogue-benchmark gain (F8) did not reproduce as an arrival-rate gain on MixColumns in 25
@@ -758,7 +760,9 @@ at k = 5, 6.
   step by step against PROOF.md with two wording remarks and no gap; finite facts S1 and N3max
   recomputed independently; 559 circuits / 2,236 phases with an independent implementation: 0
   violations, (G*) tight on 112 phases; LP recount reproduced 1,313 / 681 with the rows implemented
-  as stated. Not a bound improvement: 1,313 claims remain open at 75 by LP status. What a referee
+  as stated; the checker's own independent LP implementation (`qcheck/lp_indep.py`, run 21:48 UTC)
+  gives identical key sets (1,134 / 755 / 1,051 / 681, symmetric difference 0) and 1,313 survivors.
+  Not a bound improvement: 1,313 claims remain open at 75 by LP status. What a referee
   would still want is listed in the check report (package-style proof of G*, Farkas certificates for
   the 6,103 newly excluded claims, the rows added to the package's stress checker). The uncertified
   integer-oracle figure (1,167) is not a result.

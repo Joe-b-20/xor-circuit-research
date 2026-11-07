@@ -1,7 +1,7 @@
 # Linear maps and the XORFlux search: what we understand (sprint 2026-11-07)
 
-Status: DRAFT, updated during the sprint (last 15:40 UTC; an adversarial re-derivation of
-F1-F9 is folded in, see FINDINGS R). Every statement carries an evidence
+Status: DRAFT, updated during the sprint (last 21:55 UTC; two adversarial re-derivations are
+folded in, FINDINGS R and R2; proof-side results F16-F18 added). Every statement carries an evidence
 tag: [proved] [checked] [measured] [cited] [guess]. Four kinds of object are kept apart: the
 MAP (the matrix), the CIRCUIT (a value set), the SEARCH PROCEDURE (moves, acceptance,
 restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
@@ -44,7 +44,11 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   0.62 -> 1.00) and faster per seed on the third (0.59x iterations) (F8, replicated
   concurrently, 3 maps x 40 seeds). On MixColumns itself hunt C's 88 % vs 81 % of chains
   reaching 88 and 1.94 vs 1.51 arrivals per worker-hour are inside the noise (rate ratio
-  1.29, interval ~0.8-2.2); hunt D (3 arms, same first roots, 13 h) is the controlled test.
+  1.29, interval ~0.8-2.2). Hunt D (3 arms, same first roots, 6.4 h before the machine failed;
+  F14): arrivals per worker-hour 1.49 / 1.69 / 1.80 for window 2 / 4 / none (ratio 1.21, interval
+  ~0.8-1.9: not established), distinct plateaus per worker-hour 24.5 / 26.8 / 26.0 (no gain), but
+  the no-window arm lands far deeper (27.5 % of its 88 states at depth >= 10 vs 2.5 %). The window
+  changes where chains land, not how often or how widely [measured].
 - Restarts. v8 restarts a chain 900 s after its last improvement, 1,800 s while it holds the
   worker best. On MixColumns uncapped from fresh roots, restarting after 300 s gives 2.1x more
   arrivals at 88 per worker-hour (3.15 vs 1.51, full 5 h; 2.15x per iteration) at the price
@@ -198,9 +202,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   The bit-slice block floors (3, 20, 10, 24, 10, 16) hold for every known 88 but are not proved.
 - The exact per-depth picture: 88 exists at depth 5 and 89 at depth 4; whether 88@4 exists.
 - A predictor of which fresh root reaches 88 (none found; constructor type is a weak one).
-- Whether removing the depth window buys distinct 88 plateaus or only faster re-arrival at
-  ones of the same kind (hunt D, 3 arms, same first roots, 13 h, ends ~04:06 UTC 11-08), and
-  whether it helps at all under a depth cap (hunt E, cap 5, ~01:00-03:40 UTC).
+- Whether removing the depth window helps at all under a depth cap (hunt E, cap 5, never ran);
+  uncapped it buys neither arrivals (not established) nor distinct plateaus (refuted at 1.2x), only
+  deeper landings (F14).
 - How many 88 plateaus there are, more precisely than "1e5, floor 2,500" (F12): the exact
   catalogue on the remaining ~1,390 sampled states (a day of one core) would give ~100
   coincidences and pin the size exponent.
