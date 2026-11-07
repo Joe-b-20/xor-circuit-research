@@ -62,9 +62,23 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   "88 barrier" argument with scoped SAT refutations of 87; agent `kste/` is comparing their corpus
   and scopes with our plateaus (F3).
 
+- 05:30-06:00 UTC: kste corpus = 49 plateaus, no overlap with our region, 87 refutations
+  scoped (F3); hunt at 2 h: B 2.4x arrivals at 88 per worker-hour (F6) but A finds at least as
+  many distinct plateaus because chains migrate between 88 plateaus through 89 (F5 update);
+  76 new plateaus, 0 landings on the 52 known ones, vocabulary 303 -> 643 (F5). Bench agent:
+  69 proved-optimum maps, v8 solves all; the reliability instrument is circulant(2,3,1,1) over
+  GF(16) (14/20 in 120 s); engine-variant A/B delegated to it (starts 06:20).
+
 ## 4. Rejected explanations and failed approaches (this sprint)
 
-- none yet
+- "Time at a sealed 88 plateau is pure repeated work" (my reading of F2): wrong as a statement
+  about the chain. remove1 re-spells, but the chain leaves the plateau through +1 states every
+  1-2 minutes and lands on new 88 plateaus (F5 update). Restarting sooner (F6) buys arrivals,
+  not distinct cores.
+- "The 88 level is a small set of families" (implicit in earlier work that kept finding the
+  same 49-63 plateaus from the same seeds): wrong; fresh descents never land on known plateaus.
+- kste's "88-XOR barrier": not a proof; its floors are corpus minima and its SAT scopes do not
+  contain our circuits (F3).
 
 ## 5. Unresolved questions (ranked by how much they would change what we do)
 

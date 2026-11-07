@@ -76,6 +76,20 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
 - Prediction (to test as the hunt continues): the discovery curve (distinct plateaus against
   arrivals) stays close to the diagonal for the whole 8 h; overlap with the 52 pre-sprint
   plateaus stays near zero.
+- UPDATE 06:00 UTC (`hunt/plateaus.py`, `hunt/chains_plateaus.py`, `hunt/vocab_curve.py`;
+  224 sampled 88 states catalogued, time-capped): **76 new plateaus** (A 48, B 28), **0 of 224
+  states on any of the 52 pre-sprint plateaus**; every chain's first 88 state was a plateau no
+  other chain had reached (15 of 15). The vocabulary grew from 303 to 643 values modulo rotation
+  (340 new words over 76 plateaus, 28 of which added none). Shapes: 49 x 3^7, 13 x 33·3^5,
+  11 x 3^8, 10 x 15·3^5, 4 x 3^6, plus coupled products up to 3.4 M states and 3 giants.
+- CORRECTION to F2's consequence and to F6's reading: a chain at 88 is not stuck re-spelling
+  one circuit. Through +1 steps (acceptance allows cost <= chain best + 2) it hops between 88
+  plateaus about once every 1-2 minutes: an A-arm chain visited 17 distinct plateaus in 24 min,
+  another 14 in 23 min; B chains visited 2-6 in their 5 min. So for DISCOVERY of distinct 88
+  cores the long stay of arm A is productive (48 plateaus from 6 chains versus 28 from 9 chains
+  in B's catalogued part), and F6's "arrivals per worker-hour" is the wrong currency: the right
+  one is distinct plateaus per worker-hour, where A is at least as good. Re-spelling (F2) is
+  still what remove1 does; the migration is done by expand/LNS plus the +1 acceptance band.
 - Consequence for the 87 question: whether an 87 exists is a global question about the map,
   not something more descents can settle by sampling; the useful tools are exact (SAT over a
   structured family, lower-bound arguments) rather than more local search. The search question
