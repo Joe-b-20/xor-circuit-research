@@ -30,8 +30,7 @@ if os.path.exists(sp_path):
 for rec in sorted(glob.glob(os.path.join(HUNT, "runs", "*", "workers", "*", "records", "g88-*.json"))):
     parts = rec.split(os.sep)
     arm, w = parts[-5], parts[-3]
-    d = json.load(open(rec))
-    cands.append((os.path.getmtime(rec), arm, w, os.path.basename(rec)[:20], d["values"]))
+    cands.append((os.path.getmtime(rec), arm, w, os.path.basename(rec)[:20], rec))
 cands.sort()
 
 n_new = 0
@@ -41,6 +40,19 @@ for wall, arm, w, h, values in cands:
         continue
     if n_new >= MAXN:
         break
+    if isinstance(values, str):
+        d = json.load(open(values))
+        if d.get("values"):
+            values = d["values"]
+        elif d.get("circuit"):
+            c = d["circuit"]
+            masks = [1 << i for i in range(c["inputCount"])]
+            for a, b in c["gates"]:
+                masks.append(masks[a] ^ masks[b])
+            values = masks[c["inputCount"]:]
+        else:
+            seen_states[h] = None
+            continue
     helpers = [v for v in values if v not in sp.tset]
     st = sp.state(helpers)
     if st.count() != 88:
@@ -84,6 +96,50 @@ json.dump(store, open(out_path + ".tmp", "w"))
 os.replace(out_path + ".tmp", out_path)
 
 print(f"states seen {len(seen_states)}, plateaus {len(P)}")
+
+
+def rot(v, s, n=32):
+    s %= n
+    return ((v << s) | (v >> (n - s))) & ((1 << n) - 1)
+
+
+def rk1(v):
+    return min(rot(v, s) for s in (0, 8, 16, 24))
+
+
+# discovery curve: in order of first sighting, cumulative plateaus and vocabulary (mod rotation)
+known_vocab = set()
+import glob as _g
+for f in _g.glob("/home/joebachir20/xs-campaigns/2026-11-05-exit/runs/*/mc/plateaus/P*.json"):
+    d = json.load(open(f))
+    if d.get("cost") != 88:
+        continue
+    for v in d["core"]:
+        known_vocab.add(rk1(v))
+    for fac in d["factors"]:
+        for ch in fac["choices"]:
+            for v in ch:
+                known_vocab.add(rk1(v))
+print(f"vocabulary of the 52 pre-sprint plateaus: {len(known_vocab)} values mod rotation")
+order = sorted(P.items(), key=lambda kv: kv[1]["first"]["wall"])
+vocab = set(known_vocab)
+t_first = order[0][1]["first"]["wall"] if order else 0
+print("  #  arm  worker   t(min)  size   radices        new words  cum words  members")
+for i, (key, info) in enumerate(order, 1):
+    pl = info["plateau"]
+    vals = set(pl["core"])
+    for fac in pl["factors"]:
+        for ch in fac["choices"]:
+            vals |= set(ch)
+    if pl.get("states"):
+        for s in pl["states"]:
+            vals |= set(s)
+    words = {rk1(v) for v in vals}
+    new = words - vocab
+    vocab |= words
+    f = info["first"]
+    print(f"  {i:2d}  {f['arm']}    {f['worker']}  {(f['wall'] - t_first) / 60:6.1f}  {info['size']:5d}  "
+          f"{str(info['radices']):14s} {len(new):4d}      {len(vocab):5d}   {info['members_seen']}")
 by_arm = {}
 for key, info in P.items():
     by_arm.setdefault(info["first"]["arm"], []).append((info["first"]["wall"], key))

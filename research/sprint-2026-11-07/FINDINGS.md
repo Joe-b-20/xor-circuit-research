@@ -25,9 +25,17 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   circuit's structure; the 2,187 states are one circuit in seven interchangeable spellings. A
   plateau walk at the bottom is therefore pure repeated work, and the only genuine moves out are
   the +1 / +2 edits of the 49-value core (which PES explored).
-- Limits: one circuit; the "unshared" part is inferred from the product structure (if the
-  intermediate had another consumer, re-pairing would change that consumer's recipe and the
-  factor would not be independent). To be checked on the hunt's new plateaus.
+- Extended to all stored PES plateaus (`hunt/pes_plateaus_check.py`, 68 files, 52 distinct 88
+  plateaus modulo rotation): 424 of 424 three-way factors XOR to zero [checked]. Radices: 32
+  plateaus are 3^7; 13 are 33·3^5, 3 are 45·3^4, 1 is 108·3^4, 2 are 3^6, 1 is 12933·3^2: the
+  non-3 factors are coupled blocks where several trees share values.
+- Vocabulary: the union of helper values over the 52 plateaus is 524 raw values = 303 modulo
+  byte rotation (popcount 2: 54, 3: 99, 4: 111, 5: 98, 6: 86, 7: 45, 8+: 31). The 88 level
+  speaks a small language [checked]. Whether new plateaus found by the hunt add words to it is a
+  sharper novelty measure than plateau counts (to be tracked).
+- Limits: the "unshared" part is inferred from the product structure (if the intermediate had
+  another consumer, re-pairing would change that consumer's recipe and the factor would not be
+  independent).
 
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 

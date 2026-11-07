@@ -53,6 +53,15 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   faster than the July figure (every 88 within 3,855 s of its root, median 2,234 s): descending
   to 88 is cheap; the whole difficulty is below 88.
 
+- 03:30 UTC [checked, `hunt/factors.py`, `hunt/pes_plateaus_check.py`]: every 3-way plateau
+  factor is the pairing choice of an unshared 3-input XOR tree (424/424 across 52 known 88
+  plateaus): walking an 88 plateau re-spells the same circuit. The 52 plateaus use only 303
+  helper values modulo rotation (F2).
+- 03:30 UTC [cited, lit agent]: 88 is published (Jean, ePrint 2026/1481, July 2026); nothing
+  below 88 anywhere. github.com/kste/mixcolumns_xor: 18,938 88-XOR circuits and an unreviewed
+  "88 barrier" argument with scoped SAT refutations of 87; agent `kste/` is comparing their corpus
+  and scopes with our plateaus (F3).
+
 ## 4. Rejected explanations and failed approaches (this sprint)
 
 - none yet
@@ -76,7 +85,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | sampler | ~0 | 03:25 | with hunt | `hunt/samples.jsonl` |
 | agent crossmap | <=2 | 03:35 | ~06:30 | `crossmap/REPORT.txt` |
 | agent bench | <=6 | 03:35 | ~08:30 | `bench/REPORT.txt` (first version ~05:30) |
-| agent lit | 0 | 03:35 | ~04:30 | `lit/REPORT.txt` |
+| agent lit | 0 | 03:35 | done 03:40 | `lit/REPORT.txt` |
+| agent kste | <=3 | 03:45 | ~06:45 | `kste/REPORT.txt` (corpus vs our plateaus, scope of the 87 refutations) |
 
 ## 7. Next actions
 
