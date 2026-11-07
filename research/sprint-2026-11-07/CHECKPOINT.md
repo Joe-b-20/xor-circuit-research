@@ -95,12 +95,14 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 
 | Job | Cores | Started (UTC) | Ends | Inspect |
 |---|---|---|---|---|
-| hunt A, B | 12 | 03:16 | 11:16 | `python3 search/xorflux status ~/xs-campaigns/2026-11-07-sprint/hunt/runs/{A,B}`; `hunt/descents.py hunt/runs` |
-| sampler | ~0 | 03:25 | with hunt | `hunt/samples.jsonl` |
-| agent crossmap | <=2 | 03:35 | ~06:30 | `crossmap/REPORT.txt` |
-| agent bench | <=6 | 03:35 | ~08:30 | `bench/REPORT.txt` (first version ~05:30) |
-| agent lit | 0 | 03:35 | done 03:40 | `lit/REPORT.txt` |
-| agent kste | <=3 | 03:45 | ~06:45 | `kste/REPORT.txt` (corpus vs our plateaus, scope of the 87 refutations) |
+| hunt A | 6 | 03:16 | stopped 06:16 | `hunt/runs/A`; `hunt/descents.py hunt/runs` |
+| hunt B | 6 | 03:16 | stopped ~08:25 by predtest/driver.sh | `hunt/runs/B` |
+| sampler + plateau catalogue | ~1 | 03:25 | with hunt | `hunt/samples.jsonl`, `hunt/plateaus.json`, `hunt/plateaus.log`, `hunt/chains.log` |
+| X1 fresh vs NIST (x1a, x1b) | 8 | 06:16 | ~08:25 | `x1/runs/x1a`, `x1/runs/x1b`, `x1/driver.log` |
+| bench engine-variant A/B (agent) | <=6 | 06:20 | ~09:30 | `bench/REPORT.txt` section "Engine variants" |
+| kste1: PES +1 pass on 22 kste 3-way plateaus (+#0) | 8 | ~08:25 | ~00:25 (11-08) | `pes-kste/runs/kste1/status.txt`, `FOUND_*`, `records/`; stop: `pes-kste/pes/stop2.sh kste1` |
+| predtest pt1 (3 maps x 2 workers), then pt2 (4 maps x 2 workers) | 6, 8 | ~08:25, ~10:30 | ~12:30 | `predtest/runs/pt{1,2}`, `predtest/driver.log` |
+| agents crossmap, lit, kste, pes-kste | - | - | done | `*/REPORT.txt` |
 
 ## 7. Next actions
 
