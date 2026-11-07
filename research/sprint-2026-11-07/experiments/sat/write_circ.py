@@ -45,11 +45,11 @@ hdr = ["%NCFF-0.1-2026 (NIST Circuit File Format)", "", "## File source",
        "  % Timestamp (UTC): " + time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
        "  % Not a NIST-issued circuit", "  % Found by: scoped SAT (sprint 2026-11-07, sat/), scope " + d.get("scope", "?") + " of " + d.get("circuit", "?"),
        "", "## Index of circuits (circuitName numOutputs numInputs)",
-       "  % %s 32 32   %% AES MixColumns; 32-bit column; 2-input XOR basis" % name, "",
+       "  % " + name + " 32 32   % AES MixColumns; 32-bit column; 2-input XOR basis", "",
        "## Circuit", "begin circuit " + name, "",
        "  % Interface: x_(8b+r) and y_(8b+r) are bit r (LSB=0) of byte b, b=0:3",
-       "  % Tally of gates (%d): %d XOR" % (gates, gates), "  % Gate depth %d" % depth, "",
-       "Inputs: x0:x31", "Outputs: y0:y31", "Internal: t1:t%d" % ti, "GateSyntax: GateName Output Inputs", "",
+       "  % Tally of gates (" + str(gates) + "): " + str(gates) + " XOR", "  % Gate depth " + str(depth), "",
+       "Inputs: x0:x31", "Outputs: y0:y31", "Internal: t1:t" + str(ti), "GateSyntax: GateName Output Inputs", "",
        "begin SLP"]
 path = os.path.join(outdir, name + ".circ.txt")
 open(path, "w").write("\n".join(hdr + lines + ["end SLP", "end circuit", ""]))
