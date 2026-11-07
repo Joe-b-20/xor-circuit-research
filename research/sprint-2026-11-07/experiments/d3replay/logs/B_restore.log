@@ -1,0 +1,12 @@
+START 2026-11-07T22:34:30Z
+CMD: nice -n 8 timeout 1200 python3 -I /home/joebachir20/xs-campaigns/2026-11-07-sprint/import/zip/tools/restore_checkpoint.py --archive-root /home/joebachir20/xs-campaigns/2026-11-07-sprint/import/zip --source S000001 --destination /home/joebachir20/xs-campaigns/2026-11-07-sprint/d3replay/B/restored --public-repo /home/joebachir20/xor-circuit-research
+Indexing occurrence manifest...
+{
+  "status": "complete_regular_files",
+  "source_id": "S000001",
+  "restored_files": 481,
+  "missing_or_failed": 0,
+  "destination": "/home/joebachir20/xs-campaigns/2026-11-07-sprint/d3replay/B/restored",
+  "restore_report": "/home/joebachir20/xs-campaigns/2026-11-07-sprint/d3replay/B/restored/RESTORE_REPORT.json"
+}
+RC=0 WALL=21s END 2026-11-07T22:34:51Z

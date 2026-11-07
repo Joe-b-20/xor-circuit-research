@@ -536,8 +536,9 @@ is searched); a 4x4 map given a depth band it was never searched at (if (ii), it
 and repeats of the same hour from the same seed to size (iv). None of these can run while the
 machine is full; they are the first compute to spend when threads free up.
 
-**I.6 Bounds, with scope (75 replayed here in 137 s, argument read, not checked; the 2026-11-04 audit
-was the owner's own; the 93 replay was not rerun here). Inverse: also 88-gate unrestricted
+**I.6 Bounds, with scope (75 replayed here in 137 s and 93 replayed here in 2,028 s, F16/F24; arguments
+read, not checked; the 2026-11-04 audit was the owner's own; the owner's latest depth-3 checkpoint
+passes its default replay, its full core search was not completed here). Inverse: also 88-gate unrestricted
 constructions at depths 19 and 33 in the archive; 118@5 optimality open. Conditional / unverified
 results with scope: odd-helper theorems (h <= 2 => G >= 90 [read; h = 0, 1 proofs absent]); "<= 1
 outside value => >= 84" [read]; kste pool-restricted refutations (F3); the Barrier-Tree partial exits.**
@@ -989,6 +990,36 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   With more cores: all free 4-7 pairs at 1,800 s (~40 instances) would complete level 2 and give the
   statement "an 87 keeping the core touches >= 3 factor windows"; then the kste coupled plateaus
   (radices 33/45/108), where components are genuinely larger.
+
+## F24. The owner's depth-3 proofs replayed here (d3replay agent, high; `d3replay/REPORT.md`) [replayed; reductions read, not checked]
+
+- Public depth-3 lower bound 93 (`lower-bound-proofs/mixcolumns-lb93-depth3/verify_all.py`, whose
+  default mode is the full replay): PASS, exit 0, 2,028 s wall on the loaded machine. Counts: 1,216
+  inventory hashes (+4 supplement); six-component partitions 275,354 (271,718 forest + 96 + 3,636
+  Farkas, 0 uncovered), seven-component 22,060 (0 uncovered), eight-component 110,712 (1,552
+  parent-price + 109,160 pair-recipe); 1,113 Farkas certificates; 20,933 forest obstructions; 710
+  orbit representatives; the 97-gate control re-checked; no cached-only mode. The 772-line log equals
+  the 2026-11-04 audit's log after removing timing lines. The audit's "1,222 inventory entries" is an
+  edition difference (the 27-Oct repair edition adds six inherited modules; the repo edition stages
+  four of them from `supplement/`, differing from the archived originals by one trailing blank line
+  each). Scope: depth <= 3, one column, 2-input XOR, otherwise unrestricted; computer-assisted; the
+  mathematical reductions (lossless normal form, recipe-model completeness, universality of the
+  inequalities, enumerator completeness) read, not checked; optimum in [93, 97].
+- The owner's latest depth-3 checkpoint (Ordinary Union, 2026-11-05): restoration needed (472 of 480
+  manifest files in the browsing tree; `restore_checkpoint.py` restored 481 files from occurrences
+  inside the archive, 480/480 manifest check). Default replay: PASS in 49 s (status PASS, 315 W0 roots
+  covered, 49,683,204 complete W leaves, boundary counterexample left side 48, `global97_certified:
+  false`); regenerated records equal the archived ones ignoring timing. `--full-core` (the complete
+  315-root colored core search) timed out at 1,752 s single-threaded under load (the saved shards
+  total 1,021 CPU-s on the owner's machine): not replayed here. Covered by the default replay: the
+  124-gate counterexample (fully), the fixed-parent minima 97 / 107 (independent unpruned enumeration
+  + 1,000 differential cases), the 2,808-plan census (identical counts), and the finite ingredients
+  of the two-group union bound (reduction text read only). Not covered: the exhaustive core search
+  behind "H0 = 16 => two original CC pairs", the model reduction in CORE16_CC_PROOF.md, the derived
+  residual pattern (17, 13, 0, 1), and global 97@3 (open by the checkpoint's own statement).
+- Together with F16 (75 replayed) and F20 (odd-helper checkers replayed): every bound the sprint
+  quotes as established has now been machine-replayed here; what remains "read, not checked" is the
+  mathematics of the reductions, in every case.
 
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 

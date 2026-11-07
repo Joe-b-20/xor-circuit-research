@@ -1,0 +1,472 @@
+=================== boundary/check_boundary49_counterexample.py  [lines: 95]
+"""Independent raw AES validation and frozen-certificate replay of the48 witness."""
+from pathlib import Path
+import hashlib
+import json
+import sys
+if not __debug__:
+    raise RuntimeError('Counterexample verification requires assertions enabled.')
+WORK = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(WORK))
+sys.path.insert(0, str(WORK / 'global_ownership'))
+from ordinary.check_global_certificate import verify as verify_global
+from joined_bounds.removal.check_joined_certificate import verify as verify_joined, original_union
+from structural_tradeoff.old_union_projection import local_union
+
+def raw_aes(circuit):
+    assert circuit['n_inputs'] == 32
+    values = [1 << i for i in range(32)]
+    depths = [0]*32
+    births = {}
+    for index, (a, b) in enumerate(circuit['gates']):
+        assert 0 <= a < 32+index and 0 <= b < 32+index
+        v = values[a] ^ values[b]
+        assert v and v not in values
+        births[v] = (values[a], values[b])
+        values.append(v)
+        depths.append(1+max(depths[a], depths[b]))
+    actual = [values[i] for i in circuit['outputs']]
+    assert len(actual) == 32 and max(depths) == 3
+    expected = [0]*32
+    def twice(x):
+        return ((x << 1) ^ (0x1b if x & 0x80 else 0)) & 255
+    for source in range(32):
+        column = [0]*4
+        column[source//8] = 1 << (source%8)
+        transformed = []
+        for row in range(4):
+            a, b, c, d = (column[(row+j)%4] for j in range(4))
+            transformed.append(twice(a) ^ twice(b) ^ b ^ c ^ d)
+        for row, value in enumerate(transformed):
+            for bit in range(8):
+                if value >> bit & 1:
+                    expected[8*row+bit] |= 1 << source
+    assert actual == expected
+    outputs = set(actual)
+    assert not outputs & {p for ab in births.values() for p in ab}
+    for v, (a, b) in births.items():
+        if v in outputs:
+            continue
+        assert not a & b
+        assert sorted((a.bit_count(), b.bit_count())) == {2: [1, 1], 3: [1, 2], 4: [2, 2]}[v.bit_count()]
+=================== constructor_audit/replay.py  [lines: 169]
+"""Independent constructor decomposition and unpruned-search verification.
+
+The root solver is imported only for differential small-instance tests. Full
+control queries use a separately reconstructed problem and plain_oracle.cpp.
+"""
+from pathlib import Path
+from itertools import combinations,product
+import hashlib,json,random,subprocess,sys
+
+if not __debug__:raise RuntimeError('Audit requires assertions enabled.')
+HERE=Path(__file__).resolve().parent
+WORK=HERE.parents[1]
+sys.path.insert(0,str(WORK))
+from joined_bounds.endpoint.check_endpoint_certificate import inspect
+
+
+def choices(h):
+    """Enumerate supports independently by pair subset and XOR remainder."""
+    bits=[1<<i for i in range(h.bit_length()) if h>>i&1]
+    if len(bits)==1:return [()]
+    if len(bits)==2:return [(h,)]
+    out=set()
+    for a,b in combinations(bits,2):
+        p=a|b;rest=h^p
+        if rest.bit_count()==1:out.add((p,))
+        elif rest.bit_count()==2:out.add(tuple(sorted((p,rest))))
+    assert len(bits) in (3,4) and len(out)==3
+    return sorted(out)
+
+
+def reconstruct(circuit):
+    outputs,births=inspect(circuit)
+    parents={p for target in outputs for p in births[target]}
+    forced={p for p in parents if p.bit_count()==2}
+    requirements={h:choices(h) for h in sorted(parents) if h.bit_count()>2}
+    universes={h:{p for option in opts for p in option} for h,opts in requirements.items()}
+    # Components are formed by joining helper rows that share a candidate pair.
+    # This differs from the producer's clique graph over candidate-pair vertices.
+    pending=set(requirements);parts=[]
+    while pending:
+        helper=min(pending);group={helper};universe=set(universes[helper]);pending.remove(helper)
+        while True:
+            touching={h for h in pending if universes[h]&universe}
+            if not touching:break
+            pending-=touching;group|=touching
+            universe.update(*(universes[h] for h in touching))
+        parts.append({'pairs':sorted(universe),'requirements':{h:requirements[h] for h in sorted(group)},
+                      'forced':sorted(forced&universe)})
+    allpairs=set().union(*(set(p['pairs']) for p in parts))
+    parts.sort(key=lambda p:min(p['pairs']))
+=================== two_group/targeted_controls.py  [lines: 125]
+"""Force the two tight n5=2 companion alternatives in full AES circuits."""
+from pathlib import Path
+import json,sys
+
+ROOT=Path(__file__).resolve().parent;WORK=ROOT.parents[1]
+sys.path.insert(0,str(ROOT));sys.path.insert(0,str(WORK))
+from check_two_group import build_certificate,raw
+from joined_bounds.missing_perimeter_control import remove_pair
+from normalization_contract.preparation.group0_prepare import emit
+
+
+def bit(g,i):return 1<<(8*(i%4)+g)
+def pairbirth(v):return tuple(1<<i for i in range(32) if v>>i&1)
+def expand(v):
+    return sum(bit(6 if i<4 else 5,i%4) for i in range(8) if v>>i&1)
+
+
+def build(kind,t=4):
+    circuit=json.loads((WORK/'normalization_contract/inputs/aes_forward_97.json').read_text())
+    O=raw.inspect(circuit);births=dict(O['births']);outputs=O['outputs']
+    upper=json.loads((ROOT/'tight_upper9_local.json').read_text())
+    births.update({expand(int(v)):tuple(expand(p) for p in ab) for v,ab in upper['births'].items()})
+    for i,ab in enumerate(upper['output_births']):births[outputs[8*i+6]]=tuple(expand(p) for p in ab)
+    selected=[expand(v) for v in upper['selected_H']]
+    assert len(selected)==2
+    for h,i in zip(selected,(3,2)):
+        q=h^outputs[8*i+5];births[outputs[8*i+5]]=(h,q)
+        a=q&raw.plane(5);d=q&raw.plane(6);b=q&raw.plane(4)
+        assert a==bit(5,1)
+        if kind=='AD_pair':births[q]=(a|d,b)
+        else:births[q]=(a|bit(4,3),d|(b^bit(4,3)))
+        for p in births[q]:births[p]=pairbirth(p)
+    collision=None
+    if kind=='projected_H_collision':
+        collision=bit(5,1)|bit(4,0)|bit(4,3)
+        opposite=outputs[5]^collision
+        births[collision]=(bit(4,0)|bit(4,3),bit(5,1))
+        births[opposite]=(bit(5,2)|bit(5,3),bit(4,1)|bit(4,3))
+        births[outputs[5]]=(collision,opposite)
+        for v in (collision,opposite):
+            for p in births[v]:
+                if p.bit_count()==2:births[p]=pairbirth(p)
+    # Outside group7 uses CE births instead of demanding any extra native
+    # DD pair. This makes both t3/charge8 and t4/charge9 upper banks literal.
+    for i in range(4):
+        target=outputs[8*i+7]
+        cbits=[bit(7,j) for j in range(4) if j!=i]
+        p=cbits[0]|cbits[1];h=target^p
+        births[target]=(p,h);births[p]=pairbirth(p)
+        mixed=cbits[2]|bit(6,i)
+=================== core_interface/check_constructor_model.py  [lines: 101]
+"""Independent full-birth weighted footprints and original-CC provenance."""
+from pathlib import Path
+from itertools import combinations,product
+import json,sys,hashlib,subprocess,random
+ROOT=Path(__file__).resolve().parent
+WORK=ROOT.parents[1]
+sys.path.insert(0,str(WORK));sys.path.insert(0,str(WORK/'global_ownership'));sys.path.insert(0,str(WORK/'normalization_contract'))
+if not __debug__:raise RuntimeError('Core interface checks require Python without -O or -OO.')
+A=15;B=240;C=3840
+
+def bits(v):return [1<<i for i in range(12) if v>>i&1]
+def actual_births(v):
+    if v.bit_count()<=2:return [tuple(bits(v))]
+    result=[]
+    for pp in combinations(bits(v),2):
+        p=sum(pp);q=v^p
+        if q.bit_count()==2 and p>q:continue
+        result.append((p,q))
+    return result
+
+def independent_row(role,i):
+    cc=(1<<(8+i))|(1<<(8+(i+1)%4))
+    t=(A^(1<<i))|cc if role=='G' else (1<<i)|(1<<((i+1)%4))|cc|(B^(1<<(4+i)))
+    result=set()
+    for n in range(1,5):
+        for sub in combinations(range(12),n):
+            u=sum(1<<j for j in sub);v=t^u
+            if u>=v or not 1<=v.bit_count()<=4:continue
+            if role=='G' and u&v&B:
+                small=u if u.bit_count()==3 else v
+                if not small&A:continue
+            for bu,bv in product(actual_births(u),actual_births(v)):
+                parents={p for p in (u,v) if p.bit_count()>1}
+                constructor={p for h,bs in ((u,bu),(v,bv)) if h.bit_count()>2 for p in bs if p.bit_count()==2}
+                allhelpers=parents|constructor
+                H={p for p in allhelpers if p&~C and (role=='W' or p&A or (p.bit_count()==2 and not p&~B))}
+                cccons={p for p in constructor if not p&~C}
+                result.add(tuple(sorted(H|cccons)))
+    return sorted(result)
+
+def export_fixed(label,selected):
+    by={(o['role'],o['row']):o for o in selected}
+    rows=[]
+    for role in ('W','G'):
+        for i in range(4):
+            o=by[role,i]
+            born={int(k):tuple(v) for k,v in o['births'].items()}
+            cc={p for bb in born.values() for p in bb if p.bit_count()==2 and not p&~C}
+            fp=tuple(sorted(set(o['footprint'])|cc))
+            assert fp in independent_row(role,i)
+=================== core_audit/check_coverage.py  [lines: 55]
+"""Validate complete, disjoint coverage of the colored endpoint exclusion.
+
+Uses the independently recompiled first prefix plus the four remaining saved
+shards. Empty, timed-out, SAT, overlapping, or truncated shards are rejected.
+"""
+from pathlib import Path
+import hashlib,json,sys
+
+if not __debug__:raise RuntimeError('Coverage audit requires assertions enabled.')
+HERE=Path(__file__).resolve().parent;SOURCE=HERE.parent/'core_interface'
+sys.path.insert(0,str(HERE))
+from check_search import parse
+
+
+def run():
+    helpers,rows=parse(SOURCE/'constructor_footprints.txt')
+    assert len(helpers)==567 and list(map(len,rows))==[315]*4+[639]*4
+    paths=[HERE/'fresh_0_44.json']+[SOURCE/('colored_'+name+'.json') for name in ('44_112','112_180','180_248','248_315')]
+    results=[json.loads(p.read_text()) for p in paths]
+    frontier=0;visits=[0]*5;gtests=[0]*5;duplicates=0;leaves={}
+    for path,r in zip(paths,results):
+        assert r['status']=='UNSAT_RANGE' and r['cap']==17 and r['H_cap']==16
+        assert r['start']==frontier and r['completed_end']==r['requested_end']>frontier
+        assert not r['witness_masks'] and r['global97_certified'] is False
+        assert r['visits'][1]==r['completed_end']-r['start']
+        assert sum(r['W_leaves_by_size'].values())==r['visits'][4]==r['G_tests'][0]
+        assert all(12<=int(size)<=17 for size in r['W_leaves_by_size'])
+        frontier=r['completed_end']
+        visits=[a+b for a,b in zip(visits,r['visits'])]
+        gtests=[a+b for a,b in zip(gtests,r['G_tests'])]
+        duplicates+=r['prefix_duplicates']
+        for size,n in r['W_leaves_by_size'].items():leaves[size]=leaves.get(size,0)+n
+    assert frontier==len(rows[0])==315
+    controls=json.loads((HERE/'search_checks.json').read_text())
+    source_hash=hashlib.sha256((SOURCE/'exhaust_colored.cpp').read_bytes()).hexdigest()
+    input_hash=hashlib.sha256((SOURCE/'constructor_footprints.txt').read_bytes()).hexdigest()
+    assert controls['source_sha256']==source_hash and controls['input_sha256']==input_hash
+    initial=json.loads((SOURCE/'colored_probe.json').read_text())
+    for key in ('visits','W_leaves_by_size','G_tests','prefix_duplicates'):
+        assert initial[key]==results[0][key]
+    report={'status':'PASS','query':'H <= 16 and H + constructor_CC <= 17',
+        'covered_first_row_options':[0,frontier],'source_sha256':source_hash,'input_sha256':input_hash,
+        'shards':[{'file':str(p.relative_to(HERE.parent)),'start':r['start'],'end':r['completed_end']} for p,r in zip(paths,results)],
+        'visits':visits,'W_leaves_by_size':leaves,'G_tests':gtests,'prefix_duplicates':duplicates,
+        'fresh_prefix_counters_match':True,
+        'scope':'Complete disjoint finite-query coverage; first44 options independently replayed. Actual-circuit implication uses the audited safe footprint relaxation and original-CC provenance.',
+        'global97_certified':False}
+    report['reviewed_model_proof_sha256']=hashlib.sha256((SOURCE/'CORE16_CC_PROOF.md').read_bytes()).hexdigest()
+    report['reviewed_input_validator_sha256']=hashlib.sha256((SOURCE/'check_constructor_model.py').read_bytes()).hexdigest()
+    (HERE/'coverage_results.json').write_text(json.dumps(report,indent=2)+'\n')
+=================== core_audit/check_provenance.py  [lines: 99]
+"""Independent actual-circuit mapping into the colored endpoint input."""
+from pathlib import Path
+import json,sys
+
+if not __debug__:raise RuntimeError('Provenance audit requires assertions enabled.')
+HERE=Path(__file__).resolve().parent;WORK=HERE.parents[1]
+sys.path.insert(0,str(WORK));sys.path.insert(0,str(HERE))
+from joined_bounds.endpoint.check_endpoint_certificate import inspect
+from check_search import parse
+
+F=[sum(1<<(8*i+g) for i in range(4)) for g in range(8)]
+A,B,C=F[0],F[1],F[7]
+
+
+def ancestors(births,targets):
+    seen=set();pending=[p for target in targets for p in births[target]]
+    while pending:
+        value=pending.pop()
+        if value in births and value not in seen:
+            seen.add(value);pending.extend(births[value])
+    return seen
+
+
+def local_h(circuit):
+    outputs,births=inspect(circuit)
+    g={v for v in ancestors(births,outputs[0::8]) if v&A}
+    w=ancestors(births,outputs[1::8])
+    native={p for p in births if p.bit_count()==2 and (p&A==p or p&B==p)}
+    return {v for v in g|w|native if v&C!=v}
+
+
+def constructor_cc(circuit,local=False):
+    outputs,births=inspect(circuit)
+    parents=({p for i in range(32) if i%8 in (0,1) for p in births[outputs[i]]}
+             if local else set(births))
+    return {p for h in parents if h.bit_count() in (3,4)
+            for p in births[h] if p.bit_count()==2 and p&C==p}
+
+
+def remap(value):
+    assert not value&~(A|B|C)
+    out=0
+    for row in range(4):
+        for group,offset in ((0,0),(1,4),(7,8)):
+            if value>>(8*row+group)&1:out|=1<<(row+offset)
+    return out
+
+
+def verify(name,joined,table):
+    ledger=joined['physical_ledger'];endpoint=joined['endpoint_comparison']
+=================== core_audit/check_search.py  [lines: 102]
+"""Independent small-instance oracle for the colored union search.
+
+Tests the search machinery, not the completeness of the physical footprint
+model. The latter has its own independent generator and conceptual audit.
+"""
+from pathlib import Path
+from itertools import product
+from collections import Counter
+import hashlib,json,random,subprocess,sys
+
+if not __debug__:raise RuntimeError('Colored audit requires assertions enabled.')
+HERE=Path(__file__).resolve().parent
+SOURCE=HERE.parent/'core_interface'
+
+
+def parse(path):
+    tokens=iter(map(int,path.read_text().split()))
+    n=next(tokens);helpers=[next(tokens) for _ in range(n)]
+    assert helpers==sorted(set(helpers))
+    rows=[]
+    for _ in range(8):
+        rows.append([tuple(next(tokens) for _ in range(next(tokens))) for _ in range(next(tokens))])
+    assert list(tokens)==[]
+    assert all(tuple(sorted(set(o)))==o and all(0<=i<n for i in o) for row in rows for o in row)
+    return helpers,rows
+
+
+def write_input(path,helpers,rows):
+    lines=[str(len(helpers)),' '.join(map(str,helpers))]
+    for row in rows:
+        lines.append(str(len(row)))
+        lines.extend(str(len(o))+' '+ ' '.join(map(str,o)) for o in row)
+    path.write_text('\n'.join(lines)+'\n')
+
+
+def oracle(helpers,rows,cap):
+    hmask=sum(1<<i for i,v in enumerate(helpers) if v&~3840)
+    packed=[[sum(1<<i for i in o) for o in row] for row in rows]
+    for chosen in product(*packed):
+        bank=0
+        for mask in chosen:bank|=mask
+        if bank.bit_count()<=cap and (bank&hmask).bit_count()<=16:return True
+    return False
+
+
+def solve(path,cap,stop):
+    process=subprocess.run([str(HERE/'exhaust_colored_fresh'),str(path),str(cap),'0',str(stop),'0'],
+                           capture_output=True,text=True,check=True)
+    result=json.loads(process.stdout)
+    assert result['cap']==cap and result['H_cap']==16
+=================== boundary/minimum_tau_probe.py  [lines: 172]
+"""Actual-birth probe of the F34=1 pure-tau minimum-first branch.
+
+Every necessary filter is explicit; a survivor is a relaxed middle witness,
+not automatically a whole-circuit F34=1 realization.
+"""
+from collections import Counter
+from itertools import product
+from pathlib import Path
+import json
+import sys
+import time
+import hashlib
+if not __debug__:
+    raise RuntimeError('Run without Python optimization.')
+WORK = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(WORK))
+from joined_bounds.forest.v_cycle_census import A, B, C, D, AM, BM, CM, U_TARGETS, TARGETS, actual_options, compatible, serializable
+
+def no_CC(o):
+    return not any(p.bit_count() == 2 and p & CM == p for ab in o['births'].values() for p in ab)
+
+def charged_V(o):
+    return set(o['charged_pairs']) | {o['shadow']}
+
+def original_vertices(o):
+    vertices = {p for ab in o['births'].values() for p in ab
+                if p.bit_count() == 2 and (p & CM).bit_count() == 1}
+    if o['edge']:
+        vertices.update(o['edge'])
+    return vertices
+
+def coverage(options):
+    rows = set()
+    for o in options:
+        c = o['carrier']
+        if c.bit_count() == 3 and (c & CM).bit_count() == 2:
+            i = o['row']
+            rows |= {(i+2)%4, (i+3)%4}
+    return len(rows)
+
+def graph(options):
+    vertices = set().union(*(original_vertices(o) for o in options))
+    edges = [o['edge'] for o in options if o['edge']]
+    parents = {v: v for v in vertices}
+    def root(v):
+        while parents[v] != v:
+            parents[v] = parents[parents[v]]
+            v = parents[v]
+        return v
+    cycles = 0
+=================== boundary/replay_minimum_tau_control.py  [lines: 63]
+"""Embed the census's minimum-tree actual U/V plan and check frozen graph34."""
+from pathlib import Path
+import json
+import sys
+if not __debug__:
+    raise RuntimeError('Run without Python optimization.')
+WORK = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(WORK))
+from ordinary_completion.boundary.targeted_completion import inspect, emit, without_CC_perimeters
+from joined_bounds.joined_ledger import build_joined
+from ordinary.check_global_certificate import verify as verify_global
+from joined_bounds.removal.check_joined_certificate import verify as verify_joined
+
+def lift(v):
+    return sum(1 << (8*i+g) for j, g in enumerate((3, 4, 7, 2)) for i in range(4) if v >> (4*j+i) & 1)
+
+def run():
+    root = Path(__file__).resolve().parent
+    report = json.loads((root / 'minimum_tau_probe.json').read_text())
+    control = report['minimum_control']
+    known = json.loads((WORK / 'normalization_contract/inputs/aes_forward_97.json').read_text())
+    snap = inspect(known)
+    births = dict(snap['births'])
+    for group, label in ((3, 'U'), (4, 'V')):
+        for row in control[label]:
+            for v, ab in row['births'].items():
+                births[lift(int(v))] = tuple(lift(p) for p in ab)
+                for p in ab:
+                    p = lift(p)
+                    if p.bit_count() == 2:
+                        births[p] = tuple(1 << i for i in range(32) if p >> i & 1)
+            births[snap['outputs'][8*row['row']+group]] = (lift(row['triple']), lift(row['quartet']))
+    # Make ordinary7 explicitly CC-free, so removing endpoint CC pairs cannot
+    # accidentally replace a direct ordinary7 perimeter by a CC diagonal.
+    for row in range(4):
+        current = [1 << (8*j+7) for j in range(4) if j != row]
+        source = [1 << (8*j+6) for j in (row, (row+1)%4)]
+        t = current[0] | current[1] | source[0]
+        p = current[2] | source[1]
+        births[t] = (current[0] | source[0], current[1])
+        for pair in (current[0] | source[0], p):
+            births[pair] = tuple(1 << i for i in range(32) if pair >> i & 1)
+        births[snap['outputs'][8*row+7]] = (t, p)
+    circuit = without_CC_perimeters(emit(births, snap['outputs']))
+    parsed = inspect(circuit)
+    ccplane = sum(1 << (8*i+7) for i in range(4))
+    assert not {v for v in parsed['helpers'] if v.bit_count() == 2 and v & ccplane == v}
+    joined = build_joined(circuit)
+    verify_global(joined['physical_ledger'])
+    verify_joined(joined)
+=================== RESTORE_REPORT public resolution
+public_resolution_messages: []
+status: complete_regular_files count: 481 missing: 0
+record keys: ['compression_regenerated', 'content_sha256', 'member', 'occurrence_id', 'size']
+dedup-restored: {'member': 'normalization_contract/inputs/aes_forward.mat.txt', 'size': 2056, 'occurrence_id': 'O000000149', 'compression_regenerated': False}
+dedup-restored: {'member': 'ordinary_completion/RESUME.txt', 'size': 2151, 'occurrence_id': 'O000000206', 'compression_regenerated': False}
+dedup-restored: {'member': 'ordinary_completion/constructor_audit/constructor107_control_2.txt', 'size': 27, 'occurrence_id': 'O000000237', 'compression_regenerated': False}
+dedup-restored: {'member': 'ordinary_completion/constructor_audit/constructor107_control_5.txt', 'size': 39, 'occurrence_id': 'O000000240', 'compression_regenerated': False}
+dedup-restored: {'member': 'ordinary_completion/constructor_audit/constructor107_control_8.txt', 'size': 25, 'occurrence_id': 'O000000243', 'compression_regenerated': False}
+dedup-restored: {'member': 'ordinary_completion/constructor_audit/constructor107_control_9.txt', 'size': 25, 'occurrence_id': 'O000000244', 'compression_regenerated': False}
+dedup-restored: {'member': 'ordinary_completion/two_group_audit/upper_cross_independent_replay.json', 'size': 1141, 'occurrence_id': 'O000000335', 'compression_regenerated': False}
+dedup-restored: {'member': 'structural_tradeoff/boundary/general_floor_replay.json', 'size': 1404, 'occurrence_id': 'O000000436', 'compression_regenerated': False}
+dedup-restored: {'member': 'structural_tradeoff/core_equality/exhaust_bank_union.cpp', 'size': 5571, 'occurrence_id': 'O000000455', 'compression_regenerated': False}

@@ -1,0 +1,16 @@
+START 2026-11-07T23:07:56Z MODE=default
+CWD /home/joebachir20/xs-campaigns/2026-11-07-sprint/d3replay/B/restored
+CMD: nice -n 8 timeout 1800 python3 ordinary_completion/verify_checkpoint.py 
+LOAD_BEFORE: 24.67 25.07 25.36 25/562 948436
+{
+  "status": "PASS",
+  "full_core_rerun": false,
+  "core_saved_coverage": {
+    "covered_W0_roots": 315,
+    "complete_W_leaves": 49683204
+  },
+  "boundary_counterexample_left": 48,
+  "global97_certified": false
+}
+RC=0 WALL=49s END 2026-11-07T23:08:45Z
+LOAD_AFTER: 25.30 25.18 25.38 30/561 960662

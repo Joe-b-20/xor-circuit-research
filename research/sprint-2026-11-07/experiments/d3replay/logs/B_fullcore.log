@@ -1,0 +1,6 @@
+START 2026-11-07T23:10:15Z MODE=fullcore
+CWD /home/joebachir20/xs-campaigns/2026-11-07-sprint/d3replay/B/restored
+CMD: nice -n 8 timeout 1800 python3 ordinary_completion/verify_checkpoint.py --full-core
+LOAD_BEFORE: 24.02 24.77 25.21 25/569 975474
+RC=124 WALL=1752s END 2026-11-07T23:39:27Z
+LOAD_AFTER: 25.40 25.37 25.22 26/550 1280306

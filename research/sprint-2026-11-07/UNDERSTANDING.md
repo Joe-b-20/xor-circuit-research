@@ -265,7 +265,8 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
 - Whether an 87 exists. Unrestricted 2-input XOR circuits for one column: 75 <= C <= 88 (75: the
   owner's computer-assisted proof, replayed here, argument read, not checked; the published
   literature has no bound above 32, F19; 88: verified constructions, Jean's and ours). Depth <= 3:
-  93 <= C3 <= 97 (owner's proof, audited in the archive, not rerun here; 97@3 optimality OPEN). Depth
+  93 <= C3 <= 97 (owner's proof, replayed here in full, 2,028 s, F24; reductions read; 97@3
+  optimality OPEN by the owner's latest checkpoint, whose default replay passes here). Depth
   <= 4: 89 is the best construction; no depth-4 bound above 75 in general (F22: proved layer facts
   give only G >= 57 unconditionally; over the 89's first layer plus its family's level-2 vocabulary,
   G >= 89 is SAT-proved; over the first layer alone, open). Inverse: depth >= 5 is proved
