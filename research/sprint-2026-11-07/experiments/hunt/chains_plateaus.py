@@ -43,7 +43,11 @@ def chain_index(arm, w, t):
 
 
 visits = {}  # (arm, worker, chain) -> list of (t, key)
-for line in open(os.path.join(HUNT, "samples.jsonl")):
+lines = []
+for sp_path in (os.path.join(HUNT, "samples.jsonl"), os.path.join(HUNT, "samplesC", "samples.jsonl")):
+    if os.path.exists(sp_path):
+        lines += open(sp_path).readlines()
+for line in lines:
     r = json.loads(line)
     if r["gates"] != 88:
         continue

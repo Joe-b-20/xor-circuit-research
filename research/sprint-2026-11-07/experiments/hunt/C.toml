@@ -1,0 +1,30 @@
+# Hunt arm C: arm A with the depth window removed (engine.depth_window = none).
+# Hypothesis (from F5 update + bench A/B): chains migrate between 88 plateaus through +1 states;
+# the window (2 levels above the chain best) restricts which +1 states are accepted, so removing it
+# raises mobility: more distinct 88 plateaus per worker-hour than A (and deeper 88s).
+
+[campaign]
+name = "hunt-C-nowindow"
+seed = 20261107
+duration = "3h"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+"engine.depth_window" = "none"
+
+[[workers]]
+name = "free"
+target = "aes-mixcolumns"
+count = 6
+objective = "gates"
+depth_cap = "none"
+seeds = ["root"]

@@ -147,6 +147,28 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   prediction (klsw17-m-8x8-gf256-inv 346 -> 335 in 4 worker-hours) was beaten by one
   worker-hour (327). Prediction direction right, magnitude too timid.
 
+## F8. Engine variants on the reliability benchmark: only removing the depth window has an established effect [measured, bench agent]
+
+- Instrument: the two MixColumns analogues where v8 is not 100 % reliable in 120 s: mc_gf16 =
+  the repo's small-scale-aes (16 inputs, reference 42 = our 42@5, NIST 43@5) and mc_gf8b
+  (circulant(2,3,1,1) over GF(8), other polynomial, reference 29, ours). 69 proved-optimum maps
+  are all solved by v8 in seconds (1,380/1,380), so they measure iterations only.
+  (`bench/REPORT.txt` sections 0 and 11, `bench/results/variants_*.csv`.)
+- Variants on v8 (`quick`, single worker, 40 seeds where time allowed): stall 20 s, stall 60 s,
+  LNS weight x2, expand weight x3, depth_window=none, v10-proto.
+- Established: `engine.depth_window=none` reaches the reference in 0.46x the iterations
+  (interval 0.24-0.80) on mc_gf16 in a same-window replication; on the 13-map hard set 0.89x
+  (0.70-1.11, not established). Its circuits are deeper (42 at depth 9-11 versus 8) and each
+  iteration costs 10-40 % more CPU. Success-rate differences are NOT established for any
+  variant: the machine-load confound (success within a wall-clock budget moved by up to 0.4
+  between time windows for the same knobs) is larger than any knob effect. v10-proto was worse
+  than depth_window=none in its window and not established against default.
+- Not established either way: stall 20/60 s, LNS x2, expand x3.
+- Reading, tied to F5: the depth window (2 levels above the chain best) limits which +1 states
+  a chain may pass through; on MixColumns those +1 states are how a chain migrates between 88
+  plateaus. Prediction: hunt arm C (A with depth_window none) finds more distinct 88 plateaus
+  per worker-hour than A, at deeper depths. Scheduled after X1 (`hunt/C.toml`).
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,

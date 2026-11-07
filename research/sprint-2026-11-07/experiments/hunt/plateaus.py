@@ -42,6 +42,7 @@ if not store.get("pre_loaded"):
         pl = pes_lib.Plateau.from_json(d)
         key = key_of(pl)
         if key in P:
+            P[key]["also_pre"] = os.path.basename(f)
             continue
         P[key] = {"plateau": pl.to_json(), "size": pl.size(), "radices": pl.radices(), "kind": pl.kind,
                   "depth": None, "first": {"arm": "pre", "worker": os.path.basename(f), "wall": 0},
@@ -50,12 +51,12 @@ if not store.get("pre_loaded"):
 
 # collect 88 states: samples first (time ordered), then records
 cands = []
-sp_path = os.path.join(HUNT, "samples.jsonl")
-if os.path.exists(sp_path):
-    for line in open(sp_path):
-        r = json.loads(line)
-        if r["gates"] == 88:
-            cands.append((r["wall"], r["arm"], r["worker"], r["hash"], r["values"]))
+for sp_path in (os.path.join(HUNT, "samples.jsonl"), os.path.join(HUNT, "samplesC", "samples.jsonl")):
+    if os.path.exists(sp_path):
+        for line in open(sp_path):
+            r = json.loads(line)
+            if r["gates"] == 88:
+                cands.append((r["wall"], r["arm"], r["worker"], r["hash"], r["values"]))
 for rec in sorted(glob.glob(os.path.join(HUNT, "runs", "*", "workers", "*", "records", "g88-*.json"))):
     parts = rec.split(os.sep)
     arm, w = parts[-5], parts[-3]
