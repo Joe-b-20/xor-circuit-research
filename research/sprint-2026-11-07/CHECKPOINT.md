@@ -102,7 +102,10 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | bench engine-variant A/B (agent) | <=6 | 06:20 | ~09:30 | `bench/REPORT.txt` section "Engine variants" |
 | kste1: PES +1 pass on 22 kste 3-way plateaus (+#0) | 8 | ~08:25 | ~00:25 (11-08) | `pes-kste/runs/kste1/status.txt`, `FOUND_*`, `records/`; stop: `pes-kste/pes/stop2.sh kste1` |
 | predtest pt1 (3 maps x 2 workers), then pt2 (4 maps x 2 workers) | 6, 8 | ~08:25, ~10:30 | ~12:30 | `predtest/runs/pt{1,2}`, `predtest/driver.log` |
-| agents crossmap, lit, kste, pes-kste | - | - | done | `*/REPORT.txt` |
+| hunt C (A with depth_window none) | 6 | 08:30 | 11:30 | `hunt/runs/C`; sampler `hunt/samplesC/samples.jsonl`; catalogue via `hunt/plateaus.py .` then `hunt/chains_plateaus.py .` |
+| agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
+
+Harvest at the end: `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py x1/runs/x1a x1/runs/x1b predtest/runs/pt1 predtest/runs/pt2` (dry run; `--apply` adds via circuits/add.py), then `python3 circuits/check.py`. Already known new circuits: grostl 364@11, klsw17-m-8x8-gf256-inv 327@12, ss16-4x4-gf256 96@5.
 
 ## 7. Next actions
 
