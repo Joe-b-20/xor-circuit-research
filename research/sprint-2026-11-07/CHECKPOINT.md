@@ -43,8 +43,10 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   plateaus go home or join other 88 plateaus at ceiling 89 (groups of 16/16/7/2); about 55-60 %
   of +1 descents were cut at their state bound (unresolved); no 87 from +1 or the partial
   +2/lns passes (PES mc24, ~19 h) [checked/measured; corrected 11-07, FINDINGS I.1].
-- MC 89@4 is one level-1 set (one family up to rotation); every 90@4 ever visited sits on a
-  different level-1 set; one pair swapped costs ~+3 [measured]. InvMC 118@5 has 23 level-1 sets.
+- MC 89@4 is one level-1 set (one family up to rotation: 81 circuits, F15); every 90@4 ever visited
+  (5,798 distinct, 183 first layers) sits on a different level-1 set; one pair swapped costs
+  ~+2..+4 [measured]. The 89@4 came from the July 91@4 (914 s) and once more from a v9c shelf
+  90@4 (11-04), never from NIST's 90@4 (corrected 11-07, F15). InvMC 118@5 has 23 level-1 sets.
 - Waits are time in dead rooms; drops are big moves landing in rich rooms; no local predictor of a
   productive state was found among ~20 candidates; copying walkers onto the newest best is the
   strongest lever on InvMC descents [measured, 2026-11-03-waits].
@@ -152,7 +154,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | done 15:05, harvested | `sweep/runs/sw{1,2}`, `sweep/driver.log`; FINDINGS F10 |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
 | agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt` (done 16:00, F12), `graph/REPORT.txt` (done 15:50, F11), `sat/REPORT.txt` (done 16:20, F13; overnight batch see below) |
-| agents (17:10 start): inventory of the import (opus), lb76 feasibility (xhigh), q89 89@4 study (high) | 1-3 | 17:10 | ~19:00 | `import/INVENTORY.md`, `lb76/REPORT.md`, `q89/REPORT.md` |
+| agents (17:10 start): inventory of the import (opus, done 18:05), lb76 feasibility (xhigh), q89 89@4 study (high, done 19:05, F15); review2 of F11-F13/I (high, done 18:50, R2); giants (opus, compress of 18 giant entries, running) | 1-3 | 17:10 | ~20:30 | `import/INVENTORY.md`, `lb76/REPORT.md`, `q89/REPORT.md`, `review2/REPORT.txt`, `giants/REPORT.txt` |
 | SAT batch: scoped 87 refutations, stage 1 output windows (1,800 s), stage 2 one-seed k = 9-10 (900 s), stage 3 two-seed windows (900 s), 7 circuits; single core nice 10; open-ended | 1 | 16:50 | stop with `touch sat/STOP` (stages 1-2 ~12-17 h) | `sat/batch.log`, `python3 sat/batch_summary.py`, `sat/FOUND_87` appears if any instance is SAT (then verify `sat/found/`, harvest, commit) |
 | hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | ~04:06 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
 | sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |

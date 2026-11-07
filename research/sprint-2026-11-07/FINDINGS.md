@@ -542,6 +542,53 @@ Analysis scripts: `hunt/descents.py hunt/runsD` (arrivals, depths, restarts),
 `hunt/sigD.py runsD samplesD/samples.jsonl 13` (identity, pairing), `review2/dnull.py` (null
 model), `review2/fans.py` (fans). Final numbers at ~04:10 UTC.
 
+## F15. Why 89@4 is unusual (q89 agent, `q89/REPORT.md`; own census of every raw record) [measured / derived / argued, separated]
+
+(1) Properties shared by the recorded 89@4 circuits [measured]. 526 record files -> 90 distinct value
+sets -> 81 modulo byte rotation. All have the per-depth profile 26/22/29/12. The 81 are exactly one
+cap-4 remove1 plateau L0 (closure complete at 81; 8 neutral moves per state; 0 down moves); the other 9
+are one-byte rotations of L0 members produced by the foundation searches' validation runs (which pin
+the first layer rotated by one byte). The archive's "81 circuits, 53-value core" claim is confirmed: 53
+constant helpers; 12 variable level-2 values forming 4 slots x 3 choices with all 81 combinations
+present; each slot is the re-pairing of a 3-leaf tree (two level-1 pairs + one input) under a fixed
+weight-5 helper. For contrast, 90@4: 13,141 records, 5,798 distinct states, 183 distinct first layers
+with 21-26 gates; none has the 89's first layer (max overlap 24). The archive statement "no 90@4 had
+more than 25 first-layer gates" is FALSE on the full data (72 distinct 90@4 states have 26).
+(2) Properties required of every 89@4 circuit [proved/derived]. Depth 4 forces outputs to levels 3-4
+and G = 32 + h1 + h2 + h3 (no helper at level 4); support arithmetic gives only h1 >~ 7-10, so 26
+first-layer gates is NOT forced (depth-4 circuits at 90/91 exist with 19-26 first-layer gates); the
+question is open. The cap is what makes the pocket "sealed": cap-4 fans are subsets of uncapped fans
+[proved]; measured, each L0 state has 8 neutral moves at cap 4 versus 15 at cap 5 or none, and the
+closure is 81 (complete) versus >= 3,096 / >= 6,117 after 1,500 expansions. The engine's depth window
+is inactive at cap 4 (slack 0), so "one step up and fall back" is a plateau/move-set property under the
+cap, not a window artefact. No proved depth-4 lower bound above the unrestricted 75 exists (the archive's
+depth-4 pushes say so themselves); the July RECORD_89 is a depth-10 circuit.
+(3) Behaviour caused by the procedure [measured]. Premise correction: v8 did not reach 89@4 from
+NIST's 90@4 in minutes; the repo's found.json and HISTORY say it came from the July 91@4 at 914 s, and
+the adopt side that moved to NIST's 90@4 never left 90. Every 89@4 record traces to TWO entry events:
+control mc-cap4-01 (July lineage, 914 s) and v9c mc-cap4-04 (2026-11-04, 6,881 s, after a stall
+restart onto a shelf 90@4 whose first layer already equalled the 89's), then spread to 10 workers in
+13 s by adopt. Catchment = carrying the 26-pair first layer: walks move it one pair at a time and the
+path from NIST's set costs +2..+4 gates. Uncapped, L0 is not a trap: all 4 mc87 `from89` workers seeded
+with the 89 reached 88 (depth 6-9) within 131-640 s, their 88s keeping only 17-19 of the 26 pairs. The
+2026-11-06 study's statements are restated with their move classes; its over-reach was the "funnel"
+wording, the envelope-vs-real-Expand gap, BFS stopping at the first <= 89 state, and the budget guess
+at k = 5, 6.
+- What is unusual: one family, found twice in >10,000 core-hours, whose first layer no 90@4 shares, on a
+  small (81) plateau because the cap removes half the neutral moves. Candidate explanations: (a) the
+  family is the unique 89@4 up to rotation [open; nothing proves it]; (b) the first layer is a narrow
+  gate that the walk crosses only one pair at a time, so entry is rare but not exceptional (two entries
+  by two different routes) [supported by the catchment measurement]; (c) depth-4 feasibility is tight at
+  89 so the plateau structure is smaller than at 88 uncapped [measured for L0].
+- Predictions: P1 (confirmed on existing mc87 data): uncapped exits from L0 reach 88 keeping <= 19 of
+  the 26 pairs. P2 (testable in ~10 min on the foundations' (26,22,30,12) traps): every 90@4 with the
+  89's exact first layer lies in its +1 band D1. P3 (~1 core-hour): pinning the 89's first layer at cap
+  5 completes to 89, not 88. P4 (2 h run): arrivals from NIST pass through a 90@4 carrying a rotation of
+  the 89's first layer, equally across the four rotations.
+- Transfer to the unrestricted 87 question: plateau = product of re-pairings; first-layer motion one
+  pair at a time; records clustering into few entry events. Depth-4 only: the small plateau, the
+  immobile first layer, the single family.
+
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, 17:40-18:50 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-

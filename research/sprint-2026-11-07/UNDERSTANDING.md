@@ -178,8 +178,11 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Transfers: the plateau-as-product structure (MC, InvMC, small analogues); remove1 as the
   winning move on every map class; descents being cheap relative to the bottom; copying as
   the lever for descents (InvMC) versus restarts for discovery (MC).
-- Specific: the level-1 foundation effect (MC at depth 4: one level-1 set decides; InvMC has 23
-  level-1 sets in its 118 family); the MixColumns 88 vocabulary (303 values mod rotation over 52
+- Specific: the level-1 foundation effect (MC at depth 4: the only known 89@4 family, 81 circuits
+  = 4 slots x 3 re-pairings over a 53-value core, carries one 26-pair first layer that none of
+  5,798 distinct 90@4 states shares; the walk moves a first layer one pair at a time, so entry is
+  rare (two entry events in >10,000 core-hours) but uncapped the family is no trap (F15); 26
+  first-layer gates is not proved necessary; InvMC has 23 level-1 sets in its 118 family); the MixColumns 88 vocabulary (303 values mod rotation over 52
   plateaus, growing by ~6 per new plateau).
 
 ## 8. What remains unexplained
