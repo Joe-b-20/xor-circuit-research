@@ -1,0 +1,42 @@
+phases: real canonical 1515 control canonical+raw 52
+
+| combination | real canonical phases min / median / max (M ; Mt) | controls min / max (M ; Mt) |
+|---|---|---|
+| q - y | -14 / -2 / 2 ; -8 / -4 / 2 | -14 / 9 ; -20 / 0 |
+| q - h | -9 / -3 / 7 ; -6 / -2 / 0 | -18 / 6 ; -7 / 1 |
+| s - h | -2 / 0 / 7 ; -2 / 0 / 0 | -17 / 6 ; -2 / 2 |
+| s - y | -14 / 0 / 8 ; -6 / -2 / 4 | -14 / 10 ; -20 / 6 |
+| y - F | -5 / -1 / 13 ; -13 / 1 / 5 | -25 / 12 ; -12 / 9 |
+| h - F | -8 / -1 / 5 ; -17 / 0 / 6 | -14 / 11 ; -16 / 6 |
+| q | 10 / 14 / 16 ; 10 / 13 / 16 | 7 / 15 ; 7 / 15 |
+| z | 0 / 2 / 7 ; 0 / 2 / 5 | 0 / 8 ; 0 / 7 |
+| BB edges (= represented labels) | 23 / 27 / 40 ; 23 / 28 / 41 | 22 / 45 ; 26 / 57 |
+| n_even - q | 23 / 27 / 40 ; 23 / 28 / 41 | 22 / 45 ; 26 / 57 |
+| weight-2 labels | 14 / 17 / 26 ; 16 / 19 / 33 | 16 / 34 ; 20 / 36 |
+| E_B | 0 / 1 / 11 ; 0 / 2 / 25 | 0 / 33 ; 0 / 36 |
+| n_r0 | 0 / 0 / 2 ; 0 / 0 / 3 | 0 / 3 ; 0 / 2 |
+| n_r3 | 0 / 0 / 1 ; 0 / 0 / 3 | 0 / 4 ; 0 / 4 |
+| n_r2 - n_r1 | -4 / 1 / 7 ; 3 / 9 / 14 | -5 / 9 ; 0 / 14 |
+| 2h + y + z + C(q,2) - 32 | 65 / 107 / 138 ; 59 / 95 / 140 | 52 / 131 ; 28 / 122 |
+| 3h + 2F + y - 32 - s | 42 / 49 / 53 ; 36 / 45 / 73 | 39 / 99 ; 42 / 71 |
+| x | 24 / 24 / 26 ; 24 / 24 / 35 | 24 / 39 ; 24 / 37 |
+| x + y + h (= G - 32) | 56 / 56 / 65 ; 56 / 56 / 65 | 56 / 70 ; 56 / 70 |
+
+LP-feasible keys at 75: 1134 ; survivors: 1508
+
+| observed inequality (real + controls, canonical phases) | bound | feasible keys violating (M ; Mt) |
+|---|---|---|
+| q - y >= min observed | >= -20 | 0 ; 0 |
+| s - h >= min observed | >= -17 | 0 ; 0 |
+| q - h >= min observed | >= -18 | 0 ; 0 |
+| y - F >= min observed | >= -25 | 0 ; 0 |
+| h - F >= min observed | >= -17 | 0 ; 0 |
+| q >= min observed | >= 7 | 478 ; 539 |
+
+survivor scalar states violating real-88 observed ranges (not universal, G differs): 
+  a in [24,26]: survivors outside 456 of 1508
+  b in [24,27]: survivors outside 548 of 1508
+  Y in [14,19]: survivors outside 1508 of 1508
+  V in [10,17]: survivors outside 1508 of 1508
+  he in [13,17]: survivors outside 1016 of 1508
+  ho in [14,20]: survivors outside 757 of 1508

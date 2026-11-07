@@ -189,7 +189,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 
 - Whether an 87 exists (75 <= optimum <= 88; the 75 proof replays and its machinery is exhausted
   at 74: 1,508 of 7,416 cases survive at 75 with its rows, F16). No local evidence can decide
-  it; the exact scoped route (F13) can grow: longer limits, two-seed windows, more circuits, and an encoding
+  it; real 88 circuits sit 0-7 units below the 75 proof's drift budget and no local row is within
+  10 of tight on them (F17), so that machinery needs new content (realizability of low-Y/V/q
+  profiles) rather than sharpening; the exact scoped route (F13) can grow: longer limits, two-seed windows, more circuits, and an encoding
   for the factor-structured mobile part.
 - Why the 88 cores are so numerous and (on the resolved exits) sealed at +1: is it a counting consequence
   of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure?

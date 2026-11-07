@@ -109,6 +109,10 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   and stopped); a claimed complete 76 (29-30 Sep, 948 MB) is NOT in the archive: locating it is the
   one route to a bound improvement within weeks. Odd-helper theorems (h <= 2 => G >= 90) do not
   touch 75 or our 88s (16-24 odd helpers).
+- 19:55 UTC, bridge agent (F17): real 88 circuits evaluated with the 75 package's own code: no row
+  violated, none within slack 10; real circuits sit 0-7 below the drift budget (12 of 200 exactly
+  on it); survivors at 75 are disjoint from real circuits in Y and V; q >= 7 is a [conjecture] that
+  would cut 1,017 of 1,134 feasible keys.
 - 15:55 UTC, estimate agent (F12): landing probability ~ proportional to plateau size; at least
   ~2,500 exact 88 plateaus (95 %), order of magnitude 1e5; coverage 0.029. Next measurement:
   exact catalogue of the remaining ~1,390 sampled states (~1 core-day).

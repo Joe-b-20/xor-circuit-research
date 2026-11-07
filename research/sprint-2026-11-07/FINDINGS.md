@@ -654,6 +654,42 @@ at k = 5, 6.
   go, conditional on the package existing (the only route to 76 within weeks); new universal rows to 0
   survivors: no-go within a sprint; odd-helper accounting and 88-level identity: no-go for 76.
 
+## F17. Where real 88 circuits live in the 75 proof's space (bridge agent, high effort, `bridge/REPORT.md`) [measured with the package's own code]
+
+- Corpus: 200 sampled 88s (distinct mod rotation, from hunt A/B/C/D), 100 kste 88s, the repo 88@5,
+  89@4 and 97@3 (true gate lists). A value set determines the gate list almost uniquely (290 of 303
+  circuits have exactly one admissible parent pair per value; the rest one ambiguous value), and the
+  alternatives move x, y, q, z, F by <= 1. All 303 circuits x 6 orbit phases pass every package
+  assertion; no row (L1)-(L23) is violated [measured].
+- The canonical-transpose orbit is period 2 from the first transpose on in all 303 circuits. With the
+  package's exact identity this gives s_e + s_o = a + b + 2G - 192 - E_B, where E_B (boundary excess
+  fan-out of the two phases) is 0..7 for real 88s: real circuits sit 0-7 units BELOW the drift budget
+  the proof must exceed, 12 of 200 exactly on it [derived + verified 303/303]. The potential/drift
+  mechanism therefore saturates exactly at real 88 circuits; it cannot be the lever that excludes 88
+  or 87 without new content.
+- Real 88 tail profiles: a 24-26, b 24-27, Y 14-19, V 10-17, h_e 13-17, h_o 14-20, q 10-16, z 0-7,
+  s 12-18 per phase; even phase M^T in 72 % (94 % of kste). The 1,508 survivors at G = 75 have Y <=
+  11, V <= 8, q <= 10: disjoint from real circuits in Y and V. Real helpers are 85-90 % of types
+  (2,1,0), (2,0,1), (1,2,0), (1,1,1) with odd-graph degree exactly 3; the r = 0 / r = 3 / high-u
+  columns the survivor LPs rely on are nearly empty in real circuits.
+- Row slacks: nothing is tight. Minimum slack over 1,515 canonical phases is 10 (rows L4, L6, L12,
+  Lemma 10.3); q-scaling rows have slack 40-140. Only Lemma 7.4 (helper degree >= 3) is tight. So no
+  existing row can be sharpened by real-circuit evidence and none is contradicted.
+- Hypotheses: (a) "any <= 89 circuit has >= 3 odd non-output helpers": real 88s have 16-23 (13-20 in
+  canonical transposes), confirmed with 10+ to spare. (b) the plateau structure (F2) does not show up
+  in the proof's coordinates: all weight-2 values are represented B-B labels (13-20 per circuit,
+  55-80 % of represented labels) but they are rigid (median 0, max 2 removed by any neutral move);
+  the 8-30 neutral moves swap one weight-3..7 helper for another of similar weight.
+- Candidate inequalities [conjecture, consistent with 316 circuits incl. the 13 controls; none
+  proved]: q >= 7 per canonical phase would cut 1,017 of the 1,134 LP-feasible keys at G = 75 (no
+  argument; probably not universal); E_B <= 7 and x <= 26 hold for minimum circuits seen but are
+  broken by the 97@3. Every other simple combination tried is broken by a control circuit.
+- What this changes: proof work should not expect the 75 machinery's rows to tighten toward 88; the
+  gap between the survivors' profiles (small Y, V, q) and real circuits (large Y, V, q) says the
+  missing content is exactly realizability of low-Y, low-V, low-q profiles, consistent with F16's
+  reading of the October campaigns. For the search, the proof's coordinates give no new move or
+  predictor: the mobile part of a plateau is invisible to them.
+
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-
