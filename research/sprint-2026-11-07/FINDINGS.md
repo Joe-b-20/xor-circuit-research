@@ -186,6 +186,20 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   plateaus. Prediction: hunt arm C (A with depth_window none) finds more distinct 88 plateaus
   per worker-hour than A, at deeper depths. Scheduled after X1 (`hunt/C.toml`).
 
+## F9. Testing the crossmap predictions (pt1, 3 maps x 2 workers x 2 h, seeds = our best at the cap + NIST's) [measured]
+
+  | map | cap | before | predicted (range) | after 4 worker-h | verdict |
+  |---|---:|---:|---|---|---|
+  | ss17-8x8-gf16 | 10 | 167 | 161 (157-163) | **161@10** (+160@11) | hit |
+  | klsw17-m-8x8-gf256-inv | 12 | 346 | 335 (329-339) | 330@12 (X1: 327@12 in 1 worker-h) | beaten |
+  | skop15-8x8-gf16 | 19 | 146 | 140 (136-142) | 146@14 (no gain) | miss |
+
+- The rule (gain per ln(time) extrapolated from each map's own late-run slope) got the direction
+  right on the two maps whose circuits were the least worked (one NIST-seeded hour each) and
+  missed on the map that already had 2 worker-hours at that cap and a 14.1 % gain. Reading: the
+  log-time slope decays faster than the rule assumed once the easy gains are taken; two more
+  maps (pt2) will say whether that holds. New circuits: ss17-8x8-gf16 161@10 and 160@11.
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,

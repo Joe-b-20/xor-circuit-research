@@ -62,6 +62,9 @@ for rec in sorted(glob.glob(os.path.join(HUNT, "runs", "*", "workers", "*", "rec
     arm, w = parts[-5], parts[-3]
     cands.append((os.path.getmtime(rec), arm, w, os.path.basename(rec)[:20], rec))
 cands.sort()
+ARMS = os.environ.get("ARMS")
+if ARMS:
+    cands = [c for c in cands if c[1] in ARMS.split(",")]
 
 n_new = 0
 t0 = time.time()
