@@ -552,6 +552,13 @@ Registered by review 2 at 17:40 UTC (seen: the 2.4 h snapshot, nothing later):
 - Q5: for 10 random D 88 states, every one-seed window with k <= 8 is UNSAT within 60 s and every
   byte block with free <= 1 and k <= 10 within 120 s (a SAT is an 87; a different timeout pattern
   shows the frontier is circuit-dependent).
+Interim at 5.2 h (20:20 UTC; 20 worker-hours per arm; not a decision): arrivals per worker-hour D0
+1.50, D4 1.70, DN 1.75 (30/34/35 chains; DN/D0 = 1.17, P1 undecided); distinct v3 per worker-hour
+D0 24.1, D4 25.7, DN 25.6 (P2 ratio 1.06, below 1.2; per worker DN > D0 on 3 of 4, D0's free-00
+alone has 209 vs 114); share of 88 states at depth >= 10: D0 3 %, D4 20 %, DN 31 % (P3 on track);
+5 of 1,579 signatures shared across arms (0.3 %, P4 on track); 0 states below 88 (P5). Null model
+(Q1/Q2): 1,235,293 cross-chain pairs, 6 shared nodes, N_eff ~ 2.1e5; at 1.3e5 the expectation is
+9.5 (Poisson P(<= 6) ~ 0.17): inside, no evidence of locality or hubs so far.
 Analysis scripts: `hunt/descents.py hunt/runsD` (arrivals, depths, restarts),
 `hunt/sigD.py runsD samplesD/samples.jsonl 13` (identity, pairing), `review2/dnull.py` (null
 model), `review2/fans.py` (fans). Final numbers at ~04:10 UTC.
