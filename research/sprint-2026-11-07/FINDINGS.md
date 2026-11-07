@@ -134,8 +134,18 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   | lw16-4x4-gf256-inv-circ | 7 | 89 | 82 | 82@5 | 82@5 | 0.079 | 0.079 |
   | skop15-8x8-gf16 | 19 | 170 | 146 | 157@11 | 151@13 | 0.076 | 0.112 |
 
+- Half 2 (x1b, 08:25 UTC):
+
+  | map | cap | NIST | repo best <= cap | fresh (1 h) | NIST-seeded (1 h) | W | seeded gain |
+  |---|---:|---:|---:|---|---|---:|---:|
+  | aes-mixcolumns | 5 | 88 | 88 | 89@5 | 88@5 (seed) | -0.011 | 0 |
+  | jpst17-4x4-gf256 | 7 | 82 | 78 | 78@6 | 78@6 | 0.049 | 0.049 |
+  | ss16-4x4-gf256 | 6 | 104 | 97 | **96@5** | 97@5 | 0.077 | 0.067 |
+  | small-scale-aes | 5 | 43 | 42 | 42@5 | 42@5 | 0.023 | 0.023 |
+
 - Reading: on 32x32 maps a fresh root reaches our best in minutes (W = seeded gain), as on
-  MixColumns. On the 64x64 maps one worker-hour from a fresh root is far from the frontier
+  MixColumns (89@5 in 1 h from one fresh root at cap 5; uncapped it is 88 in minutes, F1).
+  ss16-4x4-gf256 96@5 is a new circuit (repo 97@6 / 98@4). On the 64x64 maps one worker-hour from a fresh root is far from the frontier
   (W < 0), yet a NIST-seeded worker gains 11 % in the hour and, on two maps, beat the repo's
   circuits: grostl 364@11 (repo 366@12) and klsw17-m-8x8-gf256-inv 327@12 (repo 346@12).
   These are new circuits to harvest after verification (`circuits/check.py`).
