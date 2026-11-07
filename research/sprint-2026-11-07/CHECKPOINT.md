@@ -90,6 +90,10 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   16 of 19 8x8-map trials this sprint gained gates vs 1 of 6 on 4x4 maps. Harvested: 44
   circuits added, 37 removed, 208 circuits (commits d281a78, 5edcd1a; harvest bug fixed).
   Hunt D started 15:06 (D0/D4/DN, same first roots), ends ~04:06 UTC 11-08.
+- 15:50 UTC, graph agent (F11): the 88 level as sampled is 146 disjoint chain trails (139
+  components, 8 of 1,454 nodes shared by two chains), 0 down-exits in 1,869 states, hops
+  change ~30 % of helpers, ~44 plateau changes per chain-hour is a floor (68 % of hops have no
+  89 sample; the walk lives on the 88+89 band).
 
 ## 4. Rejected explanations and failed approaches (this sprint)
 
@@ -134,7 +138,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | bench replication: default vs depth_window none, same window (agent) | 6 | 11:48 | done 13:12 | `bench/REPORT.txt` section 12 |
 | sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | done 15:05, harvested | `sweep/runs/sw{1,2}`, `sweep/driver.log`; FINDINGS F10 |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
-| agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt`, `graph/REPORT.txt`, `sat/REPORT.txt` (+ `sat/found/` if anything) |
+| agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt`, `graph/REPORT.txt` (done 15:50, F11), `sat/REPORT.txt` (+ `sat/found/` if anything) |
 | hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | ~04:06 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
 | sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |
 | hunt E: cap-5 MixColumns, E0 default vs EN depth_window none, 4+4 workers, 2.5 h (review point "depth") | 8 | after kste1 ends (~01:00 11-08) | ~03:40 | `hunt/runsE/{E0,EN}`, `hunt/driverE.log`, sampler `hunt/samplesE/samples.jsonl`; `hunt/descents.py hunt/runsE` |

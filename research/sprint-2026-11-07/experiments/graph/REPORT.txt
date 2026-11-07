@@ -1,0 +1,126 @@
+TRANSITION GRAPH OF THE 88 LEVEL AS SEEN BY THE HUNT SAMPLERS (arms A, B, C)   2026-11-07
+=========================================================================================
+Scripts (this directory): graph.py (graph, hops, fans, landings -> graph.log, graph_data.json),
+followup.py (catalogued-pair check, multi-chain components, cycle lengths), engine_stays.py
+(engine 'plateau' ledger, uphill-acceptance counts, 89 time share -> engine_stays.log).
+Inputs: hunt/samples.jsonl (arms A, B), hunt/samplesC/samples.jsonl (arm C only), hunt/sigs2.json,
+hunt/plateaus.json, runs/*/workers/*/events.jsonl, records/.  Every number below is [measured]
+unless marked [guess].  Analysis run single-threaded under nice 10; nothing else touched.
+
+Definitions.  Chain = (arm, worker, k) with k = number of 'restart' events at or before the sample's
+worker clock t (as in hunt/chains_plateaus.py).  Node = v3 signature (sigs2.json), merged where
+plateaus.json gives the same exact plateau key: 1,600 signatures -> 1,454 nodes (59 nodes absorb
+2-10 signatures each; 229 nodes carry an exact key; 1 node merges 2 exact keys, the known v3
+merge).  v3 over-splits coupled plateaus by up to ~1.6x on the catalogued set, so 1,454 is an
+upper bound on exact plateaus visited [guess: ~900-1,000 exact].  Visit = maximal run of
+consecutive 88 samples of one chain on one node; hop = consecutive visits on different nodes
+(directed edge u -> v); the samples in between with gates 89 are the sampled excursion.
+
+Data volume: 4,807 samples (A 621/836, B 475/1,280, C 774/821 at 88/89); 1,869 distinct 88 states;
+146 chains with at least one 88 sample (A 25, B 86, C 35; descents.log: 25/90/35 reached 88);
+1,462 visits, 1,418 hops.  Walk speed from consecutive samples: median 2,021 steps/s
+(q1 1,875, q3 2,189), so one 30 s sampling interval is ~60k steps.
+
+1. TRANSITION GRAPH
+-------------------
+nodes 1,454; distinct directed edges 1,402; edge traversals 1,418 (12 edges traversed twice+).
+Weakly connected components: 139.  Sizes: 65, 43, 41, 40, 36, 36, 35, 35, 34, 34, 33, 32, 29, 27,
+26, ... ; 7 isolated nodes (chains whose only 88 sample was one node), 16 of size 2, 16 of size 3.
+133 of 139 components are the trail of exactly ONE chain; 6 contain more than one chain:
+   65 nodes: A/free-05 c0 + C/free-00 c0 + C/free-03 c0  (meet on the three largest catalogued
+             plateaus: p943c008e 3,119,985; p22526234 3,403,620; p38493cb9 815,265)
+   34 nodes: C/free-02 c6 + C/free-03 c4   (uncatalogued node)
+   34 nodes: B/free-05 c20 + C/free-04 c2  (uncatalogued node)
+   27 nodes: A/free-03 c2 + C/free-01 c2   (uncatalogued node)
+   18 nodes: A/free-03 c4 + A/free-04 c2   (uncatalogued node)
+    9 nodes: A/free-05 c2 + B/free-05 c13  (pe944e1aa, size 6,561)
+Nodes entered by more than one chain: 8 of 1,454 (0.55 %); by more than one worker: 8; by more
+than one arm: 5.  Degree (distinct edges, in+out): 0: 7, 1: 248, 2: 1,122, 3: 25, 4: 40, 5: 3,
+6: 5, 7: 2, 8: 1, 10: 1.  Out-degree 0/1/2/3/4/5: 130/1,259/55/8/1/1; in-degree 0/1/2/3/4/5:
+132/1,258/53/7/3/1.  96 of 139 components are simple paths (n-1 edges, all degrees <= 2); the
+other 43 are paths with small loops made by one chain returning to a node it left 2-17 hops
+earlier.  Degree > 2 comes almost entirely from in-chain returns, not from chains meeting.
+=> The sampled graph is NOT one giant component: it is 146 chain trails that touch each other at
+8 nodes.  Three of those 8 are the biggest plateaus in the catalogue (10^6-size), which is
+the only hub-like feature seen [measured]; [guess] big plateaus get met because they have many
+entrances, not because the level funnels toward them.
+
+2. HOP STATISTICS
+-----------------
+Distinct nodes per chain-hour (chains with > 600 s of sampled life after first 88): median 40.0
+(q1 26.1, q3 61.1, n = 59); arm A median 33.9, arm C 56.0; arm B chains are 300 s stall-limited
+(median 4 distinct nodes in ~290 s).  Pooled: 1,462 visits in 33.2 chain-hours = 44 node-visits
+per hour.  These are LOWER bounds on plateau changes (see sampling caveat).
+Sampled 89 excursion length between consecutive distinct 88 nodes, in 89 samples:
+   0: 962 (68 %), 1: 262, 2: 92, 3: 27, 4: 22, 5: 17, 6-10: 26, 11-18: 7, 28-30: 3 (max 30
+   samples ~ 15 min at 89).  Wall gap last-88 -> next-88: median 33 s overall; for hops with at
+   least one 89 sample: median 96 s (q1 66, q3 132, max 1,766).  In steps (upper bound, includes
+   the ends of both 30 s windows): median 67k (0-sample hops) / 158k (hops with a sampled 89).
+Are the 0-sample hops real plateau changes?  Among the 235 hops whose BOTH ends are exactly
+catalogued (so they are distinct exact plateaus by construction), 138 (59 %) show no 89 sample:
+hopping between plateaus without an 89 instant being caught is the normal case, not a signature
+artefact.  (Over-splitting can still inflate 0-sample hops among the 1,174 uncatalogued pairs;
+their Jaccard distribution matches the catalogued ones.)
+Core change across a hop, Jaccard distance of helper sets modulo byte rotation: median 0.303
+(q1 0.250, q3 0.400, max 0.845); hops with a sampled 89: median 0.377; hops without: 0.303;
+all values incl. outputs: median 0.204.  For comparison, 30 s of neutral walking INSIDE one node
+moves the helper set by median 0.164 (q1 0.133, q3 0.222, n = 272).  This agrees with the
+reviewer's 31-38 % and says a hop changes roughly 30 % of the helpers, i.e. the chain does
+not jump far: neighbouring plateaus share ~70 % of their core.
+Cycles: 34 times a chain went to 89 and came back to the SAME node (27 of them after a single
+89 sample); 102 of 1,418 hops (7.2 %) land on a node the chain had visited earlier in the same
+chain, mostly 2 hops back (60 cases: A -> B -> A), then 3-17 hops back.  Nodes ever revisited by
+any mechanism (same-node return, in-chain cycle, another chain): 105 of 1,454 (7.2 %).
+Engine-side view (engine_stays.log): the engine's 'plateau' events track only the chain's
+best-level plateau (exit reasons: improve 175, restart 140; zero stays above 88 logged between
+88 stays), so they cannot see excursions either; but per 88 stay they record accepted minus
+neutral_accepts = 24/s median (counts both the up-step and the return step, so [guess] ~12
+departures from 88 to 89 per second, ~1.2 % of proposals), 2.84 M such accepts over all 88
+stays versus 1,418 sampled hops.  After a chain's first 88, 39-45 % of sampled instants are at
+89 (A 45 %, B 39 %, C 44 %).  The walk lives on the 88+89 band and dips into 88 nodes; the
+sampler sees one dip per 30 s.
+
+3. DOWN-EXITS
+-------------
+None anywhere: samples with gates < 88: 0 (all three arms); records/ g<88: 0 (smallest record
+class is g88, 415 states); engine plateau events with gates < 88: 0; pes_lib.fan on all 1,869
+sampled 88 states: 0 states with downs > 0 (neutral moves per state 10-28, mode 16).
+plateaus.json carries no downs field; the catalogue's 282 plateaus are products (sizes 1 to
+3,403,620, median 5,589) and none has a recorded descent.
+
+4. WHERE DESCENTS LAND
+----------------------
+First 88 node per chain (146 chains): 146 distinct nodes; 41 catalogued, size median 6,561
+(q1 2,187, q3 24,057; bins size 1: 5, <=1e3: 1, 1e3-1e4: 19, 1e4-1e5: 9, >1e5: 7); depth of
+the first 88 state: median 8 (6: 10, 7: 23, 8: 54, 9: 45, 10: 12, 11: 1, 13: 1).
+Later nodes (1,418 visits): 236 catalogued, size median 6,561 (q1 2,187, q3 35,721; bins 1: 14,
+<=1e3: 16, 1e3-1e4: 118, 1e4-1e5: 57, >1e5: 31); depth median 8 (6: 72, 7: 287, 8: 564, 9: 298,
+10: 97, 11: 46, 12: 31, 13-16: 22).  Per arm, first vs later depth medians: A 8 vs 8, B 8 vs 8,
+C 9 vs 8.  => Landings are not different in kind from later nodes: same size median, same
+depth median, same fraction catalogued (28 % vs 17 %, the catalogue was built mostly from
+early samples).  Only 2 of the 146 first nodes were ever entered by another chain; 17 chains
+returned to their own first node later.  Later visits have a longer deep tail (depth 11-16 in
+arm C) [measured]; [guess] the walk drifts deeper as it hops, it does not drift toward bigger
+or shallower plateaus.
+
+5. VERDICT
+----------
+As the walk sees it through 30 s samples, the 88 level is a set of disjoint paths, not a web:
+146 chains produced 139 components, 133 of them one chain's own trail, and only 8 of 1,454 nodes
+(0.55 %) were entered by two chains [measured]; 93 % of visited nodes were never revisited by
+anything, and the 7 % that were are mostly a chain stepping back to the node it just left
+[measured].  The discovery curve is still linear (arm C: 774 states -> 706 signatures), so a
+longer walk would add new nodes at ~44 per chain-hour and would not saturate the level [measured
+rate, guess on extrapolation]; it would also not find a down-exit by re-sampling, since none of
+the 1,869 sampled states and none of the 282 catalogued plateaus has one [measured].  Hops are
+local (30 % helper change, ~70 % shared core) and the depth drifts upward along a chain, so
+[guess] a longer walk explores a growing neighbourhood of its landing point rather than a
+different region, and reaching 87 would need a plateau with a down-exit to exist in that
+neighbourhood, for which there is no evidence yet in this data.  What the 30 s interval can
+see: the sequence of 88 nodes a chain dips into, roughly one per interval, and 89 stays longer
+than ~30 s (the sampled excursions of 1-30 samples).  What it cannot see: the ~10 departures to
+89 per second [guess from 24/s accepted non-neutral moves], any plateau visited and left within
+one interval (68 % of sampled hops show no 89 instant at all even between exactly distinct
+plateaus), and therefore the true number of plateau changes per hour, of which 44 is a floor;
+the 8 cross-chain meetings would be more numerous with finer sampling only if chains actually
+pass through common nodes between samples, which this data cannot test.

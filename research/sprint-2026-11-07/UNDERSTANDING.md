@@ -93,7 +93,13 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   capture-recapture estimate is in progress) (F5, R). The 52 pre-sprint plateaus sit at depth
   5-7, the hunt's mostly at 7-10, so "no overlap" with them is mostly a different depth
   stratum. Every +1 exit from every plateau checked (49 by PES, plus the kste plateaus in
-  kste1) goes home or to another 88. So the search's failure
+  kste1) goes home or to another 88. The transition graph of the 88 level, drawn from 146
+  chains' hops (F11): 139 components, 133 of them a single chain's trail, 8 nodes of 1,454
+  entered by two chains, 0 down-exits in 1,869 sampled states; hops change ~30 % of the
+  helpers, so each chain explores the neighbourhood of where it landed and the neighbourhoods
+  do not meet [measured]. The walk lives on the 88+89 band (39-45 % of sampled instants at
+  89, ~12 departures to 89 per second [guess from ledgers]); 30 s sampling sees a floor of ~44
+  plateau changes per chain-hour. So the search's failure
   below 88 is not slowness or bad decisions: its move set has no down-step from any 88 core
   found so far, and the number of cores is far beyond what sampling can exhaust.
 - Whether an 87 exists is therefore a global question about the map (lower bound 75, no
@@ -178,8 +184,10 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - How many 88 plateaus there are (order of magnitude): the 3 repeats in ~225 catalogued
   plateaus all fell on the largest ones, so a plain capture-recapture count is only a lower
   bound; a size-weighted estimate is being computed (`estimate/REPORT.txt`).
-- Whether the 88 cores form one connected graph under the +1 band, and where the descents
-  land in it relative to any core with a down-exit (reviewer's point; not drawn yet).
+- Whether the 88 cores form one connected graph under the +1 band: as sampled at 30 s they do
+  not (F11: 139 components for 146 chains); finer sampling (every ~1 s, or logging every
+  88 <-> 89 transition in the engine) is needed to see whether trails meet between samples.
+  No core with a down-exit has been seen anywhere (0 of 1,869 states, 0 of 282 plateaus).
 - Why the gates minimum of a map sits at a middle depth (F10: klsw17-m-8x8-gf256 321@10 beats
   everything at depth 12-15; grostl 349@15 vs 350@16): a budget effect of the depth window, a
   property of the map, or under-search of the deeper band.

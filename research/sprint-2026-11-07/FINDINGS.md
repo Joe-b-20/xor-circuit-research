@@ -298,6 +298,42 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   dropped a point recorded by two runs with the same gates@depth (fox-mu8 500@11, pt2 and sw1),
   since each record "dominated" the other; fixed in `harvest_sprint.py` [implementation].
 
+## F11. The 88 level as the walk sees it: a set of disjoint chain trails, no down-exit anywhere (graph agent, `graph/REPORT.txt`) [measured]
+
+Nodes = cheap plateau identities (v3 signatures merged by exact key where catalogued: 1,600
+signatures -> 1,454 nodes, an upper bound on exact plateaus, ~900-1,000 [guess]); directed edges =
+consecutive 88 nodes visited by one chain (hunt arms A, B, C: 4,807 samples at 30 s, 146 chains
+with an 88 sample, 1,462 visits, 1,418 hops).
+
+- Graph: 139 weakly connected components; 133 are one chain's own trail; 8 of 1,454 nodes
+  (0.55 %) were entered by two chains, 3 of them the three largest catalogued plateaus (0.8-3.4 M
+  states), the only hub-like feature. Degree 2 for 1,122 nodes, 1 for 248; degree > 2 comes from
+  a chain stepping back to a node it left 2-17 hops earlier (102 of 1,418 hops, 7.2 %). 93 % of
+  visited nodes were never revisited by anything.
+- Hops: ~44 node-visits per chain-hour pooled (A median 34/h, C 56/h; B is cut by its 300 s
+  rule), a floor: 68 % of hops between distinct nodes (59 % even between exactly catalogued,
+  provably distinct plateaus) show no 89 sample, i.e. the excursion was shorter than 30 s. The
+  engine's ledgers count ~24 accepted non-neutral moves per second during 88 stays (~12 departures
+  to 89 per second [guess], ~1.2 % of proposals); 39-45 % of sampled instants after a chain's first
+  88 are at 89. The walk lives on the 88+89 band and dips into 88 nodes. A hop changes a median
+  30 % of the helper set modulo rotation (q1 25 %, q3 40 %) against 16 % for 30 s of neutral
+  walking inside a node: neighbouring plateaus share ~70 % of their core; the reviewer's 31-38 %
+  reproduces.
+- Down-exits: none. 0 samples, records or engine events below 88 in any arm; `pes_lib.fan` on
+  all 1,869 sampled 88 states gives 0 states with a down move (10-28 neutral moves each, mode 16).
+- Landings are not special: first 88 nodes (146 chains, 146 distinct nodes) and later nodes have
+  the same size median (6,561 states) and depth median (8); only 2 first nodes were ever entered by
+  another chain. Later visits drift deeper (tail to depth 16 in arm C).
+- Reading: the discovery curve is linear (C: 774 states -> 706 signatures), so a longer walk adds
+  nodes at ~44 per chain-hour without saturating and, since no sampled or catalogued state has a
+  down-exit, cannot find an 87 by re-sampling what it has seen [measured]. Hops are local, so a
+  longer walk grows the neighbourhood of its landing point rather than reaching another region
+  [guess]. This is the strongest statement the sprint has on why the search stalls at 88: not
+  slowness, not bad acceptance decisions, but a move set whose 88 states have no down-step, on a
+  level whose size the walk cannot exhaust.
+- What 30 s sampling cannot see: departures to 89 shorter than an interval, hence the true number
+  of plateau changes per hour, and whether chains pass through common nodes between samples.
+
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
 An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:

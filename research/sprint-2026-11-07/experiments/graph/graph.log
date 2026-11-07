@@ -1,0 +1,212 @@
+samples by (arm, gates): [(('A', 88), 621), (('A', 89), 836), (('B', 88), 475), (('B', 89), 1280), (('C', 88), 774), (('C', 89), 821)]
+samples with gates < 88: 0
+steps per second (consecutive samples 20-40 s apart): n=3803 min=1181 q1=1875 med=2021 q3=2189 max=4075
+signatures: 1600; nodes after exact-key merge (all 1869 states): 1454; nodes with an exact key: 229; nodes merging >1 exact key (should be 0): 1
+nodes made of >1 signature (merged by exact key): 59; signature counts: Counter({2: 27, 4: 13, 3: 8, 5: 5, 9: 3, 7: 1, 6: 1, 10: 1})
+fans: 1869 sampled 88 states in 81 s; not 88 after trim: 0
+states with downs > 0 in fan terms: 0
+neutral-move counts per state (top): [(16, 418), (14, 371), (18, 325), (20, 174), (22, 108), (12, 86), (24, 60), (26, 54), (10, 33), (21, 33), (28, 28), (17, 25)]
+88 samples without a node (not in sigs2): 0
+chains with sampled 88 states: 146 (per arm: {'A': 25, 'B': 86, 'C': 35}); hops: 1418
+within-plateau Jaccard distance (helpers, consecutive samples, same node): n=272 min=0.035 q1=0.133 med=0.164 q3=0.222 max=0.400
+
+GRAPH: nodes 1454, directed edges (distinct) 1402, edge traversals 1418, edges traversed >1 times 12
+weakly connected components: 139; sizes (top 15): [65, 43, 41, 40, 36, 36, 35, 35, 34, 34, 33, 32, 29, 27, 26]; size distribution: [(1, 7), (2, 16), (3, 16), (4, 11), (5, 13), (6, 12), (7, 14), (8, 5), (9, 3), (10, 2), (12, 3), (14, 1), (16, 6), (18, 5), (19, 4), (20, 1), (24, 2), (25, 3), (26, 1), (27, 1), (29, 1), (32, 1), (33, 1), (34, 2), (35, 2), (36, 2), (40, 1), (41, 1), (43, 1), (65, 1)]
+components containing >1 chain: 6; components that are exactly one chain's path: 133
+nodes entered by >1 chain: 8; by >1 worker: 8; by >1 arm: 5
+total degree distribution (distinct edges, undirected count): [(0, 7), (1, 248), (2, 1122), (3, 25), (4, 40), (5, 3), (6, 5), (7, 2), (8, 1), (10, 1)]
+out-degree distribution: [(0, 130), (1, 1259), (2, 55), (3, 8), (4, 1), (5, 1)]
+in-degree distribution: [(0, 132), (1, 1258), (2, 53), (3, 7), (4, 3), (5, 1)]
+components that are simple paths (nodes-1 edges, degree <= 2): 96 of 139
+  shared node key:p943c008e56986b92 size=3119985 chains=[('A', 'free-05', 0), ('C', 'free-00', 0)]
+  shared node 0x6155f518659120b9 size=None chains=[('A', 'free-03', 2), ('C', 'free-01', 2)]
+  shared node key:p22526234e0c65e84 size=3403620 chains=[('A', 'free-05', 0), ('C', 'free-00', 0)]
+  shared node key:pe944e1aa12444d85 size=6561 chains=[('A', 'free-05', 2), ('B', 'free-05', 13)]
+  shared node 0x9253eb98c3bcd326 size=None chains=[('B', 'free-05', 20), ('C', 'free-04', 2)]
+  shared node 0xdde1f624ac885391 size=None chains=[('A', 'free-03', 4), ('A', 'free-04', 2)]
+  shared node 0x2d378acb62fb3563 size=None chains=[('C', 'free-02', 6), ('C', 'free-03', 4)]
+  shared node key:p38493cb932a1fe78 size=815265 chains=[('C', 'free-00', 0), ('C', 'free-03', 0)]
+
+HOPS
+89 excursion length in samples (89 records between consecutive 88 nodes): [(0, 962), (1, 262), (2, 92), (3, 27), (4, 22), (5, 17), (6, 8), (7, 8), (8, 3), (9, 4), (10, 3), (11, 1), (12, 1), (13, 1), (14, 1), (15, 1), (16, 1), (18, 1), (28, 1), (29, 1), (30, 1)]
+  zero-sample excursions (88 -> 88 with no 89 seen): 962 of 1418
+excursion wall seconds between last 88 sample and next 88 sample: n=1418 min=30 q1=33 med=33 q3=66 max=1766
+  same, only hops with >= 1 sampled 89: n=456 min=63 q1=66 med=96 q3=132 max=1766
+excursion in steps (upper bound, includes time on both plateaus inside the 30 s windows): n=1418 min=39525 q1=60439 med=67525 q3=124643 max=3742209
+  same, only hops with >= 1 sampled 89: n=456 min=85120 q1=124075 med=157607 q3=243136 max=3742209
+Jaccard distance across a hop, helpers only, mod rotation: n=1418 min=0.069 q1=0.250 med=0.303 q3=0.400 max=0.845
+Jaccard distance across a hop, all values incl. outputs: n=1418 min=0.044 q1=0.167 med=0.204 q3=0.275 max=0.636
+  helpers, hops with >= 1 sampled 89: n=456 min=0.102 q1=0.277 med=0.377 q3=0.507 max=0.845
+  helpers, hops with 0 sampled 89: n=962 min=0.069 q1=0.222 med=0.303 q3=0.353 max=0.727
+  arm A: hops 419; exc samples n=419 min=0 q1=0 med=0 q3=1 max=30; jac_h n=419 min=0.069 q1=0.250 med=0.303 q3=0.400 max=0.845
+  arm B: hops 312; exc samples n=312 min=0 q1=0 med=0 q3=1 max=7; jac_h n=312 min=0.102 q1=0.250 med=0.303 q3=0.377 max=0.727
+  arm C: hops 687; exc samples n=687 min=0 q1=0 med=0 q3=1 max=18; jac_h n=687 min=0.069 q1=0.250 med=0.328 q3=0.400 max=0.796
+returns to the SAME node after a sampled 89 excursion (node unchanged): 34; their excursion lengths in samples: [(1, 27), (2, 3), (3, 1), (5, 1), (6, 1), (9, 1)]
+hops landing on a node the chain visited earlier (cycle, length >= 2): 102 of 1418
+nodes ever revisited (same-node return, in-chain cycle, or entered by another chain): 105 of 1454
+
+PER CHAIN
+arm A: chains 25; visits per chain n=25 min=3 q1=8 med=18 q3=26 max=44; distinct nodes per chain n=25 min=3 q1=8 med=16 q3=20 max=36; span s n=25 min=557 q1=1145 med=1734 q3=2030 max=3956; distinct nodes per hour (chains with span > 600 s) n=24 min=8.7 q1=21.6 med=33.9 q3=56.5 max=88.5
+arm B: chains 86; visits per chain n=86 min=1 q1=3 med=5 q3=6 max=12; distinct nodes per chain n=86 min=1 q1=2 med=4 q3=6 max=12; span s n=86 min=33 q1=261 med=293 q3=296 max=715; distinct nodes per hour (chains with span > 600 s) n=1 min=30.2 q1=30.2 med=30.2 q3=30.2 max=30.2
+arm C: chains 35; visits per chain n=35 min=2 q1=10 med=19 q3=32 max=43; distinct nodes per chain n=35 min=2 q1=10 med=18 q3=30 max=43; span s n=35 min=235 q1=931 med=1539 q3=1932 max=2683; distinct nodes per hour (chains with span > 600 s) n=34 min=7.9 q1=27.0 med=56.0 q3=69.6 max=91.6
+all arms: distinct nodes per hour (span > 600 s): n=59 min=7.9 q1=26.1 med=40.0 q3=61.1 max=91.6
+pooled: 1462 node-visits over 33.2 chain-hours at/after first 88 = 44.0 per hour
+
+LANDINGS
+first 88 node per chain: n=146 catalogued=41 unknown=105; size n=41 min=1 q1=2187 med=6561 q3=24057 max=3119985; bins {'1': 5, '<=1e3': 1, '1e3-1e4': 19, '1e4-1e5': 9, '>1e5': 7}
+later 88 nodes:          n=1418 catalogued=236 unknown=1182; size n=236 min=1 q1=2187 med=6561 q3=35721 max=3403620; bins {'1': 14, '<=1e3': 16, '1e3-1e4': 118, '1e4-1e5': 57, '>1e5': 31}
+depth of first 88 state per chain: [(6, 10), (7, 23), (8, 54), (9, 45), (10, 12), (11, 1), (13, 1)]
+depth of later 88 states (first sample of each later visit): [(5, 1), (6, 72), (7, 287), (8, 564), (9, 298), (10, 97), (11, 46), (12, 31), (13, 13), (14, 5), (15, 3), (16, 1)]
+distinct first nodes 146 of 146 chains; first nodes later entered by another chain: 2; first nodes revisited by the same chain: 17
+  arm A: first depth n=25 min=6 q1=8 med=8 q3=9 max=13; later depth n=419 min=5 q1=7 med=8 q3=8 max=11
+  arm B: first depth n=86 min=6 q1=7 med=8 q3=9 max=10; later depth n=312 min=6 q1=7 med=8 q3=9 max=11
+  arm C: first depth n=35 min=6 q1=8 med=9 q3=9 max=11; later depth n=687 min=6 q1=8 med=8 q3=9 max=16
+
+CHAIN LISTING (arm worker chain: visits, distinct, hops with sampled 89 / without, returns, revisits)
+  A free-00 c0: visits 19 distinct 16 hops89 8 hops0 10 returns 7 revisits 3 sizes [334611, 111537, 29403, 13365, 29403, 29403, 13365, 29403, 13365, 29403]
+  A free-00 c1: visits 26 distinct 24 hops89 12 hops0 13 returns 0 revisits 2 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-00 c2: visits 5 distinct 5 hops89 2 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None]
+  A free-01 c0: visits 5 distinct 5 hops89 4 hops0 0 returns 1 revisits 0 sizes [2187, 2187, 6561, 60669, 2916]
+  A free-01 c2: visits 20 distinct 20 hops89 8 hops0 11 returns 1 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-01 c3: visits 44 distinct 36 hops89 8 hops0 35 returns 0 revisits 8 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-01 c4: visits 5 distinct 4 hops89 2 hops0 2 returns 0 revisits 1 sizes [None, None, None, None, None]
+  A free-02 c0: visits 27 distinct 18 hops89 10 hops0 16 returns 3 revisits 9 sizes [6561, 2916, 2916, 2916, 6561, 2916, 6561, 19683, 2916, 19683]
+  A free-02 c1: visits 3 distinct 3 hops89 2 hops0 0 returns 1 revisits 0 sizes [2187, 2187, 11664]
+  A free-02 c3: visits 18 distinct 18 hops89 5 hops0 12 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-02 c4: visits 34 distinct 33 hops89 5 hops0 28 returns 0 revisits 1 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-03 c0: visits 10 distinct 10 hops89 5 hops0 4 returns 1 revisits 0 sizes [2187, 2187, 2187, 6561, 1701, 1701, 1701, 1701, 15309, 15309]
+  A free-03 c2: visits 18 distinct 18 hops89 5 hops0 12 returns 1 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-03 c3: visits 25 distinct 25 hops89 5 hops0 19 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-03 c4: visits 7 distinct 6 hops89 4 hops0 2 returns 0 revisits 1 sizes [None, None, None, None, None, None, None]
+  A free-04 c0: visits 20 distinct 16 hops89 6 hops0 13 returns 1 revisits 4 sizes [6561, 6561, 6561, 4374, 6561, 2187, 4293, 4293, 4293, 4293]
+  A free-04 c1: visits 27 distinct 18 hops89 8 hops0 18 returns 1 revisits 9 sizes [39366, 93474, 95418, 113481, 113481, 113481, 95418, 91044, 91044, 91044]
+  A free-04 c2: visits 13 distinct 13 hops89 6 hops0 6 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-04 c3: visits 16 distinct 16 hops89 4 hops0 11 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-04 c4: visits 27 distinct 26 hops89 10 hops0 16 returns 0 revisits 1 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-05 c0: visits 26 distinct 22 hops89 12 hops0 13 returns 2 revisits 4 sizes [1, 2555145, 160380, 815265, 13365, 3119985, 3403620, 3119985, 6561, 262440]
+  A free-05 c2: visits 8 distinct 8 hops89 3 hops0 4 returns 0 revisits 0 sizes [24057, 6561, 2187, 6561, 6561, 18225, 6561, 60507]
+  A free-05 c3: visits 16 distinct 12 hops89 5 hops0 10 returns 1 revisits 4 sizes [None, None, None, None, None, None, None, None, None, None]
+  A free-05 c4: visits 6 distinct 6 hops89 3 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  A free-05 c5: visits 19 distinct 19 hops89 4 hops0 14 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  B free-00 c0: visits 1 distinct 1 hops89 0 hops0 0 returns 0 revisits 0 sizes [54675]
+  B free-00 c1: visits 4 distinct 4 hops89 3 hops0 0 returns 0 revisits 0 sizes [6561, 2187, 2187, 2187]
+  B free-00 c2: visits 3 distinct 2 hops89 1 hops0 1 returns 0 revisits 1 sizes [2187, 2187, 2187]
+  B free-00 c5: visits 5 distinct 4 hops89 0 hops0 4 returns 0 revisits 1 sizes [112833, 92988, 243, 92988, 1458]
+  B free-00 c7: visits 1 distinct 1 hops89 0 hops0 0 returns 0 revisits 0 sizes [112833]
+  B free-00 c9: visits 6 distinct 6 hops89 2 hops0 3 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  B free-00 c12: visits 5 distinct 5 hops89 3 hops0 1 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-00 c13: visits 3 distinct 3 hops89 2 hops0 0 returns 0 revisits 0 sizes [None, None, None]
+  B free-00 c14: visits 2 distinct 2 hops89 0 hops0 1 returns 0 revisits 0 sizes [None, None]
+  B free-00 c15: visits 3 distinct 3 hops89 0 hops0 2 returns 0 revisits 0 sizes [None, None, None]
+  B free-00 c16: visits 4 distinct 4 hops89 1 hops0 2 returns 0 revisits 0 sizes [None, None, None, None]
+  B free-00 c17: visits 1 distinct 1 hops89 0 hops0 0 returns 0 revisits 0 sizes [None]
+  B free-00 c18: visits 4 distinct 4 hops89 0 hops0 3 returns 0 revisits 0 sizes [None, None, None, None]
+  B free-00 c28: visits 5 distinct 5 hops89 1 hops0 3 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-00 c30: visits 5 distinct 5 hops89 3 hops0 1 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-00 c31: visits 6 distinct 6 hops89 2 hops0 3 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  B free-01 c0: visits 2 distinct 2 hops89 0 hops0 1 returns 0 revisits 0 sizes [1, 120285]
+  B free-01 c6: visits 4 distinct 4 hops89 1 hops0 2 returns 0 revisits 0 sizes [11907, 729, 729, 729]
+  B free-01 c8: visits 6 distinct 5 hops89 1 hops0 4 returns 1 revisits 1 sizes [19683, 19683, 19683, 6561, 6561, 19683]
+  B free-01 c10: visits 6 distinct 5 hops89 1 hops0 4 returns 0 revisits 1 sizes [None, None, None, None, None, None]
+  B free-01 c11: visits 5 distinct 5 hops89 1 hops0 3 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-01 c12: visits 5 distinct 3 hops89 1 hops0 3 returns 0 revisits 2 sizes [None, None, None, None, None]
+  B free-01 c15: visits 3 distinct 3 hops89 2 hops0 0 returns 0 revisits 0 sizes [None, None, None]
+  B free-01 c21: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-01 c25: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-01 c27: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-01 c28: visits 10 distinct 9 hops89 0 hops0 9 returns 0 revisits 1 sizes [None, None, None, None, None, None, None, None, None, None]
+  B free-01 c31: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-02 c0: visits 9 distinct 6 hops89 2 hops0 6 returns 0 revisits 3 sizes [2187, 2187, 2187, 2187, 2187, 2187, 2187, 2187, 2187]
+  B free-02 c3: visits 1 distinct 1 hops89 0 hops0 0 returns 0 revisits 0 sizes [729]
+  B free-02 c4: visits 1 distinct 1 hops89 0 hops0 0 returns 1 revisits 0 sizes [91044]
+  B free-02 c6: visits 6 distinct 5 hops89 3 hops0 2 returns 0 revisits 1 sizes [6561, 19683, 19683, 6561, 6561, 6561]
+  B free-02 c9: visits 5 distinct 5 hops89 2 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-02 c15: visits 5 distinct 5 hops89 0 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-02 c17: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [None, None]
+  B free-02 c20: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [None, None]
+  B free-02 c23: visits 7 distinct 7 hops89 1 hops0 5 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-02 c24: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-02 c26: visits 8 distinct 8 hops89 1 hops0 6 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None]
+  B free-02 c27: visits 2 distinct 2 hops89 0 hops0 1 returns 0 revisits 0 sizes [None, None]
+  B free-02 c30: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-03 c0: visits 2 distinct 2 hops89 0 hops0 1 returns 1 revisits 0 sizes [2187, 2187]
+  B free-03 c3: visits 3 distinct 3 hops89 2 hops0 0 returns 0 revisits 0 sizes [1, 29403, 13365]
+  B free-03 c4: visits 3 distinct 2 hops89 0 hops0 2 returns 0 revisits 1 sizes [268839, 6561, 268839]
+  B free-03 c5: visits 7 distinct 6 hops89 1 hops0 5 returns 1 revisits 1 sizes [12879, 6561, 6561, 6561, 2187, 2187, 2187]
+  B free-03 c8: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [2187, 2187]
+  B free-03 c9: visits 7 distinct 7 hops89 1 hops0 5 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-03 c10: visits 1 distinct 1 hops89 0 hops0 0 returns 0 revisits 0 sizes [None]
+  B free-03 c11: visits 3 distinct 3 hops89 0 hops0 2 returns 0 revisits 0 sizes [None, None, None]
+  B free-03 c12: visits 5 distinct 5 hops89 2 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-03 c15: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [None, None]
+  B free-03 c18: visits 5 distinct 4 hops89 2 hops0 2 returns 0 revisits 1 sizes [None, None, None, None, None]
+  B free-03 c19: visits 7 distinct 7 hops89 3 hops0 3 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-03 c21: visits 3 distinct 2 hops89 1 hops0 1 returns 0 revisits 1 sizes [None, None, None]
+  B free-03 c26: visits 8 distinct 8 hops89 2 hops0 5 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None]
+  B free-03 c28: visits 4 distinct 4 hops89 2 hops0 1 returns 1 revisits 0 sizes [None, None, None, None]
+  B free-03 c29: visits 6 distinct 6 hops89 0 hops0 5 returns 1 revisits 0 sizes [None, None, None, None, None, None]
+  B free-03 c31: visits 4 distinct 4 hops89 1 hops0 2 returns 1 revisits 0 sizes [None, None, None, None]
+  B free-03 c32: visits 4 distinct 3 hops89 0 hops0 3 returns 1 revisits 1 sizes [None, None, None, None]
+  B free-04 c1: visits 3 distinct 3 hops89 0 hops0 2 returns 0 revisits 0 sizes [6561, 6561, 729]
+  B free-04 c2: visits 4 distinct 3 hops89 0 hops0 3 returns 1 revisits 1 sizes [3645, 729, 3645, 3645]
+  B free-04 c6: visits 12 distinct 12 hops89 2 hops0 9 returns 0 revisits 0 sizes [1, 1, 1, 1, 1, 1, 1, 1, 180711, 509571]
+  B free-04 c8: visits 5 distinct 5 hops89 2 hops0 2 returns 0 revisits 0 sizes [1944, 2673, 1, 1, 25515]
+  B free-04 c9: visits 3 distinct 3 hops89 1 hops0 1 returns 0 revisits 0 sizes [1, None, None]
+  B free-04 c10: visits 4 distinct 3 hops89 2 hops0 1 returns 0 revisits 1 sizes [None, None, None, None]
+  B free-04 c13: visits 8 distinct 7 hops89 2 hops0 5 returns 0 revisits 1 sizes [None, None, None, None, None, None, None, None]
+  B free-04 c17: visits 6 distinct 6 hops89 3 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  B free-04 c18: visits 4 distinct 4 hops89 1 hops0 2 returns 0 revisits 0 sizes [None, None, None, None]
+  B free-04 c19: visits 7 distinct 7 hops89 1 hops0 5 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-04 c23: visits 7 distinct 7 hops89 1 hops0 5 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  B free-04 c29: visits 7 distinct 6 hops89 1 hops0 5 returns 0 revisits 1 sizes [None, None, None, None, None, None, None]
+  B free-04 c34: visits 6 distinct 6 hops89 1 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  B free-05 c0: visits 4 distinct 4 hops89 1 hops0 2 returns 0 revisits 0 sizes [2187, 2187, 54675, 54675]
+  B free-05 c6: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [270783, 267867]
+  B free-05 c9: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [8748, 15309]
+  B free-05 c12: visits 3 distinct 3 hops89 0 hops0 2 returns 0 revisits 0 sizes [None, None, None]
+  B free-05 c13: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [6561, None]
+  B free-05 c14: visits 1 distinct 1 hops89 0 hops0 0 returns 0 revisits 0 sizes [None]
+  B free-05 c17: visits 8 distinct 8 hops89 0 hops0 7 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None]
+  B free-05 c19: visits 6 distinct 6 hops89 1 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  B free-05 c20: visits 5 distinct 5 hops89 3 hops0 1 returns 0 revisits 0 sizes [None, None, None, None, None]
+  B free-05 c21: visits 4 distinct 2 hops89 1 hops0 2 returns 1 revisits 2 sizes [None, None, None, None]
+  B free-05 c23: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [None, None]
+  B free-05 c29: visits 3 distinct 3 hops89 0 hops0 2 returns 0 revisits 0 sizes [None, None, None]
+  B free-05 c32: visits 9 distinct 9 hops89 1 hops0 7 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None]
+  B free-05 c34: visits 6 distinct 6 hops89 3 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  C free-00 c0: visits 14 distinct 14 hops89 5 hops0 8 returns 0 revisits 0 sizes [3119985, 3403620, 3403620, 815265, None, None, None, None, None, None]
+  C free-00 c1: visits 19 distinct 19 hops89 5 hops0 13 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-00 c2: visits 22 distinct 8 hops89 11 hops0 10 returns 0 revisits 14 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-00 c3: visits 18 distinct 16 hops89 4 hops0 13 returns 0 revisits 2 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-00 c4: visits 3 distinct 3 hops89 1 hops0 1 returns 0 revisits 0 sizes [None, None, None]
+  C free-00 c5: visits 6 distinct 6 hops89 3 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None, None]
+  C free-00 c6: visits 4 distinct 3 hops89 1 hops0 2 returns 0 revisits 1 sizes [None, None, None, None]
+  C free-01 c0: visits 38 distinct 36 hops89 13 hops0 24 returns 0 revisits 2 sizes [15309, 1, 1, 1, None, None, None, None, None, None]
+  C free-01 c1: visits 35 distinct 35 hops89 8 hops0 26 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-01 c2: visits 10 distinct 10 hops89 5 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-01 c3: visits 12 distinct 12 hops89 4 hops0 7 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-01 c4: visits 16 distinct 16 hops89 5 hops0 10 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-02 c0: visits 16 distinct 14 hops89 5 hops0 10 returns 0 revisits 2 sizes [2187, 2187, 2187, 2187, None, None, None, None, None, None]
+  C free-02 c1: visits 8 distinct 8 hops89 5 hops0 2 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None]
+  C free-02 c2: visits 25 distinct 25 hops89 3 hops0 21 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-02 c3: visits 18 distinct 18 hops89 5 hops0 12 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-02 c4: visits 16 distinct 16 hops89 5 hops0 10 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-02 c6: visits 20 distinct 20 hops89 4 hops0 15 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-03 c0: visits 34 distinct 32 hops89 10 hops0 23 returns 1 revisits 2 sizes [370575, 1418175, 40095, 3403620, 850905, 18225, 479925, 18225, 815265, 40095]
+  C free-03 c1: visits 40 distinct 40 hops89 7 hops0 32 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-03 c2: visits 19 distinct 19 hops89 7 hops0 11 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-03 c3: visits 10 distinct 10 hops89 1 hops0 8 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-03 c4: visits 16 distinct 15 hops89 4 hops0 11 returns 0 revisits 1 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-03 c5: visits 21 distinct 19 hops89 6 hops0 14 returns 0 revisits 2 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-03 c6: visits 24 distinct 24 hops89 6 hops0 17 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-04 c0: visits 32 distinct 32 hops89 10 hops0 21 returns 0 revisits 0 sizes [24057, 10935, 3645, None, None, None, None, None, None, None]
+  C free-04 c1: visits 41 distinct 41 hops89 11 hops0 29 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-04 c2: visits 33 distinct 30 hops89 16 hops0 16 returns 0 revisits 3 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-04 c3: visits 43 distinct 43 hops89 9 hops0 33 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-04 c4: visits 2 distinct 2 hops89 1 hops0 0 returns 0 revisits 0 sizes [None, None]
+  C free-04 c5: visits 7 distinct 7 hops89 2 hops0 4 returns 0 revisits 0 sizes [None, None, None, None, None, None, None]
+  C free-05 c0: visits 8 distinct 7 hops89 4 hops0 3 returns 2 revisits 1 sizes [6561, 6561, 6561, 6561, 6561, 6561, 6561, 6561]
+  C free-05 c1: visits 37 distinct 35 hops89 8 hops0 28 returns 0 revisits 2 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-05 c2: visits 29 distinct 29 hops89 9 hops0 19 returns 0 revisits 0 sizes [None, None, None, None, None, None, None, None, None, None]
+  C free-05 c5: visits 26 distinct 25 hops89 9 hops0 16 returns 1 revisits 1 sizes [None, None, None, None, None, None, None, None, None, None]
+wrote graph_data.json
