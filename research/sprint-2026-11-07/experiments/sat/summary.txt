@@ -1,0 +1,66 @@
+circuit        scope                              k  tW result     wall_s solve_s  clauses
+repo           A:v=00001010                       4   3 UNSAT         1.7    0.81    46870
+repo           A:v=03010002                       4   2 UNSAT         3.4    1.92    46743
+repo           A:v=84840000                       4   2 UNSAT         1.5    0.76    46743
+repo           A:v=00008181                       4   3 UNSAT         1.6    0.49    46846
+repo           A:v=00406060                       4   3 UNSAT         1.4    0.55    46864
+repo           A:v=88008800                       4   2 UNSAT         1.7    0.72    46743
+repo           A:v=888c0400                       4   2 UNSAT         3.4    2.38    46731
+repo           A:v=10100000                       5   3 UNSAT         2.9    1.81    62673
+repo           A:v=40000040                       5   3 UNSAT         4.3    0.54    62689
+repo           A:v=84008004                       5   2 UNSAT         4.4    3.37    62480
+repo           A:v=02020202                       5   3 UNSAT         7.4    6.07    62633
+repo           A:v=20202020                       5   3 UNSAT         0.4    0.17    62649
+repo           A:v=00040400                       6   3 UNSAT         2.3    1.48    78470
+repo           A:v=00008180                       6   4 UNSAT         5.8    4.64    78651
+repo           A:v=08000808                       6   3 UNSAT         2.4    2.22    78460
+repo           A:v=80018100                       6   3 UNSAT         5.9    5.05    78470
+repo           A:v=04000004                       7   3 UNSAT        30.2    29.4    94395
+repo           A:v=40004000                       7   4 UNSAT         4.6    4.45    94648
+repo           A:v=00002060                       7   4 UNSAT         2.1    1.93    94624
+repo           A:v=81810000                       7   4 UNSAT         7.8     6.7    94588
+repo           A:v=00100010                       8   4 UNSAT        23.3   23.18   110633
+repo           A:v=00404000                       8   5 UNSAT        12.3   12.16   110928
+repo           A:v=02000002                       8   4 UNSAT        49.6   48.69   110647
+repo           A:v=04040000                       8   4 UNSAT         9.3    8.22   110605
+repo           A:v=02020200                       8   5 UNSAT        13.0   11.94   110802
+repo           A:v=20202000                       8   5 UNSAT        13.2   12.37   110886
+repo           A:v=80018000                       8   4 UNSAT        26.8    25.9   110619
+repo           A:v=08080000                       9   4 TIMEOUT      72.3    None     None
+repo           A:v=00008888                       9   4 TIMEOUT      72.3    None     None
+repo           A:v=80008008                       9   4 TIMEOUT      72.3    None     None
+repo           A:v=20002000                      10   6 TIMEOUT      72.3    None     None
+repo           C:byte1.half1                      4   4 UNSAT         1.4    0.43    46949
+repo           C:byte2.half0                      4   4 UNSAT         1.1    0.32    46937
+repo           C:byte2.half1                      4   4 UNSAT         1.2     0.3    46949
+repo           C:byte3.half0                      4   4 UNSAT         1.6    0.39    46937
+repo           C:byte0.half1                      5   5 UNSAT         0.6    0.05    62891
+repo           C:byte3.half1                      5   5 UNSAT         1.7    0.44    62891
+repo           C:byte0.half0                      6   5 UNSAT         5.7    4.74    78752
+repo           C:byte2                            8   8 UNSAT         6.0    5.06   111449
+repo           C:byte3                            9   9 UNSAT        14.4   13.46   127915
+repo           C:byte1.half0                      9   6 UNSAT        41.5   41.29   127128
+repo           C:byte0                           11  10 TIMEOUT      72.4    None     None
+repo           C:byte1                           13  10 TIMEOUT      72.3    None     None
+sampleC:1011   D:mobile(7)                       24  10 TIMEOUT     139.5    None     None
+sampleC:1011   A:v=00060206                       6   3 UNSAT         7.4    6.51    78630
+sampleC:1011   A:v=00101000                       6   4 UNSAT         2.5    1.98    78821
+sampleC:1011   A:v=01810080                       6   3 UNSAT         1.8    1.01    78630
+sampleA:1773   A:v=00808800                       6   3 UNSAT        10.6    9.81    78670
+sampleA:1773   A:v=01808001                       6   3 UNSAT         1.4    1.17    78630
+sampleA:1773   A:v=00000206                       7   4 UNSAT        10.0    9.09    94888
+sampleA:2667   D:mobile(6)                       25  12 TIMEOUT     139.5    None     None
+
+k   UNSAT  TIMEOUT  SAT  ERROR   UNSAT solve-time min/median/max (s)
+4      11        0    0      0   0.3 / 0.55 / 2.38
+5       7        0    0      0   0.05 / 0.54 / 6.07
+6      10        0    0      0   1.01 / 4.64 / 9.81
+7       5        0    0      0   1.93 / 6.7 / 29.4
+8       8        0    0      0   5.06 / 12.37 / 48.69
+9       2        3    0      0   13.46 / 41.29 / 41.29
+10      0        1    0      0   - / - / -
+11      0        1    0      0   - / - / -
+13      0        1    0      0   - / - / -
+24      0        1    0      0   - / - / -
+25      0        1    0      0   - / - / -
+total instances 51 total wall s 1064

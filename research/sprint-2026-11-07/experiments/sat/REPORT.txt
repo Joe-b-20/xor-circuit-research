@@ -1,0 +1,277 @@
+SCOPED EXACT (SAT) SEARCH FOR AN 87-GATE AES MIXCOLUMNS CIRCUIT  --  sprint 2026-11-07, agent "sat"
+Folder: ~/xs-campaigns/2026-11-07-sprint/sat/   (nothing written in the repository)
+Work window: 2026-11-07 ~09:55 - 11:35 UTC-5 (WSL clock).  CPU: ONE solver process at a time, nice 10,
+on a machine at load ~21 on 20 threads (the hunt), so wall times below are pessimistic by a factor of
+roughly 2 against an idle core [guess from the load average; solve_secs in results.jsonl is wall time].
+Tags: [proved] argument given; [checked] exact computation (script named); [measured] run data (script
+named); [cited]; [guess].
+
+RESULT IN ONE LINE: no 87 found.  Every scope the solver finished (43 of 51 instances, k = 4..9) is UNSAT
+[measured]; the 60 s frontier is k = 8 for helper windows and k = 9 for output-block windows; k >= 9
+helper windows and k >= 11 blocks time out at 60 s.  What each UNSAT proves is stated in section 3.
+
+Files (all in this folder):
+  sat87.py        map/circuit loaders (repo .circ.txt, hunt samples.jsonl, g88 records), split-closure
+                  checks, the CNF encoder, decoder, independent circuit checker, child-process runner
+  solve_child.py  one instance: encode + pysat CaDiCaL 1.9.5, prints one json line; killed by the parent
+                  at the wall limit (pysat's CaDiCaL interrupt is not relied on)
+  run_scopes.py   scope families A/B/C/D/R (below), runs instances one at a time, appends results.jsonl
+  pick_circuits.py  picks structurally different 88 states from the hunt samples by plateau core
+                  (pes_lib.fan) -> circuits.json
+  test_enc.py     encoder sanity test (m = k must be SAT and reconstruct a valid 88)
+  write_circ.py   NCFF .circ.txt writer + repo check.py + unit-vector check (ready; unused: no SAT)
+  summarize.py    the tables below from results.jsonl
+  results.jsonl   one json line per instance: circuit, scope, k, W (the removed values), result, times
+  logs_repo_A_4_7.txt, logs_c1.txt, logs_c2.txt   run logs; campaign1.sh, campaign2.sh the sequences
+
+====================================================================================================
+1. FORMULATION  [proved]
+====================================================================================================
+Values are 32-bit masks, bit j = x_j; inputs are the 32 unit masks; the 32 targets are the rows of
+circuits/aes-mixcolumns/aes-mixcolumns.mat.txt (row i = y_i, column j = x_j), read by sat87.load_targets.
+A circuit is a set V of non-input values that is SPLIT-CLOSED: V can be ordered so that every v in V is
+the XOR of two distinct elements of INPUTS u V that come earlier.  Its cost is |V| (one XOR per value);
+V must contain all 32 targets.  An 88 circuit S is such a V with |S| = 88 (56 helpers + 32 targets).
+
+Scope = a subset K of S (the KEPT values) such that INPUTS u K is itself split-closed.  W = S \ K is
+the removed set, k = |W|.  The instance I(K, m) asks for m new values g_1..g_m with
+    g_j = a xor b,  a != b,  a, b in P_j = INPUTS u K u {g_1..g_(j-1)},
+such that every target not in K equals some g_j.
+Claim: I(K, m) is SAT  <=>  there is a split-closed V with V >= K u TARGETS and |V| <= |K| + m.
+  (=>)  V = K u {g_j}: K is computable on its own (hypothesis), then the g_j in order.
+  (<=)  Order V with all of K first (legal because INPUTS u K is split-closed by itself), then the
+        remaining |V| - |K| <= m values in V's own order; each splits over earlier values of V, which
+        are in K or are earlier new values.  If |V| - |K| < m, pad with duplicates: the encoding does
+        not require g_j to be distinct from earlier values, so a duplicate is an admissible g_j.
+Therefore  UNSAT of I(K, k - 1)  proves:  NO circuit with <= 87 gates has a value set containing K.
+That is the exact content of every UNSAT below.  It is a statement about the MAP restricted to the
+region "all 88 - k values of K are present"; it says nothing about circuits that lack any one value
+of K.  It covers every wiring, every depth, every order, and any helper values whatsoever for the
+k - 1 free gates (no pool restriction, unlike kste's row 3).
+
+Distinctness (g_j differs from every earlier pool element, inputs and K included) is ADDED as a
+pruning constraint [proved sound]: if any V with |V| <= 87 exists then one with exactly 87 distinct
+values exists (add fresh splits: INPUTS u V is never XOR-closed since it would have to be a subspace
+of size 2^32), so the distinct encoding is SAT iff the plain one is.  Liveness ("every g_j is a target
+or used later") is NOT added: with exactly m gates it is not sound (an 86 could not be padded).
+
+Window construction (run_scopes.window) for a seed set of values: W = upward closure of the seeds
+under the circuit's wiring (everything that uses a removed value, transitively), then every helper
+whose users all lie in W (it would be dead), then anything K still cannot compute under ANY pair
+(sat87.wiring_from_values; this last step never fired on these circuits [checked]).  Scope families:
+  A  one seed value v in S                (per circuit: 81 distinct windows for the repo 88@5, k = 1..26)
+  C  the 8 outputs of byte b, or 4 of them (byte-rotation symmetry: the map is circulant in bytes, so
+     one byte block is representative up to the rotation of the circuit; the circuit itself is not
+     rotation symmetric, so all four blocks were run)
+  D  the mobile part: all helpers that some remove1-neutral move touches (plateau core = the rest),
+     from pes_lib.fan on six hunt 88 states with pairwise different cores (pick_circuits.py)
+  B  two seeds, R random seeds           (implemented, not run: out of time)
+
+====================================================================================================
+2. ENCODING  [checked: test_enc.py; I(K, k) is SAT and the decoded circuit re-checks as an 88@5]
+====================================================================================================
+Pool indices u: 0..31 inputs, 32..32+|K|-1 kept values (constants), then new gates w_j = 32+|K|+j.
+Per new gate j (pysat CNF, sat87.encode):
+  a[j][u], b[j][u], u < w_j : one-hot selectors of the two operands (at-least-one clause + pairwise
+      at-most-one); c[j][u] <-> OR_{u' <= u} a[j][u'] (prefix of a);  b[j][0] false and
+      b[j][u] -> c[j][u-1]: first operand index < second operand index (operand-swap symmetry).
+  For each bit i: A_i <-> OR over u of (a[j][u] if u is a constant with bit i set; the AND-variable
+      a[j][u] & bit[u][i] if u is an earlier new gate); same B_i with b; bit[j][i] = A_i xor B_i
+      (4 clauses).  Exactly-one selection makes the OR exact.
+  Distinctness: for every u < w_j one clause "some bit of g_j differs from u" (constant u: the
+      literal pattern of its complement; variable u: 32 fresh d-variables, d -> bits differ).
+  Consecutive-gate symmetry [proved sound by the bubble-sort / lex-minimal order argument]: if
+      g_(j+1) does not use g_j (g_j has the largest index so it can only be the second operand:
+      b[j+1][w_j] false) then first-operand index of g_j <= that of g_(j+1):
+      clause (b[j+1][w_j] or -c[j+1][u] or c[j][u]) for all u < w_j.
+  Targets: for every target t not in K, e[j][t] -> bit[j][i] == t_i (32 clauses), and OR_j e[j][t].
+Size [measured]: k = 4: 1.6k vars / 47k clauses; k = 6: 3.2k / 79k; k = 8: 5.1k / 111k; k = 9: 6.3k /
+128k (the pairwise at-most-one over a ~120-element pool dominates).  Solver: CaDiCaL 1.9.5 via pysat,
+default options, one instance per child process, wall limit enforced by the parent (kill at limit+5 s;
+reported wall includes ~5-7 s of process start, encoding and teardown).
+
+Sanity [checked, test_enc.py]: repo 88@5, W = {y19} (k = 1), m = 1: SAT, decoded, reconstructed
+circuit checks as 88 gates depth 5, 32 targets, by sat87.check_circuit (independent of the encoder).
+
+====================================================================================================
+3. INSTANCES RUN  [measured: results.jsonl, summarize.py -> summary.txt]
+====================================================================================================
+Circuits: "repo" = circuits/aes-mixcolumns/aes-mixcolumns-xor88-depth5.circ.txt (depth 5, its own
+plateau, in no kste plateau per the kste report); sampleC:1011 (hunt samplesC line 1011, depth 12,
+core 49, mobile 7) and sampleA:1773 (hunt samples.jsonl line 1773, depth 8, core 47, mobile 9): hunt 88 states with pairwise different plateau cores (pick_circuits.py; cores from
+pes_lib.fan, no down move seen at any of the six fans [checked]).  Column tW = targets inside W (the
+outputs the solver must recompute); scope A:v=<hex> = window seeded at value v (the removed set W is
+stored per instance in results.jsonl).  wall_s includes process start/encode/teardown; solve_s is the
+solver call alone.
+
+circuit        scope                              k  tW result     wall_s solve_s  clauses
+repo           A:v=00001010                       4   3 UNSAT         1.7    0.81    46870
+repo           A:v=03010002                       4   2 UNSAT         3.4    1.92    46743
+repo           A:v=84840000                       4   2 UNSAT         1.5    0.76    46743
+repo           A:v=00008181                       4   3 UNSAT         1.6    0.49    46846
+repo           A:v=00406060                       4   3 UNSAT         1.4    0.55    46864
+repo           A:v=88008800                       4   2 UNSAT         1.7    0.72    46743
+repo           A:v=888c0400                       4   2 UNSAT         3.4    2.38    46731
+repo           A:v=10100000                       5   3 UNSAT         2.9    1.81    62673
+repo           A:v=40000040                       5   3 UNSAT         4.3    0.54    62689
+repo           A:v=84008004                       5   2 UNSAT         4.4    3.37    62480
+repo           A:v=02020202                       5   3 UNSAT         7.4    6.07    62633
+repo           A:v=20202020                       5   3 UNSAT         0.4    0.17    62649
+repo           A:v=00040400                       6   3 UNSAT         2.3    1.48    78470
+repo           A:v=00008180                       6   4 UNSAT         5.8    4.64    78651
+repo           A:v=08000808                       6   3 UNSAT         2.4    2.22    78460
+repo           A:v=80018100                       6   3 UNSAT         5.9    5.05    78470
+repo           A:v=04000004                       7   3 UNSAT        30.2    29.4    94395
+repo           A:v=40004000                       7   4 UNSAT         4.6    4.45    94648
+repo           A:v=00002060                       7   4 UNSAT         2.1    1.93    94624
+repo           A:v=81810000                       7   4 UNSAT         7.8     6.7    94588
+repo           A:v=00100010                       8   4 UNSAT        23.3   23.18   110633
+repo           A:v=00404000                       8   5 UNSAT        12.3   12.16   110928
+repo           A:v=02000002                       8   4 UNSAT        49.6   48.69   110647
+repo           A:v=04040000                       8   4 UNSAT         9.3    8.22   110605
+repo           A:v=02020200                       8   5 UNSAT        13.0   11.94   110802
+repo           A:v=20202000                       8   5 UNSAT        13.2   12.37   110886
+repo           A:v=80018000                       8   4 UNSAT        26.8    25.9   110619
+repo           A:v=08080000                       9   4 TIMEOUT(60s)  72.3
+repo           A:v=00008888                       9   4 TIMEOUT(60s)  72.3
+repo           A:v=80008008                       9   4 TIMEOUT(60s)  72.3
+repo           A:v=20002000                      10   6 TIMEOUT(60s)  72.3
+repo           C:byte1.half1 (y12..y15)           4   4 UNSAT         1.4    0.43    46949
+repo           C:byte2.half0 (y16..y19)           4   4 UNSAT         1.1     0.3    46937
+repo           C:byte2.half1 (y20..y23)           4   4 UNSAT         1.2     0.3    46949
+repo           C:byte3.half0 (y24..y27)           4   4 UNSAT         1.6    0.39    46937
+repo           C:byte0.half1 (y4..y7)             5   5 UNSAT         0.6    0.05    62891
+repo           C:byte3.half1 (y28..y31)           5   5 UNSAT         1.7    0.44    62891
+repo           C:byte0.half0 (y0..y3)             6   5 UNSAT         5.7    4.74    78752
+repo           C:byte2      (y16..y23)            8   8 UNSAT         6.0    5.06   111449
+repo           C:byte3      (y24..y31)            9   9 UNSAT        14.4   13.46   127915
+repo           C:byte1.half0 (y8..y11)            9   6 UNSAT        41.5   41.29   127128
+repo           C:byte0      (y0..y7)             11  10 TIMEOUT(60s)  72.4
+repo           C:byte1      (y8..y15)            13  10 TIMEOUT(60s)  72.3
+sampleC:1011   D:mobile(7 helpers)               24  10 TIMEOUT(120s) 139.5
+sampleA:2667   D:mobile(6 helpers)               25  12 TIMEOUT(120s) 139.5
+sampleC:1011   A:v=00060206                       6   3 UNSAT         7.4    6.51    78630
+sampleC:1011   A:v=00101000                       6   4 UNSAT         2.5    1.98    78821
+sampleC:1011   A:v=01810080                       6   3 UNSAT         1.8    1.01    78630
+sampleA:1773   A:v=00808800                       6   3 UNSAT        10.6    9.81    78670
+sampleA:1773   A:v=01808001                       6   3 UNSAT         1.4    1.17    78630
+sampleA:1773   A:v=00000206                       7   4 UNSAT        10.0    9.09    94888
+
+Totals: 51 instances, 1065 s wall; 43 UNSAT, 8 TIMEOUT, 0 SAT, 0 errors.
+k    UNSAT TIMEOUT   UNSAT solve-time min / median / max (s)
+4      11     0      0.3 / 0.55 / 2.4
+5       7     0      0.05 / 0.54 / 6.1
+6      10     0      1.0 / 4.6 / 9.8
+7       5     0      1.9 / 6.7 / 29.4
+8       8     0      5.1 / 12.4 / 48.7
+9       2     3      13.5 / 41.3 / 41.3   (the two UNSAT are output blocks, tW = 9 and 6; the three
+                                           timeouts are helper windows with tW = 4)
+10-13   0     3      (helper window k=10, byte0 k=11, byte1 k=13)
+24,25   0     2      (mobile parts of sampleC:1011 and sampleA:2667, 120 s; sampleA:884 k=25 was
+                      started and killed at the end of the budget, not recorded)
+
+Not run: family B (two-seed windows), family R (random windows), the other three picked circuits
+(sampleA:884, sampleA:2667, sampleC:976, sampleA:1626), g88 records, k >= 9 helper windows at
+longer limits.  Reason: the 90 min budget with one solver at a time on a loaded machine.
+
+====================================================================================================
+4. WHAT IS PROVED AND WHAT IS NOT  [proved as stated; outcomes measured]
+====================================================================================================
+Each UNSAT row proves, for that circuit S and that removed set W (listed in results.jsonl):
+   no circuit with <= 87 XOR gates, of any depth, with any helpers, has a value set containing the
+   88 - k values S \ W.
+Equivalently: every <= 87 circuit (if one exists) misses at least one of the values of S \ W.  Taken
+together over the 27 helper windows and 10 output-block windows of the repo 88@5: every <= 87 circuit
+misses at least one value from each of those 37 sets of 79-84 values.  The union of the 37 removed
+sets W covers 73 of the 88 values of the repo circuit [checked: results.jsonl, W fields]; the 15 values
+never in any finished W are deep shared helpers whose one-seed windows have k >= 9.
+This is the same KIND of statement as kste's row 2 ("terminal cones s <= 7 ... k -> k-1 UNSAT") and
+as our remove1 plateau flatness, but strictly stronger per window than remove1 (remove1 moves one value
+and re-adds one; here all k - 1 replacements are free and need not resemble the removed ones), and it
+is not pool-restricted (unlike kste row 3): the k - 1 new gates may take ANY values.
+What it does NOT prove:
+  - nothing about an 87 that lacks two values from different windows, i.e. that differs from the 88
+    in a non-local way; the windows are local (k <= 9 of 88 values);
+  - nothing about circuits that do not contain the kept 79-84 values at all: an 87 on another plateau,
+    or built differently, is untouched;
+  - nothing about the three timed-out helper windows (k = 9, 10), the two timed-out byte blocks
+    (k = 11, 13) or the mobile part (k = 24): those are open, not refuted;
+  - for the sampled circuits only 6 windows (k = 6, 7) were run: evidence that their immediate
+    neighbourhoods behave like the repo circuit's, nothing more.
+Consistency check [measured]: the result agrees with the hunt's experience (no down move from any 88
+in thousands of worker-hours) and with kste's local refutations; it does not add evidence for or
+against a global 88 optimum.
+
+Structural observation [measured, this table]: output-block windows are much easier for the solver
+than helper windows of the same k: byte2 (k = 8, 8 targets removed) 5 s and byte3 (k = 9, 9 targets)
+13 s against helper windows k = 8 at 8-49 s and k = 9 timing out.  Mechanism [guess, plausible]: each
+removed target fixes all 32 bits of one new gate, so a window with tW = k - 1 leaves the solver
+essentially one free value; a helper window with tW = 4 and k = 9 leaves five free 32-bit values and
+their wiring.  Prediction: an instance's hardness is governed by k - tW (free new values), not by k.
+Test on fresh data: run byte0 (k = 11, tW = 10, free = 1) and byte1 (k = 13, tW = 10, free = 3) at
+600 s; the prediction says byte0 finishes well before byte1 (both timed out at 60 s here).
+Second observation: the "mobile part" of a plateau (helpers touched by neutral moves) is NOT a small
+local window: on the six picked circuits the 6-9 mobile helpers force k = 21-32 with 10-14 targets
+in W even under the minimal any-pair closure (dsizes.py) [checked].  The mobile helpers sit low in
+the circuit and feed many outputs; the plateau's freedom is in how those outputs are re-paired, not in
+a detachable corner.  So "mobile part + a few core values" (scope (c) of the task) is out of reach for
+this encoding at 60-120 s and was not refuted.
+
+====================================================================================================
+5. FRONTIER AND RECOMMENDATION
+====================================================================================================
+Frontier [measured, nice 10 on a machine at load ~21/20]:
+   helper windows: k <= 8 always finishes within 60 s (max 49 s at k = 8; k = 9 times out, 3 of 3);
+   output blocks:  k <= 9 finishes (<= 41 s); k = 11 and 13 time out at 60 s;
+   instance size grows linearly (k = 9: 6.3k vars, 128k clauses), so the barrier is search, not size.
+Encoding improvements worth doing before a longer run (none tried, in order of expected gain):
+  1. Replace the pairwise at-most-one over the ~120-element pool by a sequential/ladder encoding
+     (already have the prefix c[j][u]; at-most-one is 3 clauses per u instead of ~7000) -- cuts the
+     clause count by ~5x; CaDiCaL's preprocessing may already absorb it [guess].
+  2. Symmetry: full lex order on (first, second) operand pairs of independent consecutive gates
+     instead of first-operand only; and break the Z4 byte-rotation only when the window is rotation
+     closed (rare).
+  3. Prune the free values: a new gate that is a target of W is fixed; for the free ones, require
+     each to be used (liveness) in the SAT for exactly m gates AND run m - 1 as well (two calls),
+     which restores soundness and prunes dead-gate symmetry.
+  4. Kissat 4.0.4 is installed via pysat; untested here (one process rule).
+Recommended longer exact run (8-12 h, one core, after the hunt releases CPU):
+  (a) the repo 88@5 and the six picked circuits: every family-A window with k = 9 and 10 at 900 s
+      (repo: 4 windows; samples: similar counts), every byte block at 1800 s (free values 1-3);
+      expected outcome [guess from the trend]: all UNSAT, which would certify "no 87 within any
+      one-seed window up to k = 10 of seven structurally different 88s".
+  (b) family B (two-seed windows) for k <= 9 on the repo circuit (hundreds of windows at <= 60 s):
+      this is the cheapest way to cover value pairs from different corners of the circuit, i.e. the
+      first non-local statement.
+  (c) for an actual chance at an 87 rather than a certificate, the open regions are the large ones:
+      the byte blocks with k = 11-13 (free = 1-3: tractable with improvement 1-3) and the mobile
+      part k = 21-32 (needs a different encoding: fix the core, search the whole re-pairing of the
+      outputs as a 2-level problem -- choose the output trees, then count; the plateau structure
+      "exact product of 3-way re-pairings" suggests a DP over independent factors rather than SAT).
+Stop rule: if (a) is all UNSAT and (b) is all UNSAT, the next step is not more windows of the same
+88s but the same method on seeds from other plateaus (the 47 kste circuits_1 seeds) -- the result
+so far is consistent with every 88 being locally rigid at radius <= 9, so an 87, if any, is far
+from all of them.
+
+====================================================================================================
+6. FINDINGS, REJECTED, OPEN
+====================================================================================================
+Findings
+ F1 [measured] 43 scoped instances UNSAT, 0 SAT: no <= 87 circuit contains any of the 43 kept sets
+    (79-84 values each) of three structurally different 88 circuits; in particular none within a
+    one-seed window of k <= 8 (repo: all 27 such windows) or an output half-byte/byte block of
+    k <= 9 (repo: 10 of 12 blocks).
+ F2 [measured] Frontier at 60 s on a loaded machine: k = 8 helper windows, k = 9 output blocks;
+    hardness tracks the number of free (non-target) new values, not k.
+ F3 [checked] The plateau mobile part is not a local window (k = 21-32 with 10-14 outputs).
+ F4 [proved] The value-set formulation makes each UNSAT an exact, wiring-free, pool-free, depth-free
+    statement, strictly stronger than remove1 flatness on the same window.
+Rejected
+ - "a few slack leaves can be re-paired into one fewer gate": every leaf window tried is UNSAT.
+ - "the mobile part is where an 87 hides and it is small": it is not small (F3).
+Open
+ - k >= 9 helper windows, byte blocks k >= 11, mobile parts: not refuted (timeouts).
+ - whether hardness is really governed by k - tW (prediction in section 4).
+ - family B/R windows and the other four picked circuits: not run.
+Next experiment: section 5 (a)+(b) overnight on one core with improvement 1; it is cheap, it either
+produces an 87 (then everything else is moot) or the first non-local rigidity certificate.

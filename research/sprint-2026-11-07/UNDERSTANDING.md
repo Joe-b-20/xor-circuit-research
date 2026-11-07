@@ -105,7 +105,11 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   found so far, and the number of cores is far beyond what sampling can exhaust.
 - Whether an 87 exists is therefore a global question about the map (lower bound 75, no
   published proof of 88; the kste "barrier" argument is scoped to known circuits, F3). More
-  local search time cannot settle it; exact or structural methods can.
+  local search time cannot settle it; exact or structural methods can. First step taken (F13):
+  a SAT formulation that, for a kept subset K of an 88 circuit, decides whether ANY circuit
+  with <= 87 gates contains K (no depth, pool or wiring restriction); 43 such sets of 79-84
+  values on three circuits are refuted in seconds, windows of 9-10 removed values are the
+  60 s frontier [measured].
 - Waits on InvMixColumns descents are time in dead rooms (small sealed plateaus) until a large
   move lands in a rich one; no local score predicts which state is productive
   [measured, 2026-11-03-waits]. The present sprint's structural reading says why: a room is one
@@ -173,7 +177,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 
 ## 8. What remains unexplained
 
-- Whether an 87 exists (75 <= optimum <= 88). No local evidence can decide it.
+- Whether an 87 exists (75 <= optimum <= 88). No local evidence can decide it; the exact
+  scoped route (F13) can grow: longer limits, two-seed windows, more circuits, and an encoding
+  for the factor-structured mobile part.
 - Why the 88 cores are so numerous and so uniformly sealed at +1: is it a counting consequence
   of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure?
   The bit-slice block floors (3, 20, 10, 24, 10, 16) hold for every known 88 but are not proved.

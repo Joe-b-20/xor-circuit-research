@@ -364,6 +364,35 @@ signatures).
   coincidences instead of 3, pinning alpha and N; ~1-2 min per state single-threaded (a day on one
   core, hours on several), fixing the giants' identity in the same pass.
 
+## F13. Scoped exact search for an 87 around our 88 circuits: 43 refutations, 8 timeouts, no 87 (sat agent, `sat/REPORT.txt`, `sat/sat87.py`) [measured]
+
+- Formulation (value-set form): keep a subset K of an 88 circuit's values such that inputs ∪ K is
+  split-closed (every kept value is the XOR of two earlier ones); remove W, k = |W|; ask CaDiCaL
+  (via pysat) for m = k-1 new gates, each the XOR of two distinct available values, such that every
+  output not in K is a new gate. Proved: the instance is SAT iff some split-closed value set
+  containing K ∪ outputs has at most |K| + m values. So UNSAT at m = k-1 proves that NO circuit
+  with <= 87 gates, of any depth and any helper values, contains K. No pool restriction (kste's
+  scoped refutations restrict the candidate pool), no wiring assumption; strictly stronger than
+  remove1 flatness on the same window. Encoding validated: m = k is SAT and the decoded circuit
+  re-verifies as 88@5.
+- Outcomes on three structurally different 88 circuits (repo 88@5; two hunt states with different
+  cores, depth 12 and 8): 51 instances, 43 UNSAT, 8 timeouts (60-120 s), 0 SAT. Repo circuit:
+  all 27 one-seed windows (a value's upward closure plus dead helpers) with k = 4..8 UNSAT in
+  0.2-49 s; k = 9-10 timed out; all 8 half-byte output blocks (k = 4-9) and bytes 2-3 (k = 8, 9)
+  UNSAT, bytes 0-1 (k = 11, 13) timed out. The union of refuted windows covers 73 of the repo
+  circuit's 88 values: every <= 87 circuit misses at least one value of each of 37 kept sets of
+  79-84 values. The plateau's mobile part is not a local window (its closure forces k = 21-32)
+  and was not refuted.
+- Frontier at 60 s on a loaded machine: k <= 8 for helper windows, k <= 9 for output blocks;
+  instances are small (6k variables, 128k clauses at k = 9), so the barrier is search. Hardness
+  tracks the number of free (non-output) new values rather than k [measured on 51 instances;
+  prediction stated in the report].
+- What this does and does not say: an 87, if it exists, shares no refuted 79-84-value kept set
+  with these three circuits; it may still share a smaller part, or lie near another plateau. The
+  machinery (one core, exact, strictly stronger than the walk's view) is the right instrument for
+  the "exact or structural methods" route; the recommended continuation is a longer single-core
+  batch (k = 9-10 windows at 900 s, byte blocks at 1,800 s, two-seed windows) across more cores.
+
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
 An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:

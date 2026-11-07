@@ -1,0 +1,32 @@
+circuit repo depth 5 family A: 11 scopes with k in [8,10]
+repo                   A:v=00100010                 k= 8 t=4 UNSAT      23.3s vars=5131 cl=110633
+repo                   A:v=00404000                 k= 8 t=5 UNSAT      12.3s vars=5138 cl=110928
+repo                   A:v=02000002                 k= 8 t=4 UNSAT      49.6s vars=5131 cl=110647
+repo                   A:v=04040000                 k= 8 t=4 UNSAT       9.3s vars=5131 cl=110605
+repo                   A:v=02020200                 k= 8 t=5 UNSAT      13.0s vars=5138 cl=110802
+repo                   A:v=20202000                 k= 8 t=5 UNSAT      13.2s vars=5138 cl=110886
+repo                   A:v=80018000                 k= 8 t=4 UNSAT      26.8s vars=5131 cl=110619
+repo                   A:v=08080000                 k= 9 t=4 TIMEOUT    72.3s vars=None cl=None
+repo                   A:v=00008888                 k= 9 t=4 TIMEOUT    72.3s vars=None cl=None
+repo                   A:v=80008008                 k= 9 t=4 TIMEOUT    72.3s vars=None cl=None
+repo                   A:v=20002000                 k=10 t=6 TIMEOUT    72.3s vars=None cl=None
+circuit repo depth 5 family C: 12 scopes with k in [4,13]
+repo                   C:byte1.half1                k= 4 t=4 UNSAT       1.4s vars=1641 cl=46949
+repo                   C:byte2.half0                k= 4 t=4 UNSAT       1.1s vars=1641 cl=46937
+repo                   C:byte2.half1                k= 4 t=4 UNSAT       1.2s vars=1641 cl=46949
+repo                   C:byte3.half0                k= 4 t=4 UNSAT       1.6s vars=1641 cl=46937
+repo                   C:byte0.half1                k= 5 t=5 UNSAT       0.6s vars=2378 cl=62891
+repo                   C:byte3.half1                k= 5 t=5 UNSAT       1.7s vars=2378 cl=62891
+repo                   C:byte0.half0                k= 6 t=5 UNSAT       5.7s vars=3205 cl=78752
+repo                   C:byte2                      k= 8 t=8 UNSAT       6.0s vars=5159 cl=111449
+repo                   C:byte3                      k= 9 t=9 UNSAT      14.4s vars=6276 cl=127915
+repo                   C:byte1.half0                k= 9 t=6 UNSAT      41.5s vars=6252 cl=127128
+repo                   C:byte0                      k=11 t=10 TIMEOUT    72.4s vars=None cl=None
+repo                   C:byte1                      k=13 t=10 TIMEOUT    72.3s vars=None cl=None
+circuit sampleC:1011 depth 12 family D: 1 scopes with k in [2,30]
+sampleC:1011           D:mobile(7)                  k=24 t=10 TIMEOUT   139.5s vars=None cl=None
+circuit sampleA:1773 depth 8 family D: 0 scopes with k in [2,30]
+circuit sampleA:2667 depth 8 family D: 1 scopes with k in [2,30]
+sampleA:2667           D:mobile(6)                  k=25 t=12 TIMEOUT   139.5s vars=None cl=None
+circuit sampleC:976 depth 8 family D: 0 scopes with k in [2,30]
+circuit sampleA:1626 depth 8 family D: 0 scopes with k in [2,30]
