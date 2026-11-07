@@ -267,8 +267,8 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   (weight-19 outputs), 118@5 is a construction (optimality open), 88-gate unrestricted inverse
   constructions at depths 19 and 33 are recorded in the archive. A claim of 87 impossibility is open.
   The 75 proof's rows leave 1,508 of 7,416 oriented claims open at G = 75, 1,313 with the sprint's two
-  new row families (F18: proofs independently checked, LP reproduced independently, certificates in
-  progress); real 88 circuits violate no package row, sit 0-7 units below the drift budget and leave
+  new row families (F18: proofs independently checked, 1,772 exact Farkas certificates with complete
+  coverage of the 195 newly excluded claims, independent checker, mutation-tested); real 88 circuits violate no package row, sit 0-7 units below the drift budget and leave
   every capacity row (L1)-(L23) slack >= 10 (only Lemma 7.4 and two of the new rows are tight), so
   that machinery needs new content (realizability of low-Y/V/q profiles) rather than sharpening
   (F16-F18). The exact scoped route (F13) can grow: k >= 11 helper windows, the plateau's mobile

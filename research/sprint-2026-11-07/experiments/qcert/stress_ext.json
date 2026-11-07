@@ -1,0 +1,333 @@
+{
+ "circuits": 316,
+ "controls": 13,
+ "real": 303,
+ "phases": 1264,
+ "q0_phases": 0,
+ "violations": [],
+ "min_slack": {
+  "ctrl/canonical/M/G*_J": 0,
+  "ctrl/canonical/M/G*_R6": 0,
+  "ctrl/canonical/M/I": 44,
+  "ctrl/canonical/M/I_label": 1,
+  "ctrl/canonical/M/L12*": 0,
+  "ctrl/canonical/M/L13*": 48,
+  "ctrl/canonical/M/L13*_label": 0,
+  "ctrl/canonical/M/L14*": 50,
+  "ctrl/canonical/M/L14*_ex": 2,
+  "ctrl/canonical/M/L14*_label": 0,
+  "ctrl/canonical/M/L15*": 28,
+  "ctrl/canonical/M/L17-M*": 50,
+  "ctrl/canonical/M/L7*": 50,
+  "ctrl/canonical/M/L7*_label": 0,
+  "ctrl/canonical/M/LemmaS_label": 0,
+  "ctrl/canonical/M/N1": 23,
+  "ctrl/canonical/M/S2_aggregate": 80,
+  "ctrl/canonical/M/S2_poor_at_r2": 0,
+  "ctrl/canonical/Mt/G*_J": 0,
+  "ctrl/canonical/Mt/G*_R6": 0,
+  "ctrl/canonical/Mt/I": 41,
+  "ctrl/canonical/Mt/I_label": 1,
+  "ctrl/canonical/Mt/L12*": 0,
+  "ctrl/canonical/Mt/L13*": 63,
+  "ctrl/canonical/Mt/L13*_label": 1,
+  "ctrl/canonical/Mt/L14*": 63,
+  "ctrl/canonical/Mt/L14*_ex": 0,
+  "ctrl/canonical/Mt/L14*_label": 1,
+  "ctrl/canonical/Mt/L15*": 28,
+  "ctrl/canonical/Mt/L17-Mt*": 42,
+  "ctrl/canonical/Mt/L18*": 70,
+  "ctrl/canonical/Mt/L19*": 4,
+  "ctrl/canonical/Mt/L20*": 13,
+  "ctrl/canonical/Mt/L7*": 49,
+  "ctrl/canonical/Mt/L7*_label": 0,
+  "ctrl/canonical/Mt/LemmaS_label": 0,
+  "ctrl/canonical/Mt/N1": 26,
+  "ctrl/canonical/Mt/S2_aggregate": 100,
+  "ctrl/canonical/Mt/S2_poor_at_r2": 0,
+  "ctrl/raw/M/G*_J": 0,
+  "ctrl/raw/M/G*_R6": 1,
+  "ctrl/raw/M/I": 32,
+  "ctrl/raw/M/I_label": 1,
+  "ctrl/raw/M/L12*": 0,
+  "ctrl/raw/M/L13*": 26,
+  "ctrl/raw/M/L13*_label": 0,
+  "ctrl/raw/M/L14*": 28,
+  "ctrl/raw/M/L14*_ex": 2,
+  "ctrl/raw/M/L14*_label": 0,
+  "ctrl/raw/M/L15*": 19,
+  "ctrl/raw/M/L17-M*": 36,
+  "ctrl/raw/M/L7*": 30,
+  "ctrl/raw/M/L7*_label": 0,
+  "ctrl/raw/M/LemmaS_label": 0,
+  "ctrl/raw/M/N1": 18,
+  "ctrl/raw/M/S2_aggregate": 74,
+  "ctrl/raw/M/S2_poor_at_r2": 0,
+  "real/canonical/M/G*_J": 2,
+  "real/canonical/M/G*_R6": 1,
+  "real/canonical/M/I": 44,
+  "real/canonical/M/I_label": 0,
+  "real/canonical/M/L12*": 7,
+  "real/canonical/M/L13*": 49,
+  "real/canonical/M/L13*_label": 0,
+  "real/canonical/M/L14*": 51,
+  "real/canonical/M/L14*_ex": 2,
+  "real/canonical/M/L14*_label": 0,
+  "real/canonical/M/L15*": 27,
+  "real/canonical/M/L17-M*": 55,
+  "real/canonical/M/L7*": 45,
+  "real/canonical/M/L7*_label": 0,
+  "real/canonical/M/LemmaS_label": 0,
+  "real/canonical/M/N1": 23,
+  "real/canonical/M/S2_aggregate": 81,
+  "real/canonical/M/S2_poor_at_r2": 0,
+  "real/canonical/Mt/G*_J": 0,
+  "real/canonical/Mt/G*_R6": 0,
+  "real/canonical/Mt/I": 42,
+  "real/canonical/Mt/I_label": 0,
+  "real/canonical/Mt/L12*": 6,
+  "real/canonical/Mt/L13*": 56,
+  "real/canonical/Mt/L13*_label": 1,
+  "real/canonical/Mt/L14*": 56,
+  "real/canonical/Mt/L14*_ex": 0,
+  "real/canonical/Mt/L14*_label": 1,
+  "real/canonical/Mt/L15*": 26,
+  "real/canonical/Mt/L17-Mt*": 33,
+  "real/canonical/Mt/L18*": 65,
+  "real/canonical/Mt/L19*": 3,
+  "real/canonical/Mt/L20*": 9,
+  "real/canonical/Mt/L7*": 47,
+  "real/canonical/Mt/L7*_label": 0,
+  "real/canonical/Mt/LemmaS_label": 0,
+  "real/canonical/Mt/N1": 23,
+  "real/canonical/Mt/S2_aggregate": 85,
+  "real/canonical/Mt/S2_poor_at_r2": 0,
+  "real/raw/M/G*_J": 1,
+  "real/raw/M/G*_R6": 2,
+  "real/raw/M/I": 35,
+  "real/raw/M/I_label": 0,
+  "real/raw/M/L12*": 7,
+  "real/raw/M/L13*": 24,
+  "real/raw/M/L13*_label": 0,
+  "real/raw/M/L14*": 26,
+  "real/raw/M/L14*_ex": 2,
+  "real/raw/M/L14*_label": 0,
+  "real/raw/M/L15*": 15,
+  "real/raw/M/L17-M*": 30,
+  "real/raw/M/L7*": 24,
+  "real/raw/M/L7*_label": 0,
+  "real/raw/M/LemmaS_label": 0,
+  "real/raw/M/N1": 20,
+  "real/raw/M/S2_aggregate": 73,
+  "real/raw/M/S2_poor_at_r2": 0
+ },
+ "tight": {
+  "ctrl/M/G*_J": 4,
+  "ctrl/M/G*_R6": 1,
+  "ctrl/M/L12*": 2,
+  "ctrl/M/L13*_label": 7,
+  "ctrl/M/L14*_label": 7,
+  "ctrl/M/L7*_label": 25,
+  "ctrl/M/LemmaS_label": 23,
+  "ctrl/M/S2_poor_at_r2": 26,
+  "ctrl/Mt/G*_J": 8,
+  "ctrl/Mt/G*_R6": 8,
+  "ctrl/Mt/L12*": 2,
+  "ctrl/Mt/L14*_ex": 26,
+  "ctrl/Mt/L7*_label": 22,
+  "ctrl/Mt/LemmaS_label": 4,
+  "ctrl/Mt/S2_poor_at_r2": 26,
+  "real/M/I_label": 236,
+  "real/M/L13*_label": 141,
+  "real/M/L14*_label": 141,
+  "real/M/L7*_label": 606,
+  "real/M/LemmaS_label": 605,
+  "real/M/S2_poor_at_r2": 606,
+  "real/Mt/G*_J": 12,
+  "real/Mt/G*_R6": 12,
+  "real/Mt/I_label": 78,
+  "real/Mt/L14*_ex": 606,
+  "real/Mt/L7*_label": 554,
+  "real/Mt/LemmaS_label": 360,
+  "real/Mt/S2_poor_at_r2": 606
+ },
+ "ranges": {
+  "ctrl/M/h": [
+   9,
+   29
+  ],
+  "ctrl/M/h0": [
+   0,
+   3
+  ],
+  "ctrl/M/n3": [
+   0,
+   4
+  ],
+  "ctrl/M/q": [
+   7,
+   15
+  ],
+  "ctrl/M/qD": [
+   0,
+   6
+  ],
+  "ctrl/M/y": [
+   2,
+   29
+  ],
+  "ctrl/M/y0": [
+   0,
+   10
+  ],
+  "ctrl/M/y1": [
+   1,
+   15
+  ],
+  "ctrl/M/y2": [
+   0,
+   14
+  ],
+  "ctrl/M/z": [
+   0,
+   8
+  ],
+  "ctrl/Mt/h": [
+   6,
+   19
+  ],
+  "ctrl/Mt/h0": [
+   0,
+   2
+  ],
+  "ctrl/Mt/n3": [
+   0,
+   4
+  ],
+  "ctrl/Mt/q": [
+   7,
+   15
+  ],
+  "ctrl/Mt/qD": [
+   4,
+   7
+  ],
+  "ctrl/Mt/y": [
+   12,
+   27
+  ],
+  "ctrl/Mt/y0": [
+   0,
+   20
+  ],
+  "ctrl/Mt/y1": [
+   0,
+   7
+  ],
+  "ctrl/Mt/y2": [
+   5,
+   11
+  ],
+  "ctrl/Mt/z": [
+   0,
+   7
+  ],
+  "real/M/h": [
+   9,
+   23
+  ],
+  "real/M/h0": [
+   0,
+   5
+  ],
+  "real/M/n3": [
+   0,
+   1
+  ],
+  "real/M/q": [
+   7,
+   16
+  ],
+  "real/M/qD": [
+   0,
+   8
+  ],
+  "real/M/y": [
+   8,
+   30
+  ],
+  "real/M/y0": [
+   0,
+   4
+  ],
+  "real/M/y1": [
+   1,
+   16
+  ],
+  "real/M/y2": [
+   0,
+   16
+  ],
+  "real/M/z": [
+   0,
+   9
+  ],
+  "real/Mt/h": [
+   13,
+   18
+  ],
+  "real/Mt/h0": [
+   0,
+   3
+  ],
+  "real/Mt/n3": [
+   0,
+   3
+  ],
+  "real/Mt/q": [
+   10,
+   16
+  ],
+  "real/Mt/qD": [
+   3,
+   7
+  ],
+  "real/Mt/y": [
+   13,
+   19
+  ],
+  "real/Mt/y0": [
+   0,
+   8
+  ],
+  "real/Mt/y1": [
+   2,
+   8
+  ],
+  "real/Mt/y2": [
+   4,
+   11
+  ],
+  "real/Mt/z": [
+   0,
+   5
+  ]
+ },
+ "sigma_hist": {
+  "M": {
+   "0": 1704,
+   "3": 228,
+   "2": 66,
+   "5": 12,
+   "4": 6
+  },
+  "Mt": {
+   "3": 312,
+   "0": 1590,
+   "2": 78,
+   "5": 24,
+   "4": 12
+  }
+ },
+ "seconds": 11.004924297332764
+}

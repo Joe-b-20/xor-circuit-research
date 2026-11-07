@@ -796,10 +796,19 @@ at k = 5, 6.
   violations, (G*) tight on 112 phases; LP recount reproduced 1,313 / 681 with the rows implemented
   as stated; the checker's own independent LP implementation (`qcheck/lp_indep.py`, run 21:48 UTC)
   gives identical key sets (1,134 / 755 / 1,051 / 681, symmetric difference 0) and 1,313 survivors.
-  Not a bound improvement: 1,313 claims remain open at 75 by LP status. What a referee
-  would still want is listed in the check report (package-style proof of G*, Farkas certificates for
-  the 6,103 newly excluded claims, the rows added to the package's stress checker). The uncertified
-  integer-oracle figure (1,167) is not a result.
+  Not a bound improvement: 1,313 claims remain open at 75 by LP status. CERTIFIED (qcert agent,
+  xhigh, 23:10 UTC, `qcert/`): `PROOF_ADDENDUM.md` writes the lemmas in the package's notation
+  (family listed, independence before the row operations, weight-0 case, rank-nullity, row-by-row
+  facts for y -> y_2, wording fixes); `CERTIFICATES_EXT75.json` holds 1,772 exact integer Farkas
+  certificates (666 using the new rows, 1,106 package-row ones the package lacks at G = 75) with
+  complete coverage of the 195 newly excluded claims (122 M, 73 M^T; 453 killed keys), largest
+  weighted rhs -1; the independent hand-written checker `check_ext75.py` (stdlib, rows re-derived)
+  passes in 1 s and its matrices equal the generator's on all 2,562 touched keys; mutation tests
+  reject every negated multiplier (7,225), dropped certificate (195) and loosened claim (390);
+  `stress_ext.py` evaluates every new row on 1,264 phases of 316 circuits: 0 violations. Remaining
+  open at 75 by LP status: 1,313 claims / 681 keys (shortfall 0: 565, 1: 515, 2: 183, 3: 50). The
+  uncertified integer-oracle figure (1,167) is not a result. Trust ledger: package Lemmas 1.1-10.4
+  and F2-F14 [read, not checked]; everything new [proved] / [finite-checked] / [certified].
 
 ## F19. Literature status of the MixColumns bounds (lit2 agent, web; `lit2/REPORT.md`) [cited; PDFs behind Cloudflare not read]
 
