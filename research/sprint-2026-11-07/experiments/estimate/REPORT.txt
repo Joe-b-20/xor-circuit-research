@@ -1,0 +1,160 @@
+How many 88-gate MixColumns plateaus can the hunt land on?  Capture-recapture, 2026-11-07
+=====================================================================================
+Labels: [M] measured from the files, [E] estimated (a statistic computed from [M] under the
+stated model), [A] assumed.
+Scripts (all in this directory, single-thread, read-only on hunt/):
+  landings.py   -> landings.json, landings.out   chain-level landing table
+  roots.py      root construction of each catalogued chain
+  sens.py       -> sens.out, landing_table.txt   alpha sensitivity + full table (230 rows)
+  estimate.py   -> estimate.out                  sections 1-3 (Chao2, coverage, ICE, size model, bootstrap)
+  strata_d2.py  -> strata_d2.out                 assumption-light D2 bounds by size stratum
+  sigs.py, estimate_lib.py -> sigs.out           section 4 (signatures)
+  sigcheck.py   -> sigcheck.out                  signature fidelity by plateau type, exact
+                                                 plateaus of the signature repeats
+  alpha_check.py -> alpha_check.out              out-of-sample test of alpha on signature repeats
+  (peek.py, peek2.py, wait.sh: format inspection / waiting helpers only)
+
+0. What counts as an independent landing
+----------------------------------------
+- Sampling unit = chain (one root until a stall restart; boundaries from restart events), as in
+  hunt/chains_plateaus.py.  [M] 40 chains carry catalogued 88 samples (A 9, B 25, C 6), 480
+  catalogued 88 samples, 233 (chain, plateau) incidences.
+- A chain does NOT land once: through 89 states it migrates between 88 plateaus (median 4, max 22
+  distinct plateaus per chain [M]).  Revisits by the same chain are never counted as repeats; a
+  plateau's count y_i = number of distinct chains with a sampled state on it (incidence data).
+  The visits of one chain are correlated (neighbouring plateaus), which incidence estimators
+  tolerate; chains are [A] independent.
+- Caveat on independence [M]: chain 0 of worker free-0k uses the same root in arms A, B and C
+  (e.g. A/B/C free-00 chain 0 all start at bp#1633385816; A and C free-04 chain 0 share
+  naive#2647449301).  None of these same-root pairs shares a plateau, and the repeats below are
+  between different roots, so the root sharing does not create the repeats; it is a small
+  dependence that I ignore.
+- 18 of the 230 keys are closure-truncated "giants" (kind closure/giant, stored size 1 is a
+  placeholder: size unknown, identity = seed state, so membership is inexact and a giant can be
+  split into many keys: B/free-04/6 alone produced 8 giant keys in 12 samples) [M].  They are
+  excluded from the size model and from N; N below counts exact (product) plateaus, 212 seen.
+
+1. Landing table  (full table: landing_table.txt)
+-------------------------------------------------
+[M] Incidence counts, product plateaus: Q1 = 209 seen by one chain, Q2 = 3 by two chains, none
+    by 3+.  (All 230 keys: Q1 = 227, Q2 = 3.)  First landings: all 40 chains' first 88 plateau is
+    distinct (0 repeats among first landings).
+[M] The 3 repeats:
+      p22526234e0c65e84  size 3,403,620  [2101,15,12,3,3]        chains A/free-05/0, C/free-00/0
+      p943c008e56986b92  size 3,119,985  [2101,15,11,3,3]        chains A/free-05/0, C/free-00/0
+      p38493cb932a1fe78  size   815,265  [61,15,11,3,3,3,3]      chains C/free-00/0, C/free-03/0
+    They come from only 2 chain pairs, and two of them are neighbouring plateaus of the same
+    "2101" family met by the same pair: effectively ~2 independent coincidence events, not 3.
+[M] Size ranks of the repeated plateaus among the 212 (1 = largest): 1, 4, 9.
+[M] Size classes:     size <1e4: 125 plateaus, 0 repeated
+                      1e4-1e5:     54 plateaus, 0 repeated
+                      1e5-1e6:     26 plateaus, 1 repeated
+                      1e6-1e7:      7 plateaus, 2 repeated
+[M] Singleton sizes: min 243, quartiles 2,187 / 6,561 / 38,313, 90% 180,711, max 3,403,620.
+
+2. Does landing probability scale with size?
+--------------------------------------------
+(a) Permutation test [E]: under equal landing probability (alpha = 0) every 3-subset of the 212
+    is equally likely to be the repeated set; P(sum log size >= observed) = 5.5e-5;
+    P(all three in the top 9) = 5.4e-5.  Equal probability is rejected.
+(b) Model [A]: E[# chains on plateau i] = lambda * size_i^alpha (Poisson), fitted by the
+    conditional (zero-truncated) likelihood on the 212 observed plateaus (Huggins-type; uses only
+    seen plateaus, no assumption on the unseen size distribution).
+      alpha_hat = 1.34 [E]; profile-likelihood 95% CI [0.55, 3.25], 90% CI [0.65, 2.85]
+      LR tests: alpha=0 p = 7e-5; alpha=0.5 p = 0.04; alpha=1 p = 0.51; alpha=1.5 p = 0.80
+    Counting the 2101 pair once (2 repeats): alpha_hat = 1.15, 95% CI [0.40, 3.10], alpha=0 still
+    rejected (p = 0.002) [E].
+    Reading: landing probability rises steeply with size; "proportional to size" (alpha = 1) is
+    fully compatible, but the data cannot distinguish alpha = 0.5 from alpha = 3.  The interval
+    rests on 2-3 events from one family of large plateaus, so size is confounded with "being in
+    the 2101 basin": a basin attractor effect would look the same.  Treat alpha as > 0 with high
+    confidence and its value as unknown within ~[0.4, 3].
+
+3. Total number of plateaus N (exact product plateaus)
+------------------------------------------------------
+Inputs [M]: S_obs = 212, Q1 = 209, Q2 = 3, U = 215 incidences, T = 40 chains.
+(i) Chao2 (incidence Chao1) [E]:  classic 7,310, 95% CI [2,600, 21,000]
+                                   bias-corrected 5,510, 95% CI [1,600, 21,100]
+    Assumes only that chains are independent samples; it is a LOWER bound under heterogeneity:
+    it infers unseen plateaus from Q1^2/2Q2, i.e. as if the unseen ones were as detectable as the
+    rarely seen ones.  Here the doubletons are the giants of the distribution, so Q2 is inflated
+    by a few highly detectable plateaus and f0 is underestimated; the true N is larger.
+(ii) Sample coverage [E] C_hat = 0.029: ~97% of the landing-probability mass lies on plateaus
+    not yet seen; the next chain-plateau incidence is new with probability ~0.97.  This is the
+    most robust number here and agrees with the raw 3 repeats in 233 incidences [M].
+    ICE (coverage-based) [E] = 7,700; its CV correction is ~0 because only y=1,2 occur, so it
+    does not see the heterogeneity either.
+(iii) Inverse Simpson D2 [E] = 7,300, exact-Poisson 95% CI [2,500, 35,500]
+    (3 coincidences in 21,968 cross-chain incidence pairs).  D2 is the "effective number of
+    equally likely plateaus" and N >= D2 for ANY landing distribution, so
+        N >= ~2,500 at 95%, assuming only independent chains.   <- firm lower bound
+    By stratum (strata_d2.out) [E]: size >= 1e5: D2 = 186 [64, 900] (Chao2 179 [76, 529]);
+    size < 1e5: 0 coincidences in 15,188 pairs -> D2 >= 4,100 at 95%, so the small plateaus
+    alone number at least ~4,100 (stratum Chao2 with Q2 = 0: 15,700 [11,800, 21,000], weak).
+(iv) Size-weighted Horvitz-Thompson [E], N = sum_i 1/(1 - exp(-lambda s_i^alpha)) with lambda
+    refit at each alpha:
+        alpha 0     -> 7,600       alpha 0.75 -> 79,000
+        alpha 0.25  -> 9,900       alpha 1.0  -> 400,000
+        alpha 0.5   -> 22,000      alpha 1.34 (MLE) -> 5.3 million
+    Parametric bootstrap at the MLE (300 reps): 2.5% = 46,000, median 8e7, 97.5% unbounded
+    (20/300 replicates have no repeat at all).  Over the alpha 95% CI the HT estimate runs from
+    ~1.5e4 to infinity.  It also assumes [A] the unseen plateaus have the same size distribution
+    as the seen small ones (each 2,187-size plateau seen "stands for" ~1/p of them); plateaus
+    smaller than 243 never seen are not covered at all.
+    Conclusion: the heterogeneity-aware estimate has NO useful upper end with 3 repeats.  It
+    says N is at least of order 1e4 if alpha >= 0.5, and of order 1e5-1e6 if alpha ~ 1.
+
+4. Signatures (sigs2.json, all 1,869 sampled 88 states, arms A+B+C)
+-------------------------------------------------------------------
+[M] 1,600 v3 signatures, 146 chains (A 25, B 86, C 35), 1,605 incidences, Q1 = 1,595, Q2 = 5,
+    1.27 million cross-chain incidence pairs.
+[E] Chao2 classic 254,000 [110,000, 588,000]; bias-corrected 212,000 [80,000, 569,000];
+    D2 = 254,000 [109,000, 782,000]; coverage 0.006.
+Over-splitting [M] (sig2.log, 479 catalogued states): 230 exact plateaus -> 375 v3 signatures
+(1.63x), 59 plateaus split, 14 of the 33 plateaus above 1e5 split; 1 merge.
+By type (sigcheck.out) [M]: plateaus whose radices are all 3: 94 -> 94 signatures, 0 split
+(for a product of 3-way triangles v3 is the plateau's whole value set, i.e. an exact identity);
+plateaus with a larger factor: 118 -> 264 signatures (2.2-2.3x), split at every size.
+The 5 multi-chain signatures, compressed exactly (PES, sigcheck.out) [M]: every one is a genuine
+cross-chain repeat of one exact plateau: sizes 6,561 (A/free-05/2 + B/free-05/13), 2,187
+(A/free-03/4 + A/free-04/2), 2,187 (B/free-05/20 + C/free-04/2), 265,356 (A/free-03/2 +
+C/free-01/2), 40,338 (C/free-02/6 + C/free-03/4).  So small plateaus DO repeat across chains.
+Why the signature numbers are an upper-side companion: a split turns a would-be cross-chain
+repeat into singletons, and splits hit exactly the large-factor plateaus that carry the exact
+repeats; none of the 3 exact repeats survives as a signature repeat (sigs.out).  The signature
+D2/Chao2 therefore over-weight the small-plateau tail; /1.63 (-> ~156,000) is only a rough
+deflation.
+Out-of-sample check of alpha (alpha_check.py -> alpha_check.out) [E]: because all-3 plateaus are
+exactly identified by v3, the 3 signature coincidences on all-3 plateaus (2,187, 2,187, 6,561)
+test the size model fitted on the catalogue.  Expected all-3 coincidences when cross-chain pairs
+grow by r (r = 58 raw pair ratio, ~22 after deflating signature pairs by 1.63^2):
+      alpha 0.5: 9-23 expected (observed 3: rejected)
+      alpha 0.75: 3.1-8.2 (compatible at r=22)
+      alpha 1.0: 0.9-2.4 (compatible)
+      alpha 1.34 (catalogue MLE): 0.14-0.38 (P(>=3) <= 0.007: rejected)
+So the small-plateau repeats rule out the steep end of section 2's interval: combined,
+alpha ~ 0.75-1.0, i.e. landing probability roughly proportional to plateau size [E; rests on 3+3
+coincidences and on r, which is approximate because the extra chains differ in length and arm].
+
+5. Verdict
+----------
+What the data support: the hunt's descents land on at least a few thousand distinct exact 88
+plateaus (N >= ~2,500 at 95%, assuming only independent chains; the plateaus below 1e5 alone
+>= ~4,100), and the effective number of equally likely plateaus is ~7,000 (2,500-35,000) [E].
+Landing probability clearly grows with plateau size (equal probability rejected, p ~ 1e-4).
+The catalogue alone gives alpha ~ 1.3 [0.4, 3], carried by 2-3 coincidences on 1e6-size "2101"
+plateaus; the 3 exact small-plateau repeats in the signature data cut that to alpha ~ 0.75-1.0,
+i.e. roughly proportional to size.  The landing mass is then dominated by a few hundred large
+plateaus (size >= 1e5: ~180, 95% ~[80, 900]), while the count is dominated by the long tail of
+small ones.  Plain Chao2 (~5,500-7,300) is only a floor under this heterogeneity.  With
+alpha 0.75-1.0 the size-weighted estimate gives N ~ 8e4-4e5, consistent with the signature
+companion (~1-2.5e5 after over-splitting).  Honest summary: of order 1e5 reachable exact 88
+plateaus (plausibly 3e4-5e5), at least 2,500 with high confidence, and no firm upper bound:
+that order of magnitude rests on ~6 coincidences, the power-law size model, and the assumption
+that unseen plateaus look like the seen small ones (none smaller than 243 has been seen).
+Giants (closure-truncated, 18 keys) are not counted.  The one measurement that would
+tighten this most: run the exact plateau catalogue (plateaus.py) on the remaining ~1,390
+already-sampled 88 states (all 146 chains, no new search).  Cross-chain pairs grow from 22,000
+to ~1.27 million (58x), so at D2 ~ 7,000 one would expect ~150 coincidences instead of 3, many on
+plateaus below 1e5; that pins alpha (and whether small plateaus ever repeat) and turns N from a
+floor into an interval.  Fixing giant identity (closure-truncated keys) should go with it.

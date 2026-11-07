@@ -89,8 +89,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - MixColumns at 88. Descent is cheap; the whole difficulty is below 88 (F1). The 88 level is
   vast: about 18 worker-hours of catalogued descents gave <= 225 distinct plateaus with 3
   repeats, all three on the largest plateaus (0.8-3.4 M states; landing probability grows
-  with plateau size, so the small ones are under-sampled and the total is far larger; a
-  capture-recapture estimate is in progress) (F5, R). The 52 pre-sprint plateaus sit at depth
+  roughly in proportion to plateau size, so the small ones are under-sampled; capture-recapture
+  on chains gives at least ~2,500 plateaus and an order of magnitude of 1e5, with ~97 % of
+  the landing probability on plateaus never seen) (F5, F12, R) [estimated]. The 52 pre-sprint plateaus sit at depth
   5-7, the hunt's mostly at 7-10, so "no overlap" with them is mostly a different depth
   stratum. Every +1 exit from every plateau checked (49 by PES, plus the kste plateaus in
   kste1) goes home or to another 88. The transition graph of the 88 level, drawn from 146
@@ -181,9 +182,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Whether removing the depth window buys distinct 88 plateaus or only faster re-arrival at
   ones of the same kind (hunt D, 3 arms, same first roots, 13 h, ends ~04:06 UTC 11-08), and
   whether it helps at all under a depth cap (hunt E, cap 5, ~01:00-03:40 UTC).
-- How many 88 plateaus there are (order of magnitude): the 3 repeats in ~225 catalogued
-  plateaus all fell on the largest ones, so a plain capture-recapture count is only a lower
-  bound; a size-weighted estimate is being computed (`estimate/REPORT.txt`).
+- How many 88 plateaus there are, more precisely than "1e5, floor 2,500" (F12): the exact
+  catalogue on the remaining ~1,390 sampled states (a day of one core) would give ~100
+  coincidences and pin the size exponent.
 - Whether the 88 cores form one connected graph under the +1 band: as sampled at 30 s they do
   not (F11: 139 components for 146 chains); finer sampling (every ~1 s, or logging every
   88 <-> 89 transition in the engine) is needed to see whether trails meet between samples.

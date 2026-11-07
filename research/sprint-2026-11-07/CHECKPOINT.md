@@ -94,6 +94,9 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   components, 8 of 1,454 nodes shared by two chains), 0 down-exits in 1,869 states, hops
   change ~30 % of helpers, ~44 plateau changes per chain-hour is a floor (68 % of hops have no
   89 sample; the walk lives on the 88+89 band).
+- 16:00 UTC, estimate agent (F12): landing probability ~ proportional to plateau size; at least
+  ~2,500 exact 88 plateaus (95 %), order of magnitude 1e5; coverage 0.029. Next measurement:
+  exact catalogue of the remaining ~1,390 sampled states (~1 core-day).
 
 ## 4. Rejected explanations and failed approaches (this sprint)
 
@@ -138,7 +141,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | bench replication: default vs depth_window none, same window (agent) | 6 | 11:48 | done 13:12 | `bench/REPORT.txt` section 12 |
 | sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | done 15:05, harvested | `sweep/runs/sw{1,2}`, `sweep/driver.log`; FINDINGS F10 |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
-| agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt`, `graph/REPORT.txt` (done 15:50, F11), `sat/REPORT.txt` (+ `sat/found/` if anything) |
+| agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt` (done 16:00, F12), `graph/REPORT.txt` (done 15:50, F11), `sat/REPORT.txt` (+ `sat/found/` if anything) |
 | hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | ~04:06 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
 | sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |
 | hunt E: cap-5 MixColumns, E0 default vs EN depth_window none, 4+4 workers, 2.5 h (review point "depth") | 8 | after kste1 ends (~01:00 11-08) | ~03:40 | `hunt/runsE/{E0,EN}`, `hunt/driverE.log`, sampler `hunt/samplesE/samples.jsonl`; `hunt/descents.py hunt/runsE` |
@@ -157,6 +160,9 @@ Harvest recipe (done 15:15 for x1a, x1b, pt1, pt2, sw1, sw2; repeat for hunt D/E
    E0 vs EN; record in F8 (depth-capped case of the depth-window effect).
 4. ~03:30 UTC: mid-run hunt D analysis written into FINDINGS (new F11) and UNDERSTANDING;
    ~04:10: final hunt D numbers.
-5. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint (rejected
+5. If threads free up (kste1 ends ~00:30; hunt E takes 8 of them 01:00-03:40): start the exact
+   catalogue of the remaining sampled 88 states (`estimate/REPORT.txt` next measurement; use
+   `hunt/plateaus.py` machinery) on 2-4 cores at nice 15; it can outlive the sprint.
+6. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint (rejected
    explanations, open questions, next experiments), memory note, copy hunt D/E analysis scripts
    into `research/sprint-2026-11-07/experiments/hunt/`, commit, closing report.

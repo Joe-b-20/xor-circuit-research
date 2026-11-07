@@ -334,6 +334,36 @@ with an 88 sample, 1,462 visits, 1,418 hops).
 - What 30 s sampling cannot see: departures to 89 shorter than an interval, hence the true number
   of plateau changes per hour, and whether chains pass through common nodes between samples.
 
+## F12. How many 88 plateaus: at least ~2,500, probably ~1e5 (estimate agent, `estimate/REPORT.txt`) [estimated]
+
+Landings are counted per chain (one root until a restart; a chain visits a median 4 plateaus
+through 89 states, up to 22), on the exact catalogue (40 chains, 212 exact plateaus after dropping
+18 giant entries whose identity is unreliable) and on the cheap signatures (146 chains, 1,600
+signatures).
+
+- Landing probability is not uniform [measured]: equal probability is rejected (permutation
+  p = 5e-5); the 3 exact repeats are the plateaus ranked 1, 4 and 9 by size (3.4e6, 3.1e6, 8.2e5
+  states) and amount to ~2 independent events (two are neighbours of one family). The 5
+  signature repeats were all checked exactly and are genuine cross-chain repeats at sizes 6,561,
+  2,187, 2,187, 265,356 and 40,338, so small plateaus do repeat. For plateaus whose factors are
+  all 3-way the signature is an exact identity (94 of 94). Shared first roots across arms created
+  no repeat. Fit landing ∝ size^alpha: catalogue alone alpha = 1.34 [0.55, 3.25]; with the small
+  signature repeats alpha ≈ 0.75-1.0 (roughly proportional to size) [estimated from ~6 coincidences].
+- Counts [estimated]: Chao2 on exact plateaus 7,300 [1,600, 21,000] (a floor under
+  heterogeneity); effective number of equally likely plateaus 7,300 [2,500, 35,500], so N >= ~2,500
+  for any landing distribution; plateaus below 1e5 states alone: 0 coincidences in 15,188 chain
+  pairs, N >= ~4,100; plateaus >= 1e5: ~180 [64, 900]. Size-weighted model: alpha 0.5 / 0.75 /
+  1.0 / 1.34 gives 22k / 79k / 400k / 5.3M (upper ends unbounded). Sample coverage 0.029: ~97 % of
+  landing probability is on plateaus never seen. Signature companion: Chao2 254k [110k, 588k],
+  ~156k after the 1.63x over-split, an overstatement since big plateaus split 2.2-2.3x.
+- Verdict: a few hundred large plateaus take most of the landings; the long tail of small ones
+  makes up most of the count; order of magnitude 1e5 exact 88 plateaus reachable by this search
+  (plausibly 3e4-5e5), floor ~2,500 at 95 %. The search cannot enumerate the level.
+- Next measurement (no new search): the exact catalogue on the remaining ~1,390 sampled 88
+  states takes chains from 40 to 146 and chain pairs from 22k to 1.27M, expected ~100
+  coincidences instead of 3, pinning alpha and N; ~1-2 min per state single-threaded (a day on one
+  core, hours on several), fixing the giants' identity in the same pass.
+
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
 An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:
