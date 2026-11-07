@@ -262,6 +262,42 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   predictor that held. New circuits: anubis-clefia-m0 91@8/92@6, khazad 340@15/344@14,
   fox-mu8 500@11/504@10, skop15-4x4-gf256-inv 89@5.
 
+## F10. Sweep: the 12 remaining maps over 8x8 matrices, 1 worker-hour each at NIST's depth, seeded from our best at the cap and from NIST's circuit (sw1 12:52-13:52, sw2 13:58-15:05 UTC) [measured]
+
+  | map | cap | ours at <= cap before | after 1 worker-hour | gates gained at <= cap |
+  |---|---:|---:|---|---:|
+  | grostl | 16 | 350@16 | 349@15 | 1 |
+  | khazad | 18 | 345@15 | 344@15 (pt2's 340@15 already better) | 1 |
+  | whirlpool-maelstrom | 11 | 394@9 | **391@9**, 390@10 | 4 |
+  | fox-mu8 | 14 | 505@11 | **502@10**, 500@11 (pt2 found 500@11 too) | 5 |
+  | jpst17-8x8-gf256-inv | 11 | 493@11 | 494@10 (beats 496@10; nothing at 11) | 0 |
+  | bkl16-8x8-gf256 | 10 | 442@10 | **439@9** | 3 |
+  | klsw17-m-8x8-gf256 | 11 | 347@6 | **321@10**, 327@9, 346@8 | 26 |
+  | skop15-8x8-gf256 | 8 | 418@8 | 417@8, 416@9 | 1 |
+  | skop15-8x8-gf256-inv | 13 | 331@13 | **322@13**, 323@12 | 9 |
+  | ss17-8x8-gf256 | 9 | 392@8 | 390@8, 389@10 | 2 |
+  | ls16-8x8-gf256 | 9 | 404@8 | 403@8 | 1 |
+  | klsw17-m-8x8-gf16-0x13-inv | 12 | 163@12 | 163@11, 164@10 | 0 (depth only) |
+
+- 10 of 12 maps gained gates at or below NIST's depth in one worker-hour (4 of 12 by 3 or more);
+  the two that did not still produced a shallower circuit. With X1, pt1 and pt2 this makes 16 of
+  19 one-to-four-worker-hour trials on maps over 8x8 matrices that gained gates at NIST's
+  depth, against 1 of 6 on 4x4 maps (F7, F9). The coarse statement in F9 holds on fresh maps
+  [measured, 12 maps].
+- The largest gain, klsw17-m-8x8-gf256 347@6 -> 321@10, is a depth-budget effect: our earlier
+  circuits for that map were at depth 6 and at depths 12-15 (336@12 ... 326@15); nobody had
+  searched depth 9-11, and one worker-hour there beat every deeper circuit we had. The same
+  pattern (gates minimum at a middle depth, not at the deepest) shows in skop15-8x8-gf256-inv
+  (322@13 vs 318@14 and 333@12 before) and grostl (349@15 vs 350@16). Conjecture, testable on
+  the next big map: the first worker-hour at an unsearched depth 1-2 above the shallowest
+  good circuit gains more than another hour at an already-searched depth.
+- Records above the cap (416@9 with cap 8, 389@10 with cap 9, 390@10 with cap 11) are kept by
+  the engine as any-depth bests; they are listed because they beat what we had at that depth.
+- Harvest (15:05-15:15 UTC): 44 circuits added, 37 dominated ones removed, 208 circuits for 59
+  maps, all verified by circuits/check.py; commits d281a78 and 5edcd1a. The harvest script had
+  dropped a point recorded by two runs with the same gates@depth (fox-mu8 500@11, pt2 and sw1),
+  since each record "dominated" the other; fixed in `harvest_sprint.py` [implementation].
+
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
 An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:

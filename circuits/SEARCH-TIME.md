@@ -65,11 +65,10 @@ kernel; v1 records only the CPU count.
 | wide64 | v8 | 2026-10-31 04:16 | 4.7 h | 6 | 28.2 | 28.1 | no | 8 |
 | control | v8 | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.2 | no | 1 |
 | adopt | v9 prototype | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.3 | no | 1 |
-| predtest-pt2 | v8 | 2026-11-07 10:39 | 2.0 h | 8 | 16.0 | 17.6 | yes (shared machine) | 1 |
 | x1a-fresh-vs-nist | v8 | 2026-11-07 06:16 | 1.0 h | 8 | 8.0 | 8.6 | yes (shared machine) | 11 |
 | x1b-fresh-vs-nist | v8 | 2026-11-07 07:22 | 1.0 h | 8 | 8.0 | 8.7 | yes (shared machine) | 4 |
 | predtest-pt1 | v8 | 2026-11-07 08:28 | 2.0 h | 6 | 12.0 | 13.0 | yes (shared machine) | 5 |
-| predtest-pt2 | v8 | 2026-11-07 10:39 | 2.0 h | 8 | 16.0 | 17.6 | yes (shared machine) | 5 |
+| predtest-pt2 | v8 | 2026-11-07 10:39 | 2.0 h | 8 | 16.0 | 17.6 | yes (shared machine) | 6 |
 | sweep-sw1 | v8 | 2026-11-07 12:52 | 1.0 h | 6 | 6.0 | 6.7 | yes (shared machine) | 6 |
 | sweep-sw2 | v8 | 2026-11-07 13:58 | 1.0 h | 6 | 6.0 | 6.7 | yes (shared machine) | 12 |
 

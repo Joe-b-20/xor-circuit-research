@@ -84,6 +84,12 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   overlap" (3 repeats; catalogue covers ~18 worker-hours, not 60), F6 (2.1x, not 2.4x), F8
   (hunt C vs A inside noise; bench effect is success-rate on 2 of 3 maps, speed on 1), F9
   (8x8 generalisation is 4 of 5). All recorded in FINDINGS R; sig.py relaunched.
+- 15:05-15:15 UTC: sweep (F10): 10 of 12 maps over 8x8 matrices gained gates at NIST's depth
+  in one worker-hour each (klsw17-m-8x8-gf256 347@6 -> 321@10, skop15-8x8-gf256-inv 331 ->
+  322@13, fox-mu8 505 -> 500@11, whirlpool-maelstrom 394 -> 391@9, bkl16 442@10 -> 439@9);
+  16 of 19 8x8-map trials this sprint gained gates vs 1 of 6 on 4x4 maps. Harvested: 44
+  circuits added, 37 removed, 208 circuits (commits d281a78, 5edcd1a; harvest bug fixed).
+  Hunt D started 15:06 (D0/D4/DN, same first roots), ends ~04:06 UTC 11-08.
 
 ## 4. Rejected explanations and failed approaches (this sprint)
 
@@ -126,22 +132,26 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | predtest pt1, pt2 | 6, 8 | 08:28, 10:39 | done 12:52 | `predtest/runs/pt{1,2}`, `predtest/driver.log` |
 | hunt C (A with depth_window none) | 6 | 08:30 | done 11:30 | `hunt/runs/C`; sampler `hunt/samplesC/samples.jsonl`; catalogue via `hunt/plateaus.py .` then `hunt/chains_plateaus.py .` |
 | bench replication: default vs depth_window none, same window (agent) | 6 | 11:48 | done 13:12 | `bench/REPORT.txt` section 12 |
-| sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | ~14:55 | `sweep/runs/sw{1,2}`, `sweep/driver.log`; harvest afterwards |
+| sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | done 15:05, harvested | `sweep/runs/sw{1,2}`, `sweep/driver.log`; FINDINGS F10 |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
-| hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | ~14:55 | ~03:55 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
+| hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | ~04:06 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
 | sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |
 | hunt E: cap-5 MixColumns, E0 default vs EN depth_window none, 4+4 workers, 2.5 h (review point "depth") | 8 | after kste1 ends (~01:00 11-08) | ~03:40 | `hunt/runsE/{E0,EN}`, `hunt/driverE.log`, sampler `hunt/samplesE/samples.jsonl`; `hunt/descents.py hunt/runsE` |
 
-Harvest at the end: `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py x1/runs/x1a x1/runs/x1b predtest/runs/pt1 predtest/runs/pt2` (dry run; `--apply` adds via circuits/add.py), then `python3 circuits/check.py`. Already known new circuits: grostl 364@11, klsw17-m-8x8-gf256-inv 327@12, ss16-4x4-gf256 96@5.
+Harvest recipe (done 15:15 for x1a, x1b, pt1, pt2, sw1, sw2; repeat for hunt D/E if they produce a repo-worthy circuit, e.g. any 87): from the repo root, `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py RUN_DIR...` (dry run), `--apply`, `python3 circuits/check.py`, `python3 ~/xs-campaigns/2026-11-07-sprint/tables_update.py --write` (add the run dirs to its RUN_DIRS first; it appends run rows for runs with adds, so delete a duplicated run row), then hand-edit the README count line (keep "59 maps") and the SEARCH-TIME "Together:" paragraph, commit. `search/proposals/` is the user's untracked draft from 2026-10-31; leave it.
 
 ## 7. Next actions
 
-1. ~14:55 UTC: sweep done -> `harvest_sprint.py` dry run over x1a, x1b, pt1, pt2, sw1, sw2; then
-   `--apply`, `circuits/check.py`, update circuits/README.md rows and SEARCH-TIME.md, commit.
-2. Read bench/REPORT.txt section 12 (replication) when the agent reports; finish F8.
-3. kste1: check status every ~2 h; it ends ~00:30 UTC 11-08; record the outcome in F3/F5.
-4. With the remaining compute (after the sweep, 12 free threads): the experiment that answers
-   the unresolved question 1 cheaply (core-hash plateau identity over all sampled states), and
-   a MixColumns run with depth_window none at a wider restart policy if time allows.
-5. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint, memory note,
-   commit, closing report.
+1. Hunt D (15:06 -> ~04:06 UTC 11-08): check every ~2-3 h with `python3 hunt/descents.py hunt/runsD`
+   (arrivals at 88 per worker-hour, depth of 88 bests, any 87) and the cheap identity on
+   `hunt/samplesD/samples.jsonl` (adapt `hunt/sig2.py`: distinct v3 signatures per arm, shared
+   first roots across arms give a paired comparison). Any 87: verify (`circuits/check.py` after
+   `circuits/add.py`), harvest, commit at once.
+2. kste1: check status every ~2 h; ends ~00:30 UTC 11-08; record the outcome in F3/F5.
+3. Hunt E (~01:00-03:40 UTC): time to 90@5/89@5/88@5 per chain and arrivals per worker-hour,
+   E0 vs EN; record in F8 (depth-capped case of the depth-window effect).
+4. ~03:30 UTC: mid-run hunt D analysis written into FINDINGS (new F11) and UNDERSTANDING;
+   ~04:10: final hunt D numbers.
+5. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint (rejected
+   explanations, open questions, next experiments), memory note, copy hunt D/E analysis scripts
+   into `research/sprint-2026-11-07/experiments/hunt/`, commit, closing report.
