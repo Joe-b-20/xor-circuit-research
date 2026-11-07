@@ -69,6 +69,17 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   69 proved-optimum maps, v8 solves all; the reliability instrument is circulant(2,3,1,1) over
   GF(16) (14/20 in 120 s); engine-variant A/B delegated to it (starts 06:20).
 
+- 08:30-13:05 UTC: X1 (F7): 8x8-matrix maps gain several gates per worker-hour at NIST's depth
+  from NIST seeds (grostl 364@11, klsw17-inv 327@12); 4x4 maps do not. Bench (F8): only
+  depth_window=none has an established effect (0.46x iterations on small-scale-aes). Hunt C
+  (depth_window none on MC): 88 % of chains reach 88, 1.94 arrivals/worker-h (A 1.51), chains
+  land on huge coupled products that the plateau instrument cannot compress in time, so the
+  "more distinct plateaus" prediction stays untested. pt1/pt2 (F9): crossmap's numeric rule
+  scored 1 hit, 1 beaten, 3 over-predictions; the surviving predictor is matrix size. kste1
+  PES on kste's 49 plateaus: 8 plateaus' +1 passes complete, 56 joins, 0 lower states at
+  4.6 h. Catalogue: 656 states -> 230 new 88 plateaus, zero overlap with the 52 pre-sprint or
+  between arms.
+
 ## 4. Rejected explanations and failed approaches (this sprint)
 
 - "Time at a sealed 88 plateau is pure repeated work" (my reading of F2): wrong as a statement
@@ -82,9 +93,11 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 
 ## 5. Unresolved questions (ranked by how much they would change what we do)
 
-1. Does the set of MC 88 plateaus saturate under repeated independent descents (finite, small
-   landscape at 88) or keep growing? Decides whether an 87 reachable from the 88 level could have
-   been missed.
+1. Does the set of MC 88 plateaus saturate under repeated independent descents? After 230
+   catalogued plateaus from ~60 worker-hours with zero repeats the answer is "not at this
+   scale": the 88 level is far larger than any sample we can take, so an 87 reachable from some
+   88 plateau cannot be excluded by sampling. Next: a cheap plateau identity (core hash) to
+   measure the rate from all 1,900 sampled states, and the C-vs-A distinct-plateau question.
 2. What is the barrier height from the 88 level to any 87, if one exists? (PES: > +1 from 49
    plateaus; +2 partial.)
 3. Which map properties predict the search's gap to the optimum (bench + crossmap).
@@ -101,19 +114,22 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | X1 fresh vs NIST (x1a, x1b) | 8 | 06:16 | ~08:25 | `x1/runs/x1a`, `x1/runs/x1b`, `x1/driver.log` |
 | bench engine-variant A/B (agent) | <=6 | 06:20 | ~09:30 | `bench/REPORT.txt` section "Engine variants" |
 | kste1: PES +1 pass on 22 kste 3-way plateaus (+#0) | 8 | ~08:25 | ~00:25 (11-08) | `pes-kste/runs/kste1/status.txt`, `FOUND_*`, `records/`; stop: `pes-kste/pes/stop2.sh kste1` |
-| predtest pt1 (3 maps x 2 workers), then pt2 (4 maps x 2 workers) | 6, 8 | ~08:25, ~10:30 | ~12:30 | `predtest/runs/pt{1,2}`, `predtest/driver.log` |
-| hunt C (A with depth_window none) | 6 | 08:30 | 11:30 | `hunt/runs/C`; sampler `hunt/samplesC/samples.jsonl`; catalogue via `hunt/plateaus.py .` then `hunt/chains_plateaus.py .` |
-| bench replication: default vs depth_window none, same window (agent) | 6 | 11:55 | ~13:00 | `bench/REPORT.txt` section 12 |
-| sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | after pt2 (~12:40) | ~14:45 | `sweep/runs/sw{1,2}`, `sweep/driver.log`; harvest afterwards |
+| predtest pt1, pt2 | 6, 8 | 08:28, 10:39 | done 12:52 | `predtest/runs/pt{1,2}`, `predtest/driver.log` |
+| hunt C (A with depth_window none) | 6 | 08:30 | done 11:30 | `hunt/runs/C`; sampler `hunt/samplesC/samples.jsonl`; catalogue via `hunt/plateaus.py .` then `hunt/chains_plateaus.py .` |
+| bench replication: default vs depth_window none, same window (agent) | 6 | 11:55 | ~13:30 | `bench/REPORT.txt` section 12 |
+| sweep sw1, sw2 (12 maps over 8x8 matrices, 1 worker-hour each at NIST's depth) | 6 | 12:52 | ~14:55 | `sweep/runs/sw{1,2}`, `sweep/driver.log`; harvest afterwards |
 | agents crossmap, lit, kste, pes-kste, bench | - | - | done | `*/REPORT.txt` |
 
 Harvest at the end: `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py x1/runs/x1a x1/runs/x1b predtest/runs/pt1 predtest/runs/pt2` (dry run; `--apply` adds via circuits/add.py), then `python3 circuits/check.py`. Already known new circuits: grostl 364@11, klsw17-m-8x8-gf256-inv 327@12, ss16-4x4-gf256 96@5.
 
 ## 7. Next actions
 
-1. At ~1 h of hunt: run `plateaus.py`, read the discovery curve and arm comparison; decide whether
-   B's restart policy wins (arrivals at 88 per worker-hour).
-2. When `bench/` reports: run v8 vs v10 vs a short-stall variant on the benchmark; this is the
-   fair instrument for "better search decisions".
-3. Test 2-3 of crossmap's predictions with 1 h runs on 4 workers each.
-4. Keep the checkpoint and FINDINGS.md current; commit at each milestone.
+1. ~14:55 UTC: sweep done -> `harvest_sprint.py` dry run over x1a, x1b, pt1, pt2, sw1, sw2; then
+   `--apply`, `circuits/check.py`, update circuits/README.md rows and SEARCH-TIME.md, commit.
+2. Read bench/REPORT.txt section 12 (replication) when the agent reports; finish F8.
+3. kste1: check status every ~2 h; it ends ~00:30 UTC 11-08; record the outcome in F3/F5.
+4. With the remaining compute (after the sweep, 12 free threads): the experiment that answers
+   the unresolved question 1 cheaply (core-hash plateau identity over all sampled states), and
+   a MixColumns run with depth_window none at a wider restart policy if time allows.
+5. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint, memory note,
+   commit, closing report.

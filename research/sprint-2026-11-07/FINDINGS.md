@@ -192,6 +192,17 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   pre-sprint ones; C chains land more often on large coupled products (0.4-3.4 M states) than
   A/B chains did; per-chain migration rate is like A's (one chain: 11 plateaus in 13.5 min).
   Overall catalogue at 12:30 UTC: 644 states -> 225 new plateaus, zero overlap anywhere.
+- Arm C catalogue, final (13:05 UTC): the plateau instrument cannot keep up with C. Of C's
+  774 sampled 88 states only 59 were catalogued (A: 285 of 620, B: 135 of 475) because C's
+  chains sit on coupled products of 10^5-3.4x10^6 states whose compression takes the full
+  180 s cap each. Catalogued: 30 plateaus first seen by C (3 giants, 9 of size > 10^5), all
+  new, 6 of 6 first-88 plateaus distinct, 0 landings on any other arm's or pre-sprint plateau.
+  Per catalogued state C yields 0.51 new plateaus and A 0.41, but the samples are the earliest
+  states of each arm and not the same fraction, so the F8 prediction ("more distinct plateaus
+  per worker-hour") is NOT tested; what is measured is more 88 arrivals per worker-hour
+  (1.94 vs 1.51), more 88 sample-states per worker-hour (43 vs 34), and a different kind of
+  landing (large coupled products). Settling it needs a cheaper plateau identity (hash of the
+  remove1-neutral core without enumerating factors), left as a next experiment.
 
 ## F9. Testing the crossmap predictions (pt1, 3 maps x 2 workers x 2 h, seeds = our best at the cap + NIST's) [measured]
 
@@ -200,12 +211,25 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   | ss17-8x8-gf16 | 10 | 167 | 161 (157-163) | **161@10** (+160@11) | hit |
   | klsw17-m-8x8-gf256-inv | 12 | 346 | 335 (329-339) | 330@12 (X1: 327@12 in 1 worker-h) | beaten |
   | skop15-8x8-gf16 | 19 | 146 | 140 (136-142) | 146@14 (no gain) | miss |
+  | skop15-4x4-gf256-inv | 6 | 88 | 85 (83-86) | 88@6 (no gain; new 89@5) | miss |
+  | anubis-clefia-m0 | 9 | 92 | 89 (87-90) | 91@8 (+92@6) | miss (gain 1 of 3) |
+  | khazad | 18 | 345 | none (rank A/B disagree) | **340@15**, 344@14 | gain 5 |
+  | fox-mu8 | 14 | 505 | none (rank A/B disagree) | **500@11**, 504@10 | gain 5 |
 
 - The rule (gain per ln(time) extrapolated from each map's own late-run slope) got the direction
   right on the two maps whose circuits were the least worked (one NIST-seeded hour each) and
   missed on the map that already had 2 worker-hours at that cap and a 14.1 % gain. Reading: the
   log-time slope decays faster than the rule assumed once the easy gains are taken; two more
   maps (pt2) will say whether that holds. New circuits: ss17-8x8-gf16 161@10 and 160@11.
+- pt2 (12:52 UTC): the two 4x4 maps with a numeric prediction both missed low (0 and 1 gate
+  of the predicted 3): the log-time rule over-predicts for small maps whose circuits are close
+  to NIST's and already had hours of search. The two 8x8 "disagreement" maps each gained 5
+  gates in 4 worker-hours. Score of the rule over 5 numeric predictions: 1 hit, 1 beaten,
+  3 misses (all misses are over-predictions). Surviving, weaker statement [measured, 7 maps]:
+  maps over 8x8 matrices gain several gates per worker-hour at NIST's depth whatever their
+  property profile; 4x4 maps at NIST's depth gain 0-1. Size, not the rule's slope, is the
+  predictor that held. New circuits: anubis-clefia-m0 91@8/92@6, khazad 340@15/344@14,
+  fox-mu8 500@11/504@10, skop15-4x4-gf256-inv 89@5.
 
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
