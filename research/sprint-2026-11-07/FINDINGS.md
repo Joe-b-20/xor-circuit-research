@@ -187,8 +187,11 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   per worker-hour than A, at deeper depths. Scheduled after X1 (`hunt/C.toml`).
 - Arm C result, descents (3 h, 18 worker-hours, 08:30-11:30 UTC, alongside kste1 and pt1/pt2):
   40 chains, 35 reached 88 (88 %; A 81 %), 1.94 arrivals per worker-hour (A 1.51), median
-  root->88 300 s (A 240 s); 88 depths 6-8 (A 5-9), so "deeper" did not happen. The plateau
-  count per worker-hour is in the catalogue (`hunt/plateausC.log`, pending at 11:50).
+  root->88 300 s (A 240 s); 88 depths 6-8 (A 5-9), so "deeper" did not happen. Catalogue
+  (partial, first 79 C states): 25 new plateaus, none shared with any other arm or the 52
+  pre-sprint ones; C chains land more often on large coupled products (0.4-3.4 M states) than
+  A/B chains did; per-chain migration rate is like A's (one chain: 11 plateaus in 13.5 min).
+  Overall catalogue at 12:30 UTC: 644 states -> 225 new plateaus, zero overlap anywhere.
 
 ## F9. Testing the crossmap predictions (pt1, 3 maps x 2 workers x 2 h, seeds = our best at the cap + NIST's) [measured]
 
