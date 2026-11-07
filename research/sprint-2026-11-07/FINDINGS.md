@@ -82,6 +82,29 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   "what determines reaching better circuits" has, on MixColumns, the answer "a down-exit from
   some 88 core, and none of the ~65 cores examined by +1 edits has one".
 
+## F6. Restarting 300 s after the chain stops improving gives 2.4x more arrivals at 88 per worker-hour than v8's defaults [measured, hunt A/B at 2 h]
+
+- Setup: v8, MixColumns uncapped, fresh roots only, no sharing, 6 workers per arm, 12.1
+  worker-hours each (`hunt/A.toml`, `hunt/B.toml`; `hunt/descents.py`, chains from restart
+  events and epochs). A = defaults (stall 900 s, doubled to 1,800 s while the chain holds the
+  worker best); B = stall 300 s, incumbent_factor 1.
+- Result at 2 h:
+
+  | arm | chains | reached 88 | arrivals at 88 per worker-h | median root->88 | stay at 88 before restart |
+  |---|---:|---:|---:|---:|---:|
+  | A | 23 | 17 (74 %) | 1.40 | 240 s | 1,800 s |
+  | B | 88 | 41 (47 %) | 3.39 | 240 s | 300 s |
+
+- Prediction stated before the run (B >= 1.5x arrivals per worker-hour): confirmed. The cost: B
+  gives up on 53 % of chains at 89 that A would have carried to 88 (A's slowest arrival took
+  1,200 s; B restarts 300 s after the last improvement). Per-chain success falls, arrivals rise.
+- What this is and is not: a "better search decision" for the objective "sample many
+  independent 88 arrivals" (discovery, lottery). It says nothing about finding an 87, and the
+  fairer discovery measure is distinct plateaus per worker-hour, because an A chain hops between
+  88 plateaus during its 30 min at the bottom (see F5 update when the catalogue is in).
+- Scope: MixColumns uncapped from fresh roots. The benchmark harness (bench/) is where the same
+  knob will be judged on maps with known optima.
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,
