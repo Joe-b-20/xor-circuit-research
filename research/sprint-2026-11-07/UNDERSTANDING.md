@@ -276,7 +276,7 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   The 75 proof's rows leave 1,508 of 7,416 oriented claims open at G = 75, 1,313 with the sprint's two
   new row families (F18: proofs independently checked, 1,772 exact Farkas certificates with complete
   coverage of the 195 newly excluded claims, independent checker, mutation-tested) and 996 with
-  the hub and dark-label rows of F21 (claimed, under independent check, no certificates); real 88 circuits violate no package row and leave every capacity row (L1)-(L23) slack >= 10
+  the hub and dark-label rows of F21 (independently checked, no certificates yet); real 88 circuits violate no package row and leave every capacity row (L1)-(L23) slack >= 10
   (only Lemma 7.4 and two of the new rows are tight); the drift identity has no slack for any circuit
   of any gate count (margin = -(E_B + L_H) <= 0; real 88s lose only 0-7 units there), so the missing
   content is entirely in the local rows: realizability of low-Y/V/q profiles, not sharpening

@@ -1,0 +1,31 @@
+[   0.1s] M F3 triple multiplicities {1: 40704, 2: 360, 3: 80}
+[   0.6s] M candidate h: 128068 |N(h)| histogram {1: 114060, 2: 1280, 3: 10992, 4: 444, 5: 100, 6: 672, 8: 260, 9: 160, 11: 88, 12: 4, 15: 8}
+[   2.6s] M cap histogram (all odd non-boundary h with N(h) nonempty): {1: 125128, 2: 2840, 3: 92, 4: 8}
+[   2.6s] M cap histogram (triple values): {1: 10984, 2: 1496, 3: 92, 4: 8}
+[   2.6s] M kappa_0 = 4  kappa_1 = 4
+[   2.8s] M   h with 0 triple representation(s): 115488 values, cap histogram {1: 114144, 2: 1344}, max 2
+[   2.9s] M   h with 1 triple representation(s): 12140 values, cap histogram {1: 10984, 2: 1156}, max 2
+[   3.1s] M   h with 2 triple representation(s): 360 values, cap histogram {2: 260, 3: 92, 4: 8}, max 4
+[   3.2s] M   h with 3 triple representation(s): 80 values, cap histogram {2: 80}, max 2
+[   3.2s] M values with cap > 2 that are not 2-representation values: 0
+[   3.2s] M values with cap 4: 8 ['0x404040', '0x808080', '0x40004040', '0x40400040', '0x40404000', '0x80008080', '0x80800080', '0x80808000']
+[   3.3s] M witness re-verification failures (rank, adjacency, distinct pairs): 0
+[   4.8s] M second method (all subsets of size cap+1 dependent): 12968 values tested, 0 failures
+[   4.9s] M independence-notion equivalence mismatches on 3000 random subsets: 0
+[   5.4s] M cross-check with qreal hub_cap: kappa0 4 kappa1 4; values with cap>=1: mine 128068 ref 128068; differing 0
+[   5.7s] Mt F3 triple multiplicities {1: 40320, 2: 504, 3: 112}
+[   6.2s] Mt candidate h: 177412 |N(h)| histogram {1: 157472, 2: 2352, 3: 14432, 4: 892, 5: 192, 6: 1344, 8: 308, 9: 224, 11: 172, 12: 4, 15: 20}
+[   9.4s] Mt cap histogram (all odd non-boundary h with N(h) nonempty): {1: 172060, 2: 5156, 3: 176, 4: 20}
+[   9.4s] Mt cap histogram (triple values): {1: 14236, 2: 2708, 3: 176, 4: 20}
+[   9.4s] Mt kappa_0 = 4  kappa_1 = 4
+[   9.7s] Mt   h with 0 triple representation(s): 160272 values, cap histogram {1: 157824, 2: 2448}, max 2
+[   9.8s] Mt   h with 1 triple representation(s): 16524 values, cap histogram {1: 14236, 2: 2288}, max 2
+[  10.0s] Mt   h with 2 triple representation(s): 504 values, cap histogram {2: 308, 3: 176, 4: 20}, max 4
+[  10.1s] Mt   h with 3 triple representation(s): 112 values, cap histogram {2: 112}, max 2
+[  10.1s] Mt values with cap > 2 that are not 2-representation values: 0
+[  10.1s] Mt values with cap 4: 20 ['0x20202', '0x40404', '0x80808', '0x101010', '0x202020', '0x2000202', '0x2020002', '0x2020200', '0x4000404', '0x4040004', '0x4040400', '0x8000808', '0x8080008', '0x8080800', '0x10001010', '0x10100010', '0x10101000', '0x20002020', '0x20200020', '0x20202000']
+[  10.3s] Mt witness re-verification failures (rank, adjacency, distinct pairs): 0
+[  14.4s] Mt second method (all subsets of size cap+1 dependent): 18068 values tested, 0 failures
+[  14.5s] Mt independence-notion equivalence mismatches on 3000 random subsets: 0
+[  15.8s] Mt cross-check with qreal hub_cap: kappa0 4 kappa1 4; values with cap>=1: mine 177412 ref 177412; differing 0
+[  16.2s] H1 CHECK PASSED {'M': (4, 4, {1: 125128, 2: 2840, 3: 92, 4: 8}, {1: 10984, 2: 1496, 3: 92, 4: 8}), 'Mt': (4, 4, {3: 176, 2: 5156, 1: 172060, 4: 20}, {3: 176, 2: 2708, 1: 14236, 4: 20})}

@@ -886,7 +886,7 @@ computed values that are neither inputs nor outputs).
   has > 1.1e8 survivors; 5.3e8 structured triples enumerated in C++ (312 s) give max r = 9 (universal
   bound r <= 12). A real proof is a day or two of code plus CPU-hours to days [estimated].
 
-## F21. Realizability rows: survivors at G = 75 cut further, 1,313 -> 996 claims (qreal agent, xhigh; `qreal/REPORT.md`) [claimed proofs, UNDER INDEPENDENT CHECK; no certificates; no bound improvement]
+## F21. Realizability rows: survivors at G = 75 cut further, 1,313 -> 996 claims (qreal agent, xhigh; `qreal/REPORT.md`; CONFIRMED by `qrealcheck/REPORT.md`) [proved as checked; no certificates yet; no bound improvement]
 
 - Hub helpers (task b) [finite-checked + claimed proved]: H1: for every odd non-boundary value h, at
   most 4 jointly independent full values f have h + f equal to a boundary-pair value (M and M^T; <= 2
@@ -914,8 +914,20 @@ computed values that are neither inputs nor outputs).
   3-4 full-met labels (hub value among only 100 M / 196 M^T values with cap >= 3), plus M^T q = 1,
   z = 4-5 phases with 7-8 full helpers. The report specifies the finite realizability search that would
   decide the hub family (hub value x witness set x label choice x hub triple, filtered by
-  independence, FM ranks, O1, degree <= 2); not started. The integer oracle was not run on the final
-  system. The bound is 75; 996 claims survive by LP status.
+  independence, FM ranks, O1, degree <= 2); the qhub agent is running it. The integer oracle was not
+  run on the final system. The bound is 75; 996 claims survive by LP status.
+- Independent check (qrealcheck, xhigh, 23:50 UTC): H1 recomputed with own code (identical per-value
+  caps for all 128,068 / 177,412 values; cap 4 only at two-representation values); Lemma H1, the
+  HUB split, the dark rows (L13d)-(L18d) with their coefficients, the occurrence budgets, the
+  q_D split and Lemma O1 CONFIRMED step by step; LP recount 1,256 / 585 and 996 / 381 reproduced
+  both with the unchanged rows and with an independent implementation (identical survivor sets and
+  (k, l) values); 96 circuits / 384 phases with own code: 0 violations, (G*) with the F9 space tight
+  on 22 phases. Bookkeeping correction: qreal's "keys" count only the 1,134 baseline keys; over
+  every key the final scan evaluates, 1,661 are LP-feasible and 1,377 load-bearing (654 M, 723 M^T;
+  by q: 2: 80, 3: 184, 4: 321, 5: 361, 6: 244, 7: 122, 8: 60, 9: 5), so "remaining keys with q <= 3"
+  is 264 load-bearing keys, not 18; the 996 survivor count is unaffected. HUB is unexercised by any
+  known circuit (A = 0 everywhere). Referee list: per-case Farkas certificates with two checkers,
+  package-style write-up, a synthetic A >= 1 control.
 
 ## F22. Depth-4 lower bound: nothing above 75 in general; proved layer facts and scoped exact results around the 89@4 family (d4bound agent, xhigh; `d4bound/REPORT.md`) [proved / finite-checked / SAT-scoped, as marked]
 
@@ -983,6 +995,8 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
   first-layer-equal 90@4 states on disk, 11 of them in the family's remove1 basin; the 8 run-final
   traps are not). Applied in F15 and UNDERSTANDING 7.
+- F21 (qrealcheck): all lemmas and rows CONFIRMED, LP reproduced independently; key bookkeeping
+  corrected (1,377 load-bearing keys, 264 with q <= 3). Applied in F21.
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h
   16-23, weight-2 rigidity); interpretation corrected: margin = -(E_B + L_H) <= 0 for every circuit
   of every gate count, so nothing "saturates" specifically at 88; reconstruction ambiguity of the

@@ -1,0 +1,72 @@
+[   6.5s] tables ready
+[   7.4s] jobs 96 (controls 13, repo 3, real ymax 40 , rand 40 )
+[   9.8s] 25 circuits done
+[  11.6s] 50 circuits done
+[  13.0s] 75 circuits done
+[  13.9s] circuits 96 phases 384 assertion failures 0
+[  13.9s] violation totals (must be 0): {'hub_viol': 0, 'o1_viol': 0, 'perlab_viol': 0}
+[  13.9s] outputs defined per full helper (must be >= 2): {2: 92}
+[  13.9s] == M: 192 phases
+[  13.9s]    q         min   7 median  13 max  16
+[  13.9s]    z         min   0 median   3 max   8
+[  13.9s]    n3        min   0 median   0 max   4
+[  13.9s]    A         min   0 median   0 max   0
+[  13.9s]    qD        min   0 median   3 max   8
+[  13.9s]    h0        min   0 median   1 max   5
+[  13.9s]    y0        min   0 median   2 max  10
+[  13.9s]    y1        min   1 median   6 max  16
+[  13.9s]    y2        min   0 median   6 max  16
+[  13.9s]    y2d       min   0 median   3 max  16
+[  13.9s]    y2m       min   0 median   3 max   7
+[  13.9s]    Fb        min   0 median   1 max   6
+[  13.9s]    Fd        min   0 median   1 max   3
+[  13.9s]    sumk      min   0 median   6 max  13
+[  13.9s]    hub_slack min   8 median  15 max  18
+[  13.9s]    capslack  min   0 median   0 max   1
+[  13.9s]    capmax    min   3 median   3 max   4
+[  13.9s]    row FbFdFH<=F                                    min slack  10  tight on   0 of 192  ok
+[  13.9s]    row G*(F9 J)  rho <= y2+z+D0-qD+sum_bright k     min slack   0  tight on   4 of 192  ok
+[  13.9s]    row HUBlin                                       min slack  52  tight on   0 of 192  ok
+[  13.9s]    row I'                                           min slack  32  tight on   0 of 192  ok
+[  13.9s]    row L13d                                         min slack  24  tight on   0 of 192  ok
+[  13.9s]    row L14d                                         min slack  26  tight on   0 of 192  ok
+[  13.9s]    row L15d                                         min slack  14  tight on   0 of 192  ok
+[  13.9s]    row L17Md                                        min slack  28  tight on   0 of 192  ok
+[  13.9s]    row bright_cap                                   min slack  10  tight on   0 of 192  ok
+[  13.9s]    row bright_lower                                 min slack   2  tight on   0 of 192  ok
+[  13.9s]    row d=0: Fd=y2d=0                                min slack   0  tight on  10 of 10  ok
+[  13.9s]    row dark_cap                                     min slack   0  tight on  10 of 192  ok
+[  13.9s]    row y2m<=C(q,2)                                  min slack  21  tight on   0 of 192  ok
+[  13.9s] == Mt: 192 phases
+[  13.9s]    q         min   7 median  13 max  16
+[  13.9s]    z         min   0 median   2 max   7
+[  13.9s]    n3        min   0 median   0 max   4
+[  13.9s]    A         min   0 median   0 max   0
+[  13.9s]    qD        min   3 median   5 max   7
+[  13.9s]    h0        min   0 median   0 max   3
+[  13.9s]    y0        min   0 median   4 max  20
+[  13.9s]    y1        min   0 median   4 max   8
+[  13.9s]    y2        min   4 median   7 max  11
+[  13.9s]    y2d       min   0 median   2 max   5
+[  13.9s]    y2m       min   2 median   5 max   8
+[  13.9s]    Fb        min   0 median   1 max   2
+[  13.9s]    Fd        min   0 median   0 max   3
+[  13.9s]    sumk      min   0 median   2 max   3
+[  13.9s]    hub_slack min   8 median  15 max  18
+[  13.9s]    capslack  min   0 median   0 max   2
+[  13.9s]    capmax    min   0 median   4 max   4
+[  13.9s]    row FbFdFH<=F                                    min slack   9  tight on   0 of 192  ok
+[  13.9s]    row G*(F9 J)  rho <= y2+z+D0-qD+sum_bright k     min slack   0  tight on  18 of 192  ok
+[  13.9s]    row HUBlin                                       min slack  64  tight on   0 of 192  ok
+[  13.9s]    row I'                                           min slack  37  tight on   0 of 192  ok
+[  13.9s]    row L13d                                         min slack   0  tight on   2 of 192  ok
+[  13.9s]    row L14d                                         min slack   0  tight on   2 of 192  ok
+[  13.9s]    row L15d                                         min slack   0  tight on   2 of 192  ok
+[  13.9s]    row L17Td                                        min slack   0  tight on   2 of 192  ok
+[  13.9s]    row L18d                                         min slack   0  tight on   2 of 192  ok
+[  13.9s]    row bright_cap                                   min slack   0  tight on   2 of 192  ok
+[  13.9s]    row bright_lower                                 min slack   0  tight on   2 of 192  ok
+[  13.9s]    row d=q: Fb=0                                    min slack   0  tight on   2 of 2  ok
+[  13.9s]    row dark_cap                                     min slack  11  tight on   0 of 192  ok
+[  13.9s]    row y2m<=C(q,2)                                  min slack  18  tight on   0 of 192  ok
+[  13.9s] CIRCUIT CHECK PASSED: no violation of any qreal row or lemma
