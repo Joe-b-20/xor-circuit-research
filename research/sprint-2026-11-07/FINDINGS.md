@@ -840,6 +840,32 @@ at k = 5, 6.
 - To confirm by hand: download Jean's and Osvik-Canright's PDFs (depth and method of the 88; the
   94@5 / 97@4 figures).
 
+## F20. Odd-helper theorems verified and the lost cases re-proved: any MixColumns circuit with <= 89 gates has at least 3 odd non-output helpers (oddh agent, high; `oddh/REPORT.md`) [replayed + finite-checked + proved here]
+
+Model: the 75 proof's unrestricted model (2-input XOR circuits for one column; h = odd-weight
+computed values that are neither inputs nor outputs).
+- h = 2 => G >= 90 (the owner's 23 Sep theorem): restated in plain terms (G = 34 + x + y; the mixed
+  gate rows give y >= 34 + p - r with p the hidden even values and r the rank of four-term relations
+  among the 66 odd values, so G >= 92 + p - r; r <= 6 by enumerating the 3,592,052 candidate helper
+  pairs; the cases p = 0..3 closed by quotient-rank ledgers and 174,180 triangle checks). The three
+  archive checkers compile and PASS (160 s, 14 s, 84 s) with outputs identical to the stored results;
+  every finite fact was recomputed independently from the repo's matrix in plain Python (Sidon 2,016;
+  triple multiplicities 40,704 / 360 / 80; rank histogram over the full 3,592,052-pair domain
+  113,892 / 3,444,740 / 30,572 / 2,848 with max r = 6; quad capacities 2,046 / 291 / 36; single-helper
+  d-table), all matching. General-h form of the ledger: G >= 88 + 2h + p - r and H >= 12 + h + p - d
+  [proved]. Premises still [read, not checked]: F1 (x >= 24, in the 75 package) and the 88 controls.
+- h = 0 => G >= 92 and h = 1 => G >= 91: the archive had lost these proofs; complete derivations are
+  given (h = 0: r = 0 by Sidon, p <= 2 impossible, p = 3 excluded by 1,360 triangles of joint rank
+  <= 7 vs 15 required, so p >= 4; h = 1: r <= 3, p = 0..2 excluded by the d-table, p = 3 forces a full
+  helper and G = 90, excluded over the 20 rotation orbits of full values) [proved + finite-checked,
+  single implementation run once].
+- Consequence [proved given F1]: any circuit with <= 89 gates has >= 3 odd helpers; an 87 has 3 <= h
+  <= 31 and needs four-term rank r >= 7 + p among its odd values. Our 88s have 16-24 (F16), so this
+  constrains hypothetical small-h circuits, not the ones the search sees.
+- h = 3 => G >= 89 is NOT proved: the p = 0 domain is infinite and the finite r >= 7 domain at p >= 1
+  has > 1.1e8 survivors; 5.3e8 structured triples enumerated in C++ (312 s) give max r = 9 (universal
+  bound r <= 12). A real proof is a day or two of code plus CPU-hours to days [estimated].
+
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-

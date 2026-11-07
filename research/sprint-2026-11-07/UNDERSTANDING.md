@@ -265,7 +265,9 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   93 <= C3 <= 97 (owner's proof, audited in the archive, not rerun here; 97@3 optimality OPEN). Depth
   <= 4: 89 is the best construction; no depth-4 bound above 75. Inverse: depth >= 5 is proved
   (weight-19 outputs), 118@5 is a construction (optimality open), 88-gate unrestricted inverse
-  constructions at depths 19 and 33 are recorded in the archive. A claim of 87 impossibility is open.
+  constructions at depths 19 and 33 are recorded in the archive. Structural: any circuit with <= 89
+  gates has >= 3 odd-weight non-output helpers (h = 0, 1, 2 cases proved / replayed here, F20; premise
+  x >= 24 read). A claim of 87 impossibility is open.
   The 75 proof's rows leave 1,508 of 7,416 oriented claims open at G = 75, 1,313 with the sprint's two
   new row families (F18: proofs independently checked, 1,772 exact Farkas certificates with complete
   coverage of the 195 newly excluded claims, independent checker, mutation-tested); real 88 circuits violate no package row, sit 0-7 units below the drift budget and leave
