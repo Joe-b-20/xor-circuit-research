@@ -63,6 +63,25 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   depth 19 in 1 h on 4 workers; no 16x16 map gains a gate). Discriminating experiment X1 (fresh
   roots vs NIST seeds at NIST's depth, 8 maps) prepared in `x1/x1.toml`, to run when cores free.
 
+## F5. The 88 level is vast: nearly every independent descent lands on a new plateau [measured, provisional]
+
+- Observation (hunt, first ~45 min, `hunt/plateaus.py`): 13 arrivals at 88 (41 sampled states)
+  fell into 12 distinct plateaus modulo rotation; the one repeat was the same worker's chain.
+  Shapes: 7 x 3^7 (2,187 states), one 3^8, one 33·15·3^5 (120,285), one 18927·15·3^2
+  (2.56 M), two giants whose closure did not finish in 10-18 minutes (depth 9). The public kste
+  corpus (F3) has 17,462 isomorphism classes of 88-gate circuits.
+- Mechanism [guess]: the 88 level consists of a very large number of distinct cores (sets of
+  49 or so values); each is reachable from a sizeable basin of roots, and the walk never
+  leaves it downward. Sampling plateaus by descents at ~2 per worker-hour cannot exhaust it.
+- Prediction (to test as the hunt continues): the discovery curve (distinct plateaus against
+  arrivals) stays close to the diagonal for the whole 8 h; overlap with the 52 pre-sprint
+  plateaus stays near zero.
+- Consequence for the 87 question: whether an 87 exists is a global question about the map,
+  not something more descents can settle by sampling; the useful tools are exact (SAT over a
+  structured family, lower-bound arguments) rather than more local search. The search question
+  "what determines reaching better circuits" has, on MixColumns, the answer "a down-exit from
+  some 88 core, and none of the ~65 cores examined by +1 edits has one".
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,

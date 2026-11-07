@@ -18,6 +18,35 @@ out_path = os.path.join(HUNT, "plateaus.json")
 store = json.load(open(out_path)) if os.path.exists(out_path) else {"plateaus": {}, "states": {}}
 P = store["plateaus"]
 seen_states = store["states"]
+PL = {}  # key -> Plateau object cache
+
+
+def plateau_obj(key):
+    if key not in PL:
+        PL[key] = pes_lib.Plateau.from_json(P[key]["plateau"])
+    return PL[key]
+
+
+def key_of(pl):
+    allv = sorted(pl.allv) if pl.kind == "product" else sorted(set().union(*pl.states))
+    k = min(sp.rot(tuple(allv), s) if s else tuple(allv) for s in sp.shifts)
+    return "p" + pes_lib.h64(k).to_bytes(8, "big").hex()
+
+
+# pre-sprint plateaus (PES store) enter the catalogue once, so overlaps with them are detected
+if not store.get("pre_loaded"):
+    for f in sorted(glob.glob("/home/joebachir20/xs-campaigns/2026-11-05-exit/runs/*/mc/plateaus/P*.json")):
+        d = json.load(open(f))
+        if d.get("cost") != 88 or d.get("kind") != "product":
+            continue
+        pl = pes_lib.Plateau.from_json(d)
+        key = key_of(pl)
+        if key in P:
+            continue
+        P[key] = {"plateau": pl.to_json(), "size": pl.size(), "radices": pl.radices(), "kind": pl.kind,
+                  "depth": None, "first": {"arm": "pre", "worker": os.path.basename(f), "wall": 0},
+                  "members_seen": 0, "arms": {}}
+    store["pre_loaded"] = True
 
 # collect 88 states: samples first (time ordered), then records
 cands = []
@@ -64,26 +93,28 @@ for wall, arm, w, h, values in cands:
     for s in sp.shifts:
         rk = sp.rot(hk, s) if s else hk
         S = frozenset(rk)
-        for key, info in P.items():
-            pl = pes_lib.Plateau.from_json(info["plateau"])
-            if pl.contains(S):
+        for key in list(P):
+            if plateau_obj(key).contains(S):
                 found = key
                 break
         if found:
             break
     if found is None:
-        pl, info = pes_lib.compress(sp, hk, verify_limit=20000, closure_limit=20000, time_limit=600)
+        pl, info = pes_lib.compress(sp, hk, verify_limit=20000, closure_limit=3000, time_limit=180)
         if info.get("downs"):
             print("DOWN EXIT FOUND", arm, w, h, info["downs"][:3], flush=True)
             with open(os.path.join(HUNT, "DOWN_EXITS.txt"), "a") as f:
                 f.write(json.dumps({"arm": arm, "worker": w, "hash": h, "downs": [str(x) for x in info["downs"]]}) + "\n")
-        allv = sorted(pl.allv) if pl.kind == "product" else sorted(set().union(*pl.states))
-        key = min(sp.rot(tuple(allv), s) if s else tuple(allv) for s in sp.shifts)
-        key = "p" + pes_lib.h64(key).to_bytes(8, "big").hex()
+        truncated = pl.kind != "product" and (pl.meta or {}).get("verified") == "closure-truncated"
+        if truncated:
+            # giant coupled plateau: identity approximated by its seed state (membership inexact)
+            key = "giant-" + h
+        else:
+            key = key_of(pl)
         if key not in P:
             P[key] = {"plateau": pl.to_json(), "size": pl.size(), "radices": pl.radices(),
-                      "kind": pl.kind, "depth": st.depth(), "first": {"arm": arm, "worker": w, "wall": wall},
-                      "members_seen": 0, "arms": {}}
+                      "kind": "giant" if truncated else pl.kind, "depth": st.depth(),
+                      "first": {"arm": arm, "worker": w, "wall": wall}, "members_seen": 0, "arms": {}}
             n_new += 1
         found = key
     P[found]["members_seen"] += 1
@@ -121,7 +152,10 @@ for f in _g.glob("/home/joebachir20/xs-campaigns/2026-11-05-exit/runs/*/mc/plate
             for v in ch:
                 known_vocab.add(rk1(v))
 print(f"vocabulary of the 52 pre-sprint plateaus: {len(known_vocab)} values mod rotation")
-order = sorted(P.items(), key=lambda kv: kv[1]["first"]["wall"])
+order = sorted(((k, v) for k, v in P.items() if v["first"]["arm"] != "pre"),
+               key=lambda kv: kv[1]["first"]["wall"])
+pre_hits = sum(v["members_seen"] for v in P.values() if v["first"]["arm"] == "pre")
+print(f"arrivals that landed on one of the pre-sprint plateaus: {pre_hits}")
 vocab = set(known_vocab)
 t_first = order[0][1]["first"]["wall"] if order else 0
 print("  #  arm  worker   t(min)  size   radices        new words  cum words  members")
