@@ -690,6 +690,43 @@ at k = 5, 6.
   reading of the October campaigns. For the search, the proof's coordinates give no new move or
   predictor: the mobile part of a plateau is invisible to them.
 
+## F18. New universal inequalities for the 75 proof's local systems: survivors at G = 75 cut from 1,508 to 1,313 (qbound agent, xhigh; `qbound/REPORT.md`) [claimed proofs, UNDER INDEPENDENT CHECK; no bound improvement claimed]
+
+- Survivor table for hypothetical rows q >= c (package LP model at G = 75, 1,508 baseline claims): c =
+  1..8 kills 0 / 11 / 76 / 332 / 676 / 1,026 / 1,305 / 1,466; q + z >= 9 per phase kills all 1,508
+  [measured]. No q >= c is provable in the framework: q is forced only through q + z = sum_H d_v + y -
+  32, and real circuits have q >= 10 because they have y >= 10 and h >= 13, not by a label obstruction
+  [proved identity + measured]. So the bridge's q >= 7 conjecture is a [guess], probably false on
+  hypothetical tails.
+- Lemma N1 [claimed proved from Lemmas 4.1, 4.5 / F4]: 3 n_3 <= x + y - q (the represented edges of
+  "full" helpers, type r = 3, carry pairwise distinct labels). The LP's small-q survivors were built
+  from 7-13 full helpers per phase (real circuits have 0-3); N1 alone cuts feasible keys 1,134 -> 755
+  and claims 1,508 -> 1,355.
+- Family G* [claimed proved by extending Lemma 10.2's elimination with the even+even gate equations
+  whose signals are represented (kind 0) or have one bright missing signal (kind 1)]: y -> y_2 in rows
+  (L13)-(L20), (L22); plus (L12*) sum (r-1)_+ + y_0 <= rho_6, (L7*) W + y_1 <= 7q, (I) y_1 + y_2 + U +
+  2F_H <= 4q + 2F, and (Q0) q = 0 => z >= 12 + h_0 on M. G* alone: 1,508 -> 1,477; with N1: 1,313
+  claims (724 M, 589 M^T), 681 keys; with integrality of the local systems as a branch-and-bound
+  oracle (not certificates): 1,167 claims, 497 keys.
+- Lemma S (rich labels) [claimed proved] + finite fact S1 [finite-checked]: at a represented label with
+  boundary pair P, sum over helpers meeting it of (r_i - 1)_+ <= sigma(P), the rank of weight-6
+  zero-sum boundary sets through P; sigma = 0 for 1,704 of 2,016 pairs (M), 1,590 (M^T); so every
+  represented label at an r >= 2 helper is one of 312 (M) / 426 (M^T) rich pairs. Adds nothing to the
+  LP at 75; a strong structural restriction for any realizability search.
+- Negative finite fact: the largest set of full values with independent relations has exactly rho_6/2
+  elements (10 on M, 14 on M^T), so L12 is tight as a rank statement [finite-checked].
+- Controls: zero violations of any new row on the 13 package controls (52 phases) and 303 real circuits
+  (1,212 phases); (G*) with J = R_6 and (L12*) are TIGHT (slack 0) on some real phases, unlike every
+  package row (slack >= 10): they cannot be sharpened further without breaking a real circuit
+  [measured].
+- What survives and why: configurations with 7-10 full helpers using nearly every even signal as a
+  label (q = 1-3), and at q = 5-6 five or six (3,1,0) helpers plus an unanchored hub carrying 4-6
+  missing labels; both are realizability questions the count relaxation cannot see; five finite
+  searches that would decide them are listed (report section 8).
+- Status: these are new, inspectable arguments with explicit lemma citations; an independent checker
+  (xhigh) is verifying every step, the finite facts and the LP implementation now. Until it reports,
+  everything above is [claimed]. Even if confirmed, the bound stays 75: 1,313 claims remain open.
+
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-

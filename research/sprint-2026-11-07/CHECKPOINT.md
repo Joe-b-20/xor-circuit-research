@@ -113,6 +113,10 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   violated, none within slack 10; real circuits sit 0-7 below the drift budget (12 of 200 exactly
   on it); survivors at 75 are disjoint from real circuits in Y and V; q >= 7 is a [conjecture] that
   would cut 1,017 of 1,134 feasible keys.
+- 20:00 UTC, qbound agent (F18): two new row families (N1: 3 n_3 <= x + y - q; G*: y -> y_2 plus
+  L12*/L7*/(I)/(Q0)) and a rich-label lemma, all with written proofs citing package lemmas, zero
+  violations on 316 circuits; survivors at 75: 1,508 -> 1,313 (keys 1,134 -> 681). Under
+  independent check (qcheck agent, xhigh). No bound improvement claimed.
 - 15:55 UTC, estimate agent (F12): landing probability ~ proportional to plateau size; at least
   ~2,500 exact 88 plateaus (95 %), order of magnitude 1e5; coverage 0.029. Next measurement:
   exact catalogue of the remaining ~1,390 sampled states (~1 core-day).

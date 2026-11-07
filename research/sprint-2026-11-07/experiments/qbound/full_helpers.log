@@ -1,0 +1,16 @@
+M: full values 80, repeated 440, six-sets 60, rho6 20
+M: rank of the span of all full-value six-sets = 20 (so n3 <= 10 trivially)
+M: pairs of full values: independent 2800, dependent 360 (F4 adjacent pairs: 360)
+M: randomized greedy best = 10 full helpers (values ['0x40200040', '0x20100020', '0x1810000', '0x4020004', '0x202010', '0x80c04040', '0x40402', '0x404020', '0x404080c0', '0x81808001']) in 1.1s
+M: Lovasz alternating-matrix rank (seed 1) = 20  ->  nu = 10
+M: Lovasz alternating-matrix rank (seed 2) = 20  ->  nu = 10
+M: Lovasz alternating-matrix rank (seed 3) = 20  ->  nu = 10
+M: exact DFS: max independent full set = 10, 1 nodes, 0s, COMPLETE (exact maximum)
+Mt: full values 112, repeated 616, six-sets 84, rho6 28
+Mt: rank of the span of all full-value six-sets = 28 (so n3 <= 14 trivially)
+Mt: pairs of full values: independent 5712, dependent 504 (F4 adjacent pairs: 504)
+Mt: randomized greedy best = 14 full helpers (values ['0x40602040', '0x80c04080', '0x30102020', '0x1808', '0x3010000', '0x6020404', '0x60200000', '0x10002010', '0x8000404', '0x8000018', '0x1000201', '0x4080004', '0x40008040', '0x2000006']) in 2.1s
+Mt: Lovasz alternating-matrix rank (seed 1) = 28  ->  nu = 14
+Mt: Lovasz alternating-matrix rank (seed 2) = 28  ->  nu = 14
+Mt: Lovasz alternating-matrix rank (seed 3) = 28  ->  nu = 14
+Mt: exact DFS: max independent full set = 14, 1 nodes, 0s, COMPLETE (exact maximum)
