@@ -1,0 +1,11 @@
+M r=0: 128068 hub values, max-m histogram {1: 126412, 2: 1648, 3: 8}, bound 3-r=3 attained by 8, violations so far 0
+M r=1: 12580 hub values, max-m histogram {0: 11392, 1: 1124, 2: 64}, bound 3-r=2 attained by 64, violations so far 0
+M r=2: 440 hub values, max-m histogram {0: 428, 1: 12}, bound 3-r=1 attained by 12, violations so far 0
+M: 0 violations of r + m <= 3; 7s
+Mt r=0: 177412 hub values, max-m histogram {1: 174320, 2: 3072, 3: 20}, bound 3-r=3 attained by 20, violations so far 0
+Mt r=1: 17140 hub values, max-m histogram {0: 15216, 1: 1804, 2: 120}, bound 3-r=2 attained by 120, violations so far 0
+Mt r=2: 616 hub values, max-m histogram {0: 592, 1: 24}, bound 3-r=1 attained by 24, violations so far 0
+Mt: 0 violations of r + m <= 3; 9s
+circuits: 1264 phases; max A (full-met labels) = 0; max #full-met at a non-full helper = 0; so r + m <= 3 holds at every helper of every phase (m = 0 everywhere, r <= 3 by Lemma 4.4)
+RESULT violations: {'M': 0, 'Mt': 0}
+EXIT 0

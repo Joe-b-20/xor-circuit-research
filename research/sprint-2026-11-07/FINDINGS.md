@@ -1095,6 +1095,35 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   and S >= 35; one not resembling them would need a minimally realised group or cross-support
   cancellation, both unobserved.
 
+## F27. Hub capacity is exactly 3 - r; with two packing rows the survivors at G = 75 fall 996 -> 789 (qhub agent, xhigh; `qhub/REPORT.md`) [claimed proofs + finite-checked, UNDER INDEPENDENT CHECK; no certificates; no bound improvement]
+
+- The finite search qreal proposed was run in full: every odd non-boundary hub value h (128,068 M /
+  177,412 M^T), every r in {0, 1, 2}, every set R of represented triples and every subset S of the
+  full values f with h + f a boundary pair, under three conditions: C1 [claimed proved]: the family
+  {H_f + T (3 per f)} ∪ {H_i + T (r)} ∪ {H_i + H_f + P_f (1 per f)} is independent in any circuit
+  containing the configuration (gate-equation argument of Lemma 4.4) - qreal's H1 used only the 3m
+  vectors H_f + T; C3: Lemma O1's output assignment; X: the configuration's minimal boundary-degree
+  excess (a lower bound on E_B) for shortfall 0..3.
+- Finite fact H2 [finite-checked, two implementations with identical histograms]: the capacity is
+  exactly 3 - r in both orientations (K_0, K_1, K_2 = 3, 2, 1) versus H1's uniform 4; the degree
+  budget and O1 never lower the maximum, which is attained with X = 0 by explicit realizable local
+  configurations (8 of 20 hub values at r = 0, 16 of 24 at r = 1, 12 of 24 at r = 2), so no further
+  per-hub condition can tighten it.
+- Lemma H2 [claimed proved]: every helper has r_i + m_i <= 3. Row HUB2: u_i <= (3 - r_i) + (q - A) for
+  r_i <= 2, exact case split on A. Rows PK4 / PK5 [claimed proved, Lemma 10.4's packing argument at
+  q = 4, 5]: N_3 <= 1; N_3 + 2 N_4 <= 2.
+- Effect [measured, `qh_lp.py`; qreal's 996 / 381 reproduced first]: HUB2: 996 -> 863 claims (454 M,
+  409 M^T), keys 381 -> 166 (the M^T q = 5 cluster 101 -> 4; q = 2 and 13 of 14 q = 3 keys die); +
+  PK4/PK5: 863 -> 789 (416 M, 373 M^T), keys 166 -> 116 (q: 1: 2, 3: 1, 4: 33, 5: 11, 6: 31, 7: 7,
+  8: 30, 10: 1; only 53 load-bearing); shortfall 0 / 1 / 2 / 3: 426 / 270 / 69 / 24.
+- Circuit check [measured]: 13 controls + 303 real circuits, 1,264 phases, 0 violations (m_i = 0 and
+  A = 0 everywhere, HUB2 slack >= 7; the underlying independence holds on all phases; a first version
+  of the check had a bug, fixed before reporting).
+- What remains: an M q = 6 block, the M q = 4/5 blocks, M^T q = 7-8 small-h keys, in every case every
+  hub exactly on the H2 limit with L5/L23 tight; and three q <= 3 keys H2 does not touch. The report
+  specifies two finite searches (joint hub systems over a fixed set of full helpers; the M^T q = 1
+  family of 7-8 full helpers); neither was run. The bound stays 75: 789 claims survive by LP status.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
