@@ -263,7 +263,9 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   owner's computer-assisted proof, replayed here, argument read, not checked; the published
   literature has no bound above 32, F19; 88: verified constructions, Jean's and ours). Depth <= 3:
   93 <= C3 <= 97 (owner's proof, audited in the archive, not rerun here; 97@3 optimality OPEN). Depth
-  <= 4: 89 is the best construction; no depth-4 bound above 75. Inverse: depth >= 5 is proved
+  <= 4: 89 is the best construction; no depth-4 bound above 75 in general (F22: proved layer facts
+  give only G >= 57 unconditionally; over the 89's first layer plus its family's level-2 vocabulary,
+  G >= 89 is SAT-proved; over the first layer alone, open). Inverse: depth >= 5 is proved
   (weight-19 outputs), 118@5 is a construction (optimality open), 88-gate unrestricted inverse
   constructions at depths 19 and 33 are recorded in the archive. Structural: any circuit with <= 89
   gates has >= 3 odd-weight non-output helpers (h = 0, 1, 2 cases proved / replayed here, F20; premise

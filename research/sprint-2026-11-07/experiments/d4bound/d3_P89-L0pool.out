@@ -1,0 +1,4 @@
+subset scope P89-L0pool: |P|=26 |U2|=30 |S|=2080 helpers=2060 constructions=2103 recipes=1349 build 0.1s
+CP-SAT model: y=26 x=30 avail=2080 cons-vars=1161 recipe-vars=1349 build 1.8s
+CP-SAT status OPTIMAL objective 57.0 best bound 57.0 wall 1.0s
+RESULT subset scope P89-L0pool: min |L1|+|L2|+|H3| = 57 (|L1|=26, |L2|=22, |H3|=9, level-3 outputs=20) => G >= 32 + 57 = 89 for every normal-form depth-<=4 circuit whose weight-2 masks lie in P89-L0pool

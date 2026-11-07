@@ -1,0 +1,7 @@
+(a) Z4 byte rotation maps the 32 target masks onto themselves: checked for all 4 rotations
+(b) outputs never level-3-realizable over P89 (index, weight): [(1, 7), (4, 7), (11, 7), (17, 7), (20, 7), (27, 7)]
+(d) |o_i+o_j| = 4 pairs by bit position: [(0, 4), (2, 4), (5, 4), (6, 4), (7, 4)]  byte offsets: [(1, 15), (3, 5)]
+(c) parent cover all 32 outputs at level 3: |Y3|=32 universe=7897 status=FEASIBLE min level-2 parents = 36 (bound 0) 90.4s
+(c) parent cover the 20 weight-5 outputs at level 3: |Y3|=20 universe=7345 status=FEASIBLE min level-2 parents = 14 (bound 0) 90.2s
+(c) parent cover the 12 weight-7 outputs at level 3: |Y3|=12 universe=772 status=FEASIBLE min level-2 parents = 17 (bound 0) 90.0s
+EXIT d4 0

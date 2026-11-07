@@ -1,0 +1,4 @@
+scope A: |U2cand|=22 forced=22 |V2|=80 |S|=1452 helpers=1432 level-3-realizable outputs=20 constructions=1463 level-4 recipes=1081  build 0.0s
+CP-SAT model: x=22 avail=1452 cons-vars=231 recipe-vars=1081  build 1.6s
+CP-SAT status OPTIMAL objective 31.0 best bound 31.0  wall 0.1s
+RESULT scope A: min h2 + h3 = 31  (h2=22, h3=9, level-3 outputs=20) => every depth-4 circuit in the scope has G >= 32 + 26 + 31 = 89

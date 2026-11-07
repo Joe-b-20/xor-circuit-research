@@ -905,6 +905,41 @@ computed values that are neither inputs nor outputs).
   independence, FM ranks, O1, degree <= 2); not started. The integer oracle was not run on the final
   system. The bound is 75; 996 claims survive by LP status.
 
+## F22. Depth-4 lower bound: nothing above 75 in general; proved layer facts and scoped exact results around the 89@4 family (d4bound agent, xhigh; `d4bound/REPORT.md`) [proved / finite-checked / SAT-scoped, as marked]
+
+Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one MixColumns column.
+- Best justified bound at depth <= 4: 75, the unrestricted package; the archive's depth-4 pushes also
+  prove nothing above 75, and their named obstacle (the 75 proof's transposition/stabilisation does
+  not preserve depth, Lemma 3.1 accumulation trees) is confirmed [proved / archive].
+- Proved for every depth-4 circuit: a lossless normal form with layer grammar (level 1 = input
+  pairs, level 2 = triples/quartets over pairs, level 3 = weights 3-8, level-4 gates are outputs,
+  every output at level 3 or 4; G = 32 + p + h2 + h3); p + b >= 24 (pairs plus level-3 odd+odd-born
+  even helpers; from lb75 Lemmas 2.1/2.2 + F1, which need neither minimality nor depth), hence
+  G >= 56 + h2 + (h3 - b); a level-4 output can avoid a level-3 helper operand only as "cyclically
+  adjacent same-bit weight-5 output at level 3 plus a quartet" (exactly 20 output pairs, finite-
+  checked), so every weight-7 output at level 4 uses a level-3 helper; exact pair-free parent covers
+  (CP-SAT optimal): all 32 outputs at level 3 need >= 25 level-2 masks, the 20 weight-5 >= 10, the 12
+  weight-7 >= 15, so any depth-4 circuit with all weight-7 outputs at level 3 has h2 >= 15. The
+  unconditional yield is only G >= 57: the grammar prices neither level-3 helper fan-out nor the
+  level-2 bank behind level-4 outputs (the obstacle, stated).
+- SAT-scoped theorems (model completeness for each scope proved; Z4-transportable): A: weight-2 set
+  = the 89's 26 pairs and level-2 gates = its 22 => min h2 + h3 = 31 => G >= 89; B: same pairs,
+  level-2 any subset of the 81-family's 30-value pool => G >= 89; D: pairs any subset of the 26,
+  level-2 from the pool => min |L1| + |L2| + |H3| = 57 => G >= 89. C: pairs fixed, level-2 completely
+  free (1,060 candidates, 189,027 level-3 masks, 886k-variable LP): UNRESOLVED (CP-SAT bound 0 in
+  900 s; LP timed out). So 88 is not excluded over the 89's first layer alone; it is excluded over the
+  first layer plus the family's level-2 vocabulary. This is the exact-method counterpart of F15 (the
+  first layer is necessary for the family, not sufficient).
+- Route C (depth-3-style recipe enumeration) is infeasible unconditioned: last-gate split space
+  1,123,414 (weight 5) / 592,114 (weight 7) per output vs 285 / 35 at depth 3 [finite-checked].
+- Known 89 census [finite-checked]: p = 26, h2 = 22 (13 triples, 9 quartets), h3 = 9 (6 odd weight 5,
+  3 even weight 6), b = 0; all weight-5 outputs at level 3, all weight-7 at level 4, each level-3
+  helper feeds exactly 2 level-4 outputs, no output reuse.
+- Next: close scope C with the valid cuts and branching on the level of the 6 weight-7 outputs that
+  can be at level 3 over the 89's pairs (the other 6 never can); then per recorded first layer /
+  single-pair exchanges; a full depth-4 bound needs conditioning on the pair-graph partition as the
+  depth-3 proof does. Conjecture [weak support]: D4 = 89.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h
