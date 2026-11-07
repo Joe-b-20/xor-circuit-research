@@ -1,0 +1,67 @@
+[   2.3s] M zero-sum words by weight (<=10): {6: 60, 8: 248, 10: 1476} rho10 = 32
+[   4.5s] Mt zero-sum words by weight (<=10): {6: 84, 8: 276, 10: 1300} rho10 = 29
+[  14.6s] jobs 559 (controls 13, repo 3, ymax 303 , loose/rand 240 )
+[  16.7s] 100 circuits done
+[  18.5s] 200 circuits done
+[  19.7s] 300 circuits done
+[  21.0s] 400 circuits done
+[  22.6s] 500 circuits done
+[  23.5s] circuits 559 phases 2236 failures 0
+[  23.5s] == M: 1118 phases (559 canonical)
+[  23.5s]    N1     min  18 median  24 max  41
+[  23.5s]    Smin   min   0 median   0 max   1
+[  23.5s]    L7min  min   0 median   0 max   1
+[  23.5s]    L12    min   0 median   9 max  12
+[  23.5s]    Gs     min   0 median   3 max   6
+[  23.5s]    I      min  32 median  50 max  78
+[  23.5s]    n3     min   0 median   0 max   4
+[  23.5s]    y0     min   0 median   2 max  10
+[  23.5s]    y1     min   1 median   6 max  16
+[  23.5s]    y2     min   0 median   6 max  16
+[  23.5s]    q      min   7 median  13 max  16
+[  23.5s]    z      min   0 median   3 max   9
+[  23.5s]    h0     min   0 median   1 max   5
+[  23.5s]    qD     min   0 median   3 max   8
+[  23.5s]    sumk   min   4 median   7 max  12
+[  23.5s]    row G*R6                                          min slack   0  (tight on 60 phases)
+[  23.5s]    row I                                             min slack  32  (tight on 0 phases)
+[  23.5s]    row L12* Z+y0 <= rho6                             min slack   0  (tight on 2 phases)
+[  23.5s]    row L13* W+y1-2D0 <= 2y2+2z+7q-2rho               min slack  16  (tight on 0 phases)
+[  23.5s]    row L14* W+y1+A-2D0 <= 2y2+2z+7q-2rho+eps         min slack  18  (tight on 0 phases)
+[  23.5s]    row L15* Z-D0 <= y2+z+3q-rho                      min slack  11  (tight on 0 phases)
+[  23.5s]    row L17M* 2Z+2E-3D0 <= 3y2+3z+6q-24               min slack  30  (tight on 0 phases)
+[  23.5s]    row L7* W+y1 <= 7q                                min slack  24  (tight on 0 phases)
+[  23.5s]    row N1                                            min slack  18  (tight on 0 phases)
+[  23.5s]    Q0 phases (q=0): 0 ; phases with n3>=1: 186 ; with y1>=1: 1118 ; dimVB - lower bound distribution: {0: 1118}
+[  23.5s] == Mt: 1118 phases (1118 canonical)
+[  23.5s]    N1     min  23 median  27 max  45
+[  23.5s]    Smin   min   0 median   0 max   1
+[  23.5s]    L7min  min   0 median   0 max   0
+[  23.5s]    L12    min   0 median  11 max  15
+[  23.5s]    Gs     min   0 median   2 max   6
+[  23.5s]    I      min  41 median  55 max  81
+[  23.5s]    n3     min   0 median   0 max   4
+[  23.5s]    y0     min   0 median   4 max  20
+[  23.5s]    y1     min   0 median   4 max   8
+[  23.5s]    y2     min   4 median   7 max  11
+[  23.5s]    q      min   7 median  13 max  16
+[  23.5s]    z      min   0 median   2 max   7
+[  23.5s]    h0     min   0 median   0 max   3
+[  23.5s]    qD     min   3 median   4 max   7
+[  23.5s]    sumk   min   0 median   1 max   1
+[  23.5s]    row G*R6                                          min slack   0  (tight on 52 phases)
+[  23.5s]    row I                                             min slack  41  (tight on 0 phases)
+[  23.5s]    row L12* Z+y0 <= rho6                             min slack   0  (tight on 2 phases)
+[  23.5s]    row L13* W+y1-2D0 <= 2y2+2z+7q-2rho               min slack  56  (tight on 0 phases)
+[  23.5s]    row L14* W+y1+A-2D0 <= 2y2+2z+7q-2rho+eps         min slack  56  (tight on 0 phases)
+[  23.5s]    row L15* Z-D0 <= y2+z+3q-rho                      min slack  26  (tight on 0 phases)
+[  23.5s]    row L17Mt* Z+E-3D0 <= 3y2+3z+3q-12                min slack  33  (tight on 0 phases)
+[  23.5s]    row L18* W+A-3D0 <= 3y2+3z+7q-12                  min slack  65  (tight on 0 phases)
+[  23.5s]    row L19* 3 <= y2+sum_{r=0}(u+v-1)+sum_{r=1}v      min slack   3  (tight on 0 phases)
+[  23.5s]    row L20* 9 <= 3y2+2z+sum_{r=0}(3u+v-3)            min slack   9  (tight on 0 phases)
+[  23.5s]    row L7* W+y1 <= 7q                                min slack  47  (tight on 0 phases)
+[  23.5s]    row N1                                            min slack  23  (tight on 0 phases)
+[  23.5s]    Q0 phases (q=0): 0 ; phases with n3>=1: 304 ; with y1>=1: 1116 ; dimVB - lower bound distribution: {0: 1118}
+[  23.5s]    L19ext: max quotient mod R10 0 ; max z1 6 ; max residual dim 29 ; quotient>0 on 0 phases
+[  23.5s] rich violations (r>=2 helper at a poor represented label): 0
+[  23.5s] CIRCUIT CHECK PASSED: no violation of any claimed row or lemma

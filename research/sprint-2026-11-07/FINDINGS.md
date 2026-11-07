@@ -394,7 +394,9 @@ signatures).
 
 ## F13. Scoped exact search for an 87 around our 88 circuits: 43 refutations, 8 timeouts, no 87 (sat agent, `sat/REPORT.txt`, `sat/sat87.py`) [measured]
 
-- Batch status (`sat/batch_summary.py`, read at the time of this edit):
+- Batch status at the WSL failure (20:45 UTC; 1,122 instances: 1,117 UNSAT, 0 SAT, 5 timeouts,
+  solver wall 5.8 h, hardest UNSAT k = 12; stage 3 two-seed windows under way); relaunched 21:46
+  UTC together with the 12-process campaign batch2. Earlier status (16:50 UTC):
     family          UNSAT  SAT  TIMEOUT  other  hardest solved k
     stage1/A          131    0        0      0  8
     stage1/C           22    0        2      0  12
@@ -437,7 +439,8 @@ the complete remove1 neighbourhood (remove any one helper, repair with one exact
 no state with fewer gates [checked, exhaustive per state, F11]; (b) for the 88 plateaus whose +1
 band PES explored (mc24: 49 plateaus; kste1: 19 compressed so far), every RESOLVED +1 exit
 descent ends on the home plateau or on another 88 plateau, and none ends below 88; but 56 % of
-the +1 descents (kste1 at 17:33 UTC: 18,734 of 33,594 = 55.8 %; mc24: 58-66 % per completed
+the +1 descents (kste1 final at 21:41 UTC, killed at 13.2 h: 24,475 of 43,113 = 56.8 %, with
+22 plateaus' +1 passes complete, 1,117 "new" landings, 0 lower states; mc24: 58-66 % per completed
 plateau, 60-64 % pooled) were CUT at the
 descent's state bound before landing anywhere and are unresolved [measured; `pes2_tasks.py:
 classify`, the bound is `cfg.bound_plus1` visited states]; the +2 band was descended for 0 of
@@ -520,7 +523,7 @@ established. Inverse: depth >= 5 is established (output weights 19 vs depth-4 su
 must be new relative to them. A claim of 87 impossibility is open: neither search failures nor
 the available identities prove it (owner's status guide).
 
-## F14. Hunt D (depth window 2 / 4 / none, 4 MixColumns workers each, same first roots, 13 h from 15:06 UTC): predictions registered at 2.4 h, before the data decide [in progress]
+## F14. Hunt D (depth window 2 / 4 / none, 4 MixColumns workers each, same first roots; planned 13 h from 15:06 UTC, KILLED at 6.4 h by the WSL failure of 20:45 UTC): predictions registered at 2.4 h, scored on the 6.4 h data [measured]
 
 Predictions written at 17:35 UTC (the 2.4 h snapshot below was seen; nothing later):
 - P1 (from hunt C, F8): DN (no window) reaches 88 at least 1.2x as often per worker-hour as D0.
@@ -559,9 +562,29 @@ alone has 209 vs 114); share of 88 states at depth >= 10: D0 3 %, D4 20 %, DN 31
 5 of 1,579 signatures shared across arms (0.3 %, P4 on track); 0 states below 88 (P5). Null model
 (Q1/Q2): 1,235,293 cross-chain pairs, 6 shared nodes, N_eff ~ 2.1e5; at 1.3e5 the expectation is
 9.5 (Poisson P(<= 6) ~ 0.17): inside, no evidence of locality or hubs so far.
-Analysis scripts: `hunt/descents.py hunt/runsD` (arrivals, depths, restarts),
-`hunt/sigD.py runsD samplesD/samples.jsonl 13` (identity, pairing), `review2/dnull.py` (null
-model), `review2/fans.py` (fans). Final numbers at ~04:10 UTC.
+FINAL (6.4 h, 25.5 worker-hours per arm; the WSL distribution died at ~20:45 UTC and the runs
+with it; the data on disk are complete to that point):
+- Arrivals at 88 per worker-hour: D0 1.49 (38 chains), D4 1.69 (43), DN 1.80 (46). DN/D0 = 1.21:
+  P1 is met at the threshold, but the Poisson rate-ratio interval on 38 vs 46 arrivals is about
+  0.8-1.9, so the effect is not established; D4 sits between. Time from root to 88: medians 360 /
+  435 / 462 s (no speed-up). Restart reasons: all stall timers.
+- Distinct 88 plateaus (v3) per worker-hour: D0 24.5, D4 26.8, DN 26.0 (652 / 712 / 693 signatures
+  from 856 / 855 / 734 states). DN/D0 = 1.06: P2 (>= 1.2) is REFUTED; per paired worker DN > D0 on
+  3 of 4 (free-00 alone: D0 260 vs DN 168), D4 > D0 on 3 of 4.
+- Depth: share of 88 states at depth >= 10: D0 2.5 %, D4 19.9 %, DN 27.5 %: P3 CONFIRMED (>= 2x).
+- Cross-arm sharing: 7 of 2,050 signatures (0.34 %): P4 confirmed. No state below 88 in 2,445
+  sampled 88 states and 0 records below g88: P5 confirmed.
+- Null model (Q1, Q2): 2,095,065 cross-chain incidence pairs, 10 shared nodes, N_eff ~ 2.1e5;
+  expectation at 1.3e5 is 16.1 (Poisson 95 % ~ [9, 25]): inside, at the low edge. Q1 does not
+  reject the one-pool reading; a mild deficit of meetings is compatible with the data but not
+  established. Q2 (P/M in [5e4, 3e5]) holds. Q3 needs the exact catalogue (running). Q4: fans on
+  all D states below (see the addendum line). Q5 is stage 1 of the SAT campaign batch2 (running).
+- Reading: removing the depth window changes WHERE chains land (much deeper 88 plateaus) more
+  than how often they arrive or how many distinct plateaus they visit per worker-hour. The
+  analogue-benchmark gain (F8) did not reproduce as an arrival-rate gain on MixColumns in 25
+  worker-hours per arm. The capped test (hunt E) never ran.
+Analysis scripts: `hunt/descents.py hunt/runsD`, `hunt/sigD.py runsD samplesD/samples.jsonl 13`,
+`review2/dnull.py`.
 
 ## F15. Why 89@4 is unusual (q89 agent, `q89/REPORT.md`; own census of every raw record) [measured / derived / argued, separated]
 
@@ -730,9 +753,15 @@ at k = 5, 6.
   label (q = 1-3), and at q = 5-6 five or six (3,1,0) helpers plus an unanchored hub carrying 4-6
   missing labels; both are realizability questions the count relaxation cannot see; five finite
   searches that would decide them are listed (report section 8).
-- Status: these are new, inspectable arguments with explicit lemma citations; an independent checker
-  (xhigh) is verifying every step, the finite facts and the LP implementation now. Until it reports,
-  everything above is [claimed]. Even if confirmed, the bound stays 75: 1,313 claims remain open.
+- Status: CONFIRMED by an independent checker (qcheck agent, xhigh, `qcheck/REPORT.md`): every
+  lemma (N1, G*, L7*, L12*, I, Q0, the y -> y_2 and W -> W + y_1 substitutions, Lemma S) verified
+  step by step against PROOF.md with two wording remarks and no gap; finite facts S1 and N3max
+  recomputed independently; 559 circuits / 2,236 phases with an independent implementation: 0
+  violations, (G*) tight on 112 phases; LP recount reproduced 1,313 / 681 with the rows implemented
+  as stated. Not a bound improvement: 1,313 claims remain open at 75 by LP status. What a referee
+  would still want is listed in the check report (package-style proof of G*, Farkas certificates for
+  the 6,103 newly excluded claims, the rows added to the package's stress checker). The uncertified
+  integer-oracle figure (1,167) is not a result.
 
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 

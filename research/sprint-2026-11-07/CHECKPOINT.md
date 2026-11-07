@@ -153,6 +153,13 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 
 ## 6. Active jobs and how to inspect them
 
+**20:45 UTC 11-07: the WSL distribution failed** (share unreachable, all tools blocked; the user shut it
+down and restarted it at 21:42). Killed: hunt D at 6.4 h (data complete to that point, F14 final),
+kste1 at 13.2 h (status/records on disk), the SAT batch (resumable), the hunt E driver (hunt E never
+ran). Relaunched 21:46: `sat/batch2.sh 12` (12 processes, Q5 first), `giants/catalogue_all.sh 6`,
+`sat/batch.sh` (1 process). Hunt D, kste1 and hunt E were NOT relaunched (cannot finish before the
+07:00 UTC reset).
+
 | Job | Cores | Started (UTC) | Ends | Inspect |
 |---|---|---|---|---|
 | hunt A | 6 | 03:16 | stopped 06:16 | `hunt/runs/A`; `hunt/descents.py hunt/runs` |
@@ -160,7 +167,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | sampler + plateau catalogue | ~1 | 03:25 | with hunt | `hunt/samples.jsonl`, `hunt/plateaus.json`, `hunt/plateaus.log`, `hunt/chains.log` |
 | X1 fresh vs NIST (x1a, x1b) | 8 | 06:16 | ~08:25 | `x1/runs/x1a`, `x1/runs/x1b`, `x1/driver.log` |
 | bench engine-variant A/B (agent) | <=6 | 06:20 | ~09:30 | `bench/REPORT.txt` section "Engine variants" |
-| kste1: PES +1 pass on 22 kste 3-way plateaus (+#0) | 8 | ~08:25 | ~00:25 (11-08) | `pes-kste/runs/kste1/status.txt`, `FOUND_*`, `records/`; stop: `pes-kste/pes/stop2.sh kste1` |
+| kste1: PES +1 pass on 22 kste 3-way plateaus (+#0) | 8 | ~08:25 | KILLED 20:45 (13.2 h; 0 lower states, I.1) | `pes-kste/runs/kste1/status.txt`, `FOUND_*`, `records/`; stop: `pes-kste/pes/stop2.sh kste1` |
 | predtest pt1, pt2 | 6, 8 | 08:28, 10:39 | done 12:52 | `predtest/runs/pt{1,2}`, `predtest/driver.log` |
 | hunt C (A with depth_window none) | 6 | 08:30 | done 11:30 | `hunt/runs/C`; sampler `hunt/samplesC/samples.jsonl`; catalogue via `hunt/plateaus.py .` then `hunt/chains_plateaus.py .` |
 | bench replication: default vs depth_window none, same window (agent) | 6 | 11:48 | done 13:12 | `bench/REPORT.txt` section 12 |
@@ -169,9 +176,9 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 | agents (15:30-15:50 start, ~1-1.5 h each, 1 thread): estimate (size-weighted capture-recapture count of 88 plateaus), graph (88-plateau transition graph from chain hops), sat (scoped SAT search for an 87 around our 88 cores) | 1-3 | 15:30 | ~17:30 | `estimate/REPORT.txt` (done 16:00, F12), `graph/REPORT.txt` (done 15:50, F11), `sat/REPORT.txt` (done 16:20, F13; overnight batch see below) |
 | agents (17:10 start): inventory of the import (opus, done 17:30), lb76 feasibility (xhigh, done 17:50, F16), q89 89@4 study (high, done 17:45, F15); review2 of F11-F13/I (high, done 17:45, R2); giants (opus, compress of 18 giant entries, done 19:50: 10 resolved, estimates unchanged, F12) | 1-3 | 17:10 | ~20:30 | `import/INVENTORY.md`, `lb76/REPORT.md`, `q89/REPORT.md`, `review2/REPORT.txt`, `giants/REPORT.txt` |
 | SAT batch: scoped 87 refutations, stage 1 output windows (1,800 s), stage 2 one-seed k = 9-10 (900 s), stage 3 two-seed windows (900 s), 7 circuits; single core nice 10; open-ended | 1 | 16:50 | stop with `touch sat/STOP` (stages 1-2 ~12-17 h) | `sat/batch.log`, `python3 sat/batch_summary.py`, `sat/FOUND_87` appears if any instance is SAT (then verify `sat/found/`, harvest, commit) |
-| hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | ~04:06 (11-08) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
+| hunt D: D0 (default), D4 (depth_window 4), DN (none), 4 workers each, MC uncapped, fresh roots | 12 | 15:06 | KILLED 20:45 (6.4 h; F14 final) | `hunt/runsD/{D0,D4,DN}`, `hunt/driverD.log`, sampler `hunt/samplesD/samples.jsonl`; identity: `hunt/sig.py` (cheap, validated against `plateaus.json`); descents: `hunt/descents.py hunt/runsD` |
 | sig.py / sig2.py cheap identity over all 1,869 hunt 88 states | 1 | 13:32 | done 13:40 | `hunt/sig2.log`, `hunt/sigs2.json` (FINDINGS F8 addendum) |
-| hunt E: cap-5 MixColumns, E0 default vs EN depth_window none, 4+4 workers, 2.5 h (review point "depth") | 8 | after kste1 ends (~01:00 11-08) | ~03:40 | `hunt/runsE/{E0,EN}`, `hunt/driverE.log`, sampler `hunt/samplesE/samples.jsonl`; `hunt/descents.py hunt/runsE` |
+| hunt E: cap-5 MixColumns, E0 default vs EN depth_window none, 4+4 workers, 2.5 h (review point "depth") | 8 | never ran (driver killed 20:45) | - | `hunt/runsE/{E0,EN}`, `hunt/driverE.log`, sampler `hunt/samplesE/samples.jsonl`; `hunt/descents.py hunt/runsE` |
 
 Harvest recipe (done 15:15 for x1a, x1b, pt1, pt2, sw1, sw2; repeat for hunt D/E if they produce a repo-worthy circuit, e.g. any 87): from the repo root, `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py RUN_DIR...` (dry run), `--apply`, `python3 circuits/check.py`, `python3 ~/xs-campaigns/2026-11-07-sprint/tables_update.py --write` (add the run dirs to its RUN_DIRS first; it appends run rows for runs with adds, so delete a duplicated run row), then hand-edit the README count line (keep "59 maps") and the SEARCH-TIME "Together:" paragraph, commit. `search/proposals/` is the user's untracked draft from 2026-10-31; leave it.
 

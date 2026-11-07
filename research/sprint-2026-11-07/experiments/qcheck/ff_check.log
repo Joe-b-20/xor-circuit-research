@@ -1,0 +1,27 @@
+[   0.0s] M F2 Sidon ok: 2016 distinct pair values
+[   0.2s] M F3 triple histogram {1: 40704, 2: 360, 3: 80}
+[   0.2s] M F5 six-sets 60 rho6 20
+[   0.3s] M F4 adjacent full pairs rank hist {5: 360} non-adjacent {6: 2800}
+[   3.7s] M F6 rank(C_l) histogram {1: 578900, 2: 18032, 3: 5846, 4: 778, 5: 200, 6: 108, 7: 10} max 7
+[   3.7s] M S1 sigma histogram {0: 1704, 2: 66, 3: 228, 4: 6, 5: 12} ; #six-sets through pair {0: 1704, 2: 66, 3: 228, 4: 6, 5: 12}
+[   3.7s] M S1: sigma(P) = rank(C_l) - 1 for all 2016 pair values; 4-forms disjoint from the pair: ok
+[   3.7s] M rich pairs (sigma>=2) by kind {'in-in': 122, 'in-out': 160, 'out-out': 30} total 312
+[   3.7s] M top(m) m=0..40 step 4: [0, 20, 40, 60, 76, 90, 102, 114, 126, 138, 150]
+[   3.7s] M top(m) formula mismatches for m<=44: []
+[   3.7s] M rank of the span of all full-value six-set lines 20 (upper bound n3 <= rho6/2 = 10 by L12)
+[   3.7s] M N3max: explicit independent full set of size 10 ['0x60202040', '0x181', '0x20004040', '0x4020004', '0xc0404080', '0x10002020', '0x408080', '0x1810000', '0x4040002', '0x20301010']
+[   3.7s] M N3max verified: 3*10 relations independent, pairwise non-adjacent
+[   3.7s] Mt F2 Sidon ok: 2016 distinct pair values
+[   3.8s] Mt F3 triple histogram {1: 40320, 2: 504, 3: 112}
+[   3.8s] Mt F5 six-sets 84 rho6 28
+[   3.8s] Mt F4 adjacent full pairs rank hist {5: 504} non-adjacent {6: 5712}
+[   6.2s] Mt F6 rank(C_l) histogram {1: 561014, 2: 22830, 3: 7678, 4: 1273, 5: 234, 6: 216, 7: 6} max 7
+[   6.2s] Mt S1 sigma histogram {0: 1590, 2: 78, 3: 312, 4: 12, 5: 24} ; #six-sets through pair {0: 1590, 2: 78, 3: 312, 4: 12, 5: 24}
+[   6.3s] Mt S1: sigma(P) = rank(C_l) - 1 for all 2016 pair values; 4-forms disjoint from the pair: ok
+[   6.3s] Mt rich pairs (sigma>=2) by kind {'in-in': 160, 'in-out': 224, 'out-out': 42} total 426
+[   6.3s] Mt top(m) m=0..40 step 4: [0, 20, 40, 60, 80, 100, 120, 136, 152, 168, 180]
+[   6.3s] Mt top(m) formula mismatches for m<=44: []
+[   6.3s] Mt rank of the span of all full-value six-set lines 28 (upper bound n3 <= rho6/2 = 14 by L12)
+[   6.3s] Mt N3max: explicit independent full set of size 14 ['0x6020404', '0x408080c0', '0x10200010', '0x301', '0x8080010', '0x4040800', '0x4040602', '0x602000', '0x301000', '0x804040', '0xc04', '0x30100', '0x40406020', '0x10101808']
+[   6.3s] Mt N3max verified: 3*14 relations independent, pairwise non-adjacent
+[   6.3s] ALL FINITE-FACT CHECKS PASSED
