@@ -1,0 +1,21 @@
+M: full values 80, candidate h = f + pair: 128068 distinct odd non-boundary values; |N(h)| histogram {1: 114060, 2: 1280, 3: 10992, 4: 444, 5: 100, 6: 672, 8: 260, 9: 160, 11: 88, 12: 4, 15: 8}; 0.4s
+M: cap histogram over all odd non-boundary h (h outside f+PV have cap 0): {1: 125128, 2: 2840, 3: 92, 4: 8}
+M: cap histogram over TRIPLE values h (possible values of helpers with r >= 1): {1: 10984, 2: 1496, 3: 92, 4: 8}
+M: kappa_0 (r = 0 helpers) = 4; kappa_1 (r >= 1 helpers) = 4
+M:   triple values with 1 representation(s): 12140 in f+PV, cap histogram {1: 10984, 2: 1156}, max 2
+M:   triple values with 2 representation(s): 360 in f+PV, cap histogram {2: 260, 3: 92, 4: 8}, max 4
+M:   triple values with 3 representation(s): 80 in f+PV, cap histogram {2: 80}, max 2
+M: extremal h (first 5): ['0x80800080', '0x40404000', '0x80808000', '0x404040', '0x40400040'], with witness sets [['0x181', '0x80c0', '0x404020', '0x80400080'], ['0x2030', '0x204040', '0x404020', '0x80004080'], ['0x4060', '0x408080', '0x808040', '0x1008001'], ['0x4060', '0x406000', '0x20001020', '0x80800040'], ['0x4060', '0x80c0', '0x202010', '0x40200040']]
+M: second-method check of 20000 witnesses (3|S| relation vectors independent): 0 failures
+M: done in 4.3s
+Mt: full values 112, candidate h = f + pair: 177412 distinct odd non-boundary values; |N(h)| histogram {1: 157472, 2: 2352, 3: 14432, 4: 892, 5: 192, 6: 1344, 8: 308, 9: 224, 11: 172, 12: 4, 15: 20}; 0.5s
+Mt: cap histogram over all odd non-boundary h (h outside f+PV have cap 0): {1: 172060, 2: 5156, 3: 176, 4: 20}
+Mt: cap histogram over TRIPLE values h (possible values of helpers with r >= 1): {1: 14236, 2: 2708, 3: 176, 4: 20}
+Mt: kappa_0 (r = 0 helpers) = 4; kappa_1 (r >= 1 helpers) = 4
+Mt:   triple values with 1 representation(s): 16524 in f+PV, cap histogram {1: 14236, 2: 2288}, max 2
+Mt:   triple values with 2 representation(s): 504 in f+PV, cap histogram {2: 308, 3: 176, 4: 20}, max 4
+Mt:   triple values with 3 representation(s): 112 in f+PV, cap histogram {2: 112}, max 2
+Mt: extremal h (first 5): ['0x2020200', '0x20202', '0x4040400', '0x2000202', '0x40404'], with witness sets [['0x301', '0x602', '0x60200', '0x400000c'], ['0x602', '0x60200', '0x1000003', '0x4040008'], ['0x602', '0xc04', '0xc0400', '0x8000018'], ['0x602', '0x40408', '0x1010002', '0x2000006'], ['0xc04', '0xc0400', '0x2000006', '0x8080010']]
+Mt: second-method check of 20000 witnesses (3|S| relation vectors independent): 0 failures
+Mt: done in 9.1s
+RESULT kappa (r=0, r>=1): {'M': (4, 4), 'Mt': (4, 4)}

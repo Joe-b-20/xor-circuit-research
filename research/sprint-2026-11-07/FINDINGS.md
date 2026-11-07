@@ -866,6 +866,37 @@ computed values that are neither inputs nor outputs).
   has > 1.1e8 survivors; 5.3e8 structured triples enumerated in C++ (312 s) give max r = 9 (universal
   bound r <= 12). A real proof is a day or two of code plus CPU-hours to days [estimated].
 
+## F21. Realizability rows: survivors at G = 75 cut further, 1,313 -> 996 claims (qreal agent, xhigh; `qreal/REPORT.md`) [claimed proofs, UNDER INDEPENDENT CHECK; no certificates; no bound improvement]
+
+- Hub helpers (task b) [finite-checked + claimed proved]: H1: for every odd non-boundary value h, at
+  most 4 jointly independent full values f have h + f equal to a boundary-pair value (M and M^T; <= 2
+  unless h is a two-representation repeated value; exact exhaustive maximum, second-method rank check,
+  transposes agree). Lemma H1: for every helper with r <= 2, u_i <= 4 + (q - A) where A = sum over
+  full helpers of u (cites Lemmas 4.4-4.6, F2-F4); implemented as an exact case split on A. Effect:
+  681 -> 585 keys, 1,313 -> 1,256 claims; kills the q = 6, 7 unanchored-hub vertices.
+- Dark-label split (task c) [claimed proved rows]: rows (L13)-(L18) re-derived keeping the q_D terms,
+  bright/dark occurrence budgets with new columns, y_2 - y2d <= C(q, 2), and (I) with multi-missing
+  gates counted twice; exact split q_D = 0..q. Effect: 1,256 -> 996 claims (504 M, 492 M^T), 381 keys
+  (q: 1:2, 2:2, 3:14, 4:54, 5:163, 6:93, 7:11, 8:41, 10:1); the M^T q = 1 cluster falls from 57 keys to
+  2; the M n_3 = 9 key and the hub key die in every case.
+- Full-helper geometry (task a): mostly negative. Lemma O1 [claimed proved]: every full helper defines
+  >= 2 distinct outputs through its non-defining represented edges (all 324 real full helpers define
+  exactly 2) but flow-feasible independent 10-/14-sets exist, so it never bounds n_3; the label budget
+  cannot be sharpened by counting; a boundary-degree row is vacuous at 75; the full-set enumeration is
+  infeasible (> 6 M independent 10-sets through one value). FM: rank(C_l) at labels l = f + c is 3
+  for 80 % of them [finite-checked]; rows FM7/FM9 valid, add nothing.
+- Two-phase identity (task e) [derived]: on the eventual tail s_e + s_o + E_B,e + E_B,o = budget
+  exactly; 511 surviving claims have shortfall 0, forcing boundary degree <= 2 everywhere in both
+  phases; no row lower-bounds E_B yet; the joint LP was not built.
+- Controls: 0 violations of any new fact or row on 13 controls + 303 real circuits (1,264 phases;
+  `qr_circ.py`). Shortfall of the 996: 0: 511, 1: 337, 2: 109, 3: 39.
+- What remains: 362 of 381 keys have q = 4..8: five or six (3,1,0) helpers with anchored hubs carrying
+  3-4 full-met labels (hub value among only 100 M / 196 M^T values with cap >= 3), plus M^T q = 1,
+  z = 4-5 phases with 7-8 full helpers. The report specifies the finite realizability search that would
+  decide the hub family (hub value x witness set x label choice x hub triple, filtered by
+  independence, FM ranks, O1, degree <= 2); not started. The integer oracle was not run on the final
+  system. The bound is 75; 996 claims survive by LP status.
+
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
 - F11 "disjoint trails" BLOCKED as a conclusion: the 8 cross-chain meetings equal the independent-

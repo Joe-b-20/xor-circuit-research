@@ -1,0 +1,62 @@
+controls done 0s
+100 real done 2s
+200 real done 4s
+300 real done 5s
+
+316 circuits, 1264 phases (948 canonical)
+  hub_viol: total 0 (must be 0)
+  o1_viol: total 0 (must be 0)
+  bd_viol: total 0 (must be 0)
+  hub_max        M : min   0 median   0 max   0
+  hub_max        Mt: min   0 median   0 max   0
+  hub_cap_slack  M : min   0 median   0 max   1
+  hub_cap_slack  Mt: min   0 median   0 max   2
+  bx_slack       M : min   0 median   1 max  33
+  bx_slack       Mt: min   0 median   2 max  36
+  cover_slack    M : min  30 median  33 max  59
+  cover_slack    Mt: min  32 median  33 max  62
+  n3             M : min   0 median   0 max   4
+  n3             Mt: min   0 median   0 max   4
+  A              M : min   0 median   0 max   0
+  A              Mt: min   0 median   0 max   0
+  qD             M : min   0 median   2 max   8
+  qD             Mt: min   3 median   4 max   7
+  y2d            M : min   0 median   2 max  16
+  y2d            Mt: min   0 median   2 max   5
+  y2m            M : min   0 median   3 max   7
+  y2m            Mt: min   2 median   5 max   8
+  Fb             M : min   0 median   2 max   6
+  Fb             Mt: min   0 median   1 max   3
+  Fd             M : min   0 median   1 max   4
+  Fd             Mt: min   0 median   0 max   3
+  X              M : min   0 median   0 max   0
+  X              Mt: min   0 median   0 max   0
+  E_B            M : min   0 median   1 max  33
+  E_B            Mt: min   0 median   2 max  36
+  outputs defined per full helper (must be >= 2): histogram {2: 324}
+  row Fb0           Mt: min slack   0 (n=2) ok
+  row FbFd          M : min slack   9 (n=632) ok
+  row FbFd          Mt: min slack   8 (n=632) ok
+  row Fd0           M : min slack   0 (n=67) ok
+  row HUBlin        M : min slack  52 (n=632) ok
+  row HUBlin        Mt: min slack  64 (n=632) ok
+  row I'            M : min slack  32 (n=632) ok
+  row I'            Mt: min slack  37 (n=632) ok
+  row L13d          M : min slack  24 (n=632) ok
+  row L13d          Mt: min slack   0 (n=632) ok
+  row L14d          M : min slack  26 (n=632) ok
+  row L14d          Mt: min slack   0 (n=632) ok
+  row L15d          M : min slack  14 (n=632) ok
+  row L15d          Mt: min slack   0 (n=632) ok
+  row L17Md         M : min slack  28 (n=632) ok
+  row L17Td         Mt: min slack   0 (n=632) ok
+  row L18d          Mt: min slack   0 (n=632) ok
+  row bright_cap    M : min slack   9 (n=632) ok
+  row bright_cap    Mt: min slack   0 (n=632) ok
+  row bright_lower  M : min slack   2 (n=632) ok
+  row bright_lower  Mt: min slack   0 (n=632) ok
+  row dark_cap      M : min slack   0 (n=632) ok
+  row dark_cap      Mt: min slack  11 (n=632) ok
+  row y2m_pairs     M : min slack  21 (n=632) ok
+  row y2m_pairs     Mt: min slack  18 (n=632) ok
+total 5s
