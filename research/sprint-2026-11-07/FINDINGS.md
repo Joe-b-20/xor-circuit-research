@@ -37,6 +37,32 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   another consumer, re-pairing would change that consumer's recipe and the factor would not be
   independent).
 
+## F4. Across 59 maps: size and row weight predict gain over NIST; MixColumns is ordinary in every map property and an outlier only in outcome [measured, crossmap agent]
+
+- Data: all 59 maps, properties computed from the matrices (`crossmap/props.py`), outcomes from
+  circuits/ and the finder logs (`crossmap/outcomes.py`, `analyze2.py`). Protocol confound: 49
+  "batch" maps had 1 NIST-seeded uncapped worker + 1 low-cap worker for 30-60 min; correlations
+  below are on those 49 with partial rank correlation on log(NIST gates).
+- Survives size control: max row weight (+0.63), mean row weight (+0.58), base/direct (-0.64:
+  more sharing left by greedy constructors = more gain), NIST's depth slack above the minimum
+  (+0.49, a property of the baseline). Does not survive: field size, matrix dimension, inverse,
+  involutory, circulant/dyadic. Plateau width of the final state goes with LESS gain (-0.42).
+- Mechanism offered [guess]: a remove1 improvement exists when several users of a value have
+  leftovers that coincide in one buildable value; heavy rows have more common sub-sums, so more
+  coincidences to find and more left behind by greedy baselines.
+- Saturation: 16x16 maps saturate in under a minute, 32x32 maps over 4x4 matrices in ~5 min,
+  8x8-matrix maps keep gaining ~1-2 % of NIST's gates per unit of ln(time) all hour.
+- Moves: walk.remove1 made 89 % of the gates won below NIST, lns.rebuild 9 %, expand 1 %,
+  structural 0.3 % (structural moves used 4.6 % of CPU).
+- MixColumns: density, row weights, constructor gap all mid-class; every other 32x32 map over a
+  4x4 GF(2^8) matrix gained 3.3-11 % over NIST in 1-2 worker-hours, MixColumns 0 % at depth 5 in
+  >100 worker-hours. Reading: NIST's 88 is a literature-optimised point that our fresh-root
+  search independently reaches and stops at (a BASELINE effect, not a map property). This is
+  consistent with the plateau findings (F1, F2) but does not by itself say whether 88 is optimal.
+- Falsifiable predictions recorded in `crossmap/predict.csv` (e.g. skop15-8x8-gf16 146 -> 140 at
+  depth 19 in 1 h on 4 workers; no 16x16 map gains a gate). Discriminating experiment X1 (fresh
+  roots vs NIST seeds at NIST's depth, 8 maps) prepared in `x1/x1.toml`, to run when cores free.
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,
