@@ -11,8 +11,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 - 17:00 UTC 11-07: the owner's archive of unpublished proof work (2.3 GB, ~155k files, 270
   research folders) is extracted at `~/xs-campaigns/2026-11-07-sprint/import/zip/` (read
   `START_HERE.md`, `guides/CURRENT_STATUS.md` first; the owner's own status table governs).
-  Inventory in progress (`import/INVENTORY.md`), lower-bound feasibility (`lb76/REPORT.md`),
-  89@4 study (`q89/REPORT.md`). Bounds with scope: FINDINGS I.6. Nothing from the archive is
+  Inventory done 17:30 (`import/INVENTORY.md`), lower-bound feasibility (`lb76/REPORT.md`, F16),
+  89@4 study (`q89/REPORT.md`, F15). Bounds with scope: FINDINGS I.6. Nothing from the archive is
   treated as established until checked here.
 
 - Baseline search: repo v8 (`search/xorflux`), unchanged. Prototypes v9a-f, v10 live outside the
@@ -38,10 +38,10 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 - A circuit is exactly its value set; plateaus (remove1-neutral closures) are exact Cartesian
   products of small independent factors: MC 88@5 = 3^7, MC 89@4 = 3^4, InvMC 118@5 = 5·5·2·2·2
   [checked, 2026-11-05-views/plateau, 2026-11-05-exit]. A 3-way factor is a 3-input XOR tree
-  whose intermediate is unshared [guess, to be checked this sprint].
+  whose intermediate is unshared [checked this sprint: F2, R].
 - remove1 never leaves an 88 (or 118) plateau downward [checked]. RESOLVED +1 exits from 49 MC 88
-  plateaus go home or join other 88 plateaus at ceiling 89 (groups of 16/16/7/2); about 55-60 %
-  of +1 descents were cut at their state bound (unresolved); no 87 from +1 or the partial
+  plateaus go home or join other 88 plateaus at ceiling 89 (groups of 16/16/7/2); 64 % of +1
+  descents were cut at the 400-state bound (unresolved; 57 % in kste1); no 87 from +1 or the partial
   +2/lns passes (PES mc24, ~19 h) [checked/measured; corrected 11-07, FINDINGS I.1].
 - MC 89@4 is one level-1 set (one family up to rotation: 81 circuits, F15); every 90@4 ever visited
   (5,798 distinct, 183 first layers) sits on a different level-1 set; one pair swapped costs
@@ -100,8 +100,9 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   16 of 19 8x8-map trials this sprint gained gates vs 1 of 6 on 4x4 maps. Harvested: 44
   circuits added, 37 removed, 208 circuits (commits d281a78, 5edcd1a; harvest bug fixed).
   Hunt D started 15:06 (D0/D4/DN, same first roots), ends ~04:06 UTC 11-08.
-- 15:50 UTC, graph agent (F11): the 88 level as sampled is 146 disjoint chain trails (139
-  components, 8 of 1,454 nodes shared by two chains), 0 down-exits in 1,869 states, hops
+- 15:50 UTC, graph agent (F11): [reading WITHDRAWN by R2 at 17:45: the 8 meetings equal the
+  independent-wandering expectation for ~1e5 nodes] the 88 level as sampled is 146 chain trails
+  (139 components, 8 of 1,454 nodes shared by two chains), 0 down-exits in 1,869 states, hops
   change ~30 % of helpers, ~44 plateau changes per chain-hour is a floor (68 % of hops have no
   89 sample; the walk lives on the 88+89 band).
 - 17:50 UTC, lb76 agent (F16): the 75 proof replays (137 s); its rows leave 1,508 of 7,416 cases
@@ -113,7 +114,7 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   violated, none within slack 10; real circuits sit 0-7 below the drift budget (12 of 200 exactly
   on it); survivors at 75 are disjoint from real circuits in Y and V; q >= 7 is a [conjecture] that
   would cut 1,017 of 1,134 feasible keys.
-- 20:00 UTC, qbound agent (F18): two new row families (N1: 3 n_3 <= x + y - q; G*: y -> y_2 plus
+- 20:00 UTC, qbound agent (F18; CONFIRMED by qcheck 21:48): two new row families (N1: 3 n_3 <= x + y - q; G*: y -> y_2 plus
   L12*/L7*/(I)/(Q0)) and a rich-label lemma, all with written proofs citing package lemmas, zero
   violations on 316 circuits; survivors at 75: 1,508 -> 1,313 (keys 1,134 -> 681). Under
   independent check (qcheck agent, xhigh). No bound improvement claimed.
@@ -124,6 +125,14 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
   kept set), 43 UNSAT / 8 timeouts / 0 SAT over 3 circuits; frontier k = 9-10 at 60 s.
 
 ## 4. Rejected explanations and failed approaches (this sprint)
+
+- "The 88 level as sampled is a set of disjoint chain trails" (F11 first reading): withdrawn; the 8
+  cross-chain meetings are what independent wandering over ~1e5 nodes predicts (R2).
+- "Removing the depth window yields more distinct 88 plateaus per worker-hour on MixColumns" (F8
+  mechanism): refuted by hunt D (ratio 1.06 vs the registered >= 1.2; F14).
+- "The 89@4 first layer is sufficient for the family": falsified (12 first-layer-equal 90@4 states
+  outside its +1 band; F15 P2).
+- "q >= 7 per canonical phase" as a universal row: not provable in the 75 framework (F18).
 
 - "Time at a sealed 88 plateau is pure repeated work" (my reading of F2): wrong as a statement
   about the chain. remove1 re-spells, but the chain leaves the plateau through +1 states every
@@ -153,8 +162,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 
 ## 6. Active jobs and how to inspect them
 
-**20:45 UTC 11-07: the WSL distribution failed** (share unreachable, all tools blocked; the user shut it
-down and restarted it at 21:42). Killed: hunt D at 6.4 h (data complete to that point, F14 final),
+**20:45 UTC 11-07: the Windows side lost the WSL share** (all tools blocked); the Linux processes ran
+on until the user shut WSL down at ~21:41 and restarted it at 21:42. Killed at 21:41: hunt D at 6.6 h wall (data complete to that point, F14 final),
 kste1 at 13.2 h (status/records on disk), the SAT batch (resumable), the hunt E driver (hunt E never
 ran). Relaunched 21:46: `sat/batch2.sh 12` (12 processes, Q5 first), `giants/catalogue_all.sh 6`,
 `sat/batch.sh` (1 process). Hunt D, kste1 and hunt E were NOT relaunched (cannot finish before the
@@ -184,30 +193,20 @@ ran). Relaunched 21:46: `sat/batch2.sh 12` (12 processes, Q5 first), `giants/cat
 
 Harvest recipe (done 15:15 for x1a, x1b, pt1, pt2, sw1, sw2; repeat for hunt D/E if they produce a repo-worthy circuit, e.g. any 87): from the repo root, `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py RUN_DIR...` (dry run), `--apply`, `python3 circuits/check.py`, `python3 ~/xs-campaigns/2026-11-07-sprint/tables_update.py --write` (add the run dirs to its RUN_DIRS first; it appends run rows for runs with adds, so delete a duplicated run row), then hand-edit the README count line (keep "59 maps") and the SEARCH-TIME "Together:" paragraph, commit. `search/proposals/` is the user's untracked draft from 2026-10-31; leave it.
 
-## 7. Next actions
+## 7. Next actions (rewritten 23:00 UTC 11-07)
 
-1. Hunt D (15:06 -> ~04:06 UTC 11-08): check every ~2-3 h with `python3 hunt/descents.py hunt/runsD`
-   (arrivals at 88 per worker-hour, depth of 88 bests, any 87) and the cheap identity on
-   `hunt/samplesD/samples.jsonl` (adapt `hunt/sig2.py`: distinct v3 signatures per arm, shared
-   first roots across arms give a paired comparison). Any 87: verify (`circuits/check.py` after
-   `circuits/add.py`), harvest, commit at once.
-2. kste1: check status every ~2 h; ends ~00:30 UTC 11-08; record the outcome in F3/F5.
-3. Hunt E (~01:00-03:40 UTC): time to 90@5/89@5/88@5 per chain and arrivals per worker-hour,
-   E0 vs EN; record in F8 (depth-capped case of the depth-window effect).
-4. ~03:30 UTC: mid-run hunt D analysis written into FINDINGS (new F11) and UNDERSTANDING;
-   ~04:10: final hunt D numbers.
-5. ASK THE USER: locate the 29-30 Sep "76 extension" package (948 MB, 4,842 files, SHA-256
-   manifest; `import/zip/research/AES_Residual_Inference_2026_10_02/aes_inference/reference/
-   bound_76_status.md`); if found, audit it per `lb76/REPORT.md` section 9 before any claim.
-6. Compute window plan: 00:30 kste1 ends (record its final counts in F3/I.1); 01:00-03:40 hunt E
-   (4+4 threads, scheduled); ~04:06 hunt D ends -> final F14 numbers (P1-P5, Q1-Q5) and then, on
-   the 20 freed threads until ~06:30: `sat/batch2.sh 12` (Q5 windows on hunt D states, 20 more
-   circuits, two-seed windows; being prepared by the sat agent) and `giants/catalogue_all.sh 8`
-   (exact catalogue of all sampled 88 states + 8 unresolved giants; being prepared). A qbound agent
-   (xhigh) is attempting a universal q >= c inequality on the 75 proof's quantities (F17 lead).
-   Earlier note on free threads: start the exact
-   catalogue of the remaining sampled 88 states (`estimate/REPORT.txt` next measurement; use
-   `hunt/plateaus.py` machinery) on 2-4 cores at nice 15; it can outlive the sprint.
-7. By 05:00 UTC 11-08: final UNDERSTANDING.md, FINDINGS.md, this checkpoint (rejected
-   explanations, open questions, next experiments), memory note, copy hunt D/E analysis scripts
-   into `research/sprint-2026-11-07/experiments/hunt/`, commit, closing report.
+Running now: `sat/batch2.sh 12` (12 shards; stage 1 done, stage 2 on 20 circuits, stage 3 two-seed
+windows), `sat/batch.sh` (1), `giants/catalogue_all.sh 6` (exact catalogue, ~1 core-day, outlives the
+sprint; `touch giants/STOP` to end it cleanly). Agents in flight: qcert, qreal, d4bound, sharing,
+oddh, satmob (see section 6).
+1. As each agent reports: record in FINDINGS (F20+), copy its folder into experiments/, commit.
+2. ~02:30 UTC: harvest the SAT campaigns' status (`python3 sat/batch_summary.py`, `... batch2`,
+   `satmob/`), FOUND_87 check, catalogue progress (`giants/catalogue/`), update F13/F14 Q3.
+3. ~03:00-05:00 UTC: final pass on UNDERSTANDING.md (review3 items all applied at 23:00; re-check),
+   FINDINGS (new sections), this checkpoint (sections 1-6), memory note; closing report
+   REPORT-2026-11-08T05.md: insights with evidence/scope/predictions, verified circuits, measured
+   search improvements, bound status, flaws found in the import, failures, next experiments with cost.
+4. Leave running past the sprint: the catalogue and the SAT campaigns (idempotent; STOP files).
+5. For the user: locate the 29-30 Sep "76 extension" package (948 MB); download Jean 2026/1481 and
+   Osvik-Canright 2024/1076 PDFs; decide whether to run hunt E (cap-5 window test, 2.5 h, 8 threads)
+   and the I.5 distinguishing runs when threads free up.

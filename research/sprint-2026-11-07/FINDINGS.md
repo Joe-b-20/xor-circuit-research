@@ -4,7 +4,7 @@ Each entry: observation, mechanism (plain words), prediction that could be wrong
 survived, limits. Tags: [proved] [checked] [measured] [cited] [guess]. Scripts are named; raw
 data lives in `~/xs-campaigns/2026-11-07-sprint/`.
 
-## F1. Descending to 88 on MixColumns is cheap; the difficulty is entirely below 88 [measured]
+## F1. Descending to 88 on MixColumns is cheap; the difficulty is entirely below 88 [measured; counts corrected by R: 11 of 12 first chains at 88 by 25 min, median 414 s; the July comparison spans a ~20x faster engine and says nothing about iterations]
 
 - Observation (hunt, first 25 min, 12 fresh-root chains, v8 uncapped): every chain reached <= 89
   within 10-162 s of its root; 4 of 12 reached 88 within 50-216 s. (`hunt/descents.py`)
@@ -14,7 +14,7 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   whether the 88 level is a small finite set (saturating curve) or vast (linear growth).
 - Status: open; curve to be read from `hunt/plateaus.py`.
 
-## F2. A 3-way plateau factor is the pairing choice of an unshared 3-input XOR tree [checked on one circuit]
+## F2. A 3-way plateau factor is the pairing choice of an unshared 3-input XOR tree [checked: 424/424 factors on 52 plateaus, then 1,425/1,425 over 264 plateaus (R)]
 
 - Observation: the repo 88@5's remove1 plateau is a product of 7 factors with 3 choices each
   (2,187 states) [checked, PES compress]. For a 3-input XOR s = a ^ b ^ c the intermediate can be
@@ -102,7 +102,7 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   "what determines reaching better circuits" has, on MixColumns, the answer "a down-exit from
   some 88 core, and none of the ~65 cores examined by +1 edits has one".
 
-## F6. Restarting 300 s after the chain stops improving gives 2.4x more arrivals at 88 per worker-hour than v8's defaults [measured, hunt A/B at 2 h]
+## F6. Restarting 300 s after the chain stops improving gives 2.1x more arrivals at 88 per worker-hour than v8's defaults (2.4x at the 2 h snapshot; R) [measured, hunt A/B, full 5 h]
 
 - Setup: v8, MixColumns uncapped, fresh roots only, no sharing, 6 workers per arm, 12.1
   worker-hours each (`hunt/A.toml`, `hunt/B.toml`; `hunt/descents.py`, chains from restart
@@ -261,6 +261,12 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   property profile; 4x4 maps at NIST's depth gain 0-1. Size, not the rule's slope, is the
   predictor that held. New circuits: anubis-clefia-m0 91@8/92@6, khazad 340@15/344@14,
   fox-mu8 500@11/504@10, skop15-4x4-gf256-inv 89@5.
+- Rescored (review3) on the 5 further maps the sweep covered that `crossmap/predict.csv` had
+  predictions for, with the caveat that the sweep gave 1 worker-hour instead of the predicted 4 x 1 h:
+  grostl 355 (349-359) at depth 12 -> 364@11 (miss, different protocol); jpst17-8x8-gf256-inv 483
+  (479-487) -> 494@10 (miss); skop15-8x8-gf256-inv 325 (321-327) -> 322@13 (hit); klsw17-m-8x8-gf256
+  342 (340-344) -> 321@10 (beaten); klsw17-m-8x8-gf16-0x13-inv 160 (158-161) -> 163@11 (miss). Rule
+  score over 10: 2 hits, 2 beaten, 6 misses. F4's "no 16x16 map gains a gate" was never tested.
 
 ## F10. Sweep: the 12 remaining maps over 8x8 matrices, 1 worker-hour each at NIST's depth, seeded from our best at the cap and from NIST's circuit (sw1 12:52-13:52, sw2 13:58-15:05 UTC) [measured]
 
@@ -320,7 +326,8 @@ with an 88 sample, 1,462 visits, 1,418 hops).
   walking inside a node: neighbouring plateaus share ~70 % of their core; the reviewer's 31-38 %
   reproduces.
 - Down-exits: none. 0 samples, records or engine events below 88 in any arm; `pes_lib.fan` on
-  all 1,869 sampled 88 states gives 0 states with a down move (8-44 neutral moves each, mode 16;
+  all 1,869 sampled 88 states gives 0 states with a down move (8-44 neutral moves each by
+  `review2/fans.py`, 10-28 by `graph/graph.py`'s count, mode 16 in both;
   the TOPK = 16 candidate cut never bound, so the check is exhaustive for remove1 at those
   states [review 2, `review2/fans.py`]). For the catalogued plateaus the statement is exhaustive
   for every member of the 155 plateaus of <= 2e4 states and for the fanned members (seed and
@@ -394,9 +401,14 @@ signatures).
 
 ## F13. Scoped exact search for an 87 around our 88 circuits: 43 refutations, 8 timeouts, no 87 (sat agent, `sat/REPORT.txt`, `sat/sat87.py`) [measured]
 
-- Batch status at the WSL failure (20:45 UTC; 1,122 instances: 1,117 UNSAT, 0 SAT, 5 timeouts,
-  solver wall 5.8 h, hardest UNSAT k = 12; stage 3 two-seed windows under way); relaunched 21:46
-  UTC together with the 12-process campaign batch2. Earlier status (16:50 UTC):
+- Reconciled SAT count at 22:30 UTC (`sat/results*.jsonl`, 37 circuits): 2,073 instances, 2,057
+  UNSAT, 0 SAT, 16 timeouts (hardest UNSAT k = 12); one-seed windows k <= 10, output blocks k <= 12,
+  1,084 two-seed windows k <= 9 on the repo circuit; batch2's 12 shards continue on 20 further
+  circuits. The union of removed values over refuted windows covers 81 of the repo circuit's 88
+  values (72-74 for the other circuits). Earlier counts in this section (43, 153, 1,117) are dated
+  snapshots. Confirming hardness data: stage 3 k = 9, free = 4 at 50-140 s; stage 2 k = 11, free =
+  2-3 at 185-450 s. Status at the shutdown of 21:41 UTC: 1,122 instances in the first batch; relaunched
+  21:46 together with batch2. Earlier status (16:50 UTC):
     family          UNSAT  SAT  TIMEOUT  other  hardest solved k
     stage1/A          131    0        0      0  8
     stage1/C           22    0        2      0  12
@@ -440,13 +452,14 @@ no state with fewer gates [checked, exhaustive per state, F11]; (b) for the 88 p
 band PES explored (mc24: 49 plateaus; kste1: 19 compressed so far), every RESOLVED +1 exit
 descent ends on the home plateau or on another 88 plateau, and none ends below 88; but 56 % of
 the +1 descents (kste1 final at 21:41 UTC, killed at 13.2 h: 24,475 of 43,113 = 56.8 %, with
-22 plateaus' +1 passes complete, 1,117 "new" landings, 0 lower states; mc24: 58-66 % per completed
-plateau, 60-64 % pooled) were CUT at the
-descent's state bound before landing anywhere and are unresolved [measured; `pes2_tasks.py:
-classify`, the bound is `cfg.bound_plus1` visited states]; the +2 band was descended for 0 of
-13,212 classes on the Barrier-Tree plateau and LNS rebuilds for 4 combinations [owner's export,
-`import/zip/guides/BARRIER_TREE_FINDINGS.md`]; (c) the scoped SAT refutations (F13) exclude every
-<= 87 circuit containing any of 43 kept sets of 79-84 values of three 88 circuits.
+22 of 119 compressed plateaus' +1 passes complete, 1,117 "new" landings, 0 lower states; mc24: +1
+pass complete on 37 of 49 plateaus, 51,443 of 79,786 = 64 % unresolved pooled) were CUT at the
+descent's state bound before landing anywhere and are unresolved [measured; `pes-kste/pes/
+pes2_tasks.py: classify`; the bound `cfg.bound_plus1` = 400 visited states, which cuts exactly the
+long descents]; the +2 band was descended only partially (mc24: 38,748 descents on 37 plateaus, 87 %
+unresolved, 0 lower; 24,284 LNS rebuilds, 40 % unresolved, 0 lower; the archive's Barrier-Tree
+plateau: 0 of 13,212 classes, `import/zip/guides/BARRIER_TREE_FINDINGS.md`); (c) the scoped SAT refutations (F13) exclude every <= 87 circuit containing any of ~2,060 kept sets of
+76-84 values of 37 different 88 circuits (22:30 UTC).
 What this adds beyond the stopping condition of polishing: polishing stops when its OWN move
 finds nothing in the time it tried; (a) is the exhaustive statement for that move at every
 sampled state, (b) extends it one level up for a minority of the exits, (c) replaces "no single
@@ -471,7 +484,13 @@ plateaus are computed by closure (PES `compress`, complete enumeration of the co
 canonically modulo the Z4 byte rotation), so two exact keys are distinct components by
 construction [checked]. The cheap identity (v3 = canonical value set of the 1-step neutral
 closure) never merged two exact plateaus in 230 tests but splits coupled ones (1.63x), so
-signature counts are upper bounds [measured]. Non-overlap between sampled walks (F11: 139
+signature counts are upper bounds [measured]. Count reconciliation (22:00 UTC): 215 exact sprint plateaus + 52 pre-sprint = 267 products; 8 giant
+keys unresolved (2-8 plateaus); hunt D's 2,445 states not yet catalogued; "230" = 212 exact + 18 giant
+keys, "282" = 230 + 52 keys (5 duplicates), "<= 225" = 230 minus the 5 duplicates; 1,454 nodes /
+1,600 signatures are the cheap identity's upper bounds. The 1.63x over-split was measured on the
+early, mostly small catalogued states and rises to 2.2-2.3x on coupled plateaus, which arms C and
+DN favour, so signature rates for those arms are the least reliable. The plateau definition is
+relative to the move set and depth cap. Non-overlap between sampled walks (F11: 139
 components for 146 chains at 30 s sampling) is an observation about where chains were seen,
 NOT a proof of disconnection: chains hop through 89 states that the sampler mostly misses, and
 components would merge if two chains ever passed through one node between samples. The
@@ -492,12 +511,18 @@ all be distinct from each other and from K (sound: duplicates never help). An UN
 therefore excludes exactly the circuits with <= 87 gates whose value set contains K; it says
 nothing about circuits missing even one value of K. Union over the repo circuit's 37 refuted
 windows: any 87 differs from that circuit in at least one value of each of 37 sets of 79-84
-values. Advance: it turns a "no move" fact into a "no circuit" fact for each window, at seconds
-per window, and gives a frontier (k = 9-10) that longer runs can push; the batch running since
-16:50 UTC does that.
+values; over all refuted windows (22:30 UTC) the union of removed values covers 81 of the repo
+circuit's 88 values and 72-74 of each other circuit's. The 1,084 two-seed windows (k <= 9, repo) are
+the first non-local statements (pairs of corners). The 16 timeouts are open windows. None of this
+bears on 87s away from these 37 circuits. Advance: it turns a "no move" fact into a "no circuit"
+fact for each window, at seconds per window; the frontier is k = 12 at 600-1,300 s and the running
+campaigns push it.
 
-**I.5 The cross-map pattern.** Observation [measured, F7/F9/F10]: 16 of 19 one-to-four
-worker-hour trials on maps over 8x8 matrices gained gates at NIST's depth; 1 of 6 on 4x4 maps.
+**I.5 The cross-map pattern.** Observation [measured, F7/F9/F10; denominators itemised there]: 16 of
+20 one-to-four-worker-hour trials on maps over 8x8 matrices (X1 2/3, pt 4/5, sweep 10/12) gained at
+least one gate at NIST's depth, about 10 of 20 at least three (the run-to-run spread); 2 of 7 on 4x4
+maps gained one gate. The sweep's seeds were our best at the cap plus NIST's, so explanations (i) and
+(ii) below are confounded by design; (iv) is a measurement caveat, not a mechanism.
 Candidate explanations: (i) the large maps are compute-limited (their circuits had received
 few worker-hours at that depth); (ii) differences in starting-circuit quality (seeds were our
 best at the cap plus NIST's; several 8x8 maps' best were at other depths, so the cap band had
@@ -511,7 +536,11 @@ is searched); a 4x4 map given a depth band it was never searched at (if (ii), it
 and repeats of the same hour from the same seed to size (iv). None of these can run while the
 machine is full; they are the first compute to spend when threads free up.
 
-**I.6 Bounds, with scope (from the imported archive, not yet independently re-derived here).**
+**I.6 Bounds, with scope (75 replayed here in 137 s, argument read, not checked; the 2026-11-04 audit
+was the owner's own; the 93 replay was not rerun here). Inverse: also 88-gate unrestricted
+constructions at depths 19 and 33 in the archive; 118@5 optimality open. Conditional / unverified
+results with scope: odd-helper theorems (h <= 2 => G >= 90 [read; h = 0, 1 proofs absent]); "<= 1
+outside value => >= 84" [read]; kste pool-restricted refutations (F3); the Barrier-Tree partial exits.**
 Unrestricted XOR circuits for forward MixColumns: 75 <= C <= 88 (75: the owner's computer-
 assisted proof, public in the repo, fresh replay 52 s and mathematical audit on 2026-11-04 with
 no substantive gap; 88: verified construction). Depth at most 3: 93 <= C3 <= 97 (93: proof,
@@ -525,7 +554,7 @@ already new: the best published unrestricted lower bound for this matrix is 32. 
 impossibility is open: neither search failures nor the available identities prove it (owner's
 status guide).
 
-## F14. Hunt D (depth window 2 / 4 / none, 4 MixColumns workers each, same first roots; planned 13 h from 15:06 UTC, KILLED at 6.4 h by the WSL failure of 20:45 UTC): predictions registered at 2.4 h, scored on the 6.4 h data [measured]
+## F14. Hunt D (depth window 2 / 4 / none, 4 MixColumns workers each, same first roots; planned 13 h from 15:06 UTC, KILLED at 21:41 UTC (6.6 h wall, 6.4 h per worker; the Windows share was lost at ~20:45, the Linux processes ran until the shutdown at 21:41): predictions registered at 2.4 h, scored on the data to 21:41 [measured]
 
 Predictions written at 17:35 UTC (the 2.4 h snapshot below was seen; nothing later):
 - P1 (from hunt C, F8): DN (no window) reaches 88 at least 1.2x as often per worker-hour as D0.
@@ -564,8 +593,7 @@ alone has 209 vs 114); share of 88 states at depth >= 10: D0 3 %, D4 20 %, DN 31
 5 of 1,579 signatures shared across arms (0.3 %, P4 on track); 0 states below 88 (P5). Null model
 (Q1/Q2): 1,235,293 cross-chain pairs, 6 shared nodes, N_eff ~ 2.1e5; at 1.3e5 the expectation is
 9.5 (Poisson P(<= 6) ~ 0.17): inside, no evidence of locality or hubs so far.
-FINAL (6.4 h, 25.5 worker-hours per arm; the WSL distribution died at ~20:45 UTC and the runs
-with it; the data on disk are complete to that point):
+FINAL (15:06-21:41 UTC, 25.5 worker-hours per arm; data on disk complete to 21:41):
 - Arrivals at 88 per worker-hour: D0 1.49 (38 chains), D4 1.69 (43), DN 1.80 (46). DN/D0 = 1.21:
   P1 is met at the threshold, but the Poisson rate-ratio interval on 38 vs 46 arrivals is about
   0.8-1.9, so the effect is not established; D4 sits between. Time from root to 88: medians 360 /
@@ -582,7 +610,9 @@ with it; the data on disk are complete to that point):
   established. Q2 (P/M in [5e4, 3e5]) holds. Q3 needs the exact catalogue (running). Q4 CONFIRMED:
   `pes_lib.fan` on all 2,445 sampled D 88 states: 0 states with a down move, 0 TOPK binds, neutral
   moves 8/16/40 (min/median/max) [measured, `q4.sh`]. Q5 is stage 1 of the SAT campaign batch2
-  (running since 21:46).
+  (running since 21:46): stage 1 complete at 22:15 UTC, all 479 windows (one-seed k <= 8 at 60 s, byte
+  blocks free <= 1, k <= 10 at 120 s) on the 10 hunt D states UNSAT, 0 timeouts: Q5 CONFIRMED (the
+  frontier is not circuit-dependent at these sizes) [measured, `sat/batch_summary.py batch2`].
 - Reading: removing the depth window changes WHERE chains land (much deeper 88 plateaus) more
   than how often they arrive or how many distinct plateaus they visit per worker-hour. The
   analogue-benchmark gain (F8) did not reproduce as an arrival-rate gain on MixColumns in 25
@@ -628,8 +658,8 @@ at k = 5, 6.
   gate that the walk crosses only one pair at a time, so entry is rare but not exceptional (two entries
   by two different routes) [supported by the catchment measurement]; (c) depth-4 feasibility is tight at
   89 so the plateau structure is smaller than at 88 uncapped [measured for L0].
-- Predictions: P1 (confirmed on existing mc87 data): uncapped exits from L0 reach 88 keeping <= 19 of
-  the 26 pairs. P2 (testable in ~10 min on the foundations' (26,22,30,12) traps): every 90@4 with the
+- Predictions: P1 (a post-hoc check on existing mc87 data, not a test on fresh evidence): uncapped exits
+  from L0 reach 88 keeping <= 19 of the 26 pairs. P2 (testable in ~10 min on the foundations' (26,22,30,12) traps): every 90@4 with the
   89's exact first layer lies in its +1 band D1. P3 (~1 core-hour): pinning the 89's first layer at cap
   5 completes to 89, not 88. P4 (2 h run): arrivals from NIST pass through a 90@4 carrying a rotation of
   the 89's first layer, equally across the four rotations.
@@ -677,7 +707,8 @@ at k = 5, 6.
 - Odd-helper parity theorems [read, not checked; proofs for h = 0, 1 and the needed zip are absent from
   the archive; checkers not run]: in the same unrestricted model, h = 0 odd non-output helpers => G >=
   92, h = 1 => 91, h = 2 => 90 (23 Sep theorem), hence any circuit with <= 89 gates has >= 3 odd
-  helpers; the upper half h <= G - 56 follows from x >= 24 [derived]. Not a lever for 76: all survivors
+  helpers; the upper half h <= G - 56 follows from x >= 24 [derived]. (The inventory's "exactly two
+  => >= 88" is the older figure that the 23 Sep theorem strengthened to 90.) Not a lever for 76: all survivors
   at 75 have 8-19 odd helpers per phase and the h-general form of the accounting is already Lemma 4.4.
   Our own 88 circuits have 16-24 odd non-output helpers (mode 20; 2,821 sampled states, `oddhelpers.py`)
   [measured], far inside the window, so these theorems do not constrain the circuits the search sees.
@@ -715,8 +746,9 @@ at k = 5, 6.
   55-80 % of represented labels) but they are rigid (median 0, max 2 removed by any neutral move);
   the 8-30 neutral moves swap one weight-3..7 helper for another of similar weight.
 - Candidate inequalities [conjecture, consistent with 316 circuits incl. the 13 controls; none
-  proved]: q >= 7 per canonical phase would cut 1,017 of the 1,134 LP-feasible keys at G = 75 (no
-  argument; probably not universal); E_B <= 7 and x <= 26 hold for minimum circuits seen but are
+  proved]: q >= 7 per canonical phase would cut 1,017 of the 1,134 LP-feasible keys at G = 75 (SCORED by
+  F18: not provable in the framework, since q is forced only through q + z = sum d_v + y - 32; a
+  [guess], probably false on hypothetical tails); E_B <= 7 and x <= 26 hold for minimum circuits seen but are
   broken by the 97@3. Every other simple combination tried is broken by a control circuit.
 - What this changes: proof work should not expect the 75 machinery's rows to tighten toward 88; the
   gap between the survivors' profiles (small Y, V, q) and real circuits (large Y, V, q) says the
@@ -724,7 +756,7 @@ at k = 5, 6.
   reading of the October campaigns. For the search, the proof's coordinates give no new move or
   predictor: the mobile part of a plateau is invisible to them.
 
-## F18. New universal inequalities for the 75 proof's local systems: survivors at G = 75 cut from 1,508 to 1,313 (qbound agent, xhigh; `qbound/REPORT.md`) [claimed proofs, UNDER INDEPENDENT CHECK; no bound improvement claimed]
+## F18. New universal inequalities for the 75 proof's local systems: survivors at G = 75 cut from 1,508 to 1,313 (qbound agent, xhigh; `qbound/REPORT.md`; CONFIRMED by `qcheck/REPORT.md`) [proved as checked; no bound improvement claimed]
 
 - Survivor table for hypothetical rows q >= c (package LP model at G = 75, 1,508 baseline claims): c =
   1..8 kills 0 / 11 / 76 / 332 / 676 / 1,026 / 1,305 / 1,466; q + z >= 9 per phase kills all 1,508
