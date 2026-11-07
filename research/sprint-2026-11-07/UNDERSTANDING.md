@@ -1,51 +1,134 @@
 # Linear maps and the XORFlux search: what we understand (sprint 2026-11-07)
 
-Status: DRAFT, being filled during the sprint. Every statement carries an evidence tag:
-[proved] [checked] [measured] [cited] [guess]. Four kinds of object are kept apart throughout:
-the MAP (the matrix), the CIRCUIT (a value set), the SEARCH PROCEDURE (moves, acceptance,
-restarts, sharing) and the IMPLEMENTATION (how fast each step runs). Numbered findings F1, F2,
-... refer to [FINDINGS.md](FINDINGS.md); inherited results name their source folder.
+Status: DRAFT, updated during the sprint (last 06:00 UTC). Every statement carries an evidence
+tag: [proved] [checked] [measured] [cited] [guess]. Four kinds of object are kept apart: the
+MAP (the matrix), the CIRCUIT (a value set), the SEARCH PROCEDURE (moves, acceptance,
+restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
+[FINDINGS.md](FINDINGS.md); inherited results name their source folder under `~/xs-campaigns/`.
 
 ## 1. The objects
 
-- A circuit for a map M is exactly a set S of values (GF(2) masks) closed under "every output
-  and every helper is the XOR of two earlier members"; gates = |S| minus the inputs; depth is a
-  function of S alone [proved, 2026-11-05-visual]. Two circuits with the same S are the same point.
-- The map's symmetries act on S: for MixColumns the byte rotation Z4 (and nothing else among bit
-  permutations) [checked, 2026-11-05-space]. Distances and counts must be taken modulo it.
-- A plateau = the set of circuits reachable from S by the walk's neutral remove-one moves. At the
-  bottom of the known landscapes it is an exact Cartesian product of independent small factors
-  [checked, 2026-11-05-views/plateau, 2026-11-05-exit]; each 3-way factor is the pairing choice of
-  an unshared 3-input XOR tree (F2) [checked on 52 MixColumns 88 plateaus].
+- A circuit for a map M is exactly a set S of values (GF(2) masks) in which every output and
+  every helper is the XOR of two earlier members; gates = |S|; depth is a function of S alone
+  [proved, 2026-11-05-visual]. Two circuits with the same S are the same point. "Gate order",
+  "which pair is summed first" and names are labels.
+- Symmetries of the map act on S: for MixColumns the byte rotation Z4 and nothing else among bit
+  permutations [checked, 2026-11-05-space]. Counts and distances are taken modulo it.
+- A plateau is the set of circuits reachable from S by the walk's neutral remove-one moves. At
+  the bottom of every landscape we have looked at it is an exact Cartesian product of small
+  independent factors [checked, 2026-11-05-views/plateau; 2026-11-05-exit]. Each 3-way factor
+  is the pairing choice of an unshared 3-input XOR tree (F2) [checked on 52 + 44 MixColumns 88
+  plateaus and the kste corpus]. Larger coupled factors (15, 33, 54, 108, 477, 2101, 18927
+  choices) are blocks of trees that share values.
+- Consequence: a plateau is ONE circuit in many spellings. Walking it changes nothing about
+  the circuit's structure. The structural object is the plateau's core (the values no neutral
+  move touches; 40-49 of the 56 helpers at MC 88).
 
-## 2. What the search does (procedure)
+## 2. What the search procedure does, and which of its decisions the evidence supports
 
-(to be filled: moves and what each can and cannot change; acceptance; restarts; sharing; which
-decisions the evidence supports)
+- Moves. `walk.remove1` (remove a helper, repair with one exact value; never uphill) made 89 %
+  of all gates ever won below NIST across 59 maps, `lns.rebuild` 9 %, `walk.expand` 1 %,
+  structural moves 0.3 % for 4.6 % of CPU (F4) [measured]. Near a good circuit remove1 and LNS
+  win in proportion to their CPU; expand is the efficient move only while descending from a bad
+  root [measured, crossmap].
+- What remove1 can and cannot do. At a plateau it re-spells (F2). An improving remove1 step
+  exists only when the leftovers of several users of a value coincide in one buildable value
+  [derived + measured on 927 steps, 2026-11-02-why]. At the bottom of MixColumns no such step
+  exists from any of ~100 plateaus examined [checked, PES; kste agent].
+- Acceptance. Neutral moves kept; uphill +1 while cost <= chain best + 2; a depth window of 2
+  above the chain best [from code]. This lets a chain at 88 climb to 89 and fall into a
+  different 88 plateau: an A-arm chain visited 6+ distinct 88 plateaus in 30 min (F5 data).
+- Restarts. v8 restarts a chain 900 s after its last improvement, 1,800 s while it holds the
+  worker best. On MixColumns uncapped from fresh roots, restarting after 300 s gives 2.4x more
+  independent arrivals at 88 per worker-hour at the price of abandoning half the chains at 89
+  (F6) [measured]. Whether that is "better" depends on the objective (sampling many plateaus:
+  yes; finishing a given descent: no).
+- Sharing / copying. On InvMixColumns descents, copying every worker onto the newest best is
+  the strongest lever found (2026-11-03-waits; 2026-11-04-12h copy-only arm) [measured]; it
+  collapses diversity, which is exactly what a discovery objective does not want.
+- Roots. Any constructor root (naive, Paar, BP, anneal3) reaches <= 89 in under 3 minutes and
+  88 in 74 % of chains given 20 minutes (F1, F6) [measured]. In the small-map benchmark the
+  first root is already optimal in 15-56 % of runs depending on the constructor [measured,
+  bench].
 
 ## 3. Where it succeeds and why
 
-- Descending from any constructor root to 88 on MixColumns takes 1-4 minutes with v8 uncapped
-  (F1) [measured, hunt].
+- Cross-map: the search beat NIST on 53 of 59 maps, by 2-15 %, almost always within 1-2
+  worker-hours (F4). What predicts the gain, after controlling for circuit size: heavy rows
+  (more shared sub-sums for remove1 coincidences to find) and how much sharing greedy
+  constructors leave behind (base/direct); plus NIST's depth slack, which is a property of the
+  baseline [measured, crossmap].
+- Small maps with proved optima (69 maps, 6-16 inputs, 5-34 gates): v8 reaches the optimum in
+  1,380 of 1,380 runs within 60 s, median 3 iterations [measured, bench]. The minima form ONE
+  plateau under the real moves in all 15 fully enumerated maps; the fragmentation seen earlier
+  came from depth caps [checked, bench]. Difficulty (iterations to optimum) tracks the gap
+  between the Paar count and the optimum (rho +0.85 across families) and the number of helpers
+  [measured, bench].
+- The one small family where v8 fails: circulant(2,3,1,1) over GF(16) (16 inputs, reference
+  42; apparently the repo's small-scale-aes), 14 of 20 runs in 120 s [measured, bench]. This is
+  the usable reliability instrument for engine variants.
 
 ## 4. Where it fails or stalls and why
 
-- At the bottom, the walk re-spells the same circuit (F2); exits need +1/+2 edits of the core;
-  from 49 known 88 plateaus the +1 exits lead only to other 88s or home [checked, PES].
+- MixColumns at 88. Descent is cheap; the whole difficulty is below 88 (F1). The 88 level is
+  vast: each independent descent lands on a new plateau (44 new in 50 min, 2 overlaps with 52
+  known; the kste corpus adds 49 more, 2 shared) (F5). Every +1 exit from every plateau checked
+  (49 by PES, plus the kste plateaus to come) goes home or to another 88. So the search's failure
+  below 88 is not slowness or bad decisions: its move set has no down-step from any 88 core
+  found so far, and the number of cores is far beyond what sampling can exhaust.
+- Whether an 87 exists is therefore a global question about the map (lower bound 75, no
+  published proof of 88; the kste "barrier" argument is scoped to known circuits, F3). More
+  local search time cannot settle it; exact or structural methods can.
+- Waits on InvMixColumns descents are time in dead rooms (small sealed plateaus) until a large
+  move lands in a rich one; no local score predicts which state is productive
+  [measured, 2026-11-03-waits]. The present sprint's structural reading says why: a room is one
+  circuit, and "productive" is a property of the circuit's +1 neighbourhood, which the walk does
+  not see.
+- Depth caps change the landscape qualitatively (which minima exist, whether they connect):
+  MC 89@4 is a single isolated level-1 family [measured, 2026-11-02-why]; in the small analogues
+  a cap turns one plateau into several [checked, groundtruth, bench].
 
-## 5. What makes it slow (implementation versus procedure)
+## 5. What makes it slow: implementation versus procedure
 
-- ~35 % of proposal CPU is remove1 calls that return nothing; depth.repair is a no-op at the
-  minimum depth [measured, v10-proto]. (procedure/implementation split to be quantified)
+- Implementation: about 35 % of proposal CPU is remove1 calls that return nothing; depth.repair
+  is a provable no-op at the minimum depth; star-memory blocking 67-92 % in the star runs
+  [measured, v10-proto]. Iteration rate falls with circuit size and is the best single
+  predictor of "still improving at the end of the hour" after size (F4).
+- Procedure: at the bottom a chain re-spells one circuit (F2) and hops between 88 plateaus
+  through 89 states; none of that time can produce an 87 unless a core with a down-exit exists
+  in reach. On the small maps the engine's own restart timer never fires (runs end in seconds).
+- Repeated work: at MC 88 the plateau (2,187 states) is covered in minutes and re-walked for
+  the rest of the stay [measured, 2026-11-03-waits speed/anatomy]; the star memory showed 67-92 %
+  of moves blocked as revisits.
 
 ## 6. What properties of a map matter
 
-(to be filled from crossmap/ and bench/)
+- Established across the 59 maps (F4): circuit size; max/mean row weight; sharing left by greedy
+  constructors (base/direct). Not predictive after size: field, matrix dimension, inverse,
+  involutory, circulant/dyadic. On the small proved maps: Paar gap to the optimum and helper
+  count predict iterations to optimum; number of inputs does not [measured, bench].
+- MixColumns is mid-class in every measured property; its outcome is explained by its baseline
+  (NIST's 88 is the best published circuit, reached independently by our fresh roots), not by a
+  measured property (F4). X1 (fresh vs NIST seeds, 8 maps) tests this reading directly.
+- What differs between small analogues and MixColumns is not "recipes per value" (similar) but
+  the share of all values one XOR away from the current set: 0.4-0.96 at <= 9 bits, ~1.5e-6
+  for MixColumns [measured, bench]. That is why single-plateau connectivity and 100 % success at
+  small sizes should not be assumed to transfer.
 
 ## 7. What transfers and what is specific
 
-(to be filled)
+- Transfers: the plateau-as-product structure (MC, InvMC, small analogues); remove1 as the
+  winning move on every map class; descents being cheap relative to the bottom; copying as
+  the lever for descents (InvMC) versus restarts for discovery (MC).
+- Specific: the level-1 foundation effect (MC at depth 4: one level-1 set decides; InvMC has 23
+  level-1 sets in its 118 family); the MixColumns 88 vocabulary (303 values mod rotation over 52
+  plateaus, growing by ~6 per new plateau).
 
 ## 8. What remains unexplained
 
-(to be filled)
+- Whether an 87 exists (75 <= optimum <= 88). No local evidence can decide it.
+- Why the 88 cores are so numerous and so uniformly sealed at +1: is it a counting consequence
+  of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure?
+  The bit-slice block floors (3, 20, 10, 24, 10, 16) hold for every known 88 but are not proved.
+- The exact per-depth picture: 88 exists at depth 5 and 89 at depth 4; whether 88@4 exists.
+- A predictor of which fresh root reaches 88 (none found; constructor type is a weak one).
