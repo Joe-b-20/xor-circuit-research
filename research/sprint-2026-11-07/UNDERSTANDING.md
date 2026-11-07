@@ -191,8 +191,8 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 
 ## 8. What remains unexplained
 
-- Whether an 87 exists (75 <= optimum <= 88; the 75 proof replays and its machinery is exhausted
-  at 74: 1,508 of 7,416 cases survive at 75 with its rows, F16). No local evidence can decide
+- Whether an 87 exists (75 <= optimum <= 88; the published literature has no lower bound above the
+  trivial 32 for this matrix, F19; the 75 proof replays and its machinery is exhausted at 74: 1,508 of 7,416 cases survive at 75 with its rows, F16). No local evidence can decide
   it; real 88 circuits sit 0-7 units below the 75 proof's drift budget and no local row is within
   10 of tight on them (F17), so that machinery needs new content (realizability of low-Y/V/q
   profiles) rather than sharpening; the exact scoped route (F13) can grow: longer limits, two-seed windows, more circuits, and an encoding

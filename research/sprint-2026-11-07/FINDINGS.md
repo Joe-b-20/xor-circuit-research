@@ -520,8 +520,10 @@ the owner's latest checkpoint of 2026-11-05 and corrected in several places). De
 verified construction; no proved lower bound beyond the unrestricted 75 is recorded as
 established. Inverse: depth >= 5 is established (output weights 19 vs depth-4 support <= 16);
 118@5 is a construction. These are the strongest justified starting bounds; any improvement
-must be new relative to them. A claim of 87 impossibility is open: neither search failures nor
-the available identities prove it (owner's status guide).
+must be new relative to them. Relative to the published literature (F19) the 75 and the 93 are
+already new: the best published unrestricted lower bound for this matrix is 32. A claim of 87
+impossibility is open: neither search failures nor the available identities prove it (owner's
+status guide).
 
 ## F14. Hunt D (depth window 2 / 4 / none, 4 MixColumns workers each, same first roots; planned 13 h from 15:06 UTC, KILLED at 6.4 h by the WSL failure of 20:45 UTC): predictions registered at 2.4 h, scored on the 6.4 h data [measured]
 
@@ -766,6 +768,36 @@ at k = 5, 6.
   would still want is listed in the check report (package-style proof of G*, Farkas certificates for
   the 6,103 newly excluded claims, the rows added to the package's stress checker). The uncertified
   integer-oracle figure (1,167) is not a result.
+
+## F19. Literature status of the MixColumns bounds (lit2 agent, web; `lit2/REPORT.md`) [cited; PDFs behind Cloudflare not read]
+
+- J. Jean, "88-XOR Implementation of the AES MixColumns Matrix", IACR ePrint 2026/1481 (received
+  2026-07-20): abstract read; the PDF could not be fetched (bot check). Prior counts cited there:
+  94 / 92 / 91 / 89 (the 89 is Sun-Yang-Li, ePrint 2025/1493). A later arXiv note (Pandey, 2609.20873)
+  describes it as a two-page note whose circuit was found with AI assistance, with no lower bound, no
+  optimality claim and no verification procedure; 87 is not discussed; depth is not stated (7 by our
+  own earlier inference). Priority for the count 88 is Jean's.
+- Lower bounds: the best PUBLISHED unrestricted XOR-count lower bound for the fixed MixColumns
+  matrix is the counting bound 32; Pandey (Sept 2026) states that no lower bound of any kind is
+  published for it. Bounds in the 60s exist only in other models (sequential-XOR >= 67 for any 4x4
+  MDS over GL(8, F2), Venkateswarlu-Kesarwani-Sarkar ToSC 2022; 8n+2, Wang et al. 2023; word-level
+  fan-in-2 superconcentrator bounds, Lee-Park-Son ASIACRYPT 2026) and do not transfer to general
+  XOR circuits. So the owner's unrestricted 75 and depth-3 93 are new relative to the literature by
+  a wide margin [found online: explicit statement of absence]. The kste "UNSAT at <= 87" is scoped
+  to a 1,607-signal pool and its depth-floor premise (max row weight 5) is wrong: 12 rows have
+  weight 7 [computed].
+- Upper bounds by depth (published): depth 3: 103 (2021), 102 (2023), 99 (Shi-Feng-Xu ToSC 2023);
+  depth 4: 97 (Osvik-Canright 2024); depth 5: 94 (Osvik-Canright); depth 6: 92 (Maximov 2019; Xiang
+  et al. 2020); depth 7: 91 (Lin et al. 2021), 88 (Jean, inferred); depth unstated: 89 (2025). The
+  NIST circuit list carries 97@3, 90@4, 88@5 uncredited (files dated 2026-08). Verdicts: 88 at any
+  depth is not new (Jean); 88@5 is in no paper but public uncredited at NIST and in kste; 89@4 not
+  found in print; 97@3 beats every paper (99) and ties the uncredited NIST entry (possibly ours).
+  No 2025-2026 paper below 88 was found.
+- Structure: nothing published on plateaus, counts of optimal circuits or "no 87" arguments; the
+  nearest techniques are Pandey's DRAT-certified exact XOR pipelines (n = 6..9) and Lee-Park-Son's
+  word-level superconcentrator bounds (a bit-level analogue would be new work).
+- To confirm by hand: download Jean's and Osvik-Canright's PDFs (depth and method of the 88; the
+  94@5 / 97@4 figures).
 
 ## R2. Corrections from the second adversarial review (F11-F13, I; `review2/REPORT.txt`, ~17:15-17:45 UTC)
 
