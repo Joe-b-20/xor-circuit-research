@@ -185,6 +185,10 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
   a chain may pass through; on MixColumns those +1 states are how a chain migrates between 88
   plateaus. Prediction: hunt arm C (A with depth_window none) finds more distinct 88 plateaus
   per worker-hour than A, at deeper depths. Scheduled after X1 (`hunt/C.toml`).
+- Arm C result, descents (3 h, 18 worker-hours, 08:30-11:30 UTC, alongside kste1 and pt1/pt2):
+  40 chains, 35 reached 88 (88 %; A 81 %), 1.94 arrivals per worker-hour (A 1.51), median
+  root->88 300 s (A 240 s); 88 depths 6-8 (A 5-9), so "deeper" did not happen. The plateau
+  count per worker-hour is in the catalogue (`hunt/plateausC.log`, pending at 11:50).
 
 ## F9. Testing the crossmap predictions (pt1, 3 maps x 2 workers x 2 h, seeds = our best at the cap + NIST's) [measured]
 
