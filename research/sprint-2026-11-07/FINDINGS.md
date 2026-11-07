@@ -122,6 +122,31 @@ data lives in `~/xs-campaigns/2026-11-07-sprint/`.
 - Scope: MixColumns uncapped from fresh roots. The benchmark harness (bench/) is where the same
   knob will be judged on maps with known optima.
 
+## F7. X1: fresh roots versus NIST seeds at NIST's depth (half 1 of 2) [measured, provisional]
+
+- Setup: v8, 1 worker per arm, 1 h, no sharing, cap = NIST's depth (`x1/x1a.toml`,
+  `x1/analyze.py`). W = (NIST - fresh)/NIST measures how far a fresh root gets on its own.
+
+  | map | cap | NIST | repo best <= cap | fresh (1 h) | NIST-seeded (1 h) | W | seeded gain |
+  |---|---:|---:|---:|---|---|---:|---:|
+  | grostl | 12 | 410 | 366 | 582@12 | **364@11** | -0.42 | 0.112 |
+  | klsw17-m-8x8-gf256-inv | 12 | 368 | 346 | 398@12 | **327@12** | -0.08 | 0.111 |
+  | lw16-4x4-gf256-inv-circ | 7 | 89 | 82 | 82@5 | 82@5 | 0.079 | 0.079 |
+  | skop15-8x8-gf16 | 19 | 170 | 146 | 157@11 | 151@13 | 0.076 | 0.112 |
+
+- Reading: on 32x32 maps a fresh root reaches our best in minutes (W = seeded gain), as on
+  MixColumns. On the 64x64 maps one worker-hour from a fresh root is far from the frontier
+  (W < 0), yet a NIST-seeded worker gains 11 % in the hour and, on two maps, beat the repo's
+  circuits: grostl 364@11 (repo 366@12) and klsw17-m-8x8-gf256-inv 327@12 (repo 346@12).
+  These are new circuits to harvest after verification (`circuits/check.py`).
+- What this says about MixColumns: the "baseline effect" reading (F4) holds for the 32x32
+  class: fresh roots reach the NIST/literature level in minutes there and the seeded gains are
+  the baseline's slack. On MixColumns that slack is zero because the baseline is the best
+  published circuit.
+- What it says about the repo: the big maps (8x8 matrices) were under-searched; the crossmap
+  prediction (klsw17-m-8x8-gf256-inv 346 -> 335 in 4 worker-hours) was beaten by one
+  worker-hour (327). Prediction direction right, magnitude too timid.
+
 ## F3. Context from the literature and a public corpus (lit agent, 2026-11-07) [cited]
 
 - 88 XOR is now published: J. Jean, ePrint 2026/1481 (July 2026); earlier 97 (2017), 95, 94,
