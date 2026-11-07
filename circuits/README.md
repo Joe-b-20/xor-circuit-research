@@ -51,7 +51,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 
 ## Circuits
 
-207 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128). Sizes are inputs × outputs; notes are [below the tables](#notes).
+208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128). Sizes are inputs × outputs; notes are [below the tables](#notes).
 
 ## AES
 
@@ -172,7 +172,7 @@ Older versions wrote fewer files; each `found.json` lists what is there.
 
 | Map | Direct XOR | NIST | Ours (gates@depth) | Found by |
 |---|---:|---|---|---|
-| [fox-mu8](fox-mu8/) | 1257 | 540@14 | [1078@5](fox-mu8/fox-mu8-xor1078-depth5.circ.txt)², [605@6](fox-mu8/fox-mu8-xor605-depth6.circ.txt), [599@7](fox-mu8/fox-mu8-xor599-depth7.circ.txt)², [539@8](fox-mu8/fox-mu8-xor539-depth8.circ.txt)², [512@9](fox-mu8/fox-mu8-xor512-depth9.circ.txt), [502@10](fox-mu8/fox-mu8-xor502-depth10.circ.txt) | v3, v6, v7, v8 |
+| [fox-mu8](fox-mu8/) | 1257 | 540@14 | [1078@5](fox-mu8/fox-mu8-xor1078-depth5.circ.txt)², [605@6](fox-mu8/fox-mu8-xor605-depth6.circ.txt), [599@7](fox-mu8/fox-mu8-xor599-depth7.circ.txt)², [539@8](fox-mu8/fox-mu8-xor539-depth8.circ.txt)², [512@9](fox-mu8/fox-mu8-xor512-depth9.circ.txt), [502@10](fox-mu8/fox-mu8-xor502-depth10.circ.txt), [500@11](fox-mu8/fox-mu8-xor500-depth11.circ.txt) | v3, v6, v7, v8 |
 | [grostl](grostl/) | 1112 | 410@12 | [502@5](grostl/grostl-xor502-depth5.circ.txt), [455@8](grostl/grostl-xor455-depth8.circ.txt), [404@10](grostl/grostl-xor404-depth10.circ.txt), [364@11](grostl/grostl-xor364-depth11.circ.txt), [362@13](grostl/grostl-xor362-depth13.circ.txt), [360@14](grostl/grostl-xor360-depth14.circ.txt), [349@15](grostl/grostl-xor349-depth15.circ.txt) | v8 |
 | [khazad](khazad/) | 1232 | 366@18 | [1055@5](khazad/khazad-xor1055-depth5.circ.txt)³, [478@6](khazad/khazad-xor478-depth6.circ.txt), [477@8](khazad/khazad-xor477-depth8.circ.txt), [460@9](khazad/khazad-xor460-depth9.circ.txt), [433@10](khazad/khazad-xor433-depth10.circ.txt), [432@11](khazad/khazad-xor432-depth11.circ.txt), [344@14](khazad/khazad-xor344-depth14.circ.txt), [340@15](khazad/khazad-xor340-depth15.circ.txt) | v8 |
 | [whirlpool-maelstrom](whirlpool-maelstrom/) | 840 | 425@11 | [759@5](whirlpool-maelstrom/whirlpool-maelstrom-xor759-depth5.circ.txt)³, [416@6](whirlpool-maelstrom/whirlpool-maelstrom-xor416-depth6.circ.txt), [395@8](whirlpool-maelstrom/whirlpool-maelstrom-xor395-depth8.circ.txt), [391@9](whirlpool-maelstrom/whirlpool-maelstrom-xor391-depth9.circ.txt), [390@10](whirlpool-maelstrom/whirlpool-maelstrom-xor390-depth10.circ.txt) | v8 |

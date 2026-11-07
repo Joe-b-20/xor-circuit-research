@@ -65,6 +65,7 @@ kernel; v1 records only the CPU count.
 | wide64 | v8 | 2026-10-31 04:16 | 4.7 h | 6 | 28.2 | 28.1 | no | 8 |
 | control | v8 | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.2 | no | 1 |
 | adopt | v9 prototype | 2026-10-31 15:00 | 45.5 h | 10 | 454.8 | 449.3 | no | 1 |
+| predtest-pt2 | v8 | 2026-11-07 10:39 | 2.0 h | 8 | 16.0 | 17.6 | yes (shared machine) | 1 |
 | x1a-fresh-vs-nist | v8 | 2026-11-07 06:16 | 1.0 h | 8 | 8.0 | 8.6 | yes (shared machine) | 11 |
 | x1b-fresh-vs-nist | v8 | 2026-11-07 07:22 | 1.0 h | 8 | 8.0 | 8.7 | yes (shared machine) | 4 |
 | predtest-pt1 | v8 | 2026-11-07 08:28 | 2.0 h | 6 | 12.0 | 13.0 | yes (shared machine) | 5 |
@@ -72,7 +73,7 @@ kernel; v1 records only the CPU count.
 | sweep-sw1 | v8 | 2026-11-07 12:52 | 1.0 h | 6 | 6.0 | 6.7 | yes (shared machine) | 6 |
 | sweep-sw2 | v8 | 2026-11-07 13:58 | 1.0 h | 6 | 6.0 | 6.7 | yes (shared machine) | 12 |
 
-Together: 30 runs, about 3,150 worker-hours, for 207 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 980 for 203, and the v9 prototype about 455 for 1. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
+Together: 30 runs, about 3,150 worker-hours, for 208 circuits. v2–v3 used about 1,730 of those worker-hours for 3 circuits; v6–v8 used about 980 for 204, and the v9 prototype about 455 for 1. The v1 run long20 (about 796 worker-hours) and the v4 run invmixcolumns-13 (18.5), whose 89@4 and 168@5 were replaced on 2026-10-31 and 2026-11-02, and another 21 logged runs of 2026-10-28 to 10-30 (310 worker-hours) produced no circuit kept here; they are not in the
 totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute).
 
 ## Circuits
@@ -82,6 +83,7 @@ totals. Compute before v1 is in [search/HISTORY.md](../search/HISTORY.md#compute
 | [anubis-clefia-m0 91@8](anubis-clefia-m0/anubis-clefia-m0-xor91-depth8.circ.txt) | v8 | predtest-pt2 | 10 min | 11 min | 16.0 | exact | from our 92@8 |
 | [bkl16-8x8-gf256 439@9](bkl16-8x8-gf256/bkl16-8x8-gf256-xor439-depth9.circ.txt) | v8 | sweep-sw1 | 9 min | 9 min | 6.0 | exact | from our 442@10 |
 | [fox-mu8 502@10](fox-mu8/fox-mu8-xor502-depth10.circ.txt) | v8 | sweep-sw1 | 34 min | 38 min | 6.0 | exact | from our 505@11 |
+| [fox-mu8 500@11](fox-mu8/fox-mu8-xor500-depth11.circ.txt) | v8 | predtest-pt2 | 1.6 h | 1.8 h | 16.0 | exact | from our 505@11 |
 | [grostl 404@10](grostl/grostl-xor404-depth10.circ.txt) | v8 | x1a-fresh-vs-nist | 15 s | < 1 min | 8.0 | exact | from NIST 410@12 |
 | [grostl 364@11](grostl/grostl-xor364-depth11.circ.txt) | v8 | x1a-fresh-vs-nist | 55 min | 58 min | 8.0 | exact | from NIST 410@12, restarted from the worker's best |
 | [grostl 349@15](grostl/grostl-xor349-depth15.circ.txt) | v8 | sweep-sw1 | 14 min | 16 min | 6.0 | exact | from our 350@16 |
