@@ -109,7 +109,18 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   count predict iterations to optimum; number of inputs does not [measured, bench].
 - MixColumns is mid-class in every measured property; its outcome is explained by its baseline
   (NIST's 88 is the best published circuit, reached independently by our fresh roots), not by a
-  measured property (F4). X1 (fresh vs NIST seeds, 8 maps) tests this reading directly.
+  measured property (F4). X1 confirmed the reading on the 32x32 class: a single fresh-root
+  worker reaches the repo's best (or better: ss16-4x4-gf256 96@5) within the hour on every
+  32x32 map tried, and 89@5 / 88 uncapped on MixColumns; the seeded gains over NIST there are
+  the baseline's slack, which is zero for MixColumns (F7). On 64x64 maps one worker-hour from a
+  fresh root is far from the frontier, but one NIST-seeded worker-hour beat the repo's circuits
+  on two maps (grostl 364@11, klsw17-m-8x8-gf256-inv 327@12): those maps are compute-limited,
+  not search-limited (F7).
+- Search knobs (F8): on the reliability benchmark only removing the depth window had an
+  established effect (half the iterations to the reference on small-scale-aes, deeper
+  circuits, 10-40 % more CPU per iteration); stall timers, LNS and expand weights showed
+  nothing beyond load noise. The depth window is also what limits a MixColumns chain's
+  migration between 88 plateaus (F5); hunt arm C measures that.
 - What differs between small analogues and MixColumns is not "recipes per value" (similar) but
   the share of all values one XOR away from the current set: 0.4-0.96 at <= 9 bits, ~1.5e-6
   for MixColumns [measured, bench]. That is why single-plateau connectivity and 100 % success at
