@@ -393,6 +393,94 @@ signatures).
   the "exact or structural methods" route; the recommended continuation is a longer single-core
   batch (k = 9-10 windows at 900 s, byte blocks at 1,800 s, two-seed windows) across more cores.
 
+## I. Interpretation, tightened (2026-11-07 17:40 UTC, on the owner's five points)
+
+**I.1 The resistance at 88.** What is established: (a) at every one of 1,869 sampled 88 states
+the complete remove1 neighbourhood (remove any one helper, repair with one exact value) contains
+no state with fewer gates [checked, exhaustive per state, F11]; (b) for the 88 plateaus whose +1
+band PES explored (mc24: 49 plateaus; kste1: 19 compressed so far), every RESOLVED +1 exit
+descent ends on the home plateau or on another 88 plateau, and none ends below 88; but 56 % of
+the +1 descents (kste1 at 17:27 UTC: 18,622 of 33,364; mc24 plateaus: ~55-60 %) were CUT at the
+descent's state bound before landing anywhere and are unresolved [measured; `pes2_tasks.py:
+classify`, the bound is `cfg.bound_plus1` visited states]; the +2 band was descended for 0 of
+13,212 classes on the Barrier-Tree plateau and LNS rebuilds for 4 combinations [owner's export,
+`import/zip/guides/BARRIER_TREE_FINDINGS.md`]; (c) the scoped SAT refutations (F13) exclude every
+<= 87 circuit containing any of 43 kept sets of 79-84 values of three 88 circuits.
+What this adds beyond the stopping condition of polishing: polishing stops when its OWN move
+finds nothing in the time it tried; (a) is the exhaustive statement for that move at every
+sampled state, (b) extends it one level up for a minority of the exits, (c) replaces "no single
+move" by "no circuit at all" for the refuted windows. What it does NOT establish: that heuristic
+search cannot find an 87. Paths through 89 that the bound cut (the majority), paths through
+90 or higher, moves that change three or more values at once, and starting regions nobody has
+sampled (97 % of the landing probability, F12) are all open. The earlier wording "every +1 exit
+goes home or to another 88" was an overstatement and is corrected in UNDERSTANDING and
+CHECKPOINT: it holds for the resolved exits only.
+
+**I.2 The role of exact methods.** One verified 87 proves existence whatever finds it; the
+local search, the SAT batch and any constructor are equally valid routes to that. Proving that
+no 87 exists needs an argument over the whole class of unrestricted XOR circuits; exact
+computation contributes pieces of such an argument only with their scope attached: the F13
+refutations are statements about circuits containing a specific kept set, the owner's 75 bound
+is a full-class statement (replayed and audited, see I.6), and nothing in between exists yet.
+
+**I.3 The plateau counts.** Definition used throughout: a plateau is a connected component of
+the graph whose vertices are 88-gate value sets and whose edges are remove1-neutral moves
+(remove one helper, add one exact value, gate count unchanged, no depth restriction). Exact
+plateaus are computed by closure (PES `compress`, complete enumeration of the component, hashed
+canonically modulo the Z4 byte rotation), so two exact keys are distinct components by
+construction [checked]. The cheap identity (v3 = canonical value set of the 1-step neutral
+closure) never merged two exact plateaus in 230 tests but splits coupled ones (1.63x), so
+signature counts are upper bounds [measured]. Non-overlap between sampled walks (F11: 139
+components for 146 chains at 30 s sampling) is an observation about where chains were seen,
+NOT a proof of disconnection: chains hop through 89 states that the sampler mostly misses, and
+components would merge if two chains ever passed through one node between samples. The
+population estimate (F12) assumes independent chains, a landing probability proportional to
+size^alpha with alpha fitted from about six coincidences, and unseen plateaus resembling the seen
+small ones; its distribution-free part is the floor (effective number >= ~2,500 at 95 %), its
+model part is the order of magnitude (1e5, 3e4-5e5).
+
+**I.4 The SAT exclusions (F13), stated exactly.** Fixed: a kept set K of values from one
+specific 88 circuit, chosen so that inputs ∪ K is split-closed (79-84 of its 88 values). Free:
+everything else: the k-1 new values may be any 32-bit masks, computed in any order and at any
+depth, with any fan-out, from any two available values; no layout, no helper bank, no
+cancellation assumption, no pool restriction. Restriction imposed by the encoding: circuits are
+taken as value sets (lossless for linear maps, since depth and gates are functions of the set),
+gates are 2-input XORs (XNOR/constants are irrelevant for a linear map), and the new gates must
+all be distinct from each other and from K (sound: duplicates never help). An UNSAT instance
+therefore excludes exactly the circuits with <= 87 gates whose value set contains K; it says
+nothing about circuits missing even one value of K. Union over the repo circuit's 37 refuted
+windows: any 87 differs from that circuit in at least one value of each of 37 sets of 79-84
+values. Advance: it turns a "no move" fact into a "no circuit" fact for each window, at seconds
+per window, and gives a frontier (k = 9-10) that longer runs can push; the batch running since
+16:50 UTC does that.
+
+**I.5 The cross-map pattern.** Observation [measured, F7/F9/F10]: 16 of 19 one-to-four
+worker-hour trials on maps over 8x8 matrices gained gates at NIST's depth; 1 of 6 on 4x4 maps.
+Candidate explanations: (i) the large maps are compute-limited (their circuits had received
+few worker-hours at that depth); (ii) differences in starting-circuit quality (seeds were our
+best at the cap plus NIST's; several 8x8 maps' best were at other depths, so the cap band had
+never been searched, e.g. klsw17-m-8x8-gf256 347@6 -> 321@10); (iii) 4x4 maps already sat at
+the floor the search can reach (X1: fresh roots reach the repo best within the hour on every
+4x4 map); (iv) run-to-run spread (~3 gates on 64x64 maps, ~1 on 4x4) makes 1-3-gate gains on
+large maps indistinguishable from repeats. (i)-(iii) are not separated by the present data: all
+three predict the observation. Distinguishing tests: a second worker-hour on each sweep map
+from its new best (if (i), gains continue at a similar rate; if (ii), they stop once the band
+is searched); a 4x4 map given a depth band it was never searched at (if (ii), it gains too);
+and repeats of the same hour from the same seed to size (iv). None of these can run while the
+machine is full; they are the first compute to spend when threads free up.
+
+**I.6 Bounds, with scope (from the imported archive, not yet independently re-derived here).**
+Unrestricted XOR circuits for forward MixColumns: 75 <= C <= 88 (75: the owner's computer-
+assisted proof, public in the repo, fresh replay 52 s and mathematical audit on 2026-11-04 with
+no substantive gap; 88: verified construction). Depth at most 3: 93 <= C3 <= 97 (93: proof,
+replay 962 s, audited; 97: verified construction; the proposed 97 optimality proof is OPEN per
+the owner's latest checkpoint of 2026-11-05 and corrected in several places). Depth 4: 89 is a
+verified construction; no proved lower bound beyond the unrestricted 75 is recorded as
+established. Inverse: depth >= 5 is established (output weights 19 vs depth-4 support <= 16);
+118@5 is a construction. These are the strongest justified starting bounds; any improvement
+must be new relative to them. A claim of 87 impossibility is open: neither search failures nor
+the available identities prove it (owner's status guide).
+
 ## R. Corrections from the adversarial review (review agent, 13:20-13:30 UTC; `review/REPORT.txt`, scripts `review/*.py`)
 
 An independent agent re-derived the F1-F9 numbers from the raw data. What it changed:

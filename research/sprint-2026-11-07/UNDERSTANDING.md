@@ -93,8 +93,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   on chains gives at least ~2,500 plateaus and an order of magnitude of 1e5, with ~97 % of
   the landing probability on plateaus never seen) (F5, F12, R) [estimated]. The 52 pre-sprint plateaus sit at depth
   5-7, the hunt's mostly at 7-10, so "no overlap" with them is mostly a different depth
-  stratum. Every +1 exit from every plateau checked (49 by PES, plus the kste plateaus in
-  kste1) goes home or to another 88. The transition graph of the 88 level, drawn from 146
+  stratum. Every RESOLVED +1 exit from every plateau checked (49 by PES mc24, 19 so far in
+  kste1) goes home or to another 88, but 56 % of the +1 descents were cut at their state
+  bound before landing and are unresolved, and the +2 band is essentially unexplored (I.1). The transition graph of the 88 level, drawn from 146
   chains' hops (F11): 139 components, 133 of them a single chain's trail, 8 nodes of 1,454
   entered by two chains, 0 down-exits in 1,869 sampled states; hops change ~30 % of the
   helpers, so each chain explores the neighbourhood of where it landed and the neighbourhoods
@@ -102,7 +103,9 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
   89, ~12 departures to 89 per second [guess from ledgers]); 30 s sampling sees a floor of ~44
   plateau changes per chain-hour. So the search's failure
   below 88 is not slowness or bad decisions: its move set has no down-step from any 88 core
-  found so far, and the number of cores is far beyond what sampling can exhaust.
+  found so far, and the number of cores is far beyond what sampling can exhaust. This is
+  resistance to the tested moves under the tested conditions, not a proof that heuristic
+  search cannot find 87 (FINDINGS I.1 states exactly what is and is not established).
 - Whether an 87 exists is therefore a global question about the map (lower bound 75, no
   published proof of 88; the kste "barrier" argument is scoped to known circuits, F3). More
   local search time cannot settle it; exact or structural methods can. First step taken (F13):
@@ -180,7 +183,7 @@ restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers refer to
 - Whether an 87 exists (75 <= optimum <= 88). No local evidence can decide it; the exact
   scoped route (F13) can grow: longer limits, two-seed windows, more circuits, and an encoding
   for the factor-structured mobile part.
-- Why the 88 cores are so numerous and so uniformly sealed at +1: is it a counting consequence
+- Why the 88 cores are so numerous and (on the resolved exits) sealed at +1: is it a counting consequence
   of 32 weight-5/7 outputs over a 56-helper budget, or a property of the circulant structure?
   The bit-slice block floors (3, 20, 10, 24, 10, 16) hold for every known 88 but are not proved.
 - The exact per-depth picture: 88 exists at depth 5 and 89 at depth 4; whether 88@4 exists.
