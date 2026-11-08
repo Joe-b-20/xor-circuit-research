@@ -249,17 +249,21 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
 
 ## 7. What transfers and what is specific
 
-- Transfers: the plateau-as-product structure (MC, InvMC, small analogues, where closed); remove1 as
-  the winning move on every map class; descents being cheap relative to the bottom; copying as the
+- Transfers: the plateau-as-product structure (MC, InvMC, small analogues, where closed) and the
+  absence of remove1 down-steps at every sampled bottom state (MC 4,314 states, InvMC 510; F28);
+  remove1 as the winning move on every map class; descents being cheap relative to the bottom; copying as the
   lever for descents (InvMC); restarts buying arrivals but not distinct plateaus (MC).
-- Specific: the level-1 foundation effect (MC at depth 4: the only known 89@4 family, a cap-4 remove1
+- Specific: the 3-input-tree form of 3-way factors (MC 88; InvMC factors are "one consumer, choice
+  of partner", including 4-input trees with a shared half, F28); the vast 88 level itself (InvMC's
+  118 level is one lineage found once, like 89@4, F28); the level-1 foundation effect (MC at depth 4: the only known 89@4 family, a cap-4 remove1
   plateau of 81 circuits = 4 slots x 3 re-pairings over a 53-value core, carries one 26-pair first
   layer that none of 5,798 distinct 90@4 states shares; the walk moves a first layer one pair at a
   time, so entry is rare (two entry events in all recorded cap-4 runs; the cap-4 core-hour total is
   not computed); the first layer is necessary but not sufficient (of 26 recorded 90@4 states carrying it, the
   8 that ended their runs at 90 do not connect to the family under remove1, while 11 transient
   ones do; q89check); uncapped the family is no trap (F15); 26 first-layer gates is not
-  proved necessary; InvMC has 23 level-1 sets in its 118 family); the MixColumns 88 vocabulary (303
+  proved necessary; the InvMC 118@5 family has 17 first-layer pairs common to all 510 recorded states and 105
+  distinct level-1 sets, F28; the earlier "23 level-1 sets" is unsourced); the MixColumns 88 vocabulary (303
   helper values mod rotation over the 52 pre-sprint plateaus, growing by ~3-4 words per new plateau
   with more than half of new plateaus adding none: 303 -> 947 over 200 hunt plateaus, vocab.log).
 

@@ -1124,6 +1124,43 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   specifies two finite searches (joint hub systems over a fixed set of full helpers; the M^T q = 1
   family of 7-8 full helpers); neither was run. The bound stays 75: 789 claims survive by LP status.
 
+## F28. What transfers to Inverse MixColumns (invtransfer agent, high; `invtransfer/REPORT.md`) [checked / measured / guess, as marked]
+
+Data: 799 inverse 118@5 record files -> 510 distinct cap-5 states (adopt 158, the 6 h star walk 640,
+repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v9d 125-128; w500 129).
+- Plateau = exact Cartesian product: TRANSFERS [checked]: all 56 plateaus are products (48 fully
+  closed, 8 pairwise), the same 56 the 2026-11-05 views agent found. "3-way factor = re-pairing of an
+  unshared 3-input tree" DOES NOT transfer: it is the MixColumns special case. The repo plateau 200 =
+  5 x 5 x 2 x 2 x 2 (core 80 of 86) has one coupled 5-block made of two genuine 3-input trees coupled
+  by a core value; its free K5 is a weight-10 level-4 consumer choosing among 5 fixed weight-4
+  partners; its K2s are 4-input trees with one shared half. Across 219 factors (134 K2, 21 K5, 8 K7,
+  coupled 43 x 5 / 6 x 14 / 7 x 19) every single-value factor has the generalised form "one consumer,
+  choice of partner among fixed available values"; none XOR to zero.
+- No remove1 down-step: TRANSFERS [checked]: 0 down moves at all 510 states (exhaustive, 0 binds) and
+  inside the 48 fully closed plateaus; neutral moves 4-20 (mode 9; MC 8-44, mode 16); cores 63-79 of 86.
+- Distinct plateaus: 56 exact (123 cheap-identity classes, 2.2x over-split). The "vast level" DOES NOT
+  transfer on this data: everything recorded at 118 is ONE lineage (one discovery event in adopt
+  inv-cap5-01 after 40.5 h at 120, spread by adopt copying, then the star walk seeded with the repo 118:
+  55 plateaus within helper distance 0.36); nothing reached 118 twice, so no capture-recapture is
+  possible [measured]. A second, independent 119@5 family exists in 2026-10-31-long sharing only 11-12
+  of the 118 family's 17 fixed first-layer pairs.
+- Odd helpers and sharing identity: 118@5 circuits have 23-27 odd non-output helpers of 86; the
+  inverse 88@17 (repo) 21 of 56, the archive's 88@33 18 of 56. G = 228 + delta - S + dead holds on all
+  521 circuits (118@5: S 157-166, delta 47-56, S - delta = 110 always; the 88s: S 212 / 278, delta 72 /
+  138); random rewirings move S and delta by +-40 but never S - delta. F20's bound is MC-specific.
+- First layer: PARTLY transfers [measured]: 24-25 level-1 pairs, 17 common to all 510 states, 35 ever
+  used, 105 distinct level-1 sets (Jaccard 0.75), matching the 2026-11-06 layout report (17 / 35 /
+  0.74). The sprint's inherited "InvMC 118@5 has 23 level-1 sets" is reproduced by no count: treat as
+  unsourced (corrected in UNDERSTANDING 7 and CHECKPOINT 2). Unlike 89@4 (frozen first layer, mobile
+  slots at level 2), 39 of 56 inverse plateaus move level-1 pairs inside the plateau.
+- Reading [guess]: the inverse bottom looks like 89@4 (one family found once, rigid first layer, small
+  product plateaus), not like MC 88 (~1e5 plateaus, every chain new); the vast level is specific to
+  MC at 88, plausibly a depth-slack effect (InvMC 118@5, MC 97@3 and 89@4 sit at or one above the
+  minimum depth; uncapped MC 88 does not). The inverse's unrestricted 88 matches the forward's 88 in
+  gate and helper count while every structural number differs (group floors 228 vs 108, sharing
+  212-278 vs 41), suggesting "88 on both maps" is the search's reach rather than a shared wall; a
+  cheap test is an uncapped campaign on the inverse from its 88@17 (never run).
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26

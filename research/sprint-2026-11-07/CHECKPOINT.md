@@ -46,7 +46,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 - MC 89@4 is one level-1 set (one family up to rotation: 81 circuits, F15); every 90@4 ever visited
   (5,798 distinct, 183 first layers) sits on a different level-1 set; one pair swapped costs
   ~+2..+4 [measured]. The 89@4 came from the July 91@4 (914 s) and once more from a v9c shelf
-  90@4 (11-04), never from NIST's 90@4 (corrected 11-07, F15). InvMC 118@5 has 23 level-1 sets.
+  90@4 (11-04), never from NIST's 90@4 (corrected 11-07, F15). InvMC 118@5: 17 fixed first-layer pairs, 105 level-1 sets over 510 states (F28; the earlier
+  "23 level-1 sets" is unsourced).
 - Waits are time in dead rooms; drops are big moves landing in rich rooms; no local predictor of a
   productive state was found among ~20 candidates; copying walkers onto the newest best is the
   strongest lever on InvMC descents [measured, 2026-11-03-waits].
