@@ -1,0 +1,47 @@
+A: 53 circuits (40 real), 212 phases; q range 7..16; orientation counts {'M': 106, 'Mt': 106}
+   violations (H2, HUB2, 4.5, 4.6, PK4, PK5, L23): 0; examples []
+   max m_i: 0; max A: 0; HUB2 slack min 7
+   pair identity h_i + h_j = b + c at shared missing labels: ok 1718, bad 0
+   mixed-vector family independent on 212 / 212 phases (mixed vectors per phase min 1 max 15); C1 failures at helpers with m >= 1: 0 (vacuous when max m_i = 0)
+   phases with q in 4..7: {7: 3}; helpers with u >= 3 per phase max 2
+   1s
+B (M): synthetic local configurations:
+     8 x ('H1-cap4-mutation', 0, 'gates DEPENDENT', 'H2 VIOLATED', 'HUB2 VIOLATED', 'elimination = F', 'rank identity')
+     8 x ('random-max', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    15 x ('random-max', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    12 x ('random-max', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     2 x ('witness', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     2 x ('witness', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     1 x ('witness', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+B (Mt): synthetic local configurations:
+     8 x ('H1-cap4-mutation', 0, 'gates DEPENDENT', 'H2 VIOLATED', 'HUB2 VIOLATED', 'elimination = F', 'rank identity')
+    15 x ('random-max', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    15 x ('random-max', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    15 x ('random-max', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     2 x ('witness', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     1 x ('witness', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     1 x ('witness', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+EXIT 0 Sun Nov  8 00:26:58 UTC 2026
+variant GstarN1HUBDARK: of 1134 baseline-feasible keys, 381 still feasible; by q [(1, 2), (2, 2), (3, 14), (4, 54), (5, 163), (6, 93), (7, 11), (8, 41), (10, 1)]; by ori {'Mt': 187, 'M': 194}; 18s
+compared with qhub scan_GstarN1HUBDARKMFM_q0_g75.json: ref 381, mine 381, only-ref 0, only-mine 0
+EXIT 0 Sun Nov  8 00:27:18 UTC 2026
+variant GstarN1HUB2DARK: of 1134 baseline-feasible keys, 167 still feasible; by q [(1, 2), (3, 1), (4, 54), (5, 40), (6, 31), (7, 8), (8, 30), (10, 1)]; by ori {'Mt': 38, 'M': 129}; 30s
+compared with qhub scan_GstarN1HUB2DARKMFM_q0_g75.json: ref 166, mine 167, only-ref 0, only-mine 1
+   differs: (9, 6, 8, 7, 0, 'Mt') mine
+EXIT 0 Sun Nov  8 00:27:50 UTC 2026
+variant GstarN1HUB2DARKPK: of 1134 baseline-feasible keys, 117 still feasible; by q [(1, 2), (3, 1), (4, 33), (5, 11), (6, 31), (7, 8), (8, 30), (10, 1)]; by ori {'Mt': 36, 'M': 81}; 28s
+compared with qhub scan_GstarN1HUB2DARKMFMPK_q0_g75.json: ref 116, mine 117, only-ref 0, only-mine 1
+   differs: (9, 6, 8, 7, 0, 'Mt') mine
+EXIT 0 Sun Nov  8 00:28:19 UTC 2026
+variant GstarN1HUB2XDARKPK: of 1134 baseline-feasible keys, 117 still feasible; by q [(1, 2), (3, 1), (4, 33), (5, 11), (6, 31), (7, 8), (8, 30), (10, 1)]; by ori {'Mt': 36, 'M': 81}; 28s
+compared with qhub scan_GstarN1HUB2DARKMFMPK_q0_g75.json: ref 116, mine 117, only-ref 0, only-mine 1
+   differs: (9, 6, 8, 7, 0, 'Mt') mine
+EXIT 0 Sun Nov  8 00:28:48 UTC 2026
+variant GstarN1HUB2DARK: survivors 863 (M 454, Mt 409); shortfall hist [(0, 454), (1, 295), (2, 88), (3, 26)]; LP keys evaluated 36559; 337s
+compared with qhub scan_GstarN1HUB2DARKMFM_q0_g75.json: ref 863, mine 863, only-ref 0, only-mine 0; identical (k, ell) on 863 common survivors
+keys touched 36559; LP-feasible 882 (by q [(1, 5), (2, 100), (3, 98), (4, 312), (5, 159), (6, 75), (7, 64), (8, 64), (9, 4), (10, 1)]; in the baseline 1,134: 119); load-bearing 591 (by q [(1, 2), (2, 64), (3, 91), (4, 191), (5, 123), (6, 61), (7, 37), (8, 21), (9, 1)]; by ori {'Mt': 301, 'M': 290}; in the baseline: 94)
+EXIT 0 Sun Nov  8 00:34:27 UTC 2026
+variant GstarN1HUB2DARKPK: survivors 789 (M 416, Mt 373); shortfall hist [(0, 426), (1, 270), (2, 69), (3, 24)]; LP keys evaluated 36655; 346s
+compared with qhub scan_GstarN1HUB2DARKMFMPK_q0_g75.json: ref 789, mine 789, only-ref 0, only-mine 0; identical (k, ell) on 789 common survivors
+keys touched 36655; LP-feasible 859 (by q [(1, 5), (2, 107), (3, 106), (4, 299), (5, 82), (6, 121), (7, 64), (8, 70), (9, 4), (10, 1)]; in the baseline 1,134: 78); load-bearing 551 (by q [(1, 2), (2, 62), (3, 95), (4, 175), (5, 66), (6, 93), (7, 37), (8, 20), (9, 1)]; by ori {'M': 271, 'Mt': 280}; in the baseline: 53)
+EXIT 0 Sun Nov  8 00:40:14 UTC 2026

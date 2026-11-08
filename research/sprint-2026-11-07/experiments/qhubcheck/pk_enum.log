@@ -1,0 +1,20 @@
+q = 4: 6 families of distinct >=3-subsets pairwise meeting in <= 1 element; 3 distinct count vectors (n_3..n_4)
+   achievable vectors: [(0, 0), (0, 1), (1, 0)]
+   convex hull facets: ['-1 n3 <= 0', '-1 n4 <= -0', '1 n3 + 1 n4 <= 1']
+   PK4 as implemented: #{u>=3} <= 1: max 1 vs constant 1: VALID (tight); maximizers [(1, 0), (0, 1)]
+   PK4 as stated (N_3 <= 1 with N_j = #{u>=j}): same row: max 1 vs constant 1: VALID (tight); maximizers [(1, 0), (0, 1)]
+   max #helpers with u>=3: 1; max per size: u=3: 1, u=4: 1
+q = 5: 32 families of distinct >=3-subsets pairwise meeting in <= 1 element; 5 distinct count vectors (n_3..n_5)
+   achievable vectors: [(0, 0, 0), (0, 0, 1), (0, 1, 0), (1, 0, 0), (2, 0, 0)]
+   convex hull facets: ['-1 n3 <= -0', '-1 n4 <= 0', '-1 n5 <= -0', '1 n3 + 2 n4 + 2 n5 <= 2']
+   PK5 as implemented: n3 + 2 n4 + 2 n5 <= 2: max 2 vs constant 2: VALID (tight); maximizers [(2, 0, 0), (0, 1, 0), (0, 0, 1)]
+   PK5 as stated in qhub REPORT, N_j = #{u>=j}: N3 + 2 N4 = n3 + 3 n4 + 3 n5 <= 2: max 3 vs constant 2: INVALID; maximizers [(0, 1, 0), (0, 0, 1)]
+   PK5 read with the package notation N_j = #{u=j}: n3 + 2 n4 <= 2: max 2 vs constant 2: VALID (tight); maximizers [(2, 0, 0), (0, 1, 0)]
+   weaker: #{u>=3} <= 2: max 2 vs constant 2: VALID (tight); maximizers [(2, 0, 0)]
+   max #helpers with u>=3: 2; max per size: u=3: 2, u=4: 1, u=5: 1
+q = 6: 353 families of distinct >=3-subsets pairwise meeting in <= 1 element; 9 distinct count vectors (n_3..n_6)
+   L23 q=6 (package): N3 + 3N4 + 4N5 + 4N6 <= 4 (N_j = #{u=j}): max 4 vs constant 4: VALID (tight); maximizers [(4, 0, 0, 0), (1, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1)]
+   max #helpers with u>=3: 4; max per size: u=3: 4, u=4: 1, u=5: 1, u=6: 1
+q = 7: 8390 families of distinct >=3-subsets pairwise meeting in <= 1 element; 17 distinct count vectors (n_3..n_7)
+   L23 q=7 (package): 2N3 + 7N4 + 12N5 + 14N6 + 14N7 <= 14: max 14 vs constant 14: VALID (tight); maximizers [(7, 0, 0, 0, 0), (1, 0, 1, 0, 0), (0, 2, 0, 0, 0), (0, 0, 0, 1, 0)]
+   max #helpers with u>=3: 7; max per size: u=3: 7, u=4: 2, u=5: 1, u=6: 1, u=7: 1

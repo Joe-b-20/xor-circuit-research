@@ -1,0 +1,32 @@
+== h2_check Sun Nov  8 00:07:51 UTC 2026
+M: F3 histogram {1: 40704, 3: 80, 2: 360}; 80 full values; 128068 odd non-boundary h with N(h) nonempty; |N(h)| histogram {1: 114060, 2: 1280, 3: 10992, 4: 444, 5: 100, 6: 672, 8: 260, 9: 160, 11: 88, 12: 4, 15: 8}; 0.8s
+M: H1 cross-check (3m vectors only): cap histogram {1: 125128, 2: 2840, 3: 92, 4: 8}, max 4; cap-4 values ['0x404040', '0x808080', '0x40004040', '0x40400040', '0x40404000', '0x80008080', '0x80800080', '0x80808000']
+M r=0: 128068 hub values; cap_r histogram {1: 126412, 2: 1648, 3: 8}; max 3; attaining 3-r: 8; VIOLATIONS of cap <= 3-r: 0 []
+M r=0:   maximal configurations at attaining values: 192; X histogram (qhub definition) {0: 64, 1: 128}; constrained-X histogram {0: 64, 1: 128}; O1 failures 0; hub values attaining 3-r with X = 0: 8; with constrained X = 0: 8
+M r=1: 12580 hub values; cap_r histogram {0: 11392, 1: 1124, 2: 64}; max 2; attaining 3-r: 64; VIOLATIONS of cap <= 3-r: 0 []
+M r=1:   maximal configurations at attaining values: 352; X histogram (qhub definition) {0: 208, 1: 48, 2: 96}; constrained-X histogram {0: 208, 1: 48, 2: 96}; O1 failures 0; hub values attaining 3-r with X = 0: 16; with constrained X = 0: 16
+M r=2: 440 hub values; cap_r histogram {0: 428, 1: 12}; max 1; attaining 3-r: 12; VIOLATIONS of cap <= 3-r: 0 []
+M r=2:   maximal configurations at attaining values: 48; X histogram (qhub definition) {0: 48}; constrained-X histogram {0: 48}; O1 failures 0; hub values attaining 3-r with X = 0: 12; with constrained X = 0: 12
+M witness r=0 h=0x80800080 R=[] S=['0x181', '0x406000', '0x80800040']: membership True, independent (rank 12 of 12) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+M witness r=0 h=0x40404000 R=[] S=['0x2030', '0x20404000', '0x80004080']: membership True, independent (rank 12 of 12) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+M witness r=1 h=0x2020200 R=['0x2020200'] S=['0x181', '0x4000204']: membership True, independent (rank 9 of 9) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+M witness r=1 h=0x80800080 R=['0x80800080'] S=['0x181', '0x404020']: membership True, independent (rank 9 of 9) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+M witness r=2 h=0x80800080 R=['0x80800080', '0x800000404000'] S=['0x181']: membership True, independent (rank 6 of 6) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+M: mutation (one-swap configurations must be dependent): 50 tested, 50 dependent
+M: mutation (duplicated mixed vector) dependent: True; 11s total
+Mt: F3 histogram {1: 40320, 2: 504, 3: 112}; 112 full values; 177412 odd non-boundary h with N(h) nonempty; |N(h)| histogram {1: 157472, 2: 2352, 3: 14432, 4: 892, 5: 192, 6: 1344, 8: 308, 9: 224, 11: 172, 12: 4, 15: 20}; 0.9s
+Mt: H1 cross-check (3m vectors only): cap histogram {1: 172060, 2: 5156, 3: 176, 4: 20}, max 4; cap-4 values ['0x20202', '0x40404', '0x80808', '0x101010', '0x202020', '0x2000202', '0x2020002', '0x2020200', '0x4000404', '0x4040004', '0x4040400', '0x8000808', '0x8080008', '0x8080800', '0x10001010', '0x10100010', '0x10101000', '0x20002020', '0x20200020', '0x20202000']
+Mt r=0: 177412 hub values; cap_r histogram {1: 174320, 2: 3072, 3: 20}; max 3; attaining 3-r: 20; VIOLATIONS of cap <= 3-r: 0 []
+Mt r=0:   maximal configurations at attaining values: 480; X histogram (qhub definition) {0: 160, 1: 320}; constrained-X histogram {0: 160, 1: 320}; O1 failures 0; hub values attaining 3-r with X = 0: 20; with constrained X = 0: 20
+Mt r=1: 17140 hub values; cap_r histogram {0: 15216, 1: 1804, 2: 120}; max 2; attaining 3-r: 120; VIOLATIONS of cap <= 3-r: 0 []
+Mt r=1:   maximal configurations at attaining values: 720; X histogram (qhub definition) {0: 432, 1: 96, 2: 192}; constrained-X histogram {0: 432, 1: 96, 2: 192}; O1 failures 0; hub values attaining 3-r with X = 0: 24; with constrained X = 0: 24
+Mt r=2: 616 hub values; cap_r histogram {0: 592, 1: 24}; max 1; attaining 3-r: 24; VIOLATIONS of cap <= 3-r: 0 []
+Mt r=2:   maximal configurations at attaining values: 96; X histogram (qhub definition) {0: 96}; constrained-X histogram {0: 96}; O1 failures 0; hub values attaining 3-r with X = 0: 24; with constrained X = 0: 24
+Mt witness r=0 h=0x2020200 R=[] S=['0x301', '0x60200', '0x4080004']: membership True, independent (rank 12 of 12) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+Mt witness r=0 h=0x20202 R=[] S=['0x602', '0x1000003', '0x4040800']: membership True, independent (rank 12 of 12) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+Mt witness r=1 h=0x2020200 R=['0x204000004'] S=['0x301', '0x60200']: membership True, independent (rank 9 of 9) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+Mt witness r=2 h=0x2020200 R=['0x204000004', '0x2020200'] S=['0x301']: membership True, independent (rank 6 of 6) True, m = 3-r True, pairs disjoint True, X = 0, constrained X = 0, O1 True
+Mt: mutation (one-swap configurations must be dependent): 50 tested, 50 dependent
+Mt: mutation (duplicated mixed vector) dependent: True; 19s total
+RESULT max cap_r: {'M': {0: 3, 1: 2, 2: 1}, 'Mt': {0: 3, 1: 2, 2: 1}}
+EXIT 0 Sun Nov  8 00:08:21 UTC 2026

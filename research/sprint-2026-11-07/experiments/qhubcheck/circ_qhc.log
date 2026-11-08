@@ -1,0 +1,25 @@
+== circ_qhc Sun Nov  8 00:26:37 UTC 2026
+A: 53 circuits (40 real), 212 phases; q range 7..16; orientation counts {'M': 106, 'Mt': 106}
+   violations (H2, HUB2, 4.5, 4.6, PK4, PK5, L23): 0; examples []
+   max m_i: 0; max A: 0; HUB2 slack min 7
+   pair identity h_i + h_j = b + c at shared missing labels: ok 1718, bad 0
+   mixed-vector family independent on 212 / 212 phases (mixed vectors per phase min 1 max 15); C1 failures at helpers with m >= 1: 0 (vacuous when max m_i = 0)
+   phases with q in 4..7: {7: 3}; helpers with u >= 3 per phase max 2
+   1s
+B (M): synthetic local configurations:
+     8 x ('H1-cap4-mutation', 0, 'gates DEPENDENT', 'H2 VIOLATED', 'HUB2 VIOLATED', 'elimination = F', 'rank identity')
+     8 x ('random-max', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    15 x ('random-max', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    12 x ('random-max', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     2 x ('witness', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     2 x ('witness', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     1 x ('witness', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+B (Mt): synthetic local configurations:
+     8 x ('H1-cap4-mutation', 0, 'gates DEPENDENT', 'H2 VIOLATED', 'HUB2 VIOLATED', 'elimination = F', 'rank identity')
+    15 x ('random-max', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    15 x ('random-max', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+    15 x ('random-max', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     2 x ('witness', 0, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     1 x ('witness', 1, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+     1 x ('witness', 2, 'gates independent', 'H2 ok', 'HUB2 ok', 'elimination = F', 'rank identity')
+EXIT 0 Sun Nov  8 00:26:58 UTC 2026

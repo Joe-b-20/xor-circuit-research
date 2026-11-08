@@ -1115,7 +1115,7 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   and S >= 35; one not resembling them would need a minimally realised group or cross-support
   cancellation, both unobserved.
 
-## F27. Hub capacity is exactly 3 - r; with two packing rows the survivors at G = 75 fall 996 -> 789 (qhub agent, xhigh; `qhub/REPORT.md`) [claimed proofs + finite-checked, UNDER INDEPENDENT CHECK; no certificates; no bound improvement]
+## F27. Hub capacity is exactly 3 - r; with two packing rows the survivors at G = 75 fall 996 -> 789 (qhub agent, xhigh; `qhub/REPORT.md`; CONFIRMED by `qhubcheck/REPORT.md`) [proved as checked; certificates in progress; no bound improvement]
 
 - The finite search qreal proposed was run in full: every odd non-boundary hub value h (128,068 M /
   177,412 M^T), every r in {0, 1, 2}, every set R of represented triples and every subset S of the
@@ -1143,6 +1143,18 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   hub exactly on the H2 limit with L5/L23 tight; and three q <= 3 keys H2 does not touch. The report
   specifies two finite searches (joint hub systems over a fixed set of full helpers; the M^T q = 1
   family of 7-8 full helpers); neither was run. The bound stays 75: 789 claims survive by LP status.
+- Independent check (qhubcheck, xhigh, 00:55 UTC): C1 CONFIRMED step by step; H2 CONFIRMED by a
+  third implementation (identical histograms, K_r = 3 - r, witnesses and X = 0 confirmed); Lemma H2 /
+  HUB2 and its case split CONFIRMED (integer refinement changes nothing); PK4 CONFIRMED; PK5
+  CONFIRMED as implemented (n_3 + 2 n_4 + 2 n_5 <= 2 with n_j = #{u = j}) but WRONG as written in
+  qhub's notation (a lone u = 4 helper would give 3 > 2): a notation slip, corrected here; the
+  recounts 996 / 381, 863 / 166, 789 / 116 reproduced verbatim (byte-identical scan files) and
+  independently, with the correction that the FM7/FM9 rows ARE part of every qhub variant (contrary
+  to its text) and kill one baseline key under HUB2 (167 / 117 keys without them; the survivor
+  counts 863 / 789 are FM-independent; FM's tables recomputed and valid); 212 real phases: 0
+  violations with m_i = A = 0 everywhere; synthetic m = 1..3 configurations exercise the rows and
+  the m = 4 mutations are rejected. Bookkeeping: the final scan leaves 859 LP-feasible and 551
+  load-bearing keys (qhub's 116 / 53 are the baseline-restricted parts).
 
 ## F28. What transfers to Inverse MixColumns (invtransfer agent, high; `invtransfer/REPORT.md`) [checked / measured / guess, as marked]
 
@@ -1260,6 +1272,8 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   re-entries (~2,600 per chain-hour) by ~35x; "~12 departures per second" was a wrong guess (0.72 per
   second measured); the cheap v3 identity changes within a single 88 stay, so signature-based node
   and plateau counts are finer than neutral components. Applied in F11, F14 and UNDERSTANDING 4.
+- F27 (qhubcheck): C1, H2, Lemma H2 / HUB2, PK4 / PK5 CONFIRMED; PK5's written formula and the FM
+  remark corrected; load-bearing keys are 551, not 53. Applied in F27.
 - F21 (qrealcheck): all lemmas and rows CONFIRMED, LP reproduced independently; key bookkeeping
   corrected (1,377 load-bearing keys, 264 with q <= 3). Applied in F21.
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h
