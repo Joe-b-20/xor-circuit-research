@@ -8,6 +8,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 
 ## 1. State of code and experiments
 
+- Harvest 02:24 UTC 2026-11-08: exact catalogue 1177 states processed, 495 products (new plateaus or memberships), 6 workers running; satmob {'UNSAT': 132, 'SAT': 0, 'TIMEOUT': 75}; satmob2 {'UNSAT': 160, 'SAT': 0, 'TIMEOUT': 38}; FOUND_87 anywhere: False.
+
 - 17:00 UTC 11-07: the owner's archive of unpublished proof work (2.3 GB, ~155k files, 270
   research folders) is extracted at `~/xs-campaigns/2026-11-07-sprint/import/zip/` (read
   `START_HERE.md`, `guides/CURRENT_STATUS.md` first; the owner's own status table governs).
