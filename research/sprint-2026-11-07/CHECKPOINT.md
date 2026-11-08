@@ -222,3 +222,11 @@ analysis, qjointcheck (F32 check). The closing report draft is REPORT-2026-11-08
    Osvik-Canright 2024/1076; decide on hunt E (2.5 h x 8), the sw2-twice run (1 h x 12), the F30
    12-worker experiment repeat with the exact catalogue, and the proof-side continuation (J1 second
    implementation + certificates for 789 -> 686, then the global label-sharing searches).
+
+## 8. Continuation after the close (model switched to Opus 5.5 at 03:20 UTC 11-08)
+
+Launched 03:25 UTC, all due by ~06:00: exp2 (translog/exp2: 8 workers x 2 h, 4 seeds x 2, pre-registered
+test of disconnected vs far-apart regions), d4c2 (depth-4 scope C open branches by pure core
+minimisation, <= 4 threads; FOUND_88AT4 flag if an 88@4 appears), qcert4 (certificates for the F32
+rows, 789 -> 686). Allowance at 03:24: all models 71 %, Fable 96 %; agents run on Opus. Record their
+results as F36+ and patch REPORT-2026-11-08T05.md section 6 by ~06:30 UTC.
