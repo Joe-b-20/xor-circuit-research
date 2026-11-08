@@ -232,4 +232,6 @@ rows, 789 -> 686). Allowance at 03:24: all models 71 %, Fable 96 %; agents run o
 results as F36+ and patch REPORT-2026-11-08T05.md section 6 by ~06:30 UTC.
 
 - qcert4 DONE 04:30 UTC (F36): 789 -> 686 certified (4,361 certificates, independent checker, mutation
-  tests); 686 claims still open at G = 75. exp2 and d4c2 still running.
+  tests); 686 claims still open at G = 75.
+- exp2 DONE 05:25 UTC (F37): neither far apart nor disconnected fits; locality is a short memory of
+  the start; meeting tests at 2 h are uninformative. d4c2 still running.

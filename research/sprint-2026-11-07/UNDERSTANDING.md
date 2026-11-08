@@ -324,7 +324,11 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   behave like one pool (F35: 0 shared plateaus across seeds vs 24 expected; same-seed chains re-meet),
   so a chain explores a local region; whether regions are disconnected or merely far apart needs
   longer runs, and the exact-plateau count per chain-hour needs the 3,300 logged signatures
-  catalogued. No core with a down-exit has been seen anywhere (0 of 4,314 sampled states, exhaustive
+  catalogued. exp2 (F37, 2 h, pre-registered) then showed the locality is a short memory of the
+  start (tens of minutes), not a region: same-start twins drift to the unrelated-state distance and
+  stop meeting, cross-seed chains never meet (0 vs 478 expected), so the 88 level is too large to
+  revisit at this scale (>= 2e7 v3 nodes under the null [model]) and meeting tests cannot separate
+  disconnected from far apart [measured]. No core with a down-exit has been seen anywhere (0 of 4,314 sampled states, exhaustive
   remove1; 0 at any fanned member of the catalogued plateaus, every member for the 155 of <= 2e4
   states).
 - Why the gates minimum of a map sits at a middle depth (F10: klsw17-m-8x8-gf256 321@10 beats

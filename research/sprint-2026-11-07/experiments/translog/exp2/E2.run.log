@@ -1,0 +1,19 @@
+campaign translog-exp2  seed 20261110  duration 2:00:00  profiles default  backend xorflux
+
+target          inputs  outputs  matrix sha256     spec
+aes-mixcolumns  32      32       2a16955dfe321e1b  aes-mixcolumns
+
+worker  target          objective  cap   gate limit  seed                                                                                                                      rng seed  settings
+q0-00   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D4/workers/free-00/records/g88-d6-e012d7680845dab4.json  20261110  3649a714e29a
+q0-01   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D4/workers/free-00/records/g88-d6-e012d7680845dab4.json  21261113  3649a714e29a
+q1-00   aes-mixcolumns  gates      none  none        88@5 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/DN/workers/free-01/records/g88-d5-9e0cf8a7831058b2.json  22261116  3649a714e29a
+q1-01   aes-mixcolumns  gates      none  none        88@5 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/DN/workers/free-01/records/g88-d5-9e0cf8a7831058b2.json  23261119  3649a714e29a
+q2-00   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-02/records/g88-d6-6342dc1558b0fafd.json  24261122  3649a714e29a
+q2-01   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-02/records/g88-d6-6342dc1558b0fafd.json  25261125  3649a714e29a
+q3-00   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D4/workers/free-03/records/g88-d6-2c2a6b25cc34b92e.json  26261128  3649a714e29a
+q3-01   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D4/workers/free-03/records/g88-d6-2c2a6b25cc34b92e.json  27261131  3649a714e29a
+
+frozen into /home/joebachir20/xs-campaigns/2026-11-07-sprint/translog/exp2/runs/E2
+stop with:   python3 xorflux-translog/xorflux stop /home/joebachir20/xs-campaigns/2026-11-07-sprint/translog/exp2/runs/E2   (or Ctrl-C here)
+status with: python3 xorflux-translog/xorflux status /home/joebachir20/xs-campaigns/2026-11-07-sprint/translog/exp2/runs/E2
+

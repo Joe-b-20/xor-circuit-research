@@ -1461,6 +1461,30 @@ two workers (same-start pairs as positive control, 15 cross-seed pairs), the 30 
 - Status of the proof side: 1,508 -> 1,313 -> 996 -> 789 -> 686 open claims at G = 75, every step
   certified. The bound stays L(M) >= 75.
 
+## F37. Transition-log exp2 (2 h, 8 workers, 4 new seeds x 2, departure keys logged): neither "far apart" nor "disconnected" fits; "local trails" is a short memory of the start (translog agent, Opus high; `translog/exp2/REPORT.md`) [measured; pre-registered, deviations listed]
+
+- Design pre-registered in `exp2/DESIGN.md` before launch (03:31 UTC); run 03:31-05:25 UTC, 10.6-12.4 M
+  steps per worker, restarts off, D0 settings; 0 states below 88 in 46,017 entries into 88. New knob
+  `translog.departure` (62-line diff kept apart from v8) logs the 88 state at every exit, fixing exp1's
+  failed reconstruction.
+- Distance: Jaccard of the 56 helper values, min over the 4 byte rotations. Calibration (added at the
+  interim, not registered): same v3 node <= 0.22; unrelated states ~0.85, where the metric saturates.
+- Same-start pairs drift apart within 20-45 min to 0.77-0.91, the cross-seed level; 3 of 4 pairs stop
+  meeting after 0-30 min and never re-meet; one pair (88 share 60-68 %) kept re-meeting.
+- Cross-seed: 0 shared v3 nodes at 1 h (205 expected, [177, 233]) and at 2 h (478 expected, [436, 521])
+  under the R2 null; independent wandering would need N_eff >= 2e7 v3 nodes [model]. The per-15-min
+  cross minimum rises (0.53 -> 0.70, rho +0.80); closest cross pair ever 0.377.
+- Exact hop test: 99 of 100 consecutive 88 -> 89 -> 88 hops stay on the exact plateau of the departure
+  state (exp1's 39 of 40 reproduced); same-start shared nodes: 69 same plateau, 0 different, 73 timeouts.
+- Verdicts: FAR APART not supported (no meetings, cross minimum does not shrink); DISCONNECTED clause 1
+  (cross minimum bounded away from 0) supported at 2 h; clause 2 (same-start saturates below cross)
+  not supported.
+- Revises F35's reading: chains do not stay in seed regions; they remember their start for tens of
+  minutes and then are as unrelated to their twin as to another seed's chain. With 2 h chains,
+  "disconnected" cannot be told from "too large to revisit", so meeting tests at this scale are
+  uninformative and helper distance cannot see structure past its ~0.85 ceiling. Plateau changes are
+  rare events inside a dense plateau-internal shuffle.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26

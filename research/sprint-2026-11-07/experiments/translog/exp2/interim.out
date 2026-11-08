@@ -1,0 +1,94 @@
+workers 8; common log end t = 3648 s
+  q0-00: rows 15111, 88 entries 4849, departures 4849, distinct ids 4805, rows below 88 0, helpers per state [56]
+  q0-01: rows 16356, 88 entries 6651, departures 6650, distinct ids 6063, rows below 88 0, helpers per state [56]
+  q1-00: rows 9925, 88 entries 3217, departures 3217, distinct ids 3010, rows below 88 0, helpers per state [56]
+  q1-01: rows 15783, 88 entries 4205, departures 4205, distinct ids 3675, rows below 88 0, helpers per state [56]
+  q2-00: rows 14250, 88 entries 3858, departures 3858, distinct ids 3833, rows below 88 0, helpers per state [56]
+  q2-01: rows 12520, 88 entries 2193, departures 2193, distinct ids 2174, rows below 88 0, helpers per state [56]
+  q3-00: rows 14997, 88 entries 5421, departures 5421, distinct ids 5351, rows below 88 0, helpers per state [56]
+  q3-01: rows 14264, 88 entries 5482, departures 5481, distinct ids 5471, rows below 88 0, helpers per state [56]
+
+(a) same-start pair distance of current 88 states, every 5 min (helper Jaccard, min over rotations)
+  t(min)     5    10    15    20    25    30    35    40    45    50    55    60
+  q0-00/q0-01   0.58  0.65  0.68  0.67  0.68  0.70  0.65  0.67  0.80  0.77  0.80  0.82
+  q1-00/q1-01   0.60  0.67  0.70  0.81  0.83  0.86  0.82  0.82  0.83  0.74  0.82  0.76
+  q2-00/q2-01   0.38  0.58  0.78  0.67  0.63  0.73  0.73  0.71  0.73  0.81  0.76  0.62
+  q3-00/q3-01   0.25  0.70  0.62  0.65  0.51  0.35  0.44  0.63  0.70  0.71  0.71  0.74
+(b) distance of each chain's current state to its own start
+  q0-00         0.56  0.65  0.62  0.62  0.62  0.62  0.62  0.62  0.76  0.77  0.77  0.76
+  q0-01         0.30  0.30  0.44  0.51  0.38  0.49  0.47  0.49  0.44  0.42  0.51  0.47
+  q1-00         0.42  0.53  0.55  0.76  0.83  0.83  0.81  0.78  0.76  0.76  0.78  0.78
+  q1-01         0.67  0.65  0.73  0.74  0.74  0.71  0.65  0.63  0.68  0.68  0.68  0.60
+  q2-00         0.38  0.40  0.71  0.74  0.74  0.74  0.77  0.77  0.74  0.82  0.82  0.76
+  q2-01         0.25  0.56  0.47  0.51  0.51  0.30  0.44  0.40  0.42  0.42  0.55  0.55
+  q3-00         0.30  0.68  0.74  0.78  0.73  0.73  0.77  0.73  0.70  0.58  0.68  0.71
+  q3-01         0.35  0.25  0.56  0.63  0.73  0.73  0.71  0.80  0.76  0.73  0.74  0.73
+cross-seed current-state distance (median / min over the 24 cross pairs)
+  median        0.85  0.85  0.86  0.86  0.87  0.85  0.86  0.83  0.87  0.84  0.87  0.86
+  min           0.73  0.76  0.71  0.74  0.80  0.78  0.77  0.74  0.80  0.63  0.68  0.74
+  seed-to-seed distances (cross groups): min 0.796 median 0.851
+
+(c) minimum distance between visited states (thinned to 1 state / 5 s per chain: q0-00 475, q0-01 663, q1-00 507, q1-01 565, q2-00 327, q2-01 351, q3-00 582, q3-01 620)
+  per-15-min-window minimum distance, windows 1..5
+  q0-00/q1-00   0.76  0.78  0.82  0.82     -  slope +0.0235 rho +0.95
+  q0-00/q1-01   0.74  0.76  0.76  0.77     -  slope +0.0083 rho +0.95
+  q0-00/q2-00   0.74  0.85  0.85  0.78     -  slope +0.0123 rho +0.32
+  q0-00/q2-01   0.71  0.74  0.76  0.82     -  slope +0.0339 rho +1.00
+  q0-00/q3-00   0.81  0.83  0.83  0.81     -  slope -0.0000 rho +0.00
+  q0-00/q3-01   0.78  0.82  0.77  0.81     -  slope +0.0026 rho +0.00
+  q0-01/q1-00   0.81  0.78  0.81  0.86     -  slope +0.0172 rho +0.63
+  q0-01/q1-01   0.82  0.78  0.83  0.74  0.76  slope -0.0172 rho -0.60
+  q0-01/q2-00   0.80  0.85  0.80  0.81  0.86  slope +0.0086 rho +0.62
+  q0-01/q2-01   0.78  0.81  0.80  0.82     -  slope +0.0103 rho +0.80
+  q0-01/q3-00   0.80  0.81  0.82  0.83  0.86  slope +0.0148 rho +1.00
+  q0-01/q3-01   0.82  0.83  0.74  0.71  0.78  slope -0.0198 rho -0.60
+  q1-00/q2-00   0.56  0.74  0.76  0.76     -  slope +0.0588 rho +0.95
+  q1-00/q2-01   0.56  0.55  0.77  0.85     -  slope +0.1068 rho +0.80
+  q1-00/q3-00   0.78  0.78  0.74  0.68     -  slope -0.0342 rho -0.95
+  q1-00/q3-01   0.78  0.78  0.76  0.83     -  slope +0.0125 rho +0.32
+  q1-01/q2-00   0.70  0.77  0.74  0.73  0.85  slope +0.0253 rho +0.60
+  q1-01/q2-01   0.68  0.74  0.74  0.65     -  slope -0.0095 rho -0.32
+  q1-01/q3-00   0.78  0.81  0.81  0.81  0.89  slope +0.0217 rho +0.89
+  q1-01/q3-01   0.78  0.82  0.78  0.70  0.83  slope -0.0022 rho +0.21
+  q2-00/q3-00   0.55  0.70  0.62  0.53  0.73  slope +0.0192 rho +0.30
+  q2-00/q3-01   0.53  0.70  0.62  0.68  0.78  slope +0.0497 rho +0.70
+  q2-01/q3-00   0.70  0.68  0.74  0.68     -  slope +0.0013 rho -0.21
+  q2-01/q3-01   0.71  0.74  0.76  0.73     -  slope +0.0058 rho +0.40
+  min over 24 cross pairs  0.53  0.55  0.62  0.53  0.73  slope +0.0383 rho +0.56
+  median over cross pairs  0.77  0.78  0.76  0.78  0.83  slope +0.0122 rho +0.50
+  per-pair slopes: median +0.0113, 6 of 24 negative
+  same-start pairs, per-window minimum distance (time-aligned windows)
+  q0-00/q0-01   0.00  0.63  0.60  0.71     -
+  q1-00/q1-01   0.00  0.53  0.73  0.67     -
+  q2-00/q2-01   0.00  0.53  0.60  0.55     -
+  q3-00/q3-01   0.00  0.19  0.07  0.56  0.67
+  cumulative minimum (all states up to window end) vs time-shuffled control, min over cross pairs
+  actual    0.53  0.53  0.38  0.38  0.38
+  shuffled  0.42  0.40  0.39  0.38  0.38
+  mean (actual - shuffled) over cross pairs +0.049 +0.043 +0.025 +0.002 +0.000  (> 0: later states closer than earlier ones = approach)
+  overall min cross-seed distance 0.377; per cross pair min: median 0.682
+  overall min same-start (any times) q0-00/q0-01 0.000, q1-00/q1-01 0.000, q2-00/q2-01 0.000, q3-00/q3-01 0.000
+
+(c) shared v3 nodes vs the null (N_eff = 1.3e5)
+  up to t = 3600 s (missing sigs 0); distinct v3 per chain {'q0-00': 879, 'q0-01': 573, 'q1-00': 912, 'q1-01': 149, 'q2-00': 804, 'q2-01': 898, 'q3-00': 2107, 'q3-01': 2833}
+    cross: P = 26,639,798, expected 204.92 (95 % [176.9, 233.0]), M = 0 pair incidences / 0 nodes; per pair {}
+    same: P = 7,321,527, expected 56.32 (95 % [41.6, 71.0]), M = 192 pair incidences / 192 nodes; per pair {'q0-00/q0-01': 0, 'q1-00/q1-01': 4, 'q2-00/q2-01': 55, 'q3-00/q3-01': 133}
+    shared exact-state ids: cross 0, same-start 5
+  up to t = 3648 s (missing sigs 0); distinct v3 per chain {'q0-00': 879, 'q0-01': 587, 'q1-00': 912, 'q1-01': 161, 'q2-00': 820, 'q2-01': 898, 'q3-00': 2123, 'q3-01': 2878}
+    cross: P = 27,224,277, expected 209.42 (95 % [181.1, 237.8]), M = 0 pair incidences / 0 nodes; per pair {}
+    same: P = 7,499,905, expected 57.69 (95 % [42.8, 72.6]), M = 192 pair incidences / 192 nodes; per pair {'q0-00/q0-01': 0, 'q1-00/q1-01': 4, 'q2-00/q2-01': 55, 'q3-00/q3-01': 133}
+    shared exact-state ids: cross 0, same-start 5
+
+same-start shared v3 nodes by 15-min window in which the node became shared (incl. start node)
+  q0-00/q0-01      1     0     0     0     0
+  q1-00/q1-01      1     4     0     0     0
+  q2-00/q2-01     56     0     0     0     0
+  q3-00/q3-01     85     7    42     0     0
+
+calibration (added at interim): helper distance quantiles [min, p10, med, p90, max]
+  same v3 node, two same-start chains (n = 196): [0.0, 0.069, 0.133, 0.194, 0.222]
+  consecutive entries of one chain (n = 2531): [0.0, 0.102, 0.194, 0.277, 0.6]
+
+(d) exact tests (pes_lib.compress, 60 s cap): {"shared_same": {"yes": 63, "timeout": 49}, "hop": {"yes": 99, "no": 1}, "hop_v3_changed": {"False": 57, "True": 43}, "hop_v3_changed_and_yes": {"False": 57, "True": 42}, "hop_v3_changed_and_no": {"True": 1}}
+  hop sample: worker q1-00, t 601-695 s, 100 hops; departure==entry exact state 12; median |xv ^ entry| 6
+  plateau sizes met: [(2187, '[3, 3, 3, 3, 3, 3, 3]'), (8019, '[33, 3, 3, 3, 3, 3]'), (54675, '[15, 15, 3, 3, 3, 3, 3]'), (105705, '[87, 15, 3, 3, 3, 3]'), (120285, '[33, 15, 3, 3, 3, 3, 3]')]

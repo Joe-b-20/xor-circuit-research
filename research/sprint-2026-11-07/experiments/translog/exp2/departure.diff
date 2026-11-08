@@ -1,0 +1,62 @@
+--- exp2/loop.py.orig	2026-11-07 19:04:04.349111731 -0500
++++ xorflux-translog/xorflux/engine/loop.py	2026-11-07 22:25:49.583055943 -0500
+@@ -628,6 +628,11 @@
+                         st.rollback(journal)
+                         g1, d1 = g0, d0
+                     else:
++                        _tld = self._tl
++                        if (_tld is not None and _tld.departure and g0 <= _tld.id_gates
++                                and g1 > g0):
++                            _ad, _rm = journal.changes()
++                            _tld.pending_departure = (st.key() - set(_ad)) | set(_rm)
+                         # Frontier points are recorded at their own depth, feasible or not: a
+                         # capped chain deeper than its cap still holds a valid circuit, and
+                         # 2026-10-28 lost a fox_mu8 519@10 and an InvMixColumns 92@11 that way.
+--- exp2/translog.py.orig	2026-11-07 19:32:19.381252224 -0500
++++ xorflux-translog/xorflux/engine/translog.py	2026-11-07 22:25:49.583055943 -0500
+@@ -59,6 +59,8 @@
+                    "identity), new (first time an identity is seen by this engine), never.",
+                    choices=("entry", "new", "never")),
+     "file": Knob("translog.jsonl", "File name inside the worker directory."),
++    "departure": Knob(False, "exp2: on an exit from <= id_gates, also log the state left "
++                      "(xid identity, xv values), from the proposal journal's net changes."),
+ })
+ 
+ 
+@@ -92,10 +94,11 @@
+         if directory is None:
+             return None
+         return cls(Path(directory) / cfg.file, worker_id, target, recorder, cfg.band_gates,
+-                   cfg.id_gates, cfg.rotate_bits, cfg.values, cfg.values_gates)
++                   cfg.id_gates, cfg.rotate_bits, cfg.values, cfg.values_gates,
++                   getattr(cfg, "departure", False))
+ 
+     def __init__(self, path, worker_id, target, recorder, band_gates, id_gates, rotate_bits,
+-                 values_mode, values_gates=None):
++                 values_mode, values_gates=None, departure=False):
+         self.path = Path(path)
+         self.worker_id = worker_id
+         self.recorder = recorder
+@@ -105,6 +108,8 @@
+         self.n = target.n_inputs
+         self.rotate = rotate_bits
+         self.values_mode = values_mode
++        self.departure = bool(departure)
++        self.pending_departure = None       # set by the loop on an accepted exit from id band
+         self.g = None                       # gate count of the last state seen
+         self.rows = 0
+         self.entries = 0                    # rows with an identity
+@@ -152,6 +157,13 @@
+                 row["v"] = values
+         elif g <= self.values_gates and self.values_mode != "never":
+             row["v"] = sorted(state.key())
++        dep = self.pending_departure
++        if dep is not None:
++            self.pending_departure = None
++            if kind == "step" and p is not None and p <= self.id_gates < g:
++                xv = sorted(dep)
++                row["xid"] = _identity(xv, self.n, self.rotate)
++                row["xv"] = xv
+         self._write(row)
+         self.seconds += perf_counter() - t0
+ 

@@ -1,0 +1,63 @@
+# exp2: 120m, 8 MixColumns workers, uncapped, v8 defaults as hunt D0, translog on (+ departure
+# keys), restarts off.  4 2-worker groups q0..q3, each pair started on one hunt-D 88 record.
+
+[campaign]
+name = "translog-exp2"
+seed = 20261110
+duration = "120m"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.enabled" = false
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+"translog.enabled" = true
+"translog.band_gates" = 89
+"translog.id_gates" = 88
+"translog.rotate_bits" = 8
+"translog.values" = "entry"
+"translog.values_gates" = 89
+"translog.departure" = true
+
+# D4 free-00 root anneal3#1935188101 v3 b4701e4a7296214a depth 6
+[[workers]]
+name = "q0"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D4/workers/free-00/records/g88-d6-e012d7680845dab4.json"]
+
+# DN free-01 root naive#4079938347 v3 03add2b9593df086 depth 5
+[[workers]]
+name = "q1"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/DN/workers/free-01/records/g88-d5-9e0cf8a7831058b2.json"]
+
+# D0 free-02 root naive#1611000713 v3 d2997fa85da06d81 depth 6
+[[workers]]
+name = "q2"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-02/records/g88-d6-6342dc1558b0fafd.json"]
+
+# D4 free-03 root paar#2407742785 v3 a2b72e119e764b75 depth 6
+[[workers]]
+name = "q3"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D4/workers/free-03/records/g88-d6-2c2a6b25cc34b92e.json"]
