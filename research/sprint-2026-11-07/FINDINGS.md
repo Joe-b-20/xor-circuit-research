@@ -511,7 +511,11 @@ all be distinct from each other and from K (sound: duplicates never help). An UN
 therefore excludes exactly the circuits with <= 87 gates whose value set contains K; it says
 nothing about circuits missing even one value of K. Union over the repo circuit's 37 refuted
 windows: any 87 differs from that circuit in at least one value of each of 37 sets of 79-84
-values; over all refuted windows (22:30 UTC) the union of removed values covers 81 of the repo
+values. POWER CAVEAT (F29): the archive's identical instrument returned UNSAT on 17 of 17 control
+windows around circuits with a provably smaller circuit, because improvements sit at mask distance
+~42; until the sprint's own slack-1 control (R0, running) says otherwise, these refutations are
+theorems about kept sets, not evidence against 87. Over all refuted windows (22:30 UTC) the union of
+removed values covers 81 of the repo
 circuit's 88 values and 72-74 of each other circuit's. The 1,084 two-seed windows (k <= 9, repo) are
 the first non-local statements (pairs of corners). The 16 timeouts are open windows. None of this
 bears on 87s away from these 37 circuits. Advance: it turns a "no move" fact into a "no circuit"
@@ -1161,11 +1165,49 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   212-278 vs 41), suggesting "88 on both maps" is the search's reach rather than a shared wall; a
   cheap test is an uncapped campaign on the inverse from its 88@17 (never run).
 
+## F29. The archive's 87 attempts against the sprint's SAT scopes, and the missing power control (arch87 agent, opus; `arch87/REPORT.md`) [archive claims with their own labels; one control fact changes how F13/F23 are read]
+
+- The owner's August `fence_sat` asked the same order-free value-set question as sat87 (frozen core +
+  k-mask window). On 17 windows of 89-97-gate circuits where a smaller circuit provably exists it
+  returned UNSAT on all 17; the owner's verdict was "likelihood ratio ~ 1.00". The archive's other
+  exact -1 window solvers over all 2^32 masks (mutant_satrepair k = 5-10, 6,472 UNSAT; xor_encoding
+  k = 10-13; band_hunt to n = 11; downstep 20,893 decisions) also found 0 SAT on the August 88s. The
+  stated reason: in the controls, improving moves sat at mask distance min 3, median 42, max 48;
+  below k ~ 25 there is "no viable operating point" [archive]. The sprint has run no slack-1 power
+  control (the m = k check, which re-finds the 88, is not one). So F13 and F23 are correct theorems
+  whose weight as evidence about 87's existence is unmeasured and, if the archive's control
+  transfers, close to nil at k <= 12. This caveat is now attached to F13, F23 and I.4.
+- Twenty-two attempt families are tabulated (space, result in the owner's labels, why it stopped,
+  relation to the sprint's scopes S1-S4, untried idea): neighbourhood certificates, fence_sat, exact -1
+  windows, convex sub-blocks, alphabet rungs and pools (including union_sat, the archive's only large
+  negative with a WORKING power control: floor 88 over 348,405 unions of two 88s while the same test
+  finds 88s in 0.77 % of 89∪89 unions), one-target-short trims (0 of 1,630,797 complete), value-pool
+  MILPs, k-foreign census (four-foreign complete around canonical_00: any circuit with <= 55 helpers
+  needs >= 5 helpers outside it; five-foreign 81.9 % done), four-exterior, pricing LP (>= 84 only),
+  blank exact instances (all UNKNOWN; cannot re-find known 88s), restricted classes, the demand-flow
+  backbone (1,291 open triples), the 18-pair foundation, local moves, engines and learning, partial-
+  circuit repair (candidate D: 87 gates computing 31 outputs, y19 missing; "rewiring D within 87
+  gates remains a different question"), grammars, identities, the exit search, transposes.
+- Ranked untried exact formulations with costs: R0 power control (2-6 core-hours; prerequisite); R1
+  large windows only (queued in satmob); R2 r-outside as one SAT per (pool, r); R3 the demand-flow
+  frontier (1,540 instances at k = 8); R4 near-miss anchors (candidate D; the 18-pair state); R5
+  finish the five-foreign census with sat87; R6 band_hunt's frontier on our plateaus; R7
+  class-conditional large windows; R8 the 75/76 partial circuits. Not recommended: blank instances.
+- Strongest conditional negatives in the archive, with scope: four-foreign complete (exhaustive at
+  k <= 5 around canonical_00), four-exterior (any 87 containing x7+x23 needs >= 5 quotient values
+  outside a 114-value pool), free-closer (<= 1 mask outside the region alphabets), value pools (HiGHS
+  status only), PLX3 (plane-local layer free), union_sat, one-target-short corpus, odd helpers (F20),
+  depth >= 4 for any 87 (from D3 >= 93).
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
   first-layer-equal 90@4 states on disk, 11 of them in the family's remove1 basin; the 8 run-final
   traps are not). Applied in F15 and UNDERSTANDING 7.
+- F13/F23/I.4 (arch87): the archive's fence_sat power control (17 of 17 UNSAT on windows that
+  provably contained an improvement) means the sprint's window refutations have unmeasured, probably
+  negligible, evidential weight about 87 at k <= 12; a power control (R0) is running; the "advance"
+  wording in I.4 is qualified accordingly.
 - F21 (qrealcheck): all lemmas and rows CONFIRMED, LP reproduced independently; key bookkeeping
   corrected (1,377 load-bearing keys, 264 with q <= 3). Applied in F21.
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h

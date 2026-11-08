@@ -1,0 +1,355 @@
+# PHASE E — Wave-5 wind-down and the root-supply experiment (2026-08-09 → 08-11)
+
+Source: `W5/STATE_2026-08-11.md`, which supersedes `W5/CAMPAIGN_VERDICT.md` for
+everything after 2026-08-08.
+
+## E1 — The root-supply experiment (Lane 2) — `W5/burn/simple/execute/`
+
+**Idea (thinker_d's hypothesis, D3).** Every from-scratch root ever descended is
+zero-cancellation / 100 % target-subset masks, while every record 88 is ~25 %
+cancelling. If so, the campaign's entire region supply has been drawn from one
+structural corner — which would be the most actionable finding since the plane law.
+
+**Design.** Pre-registered, paired seeds, equal CPU (1,488 core-s per arm), naive
+roots vs cancellation-planted roots.
+
+**At n = 40/arm** (`W5/STATE_2026-08-11.md` §3): mean endpoint 89.80 naive vs
+**89.53** cancel; reached ≤ 89 35.0 % vs **52.5 %**; reached 88 **2 vs 5**. Paired:
+cancel better 17, tie 11, naive better 12; mean diff −0.275 gates, 95 % CI
+[−0.725, +0.175]; McNemar p = 0.21 (≤ 89), 0.45 (= 88). **Not significant — as
+pre-registered.** Note the sign was already *opposite* to thinker_d's 3-vs-3 pilot
+(which had run arms at unequal effective compute).
+
+**At n = 90/arm — CONCLUDED, hypothesis NOT SUPPORTED** (`W5/STATE_2026-08-11.md`
+ADDENDUM, 2026-08-11 evening):
+
+| measure | naive | cancellation |
+|---|---|---|
+| n | 90 | 90 |
+| mean endpoint | 89.62 | 89.61 |
+| reached ≤ 89 | 46.7 % | 51.1 % |
+| **reached 88** | **11** | **6** |
+
+Means identical; the ≤ 89 gap fell from 17.5 points to 4.4; and the 88-arrival count —
+the measure that matters — **reversed** (naive 11 vs cancel 6, opposite to n = 40's
+2 vs 5). **Outcome: REFUTED (the hypothesis), FOUND-NOTHING (the search).** "The n=40
+result was early-sample noise, exactly as pre-registered." This also reconciles the
+tension with evolve's independent n = 180 finding — **evolve was right.**
+
+A parallel duplicate lane (`W5/burn/simple/executor/STATUS.md`, updated 2026-08-12)
+agrees: naive n = 50 → 5 arrivals at ≤ 88 (10.0 %); cancel n = 52 → 3 (5.8 %).
+
+## E2 — Closing the timeout queue
+
+Two objects closed the same evening, **both TIMEOUT/UNKNOWN, neither reportable**:
+`FCN2_*_n85` (the rebuilt 85-mask alphabet — the control itself timed out at 5,354 s,
+so the object remains UNDECIDED, not refuted) and `FCW_ctrl88_V88pref240b` (a 4 h
+SAT-tuned retry; the widest-alphabet rung stays UNCONTROLLED). **Lesson on the
+record:** for that object "the alphabet must be large enough to be non-vacuous and
+small enough to be decidable, and those windows may not overlap."
+
+Wave-6's T2 later partially resolved these (see G/T2): `FCN2_ctrl88_n85`'s control
+now PASSES, making the n85 rungs CONTROLLED — but still TIMEOUT, so still not
+theorems. `FCW_ctrl88_V88pref240` is CONTROLLED-and-still-TIMEOUT.
+
+## E3 — Control hygiene became infrastructure
+
+`W5/burn/simple/execute/CONTROL_AUDIT.md` + `audit_controls.py`: every K ≤ 87 rung is
+paired with a K = 88 control on the same alphabet / free-tier / depth, and
+`summarize.py` stamps VACUOUS automatically **so a failed control can never quietly
+become a theorem in a later table.** This is an INSTRUMENT, and arguably the most
+durable thing the burn produced.
+
+**Campaign compute stopped 2026-08-11** except `evolve/` (later killed in wave-6
+triage). Final wave-5 state: best verified 88, `BREAKTHROUGH/` empty, no claim that
+88 is optimal.
+
+---
+
+# PHASE F — Meta-work: the publication package (2026-08-08)
+
+`W5/publication_draft/` — `DRAFT.md` (37.6 kB), `CLAIMS_AUDIT.md` (17.8 kB),
+`PAPER_OUTLINE.md`. **INSTRUMENT.** This is an attempt to settle 87 "by other means"
+in the sense that it forces every claim to name its evidence class.
+
+`CLAIMS_AUDIT.md` maps every quantitative claim in the draft to its on-disk source
+file, marks numbers that were still moving `[FINAL-AT-STOP]`, and carries a
+correction register (§8) of ten items: **C1** 40→22 windows; **C2** Chao1
+misapplication; **C3** N_depth3 57→66 (now →80, see G/T5); **C4** the novelty table;
+**C5** 45→43 conversions; **C6** kissat UNSAT-tuned record attempts; **C7**
+`lp_iterations = 0`; **C8** 123/128 false UNSATs and the fence validation; **C9**
+harvest truncation; **C10** the six live bugs.
+
+Four global scope checks are enforced across the draft: **no optimality claim
+anywhere**; P(87 exists) ≈ 0.60 deliberately kept OUT (it is decision support, not a
+result); the §5c "v·(1,1,1,1) mask" observation deliberately kept out on its own
+source's instruction; and every negative sits next to its control ("if editing moves
+one, move both").
+
+Two unresolved caveats blocking submission, recorded in `W5/STATE_2026-08-11.md` §5:
+this box's clock steps backwards, and the **ARCHIVED** exact-decider certificates use
+wall-clock deadlines (the burn deciders were immunized with a monotonic shim; the
+archived ones were not). Audit before submitting.
+
+---
+
+# PHASE G — Wave-6 (launched 2026-08-11, still running)
+
+Brief `W6/COMMON_BRIEF.md`; triage and kill log `W6/TRIAGE.md`. This wave executes
+§5 of `W5/STATE_2026-08-11.md` and the ranking in `W5/burn/assume87/solver.md` §4.
+Author directive at ~21:20 on 2026-08-11: time limits, kill no-potential lanes, full
+freedom to alter/audit/replace methods.
+
+## G/T1 — skeleton_pools: generative pool search — `W6/skeleton_pools/` (8 cores)
+
+**Idea.** The top-ranked discovery instrument. Generate pools of cross-plane masks;
+each pool plus the 32 targets plus all 88 plane-local masks forms an alphabet, and one
+RC2 MaxSAT query returns the **exact** minimum gate count ("floor") inside it. A
+floor ≥ 88 **is** the K = 87 UNSAT for that alphabet, and it arrives with a decoded
+88-gate witness — its own positive control. Unlike every window method, its SAT event
+can fire far from the 88 plateau.
+
+**Scale** (`W6/skeleton_pools/STATUS.md`, updated 2026-08-12 07:20:27 EDT):
+**88,908 pools decided by exact floor**, recent rate 4,818/h, mean floor wall 1.00 s,
+supervisor uptime 10.38 h. Floor histogram: 88 → 16,941 (19.05 %); 89–91 → 7,095;
+92–95 → 19,691; 96–100 → 26,143; 101+ → 19,026; INFEASIBLE → 12. Rungs: K87_UNSAT 40,
+K88_SAT 112, K88_UNSAT 27, K88_TIMEOUT 1. Elite archive: 300 entries, **floors
+88:300**. `W6/skeleton_pools/ATTEMPTS.md`: 1,920 distinct verified skeletons scanned
+→ 1,269 cross masks (706 2-plane, 551 3-plane, 12 4-plane); the "big" lane decided a
+220-mask alphabet at exact floor 88 in 40.4 s, claimed to cover ~C(100,64) ≈ 10²⁸
+skeletons in one query.
+
+**Outcome: FOUND-NOTHING (best floor anywhere 88; no BREAKTHROUGH files) + INSTRUMENT
++ THEOREM per pool (vocabulary-conditional on that alphabet, depth-unconditional at
+L = 87).**
+
+**The A1 audit's two findings on this track are load-bearing.**
+1. **Confirmed clean:** the plane-local tier is the COMPLETE PL universe (88 masks,
+   independently enumerated), so "the PL layer is completely free" is exactly true.
+   Positive-control record **25,074/25,074** floor rows decode, self-check, and match
+   floor exactly.
+2. **A real hole:** the cross generator capped at **4 bit-planes** in three
+   undeclared places. Measured support across all ten families: 15,299 masks proposed
+   → 2pl 11,954, 3pl 2,725, 4pl 620, **≥5pl 0**. Blind-spot statement: "an 87 with ANY
+   gate mask touching ≥ 5 planes escapes every T1 query past and future —
+   structurally, not probabilistically. This is the V88-saturation failure pattern one
+   abstraction level up." Removal cost measured at ZERO. Patch (PLANE_CAP = 8,
+   HI_PLANE_RATE = 0.12) applied and the loop restarted ~21:5x.
+3. Throughput was **over-counted ~15 %** by worker-restart replays (25,172 rows /
+   21,291 distinct pools; ~13 % of RC2 wall wasted). Fixed by the same patch.
+4. Kill-criterion input: the `nov` family scored **0/4,440 at floor 88 (min 89)** —
+   every measured step away from anchors costs ≥ 1 gate.
+
+**Deadline** set in `W6/TRIAGE.md`: ~12 h from restart (≈ 2026-08-12 10:00). As of
+this morning the loop's last heartbeat is 07:21 and no worker processes are alive —
+**it has stopped; whether by deadline or otherwise is `[unverified]`.**
+
+## G/T2 — sat_boost: do the standard SAT accelerators help? — `W6/sat_boost/` (3 cores)
+
+**Idea.** Test whether march_cu cube-and-conquer and CryptoMiniSat + Gauss-Jordan
+deliver the ×20–100 that `solver.md` §3 assumed, then clear wave-5's timeout queue.
+
+**Scale** (`W6/sat_boost/STATUS.md`, 2026-08-11 18:50). Benchmark rung `PLVB_top150`,
+238 masks, K = 87 / L = 87 (34,062 vars / 355,842 clauses). CnC at `-d 8`: 256 cubes in
+9.5 s, **0 of 256 decided in 9 minutes**. At `-d 13`: 8,192 cubes in 296 s, cube #0
+alone ran 599 s undecided. Domain cuber: 1,024 cubes, 16 attempted, **0 decided**.
+XOR scan on a 145-mask rung: **6 recoverable XORs, all length 2**. CMS is 1.1×–4.3×
+*slower* than kissat. RC2, by contrast, gave ≥ 40× / ≥ 19× / ≥ 15× / ≥ 11× on
+201/199/216/200-mask alphabets.
+
+**Outcome: REFUTED-METHOD ×2 + THEOREM ×3 + RETIRED.**
+- Cube-and-conquer: "the ×20–100 of solver.md §3 is NOT there. **Measured multiplier
+  ≈ 1.**" CMS/Gauss: "**CMS is not the lever; retire the line**" — and the cause is
+  structural, not tuning: the GF(2) structure is consumed at encoding time by
+  `build_triples`.
+- Three new theorems, each **K = 87 UNSAT, depth-unconditional, vocabulary-conditional**,
+  each CONTROLLED by an oracle-VALID 88-gate witness: `PLX3_d6_d7_fs` (213 masks,
+  floor 88 in 45.3 s), `PLX3_d5_d6_fs` (211, 541 s), `PLX3_d6_d8_fs` (211, 114.3 s).
+  With them, all six `PLX3_*_fs` rungs are decided. Also `PLX5_all` (241 masks) floor
+  88 in 33,514 s and `PLX5_all_89` (249) in 31,071 s.
+- Resolved two wave-5 control failures (see E2).
+- **RETIRED by triage** the same evening: the PLVB/PLN/PLX floor queues were killed
+  with cause — "harvested-vocabulary theorems; wave-5 controls measured that entire
+  evidence class at LR ≈ 1 about the 87. Certification, not discovery."
+
+**Caveat from its own README:** `floor: null` ⇒ VACUOUS (a statement about the pool,
+not about 87); TIMEOUT ⇒ UNCONTROLLED, "Not evidence." And "variance inside a size
+class is two orders of magnitude, so a timeout is never evidence about pool size."
+
+## G/T3 — disc_windows: the disconnected-window generator — `W6/disc_windows/` (4 cores)
+
+**Idea.** Close D1's measured blind spot. Reading the plant construction backwards
+gives a witness-free predicate — a *rebracket pair* is a pair of masks sharing ≥ 2
+common virtual parents — which makes the improving class small enough to **exhaust**
+rather than sample.
+
+**Scale** (`W6/disc_windows/STATUS.md`, refreshed 2026-08-11 18:15). Blind-spot
+evidence re-confirmed: `cluster` 0/197 k, `cone` 0/118 k, wave-5 `sibling` 0/74 k.
+Hit rates: co-parent **1 in 81** at m = 4, vs `disjrand` 1 in 292,449 and uniform
+C(58,4) = 424,270 — the co-parent structure buys **~3,600×**. Class sizes: T0 m = 4 →
+11 edges / 42 windows; T2 → 261 edges / ~23.4 k windows; T4 → 357 edges / ~59 k.
+`exhaustive4.py` needed 16 hours where the class closes in **3.6 seconds**. Anchors:
+3,907 distinct verified 88-gate states. Live tally: **872 window decisions, 872
+(100.0 %) theorem-grade, 0 SAT, 0 hits.**
+
+**Outcome: FOUND-NOTHING + INSTRUMENT (the co-parent predicate, validated 5/5 against
+the plant including an end-to-end realization of a verified 88), then RETIRED.**
+Killed at 22:30, ~2 h ahead of its heartbeat deadline. Cause on record
+(`W6/TRIAGE.md`): "load 25 and the instrument is now dominated: its exact deciders cap
+at n ≤ 9 / budget ≤ 3 while A3's new encoder decides n = 14–16. 872+ decisions, all
+theorem-grade, 0 SAT — ledgered."
+
+**Caveat.** A cell is CLASS-CLOSED only for that (anchor, d, m, tier) — "a theorem
+about the class, not about all windows of that size." At budget ≥ 4 it uses partial
+DFS, where "a WIN is real, a no is NOT a proof."
+
+## G/T4 — dfs_spike: a native DFS over derivation DAGs — `W6/dfs_spike/` (2 cores)
+
+**Idea.** Build branch-and-bound DFS in C directly over derivation DAGs (no CNF),
+re-decide known ground truths, and **measure** the speculative 10⁻⁶ pruning constant
+in the campaign plan — then sweep convex blocks at budget B − 1, where any SAT *is*
+the 87.
+
+**Scale** (`W6/dfs_spike/STATUS.md`, 2026-08-11). Validation: **153 rows** vs
+`brute()`, 0 mismatches; **373 ledgered UNSAT rows, 373 agree, 0 conflicts**;
+**40 rows on which kissat TIMED OUT (90–155 s) decided in 0.1–25 s**; selftest 8/8;
+**398/398** calibration instances passed the planted control. Pruning: median log₁₀
+prune −5.03 at n = 8 → **−6.90 at n = 12**; 4.2e5–1.8e6 nodes/s. The decisive rung:
+`B=15 W=9 G=9 nreq=8 n=14 → UNSAT, 1,415,967,693 nodes, 830.72 s, prune = 10⁻⁸·¹⁴⁵`
+— 13.8 min on one core against a `[SPEC]` estimate of ~30 min. Reach table:
+B = 17 ≈ 4.7 d single-core / 5.6 h on 20 cores; B = 19 marginal; B = 20 out.
+
+**Outcome: INSTRUMENT + a load-bearing measurement (verdict GO) + ONGOING search.**
+"No SAT at any budget B−1. Best so far remains 88."
+
+**Two corrections it forced on the campaign plan.**
+1. `10⁸ nodes/s/core was never achievable` — the real figure is ~2 × 10⁶,
+   memory-bound (69 % of visits are TT hits).
+2. **A soundness bug in the published campaign spec**: `solver.md`'s distance prune
+   `max_t(δ(t)−1) + #unbuilt` "is **not** a lower bound … Using it would manufacture
+   false UNSATs." Replaced by `LB = max(#unbuilt, max_t δ(t))`.
+
+**ONGOING as of 2026-08-12 morning.** `sweep.py --minB 16 --maxB 17` is alive (PID
+3392211, ~14 h 39 m elapsed, 48 h cap, resumable). `sweep_big.log` shows B = 16 and
+B = 17 rows hitting `CAP` at 3,600 s — **inconclusive, not UNSAT**. Kept by triage as
+"genuinely undecided territory (a SAT is the 87)".
+
+**Caveat.** The file explicitly warns against using its section-E log-linear fit
+(×4.5/gate) — it under-projects — and says the ×6.2/B empirical ladder "with only
+three rungs is not yet a claim."
+
+## G/T4b/c — dfs_par: the parallel engine — `W6/dfs_par/`
+
+**Idea.** Root-split T4's validated engine into tasks over one shared lockless
+transposition table, fix the load-balance ceiling with adaptive re-splitting, and run
+the B = 16 → 17 → 18 sweep over the five record anchors plus the remote 88s (SIGMA5,
+SIGMA7, alg_2). A SAT at any block *is* the 87 (monotone-improvability lemma); a full
+UNSAT sweep certifies, per block, the entire convex **down-set** of that block.
+
+**Scale** (`W6/dfs_par/STATUS.md`, updated 2026-08-12 ~08:5x EDT). Validation gates:
+**V1 63 rows × 8 configs = 504 decisions, 145,752 re-splits, 0 mismatches**; V2 79
+rows (40 SAT / 39 UNSAT) × 8 = 632 decisions, 0 mismatches; V3a 20 rows 0 FAIL;
+V3b 32 rows 0 FAIL. Heaviest V1 row: 23,447 re-splits, still agreed. Pool-capacity
+stress: a 45-task root grew to **786,437 tasks** with 32,661 re-splits and still
+returned the ledgered UNSAT (40 % node overhead). Checkpoint round-trip skipped
+**16,197** already-proven tasks. Scaling on the B = 15 rung: 1 thread 376.5 s;
+8 threads 55.6 s (eff 0.85); **16 threads 33.1 s (eff 0.71, 25.10× vs single-core
+dfs.c, 4.31e7 nodes/s)**. Load-balance motivation: 8 workers finished **8 of 34,080
+tasks in 11 minutes** on the B = 16 slack-7 row.
+
+**Outcome: INSTRUMENT + ONGOING.** "Best so far: 88 — no 87. Zero SATs at any budget
+B−1. Zero LOUD-FAILUREs. Zero failed positive controls."
+
+**Live now.** `./par_prop` is running (PID 3646441). Two STATUS sections are still
+placeholders — the A/B table and THE SWEEP are both marked "(in flight)".
+`ab_resplit.log` has three completed rows (T4b 373.4 s; T4c re-split disabled 418.4 s;
+T4c adaptive 407.5 s), i.e. **adaptive re-splitting is not yet a win on that row and
+the T4c engine is slightly slower than T4b**; a v2 "syncstep fix" pair is running with
+the proportional row not yet reporting. B = 18 pricing probe has SIGMA7 rows at n = 13
+(1.0 s) and n = 14 (6.7 s), both UNSAT.
+
+**Caveats.** "UNSAT ⟺ the pool drained to quiescence and no worker ever aborted on a
+cap or the global stop flag. **CAP otherwise — never reported as UNSAT.**" The split
+phase deliberately never touches the TT ("storing 'failed' for a node whose children
+were merely deferred would be a fabricated certificate") and there are deliberately no
+in-progress markers. The 16-thread efficiency numbers are **not** comparable to T4b's
+(different box load); "the honest cross-run number is the wall clock: 62.0 s → 33.1 s."
+
+## G/T5 — lower_bound: the proof side — `W6/lower_bound/` (1 core)
+
+**Idea.** Settle 87 from the other direction. A structure theorem makes the depth-3
+candidate space finite and complete, so an LP over it plus valid inequalities, with an
+**exactly re-checked rational dual certificate**, lower-bounds the gate count of any
+depth-≤3 MixColumns circuit.
+
+**Scale.** Model: **7,897 candidate level-2 masks, 496 candidate edges, 6,120
+decompositions** (`W6/lower_bound/THEOREM.md`). Certificate: **23,450 nonzero rational
+duals**. Controls: `control_cuts.py` over 23,405 inequalities and `control_lp.py` over
+72,830 rows, both PASS at objective exactly 65 = 97 − 32. `lp_level.py 4`: 92,143 rows,
+**47.59824561403512** vs level 1's **47.59824561403509**.
+
+**Outcome: THEOREM — unconditional within its scope, and the strongest proof-side
+result the project holds.**
+
+> **Every 2-input-XOR circuit of depth ≤ 3 computing the 32×32 GF(2) AES MixColumns
+> matrix has at least 80 gates. Bracket: 80 ≤ N_depth3 ≤ 97.**
+
+It is depth-conditional in *scope* (depth ≤ 3 only) but unconditional *within* that
+scope: no vocabulary restriction, no solver trust, no floating point. Re-checkable
+offline in one command (`python3 certify.py --check cert_depth3.json`). Certified
+by-products: every depth-3 circuit has ≥ 18 level-1 edges, plus a per-E certified LP
+profile for E = 18…31, and the C7 argument (degree histogram 1:5020 2:2052 3:584
+4:157 5:68 6:16, max degree 6 ⇒ |L2| ≥ ⌈44/6⌉ = 8) closing E ≥ 49.
+
+**THE CORRECTION CHAIN — this constant has now moved twice and the trail must be
+published, not overwritten** (`W6/lower_bound/PUBLICATION_CAVEATS.md`, correction C3):
+
+- **57** — CP-SAT dual bound with the LP relaxation effectively off
+  (`lp_iterations = 0`). This is the number in `W5/CAMPAIGN_VERDICT.md` §2.
+- **66** — the same model re-run with `linearization_level = 2`. Still an uncertified
+  solver dual read from a log, **never certified**. This is the number in
+  `W5/publication_draft/DRAFT.md` §4.1, and the bracketed "[claim 67]" note attached
+  to it referred to a run whose termination was never confirmed — delete both.
+- **80** — wave-6 T5, exact rational dual certificate over the same complete model
+  plus valid inequalities C1–C10. Supersedes both.
+
+**And a second negative that closes a line — C11, measured not assumed.** The LP of
+this formulation is **saturated at 47.598 across cut levels 1, 2, 3 and 4**; each cut
+family adds exactly 0.000. Therefore the depth-4 theorem (which needs dual 56 ⇒
+N_depth3 ≥ 88, i.e. "every ≤87-gate circuit has depth ≥ 4") is **not reachable on this
+formulation — "no, not with more days."** The whole distance from 48 to 56 is
+integrality gap over 29,080 binaries; SCIP's root cut loop bought +2.12 in 1,525 s and
+after 27 minutes had not left node 1; the cheap structural lever (the edge floor) is
+capped at 85 by the 27 edges of the real 97-gate circuit. Reachable targets here are
+81–85. "Any future claim above 80 on this formulation must come from integer
+reasoning, not from another cut family."
+
+**Scope sentences that must survive editing** (verbatim requirements from
+`PUBLICATION_CAVEATS.md` §4): the theorem is about **depth ≤ 3 only** — the campaign's
+88s sit at depth 5–7, so **it does not bear on them**; at unrestricted depth the
+provable statement remains **N ≥ 33** (`general_bound.py`) and the draft must not let
+Theorem 1 be read as a general-depth bound; the 97@3 upper bound and its control at
+cost 65 are what make the bound non-vacuous.
+
+**Evidence-class discipline.** The branch-and-cut number (HiGHS 49.478, SCIP 10.0
+49.715 ⇒ N_depth3 ≥ 82) must be reported **separately and labelled a solver claim**:
+"Do not merge those two into a single headline number; they are different evidence
+classes, which is exactly the failure mode that produced 57 and 66." pyscipopt's PyPI
+wheel has no exact/VIPR mode, so SCIP is a solver-claim channel only.
+
+**RETIRED by triage:** the SCIP M1 (72 h) and E20 (48 h) runs, cause — "T5b's own
+analysis proved the d = 56 target unreachable on this formulation (LP saturated at
+47.598, gap all integrality, SCIP decelerating at node 1). Solver-claim channel, no
+bearing on 87." The kept `edge_ladder.py` finished **inconclusively**: cap 19 →
+`"verdict": "UNKNOWN"` after 10,876 s; cap 19 and cap 20 edge-floor results both
+`"status": "UNKNOWN"`. Nothing is running in this folder now.
+
+## G/A1 — the core-out red-team audit — `W6/audit/REPORT.md`
+
+**Idea.** Red-team with authority to overturn: is T1's alphabet construction the
+complete PL universe or harvested vocabulary — and are the campaign's roll-up claims
+stated at the right strength?
+
+**Outcome: INSTRUMENT + THEOREM + three roll-up claims REFUTED.** Its verdicts are
+distributed above at their subject matter (G/T1, D4c, D4d, D6). The complete list:
+

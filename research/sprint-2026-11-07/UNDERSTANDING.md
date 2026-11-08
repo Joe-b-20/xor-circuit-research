@@ -192,7 +192,9 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   for the other circuits), so any 87 differs from each of these circuits in at least one value of
   each refuted kept set [measured, `sat/`]. On four plateaus the mobile part was also attacked: no 87 is a one-factor rewrite or a
   two-factor rewrite with <= 3 free values of those plateaus (F23). None of this bears on 87s away
-  from these circuits.
+  from these circuits, and the archive's own control for the same instrument (F29: 17 of 17 UNSAT on
+  windows that provably contained an improvement; improvements sit at mask distance ~42) says that
+  windows of k <= 12 carry little evidence about 87 either way until a slack-1 power control is run.
 - Waits on InvMixColumns descents are time in dead rooms (small sealed plateaus) until a large move
   lands in a rich one; no local score predicts which state is productive [measured, 2026-11-03-waits,
   InvMC]. A reading: a room is one circuit, and "productive" is a property of the circuit's +1
