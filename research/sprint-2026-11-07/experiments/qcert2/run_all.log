@@ -1,0 +1,32 @@
+expected counts match: {'scalar_states': 3708, 'claims_checked': 317, 'certificates': 4523, 'certificates_package': 1698, 'certificates_batch1': 328, 'certificates_case': 2497, 'case_certificates_hub_only': 428, 'case_certificates_dark_only': 876, 'case_certificates_hub_and_dark': 1193, 'keys_with_certificates': 2460, 'batch1_feasible_keys': 681, 'killed_keys': 300, 'surviving_keys': 381, 'leaf_cases_of_killed_keys': 4344, 'leaf_cases_of_referenced_keys': 11788, 'coefficients_checked': 192917, 'largest_right_side': -1, 'certificate_references': 4173, 'distinct_referenced': 2232, 'direct_geometric_references': 620}
+INDEPENDENT CHECK PASSED
+systems identical on 23593 (key, case) nodes of 3978 keys (50459644 coefficients and every row constant), 30s
+batch-1-feasible keys 681 = qbound; surviving 381 = qreal = qrealcheck; killed 300 = difference; newly excluded claims 317 = qreal GstarN1 survivors minus GstarN1HUBDARKM survivors; full survivors 996 identical to qreal and qrealcheck with identical (k, l); batch-1 survivors 1313 identical to qcert; all killed keys certified
+CROSSCHECK PASSED
+MUTATION TEST PASSED (26s; every negated weight, every dropped case certificate and every dropped referenced certificate was rejected; every surviving zeroing / +1 is itself a valid certificate)
+STRESS EXT2 PASSED: 316 circuits, 1264 phases, 0 violations of the batch-1, HUB and DARK rows and of O1, 41s
+SYNTHETIC HUB CONTROL PASSED (local helper configurations with A = m >= 1, not full circuits)
+PROOF_ADDENDUM_2.md: OK
+REPORT.md: OK
+CERTIFICATES_CASES75.json: OK
+scan_cases75.json: OK
+gen_certs2.py: OK
+check_cases75.py: OK
+crosscheck2.py: OK
+mutate_cases.py: OK
+stress_ext2.py: OK
+synthetic_hub.py: OK
+stats.py: OK
+smoke.py: OK
+run_all.sh: OK
+s00_setup.sh: OK
+stress_pkg.py: OK
+profile_real_copy.py: OK
+hub_cap_M.json: OK
+hub_cap_Mt.json: OK
+QCERT2 ALL CHECKS PASSED
+
+real	1m54.159s
+user	1m29.029s
+sys	0m1.455s
+EXIT 0

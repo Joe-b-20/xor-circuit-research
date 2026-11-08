@@ -894,7 +894,7 @@ computed values that are neither inputs nor outputs).
   has > 1.1e8 survivors; 5.3e8 structured triples enumerated in C++ (312 s) give max r = 9 (universal
   bound r <= 12). A real proof is a day or two of code plus CPU-hours to days [estimated].
 
-## F21. Realizability rows: survivors at G = 75 cut further, 1,313 -> 996 claims (qreal agent, xhigh; `qreal/REPORT.md`; CONFIRMED by `qrealcheck/REPORT.md`) [proved as checked; no certificates yet; no bound improvement]
+## F21. Realizability rows: survivors at G = 75 cut further, 1,313 -> 996 claims (qreal agent, xhigh; `qreal/REPORT.md`; CONFIRMED by `qrealcheck/REPORT.md`; CERTIFIED by `qcert2/`) [proved as checked and certified; no bound improvement]
 
 - Hub helpers (task b) [finite-checked + claimed proved]: H1: for every odd non-boundary value h, at
   most 4 jointly independent full values f have h + f equal to a boundary-pair value (M and M^T; <= 2
@@ -934,8 +934,22 @@ computed values that are neither inputs nor outputs).
   every key the final scan evaluates, 1,661 are LP-feasible and 1,377 load-bearing (654 M, 723 M^T;
   by q: 2: 80, 3: 184, 4: 321, 5: 361, 6: 244, 7: 122, 8: 60, 9: 5), so "remaining keys with q <= 3"
   is 264 load-bearing keys, not 18; the 996 survivor count is unaffected. HUB is unexercised by any
-  known circuit (A = 0 everywhere). Referee list: per-case Farkas certificates with two checkers,
-  package-style write-up, a synthetic A >= 1 control.
+  known circuit (A = 0 everywhere).
+- CERTIFIED (qcert2 agent, xhigh, 00:10 UTC, `qcert2/`): `PROOF_ADDENDUM_2.md` writes H1, Lemma H1
+  with the HUB split (exhaustive since A is an integer in 0..q), the dark rows (L13d)-(L18d) re-derived
+  from G*, the occurrence budgets, (I'), Lemma O1 and a lemma that certificates persist under case
+  relaxation, in package style with every lemma cited; `CERTIFICATES_CASES75.json` holds 4,523 exact
+  integer Farkas certificates (2,460 keys, 2,497 per case; each recording its hub case and q_D) with
+  complete case coverage of all 300 killed keys (681 -> 381; 4,344 leaf cases) and all 317 newly
+  excluded claims (1,313 -> 996; 11,788 leaves), largest weighted rhs -1, 192,917 coefficients; the
+  independent stdlib checker `check_cases75.py` (own rows, own case tree) passes in 3 s;
+  `crosscheck2.py` shows both system definitions identical on 23,593 (key, case) nodes and all key and
+  claim sets identical to qbound / qreal / qrealcheck / qcert; mutation tests: 26,724 negated
+  multipliers, 300 dropped cases and 317 dropped certificates all rejected. `stress_ext2.py`: 1,264
+  phases, 0 violations; `synthetic_hub.py` builds local configurations with A = 3 that exercise the
+  HUB row (slack 1). Observation recorded, not used: at every cap-4 hub value the 4-witness sets have
+  dependent gate equations once the missing-edge equations are included, consistent with qhub's
+  capacity 3 (F27); the certificates rest on the proved constant 4.
 
 ## F22. Depth-4 lower bound: nothing above 75 in general; proved layer facts and scoped exact results around the 89@4 family (d4bound agent, xhigh; `d4bound/REPORT.md`) [proved / finite-checked / SAT-scoped, as marked]
 

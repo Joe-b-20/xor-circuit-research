@@ -1,0 +1,67 @@
+  tables M: rho6 20, dim J 24, full values 80, sigma histogram {0: 1704, 2: 66, 3: 228, 4: 6, 5: 12}, 3.0s
+  tables Mt: rho6 28, dim J 28, full values 112, sigma histogram {0: 1590, 2: 78, 3: 312, 4: 12, 5: 24}, 2.9s
+13 control circuits + 303 real circuits; 8s
+  50/316 circuits, 0 violations, 32s
+  100/316 circuits, 0 violations, 35s
+  150/316 circuits, 0 violations, 37s
+  200/316 circuits, 0 violations, 38s
+  250/316 circuits, 0 violations, 39s
+  300/316 circuits, 0 violations, 41s
+
+phases: {('ctrl', 'raw', 'M'): 13, ('ctrl', 'canonical', 'Mt'): 26, ('ctrl', 'canonical', 'M'): 13, ('real', 'raw', 'M'): 303, ('real', 'canonical', 'Mt'): 606, ('real', 'canonical', 'M'): 303}; phases with q = 0: 0; phases with A > 0: 0; helper cap checks (table = own search): 20745; distinct helper masks with cap recomputed: 977
+outputs defined per full helper (Lemma O1, must be >= 2): {2: 324}
+
+minimum slack per row (group, raw/canonical, orientation):
+  F_budget               ctrl/raw/M:10  ctrl/canonical/M:10  ctrl/canonical/Mt:10  real/raw/M:9  real/canonical/M:9  real/canonical/Mt:8
+  Fb=0 (d=q)             ctrl/canonical/Mt:0
+  Fd=y2d=0 (d=0)         ctrl/raw/M:0  real/raw/M:0
+  G*_J                   ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:1  real/canonical/M:2  real/canonical/Mt:0
+  G*_R6                  ctrl/raw/M:1  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:2  real/canonical/M:1  real/canonical/Mt:0
+  HUB_lp                 ctrl/raw/M:8  ctrl/canonical/M:13  ctrl/canonical/Mt:8  real/raw/M:10  real/canonical/M:12  real/canonical/Mt:11
+  HUB_strong_label       ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  HUBlin                 ctrl/raw/M:52  ctrl/canonical/M:72  ctrl/canonical/Mt:64  real/raw/M:60  real/canonical/M:68  real/canonical/Mt:64
+  I                      ctrl/raw/M:32  ctrl/canonical/M:44  ctrl/canonical/Mt:41  real/raw/M:35  real/canonical/M:44  real/canonical/Mt:42
+  I'                     ctrl/raw/M:32  ctrl/canonical/M:40  ctrl/canonical/Mt:37  real/raw/M:35  real/canonical/M:41  real/canonical/Mt:39
+  I_label                ctrl/raw/M:1  ctrl/canonical/M:1  ctrl/canonical/Mt:1  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  L12*                   ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:7  real/canonical/M:7  real/canonical/Mt:6
+  L13*                   ctrl/raw/M:26  ctrl/canonical/M:48  ctrl/canonical/Mt:63  real/raw/M:24  real/canonical/M:49  real/canonical/Mt:56
+  L13*_label             ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:1  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:1
+  L13d                   ctrl/raw/M:25  ctrl/canonical/M:24  ctrl/canonical/Mt:0  real/raw/M:24  real/canonical/M:26  real/canonical/Mt:10
+  L14*                   ctrl/raw/M:28  ctrl/canonical/M:50  ctrl/canonical/Mt:63  real/raw/M:26  real/canonical/M:51  real/canonical/Mt:56
+  L14*_ex                ctrl/raw/M:2  ctrl/canonical/M:2  ctrl/canonical/Mt:0  real/raw/M:2  real/canonical/M:2  real/canonical/Mt:0
+  L14*_label             ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:1  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:1
+  L14d                   ctrl/raw/M:27  ctrl/canonical/M:26  ctrl/canonical/Mt:0  real/raw/M:26  real/canonical/M:28  real/canonical/Mt:10
+  L15*                   ctrl/raw/M:19  ctrl/canonical/M:28  ctrl/canonical/Mt:28  real/raw/M:15  real/canonical/M:27  real/canonical/Mt:26
+  L15_label              ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  L15d                   ctrl/raw/M:15  ctrl/canonical/M:14  ctrl/canonical/Mt:0  real/raw/M:15  real/canonical/M:16  real/canonical/Mt:4
+  L17-M*                 ctrl/raw/M:36  ctrl/canonical/M:50  real/raw/M:30  real/canonical/M:55
+  L17-Mt*                ctrl/canonical/Mt:42  real/canonical/Mt:33
+  L17Md                  ctrl/raw/M:29  ctrl/canonical/M:28  real/raw/M:30  real/canonical/M:32
+  L17Td                  ctrl/canonical/Mt:0  real/canonical/Mt:4
+  L18*                   ctrl/canonical/Mt:70  real/canonical/Mt:65
+  L18d                   ctrl/canonical/Mt:0  real/canonical/Mt:12
+  L19*                   ctrl/canonical/Mt:4  real/canonical/Mt:3
+  L20*                   ctrl/canonical/Mt:13  real/canonical/Mt:9
+  L7*                    ctrl/raw/M:30  ctrl/canonical/M:50  ctrl/canonical/Mt:49  real/raw/M:24  real/canonical/M:45  real/canonical/Mt:47
+  L7*_label              ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  LemmaS_label           ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  N1                     ctrl/raw/M:18  ctrl/canonical/M:23  ctrl/canonical/Mt:26  real/raw/M:20  real/canonical/M:23  real/canonical/Mt:23
+  O1                     ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  S2_aggregate           ctrl/raw/M:74  ctrl/canonical/M:80  ctrl/canonical/Mt:100  real/raw/M:73  real/canonical/M:81  real/canonical/Mt:85
+  S2_poor_at_r2          ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  bright_anchored_label  ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  bright_cap             ctrl/raw/M:14  ctrl/canonical/M:10  ctrl/canonical/Mt:0  real/raw/M:9  real/canonical/M:12  real/canonical/Mt:6
+  bright_cap_label       ctrl/raw/M:1  ctrl/canonical/M:1  ctrl/canonical/Mt:1  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  bright_lower           ctrl/raw/M:2  ctrl/canonical/M:2  ctrl/canonical/Mt:0  real/raw/M:4  real/canonical/M:2  real/canonical/Mt:3
+  dark_cap               ctrl/raw/M:0  ctrl/canonical/M:2  ctrl/canonical/Mt:14  real/raw/M:0  real/canonical/M:3  real/canonical/Mt:11
+  dark_cap_label         ctrl/raw/M:2  ctrl/canonical/M:1  ctrl/canonical/Mt:2  real/raw/M:2  real/canonical/M:1  real/canonical/Mt:2
+  dark_zero              ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  pair_once              ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:0  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:0
+  y2d<=y2                ctrl/raw/M:0  ctrl/canonical/M:0  ctrl/canonical/Mt:3  real/raw/M:0  real/canonical/M:0  real/canonical/Mt:2
+  y2m<=C(q,2)            ctrl/raw/M:21  ctrl/canonical/M:53  ctrl/canonical/Mt:18  real/raw/M:21  real/canonical/M:42  real/canonical/Mt:42
+
+rows tight (slack 0) on some phase: {'ctrl/M/Fd=y2d=0 (d=0)': 5, 'ctrl/M/G*_J': 4, 'ctrl/M/G*_R6': 1, 'ctrl/M/HUB_strong_label': 24, 'ctrl/M/L12*': 2, 'ctrl/M/L13*_label': 7, 'ctrl/M/L14*_label': 7, 'ctrl/M/L15_label': 25, 'ctrl/M/L7*_label': 25, 'ctrl/M/LemmaS_label': 23, 'ctrl/M/O1': 26, 'ctrl/M/S2_poor_at_r2': 26, 'ctrl/M/bright_anchored_label': 26, 'ctrl/M/dark_cap': 5, 'ctrl/M/dark_zero': 26, 'ctrl/M/pair_once': 26, 'ctrl/M/y2d<=y2': 9, 'ctrl/Mt/Fb=0 (d=q)': 2, 'ctrl/Mt/G*_J': 8, 'ctrl/Mt/G*_R6': 8, 'ctrl/Mt/HUB_strong_label': 24, 'ctrl/Mt/L12*': 2, 'ctrl/Mt/L13d': 2, 'ctrl/Mt/L14*_ex': 26, 'ctrl/Mt/L14d': 2, 'ctrl/Mt/L15_label': 21, 'ctrl/Mt/L15d': 2, 'ctrl/Mt/L17Td': 2, 'ctrl/Mt/L18d': 2, 'ctrl/Mt/L7*_label': 22, 'ctrl/Mt/LemmaS_label': 4, 'ctrl/Mt/O1': 26, 'ctrl/Mt/S2_poor_at_r2': 26, 'ctrl/Mt/bright_anchored_label': 20, 'ctrl/Mt/bright_cap': 2, 'ctrl/Mt/bright_lower': 2, 'ctrl/Mt/dark_zero': 26, 'ctrl/Mt/pair_once': 26, 'real/M/Fd=y2d=0 (d=0)': 62, 'real/M/HUB_strong_label': 605, 'real/M/I_label': 236, 'real/M/L13*_label': 141, 'real/M/L14*_label': 141, 'real/M/L15_label': 606, 'real/M/L7*_label': 606, 'real/M/LemmaS_label': 605, 'real/M/O1': 606, 'real/M/S2_poor_at_r2': 606, 'real/M/bright_anchored_label': 600, 'real/M/bright_cap_label': 198, 'real/M/dark_cap': 62, 'real/M/dark_zero': 606, 'real/M/pair_once': 606, 'real/M/y2d<=y2': 25, 'real/Mt/G*_J': 12, 'real/Mt/G*_R6': 12, 'real/Mt/HUB_strong_label': 594, 'real/Mt/I_label': 78, 'real/Mt/L14*_ex': 606, 'real/Mt/L15_label': 484, 'real/Mt/L7*_label': 554, 'real/Mt/LemmaS_label': 360, 'real/Mt/O1': 606, 'real/Mt/S2_poor_at_r2': 606, 'real/Mt/bright_anchored_label': 602, 'real/Mt/bright_cap_label': 74, 'real/Mt/dark_zero': 606, 'real/Mt/pair_once': 606}
+
+ranges of the quantities: {'ctrl/M/A': (0, 0), 'ctrl/M/Fb': (0, 4), 'ctrl/M/Fd': (0, 1), 'ctrl/M/cap_max': (3, 4), 'ctrl/M/h': (9, 29), 'ctrl/M/h0': (0, 3), 'ctrl/M/hub_fullmet_max': (0, 0), 'ctrl/M/n3': (0, 4), 'ctrl/M/q': (7, 15), 'ctrl/M/qD': (0, 6), 'ctrl/M/y': (2, 29), 'ctrl/M/y0': (0, 10), 'ctrl/M/y1': (1, 15), 'ctrl/M/y2': (0, 14), 'ctrl/M/y2d': (0, 14), 'ctrl/M/y2m': (0, 6), 'ctrl/M/z': (0, 8), 'ctrl/Mt/A': (0, 0), 'ctrl/Mt/Fb': (0, 1), 'ctrl/Mt/Fd': (0, 3), 'ctrl/Mt/cap_max': (0, 4), 'ctrl/Mt/h': (6, 19), 'ctrl/Mt/h0': (0, 2), 'ctrl/Mt/hub_fullmet_max': (0, 0), 'ctrl/Mt/n3': (0, 4), 'ctrl/Mt/q': (7, 15), 'ctrl/Mt/qD': (4, 7), 'ctrl/Mt/y': (12, 27), 'ctrl/Mt/y0': (0, 20), 'ctrl/Mt/y1': (0, 7), 'ctrl/Mt/y2': (5, 11), 'ctrl/Mt/y2d': (1, 5), 'ctrl/Mt/y2m': (3, 7), 'ctrl/Mt/z': (0, 7), 'real/M/A': (0, 0), 'real/M/Fb': (0, 6), 'real/M/Fd': (0, 4), 'real/M/cap_max': (3, 4), 'real/M/h': (9, 23), 'real/M/h0': (0, 5), 'real/M/hub_fullmet_max': (0, 0), 'real/M/n3': (0, 1), 'real/M/q': (7, 16), 'real/M/qD': (0, 8), 'real/M/y': (8, 30), 'real/M/y0': (0, 4), 'real/M/y1': (1, 16), 'real/M/y2': (0, 16), 'real/M/y2d': (0, 16), 'real/M/y2m': (0, 7), 'real/M/z': (0, 9), 'real/Mt/A': (0, 0), 'real/Mt/Fb': (0, 3), 'real/Mt/Fd': (0, 2), 'real/Mt/cap_max': (3, 4), 'real/Mt/h': (13, 18), 'real/Mt/h0': (0, 3), 'real/Mt/hub_fullmet_max': (0, 0), 'real/Mt/n3': (0, 3), 'real/Mt/q': (10, 16), 'real/Mt/qD': (3, 7), 'real/Mt/y': (13, 19), 'real/Mt/y0': (0, 8), 'real/Mt/y1': (2, 8), 'real/Mt/y2': (4, 11), 'real/Mt/y2d': (0, 5), 'real/Mt/y2m': (2, 8), 'real/Mt/z': (0, 5)}
+
+STRESS EXT2 PASSED: 316 circuits, 1264 phases, 0 violations of the batch-1, HUB and DARK rows and of O1, 41s
