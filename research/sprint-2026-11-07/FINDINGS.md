@@ -513,10 +513,10 @@ all be distinct from each other and from K (sound: duplicates never help). An UN
 therefore excludes exactly the circuits with <= 87 gates whose value set contains K; it says
 nothing about circuits missing even one value of K. Union over the repo circuit's 37 refuted
 windows: any 87 differs from that circuit in at least one value of each of 37 sets of 79-84
-values. POWER CAVEAT (F29): the archive's identical instrument returned UNSAT on 17 of 17 control
-windows around circuits with a provably smaller circuit, because improvements sit at mask distance
-~42; until the sprint's own slack-1 control (R0, running) says otherwise, these refutations are
-theorems about kept sets, not evidence against 87. Over all refuted windows (22:30 UTC) the union of
+values. POWER (F29, F34): the archive's identical instrument returned UNSAT on 17 of 17 control
+windows around circuits with a provably smaller circuit, and the sprint's own control (0 SAT on 28
+real anchors; no generated window contains a known improvement; k_min median 42) gives likelihood
+ratio 1.0: these refutations are theorems about kept sets, not evidence against 87. Over all refuted windows (22:30 UTC) the union of
 removed values covers 81 of the repo
 circuit's 88 values and 72-74 of each other circuit's. The 1,084 two-seed windows (k <= 9, repo) are
 the first non-local statements (pairs of corners). The 16 timeouts are open windows. None of this
@@ -1369,6 +1369,35 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
 - The 75/76-gate partial circuits: I(A75, 12), I(A76, 11) x 2: all TIMEOUT at 900 s, uninformative as
   predicted. 81 instance runs, ~98 min solver wall, one child; nothing SAT; the decode-verify path
   never exercised.
+
+## F34. Power control for the SAT window refutations: likelihood ratio 1.0; improvements need windows of k >= 13, median 42 (power agent, high; `power/REPORT.md`) [measured]
+
+- Anchors: 25 hunt 89-states whose chain reached 88 at the next sample, the repo 89@4 (truth = nearest
+  of the 257 88s the mc87 from89 workers reached), the July 91@4, NIST's 90@4, the repo 97@3, plus six
+  90@4 states at distance 1-3 from the 89@4 family as a positive control.
+- Containment (no solver needed): the sprint's generators produce 41,057 windows around the 29 real
+  anchors; 0 have a kept set contained in the known improvement and 0 are contained in any of the
+  22,489 known 88s. Only the distance-1-3 positive controls have contained windows (244), and all 244
+  are SAT when solved (147 decode to exactly the known 89@4): the solver works; the windows do not
+  contain real improvements.
+- Distance distribution over all 1,380 89 -> 88 transitions in the hunt data: helpers of the 89 not
+  in its 88: min 6 / median 17 / max 47; the smallest split-closed window containing the improvement
+  has k_min min 13, median 42, with 16-18 of the 32 outputs inside. No pair has k_min <= 12; the
+  sprint's hardest finished instance is k = 12. This reproduces the archive's "median 42" control on
+  independent data.
+- Solver run: 1,053 one-seed windows k 2-8 of the real anchors: 0 SAT on 28 anchors one gate above a
+  known improvement (1,017 UNSAT, 0 timeouts; blocks, k 9-10 and two-seed windows not reached). One
+  SAT: a k = 4 window of the 97@3 yields a 96@4 (re-checked with sat87.check_circuit; not run through
+  the repo's check.py; dominated by the known 89@4, so not a record): the instrument sees local
+  improvements; the 88s and near-optimal 89s have none.
+- Conclusion: F13, F23 and F33 are correct rigidity theorems about kept sets and carry essentially no
+  information about 87 (hit rate 0 of 28, one-sided 95 % bound 0.10; likelihood ratio in [1.00, 1.11],
+  point estimate 1.0), the same verdict as the archive's fence_sat control (F29). Windows that could
+  contain an improvement need k >= 13 and typically 37-42 with half the output layer removed, i.e. the
+  mobile-part band that times out; power needs a different formulation (large scopes only; the
+  r-outside single-SAT; union-type pools), not more k <= 12 windows. Caveat: the calibration assumes
+  88 -> 87 behaves like 89 -> 88 (the only calibration available); anchors are 30 s-sample predecessors,
+  not direct parents (direct parents can only be closer; min k_min is already 13).
 
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 

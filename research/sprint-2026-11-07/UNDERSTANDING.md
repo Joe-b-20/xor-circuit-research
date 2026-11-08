@@ -198,8 +198,11 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   itself is invisible to the remove1 fan and its exact window (free 5-20) is beyond the solver
   frontier (F31). None of this bears on 87s away
   from these circuits, and the archive's own control for the same instrument (F29: 17 of 17 UNSAT on
-  windows that provably contained an improvement; improvements sit at mask distance ~42) says that
-  windows of k <= 12 carry little evidence about 87 either way until a slack-1 power control is run.
+  windows that provably contained an improvement; improvements sit at mask distance ~42) and the
+  sprint's own power control (F34: 0 SAT windows on 28 anchors one gate above a known improvement,
+  no generated window contains any known improvement, the smallest window that could needs k >= 13
+  and typically 42) give likelihood ratio 1.0: the k <= 12 refutations are rigidity theorems about
+  kept sets and carry no evidence about 87 either way.
 - Waits on InvMixColumns descents are time in dead rooms (small sealed plateaus) until a large move
   lands in a rich one; no local score predicts which state is productive [measured, 2026-11-03-waits,
   InvMC]. A reading: a room is one circuit, and "productive" is a property of the circuit's +1

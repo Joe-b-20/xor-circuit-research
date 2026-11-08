@@ -1,0 +1,57 @@
+[     4s] hunt: chains with samples 432; 89->88 pairs 1380 (descent 234, excursion 1146); distinct 88 states 4314
+[     4s] all descent pairs: k_needed=|H89\H88| (identity frame): n=234 min=6 q1=13 med=17 q3=22 max=47
+[     4s] all descent pairs: |H89 xor H88| (identity frame): n=234 min=11 q1=25 med=33 q3=43 max=93
+[     4s] all descent pairs: k_needed min over rotations: n=234 min=6 q1=13 med=17 q3=22 max=47
+[     4s] all excursion pairs: k_needed=|H89\H88| (identity frame): n=1146 min=5 q1=11 med=14 q3=17 max=35
+[     4s] all excursion pairs: |H89 xor H88| (identity frame): n=1146 min=9 q1=21 med=27 q3=33 max=69
+[     4s] all excursion pairs: k_needed min over rotations: n=1146 min=5 q1=11 med=14 q3=17 max=35
+[     4s] k_needed histogram (all pairs, identity frame; 30 = >= 30): [(5, 4), (6, 17), (7, 20), (8, 49), (9, 65), (10, 100), (11, 101), (12, 109), (13, 113), (14, 121), (15, 117), (16, 95), (17, 95), (18, 70), (19, 66), (20, 48), (21, 39), (22, 32), (23, 24), (24, 19), (25, 13), (26, 10), (27, 10), (28, 6), (29, 10), (30, 27)]
+[     4s] sample gap 89->88 wall seconds: n=1380 min=29 q1=30 med=32 q3=32 max=810
+[     5s] chosen hunt anchors: 25 (20 descent, 5 excursion)
+[     5s] loading corpora
+[     7s] corpus: 88s 22489 (hunt 4314, mc87 712, kste 17462); 89@4 states 90; 90@4 states 5798
+[     7s] from89 workers' distinct 88s: 257
+[     7s] 90@4 states with the 89's first layer: 0
+[     7s] repo89@4 vs 88s reached by the mc87 from89 workers seeded with it (257 circuits): closest from89:b89c7d62c645c41f need_min=19 sd_min=37 rot=2; k_needed histogram [(19, 1), (20, 6), (21, 15), (22, 11), (23, 3), (24, 8), (25, 34), (26, 35), (27, 22), (31, 11), (32, 28), (33, 10)]
+[    15s] repo89@4/any88 vs any known 88 (22489 circuits): closest mc87:from89-01:g88-d9-405fbed95a70a need_min=19 sd_min=37 rot=2; k_needed histogram [(19, 1), (20, 6), (21, 15), (22, 33), (23, 55), (24, 73), (25, 172), (26, 231), (27, 58), (28, 3), (30, 10), (31, 64)]
+[    15s] july91@4 vs the 89@4 family it descended to (v8 control, 914 s) (90 circuits): closest fam89:4c97027faa4bc076 need_min=20 sd_min=38 rot=2; k_needed histogram [(20, 31), (21, 59)]
+[    23s] nist90@4 vs any known 88 or 89@4 (no logged descent exists) (22579 circuits): closest kste:2291 need_min=13 sd_min=24 rot=2; k_needed histogram [(13, 1), (14, 14), (15, 50), (16, 84), (17, 58), (18, 24), (19, 15), (20, 16), (21, 58), (22, 82), (23, 89), (24, 73)]
+[    32s] repo97@3 vs any known 88, 89@4, 90@4 or the July 91@4 (28378 circuits): closest st90:a768b74061f331b1 need_min=34 sd_min=61 rot=0; k_needed histogram [(34, 3), (35, 8), (36, 16), (37, 13), (38, 13), (39, 12), (40, 28313)]
+[    32s] P2 90@4 anchors, k_needed to the nearest 89@4 family member: []
+[    32s] enumerating windows (sprint generators) for 29 anchors
+[    58s] hunt89:sampleA:232           hunt-descent g=89 need0=19 sd0=37 need_min=19 | windows A=62 C=9 B=1071 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[    83s] hunt89:sampleA:2094          hunt-descent g=89 need0=13 sd0=25 need_min=13 | windows A=68 C=9 B=1464 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   108s] hunt89:sampleC:1035          hunt-descent g=89 need0=10 sd0=19 need_min=10 | windows A=66 C=9 B=1373 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 2
+[   133s] hunt89:sampleD:6105          hunt-descent g=89 need0=22 sd0=43 need_min=22 | windows A=63 C=7 B=1167 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   153s] hunt89:sampleD:5612          hunt-descent g=89 need0=34 sd0=67 need_min=34 | windows A=64 C=11 B=1190 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   183s] hunt89:sampleD:6119          hunt-descent g=89 need0=16 sd0=31 need_min=16 | windows A=65 C=10 B=1266 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 1
+[   197s] hunt89:sampleA:1198          hunt-descent g=89 need0=17 sd0=33 need_min=17 | windows A=69 C=10 B=1462 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   212s] hunt89:sampleA:1539          hunt-descent g=89 need0=23 sd0=45 need_min=23 | windows A=67 C=9 B=1362 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   236s] hunt89:sampleC:1037          hunt-descent g=89 need0=15 sd0=29 need_min=15 | windows A=64 C=8 B=1361 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   251s] hunt89:sampleD:5931          hunt-descent g=89 need0=26 sd0=51 need_min=26 | windows A=65 C=9 B=1306 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   275s] hunt89:sampleD:5577          hunt-descent g=89 need0=12 sd0=23 need_min=12 | windows A=63 C=8 B=1239 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 33
+[   309s] hunt89:sampleD:5320          hunt-descent g=89 need0=7 sd0=13 need_min=7 | windows A=64 C=8 B=1312 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 1
+[   326s] hunt89:sampleA:263           hunt-descent g=89 need0=9 sd0=17 need_min=9 | windows A=68 C=11 B=1429 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 2
+[   343s] hunt89:sampleA:191           hunt-descent g=89 need0=10 sd0=19 need_min=10 | windows A=66 C=8 B=1238 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 1
+[   376s] hunt89:sampleC:1222          hunt-descent g=89 need0=19 sd0=37 need_min=19 | windows A=60 C=7 B=1132 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 1
+[   402s] hunt89:sampleD:5806          hunt-descent g=89 need0=10 sd0=19 need_min=10 | windows A=67 C=9 B=1283 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 3
+[   421s] hunt89:sampleD:4592          hunt-descent g=89 need0=21 sd0=41 need_min=21 | windows A=65 C=9 B=1305 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   440s] hunt89:sampleD:5707          hunt-descent g=89 need0=13 sd0=25 need_min=13 | windows A=61 C=5 B=1079 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   467s] hunt89:sampleA:1784          hunt-descent g=89 need0=13 sd0=25 need_min=13 | windows A=69 C=9 B=1407 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 4
+[   488s] hunt89:sampleA:994           hunt-descent g=89 need0=20 sd0=39 need_min=20 | windows A=64 C=9 B=1345 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   517s] hunt89:sampleD:6078          hunt-excursion g=89 need0=12 sd0=23 need_min=12 | windows A=63 C=8 B=1183 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 12
+[   548s] hunt89:sampleD:6126          hunt-excursion g=89 need0=21 sd0=41 need_min=21 | windows A=63 C=9 B=1096 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   565s] hunt89:sampleD:6110          hunt-excursion g=89 need0=10 sd0=19 need_min=10 | windows A=63 C=9 B=1197 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 2
+[   586s] hunt89:sampleD:5968          hunt-excursion g=89 need0=10 sd0=19 need_min=10 | windows A=60 C=8 B=1100 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 16
+[   612s] hunt89:sampleD:6093          hunt-excursion g=89 need0=18 sd0=35 need_min=18 | windows A=64 C=8 B=1143 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 8
+[   624s] repo89@4                     repo g=89 need0=20 sd0=39 need_min=19 | windows A=78 C=12 B=2200 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   642s] july91@4                     seed g=91 need0=25 sd0=48 need_min=20 | windows A=74 C=12 B=1847 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   654s] nist90@4                     seed g=90 need0=22 sd0=42 need_min=13 | windows A=74 C=12 B=1870 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   671s] repo97@3                     repo g=97 need0=34 sd0=61 need_min=34 | windows A=68 C=8 B=1463 | contained(truth)=0 contained(any known)=0 | corpus members within 12: 0
+[   673s] TOTAL windows 41057; contained in truth 0; contained in any known smaller circuit 0; anchors with >= 1 truth-contained window: 0 of 29
+[p2] p2_90@4:af207a616d2e3f02     p2 g=90 need0=1 sd0=1 need_min=1 | windows A=77 C=12 B=2128 | contained(truth)=190 contained(any 89@4)=190 | nearest recorded 89@4 (downs_into_L0=1, bfs_hit=L0, in_B1=False)
+[p2] p2_90@4:552d7aab3956f9e7     p2 g=90 need0=2 sd0=3 need_min=2 | windows A=76 C=12 B=2127 | contained(truth)=51 contained(any 89@4)=51 | nearest recorded 89@4 (downs_into_L0=2, bfs_hit=L0, in_B1=False)
+[p2] p2_90@4:347ce390b48ffb42     p2 g=90 need0=2 sd0=3 need_min=2 | windows A=78 C=12 B=2163 | contained(truth)=1 contained(any 89@4)=1 | nearest recorded 89@4 (downs_into_L0=2, bfs_hit=L0, in_B1=True)
+[p2] p2_90@4:8b409703a5ba2c23     p2 g=90 need0=3 sd0=5 need_min=3 | windows A=76 C=12 B=2006 | contained(truth)=0 contained(any 89@4)=0 | nearest recorded 89@4 (downs_into_L0=0, bfs_hit=L0, in_B1=False)
+[p2] p2_90@4:8d5d371c8f503ffb     p2 g=90 need0=3 sd0=5 need_min=3 | windows A=76 C=12 B=2006 | contained(truth)=0 contained(any 89@4)=0 | nearest recorded 89@4 (downs_into_L0=0, bfs_hit=L0, in_B1=False)
+[p2] p2_90@4:c2295c93e3e5774e     p2 g=90 need0=3 sd0=5 need_min=3 | windows A=76 C=12 B=1990 | contained(truth)=2 contained(any 89@4)=2 | nearest recorded 89@4 (downs_into_L0=0, bfs_hit=L0, in_B1=False)
