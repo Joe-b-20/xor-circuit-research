@@ -8,6 +8,8 @@ are established; this file is the state of play. Evidence tags: [proved] [checke
 
 ## 1. State of code and experiments
 
+- Final harvest 07:35 UTC 2026-11-08: all background jobs ended ~07:31 UTC by SIGTERM from outside the sprint (no STOP file, WSL not restarted). Exact catalogue 3688 of 3,853 queued states processed, 1424 products; satmob {'UNSAT': 155, 'SAT': 0, 'TIMEOUT': 98}; satmob2 {'UNSAT': 160, 'SAT': 0, 'TIMEOUT': 39}; FOUND_87 / FOUND_88AT4 anywhere: False. Catalogue resumes with `bash catalogue_all.sh 6` in giants/ (done states are skipped).
+
 - Harvest 02:24 UTC 2026-11-08: exact catalogue 1177 states processed, 495 products (new plateaus or memberships), 6 workers running; satmob {'UNSAT': 132, 'SAT': 0, 'TIMEOUT': 75}; satmob2 {'UNSAT': 160, 'SAT': 0, 'TIMEOUT': 38}; FOUND_87 anywhere: False.
 
 - 17:00 UTC 11-07: the owner's archive of unpublished proof work (2.3 GB, ~155k files, 270
