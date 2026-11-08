@@ -214,8 +214,8 @@ Budget: Fable 92 % used at 02:00 UTC; no further Fable agents. Running: giants/c
 workers, 439 products so far; outlives the sprint; `touch giants/STOP` to end), satmob campaign3 and
 satmob2 campaignB (one solver each; STOP files), agents power (SAT power control), translog exp1
 analysis, qjointcheck (F32 check). The closing report draft is REPORT-2026-11-08T05.md.
-1. When power / exp1 / qjointcheck report: record in FINDINGS (F30 addendum, F29/F13 power verdict, F32
-   status), patch REPORT-2026-11-08T05.md section 6 and UNDERSTANDING 4/8, commit.
+1. DONE 02:40 UTC: power (F34), exp1 (F35), qjointcheck (F32 confirmed) recorded; closing report
+   REPORT-2026-11-08T05.md complete.
 2. ~04:30 UTC: final CHECKPOINT (sections 1-6 current), memory note, last commit. Leave the catalogue
    and the two SAT campaigns running past 07:00 UTC; they are idempotent.
 3. For the user: locate the 29-30 Sep "76 extension" package; download Jean 2026/1481 and

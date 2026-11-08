@@ -1321,7 +1321,7 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   groups (sizes 2-5) are the next lever. A continuing campaign (`satmob2/campaignB.sh`, one child,
   idempotent, `satmob2/STOP`) runs the free-4 singles, span-pool variants and free-4 pairs.
 
-## F32. Joint hub configurations: two limit hubs never share a missing label; label-class rows cut the survivors 789 -> 686 (qjoint agent, xhigh; `qjoint/REPORT.md`) [claimed proofs + finite-checked with ONE implementation; UNDER INDEPENDENT CHECK; no certificates; no bound improvement]
+## F32. Joint hub configurations: two limit hubs never share a missing label; label-class rows cut the survivors 789 -> 686 (qjoint agent, xhigh; `qjoint/REPORT.md`; CONFIRMED by `qjointcheck/REPORT.md`) [proved as checked; J1 finite-checked by two independent implementations; no certificates yet; no bound improvement]
 
 - Vertex classification [measured, MILP oracle with unrecorded time-limit status]: of the 551
   load-bearing keys, 450 have an integer-feasible case system and 101 are LP-feasible but
@@ -1348,7 +1348,15 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   Cumulative at G = 75: 1,508 -> 1,313 -> 996 -> 863 -> 789 -> 686. What dies: the M^T q = 4 cluster and
   the M q = 3-4 keys needing limit hubs that share labels; what survives: q = 5-6 keys with limit hubs
   plus sub-limit partners or no forced hub, the q = 2-3 many-full-helper keys, M^T small-h q = 7-8.
-- Not done: a second implementation of J1 (as H2 got), certificates for the 103 newly excluded claims,
+- Independent check (qjointcheck, xhigh, 02:30 UTC): F_joint CONFIRMED (one wording defect: for three
+  or more hubs at one hub-only label the pivot yields a spanning tree of t - 1 mixed vectors, not one
+  per pair; harmless for J1 / LIM); J1 CONFIRMED by a second implementation without the Lemma-4.6
+  pre-skips (identical configuration counts; 0 independent limit-limit pairs in every class pair);
+  Lemma P, the LP relaxations (concave term included) and LIM CONFIRMED; the recount 686 / 814 / 483
+  and 551 -> 452 -> 388 reproduced verbatim and with independent rows; 212 real phases 0 violations;
+  synthetic two-hub phases: realizable kinds satisfy every row with LIM tight, excluded kinds violate
+  LIM. Certificates for the 103 newly excluded claims still to be produced.
+- Not done: certificates for the 103 newly excluded claims,
   the two global label-sharing enumerations (M^T q = 1 with 7-8 full helpers; M q = 2 with ten). The
   bound stays 75.
 

@@ -1,0 +1,19 @@
+== recount scan JOINTLIM (verbatim qj_lp.py, OUT redirected)
+G=75: scalar states 3708, oriented claims 7416, survivors 686, LP keys 36573, unknown 0, 207s
+variant GstarN1HUB2DARKPKFMJOINTLIM: survivors 686 (M 372, Mt 314); shortfall hist [(0, 382), (1, 221), (2, 59), (3, 24)]; LP keys evaluated 36573; 207s
+compared with qhub lp_qhc_scan_GstarN1HUB2DARKPKFM.json: ref 789, mine 686, only-ref 103, only-mine 0; identical (k, ell) on 633 common survivors
+keys touched 36573; LP-feasible 814 (by q [(1, 22), (2, 114), (3, 92), (4, 90), (5, 270), (6, 107), (7, 63), (8, 49), (9, 6), (10, 1)]; in the baseline 1,134: 54); load-bearing 483 (by q [(1, 3), (2, 58), (3, 80), (4, 64), (5, 147), (6, 89), (7, 27), (8, 15)]; by ori {'M': 235, 'Mt': 248}; in the baseline: 44)
+== recount lbkeys JOINT
+variant GstarN1HUB2DARKPKFMJOINT: of 551 baseline-feasible keys, 452 still feasible; by q [(1, 1), (2, 62), (3, 95), (4, 110), (5, 61), (6, 87), (7, 25), (8, 11)]; by ori {'M': 241, 'Mt': 211}; 7s
+== recount lbkeys JOINTLIM
+variant GstarN1HUB2DARKPKFMJOINTLIM: of 551 baseline-feasible keys, 388 still feasible; by q [(1, 1), (2, 62), (3, 84), (4, 57), (5, 61), (6, 87), (7, 25), (8, 11)]; by ori {'M': 188, 'Mt': 200}; 6s
+== own rows lbkeys JC
+variant GstarN1HUB2DARKPKFMJC: of 551 baseline-feasible keys, 452 still feasible; by q [(1, 1), (2, 62), (3, 95), (4, 110), (5, 61), (6, 87), (7, 25), (8, 11)]; by ori {'M': 241, 'Mt': 211}; 55s
+== own rows lbkeys JCLIM
+variant GstarN1HUB2DARKPKFMJCLIM: of 551 baseline-feasible keys, 388 still feasible; by q [(1, 1), (2, 62), (3, 84), (4, 57), (5, 61), (6, 87), (7, 25), (8, 11)]; by ori {'M': 188, 'Mt': 200}; 54s
+== own rows scan JCLIM
+G=75: scalar states 3708, oriented claims 7416, survivors 686, LP keys 36573, unknown 0, 256s
+variant GstarN1HUB2DARKPKFMJCLIM: survivors 686 (M 372, Mt 314); shortfall hist [(0, 382), (1, 221), (2, 59), (3, 24)]; LP keys evaluated 36573; 256s
+compared with qhub lp_qhc_scan_GstarN1HUB2DARKPKFMJOINTLIM.json: ref 686, mine 686, only-ref 0, only-mine 0; identical (k, ell) on 686 common survivors
+keys touched 36573; LP-feasible 814 (by q [(1, 22), (2, 114), (3, 92), (4, 90), (5, 270), (6, 107), (7, 63), (8, 49), (9, 6), (10, 1)]; in the baseline 1,134: 54); load-bearing 483 (by q [(1, 3), (2, 58), (3, 80), (4, 64), (5, 147), (6, 89), (7, 27), (8, 15)]; by ori {'M': 235, 'Mt': 248}; in the baseline: 44)
+CHAIN1_DONE

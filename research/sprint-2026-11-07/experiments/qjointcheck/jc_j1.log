@@ -1,0 +1,16 @@
+M: F3 {1: 40704, 3: 80, 2: 360}; 80 full values; 128068 hub values with N(h) nonempty; limit configurations r=0/1/2: 192 / 352 / 48 at 8 / 64 / 12 values; H2 violations (|S| = 4 - r independent): 0; 2s
+M: (A) hub-only sharing, pairs of limit configurations with h1 + h2 in PV: 75192; independent by class pair: {}; dependent: {((0, 3), (0, 3)): 11520, ((0, 3), (1, 2)): 30336, ((0, 3), (2, 1)): 4608, ((1, 2), (1, 2)): 21464, ((1, 2), (2, 1)): 6720, ((2, 1), (2, 1)): 544}; pairs qj_limit would pre-skip: {False: 4384} (independent ones must be 0); r = 2 limit VALUES 12, value pairs with XOR in PV 34; 4s
+M: (B) pairs of limit configurations sharing a full helper (counted per common f): 10880
+M:   intersecting pairs at f (same label possible): indep {} dep {((0, 3), (0, 3)): 1344, ((0, 3), (1, 2)): 2272, ((0, 3), (2, 1)): 192, ((1, 2), (1, 2)): 672, ((1, 2), (2, 1)): 64}
+M:   disjoint pairs at f (different labels): indep {((0, 3), (1, 2)): 672, ((0, 3), (2, 1)): 96, ((1, 2), (1, 2)): 1040, ((1, 2), (2, 1)): 128} dep {((0, 3), (1, 2)): 2624, ((1, 2), (1, 2)): 1712, ((1, 2), (2, 1)): 64}
+M:   different labels + shared hub-only label: indep {} dep {((0, 3), (1, 2)): 768, ((1, 2), (1, 2)): 480}; 4s
+M: J1 hub-only part HOLDS; J1 full-met (same label) part HOLDS
+M: (C) Lemma-4.6 configurations among limit pairs: 4544, of them dependent as predicted: 4544; 4s
+Mt: F3 {1: 40320, 2: 504, 3: 112}; 112 full values; 177412 hub values with N(h) nonempty; limit configurations r=0/1/2: 480 / 720 / 96 at 20 / 120 / 24 values; H2 violations (|S| = 4 - r independent): 0; 3s
+Mt: (A) hub-only sharing, pairs of limit configurations with h1 + h2 in PV: 208272; independent by class pair: {}; dependent: {((0, 3), (0, 3)): 35712, ((0, 3), (1, 2)): 87360, ((0, 3), (2, 1)): 12672, ((1, 2), (1, 2)): 55088, ((1, 2), (2, 1)): 16224, ((2, 1), (2, 1)): 1216}; pairs qj_limit would pre-skip: {False: 14272} (independent ones must be 0); r = 2 limit VALUES 24, value pairs with XOR in PV 76; 8s
+Mt: (B) pairs of limit configurations sharing a full helper (counted per common f): 35280
+Mt:   intersecting pairs at f (same label possible): indep {} dep {((0, 3), (0, 3)): 5376, ((0, 3), (1, 2)): 6976, ((0, 3), (2, 1)): 480, ((1, 2), (1, 2)): 1824, ((1, 2), (2, 1)): 160}
+Mt:   disjoint pairs at f (different labels): indep {((0, 3), (0, 3)): 1728, ((0, 3), (1, 2)): 4032, ((0, 3), (2, 1)): 384, ((1, 2), (1, 2)): 3184, ((1, 2), (2, 1)): 352} dep {((0, 3), (1, 2)): 6848, ((1, 2), (1, 2)): 3776, ((1, 2), (2, 1)): 160}
+Mt:   different labels + shared hub-only label: indep {} dep {((0, 3), (1, 2)): 1920, ((1, 2), (1, 2)): 960}; 9s
+Mt: J1 hub-only part HOLDS; J1 full-met (same label) part HOLDS
+Mt: (C) Lemma-4.6 configurations among limit pairs: 14816, of them dependent as predicted: 14816; 10s
