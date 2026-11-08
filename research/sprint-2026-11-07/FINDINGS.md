@@ -1352,6 +1352,24 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   the two global label-sharing enumerations (M^T q = 1 with 7-8 full helpers; M q = 2 with ten). The
   bound stays 75.
 
+## F33. The archive's near-miss anchors (candidate D, the 18-pair foundation state, the 75/76 partial circuits): no 87 (nearmiss agent, high; `nearmiss/REPORT.md`) [measured; exclusions proved as stated by the sat87 encoding]
+
+- Candidate D (archive AES_Deep_Repair_75_76_Profiles_2026_10_02, `b87_most_exact.json` + its
+  known_completion): 87 XOR gates, depth 5, 20 input pairs, 31 outputs equal to the matrix rows, y19
+  missing; the y19 representative r = y19 + x11 is a DEAD gate (no users), so D is really an 86-gate
+  31-output circuit plus one useless gate [checked]. Instances (K = D minus W, m = |W|, r in W): the
+  one-gate completion I(D - r, 1) UNSAT; every one-helper window with k <= 8 UNSAT (37 of 55 live
+  helpers under the wiring closure); 3 neighbourhood pairs UNSAT; all windows with k >= 9 (the shared
+  input pairs x18+x26, x3+x19, x19+x27, x23+x31, the parent cone k = 13, the large cones k = 31/33) timed
+  out at 120 s or were not run. A 600 s pass (~1 core-hour) is specified.
+- The 18-pair foundation state (archive 18_pair_87_checkpoint + the 88@6 19-pair baseline): the
+  reconstruction reproduces the checkpoint exactly (dropping x1+x17 and closing gives 84 values missing
+  y9, y10, y18; the checkpoint's "o10" list has a typo). I(K84, 3) UNSAT and all 13 windows of r <= 6
+  around the three missing outputs UNSAT: no 87 keeps the 18-pair rich interior minus any such window.
+- The 75/76-gate partial circuits: I(A75, 12), I(A76, 11) x 2: all TIMEOUT at 900 s, uninformative as
+  predicted. 81 instance runs, ~98 min solver wall, one child; nothing SAT; the decode-verify path
+  never exercised.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
