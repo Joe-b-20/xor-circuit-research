@@ -1,0 +1,277 @@
+diff -ruN -x __pycache__ /home/joebachir20/xor-circuit-research/search/xorflux/campaign/worker.py xorflux-translog/xorflux/campaign/worker.py
+--- /home/joebachir20/xor-circuit-research/search/xorflux/campaign/worker.py	2026-10-30 11:14:24.698472555 -0400
++++ xorflux-translog/xorflux/campaign/worker.py	2026-11-07 19:04:04.349111731 -0500
+@@ -271,6 +271,9 @@
+             self.checkpoint()
+             self.write_status("stopped")
+             self.recorder.close(reason)
++            tl = getattr(engine, "_tl", None)
++            if tl is not None:
++                tl.close()
+             return 0
+         except BaseException as exc:  # noqa: BLE001 - every failure must leave error.json
+             atomic_json(self.dir / "error.json", {
+diff -ruN -x __pycache__ /home/joebachir20/xor-circuit-research/search/xorflux/config/registry.py xorflux-translog/xorflux/config/registry.py
+--- /home/joebachir20/xor-circuit-research/search/xorflux/config/registry.py	2026-10-30 11:14:24.707091311 -0400
++++ xorflux-translog/xorflux/config/registry.py	2026-11-07 19:04:04.349111731 -0500
+@@ -26,6 +26,7 @@
+     "xorflux.engine.archive",
+     "xorflux.engine.restart",
+     "xorflux.engine.phase",
++    "xorflux.engine.translog",
+     "xorflux.telemetry.recorder",
+     "xorflux.campaign.coordinator",
+     "xorflux.campaign.worker",
+diff -ruN -x __pycache__ /home/joebachir20/xor-circuit-research/search/xorflux/engine/loop.py xorflux-translog/xorflux/engine/loop.py
+--- /home/joebachir20/xor-circuit-research/search/xorflux/engine/loop.py	2026-10-30 11:14:24.694163177 -0400
++++ xorflux-translog/xorflux/engine/loop.py	2026-11-07 19:04:04.349111731 -0500
+@@ -71,6 +71,7 @@
+ from .phase import BURST, PLATEAU, REPAIR, PhaseController, phase_priors
+ from .restart import RestartController
+ from .scheduler import Scheduler, Tightness
++from .translog import TransitionLog
+ 
+ KNOBS = (
+     Section("engine", "The search loop.", {
+@@ -390,6 +391,8 @@
+         source = getattr(recorder, "set_epoch_source", None)
+         if source is not None:
+             source(self.epoch_fields)
++        # EXPERIMENTAL transition log (engine/translog.py); None when off.
++        self._tl = TransitionLog.from_settings(settings, target, recorder, worker_id)
+ 
+     def _make_state(self, values, cap):
+         """A canonical chain state from ``values`` (see ``canonical_state``)."""
+@@ -501,6 +504,8 @@
+         self.source = source
+         self.donor = donor
+         self.cur_g, self.cur_d, self.cur_key = g, d, key
++        if self._tl is not None:
++            self._tl.transition("chain", self.it, g, d, source, self.chain_seq, state)
+         values = state.key()
+         self.root_values = values
+         self.chain_best_key, self.chain_best_g, self.chain_best_d = key, g, d
+@@ -668,6 +673,9 @@
+                             self._sample_best_point(move.name)
+         # A proposal's cost includes scoring and its undo (rollback is kernel work for it).
+         secs = perf_counter() - t0
++        tl = self._tl
++        if tl is not None and g1 != tl.g:
++            tl.transition("step", it, g1, d1, move.name, self.chain_seq, self.state)
+ 
+         self.work_total += work
+         weight = self._tightness.weight(g1, d1) if (chain or worker or frontier) else 1.0
+@@ -802,6 +810,8 @@
+     # ------------------------------------------------------------------ periodic work ---
+     def _periodic(self) -> None:
+         self._t = t = self.recorder.now()
++        if self._tl is not None:
++            self._tl.flush()
+         if self._repair_expired:
+             self._repair_expired = False
+             if not self._feasible(self.chain_best_g, self.chain_best_d):
+@@ -851,6 +861,7 @@
+             "restarts_by": {"reason": dict(self.restarter.by_reason),
+                             "source": dict(self.restarter.by_source)},
+             "counters": dict(self.counters),
++            "translog": None if self._tl is None else self._tl.summary(),
+         }
+ 
+     # ------------------------------------------------------------------ restarts --------
+@@ -986,6 +997,8 @@
+         """
+         if self._canonical:
+             self._set_state(self._make_state(self.state.values(), self._cap))
++        if self._tl is not None:
++            self._tl.flush()
+         t = self.recorder.now()
+         wb = None
+         if self.worker_best_key is not None:
+@@ -1046,6 +1059,9 @@
+         self.cur_g, self.cur_d = self._size(), self.state.depth()
+         self.cur_key = self._key(self.cur_g, self.cur_d)
+         self.chain_seq = chain["seq"]
++        if self._tl is not None:
++            self._tl.transition("chain", self.it, self.cur_g, self.cur_d, "resume",
++                                self.chain_seq, self.state)
+         self.root = chain["root"]
+         self.source = chain["source"]
+         self.donor = chain["donor"]
+diff -ruN -x __pycache__ /home/joebachir20/xor-circuit-research/search/xorflux/engine/translog.py xorflux-translog/xorflux/engine/translog.py
+--- /home/joebachir20/xor-circuit-research/search/xorflux/engine/translog.py	1969-12-31 19:00:00.000000000 -0500
++++ xorflux-translog/xorflux/engine/translog.py	2026-11-07 19:32:19.381252224 -0500
+@@ -0,0 +1,174 @@
++"""Transition log (EXPERIMENTAL, 2026-11-07 sprint): every change of the chain's gate count
++inside the low band, written by the engine itself.
++
++Why.  The 30 s chain.json sampler sees a 30 s snapshot of a walk that leaves and re-enters the
++88 level ~12 times per second (FINDINGS F11): 68 % of hops between distinct 88 plateaus show no
++89 sample.  Nobody knows how many distinct 88 states (or plateaus) a chain enters per hour, how
++long the 89 excursions are, or whether two chains' trails ever meet between samples.  This module
++records the transitions themselves, at the engine's step resolution.
++
++What is written (``<worker dir>/translog.jsonl``, one JSON object per line):
++
++* ``{"k": "open", ...}``        once per engine start/resume: worker, knobs, campaign clock ``t``
++                                and wall time ``w`` (so ``t`` pairs with the sampler's ``t``).
++* ``{"k": "step", ...}``        an accepted proposal changed the gate count, and the old or the
++                                new count is <= ``translog.band_gates``;
++* ``{"k": "chain", ...}``       a chain began (start, restart, resume): the state was replaced
++                                wholesale, whatever the gate counts.
++
++Fields of step/chain rows: ``it`` engine step counter, ``t`` campaign clock (s), ``w`` wall
++time (s since the epoch), ``p`` gates before, ``g`` gates after, ``d`` depth after, ``m`` move
++name (chain rows: the chain source), ``c`` engine chain sequence number.  When ``g`` is
++<= ``translog.id_gates`` the row also carries ``id``, a 16-hex-digit identity of the state
++(blake2b-64 of the sorted non-input values, canonical under ``translog.rotate_bits``-bit
++rotation of the input masks when that is set: 8 for AES MixColumns/InvMixColumns, whose rows are
++invariant under byte rotation; checked at start), and, by ``translog.values``, ``v`` = the
++sorted non-input values (what chain.json/sampler.py call ``chain_values``) so plateaus can be
++catalogued offline.
++
++Cost.  One attribute compare per step; a row costs a dict + json.dumps (~10 us) and, at an
++entry into the identity band, the canonical hash (~60 us with rotation at 88 values).  At the
++measured ~12 entries per second this is ~0.1 % of a 1,750 step/s worker.  Writes are buffered
++and flushed from the engine's periodic check (every 64 steps) and at checkpoints.
++"""
++from __future__ import annotations
++
++import hashlib
++import json
++import time
++from pathlib import Path
++from time import perf_counter
++
++from ..config.schema import Knob, Section
++
++KNOBS = Section("translog", "EXPERIMENTAL: in-engine log of gate-count transitions in the low "
++                "band (sprint 2026-11-07, connectivity question).", {
++    "enabled": Knob(False, "Write <worker dir>/translog.jsonl."),
++    "band_gates": Knob(89, "Log a transition when the gate count before or after it is at most "
++                       "this (89 on MixColumns: the 88+89 band).", min=0),
++    "id_gates": Knob(88, "States with at most this many gates get an identity hash (and values, "
++                     "by translog.values) in their row.", min=0),
++    "values_gates": Knob(None, "Rows with at most this many gates also carry the state's values "
++                         "(no identity): set it to band_gates to keep the 89 state right after "
++                         "an exit from 88, whose 88 exit state is one of its 88-subsets. "
++                         "null = id_gates.", kind=int, nullable=True, min=0),
++    "rotate_bits": Knob(0, "Normalise identities modulo rotation of the input masks by this "
++                         "many bits (8 = byte rotation for AES MixColumns/InvMixColumns; the "
++                         "target rows must be invariant, checked at start). 0 = none.", min=0),
++    "values": Knob("entry", "When a row carries the state's values: entry (every row with an "
++                   "identity), new (first time an identity is seen by this engine), never.",
++                   choices=("entry", "new", "never")),
++    "file": Knob("translog.jsonl", "File name inside the worker directory."),
++})
++
++
++def _identity(values: list, n: int, rotate: int) -> str:
++    """blake2b-64 (hex) of the sorted values, minimal over rotations of the input masks."""
++    best = values
++    if rotate:
++        mask = (1 << n) - 1
++        s = rotate
++        while s < n:
++            r = sorted(((v << s) | (v >> (n - s))) & mask for v in values)
++            if r < best:
++                best = r
++            s += rotate
++    return hashlib.blake2b(",".join(map(str, best)).encode(), digest_size=8).hexdigest()
++
++
++class TransitionLog:
++    """The engine's transition logger; ``None`` stands in for it when disabled."""
++
++    @classmethod
++    def from_settings(cls, settings, target, recorder, worker_id):
++        try:
++            cfg = settings.view("translog")
++            enabled = cfg.enabled
++        except (KeyError, AttributeError):          # partial schemas (tests)
++            return None
++        if not enabled:
++            return None
++        directory = getattr(recorder, "directory", None)
++        if directory is None:
++            return None
++        return cls(Path(directory) / cfg.file, worker_id, target, recorder, cfg.band_gates,
++                   cfg.id_gates, cfg.rotate_bits, cfg.values, cfg.values_gates)
++
++    def __init__(self, path, worker_id, target, recorder, band_gates, id_gates, rotate_bits,
++                 values_mode, values_gates=None):
++        self.path = Path(path)
++        self.worker_id = worker_id
++        self.recorder = recorder
++        self.band = band_gates
++        self.id_gates = id_gates
++        self.values_gates = id_gates if values_gates is None else values_gates
++        self.n = target.n_inputs
++        self.rotate = rotate_bits
++        self.values_mode = values_mode
++        self.g = None                       # gate count of the last state seen
++        self.rows = 0
++        self.entries = 0                    # rows with an identity
++        self.seconds = 0.0                  # time spent in this module (rows only)
++        self._seen: set | None = set() if values_mode == "new" else None
++        if rotate_bits:
++            rows = set(target.rows)
++            mask = (1 << self.n) - 1
++            s = rotate_bits
++            ok = True
++            while s < self.n and ok:
++                ok = {((v << s) | (v >> (self.n - s))) & mask for v in rows} == rows
++                s += rotate_bits
++            if not ok:
++                recorder.event("translog", status="rotation_disabled",
++                               reason=f"target rows not invariant under {rotate_bits}-bit rotation")
++                self.rotate = 0
++        self._f = open(self.path, "a", buffering=1 << 16)
++        self._write({"k": "open", "worker": worker_id, "t": recorder.now(), "w": time.time(),
++                     "band_gates": band_gates, "id_gates": id_gates, "rotate_bits": self.rotate,
++                     "values": values_mode, "values_gates": self.values_gates,
++                     "n_inputs": self.n})
++
++    # ------------------------------------------------------------------ hot path
++    def transition(self, kind: str, it: int, g: int, d, move, chain_seq: int, state) -> None:
++        """Record that the chain is now at ``g`` gates (called when it differs from the last
++        value seen, or for every chain begin)."""
++        p = self.g
++        self.g = g
++        if kind == "step" and g > self.band and (p is None or p > self.band):
++            return
++        t0 = perf_counter()
++        row = {"k": kind, "it": it, "t": round(self.recorder.now(), 3),
++               "w": round(time.time(), 3), "p": p, "g": g, "d": d, "m": move, "c": chain_seq}
++        if g <= self.id_gates:
++            values = sorted(state.key())
++            ident = _identity(values, self.n, self.rotate)
++            row["id"] = ident
++            self.entries += 1
++            mode = self.values_mode
++            if mode == "entry":
++                row["v"] = values
++            elif mode == "new" and ident not in self._seen:
++                self._seen.add(ident)
++                row["v"] = values
++        elif g <= self.values_gates and self.values_mode != "never":
++            row["v"] = sorted(state.key())
++        self._write(row)
++        self.seconds += perf_counter() - t0
++
++    def _write(self, row: dict) -> None:
++        self._f.write(json.dumps(row, separators=(",", ":")) + "\n")
++        self.rows += 1
++
++    # ------------------------------------------------------------------ housekeeping
++    def flush(self) -> None:
++        self._f.flush()
++
++    def close(self) -> None:
++        if not self._f.closed:
++            self._write({"k": "close", "t": self.recorder.now(), "w": time.time(),
++                         "rows": self.rows, "entries": self.entries,
++                         "seconds": round(self.seconds, 3)})
++            self._f.close()
++
++    def summary(self) -> dict:
++        return {"rows": self.rows, "entries": self.entries, "seconds": round(self.seconds, 3)}

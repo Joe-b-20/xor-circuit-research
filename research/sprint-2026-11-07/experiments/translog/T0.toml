@@ -1,0 +1,28 @@
+# translog test, arm T0: v8 defaults as hunt D0, ONE MixColumns worker, uncapped, 20m,
+# started on an 88@6 record of hunt D0 (free-00) so the run sits on the 88+89 band from t = 0
+# (incumbent stall allowance 2 x 900 s > 20 min: one chain).  Transition log OFF (control for the overhead measurement).
+
+[campaign]
+name = "translog-T0"
+seed = 20261108
+duration = "20m"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+
+[[workers]]
+name = "free"
+target = "aes-mixcolumns"
+count = 1
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d6-0f7bfd6b155e8d61.json"]

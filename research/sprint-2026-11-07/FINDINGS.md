@@ -317,10 +317,12 @@ with an 88 sample, 1,462 visits, 1,418 hops).
   a chain stepping back to a node it left 2-17 hops earlier (102 of 1,418 hops, 7.2 %). 93 % of
   visited nodes were never revisited by anything.
 - Hops: ~44 node-visits per chain-hour pooled (A median 34/h, C 56/h; B is cut by its 300 s
-  rule), a floor: 68 % of hops between distinct nodes (59 % even between exactly catalogued,
+  rule), a SAMPLER property (F30: the real re-entry rate is ~2,600 per chain-hour; the sampler sees
+  ~3 % of stays), a floor by a factor of ~35: 68 % of hops between distinct nodes (59 % even between exactly catalogued,
   provably distinct plateaus) show no 89 sample, i.e. the excursion was shorter than 30 s. The
-  engine's ledgers count ~24 accepted non-neutral moves per second during 88 stays (~12 departures
-  to 89 per second [guess], ~1.2 % of proposals); 39-45 % of sampled instants after a chain's first
+  engine's ledgers count ~24 accepted non-neutral moves per second during 88 stays; the in-engine
+  log (F30) measures 0.72 departures from 88 per second, so the earlier "~12 per second [guess]" was
+  wrong; 39-45 % of sampled instants after a chain's first
   88 are at 89. The walk lives on the 88+89 band and dips into 88 nodes. A hop changes a median
   30 % of the helper set modulo rotation (q1 25 %, q3 40 %) against 16 % for 30 s of neutral
   walking inside a node: neighbouring plateaus share ~70 % of their core; the reviewer's 31-38 %
@@ -1213,6 +1215,38 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   status only), PLX3 (plane-local layer free), union_sat, one-target-short corpus, odd helpers (F20),
   depth >= 4 for any 87 (from D3 >= 93).
 
+## F30. In-engine 88 <-> 89 transition logging: the sampler saw 3 % of stays; a chain enters 88 ~2,600 times per hour (translog agent, high; `translog/REPORT.md`, `translog/translog.diff`) [measured; prototype, experimental code kept apart from v8]
+
+- Instrument: a copy of the v8 engine with a logger (one module + four small hooks; `translog.diff`,
+  277 lines; unit tests pass) that records every accepted gate-count change within the 88-89 band,
+  with a rotation-canonical identity hash of each 88 entry state and optionally its values. Overhead
+  under identical load: steps per wall-second 1.008x, per CPU-second 1.003x, logger self-time 0.06 %
+  (entry row ~160 us at 2.3 rows/s): not resolvable. ~3 MB per worker-hour.
+- 20-minute test (one uncapped MixColumns worker from a hunt D 88@6 record, one chain, sampler at 30 s
+  alongside): 869 entries into 88 (43 per minute, ~2,600 per hour), 866 distinct identities of 869 (3
+  recurrences: 1 immediate return, 2 after 10 s and 75 s); consecutive entries differ by a median 7
+  values. 868 excursions to 89: median 24 steps / 0.019 s, 99.65 % shorter than 30 s, 97.4 % shorter
+  than 2 s, max 163 s; 770 stayed at 89, 98 reached 90; time share 56 % at 88, 34 % at 89, 10 % at 90;
+  88 stays median 0.49 s. Nothing below 88; 0 of 869 entry states has a remove1 down-exit.
+- Sampler calibration: the 30 s sampler caught 25 of 869 stays (2.9 %) and 11 at 89; its "hop" count
+  for the period (21-24, i.e. 63-72 per hour) against 868 real re-entries means F11's "~44 plateau
+  changes per chain-hour (floor)" is a sampler property that undercounts by ~35x. Measured departures
+  from 88: 0.72 per second (~1 per second at D0's step rate), not the "~12 per second [guess]" inferred
+  from the ledgers in F11 (corrected there).
+- Identity caveat: 18 of 25 sampled mid-stay states carry a DIFFERENT cheap v3 signature from their
+  own stay's entry state (3-10 values replaced inside one contiguous 88 stay), so v3 is not constant
+  along the walk's neutral components: F11's graph nodes and the signature-based plateau counts (F12
+  upper bounds, F14 "distinct plateaus per worker-hour") are finer than neutral components by an
+  unknown factor; exact identity needs the exact catalogue offline on the logged values (the
+  `values_gates = 89` knob keeps the 89 state right after each exit for the plateau-before/after
+  test). v3 signatures of the 609 logged visits: 366 distinct (~1,100 per hour), 243 revisits.
+- Proposed 1 h / 12-worker experiment (pre-registered analysis in the report): D0 settings with the
+  logger, restarts off, 6 distinct hunt D 88 records each given to two workers (same-start pairs as
+  the positive control for meeting/separation, 15 cross pairs), sampler alongside; ~31k entry states;
+  exact plateau identity of consecutive < 2 s hops and of every cross-worker coincidence; the R2 null
+  model on exact P and M; sampler correction factors for every F11/F14 number. This is the experiment
+  that would decide the connectivity question (UNDERSTANDING 8).
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
@@ -1222,6 +1256,10 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   provably contained an improvement) means the sprint's window refutations have unmeasured, probably
   negligible, evidential weight about 87 at k <= 12; a power control (R0) is running; the "advance"
   wording in I.4 is qualified accordingly.
+- F11/F14 (translog, F30): the sampler-based hop rate (~44 per chain-hour) undercounts real 88
+  re-entries (~2,600 per chain-hour) by ~35x; "~12 departures per second" was a wrong guess (0.72 per
+  second measured); the cheap v3 identity changes within a single 88 stay, so signature-based node
+  and plateau counts are finer than neutral components. Applied in F11, F14 and UNDERSTANDING 4.
 - F21 (qrealcheck): all lemmas and rows CONFIRMED, LP reproduced independently; key bookkeeping
   corrected (1,377 load-bearing keys, 264 with q <= 3). Applied in F21.
 - F17 (bridgecheck): numbers CONFIRMED (0 row violations, min slack 10, tail profiles, E_B 0-7, h
