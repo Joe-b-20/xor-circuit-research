@@ -1,0 +1,321 @@
+circuit kste:3146 depth 8: core 47, mobile 9, neutral moves 18, downs []; 9 components (shapes {'1+1': 9}); ambiguous splits: 63 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=00020006 roots=00020406
+  c1  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=08000008 roots=88000088
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=08180000 roots=88980000
+  c3  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k=12 tW= 6 free=5 forced_extra=10 leaves=12  mobile=80810000 roots=81810000
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 5 tW= 2 free=2 forced_extra=3 leaves=6  mobile=80888080 roots=848c8484
+  c5  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=83800101 roots=02008181
+  c6  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=848c848c roots=8c840808
+  c7  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=888a8c86 roots=08088c84
+  c8  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=98889880 roots=98889888
+  whole mobile part: k=36 tW=16 free=19 forced_extra=18 leaves=30
+2026-11-07 19:01:49 run kste:3146 levels=['1'] limit=120 pool=full maxfree=3: 8 instances (free histogram [(0, 2), (1, 3), (2, 3)])
+2026-11-07 19:01:50 kste:3146      M:c6                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.02) cl=15470 prior=None
+2026-11-07 19:01:50 kste:3146      M:c7                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.04) cl=31170 prior=None
+2026-11-07 19:01:51 kste:3146      M:c2                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.7s (solve 0.58) cl=46953 prior=None
+2026-11-07 19:01:51 kste:3146      M:c5                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.19) cl=46935 prior=None
+2026-11-07 19:01:51 kste:3146      M:c8                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.18) cl=46887 prior=None
+2026-11-07 19:01:52 kste:3146      M:c4                   lvl=1   k= 5 tW= 2 free=2 pool=full UNSAT        1.0s (solve 0.78) cl=62680 prior=None
+2026-11-07 19:01:55 kste:3146      M:c0                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        2.9s (solve 2.6) cl=94924 prior=None
+2026-11-07 19:02:00 kste:3146      M:c1                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        4.7s (solve 4.31) cl=94948 prior=None
+2026-11-07 19:02:00 run complete kste:3146
+circuit kste:2229 depth 7: core 49, mobile 7, neutral moves 14, downs []; 7 components (shapes {'1+1': 7}); ambiguous splits: 65 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=01800181 roots=81800101
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=08008c84 roots=08088c84
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=08881090 roots=00881098
+  c3  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=10109088 roots=10109888
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=82038100 roots=83028100
+  c5  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k=12 tW= 5 free=6 forced_extra=10 leaves=12  mobile=88800000 roots=88880000
+  c6  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=88800808 roots=8c840808
+  whole mobile part: k=27 tW=12 free=14 forced_extra=13 leaves=21
+2026-11-07 19:02:01 run kste:2229 levels=['1'] limit=120 pool=full maxfree=3: 6 instances (free histogram [(0, 4), (1, 2)])
+2026-11-07 19:02:01 kste:2229      M:c1                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.02) cl=15432 prior=None
+2026-11-07 19:02:01 kste:2229      M:c0                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.3s (solve 0.07) cl=31118 prior=None
+2026-11-07 19:02:01 kste:2229      M:c3                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.3s (solve 0.08) cl=31098 prior=None
+2026-11-07 19:02:02 kste:2229      M:c6                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.03) cl=31102 prior=None
+2026-11-07 19:02:02 kste:2229      M:c2                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.2) cl=46791 prior=None
+2026-11-07 19:02:03 kste:2229      M:c4                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.5s (solve 0.24) cl=46791 prior=None
+2026-11-07 19:02:03 run complete kste:2229
+circuit kste:1557 depth 7: core 48, mobile 8, neutral moves 16, downs []; 8 components (shapes {'1+1': 8}); ambiguous splits: 60 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=00008888 roots=00009888
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=08008c84 roots=08088c84
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 5 tW= 2 free=2 forced_extra=3 leaves=6  mobile=08888000 roots=088c8400
+  c3  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=088c0084 roots=8408088c
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=80108010 roots=88108810
+  c5  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k=11 tW= 6 free=4 forced_extra=9 leaves=11  mobile=80810000 roots=81810000
+  c6  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=81008100 roots=83008102
+  c7  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=8c840000 roots=8c840808
+  whole mobile part: k=32 tW=13 free=18 forced_extra=16 leaves=26
+2026-11-07 19:02:03 run kste:1557 levels=['1'] limit=120 pool=full maxfree=3: 7 instances (free histogram [(0, 3), (1, 3), (2, 1)])
+2026-11-07 19:02:04 kste:1557      M:c1                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.1s (solve 0.02) cl=15422 prior=None
+2026-11-07 19:02:04 kste:1557      M:c3                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.1s (solve 0.02) cl=15422 prior=None
+2026-11-07 19:02:04 kste:1557      M:c7                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.03) cl=31082 prior=None
+2026-11-07 19:02:04 kste:1557      M:c0                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.3s (solve 0.15) cl=46779 prior=None
+2026-11-07 19:02:05 kste:1557      M:c4                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.2) cl=46773 prior=None
+2026-11-07 19:02:05 kste:1557      M:c6                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.19) cl=46773 prior=None
+2026-11-07 19:02:06 kste:1557      M:c2                   lvl=1   k= 5 tW= 2 free=2 pool=full UNSAT        1.5s (solve 1.15) cl=62520 prior=None
+2026-11-07 19:02:06 run complete kste:1557
+circuit sampleA:109 depth 8: core 48, mobile 8, neutral moves 22, downs []; 7 components (shapes {'1+1': 6, '2+1': 1}); ambiguous splits: 64 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=00830283 roots=81020283
+  c1  mobile 1 roots 1 (targets 0, core 1) moves 6 sizes {1: 6}  k= 5 tW= 3 free=1 forced_extra=3 leaves=6  mobile=01810080 roots=81810000
+  c2  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=02028280 roots=02028381
+  c3  mobile 2 roots 1 (targets 0, core 1) moves 4 sizes {1: 4}  k= 5 tW= 2 free=2 forced_extra=2 leaves=6  mobile=0c000000,0c880088 roots=0c8c0088
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=80081880 roots=00889800
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=80088c0c roots=08088c84
+  c6  mobile 1 roots 1 (targets 1, core 0) moves 4 sizes {1: 4}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=8040c080 roots=c0408080
+  whole mobile part: k=22 tW=11 free=10 forced_extra=7 leaves=23
+2026-11-07 19:02:07 run sampleA:109 levels=['1'] limit=120 pool=full maxfree=3: 7 instances (free histogram [(0, 3), (1, 3), (2, 1)])
+2026-11-07 19:02:07 sampleA:109    M:c0                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.03) cl=15444 prior=None
+2026-11-07 19:02:08 sampleA:109    M:c5                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.02) cl=15444 prior=None
+2026-11-07 19:02:08 sampleA:109    M:c6                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.4s (solve 0.07) cl=31146 prior=None
+2026-11-07 19:02:07 sampleA:109    M:c2                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT       -0.6s (solve 0.13) cl=46833 prior=None
+2026-11-07 19:02:08 sampleA:109    M:c4                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.16) cl=46845 prior=None
+2026-11-07 19:02:08 sampleA:109    M:c1                   lvl=1   k= 5 tW= 3 free=1 pool=full UNSAT        0.4s (solve 0.24) cl=62769 prior=None
+2026-11-07 19:02:10 sampleA:109    M:c3                   lvl=1   k= 5 tW= 2 free=2 pool=full UNSAT        1.4s (solve 1.14) cl=62624 prior=None
+2026-11-07 19:02:10 run complete sampleA:109
+circuit sampleA:48 depth 9: core 45, mobile 11, neutral moves 29, downs []; 9 components (shapes {'2+2': 1, '1+1': 6, '2+1': 1, '1+2': 1}); ambiguous splits: 63 values; fan 0.0s
+  c0  mobile 2 roots 2 (targets 1, core 1) moves 3 sizes {1: 3}  k= 7 tW= 3 free=3 forced_extra=3 leaves=8  mobile=00818001,00818100 roots=01818001,02818102
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=00888800 roots=10988810
+  c2  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=06020701 roots=02028381
+  c3  mobile 2 roots 1 (targets 0, core 1) moves 4 sizes {1: 4}  k= 5 tW= 2 free=2 forced_extra=2 leaves=6  mobile=08040000,088c0088 roots=0c8c0088
+  c4  mobile 1 roots 1 (targets 1, core 0) moves 9 sizes {1: 9}  k= 9 tW= 4 free=4 forced_extra=7 leaves=9  mobile=80000181 roots=80010181
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=80088c0c roots=08088c84
+  c6  mobile 1 roots 2 (targets 1, core 1) moves 1 sizes {1: 1}  k= 7 tW= 4 free=2 forced_extra=4 leaves=8  mobile=81800000 roots=81800101,81810000
+  c7  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=83008102 roots=81020283
+  c8  mobile 1 roots 1 (targets 0, core 1) moves 4 sizes {1: 4}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=84800400 roots=04008480
+  whole mobile part: k=29 tW=13 free=15 forced_extra=7 leaves=22
+2026-11-07 19:02:10 run sampleA:48 levels=['1'] limit=120 pool=full maxfree=3: 8 instances (free histogram [(0, 4), (2, 3), (3, 1)])
+2026-11-07 19:02:11 sampleA:48     M:c5                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.02) cl=15450 prior=None
+2026-11-07 19:02:11 sampleA:48     M:c7                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.02) cl=15452 prior=None
+2026-11-07 19:02:11 sampleA:48     M:c1                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.3s (solve 0.03) cl=31146 prior=None
+2026-11-07 19:02:11 sampleA:48     M:c2                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.04) cl=31134 prior=None
+2026-11-07 19:02:13 sampleA:48     M:c3                   lvl=1   k= 5 tW= 2 free=2 pool=full UNSAT        1.7s (solve 1.48) cl=62648 prior=None
+2026-11-07 19:02:15 sampleA:48     M:c6                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        2.2s (solve 2.01) cl=94828 prior=None
+2026-11-07 19:02:19 sampleA:48     M:c8                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        3.6s (solve 3.28) cl=94756 prior=None
+2026-11-07 19:02:25 sampleA:48     M:c0                   lvl=1   k= 7 tW= 3 free=3 pool=full UNSAT        6.3s (solve 6.03) cl=94611 prior=None
+2026-11-07 19:02:25 run complete sampleA:48
+circuit sampleA:781 depth 9: core 48, mobile 8, neutral moves 16, downs []; 8 components (shapes {'1+1': 8}); ambiguous splits: 65 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=7  mobile=00008098 roots=00008898
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=00828002 roots=02028381
+  c2  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=00848400 roots=088c8408
+  c3  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=00880088 roots=10988810
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 8 tW= 4 free=3 forced_extra=6 leaves=7  mobile=02000202 roots=02800383
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=02838300 roots=02838102
+  c6  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=80818080 roots=81800100
+  c7  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=8c8c8c8c roots=8c848c84
+  whole mobile part: k=28 tW=13 free=14 forced_extra=12 leaves=26
+2026-11-07 19:02:26 run sampleA:781 levels=['1'] limit=120 pool=full maxfree=3: 8 instances (free histogram [(0, 3), (1, 2), (2, 2), (3, 1)])
+2026-11-07 19:02:26 sampleA:781    M:c5                   lvl=1   k= 2 tW= 1 free=0 pool=full UNSAT        0.2s (solve 0.02) cl=15470 prior=None
+2026-11-07 19:02:26 sampleA:781    M:c2                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.05) cl=31186 prior=None
+2026-11-07 19:02:26 sampleA:781    M:c3                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.05) cl=31186 prior=None
+2026-11-07 19:02:26 sampleA:781    M:c1                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.3s (solve 0.16) cl=46917 prior=None
+2026-11-07 19:02:27 sampleA:781    M:c7                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.25) cl=46851 prior=None
+2026-11-07 19:02:28 sampleA:781    M:c0                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        1.4s (solve 1.14) cl=94864 prior=None
+2026-11-07 19:02:30 sampleA:781    M:c6                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        2.0s (solve 1.69) cl=94912 prior=None
+2026-11-07 19:02:41 sampleA:781    M:c4                   lvl=1   k= 8 tW= 4 free=3 pool=full UNSAT       11.1s (solve 10.58) cl=110885 prior=None
+2026-11-07 19:02:41 run complete sampleA:781
+circuit sampleC:131 depth 12: core 50, mobile 6, neutral moves 12, downs []; 6 components (shapes {'1+1': 6}); ambiguous splits: 66 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=03830182 roots=02028183
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=0c040808 roots=8c840808
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=7  mobile=10000008 roots=98000088
+  c3  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=80888088 roots=848c848c
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=82000280 roots=83008300
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=88008800 roots=10109888
+  whole mobile part: k=21 tW=10 free=10 forced_extra=9 leaves=22
+2026-11-07 19:02:42 run sampleC:131 levels=['1'] limit=120 pool=full maxfree=3: 6 instances (free histogram [(0, 2), (1, 3), (2, 1)])
+2026-11-07 19:02:42 sampleC:131    M:c1                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.2s (solve 0.03) cl=31154 prior=None
+2026-11-07 19:02:42 sampleC:131    M:c5                   lvl=1   k= 3 tW= 2 free=0 pool=full UNSAT        0.3s (solve 0.07) cl=31158 prior=None
+2026-11-07 19:02:43 sampleC:131    M:c0                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.3s (solve 0.12) cl=46851 prior=None
+2026-11-07 19:02:43 sampleC:131    M:c3                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.6s (solve 0.29) cl=46845 prior=None
+2026-11-07 19:02:44 sampleC:131    M:c4                   lvl=1   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.17) cl=46881 prior=None
+2026-11-07 19:02:46 sampleC:131    M:c2                   lvl=1   k= 7 tW= 4 free=2 pool=full UNSAT        2.7s (solve 2.32) cl=94804 prior=None
+2026-11-07 19:02:46 run complete sampleC:131
+circuit kste:3146 depth 8: core 47, mobile 9, neutral moves 18, downs []; 9 components (shapes {'1+1': 9}); ambiguous splits: 63 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=00020006 roots=00020406
+  c1  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=08000008 roots=88000088
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=08180000 roots=88980000
+  c3  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k=12 tW= 6 free=5 forced_extra=10 leaves=12  mobile=80810000 roots=81810000
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 5 tW= 2 free=2 forced_extra=3 leaves=6  mobile=80888080 roots=848c8484
+  c5  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=83800101 roots=02008181
+  c6  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=848c848c roots=8c840808
+  c7  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=888a8c86 roots=08088c84
+  c8  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=98889880 roots=98889888
+  whole mobile part: k=36 tW=16 free=19 forced_extra=18 leaves=30
+2026-11-07 19:02:48 run kste:3146 levels=['2'] limit=120 pool=full maxfree=3: 16 instances (free histogram [(1, 1), (2, 7), (3, 8)])
+2026-11-07 19:02:48 kste:3146      M:c6+c7                lvl=2   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.17) cl=46875 prior=None
+2026-11-07 19:02:51 kste:3146      M:c2+c6                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.5s (solve 2.32) cl=78740 prior=None
+2026-11-07 19:02:53 kste:3146      M:c5+c6                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.8s (solve 1.49) cl=78710 prior=None
+2026-11-07 19:02:55 kste:3146      M:c6+c8                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.6s (solve 2.41) cl=78630 prior=None
+2026-11-07 19:03:02 kste:3146      M:c2+c7                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        7.1s (solve 6.75) cl=94864 prior=None
+2026-11-07 19:03:06 kste:3146      M:c5+c7                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.3s (solve 3.01) cl=94828 prior=None
+2026-11-07 19:03:15 kste:3146      M:c2+c8                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        9.9s (solve 9.73) cl=94659 prior=None
+2026-11-07 19:03:26 kste:3146      M:c4+c7                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT       10.2s (solve 9.95) cl=94563 prior=None
+2026-11-07 19:03:49 kste:3146      M:c0+c6                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       23.3s (solve 23.02) cl=110927 prior=None
+2026-11-07 19:04:07 kste:3146      M:c2+c5                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       18.5s (solve 18.19) cl=110997 prior=None
+2026-11-07 19:04:26 kste:3146      M:c5+c8                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       18.1s (solve 17.8) cl=110843 prior=None
+2026-11-07 19:04:44 kste:3146      M:c7+c8                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       18.9s (solve 18.57) cl=110745 prior=None
+2026-11-07 19:05:24 kste:3146      M:c1+c6                lvl=2   k= 9 tW= 5 free=3 pool=full UNSAT       39.8s (solve 39.45) cl=127319 prior=None
+2026-11-07 19:07:20 kste:3146      M:c1+c7                lvl=2   k=10 tW= 6 free=3 pool=full UNSAT      116.0s (solve 115.8) cl=143795 prior=None
+2026-11-07 19:07:20 run complete kste:3146
+circuit kste:2229 depth 7: core 49, mobile 7, neutral moves 14, downs []; 7 components (shapes {'1+1': 7}); ambiguous splits: 65 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=01800181 roots=81800101
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=08008c84 roots=08088c84
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=08881090 roots=00881098
+  c3  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=10109088 roots=10109888
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=82038100 roots=83028100
+  c5  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k=12 tW= 5 free=6 forced_extra=10 leaves=12  mobile=88800000 roots=88880000
+  c6  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=88800808 roots=8c840808
+  whole mobile part: k=27 tW=12 free=14 forced_extra=13 leaves=21
+2026-11-07 19:07:20 run kste:2229 levels=['2'] limit=120 pool=full maxfree=3: 15 instances (free histogram [(1, 5), (2, 9), (3, 1)])
+2026-11-07 19:07:21 kste:2229      M:c0+c1                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.8s (solve 0.61) cl=62705 prior=None
+2026-11-07 19:07:22 kste:2229      M:c1+c3                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.8s (solve 0.61) cl=62665 prior=None
+2026-11-07 19:07:23 kste:2229      M:c0+c3                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        0.9s (solve 0.77) cl=78711 prior=None
+2026-11-07 19:07:24 kste:2229      M:c0+c6                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        0.8s (solve 0.58) cl=78721 prior=None
+2026-11-07 19:07:25 kste:2229      M:c3+c6                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        1.0s (solve 0.65) cl=78671 prior=None
+2026-11-07 19:07:27 kste:2229      M:c1+c2                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.1s (solve 1.83) cl=78510 prior=None
+2026-11-07 19:07:30 kste:2229      M:c1+c4                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.6s (solve 2.33) cl=78510 prior=None
+2026-11-07 19:07:31 kste:2229      M:c1+c6                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.9s (solve 1.66) cl=78550 prior=None
+2026-11-07 19:07:33 kste:2229      M:c2+c3                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.6s (solve 1.44) cl=78510 prior=None
+2026-11-07 19:07:38 kste:2229      M:c0+c2                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        4.8s (solve 4.55) cl=94660 prior=None
+2026-11-07 19:07:41 kste:2229      M:c0+c4                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.2s (solve 2.99) cl=94660 prior=None
+2026-11-07 19:07:44 kste:2229      M:c2+c6                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.4s (solve 3.21) cl=94612 prior=None
+2026-11-07 19:07:48 kste:2229      M:c3+c4                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.9s (solve 3.68) cl=94600 prior=None
+2026-11-07 19:07:52 kste:2229      M:c4+c6                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.4s (solve 3.12) cl=94612 prior=None
+2026-11-07 19:08:08 kste:2229      M:c2+c4                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       16.1s (solve 15.85) cl=110605 prior=None
+2026-11-07 19:08:08 run complete kste:2229
+circuit kste:1557 depth 7: core 48, mobile 8, neutral moves 16, downs []; 8 components (shapes {'1+1': 8}); ambiguous splits: 60 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=00008888 roots=00009888
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=08008c84 roots=08088c84
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 5 tW= 2 free=2 forced_extra=3 leaves=6  mobile=08888000 roots=088c8400
+  c3  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=088c0084 roots=8408088c
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=80108010 roots=88108810
+  c5  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k=11 tW= 6 free=4 forced_extra=9 leaves=11  mobile=80810000 roots=81810000
+  c6  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=81008100 roots=83008102
+  c7  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=8c840000 roots=8c840808
+  whole mobile part: k=32 tW=13 free=18 forced_extra=16 leaves=26
+2026-11-07 19:08:09 run kste:1557 levels=['2'] limit=120 pool=full maxfree=3: 18 instances (free histogram [(1, 2), (2, 9), (3, 7)])
+2026-11-07 19:08:10 kste:1557      M:c3+c7                lvl=2   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.24) cl=46767 prior=None
+2026-11-07 19:08:10 kste:1557      M:c1+c7                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.6s (solve 0.32) cl=62633 prior=None
+2026-11-07 19:08:11 kste:1557      M:c1+c3                lvl=2   k= 5 tW= 2 free=2 pool=full UNSAT        0.8s (solve 0.69) cl=62520 prior=None
+2026-11-07 19:08:13 kste:1557      M:c0+c1                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.8s (solve 1.69) cl=78490 prior=None
+2026-11-07 19:08:14 kste:1557      M:c0+c3                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.5s (solve 1.19) cl=78490 prior=None
+2026-11-07 19:08:17 kste:1557      M:c1+c6                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.8s (solve 2.53) cl=78480 prior=None
+2026-11-07 19:08:20 kste:1557      M:c3+c4                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        3.1s (solve 2.88) cl=78480 prior=None
+2026-11-07 19:08:22 kste:1557      M:c3+c6                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.1s (solve 1.87) cl=78480 prior=None
+2026-11-07 19:08:26 kste:1557      M:c4+c7                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.3s (solve 3.08) cl=94576 prior=None
+2026-11-07 19:08:29 kste:1557      M:c6+c7                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.3s (solve 3.12) cl=94576 prior=None
+2026-11-07 19:08:36 kste:1557      M:c0+c4                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        7.1s (solve 6.86) cl=94419 prior=None
+2026-11-07 19:08:47 kste:1557      M:c1+c2                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT       10.4s (solve 10.16) cl=94383 prior=None
+2026-11-07 19:08:57 kste:1557      M:c1+c4                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT       10.3s (solve 10.02) cl=94431 prior=None
+2026-11-07 19:09:08 kste:1557      M:c2+c7                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT       11.6s (solve 11.18) cl=94395 prior=None
+2026-11-07 19:09:25 kste:1557      M:c0+c6                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       16.6s (solve 16.21) cl=110605 prior=None
+2026-11-07 19:09:38 kste:1557      M:c0+c7                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       13.4s (solve 13.01) cl=110647 prior=None
+2026-11-07 19:09:56 kste:1557      M:c4+c6                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       17.9s (solve 17.52) cl=110591 prior=None
+2026-11-07 19:09:56 run complete kste:1557
+circuit sampleA:109 depth 8: core 48, mobile 8, neutral moves 22, downs []; 7 components (shapes {'1+1': 6, '2+1': 1}); ambiguous splits: 64 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=00830283 roots=81020283
+  c1  mobile 1 roots 1 (targets 0, core 1) moves 6 sizes {1: 6}  k= 5 tW= 3 free=1 forced_extra=3 leaves=6  mobile=01810080 roots=81810000
+  c2  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=02028280 roots=02028381
+  c3  mobile 2 roots 1 (targets 0, core 1) moves 4 sizes {1: 4}  k= 5 tW= 2 free=2 forced_extra=2 leaves=6  mobile=0c000000,0c880088 roots=0c8c0088
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=80081880 roots=00889800
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=80088c0c roots=08088c84
+  c6  mobile 1 roots 1 (targets 1, core 0) moves 4 sizes {1: 4}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=8040c080 roots=c0408080
+  whole mobile part: k=22 tW=11 free=10 forced_extra=7 leaves=23
+2026-11-07 19:09:57 run sampleA:109 levels=['2'] limit=120 pool=full maxfree=3: 18 instances (free histogram [(1, 4), (2, 8), (3, 6)])
+2026-11-07 19:09:58 sampleA:109    M:c0+c5                lvl=2   k= 4 tW= 2 free=1 pool=full UNSAT        0.5s (solve 0.28) cl=46821 prior=None
+2026-11-07 19:09:58 sampleA:109    M:c0+c6                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.9s (solve 0.69) cl=62753 prior=None
+2026-11-07 19:09:59 sampleA:109    M:c5+c6                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        1.0s (solve 0.69) cl=62753 prior=None
+2026-11-07 19:10:01 sampleA:109    M:c0+c1                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.3s (solve 1.03) cl=78630 prior=None
+2026-11-07 19:10:03 sampleA:109    M:c0+c4                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.6s (solve 2.28) cl=78590 prior=None
+2026-11-07 19:10:05 sampleA:109    M:c2+c5                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.0s (solve 1.75) cl=78570 prior=None
+2026-11-07 19:10:07 sampleA:109    M:c4+c5                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.2s (solve 1.88) cl=78590 prior=None
+2026-11-07 19:10:11 sampleA:109    M:c1+c5                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.9s (solve 3.62) cl=94744 prior=None
+2026-11-07 19:10:16 sampleA:109    M:c2+c6                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        4.7s (solve 4.35) cl=94744 prior=None
+2026-11-07 19:10:21 sampleA:109    M:c4+c6                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        4.4s (solve 4.04) cl=94768 prior=None
+2026-11-07 19:10:26 sampleA:109    M:c1+c6                lvl=2   k= 8 tW= 5 free=2 pool=full UNSAT        5.9s (solve 5.64) cl=111068 prior=None
+2026-11-07 19:10:36 sampleA:109    M:c0+c3                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        9.8s (solve 9.51) cl=94527 prior=None
+2026-11-07 19:10:43 sampleA:109    M:c3+c5                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        6.6s (solve 6.29) cl=94527 prior=None
+2026-11-07 19:11:08 sampleA:109    M:c1+c2                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       25.5s (solve 25.22) cl=110787 prior=None
+2026-11-07 19:11:27 sampleA:109    M:c2+c4                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       19.0s (solve 18.77) cl=110731 prior=None
+2026-11-07 19:11:56 sampleA:109    M:c3+c6                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       29.0s (solve 28.75) cl=110815 prior=None
+2026-11-07 19:12:31 sampleA:109    M:c1+c4                lvl=2   k= 9 tW= 5 free=3 pool=full UNSAT       35.2s (solve 34.82) cl=127159 prior=None
+2026-11-07 19:12:31 run complete sampleA:109
+circuit sampleA:48 depth 9: core 45, mobile 11, neutral moves 29, downs []; 9 components (shapes {'2+2': 1, '1+1': 6, '2+1': 1, '1+2': 1}); ambiguous splits: 63 values; fan 0.0s
+  c0  mobile 2 roots 2 (targets 1, core 1) moves 3 sizes {1: 3}  k= 7 tW= 3 free=3 forced_extra=3 leaves=8  mobile=00818001,00818100 roots=01818001,02818102
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=00888800 roots=10988810
+  c2  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=06020701 roots=02028381
+  c3  mobile 2 roots 1 (targets 0, core 1) moves 4 sizes {1: 4}  k= 5 tW= 2 free=2 forced_extra=2 leaves=6  mobile=08040000,088c0088 roots=0c8c0088
+  c4  mobile 1 roots 1 (targets 1, core 0) moves 9 sizes {1: 9}  k= 9 tW= 4 free=4 forced_extra=7 leaves=9  mobile=80000181 roots=80010181
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=80088c0c roots=08088c84
+  c6  mobile 1 roots 2 (targets 1, core 1) moves 1 sizes {1: 1}  k= 7 tW= 4 free=2 forced_extra=4 leaves=8  mobile=81800000 roots=81800101,81810000
+  c7  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=83008102 roots=81020283
+  c8  mobile 1 roots 1 (targets 0, core 1) moves 4 sizes {1: 4}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=84800400 roots=04008480
+  whole mobile part: k=29 tW=13 free=15 forced_extra=7 leaves=22
+2026-11-07 19:12:33 run sampleA:48 levels=['2'] limit=120 pool=full maxfree=3: 19 instances (free histogram [(1, 6), (2, 2), (3, 11)])
+2026-11-07 19:12:33 sampleA:48     M:c2+c7                lvl=2   k= 4 tW= 2 free=1 pool=full UNSAT        0.3s (solve 0.16) cl=46845 prior=None
+2026-11-07 19:12:34 sampleA:48     M:c5+c7                lvl=2   k= 4 tW= 2 free=1 pool=full UNSAT        0.4s (solve 0.2) cl=46845 prior=None
+2026-11-07 19:12:35 sampleA:48     M:c1+c5                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.9s (solve 0.74) cl=62753 prior=None
+2026-11-07 19:12:35 sampleA:48     M:c1+c7                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.8s (solve 0.63) cl=62761 prior=None
+2026-11-07 19:12:36 sampleA:48     M:c2+c5                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.6s (solve 0.36) cl=62729 prior=None
+2026-11-07 19:12:37 sampleA:48     M:c1+c2                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        1.0s (solve 0.76) cl=78771 prior=None
+2026-11-07 19:12:45 sampleA:48     M:c3+c5                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        8.0s (solve 7.8) cl=94563 prior=None
+2026-11-07 19:12:57 sampleA:48     M:c3+c7                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT       12.0s (solve 11.74) cl=94575 prior=None
+2026-11-07 19:13:22 sampleA:48     M:c1+c3                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       25.0s (solve 24.53) cl=110815 prior=None
+2026-11-07 19:13:47 sampleA:48     M:c2+c3                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       25.3s (solve 24.89) cl=110773 prior=None
+2026-11-07 19:14:05 sampleA:48     M:c2+c8                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       17.8s (solve 17.48) cl=110773 prior=None
+2026-11-07 19:14:25 sampleA:48     M:c7+c8                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       20.2s (solve 19.93) cl=110787 prior=None
+2026-11-07 19:15:15 sampleA:48     M:c2+c6                lvl=2   k= 9 tW= 5 free=3 pool=full UNSAT       49.5s (solve 49.0) cl=127207 prior=None
+2026-11-07 19:16:13 sampleA:48     M:c5+c6                lvl=2   k= 9 tW= 5 free=3 pool=full UNSAT       57.8s (solve 57.61) cl=127207 prior=None
+2026-11-07 19:18:15 sampleA:48     M:c1+c6                lvl=2   k=10 tW= 6 free=3 pool=full TIMEOUT    122.1s (solve None) cl=None prior=None
+2026-11-07 19:19:50 sampleA:48     M:c1+c8                lvl=2   k=10 tW= 6 free=3 pool=full UNSAT       94.8s (solve 94.49) cl=143633 prior=None
+2026-11-07 19:19:50 run complete sampleA:48
+circuit sampleA:781 depth 9: core 48, mobile 8, neutral moves 16, downs []; 8 components (shapes {'1+1': 8}); ambiguous splits: 65 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=7  mobile=00008098 roots=00008898
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=00828002 roots=02028381
+  c2  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=00848400 roots=088c8408
+  c3  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=00880088 roots=10988810
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 8 tW= 4 free=3 forced_extra=6 leaves=7  mobile=02000202 roots=02800383
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 2 tW= 1 free=0 forced_extra=0 leaves=3  mobile=02838300 roots=02838102
+  c6  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=8  mobile=80818080 roots=81800100
+  c7  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=8c8c8c8c roots=8c848c84
+  whole mobile part: k=28 tW=13 free=14 forced_extra=12 leaves=26
+2026-11-07 19:19:50 run sampleA:781 levels=['2'] limit=120 pool=full maxfree=3: 17 instances (free histogram [(1, 4), (2, 4), (3, 9)])
+2026-11-07 19:19:50 sampleA:781    M:c2+c5                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.0s (solve 0.75) cl=62833 prior=None
+2026-11-07 19:19:51 sampleA:781    M:c3+c5                lvl=2   k= 5 tW= 3 free=1 pool=full UNSAT        0.9s (solve 0.73) cl=62833 prior=None
+2026-11-07 19:19:53 sampleA:781    M:c2+c3                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        1.3s (solve 0.9) cl=78901 prior=None
+2026-11-07 19:19:54 sampleA:781    M:c2+c7                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        1.9s (solve 1.53) cl=78630 prior=None
+2026-11-07 19:19:57 sampleA:781    M:c5+c7                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.7s (solve 2.44) cl=78600 prior=None
+2026-11-07 19:20:03 sampleA:781    M:c1+c3                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        5.4s (solve 5.17) cl=94876 prior=None
+2026-11-07 19:20:06 sampleA:781    M:c3+c7                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.1s (solve 2.85) cl=94744 prior=None
+2026-11-07 19:20:21 sampleA:781    M:c0+c3                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       15.5s (solve 15.18) cl=110941 prior=None
+2026-11-07 19:21:03 sampleA:781    M:c1+c2                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       42.2s (solve 42.04) cl=110983 prior=None
+2026-11-07 19:21:34 sampleA:781    M:c1+c7                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       30.5s (solve 30.16) cl=110759 prior=None
+2026-11-07 19:22:06 sampleA:781    M:c0+c5                lvl=2   k= 9 tW= 5 free=3 pool=full UNSAT       32.4s (solve 31.91) cl=127255 prior=None
+2026-11-07 19:22:43 sampleA:781    M:c5+c6                lvl=2   k= 9 tW= 5 free=3 pool=full UNSAT       36.5s (solve 36.27) cl=127319 prior=None
+2026-11-07 19:23:34 sampleA:781    M:c0+c2                lvl=2   k=10 tW= 6 free=3 pool=full UNSAT       51.6s (solve 51.21) cl=143795 prior=None
+2026-11-07 19:25:25 sampleA:781    M:c2+c6                lvl=2   k=10 tW= 6 free=3 pool=full UNSAT      110.1s (solve 109.79) cl=143867 prior=None
+2026-11-07 19:26:50 sampleA:781    M:c3+c6                lvl=2   k=10 tW= 6 free=3 pool=full UNSAT       85.6s (solve 84.98) cl=143867 prior=None
+2026-11-07 19:26:50 run complete sampleA:781
+circuit sampleC:131 depth 12: core 50, mobile 6, neutral moves 12, downs []; 6 components (shapes {'1+1': 6}); ambiguous splits: 66 values; fan 0.0s
+  c0  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=03830182 roots=02028183
+  c1  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=0c040808 roots=8c840808
+  c2  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 7 tW= 4 free=2 forced_extra=5 leaves=7  mobile=10000008 roots=98000088
+  c3  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=80888088 roots=848c848c
+  c4  mobile 1 roots 1 (targets 0, core 1) moves 2 sizes {1: 2}  k= 4 tW= 2 free=1 forced_extra=2 leaves=5  mobile=82000280 roots=83008300
+  c5  mobile 1 roots 1 (targets 1, core 0) moves 2 sizes {1: 2}  k= 3 tW= 2 free=0 forced_extra=1 leaves=4  mobile=88008800 roots=10109888
+  whole mobile part: k=21 tW=10 free=10 forced_extra=9 leaves=22
+2026-11-07 19:26:51 run sampleC:131 levels=['2'] limit=120 pool=full maxfree=3: 12 instances (free histogram [(1, 1), (2, 6), (3, 5)])
+2026-11-07 19:26:53 sampleC:131    M:c1+c5                lvl=2   k= 6 tW= 4 free=1 pool=full UNSAT        1.5s (solve 1.1) cl=78821 prior=None
+2026-11-07 19:26:55 sampleC:131    M:c1+c3                lvl=2   k= 6 tW= 3 free=2 pool=full UNSAT        2.6s (solve 2.29) cl=78610 prior=None
+2026-11-07 19:26:59 sampleC:131    M:c0+c1                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.4s (solve 3.1) cl=94732 prior=None
+2026-11-07 19:27:04 sampleC:131    M:c0+c5                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        5.2s (solve 4.78) cl=94744 prior=None
+2026-11-07 19:27:08 sampleC:131    M:c1+c4                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        3.7s (solve 3.49) cl=94792 prior=None
+2026-11-07 19:27:10 sampleC:131    M:c3+c5                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        2.2s (solve 1.87) cl=94732 prior=None
+2026-11-07 19:27:15 sampleC:131    M:c4+c5                lvl=2   k= 7 tW= 4 free=2 pool=full UNSAT        5.5s (solve 5.14) cl=94804 prior=None
+2026-11-07 19:27:25 sampleC:131    M:c0+c4                lvl=2   k= 7 tW= 3 free=3 pool=full UNSAT        9.3s (solve 8.93) cl=94563 prior=None
+2026-11-07 19:27:46 sampleC:131    M:c0+c3                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       21.9s (solve 21.58) cl=110689 prior=None
+2026-11-07 19:27:58 sampleC:131    M:c2+c5                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       11.4s (solve 11.06) cl=110871 prior=None
+2026-11-07 19:28:24 sampleC:131    M:c3+c4                lvl=2   k= 8 tW= 4 free=3 pool=full UNSAT       26.3s (solve 25.98) cl=110759 prior=None
+2026-11-07 19:29:20 sampleC:131    M:c1+c2                lvl=2   k=10 tW= 6 free=3 pool=full UNSAT       55.9s (solve 55.44) cl=143687 prior=None
+2026-11-07 19:29:20 run complete sampleC:131
+A1_DONE

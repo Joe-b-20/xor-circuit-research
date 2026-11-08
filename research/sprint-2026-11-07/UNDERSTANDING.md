@@ -193,8 +193,10 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   1,084 two-seed windows k <= 9 on the repo circuit) are refuted, 0 satisfiable, 16 timeouts; the
   union of removed values over the repo circuit's refuted windows covers 81 of its 88 values (72-74
   for the other circuits), so any 87 differs from each of these circuits in at least one value of
-  each refuted kept set [measured, `sat/`]. On four plateaus the mobile part was also attacked: no 87 is a one-factor rewrite or a
-  two-factor rewrite with <= 3 free values of those plateaus (F23). None of this bears on 87s away
+  each refuted kept set [measured, `sat/`]. On four 3-way plateaus the mobile part was also attacked: no 87 is a one-factor rewrite or a
+  two-factor rewrite with <= 3 free values of those plateaus (F23); on coupled plateaus the factor
+  itself is invisible to the remove1 fan and its exact window (free 5-20) is beyond the solver
+  frontier (F31). None of this bears on 87s away
   from these circuits, and the archive's own control for the same instrument (F29: 17 of 17 UNSAT on
   windows that provably contained an improvement; improvements sit at mask distance ~42) says that
   windows of k <= 12 carry little evidence about 87 either way until a slack-1 power control is run.

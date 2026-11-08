@@ -1259,6 +1259,36 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   model on exact P and M; sampler correction factors for every F11/F14 number. This is the experiment
   that would decide the connectivity question (UNDERSTANDING 8).
 
+## F31. SAT on coupled plateaus: the remove1 fan cannot see a coupled factor; its windows start at free 5 and none finished (satmob2 agent, high; `satmob2/REPORT.md`) [checked / measured; no 87]
+
+- Targets: seven coupled plateaus with member states located by sample hash: kste #43 (33 x 3^7), #34
+  (45 x 3^4), #41 (108 x 3^4), hunt p943c008e (2,101 x 15 x 11 x 3 x 3), hunt pce9227a (18,927 x 15 x
+  3 x 3), giants p8042472 (62,856 x 3), giants p55f9dc0 (69,228 x 3 x 3); plateau cores 37-48 values.
+- Key structural finding [checked, `coupling.py`]: a coupled-factor choice value is locally mobile
+  under remove1 iff some other listed choice differs from the current one by that value alone; the
+  rest only leave in groups of 2-13 values, so the fan calls them core (local core 1-11 values larger
+  than the plateau core; only 4-21 of a factor's other choices are at distance 1, e.g. 10 of 2,100,
+  14 of 62,855). Consequently satmob's decomposition on a coupled plateau silently reports 1 + 1
+  components (46 of 50 here) and F23's expectation that coupled plateaus would show larger local
+  components is wrong; the coupled factor's window must be built from the compressed plateau object
+  (`fac.py`: the factor's choice at S plus its consumers, any-pair forced closure; same sat87
+  semantics).
+- Instances [measured; one nice-8 child, 120 s then 600 s]: 165 distinct, 155 UNSAT, 10 timeouts, 0
+  SAT. Local (satmob-style): level 1 50 of 50 UNSAT; level 2 pairs with free <= 3: 105 of 106 UNSAT.
+  Coupled-factor windows: k = 10-38 removed values, free 5-20 (kste 108: k = 10, free 5; kste 33:
+  k = 12, free 5; kste 45: k = 17, free 9; 2,101: k = 18, free 9; 18,927: k = 31, free 15; 62,856:
+  k = 36, free 20; 69,228: k = 38, free 20): all seven TIMEOUT at 120 s, the two free-5 ones also at
+  600 s. Hardness by free: 0: <= 0.1 s, 1: <= 1.1 s, 2: <= 7 s, 3: <= 116 s, >= 5 unsolved.
+- What is excluded on the seven plateaus: no 87 is the state with one single-swappable value
+  rewritten, nor two such windows together with free <= 3 (this covers the pure 3-way factors and the
+  single-swappable fringe of each coupled factor). Not excluded: any rewrite touching a group-moving
+  value of a coupled factor, i.e. the coupled factor as a unit: in the 3-way case "one factor
+  rewritten" is decided exactly at level 1 in seconds; in the coupled case the exact instance starts
+  at free 5 and is at or beyond the frontier (free 4 at 600 s). Cheapest open coupled statement: kste
+  108 (k = 10, free 5), a 1-2 h run or the ladder/lex encoding; windows on the factor's minimal move
+  groups (sizes 2-5) are the next lever. A continuing campaign (`satmob2/campaignB.sh`, one child,
+  idempotent, `satmob2/STOP`) runs the free-4 singles, span-pool variants and free-4 pairs.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
@@ -1272,6 +1302,9 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   re-entries (~2,600 per chain-hour) by ~35x; "~12 departures per second" was a wrong guess (0.72 per
   second measured); the cheap v3 identity changes within a single 88 stay, so signature-based node
   and plateau counts are finer than neutral components. Applied in F11, F14 and UNDERSTANDING 4.
+- F23 (satmob2, F31): the mobile-part decomposition by remove1 fans does not see coupled factors;
+  on coupled plateaus its level-1/2 UNSATs are a strictly weaker statement than on 3-way plateaus,
+  and the expectation of larger local components there was wrong.
 - F27 (qhubcheck): C1, H2, Lemma H2 / HUB2, PK4 / PK5 CONFIRMED; PK5's written formula and the FM
   remark corrected; load-bearing keys are 551, not 53. Applied in F27.
 - F21 (qrealcheck): all lemmas and rows CONFIRMED, LP reproduced independently; key bookkeeping
