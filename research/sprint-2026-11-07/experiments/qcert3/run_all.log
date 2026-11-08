@@ -1,0 +1,30 @@
+expected counts match: {'scalar_states': 3708, 'claims_checked': 207, 'certificates': 4950, 'certificates_package': 1615, 'certificates_batch1': 220, 'certificates_flat': 190, 'certificates_case': 2925, 'case_certificates_hub_only': 1611, 'case_certificates_dark_only': 14, 'case_certificates_hub_and_dark': 1300, 'certificates_using_PK': 540, 'certificates_using_FM': 47, 'keys_with_certificates': 2471, 'batch2_feasible_keys': 1713, 'killed_keys': 536, 'surviving_keys': 1177, 'baseline_keys': 381, 'baseline_killed': 265, 'baseline_surviving': 116, 'leaf_cases_of_killed_keys': 14312, 'leaf_cases_of_referenced_keys': 27153, 'coefficients_checked': 251213, 'largest_right_side': -1, 'certificate_references': 3353, 'distinct_referenced': 2054, 'direct_geometric_references': 401}
+INDEPENDENT CHECK PASSED
+check_cases3.py: 8 s
+FM TABLES RECOMPUTED: identical to qreal and qhubcheck in both orientations
+fm_tab3.py: 1 s
+CROSSCHECK PASSED
+crosscheck3.py: 88 s
+MUTATION TEST PASSED (86s; every negated weight, every dropped case certificate and every dropped referenced certificate was rejected; every surviving zeroing / +1 is itself a valid certificate)
+mutate3.py: 87 s
+STRESS EXT3 PASSED: 316 circuits, 1264 phases, 0 violations of the batch-1, HUB, DARK, H2, HUB2, PK, FM rows and of O1; synthetic maximal configurations 1897 all passed; 39s
+stress_ext3.py: 40 s
+PROOF_ADDENDUM_3.md: OK
+CERTIFICATES_CASES75_B3.json: OK
+scan_cases3.json: OK
+keysfull3.json: OK
+gen_certs3.py: OK
+check_cases3.py: OK
+crosscheck3.py: OK
+mutate3.py: OK
+stress_ext3.py: OK
+fm_tab3.py: OK
+stats3.py: OK
+run_all.sh: OK
+stress_pkg.py: OK
+profile_real_copy.py: OK
+hub_cap_M.json: OK
+hub_cap_Mt.json: OK
+gen_certs3.log: OK
+s01_gen.out: OK
+QCERT3 ALL CHECKS PASSED

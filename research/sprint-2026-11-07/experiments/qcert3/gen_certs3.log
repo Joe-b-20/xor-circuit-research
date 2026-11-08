@@ -1,0 +1,33 @@
+FM tables: histogram and top / top3 identical to qreal and qhubcheck; top(M) = [0, 7, 14, 21, 28, 34, 40, 46, 52, 58, 64, 70] top(Mt) = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]
+full scan: scalar states 3708, oriented claims 7416; survivors 789 (M 416); keys touched 36655, LP-feasible 859; 123s
+batch-2 survivors 996 (qcert2 = qreal = qrealcheck); full survivors 789; newly excluded claims 207 (M 88); bounds monotone on all 7416 claims
+batch-2-feasible keys: baseline 381, complete list 1661, union 1713; killed by the full system 536 (baseline 265), surviving 1177 (baseline 116); 133s
+coverage of the 207 claims references 2054 distinct keys; 133s
+scan bookkeeping: keys touched 36655; LP-feasible 859 (by q [(1, 5), (2, 107), (3, 106), (4, 299), (5, 82), (6, 121), (7, 64), (8, 70), (9, 4), (10, 1)]; by ori {'M': 419, 'Mt': 440}); load-bearing 551 (by q [(1, 2), (2, 62), (3, 95), (4, 175), (5, 66), (6, 93), (7, 37), (8, 20), (9, 1)]; by ori {'M': 271, 'Mt': 280})
+  100/2471 keys, 337 certificates, kinds {'case': 42, 'flat': 58}, 139s
+  200/2471 keys, 653 certificates, kinds {'case': 77, 'flat': 123}, 142s
+  300/2471 keys, 840 certificates, kinds {'case': 94, 'flat': 172, 'package': 34}, 144s
+  400/2471 keys, 1080 certificates, kinds {'case': 108, 'flat': 172, 'package': 115, 'batch1': 5}, 146s
+  500/2471 keys, 1239 certificates, kinds {'case': 114, 'flat': 172, 'package': 209, 'batch1': 5}, 148s
+  600/2471 keys, 1447 certificates, kinds {'case': 124, 'flat': 173, 'package': 295, 'batch1': 8}, 150s
+  700/2471 keys, 1779 certificates, kinds {'case': 152, 'flat': 173, 'package': 347, 'batch1': 28}, 154s
+  800/2471 keys, 1991 certificates, kinds {'case': 162, 'flat': 173, 'package': 435, 'batch1': 30}, 157s
+  900/2471 keys, 2233 certificates, kinds {'case': 200, 'flat': 173, 'package': 489, 'batch1': 38}, 159s
+  1000/2471 keys, 2362 certificates, kinds {'case': 207, 'flat': 173, 'package': 582, 'batch1': 38}, 159s
+  1100/2471 keys, 2571 certificates, kinds {'case': 217, 'flat': 173, 'package': 653, 'batch1': 57}, 161s
+  1200/2471 keys, 2698 certificates, kinds {'case': 224, 'flat': 173, 'package': 731, 'batch1': 72}, 163s
+  1300/2471 keys, 2814 certificates, kinds {'case': 228, 'flat': 173, 'package': 819, 'batch1': 80}, 164s
+  1400/2471 keys, 2958 certificates, kinds {'case': 233, 'flat': 173, 'package': 888, 'batch1': 106}, 165s
+  1500/2471 keys, 3109 certificates, kinds {'case': 238, 'flat': 173, 'package': 965, 'batch1': 124}, 166s
+  1600/2471 keys, 3209 certificates, kinds {'case': 238, 'flat': 173, 'package': 1050, 'batch1': 139}, 166s
+  1700/2471 keys, 3331 certificates, kinds {'case': 242, 'flat': 174, 'package': 1128, 'batch1': 156}, 167s
+  1800/2471 keys, 3451 certificates, kinds {'case': 247, 'flat': 174, 'package': 1206, 'batch1': 173}, 168s
+  1900/2471 keys, 3565 certificates, kinds {'case': 250, 'flat': 174, 'package': 1282, 'batch1': 194}, 169s
+  2000/2471 keys, 3665 certificates, kinds {'case': 250, 'flat': 174, 'package': 1380, 'batch1': 196}, 169s
+  2100/2471 keys, 3770 certificates, kinds {'case': 251, 'flat': 174, 'package': 1470, 'batch1': 205}, 170s
+  2200/2471 keys, 3870 certificates, kinds {'case': 251, 'flat': 179, 'package': 1553, 'batch1': 217}, 171s
+  2300/2471 keys, 4114 certificates, kinds {'case': 283, 'flat': 182, 'package': 1615, 'batch1': 220}, 173s
+  2400/2471 keys, 4658 certificates, kinds {'case': 377, 'flat': 188, 'package': 1615, 'batch1': 220}, 180s
+keys to certify 2471 (killed 536 [baseline 265], referenced 2054, both 119); kinds {'case': 446, 'flat': 190, 'package': 1615, 'batch1': 220}; certificates 4950 (2925 per-case); not certified 0; largest weighted rhs -1; multipliers 222030; coefficients checked 251213; 183s
+killed keys by certificate kind: {'case': 348, 'flat': 188} ; baseline killed: {'case': 93, 'flat': 172}
+written CERTIFICATES_CASES75_B3.json, scan_cases3.json, keysfull3.json; total 183s

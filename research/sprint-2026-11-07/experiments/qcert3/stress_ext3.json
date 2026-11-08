@@ -1,0 +1,793 @@
+{
+ "circuits": 316,
+ "controls": 13,
+ "real": 303,
+ "phases": 1264,
+ "q_hist": {
+  "11": 168,
+  "7": 4,
+  "12": 180,
+  "14": 250,
+  "15": 108,
+  "13": 406,
+  "8": 12,
+  "10": 94,
+  "16": 11,
+  "9": 31
+ },
+ "q0_phases": 0,
+ "A_positive_phases": 0,
+ "cap_checks_H1": 20745,
+ "cap_checks_C1": 20745,
+ "c1_table_equal": 20745,
+ "c1_table_below": 0,
+ "o1_histogram": {
+  "2": 324
+ },
+ "violations": [],
+ "min_slack": {
+  "ctrl/canonical/M/FM7": 50,
+  "ctrl/canonical/M/FM7_chords": 50,
+  "ctrl/canonical/M/FM9": 30,
+  "ctrl/canonical/M/FM9_chords": 30,
+  "ctrl/canonical/M/FM9_label": 0,
+  "ctrl/canonical/M/FM_rank_fullmet": 99,
+  "ctrl/canonical/M/F_budget": 10,
+  "ctrl/canonical/M/G*_J": 0,
+  "ctrl/canonical/M/G*_R6": 0,
+  "ctrl/canonical/M/H2": 0,
+  "ctrl/canonical/M/H2_strong": 0,
+  "ctrl/canonical/M/HUB2": 11,
+  "ctrl/canonical/M/HUB_lp": 13,
+  "ctrl/canonical/M/HUB_strong_label": 0,
+  "ctrl/canonical/M/HUBlin": 72,
+  "ctrl/canonical/M/I": 44,
+  "ctrl/canonical/M/I'": 40,
+  "ctrl/canonical/M/I_label": 1,
+  "ctrl/canonical/M/L12*": 0,
+  "ctrl/canonical/M/L13*": 48,
+  "ctrl/canonical/M/L13*_label": 0,
+  "ctrl/canonical/M/L13d": 24,
+  "ctrl/canonical/M/L14*": 50,
+  "ctrl/canonical/M/L14*_ex": 2,
+  "ctrl/canonical/M/L14*_label": 0,
+  "ctrl/canonical/M/L14d": 26,
+  "ctrl/canonical/M/L15*": 28,
+  "ctrl/canonical/M/L15_label": 0,
+  "ctrl/canonical/M/L15d": 14,
+  "ctrl/canonical/M/L17-M*": 50,
+  "ctrl/canonical/M/L17Md": 28,
+  "ctrl/canonical/M/L4.6_pairs": 0,
+  "ctrl/canonical/M/L7*": 50,
+  "ctrl/canonical/M/L7*_label": 0,
+  "ctrl/canonical/M/LemmaS_label": 0,
+  "ctrl/canonical/M/N1": 23,
+  "ctrl/canonical/M/O1": 0,
+  "ctrl/canonical/M/S2_aggregate": 80,
+  "ctrl/canonical/M/S2_poor_at_r2": 0,
+  "ctrl/canonical/M/bright_anchored_label": 0,
+  "ctrl/canonical/M/bright_cap": 10,
+  "ctrl/canonical/M/bright_cap_label": 1,
+  "ctrl/canonical/M/bright_lower": 2,
+  "ctrl/canonical/M/dark_cap": 2,
+  "ctrl/canonical/M/dark_cap_label": 1,
+  "ctrl/canonical/M/dark_zero": 0,
+  "ctrl/canonical/M/pair_once": 0,
+  "ctrl/canonical/M/y2d<=y2": 0,
+  "ctrl/canonical/M/y2m<=C(q,2)": 53,
+  "ctrl/canonical/Mt/FM7": 49,
+  "ctrl/canonical/Mt/FM7_chords": 49,
+  "ctrl/canonical/Mt/FM9": 21,
+  "ctrl/canonical/Mt/FM9_chords": 21,
+  "ctrl/canonical/Mt/FM9_label": 0,
+  "ctrl/canonical/Mt/FM_rank_fullmet": 99,
+  "ctrl/canonical/Mt/F_budget": 10,
+  "ctrl/canonical/Mt/Fb=0 (d=q)": 0,
+  "ctrl/canonical/Mt/G*_J": 0,
+  "ctrl/canonical/Mt/G*_R6": 0,
+  "ctrl/canonical/Mt/H2": 0,
+  "ctrl/canonical/Mt/H2_strong": 0,
+  "ctrl/canonical/Mt/HUB2": 7,
+  "ctrl/canonical/Mt/HUB_lp": 8,
+  "ctrl/canonical/Mt/HUB_strong_label": 0,
+  "ctrl/canonical/Mt/HUBlin": 64,
+  "ctrl/canonical/Mt/I": 41,
+  "ctrl/canonical/Mt/I'": 37,
+  "ctrl/canonical/Mt/I_label": 1,
+  "ctrl/canonical/Mt/L12*": 0,
+  "ctrl/canonical/Mt/L13*": 63,
+  "ctrl/canonical/Mt/L13*_label": 1,
+  "ctrl/canonical/Mt/L13d": 0,
+  "ctrl/canonical/Mt/L14*": 63,
+  "ctrl/canonical/Mt/L14*_ex": 0,
+  "ctrl/canonical/Mt/L14*_label": 1,
+  "ctrl/canonical/Mt/L14d": 0,
+  "ctrl/canonical/Mt/L15*": 28,
+  "ctrl/canonical/Mt/L15_label": 0,
+  "ctrl/canonical/Mt/L15d": 0,
+  "ctrl/canonical/Mt/L17-Mt*": 42,
+  "ctrl/canonical/Mt/L17Td": 0,
+  "ctrl/canonical/Mt/L18*": 70,
+  "ctrl/canonical/Mt/L18d": 0,
+  "ctrl/canonical/Mt/L19*": 4,
+  "ctrl/canonical/Mt/L20*": 13,
+  "ctrl/canonical/Mt/L23-7": 10,
+  "ctrl/canonical/Mt/L4.6_pairs": 0,
+  "ctrl/canonical/Mt/L7*": 49,
+  "ctrl/canonical/Mt/L7*_label": 0,
+  "ctrl/canonical/Mt/LemmaS_label": 0,
+  "ctrl/canonical/Mt/N1": 26,
+  "ctrl/canonical/Mt/O1": 0,
+  "ctrl/canonical/Mt/S2_aggregate": 100,
+  "ctrl/canonical/Mt/S2_poor_at_r2": 0,
+  "ctrl/canonical/Mt/bright_anchored_label": 0,
+  "ctrl/canonical/Mt/bright_cap": 0,
+  "ctrl/canonical/Mt/bright_cap_label": 1,
+  "ctrl/canonical/Mt/bright_lower": 0,
+  "ctrl/canonical/Mt/dark_cap": 14,
+  "ctrl/canonical/Mt/dark_cap_label": 2,
+  "ctrl/canonical/Mt/dark_zero": 0,
+  "ctrl/canonical/Mt/pair_once": 0,
+  "ctrl/canonical/Mt/y2d<=y2": 3,
+  "ctrl/canonical/Mt/y2m<=C(q,2)": 18,
+  "ctrl/raw/M/FM7": 30,
+  "ctrl/raw/M/FM7_chords": 30,
+  "ctrl/raw/M/FM9": 19,
+  "ctrl/raw/M/FM9_chords": 19,
+  "ctrl/raw/M/FM9_label": 0,
+  "ctrl/raw/M/FM_rank_fullmet": 99,
+  "ctrl/raw/M/F_budget": 10,
+  "ctrl/raw/M/Fd=y2d=0 (d=0)": 0,
+  "ctrl/raw/M/G*_J": 0,
+  "ctrl/raw/M/G*_R6": 1,
+  "ctrl/raw/M/H2": 0,
+  "ctrl/raw/M/H2_strong": 0,
+  "ctrl/raw/M/HUB2": 7,
+  "ctrl/raw/M/HUB_lp": 8,
+  "ctrl/raw/M/HUB_strong_label": 0,
+  "ctrl/raw/M/HUBlin": 52,
+  "ctrl/raw/M/I": 32,
+  "ctrl/raw/M/I'": 32,
+  "ctrl/raw/M/I_label": 1,
+  "ctrl/raw/M/L12*": 0,
+  "ctrl/raw/M/L13*": 26,
+  "ctrl/raw/M/L13*_label": 0,
+  "ctrl/raw/M/L13d": 25,
+  "ctrl/raw/M/L14*": 28,
+  "ctrl/raw/M/L14*_ex": 2,
+  "ctrl/raw/M/L14*_label": 0,
+  "ctrl/raw/M/L14d": 27,
+  "ctrl/raw/M/L15*": 19,
+  "ctrl/raw/M/L15_label": 0,
+  "ctrl/raw/M/L15d": 15,
+  "ctrl/raw/M/L17-M*": 36,
+  "ctrl/raw/M/L17Md": 29,
+  "ctrl/raw/M/L23-7": 12,
+  "ctrl/raw/M/L4.6_pairs": 0,
+  "ctrl/raw/M/L7*": 30,
+  "ctrl/raw/M/L7*_label": 0,
+  "ctrl/raw/M/LemmaS_label": 0,
+  "ctrl/raw/M/N1": 18,
+  "ctrl/raw/M/O1": 0,
+  "ctrl/raw/M/S2_aggregate": 74,
+  "ctrl/raw/M/S2_poor_at_r2": 0,
+  "ctrl/raw/M/bright_anchored_label": 0,
+  "ctrl/raw/M/bright_cap": 14,
+  "ctrl/raw/M/bright_cap_label": 1,
+  "ctrl/raw/M/bright_lower": 2,
+  "ctrl/raw/M/dark_cap": 0,
+  "ctrl/raw/M/dark_cap_label": 2,
+  "ctrl/raw/M/dark_zero": 0,
+  "ctrl/raw/M/pair_once": 0,
+  "ctrl/raw/M/y2d<=y2": 0,
+  "ctrl/raw/M/y2m<=C(q,2)": 21,
+  "real/canonical/M/FM7": 45,
+  "real/canonical/M/FM7_chords": 45,
+  "real/canonical/M/FM9": 24,
+  "real/canonical/M/FM9_chords": 24,
+  "real/canonical/M/FM9_label": 0,
+  "real/canonical/M/FM_rank_fullmet": 99,
+  "real/canonical/M/F_budget": 9,
+  "real/canonical/M/G*_J": 2,
+  "real/canonical/M/G*_R6": 1,
+  "real/canonical/M/H2": 0,
+  "real/canonical/M/H2_strong": 0,
+  "real/canonical/M/HUB2": 10,
+  "real/canonical/M/HUB_lp": 12,
+  "real/canonical/M/HUB_strong_label": 0,
+  "real/canonical/M/HUBlin": 68,
+  "real/canonical/M/I": 44,
+  "real/canonical/M/I'": 41,
+  "real/canonical/M/I_label": 0,
+  "real/canonical/M/L12*": 7,
+  "real/canonical/M/L13*": 49,
+  "real/canonical/M/L13*_label": 0,
+  "real/canonical/M/L13d": 26,
+  "real/canonical/M/L14*": 51,
+  "real/canonical/M/L14*_ex": 2,
+  "real/canonical/M/L14*_label": 0,
+  "real/canonical/M/L14d": 28,
+  "real/canonical/M/L15*": 27,
+  "real/canonical/M/L15_label": 0,
+  "real/canonical/M/L15d": 16,
+  "real/canonical/M/L17-M*": 55,
+  "real/canonical/M/L17Md": 32,
+  "real/canonical/M/L4.6_pairs": 0,
+  "real/canonical/M/L7*": 45,
+  "real/canonical/M/L7*_label": 0,
+  "real/canonical/M/LemmaS_label": 0,
+  "real/canonical/M/N1": 23,
+  "real/canonical/M/O1": 0,
+  "real/canonical/M/S2_aggregate": 81,
+  "real/canonical/M/S2_poor_at_r2": 0,
+  "real/canonical/M/bright_anchored_label": 0,
+  "real/canonical/M/bright_cap": 12,
+  "real/canonical/M/bright_cap_label": 0,
+  "real/canonical/M/bright_lower": 2,
+  "real/canonical/M/dark_cap": 3,
+  "real/canonical/M/dark_cap_label": 1,
+  "real/canonical/M/dark_zero": 0,
+  "real/canonical/M/pair_once": 0,
+  "real/canonical/M/y2d<=y2": 0,
+  "real/canonical/M/y2m<=C(q,2)": 42,
+  "real/canonical/Mt/FM7": 47,
+  "real/canonical/Mt/FM7_chords": 47,
+  "real/canonical/Mt/FM9": 21,
+  "real/canonical/Mt/FM9_chords": 21,
+  "real/canonical/Mt/FM9_label": 0,
+  "real/canonical/Mt/FM_rank_fullmet": 99,
+  "real/canonical/Mt/F_budget": 8,
+  "real/canonical/Mt/G*_J": 0,
+  "real/canonical/Mt/G*_R6": 0,
+  "real/canonical/Mt/H2": 0,
+  "real/canonical/Mt/H2_strong": 0,
+  "real/canonical/Mt/HUB2": 10,
+  "real/canonical/Mt/HUB_lp": 11,
+  "real/canonical/Mt/HUB_strong_label": 0,
+  "real/canonical/Mt/HUBlin": 64,
+  "real/canonical/Mt/I": 42,
+  "real/canonical/Mt/I'": 39,
+  "real/canonical/Mt/I_label": 0,
+  "real/canonical/Mt/L12*": 6,
+  "real/canonical/Mt/L13*": 56,
+  "real/canonical/Mt/L13*_label": 1,
+  "real/canonical/Mt/L13d": 10,
+  "real/canonical/Mt/L14*": 56,
+  "real/canonical/Mt/L14*_ex": 0,
+  "real/canonical/Mt/L14*_label": 1,
+  "real/canonical/Mt/L14d": 10,
+  "real/canonical/Mt/L15*": 26,
+  "real/canonical/Mt/L15_label": 0,
+  "real/canonical/Mt/L15d": 4,
+  "real/canonical/Mt/L17-Mt*": 33,
+  "real/canonical/Mt/L17Td": 4,
+  "real/canonical/Mt/L18*": 65,
+  "real/canonical/Mt/L18d": 12,
+  "real/canonical/Mt/L19*": 3,
+  "real/canonical/Mt/L20*": 9,
+  "real/canonical/Mt/L4.6_pairs": 0,
+  "real/canonical/Mt/L7*": 47,
+  "real/canonical/Mt/L7*_label": 0,
+  "real/canonical/Mt/LemmaS_label": 0,
+  "real/canonical/Mt/N1": 23,
+  "real/canonical/Mt/O1": 0,
+  "real/canonical/Mt/S2_aggregate": 85,
+  "real/canonical/Mt/S2_poor_at_r2": 0,
+  "real/canonical/Mt/bright_anchored_label": 0,
+  "real/canonical/Mt/bright_cap": 6,
+  "real/canonical/Mt/bright_cap_label": 0,
+  "real/canonical/Mt/bright_lower": 3,
+  "real/canonical/Mt/dark_cap": 11,
+  "real/canonical/Mt/dark_cap_label": 2,
+  "real/canonical/Mt/dark_zero": 0,
+  "real/canonical/Mt/pair_once": 0,
+  "real/canonical/Mt/y2d<=y2": 2,
+  "real/canonical/Mt/y2m<=C(q,2)": 42,
+  "real/raw/M/FM7": 24,
+  "real/raw/M/FM7_chords": 24,
+  "real/raw/M/FM9": 15,
+  "real/raw/M/FM9_chords": 15,
+  "real/raw/M/FM9_label": 0,
+  "real/raw/M/FM_rank_fullmet": 99,
+  "real/raw/M/F_budget": 9,
+  "real/raw/M/Fd=y2d=0 (d=0)": 0,
+  "real/raw/M/G*_J": 1,
+  "real/raw/M/G*_R6": 2,
+  "real/raw/M/H2": 0,
+  "real/raw/M/H2_strong": 0,
+  "real/raw/M/HUB2": 7,
+  "real/raw/M/HUB_lp": 10,
+  "real/raw/M/HUB_strong_label": 0,
+  "real/raw/M/HUBlin": 60,
+  "real/raw/M/I": 35,
+  "real/raw/M/I'": 35,
+  "real/raw/M/I_label": 0,
+  "real/raw/M/L12*": 7,
+  "real/raw/M/L13*": 24,
+  "real/raw/M/L13*_label": 0,
+  "real/raw/M/L13d": 24,
+  "real/raw/M/L14*": 26,
+  "real/raw/M/L14*_ex": 2,
+  "real/raw/M/L14*_label": 0,
+  "real/raw/M/L14d": 26,
+  "real/raw/M/L15*": 15,
+  "real/raw/M/L15_label": 0,
+  "real/raw/M/L15d": 15,
+  "real/raw/M/L17-M*": 30,
+  "real/raw/M/L17Md": 30,
+  "real/raw/M/L23-7": 14,
+  "real/raw/M/L4.6_pairs": 0,
+  "real/raw/M/L7*": 24,
+  "real/raw/M/L7*_label": 0,
+  "real/raw/M/LemmaS_label": 0,
+  "real/raw/M/N1": 20,
+  "real/raw/M/O1": 0,
+  "real/raw/M/S2_aggregate": 73,
+  "real/raw/M/S2_poor_at_r2": 0,
+  "real/raw/M/bright_anchored_label": 0,
+  "real/raw/M/bright_cap": 9,
+  "real/raw/M/bright_cap_label": 0,
+  "real/raw/M/bright_lower": 4,
+  "real/raw/M/dark_cap": 0,
+  "real/raw/M/dark_cap_label": 2,
+  "real/raw/M/dark_zero": 0,
+  "real/raw/M/pair_once": 0,
+  "real/raw/M/y2d<=y2": 0,
+  "real/raw/M/y2m<=C(q,2)": 21
+ },
+ "tight": {
+  "ctrl/M/FM9_label": 3,
+  "ctrl/M/Fd=y2d=0 (d=0)": 5,
+  "ctrl/M/G*_J": 4,
+  "ctrl/M/G*_R6": 1,
+  "ctrl/M/H2": 4,
+  "ctrl/M/H2_strong": 26,
+  "ctrl/M/HUB_strong_label": 24,
+  "ctrl/M/L12*": 2,
+  "ctrl/M/L13*_label": 7,
+  "ctrl/M/L14*_label": 7,
+  "ctrl/M/L15_label": 25,
+  "ctrl/M/L4.6_pairs": 26,
+  "ctrl/M/L7*_label": 25,
+  "ctrl/M/LemmaS_label": 23,
+  "ctrl/M/O1": 26,
+  "ctrl/M/S2_poor_at_r2": 26,
+  "ctrl/M/bright_anchored_label": 26,
+  "ctrl/M/dark_cap": 5,
+  "ctrl/M/dark_zero": 26,
+  "ctrl/M/pair_once": 26,
+  "ctrl/M/y2d<=y2": 9,
+  "ctrl/Mt/FM9_label": 11,
+  "ctrl/Mt/Fb=0 (d=q)": 2,
+  "ctrl/Mt/G*_J": 8,
+  "ctrl/Mt/G*_R6": 8,
+  "ctrl/Mt/H2": 6,
+  "ctrl/Mt/H2_strong": 26,
+  "ctrl/Mt/HUB_strong_label": 24,
+  "ctrl/Mt/L12*": 2,
+  "ctrl/Mt/L13d": 2,
+  "ctrl/Mt/L14*_ex": 26,
+  "ctrl/Mt/L14d": 2,
+  "ctrl/Mt/L15_label": 21,
+  "ctrl/Mt/L15d": 2,
+  "ctrl/Mt/L17Td": 2,
+  "ctrl/Mt/L18d": 2,
+  "ctrl/Mt/L4.6_pairs": 26,
+  "ctrl/Mt/L7*_label": 22,
+  "ctrl/Mt/LemmaS_label": 4,
+  "ctrl/Mt/O1": 26,
+  "ctrl/Mt/S2_poor_at_r2": 26,
+  "ctrl/Mt/bright_anchored_label": 20,
+  "ctrl/Mt/bright_cap": 2,
+  "ctrl/Mt/bright_lower": 2,
+  "ctrl/Mt/dark_zero": 26,
+  "ctrl/Mt/pair_once": 26,
+  "real/M/FM9_label": 267,
+  "real/M/Fd=y2d=0 (d=0)": 62,
+  "real/M/H2": 152,
+  "real/M/H2_strong": 606,
+  "real/M/HUB_strong_label": 605,
+  "real/M/I_label": 236,
+  "real/M/L13*_label": 141,
+  "real/M/L14*_label": 141,
+  "real/M/L15_label": 606,
+  "real/M/L4.6_pairs": 606,
+  "real/M/L7*_label": 606,
+  "real/M/LemmaS_label": 605,
+  "real/M/O1": 606,
+  "real/M/S2_poor_at_r2": 606,
+  "real/M/bright_anchored_label": 600,
+  "real/M/bright_cap_label": 198,
+  "real/M/dark_cap": 62,
+  "real/M/dark_zero": 606,
+  "real/M/pair_once": 606,
+  "real/M/y2d<=y2": 25,
+  "real/Mt/FM9_label": 103,
+  "real/Mt/G*_J": 12,
+  "real/Mt/G*_R6": 12,
+  "real/Mt/H2": 140,
+  "real/Mt/H2_strong": 606,
+  "real/Mt/HUB_strong_label": 594,
+  "real/Mt/I_label": 78,
+  "real/Mt/L14*_ex": 606,
+  "real/Mt/L15_label": 484,
+  "real/Mt/L4.6_pairs": 606,
+  "real/Mt/L7*_label": 554,
+  "real/Mt/LemmaS_label": 360,
+  "real/Mt/O1": 606,
+  "real/Mt/S2_poor_at_r2": 606,
+  "real/Mt/bright_anchored_label": 602,
+  "real/Mt/bright_cap_label": 74,
+  "real/Mt/dark_zero": 606,
+  "real/Mt/pair_once": 606
+ },
+ "ranges": {
+  "ctrl/M/A": [
+   0,
+   0
+  ],
+  "ctrl/M/Fb": [
+   0,
+   4
+  ],
+  "ctrl/M/Fd": [
+   0,
+   1
+  ],
+  "ctrl/M/c1cap_max": [
+   0,
+   0
+  ],
+  "ctrl/M/cap_max": [
+   3,
+   4
+  ],
+  "ctrl/M/h": [
+   9,
+   29
+  ],
+  "ctrl/M/h0": [
+   0,
+   3
+  ],
+  "ctrl/M/hub_fullmet_max": [
+   0,
+   0
+  ],
+  "ctrl/M/n3": [
+   0,
+   4
+  ],
+  "ctrl/M/n_u3": [
+   0,
+   1
+  ],
+  "ctrl/M/q": [
+   7,
+   15
+  ],
+  "ctrl/M/qD": [
+   0,
+   6
+  ],
+  "ctrl/M/y": [
+   2,
+   29
+  ],
+  "ctrl/M/y0": [
+   0,
+   10
+  ],
+  "ctrl/M/y1": [
+   1,
+   15
+  ],
+  "ctrl/M/y2": [
+   0,
+   14
+  ],
+  "ctrl/M/y2d": [
+   0,
+   14
+  ],
+  "ctrl/M/y2m": [
+   0,
+   6
+  ],
+  "ctrl/M/z": [
+   0,
+   8
+  ],
+  "ctrl/Mt/A": [
+   0,
+   0
+  ],
+  "ctrl/Mt/Fb": [
+   0,
+   1
+  ],
+  "ctrl/Mt/Fd": [
+   0,
+   3
+  ],
+  "ctrl/Mt/c1cap_max": [
+   0,
+   0
+  ],
+  "ctrl/Mt/cap_max": [
+   0,
+   4
+  ],
+  "ctrl/Mt/h": [
+   6,
+   19
+  ],
+  "ctrl/Mt/h0": [
+   0,
+   2
+  ],
+  "ctrl/Mt/hub_fullmet_max": [
+   0,
+   0
+  ],
+  "ctrl/Mt/n3": [
+   0,
+   4
+  ],
+  "ctrl/Mt/n_u3": [
+   0,
+   2
+  ],
+  "ctrl/Mt/q": [
+   7,
+   15
+  ],
+  "ctrl/Mt/qD": [
+   4,
+   7
+  ],
+  "ctrl/Mt/y": [
+   12,
+   27
+  ],
+  "ctrl/Mt/y0": [
+   0,
+   20
+  ],
+  "ctrl/Mt/y1": [
+   0,
+   7
+  ],
+  "ctrl/Mt/y2": [
+   5,
+   11
+  ],
+  "ctrl/Mt/y2d": [
+   1,
+   5
+  ],
+  "ctrl/Mt/y2m": [
+   3,
+   7
+  ],
+  "ctrl/Mt/z": [
+   0,
+   7
+  ],
+  "real/M/A": [
+   0,
+   0
+  ],
+  "real/M/Fb": [
+   0,
+   6
+  ],
+  "real/M/Fd": [
+   0,
+   4
+  ],
+  "real/M/c1cap_max": [
+   0,
+   1
+  ],
+  "real/M/cap_max": [
+   3,
+   4
+  ],
+  "real/M/h": [
+   9,
+   23
+  ],
+  "real/M/h0": [
+   0,
+   5
+  ],
+  "real/M/hub_fullmet_max": [
+   0,
+   0
+  ],
+  "real/M/n3": [
+   0,
+   1
+  ],
+  "real/M/n_u3": [
+   0,
+   2
+  ],
+  "real/M/q": [
+   7,
+   16
+  ],
+  "real/M/qD": [
+   0,
+   8
+  ],
+  "real/M/y": [
+   8,
+   30
+  ],
+  "real/M/y0": [
+   0,
+   4
+  ],
+  "real/M/y1": [
+   1,
+   16
+  ],
+  "real/M/y2": [
+   0,
+   16
+  ],
+  "real/M/y2d": [
+   0,
+   16
+  ],
+  "real/M/y2m": [
+   0,
+   7
+  ],
+  "real/M/z": [
+   0,
+   9
+  ],
+  "real/Mt/A": [
+   0,
+   0
+  ],
+  "real/Mt/Fb": [
+   0,
+   3
+  ],
+  "real/Mt/Fd": [
+   0,
+   2
+  ],
+  "real/Mt/c1cap_max": [
+   0,
+   2
+  ],
+  "real/Mt/cap_max": [
+   3,
+   4
+  ],
+  "real/Mt/h": [
+   13,
+   18
+  ],
+  "real/Mt/h0": [
+   0,
+   3
+  ],
+  "real/Mt/hub_fullmet_max": [
+   0,
+   0
+  ],
+  "real/Mt/n3": [
+   0,
+   3
+  ],
+  "real/Mt/n_u3": [
+   0,
+   2
+  ],
+  "real/Mt/q": [
+   10,
+   16
+  ],
+  "real/Mt/qD": [
+   3,
+   7
+  ],
+  "real/Mt/y": [
+   13,
+   19
+  ],
+  "real/Mt/y0": [
+   0,
+   8
+  ],
+  "real/Mt/y1": [
+   2,
+   8
+  ],
+  "real/Mt/y2": [
+   4,
+   11
+  ],
+  "real/Mt/y2d": [
+   0,
+   5
+  ],
+  "real/Mt/y2m": [
+   2,
+   8
+  ],
+  "real/Mt/z": [
+   0,
+   5
+  ]
+ },
+ "sigma_hist": {
+  "M": {
+   "0": 1704,
+   "3": 228,
+   "2": 66,
+   "5": 12,
+   "4": 6
+  },
+  "Mt": {
+   "3": 312,
+   "0": 1590,
+   "2": 78,
+   "5": 24,
+   "4": 12
+  }
+ },
+ "synthetic": {
+  "M": {
+   "attaining": {
+    "0": 8,
+    "1": 64,
+    "2": 12
+   },
+   "maximal": {
+    "0": 192,
+    "1": 352,
+    "2": 48
+   },
+   "qhubcheck_maximal": {
+    "0": 192,
+    "1": 352,
+    "2": 48
+   },
+   "witnesses": 5,
+   "total": 597,
+   "passed": 597,
+   "h1_cap4_mutations": 1152,
+   "flagged": 1152
+  },
+  "Mt": {
+   "attaining": {
+    "0": 20,
+    "1": 120,
+    "2": 24
+   },
+   "maximal": {
+    "0": 480,
+    "1": 720,
+    "2": 96
+   },
+   "qhubcheck_maximal": {
+    "0": 480,
+    "1": 720,
+    "2": 96
+   },
+   "witnesses": 4,
+   "total": 1300,
+   "passed": 1300,
+   "h1_cap4_mutations": 2880,
+   "flagged": 2880
+  }
+ },
+ "seconds": 39.1466646194458
+}

@@ -1134,7 +1134,7 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   and S >= 35; one not resembling them would need a minimally realised group or cross-support
   cancellation, both unobserved.
 
-## F27. Hub capacity is exactly 3 - r; with two packing rows the survivors at G = 75 fall 996 -> 789 (qhub agent, xhigh; `qhub/REPORT.md`; CONFIRMED by `qhubcheck/REPORT.md`) [proved as checked; certificates in progress; no bound improvement]
+## F27. Hub capacity is exactly 3 - r; with two packing rows the survivors at G = 75 fall 996 -> 789 (qhub agent, xhigh; `qhub/REPORT.md`; CONFIRMED by `qhubcheck/REPORT.md`; CERTIFIED by `qcert3/`) [proved as checked and certified; no bound improvement]
 
 - The finite search qreal proposed was run in full: every odd non-boundary hub value h (128,068 M /
   177,412 M^T), every r in {0, 1, 2}, every set R of represented triples and every subset S of the
@@ -1174,6 +1174,19 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   violations with m_i = A = 0 everywhere; synthetic m = 1..3 configurations exercise the rows and
   the m = 4 mutations are rejected. Bookkeeping: the final scan leaves 859 LP-feasible and 551
   load-bearing keys (qhub's 116 / 53 are the baseline-restricted parts).
+- CERTIFIED (qcert3 agent, xhigh, 01:20 UTC, `qcert3/`): `PROOF_ADDENDUM_3.md` (H2 with its enumeration,
+  C1 with the family and pivot steps, Lemma H2, HUB2 with its split, PK4/PK5 in correct notation from
+  Lemma 4.6, FM7/FM9 with their finite fact); `CERTIFICATES_CASES75_B3.json`: 4,950 exact integer
+  Farkas certificates (2,925 per case) with complete case coverage of all 536 keys killed over the
+  complete key set (including all 265 of the baseline 381 -> 116) and all 207 newly excluded claims
+  (88 M, 119 M^T; 27,153 leaves), largest weighted rhs -1, 0 uncertified; independent stdlib checker
+  `check_cases3.py` passes; `crosscheck3.py`: generator and checker matrices identical on 24,790 nodes,
+  all key and claim sets identical to qhub / qhubcheck; mutation tests: 28,530 negations, 348 dropped
+  case certificates and 207 dropped referenced certificates all rejected; weakening HUB2 to H1's
+  capacity breaks 1,050 of 2,361 certificates (the sharper capacity does the work); `stress_ext3.py`:
+  1,264 phases, 0 violations, plus all 1,897 synthetic maximal configurations; a fourth independent H2
+  implementation gives identical tables. 188 of the 536 killed keys die from PK/FM alone, 272 need hub
+  cases, 76 hub + dark, 0 dark-only. 789 claims remain open at 75 by LP status.
 
 ## F28. What transfers to Inverse MixColumns (invtransfer agent, high; `invtransfer/REPORT.md`) [checked / measured / guess, as marked]
 
