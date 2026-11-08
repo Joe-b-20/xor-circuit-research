@@ -206,20 +206,17 @@ ran). Relaunched 21:46: `sat/batch2.sh 12` (12 processes, Q5 first), `giants/cat
 
 Harvest recipe (done 15:15 for x1a, x1b, pt1, pt2, sw1, sw2; repeat for hunt D/E if they produce a repo-worthy circuit, e.g. any 87): from the repo root, `python3 ~/xs-campaigns/2026-11-07-sprint/harvest_sprint.py RUN_DIR...` (dry run), `--apply`, `python3 circuits/check.py`, `python3 ~/xs-campaigns/2026-11-07-sprint/tables_update.py --write` (add the run dirs to its RUN_DIRS first; it appends run rows for runs with adds, so delete a duplicated run row), then hand-edit the README count line (keep "59 maps") and the SEARCH-TIME "Together:" paragraph, commit. `search/proposals/` is the user's untracked draft from 2026-10-31; leave it.
 
-## 7. Next actions (rewritten 23:00 UTC 11-07)
+## 7. Next actions (rewritten 02:10 UTC 11-08)
 
-Running now: `sat/batch2.sh 12` (12 shards; stage 1 done, stage 2 on 20 circuits, stage 3 two-seed
-windows), `sat/batch.sh` (1), `giants/catalogue_all.sh 6` (exact catalogue, ~1 core-day, outlives the
-sprint; `touch giants/STOP` to end it cleanly). Agents in flight: qcert, qreal, d4bound, sharing,
-oddh, satmob (see section 6).
-1. As each agent reports: record in FINDINGS (F20+), copy its folder into experiments/, commit.
-2. ~02:30 UTC: harvest the SAT campaigns' status (`python3 sat/batch_summary.py`, `... batch2`,
-   `satmob/`), FOUND_87 check, catalogue progress (`giants/catalogue/`), update F13/F14 Q3.
-3. ~03:00-05:00 UTC: final pass on UNDERSTANDING.md (review3 items all applied at 23:00; re-check),
-   FINDINGS (new sections), this checkpoint (sections 1-6), memory note; closing report
-   REPORT-2026-11-08T05.md: insights with evidence/scope/predictions, verified circuits, measured
-   search improvements, bound status, flaws found in the import, failures, next experiments with cost.
-4. Leave running past the sprint: the catalogue and the SAT campaigns (idempotent; STOP files).
-5. For the user: locate the 29-30 Sep "76 extension" package (948 MB); download Jean 2026/1481 and
-   Osvik-Canright 2024/1076 PDFs; decide whether to run hunt E (cap-5 window test, 2.5 h, 8 threads)
-   and the I.5 distinguishing runs when threads free up.
+Budget: Fable 92 % used at 02:00 UTC; no further Fable agents. Running: giants/catalogue_all.sh (7
+workers, 439 products so far; outlives the sprint; `touch giants/STOP` to end), satmob campaign3 and
+satmob2 campaignB (one solver each; STOP files), agents power (SAT power control), translog exp1
+analysis, qjointcheck (F32 check). The closing report draft is REPORT-2026-11-08T05.md.
+1. When power / exp1 / qjointcheck report: record in FINDINGS (F30 addendum, F29/F13 power verdict, F32
+   status), patch REPORT-2026-11-08T05.md section 6 and UNDERSTANDING 4/8, commit.
+2. ~04:30 UTC: final CHECKPOINT (sections 1-6 current), memory note, last commit. Leave the catalogue
+   and the two SAT campaigns running past 07:00 UTC; they are idempotent.
+3. For the user: locate the 29-30 Sep "76 extension" package; download Jean 2026/1481 and
+   Osvik-Canright 2024/1076; decide on hunt E (2.5 h x 8), the sw2-twice run (1 h x 12), the F30
+   12-worker experiment repeat with the exact catalogue, and the proof-side continuation (J1 second
+   implementation + certificates for 789 -> 686, then the global label-sharing searches).
