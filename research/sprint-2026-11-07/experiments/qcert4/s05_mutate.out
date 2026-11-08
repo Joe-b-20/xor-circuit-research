@@ -1,0 +1,34 @@
+certificate mutations done, 104s
+mutation test results (mutations, rejected, rate):
+  negate                                      26272    26272  100.00%
+  zero                                        26272    26126   99.44%
+  plus_one                                    26272    15932   60.64%
+  plus_one_survivor_is_valid_certificate      10340    10340  100.00%
+  swap_key                                    17444    14630   83.87%
+  swap_case                                    6026     1170   19.42%
+  rhs_plus                                     4361     1535   35.20%
+  coef_flip                                    4343     3164   72.85%
+  joint_const_P4h                                76       17   22.37%
+  joint_drop_P4h                                 76       76  100.00%
+  h2_widen                                      821      664   80.88%
+  exact_split                                  1241       77    6.20%
+  joint_const_P1                                171       41   23.98%
+  joint_drop_P1                                 171      171  100.00%
+  pk_bound                                       53        7   13.21%
+  joint_const_P3                                285       50   17.54%
+  joint_drop_P3                                 285      285  100.00%
+  zero_survivor_is_valid_certificate            146      146  100.00%
+  joint_const_P2                                333       27    8.11%
+  joint_drop_P2                                 333      333  100.00%
+  joint_const_LIM                                78       45   57.69%
+  joint_drop_LIM                                 78       78  100.00%
+  joint_const_P4f                                35        9   25.71%
+  joint_drop_P4f                                 35       35  100.00%
+  joint_const_P5                                  8        2   25.00%
+  joint_drop_P5                                   8        8  100.00%
+  drop_case                                     375      375  100.00%
+  drop_cert                                     103      103  100.00%
+  k_minus                                       103       96   93.20%
+  l_minus                                       103      103  100.00%
+  k_plus                                        103      103  100.00%
+MUTATION TEST PASSED (115s)

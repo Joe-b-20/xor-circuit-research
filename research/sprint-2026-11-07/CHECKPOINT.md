@@ -230,3 +230,6 @@ test of disconnected vs far-apart regions), d4c2 (depth-4 scope C open branches 
 minimisation, <= 4 threads; FOUND_88AT4 flag if an 88@4 appears), qcert4 (certificates for the F32
 rows, 789 -> 686). Allowance at 03:24: all models 71 %, Fable 96 %; agents run on Opus. Record their
 results as F36+ and patch REPORT-2026-11-08T05.md section 6 by ~06:30 UTC.
+
+- qcert4 DONE 04:30 UTC (F36): 789 -> 686 certified (4,361 certificates, independent checker, mutation
+  tests); 686 claims still open at G = 75. exp2 and d4c2 still running.

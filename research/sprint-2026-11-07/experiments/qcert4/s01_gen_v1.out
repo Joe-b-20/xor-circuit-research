@@ -1,0 +1,16 @@
+G=75: scalar states 3708, oriented claims 7416, survivors 686, LP keys 36573, unknown 0, 95s
+new scan: scalar states 3708, oriented claims 7416; survivors 686 (M 372); keys touched 36573, LP-feasible 814; 95s
+batch-3 survivors 789 (qcert3); new survivors 686; newly excluded claims 103 (M 44); bounds monotone on all 7416 claims
+batch-3-feasible keys: scan 859, batch-3 survivors of the 1,713: 1,177, union 1437; killed by the new system 343 (of the 859: 321; of the 551 load-bearing: 163), surviving 1094; load-bearing still feasible 388; 105s
+load-bearing still feasible without LIM (P1-P5 only): 452
+coverage of the 103 claims references 980 distinct keys; 123s
+scan bookkeeping: keys touched 36573; LP-feasible 814 (by q [(1, 22), (2, 114), (3, 92), (4, 90), (5, 270), (6, 107), (7, 63), (8, 49), (9, 6), (10, 1)]; by ori {'Mt': 419, 'M': 395}); load-bearing 483 (by q [(1, 3), (2, 58), (3, 80), (4, 64), (5, 147), (6, 89), (7, 27), (8, 15)]; by ori {'M': 235, 'Mt': 248})
+  200/1275 keys, 1839 certificates, kinds {'case': 200}, 139s
+  400/1275 keys, 2800 certificates, kinds {'case': 344, 'package': 56}, 147s
+  600/1275 keys, 3086 certificates, kinds {'case': 362, 'package': 229, 'flat': 8, 'batch1': 1}, 149s
+  800/1275 keys, 3402 certificates, kinds {'case': 392, 'package': 383, 'flat': 8, 'batch1': 17}, 151s
+  1000/1275 keys, 3678 certificates, kinds {'case': 410, 'package': 527, 'flat': 8, 'batch1': 55}, 153s
+  1200/1275 keys, 3938 certificates, kinds {'case': 418, 'package': 679, 'flat': 9, 'batch1': 94}, 154s
+keys to certify 1275 (killed 343, referenced 980, both 48); kinds {'case': 420, 'package': 745, 'flat': 9, 'batch1': 101}; certificates 4021 (3166 per-case); not certified 0; largest weighted rhs -1; multipliers 210588; coefficients 239365; 154s
+killed keys by certificate kind: {'case': 343}
+written CERTIFICATES_CASES75_B4.json, scan_cases4.json, keysfull4.json; total 154s

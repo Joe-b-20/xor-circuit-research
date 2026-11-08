@@ -1321,7 +1321,7 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   groups (sizes 2-5) are the next lever. A continuing campaign (`satmob2/campaignB.sh`, one child,
   idempotent, `satmob2/STOP`) runs the free-4 singles, span-pool variants and free-4 pairs.
 
-## F32. Joint hub configurations: two limit hubs never share a missing label; label-class rows cut the survivors 789 -> 686 (qjoint agent, xhigh; `qjoint/REPORT.md`; CONFIRMED by `qjointcheck/REPORT.md`) [proved as checked; J1 finite-checked by two independent implementations; no certificates yet; no bound improvement]
+## F32. Joint hub configurations: two limit hubs never share a missing label; label-class rows cut the survivors 789 -> 686 (qjoint agent, xhigh; `qjoint/REPORT.md`; CONFIRMED by `qjointcheck/REPORT.md`) [proved as checked; J1 finite-checked by two independent implementations; CERTIFIED by qcert4 (F36); no bound improvement]
 
 - Vertex classification [measured, MILP oracle with unrecorded time-limit status]: of the 551
   load-bearing keys, 450 have an integer-feasible case system and 101 are LP-feasible but
@@ -1356,7 +1356,7 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   and 551 -> 452 -> 388 reproduced verbatim and with independent rows; 212 real phases 0 violations;
   synthetic two-hub phases: realizable kinds satisfy every row with LIM tight, excluded kinds violate
   LIM. Certificates for the 103 newly excluded claims still to be produced.
-- Not done: certificates for the 103 newly excluded claims,
+- Certificates for the 103 newly excluded claims: DONE (F36, 04:30 UTC). Not done:
   the two global label-sharing enumerations (M^T q = 1 with 7-8 full helpers; M q = 2 with ten). The
   bound stays 75.
 
@@ -1433,6 +1433,33 @@ two workers (same-start pairs as positive control, 15 cross-seed pairs), the 30 
 - Not settled: the exact-plateau count per chain-hour (needs cataloguing the 3,300 signatures), and
   whether seed regions are disconnected or just far apart (needs longer runs). Instrument: `translog/
   translog.diff` (277 lines, 0.3 % overhead), kept apart from v8.
+
+## F36. Certificates for the joint-hub rows: 789 -> 686 is now certified (qcert4 agent, Opus xhigh; `qcert4/REPORT.md`, `qcert4/PROOF_ADDENDUM_4.md`) [certified; proof addendum written; no bound improvement]
+
+- Proof addendum D in package style: Lemma J (F_joint independence) with the spanning-tree statement
+  for three or more hubs at one hub-only label (the wording defect qjointcheck found), finite fact J1
+  stated exactly with both implementations and their counts, Lemma P (rows P1-P5), the packing bound
+  D(n) with a proof, the per-row relaxation argument, row LIM in its three cases, the exact integer
+  hub split A = 0..q as an exhaustive disjunction [proved].
+- 4,361 exact integer Farkas certificates for 1,307 keys at G = 75, 3,506 of them per (hub, dark)
+  case: every key the new rows kill that was feasible under batch 3 (375 keys, 14,096 leaves; all 163
+  load-bearing keys of the 551 -> 388 recount; 32 keys outside qcert3's lists found by re-checking
+  every key the new scan touched) and all 103 newly excluded oriented claims (44 M, 59 M^T; 980
+  referenced keys). Largest weighted right side -1; 0 uncertified (key, case) pairs [certified: the
+  generator's exact check plus an independent standard-library checker with its own rows, brute-force
+  joint rows and its own case tree; the two systems identical on all 22,301 case nodes].
+- What rests on J1: LIM enters only 78 certificates, all in the case A = q - 1, so only J1's hub-only
+  part carries weight. Without J1, 297 of the 375 keys and 65 of the 103 claims are still covered;
+  38 claims rest on J1 (finite-checked by two independent implementations, F32). Five M^T keys with
+  q = 1 die from the exact A split alone (corrects a remark in Addendum C).
+- Mutation tests reject every negated multiplier and every dropped certificate; stress test: 1,264
+  real-circuit phases and 102,792 synthetic two-hub phases, 0 violations.
+- Survivors: for the 1,304 surviving batch-3-feasible keys, 44,058 of 47,987 leaves are certified
+  dead, 3,929 open. Open: 686 claims (372 M, 314 M^T) at G = 75, 814 LP-feasible keys (483
+  load-bearing); 101 keys are integer-infeasible but LP-feasible and not certified. J1 was not re-run
+  by this agent (relied on the logs of both earlier implementations).
+- Status of the proof side: 1,508 -> 1,313 -> 996 -> 789 -> 686 open claims at G = 75, every step
+  certified. The bound stays L(M) >= 75.
 
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 

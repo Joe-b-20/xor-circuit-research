@@ -1,0 +1,10 @@
+killed keys certified without any joint row: [(12, 5, 1, 'Mt', 1, 4), (12, 5, 2, 'Mt', 1, 4), (12, 5, 3, 'Mt', 1, 4), (12, 5, 4, 'Mt', 1, 4), (12, 5, 5, 'Mt', 1, 4)] [(0, 0), (0, 1), (1, 0), (1, 1), (0, 0), (0, 1), (1, 0), (1, 1), (0, 0), (0, 1), (1, 0), (1, 1), (0, 0), (0, 1), (1, 0), (1, 1), (0, 0), (0, 1), (1, 0), (1, 1)]
+killed keys whose coverage uses J1: 78 by q [(3, 12), (4, 66)] by ori {'Mt': 12, 'M': 66}
+J1 certificates: 78 by (q, A) [((3, 2), 12), ((4, 3), 66)] ; whole hub case 78
+largest multipliers: [15707997621521517408, 41139491049195, 227304, 126984, 23004] ; certificates with max multiplier > 10^6: 2 ; median max 12
+without LIM (LP scan): survivors 724 ; of the 789 excluded 65
+claims excluded without LIM by ori: {'Mt': 45, 'M': 20}
+partial: {'surviving_keys': 1304, 'certificates': 22586, 'hub_only': 3963, 'leaves': 47987, 'open_leaves': 3929, 'farkas_lps': 31445, 'largest_rhs': -1, 'failed': 0, 'joint_row_use': {'P1': 170, 'P3': 538, 'P4h': 76, 'LIM': 1586, 'P4f': 69, 'P2': 94, 'P5': 9}}
+surviving keys by number of open leaves: [(1, 366), (2, 273), (3, 257), (4, 182), (5, 71), (6, 65), (7, 28), (8, 23), (9, 21), (10, 4), (11, 4), (12, 10)] ...
+open leaves by A value: [(0, 480), (1, 782), (2, 1091), (3, 997), (4, 412), (5, 137), (6, 30)]
+open leaves with A = 0: 480 ; surviving keys open only at A = 0: 66

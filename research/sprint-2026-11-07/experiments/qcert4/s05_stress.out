@@ -1,0 +1,53 @@
+Part A: 316 circuits (13 controls), 1264 phases; q [(7, 4), (8, 12), (9, 31), (10, 94), (11, 168), (12, 180), (13, 406), (14, 250), (15, 108), (16, 11)]; A [(0, 1264)]; limit hubs per phase max 0; helpers checked {'ctrl': 803, 'real': 19942}; 5s
+  P1     : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  P2     : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  P3     : violations ctrl 0, real 0; min slack ctrl 15, real 21
+  P4f    : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  P4h    : violations ctrl 0, real 0; min slack ctrl 5, real 7
+  P5     : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  H2     : violations ctrl 0, real 0; min slack ctrl 1, real 1
+  HUB2   : violations ctrl 0, real 0; min slack ctrl 7, real 7
+  J1     : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  LIM    : violations ctrl 0, real 0; min slack ctrl 1, real 1
+  LP_P1  : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  LP_P2  : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  LP_P3  : violations ctrl 0, real 0; min slack ctrl 21, real 21
+  LP_P4f : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  LP_P4h : violations ctrl 0, real 0; min slack ctrl 7, real 7
+  LP_P5  : violations ctrl 0, real 0; min slack ctrl 0, real 0
+  LP_LIM : violations ctrl 0, real 0; min slack ctrl 1, real 1
+  M diff-labels ((0, 3), (1, 2)): available 3296, tested 3296, independent 672; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 2624 dependent
+  M diff-labels ((0, 3), (2, 1)): available 96, tested 96, independent 96; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 0 dependent
+  M diff-labels ((1, 2), (1, 2)): available 2752, tested 2752, independent 1040; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 1712 dependent
+  M diff-labels ((1, 2), (2, 1)): available 192, tested 192, independent 128; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 64 dependent
+  M hub-only ((0, 3), (0, 3)): available 11520, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  M hub-only ((0, 3), (1, 2)): available 30336, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  M hub-only ((0, 3), (2, 1)): available 4608, tested 4608, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 4608 of 4608 dependent
+  M hub-only ((1, 2), (1, 2)): available 21464, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  M hub-only ((1, 2), (2, 1)): available 6720, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  M hub-only ((2, 1), (2, 1)): available 544, tested 544, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 544 of 544 dependent
+  M same-label ((0, 2), (0, 2)): available 616, tested 616, independent 456; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 160 dependent
+  M same-label ((0, 3), (0, 3)): available 1344, tested 1344, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 1344 of 1344 dependent
+  M same-label ((0, 3), (1, 2)): available 2272, tested 2272, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 2272 of 2272 dependent
+  M same-label ((0, 3), (2, 1)): available 192, tested 192, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 192 of 192 dependent
+  M same-label ((1, 2), (1, 2)): available 672, tested 672, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 672 of 672 dependent
+  M same-label ((1, 2), (2, 1)): available 64, tested 64, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 64 of 64 dependent
+  Mt diff-labels ((0, 3), (0, 3)): available 1728, tested 1728, independent 1728; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 0 dependent
+  Mt diff-labels ((0, 3), (1, 2)): available 10880, tested 6000, independent 2396; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 3604 dependent
+  Mt diff-labels ((0, 3), (2, 1)): available 384, tested 384, independent 384; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 0 dependent
+  Mt diff-labels ((1, 2), (1, 2)): available 6960, tested 6000, independent 2836; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 3164 dependent
+  Mt diff-labels ((1, 2), (2, 1)): available 512, tested 512, independent 352; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 160 dependent
+  Mt hub-only ((0, 3), (0, 3)): available 35712, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  Mt hub-only ((0, 3), (1, 2)): available 87360, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  Mt hub-only ((0, 3), (2, 1)): available 12672, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  Mt hub-only ((1, 2), (1, 2)): available 55088, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  Mt hub-only ((1, 2), (2, 1)): available 16224, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  Mt hub-only ((2, 1), (2, 1)): available 1216, tested 1216, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 1216 of 1216 dependent
+  Mt same-label ((0, 2), (0, 2)): available 2464, tested 2464, independent 1824; violations on independent {}; J1-excluded kind False: LP LIM violated on 0 of 640 dependent
+  Mt same-label ((0, 3), (0, 3)): available 5376, tested 5376, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 5376 of 5376 dependent
+  Mt same-label ((0, 3), (1, 2)): available 6976, tested 6000, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 6000 of 6000 dependent
+  Mt same-label ((0, 3), (2, 1)): available 480, tested 480, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 480 of 480 dependent
+  Mt same-label ((1, 2), (1, 2)): available 1824, tested 1824, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 1824 of 1824 dependent
+  Mt same-label ((1, 2), (2, 1)): available 160, tested 160, independent 0; violations on independent {}; J1-excluded kind True: LP LIM violated on 160 of 160 dependent
+Part B: 102792 synthetic phases (11912 independent), violations on independent 0, J1-excluded phases not flagged by LIM 0, phases with a type outside the case columns {}; 31s
+STRESS EXT4 PASSED : 316 circuits, 1264 phases, 0 violations; 102792 synthetic phases; 36s

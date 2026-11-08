@@ -1,0 +1,19 @@
+G=75: scalar states 3708, oriented claims 7416, survivors 686, LP keys 36573, unknown 0, 148s
+new scan: scalar states 3708, oriented claims 7416; survivors 686 (M 372); keys touched 36573, LP-feasible 814; 148s
+batch-3 survivors 789 (qcert3); new survivors 686; newly excluded claims 103 (M 44); bounds monotone on all 7416 claims
+keys touched by the new scan outside qcert3 lists: 35650; batch-3-feasible among them 242 (new-feasible 210); the 1,437 listed keys re-evaluated batch-3-feasible; 278s
+batch-3-feasible keys: scan 859, batch-3 survivors of the 1,713: 1,177, union 1679; killed by the new system 375 (of the 859: 321; of the 551 load-bearing: 163), surviving 1304; load-bearing still feasible 388; 289s
+load-bearing still feasible without LIM (P1-P5 only): 452
+coverage of the 103 claims references 980 distinct keys; 307s
+scan bookkeeping: keys touched 36573; LP-feasible 814 (by q [(1, 22), (2, 114), (3, 92), (4, 90), (5, 270), (6, 107), (7, 63), (8, 49), (9, 6), (10, 1)]; by ori {'M': 395, 'Mt': 419}); load-bearing 483 (by q [(1, 3), (2, 58), (3, 80), (4, 64), (5, 147), (6, 89), (7, 27), (8, 15)]; by ori {'M': 235, 'Mt': 248})
+  200/1307 keys, 1898 certificates, kinds {'case': 200}, 329s
+  400/1307 keys, 3080 certificates, kinds {'case': 376, 'package': 24}, 345s
+  600/1307 keys, 3366 certificates, kinds {'case': 394, 'package': 199, 'flat': 6, 'batch1': 1}, 347s
+  800/1307 keys, 3686 certificates, kinds {'case': 424, 'package': 358, 'flat': 8, 'batch1': 10}, 349s
+  1000/1307 keys, 3980 certificates, kinds {'case': 442, 'package': 496, 'flat': 8, 'batch1': 54}, 351s
+  1200/1307 keys, 4240 certificates, kinds {'case': 449, 'package': 652, 'flat': 9, 'batch1': 90}, 352s
+keys to certify 1307 (killed 375, referenced 980, both 48); kinds {'case': 452, 'package': 745, 'flat': 9, 'batch1': 101}; certificates 4361 (3506 per-case); not certified 0; largest weighted rhs -1; multipliers 230820; coefficients 264062; 353s
+killed keys by certificate kind: {'case': 375}
+G=75: scalar states 3708, oriented claims 7416, survivors 724, LP keys 36537, unknown 0, 139s
+scan without LIM: survivors 724 (M 396); of the 789 excluded without LIM 65; new survivors subset of these: True; 492s
+written CERTIFICATES_CASES75_B4.json, scan_cases4.json, keysfull4.json; total 492s

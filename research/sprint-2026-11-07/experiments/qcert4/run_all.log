@@ -1,0 +1,27 @@
+PARTIAL CERTIFICATES CHECKED
+expected counts match: {'scalar_states': 3708, 'claims_checked': 103, 'certificates': 4361, 'certificates_package': 745, 'certificates_batch1': 101, 'certificates_flat': 9, 'certificates_case': 3506, 'case_certificates_hub_only': 2350, 'case_certificates_hub_and_dark': 1156, 'case_certificates_dark_only': 0, 'case_certificates_without_joint_rows': 2677, 'joint_row_use': {'P1': 171, 'P2': 333, 'P3': 285, 'P4f': 35, 'P4h': 76, 'P5': 8, 'LIM': 78}, 'certificates_using_PK': 98, 'certificates_using_FM': 26, 'keys_with_certificates': 1307, 'batch3_feasible_keys': 1679, 'killed_keys': 375, 'surviving_keys': 1304, 'leaf_cases_of_killed_keys': 14096, 'leaf_cases_of_referenced_keys': 18418, 'coefficients_checked': 264062, 'largest_right_side': -1, 'certificate_references': 1616, 'distinct_referenced': 980, 'direct_geometric_references': 188, 'certificates_using_LIM_by_basis': {'J1b hub-only (a = q-1)': 78, 'J1a full-met (a = q)': 0, 'Lemma 4.6 only (a <= q-2)': 0}, 'certificates_using_J1': 78, 'killed_keys_covered_without_J1': 297, 'claims_covered_without_J1': 65, 'partial_certificates': 22586, 'partial_leaves': 47987, 'partial_leaves_certified_dead': 44058, 'partial_leaves_open': 3929}
+INDEPENDENT CHECK PASSED
+check_cases4.py: 58 s
+CROSSCHECK PASSED
+crosscheck4.py: 92 s
+MUTATION TEST PASSED (115s)
+mutate4.py: 115 s
+STRESS EXT4 PASSED : 316 circuits, 1264 phases, 0 violations; 102792 synthetic phases; 36s
+stress_ext4.py: 36 s
+stats4.py: 1 s
+CERTIFICATES_CASES75_B4.json: OK
+CERTIFICATES_PARTIAL75_B4.json: OK
+gen_certs4.py: OK
+gen_partial4.py: OK
+check_cases4.py: OK
+check_cases3_copy.py: OK
+gen_certs3_copy.py: OK
+crosscheck4.py: OK
+mutate4.py: OK
+stress_ext4.py: OK
+stats4.py: OK
+stats4b.py: OK
+scan_cases4.json: OK
+keysfull4.json: OK
+run_all.sh: OK
+QCERT4 ALL CHECKS PASSED
