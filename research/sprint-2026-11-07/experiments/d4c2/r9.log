@@ -1,0 +1,15 @@
+START BJ Sun Nov  8 04:58:59 UTC 2026 limit 1400
+[BJ] |U2|=1060 |V2|=1118 |S|=188557 helper-universe=138557 level-3-realisable outputs=26 never=[1, 4, 11, 17, 20, 27] build 4.2s |N6|=26024
+[BJ] fix3=[0, 2, 5, 6, 7, 8, 10, 13, 14, 15, 16, 18, 21, 22, 23, 24, 26, 29, 30, 31] fix4=[1, 4, 11, 17, 20, 27] ub=None strict=True helpers=all extra={'jmin': '1', 'hmin': '6', 'pc5': '16'}
+[BJ] model: x=1060 a=138557 helpers=138531 cons-vars=399604 recipe-vars=37766 build 18.1s
+[BJ] status UNKNOWN objective None bound 27.0 target 31 wall 1400.7s closed=False
+MAXRSS_KB 5219432 ELAPSED 1420.16
+EXIT BJ 0 Sun Nov  8 05:22:39 UTC 2026
+START M Sun Nov  8 05:22:39 UTC 2026 limit 1400
+[M] |U2|=1060 |V2|=1118 |S|=188557 helper-universe=138557 level-3-realisable outputs=26 never=[1, 4, 11, 17, 20, 27] build 4.9s |N6|=26024
+[M] fix3=[] fix4=[1, 4, 11, 17, 20, 27] ub=None strict=True helpers=all extra={'m5min': '1', 'hmin': '6', 'pc5': '16'}
+[M] model: x=1060 a=138557 helpers=138531 cons-vars=399604 recipe-vars=166337 build 27.0s
+[M] status UNKNOWN objective None bound 12.0 target 31 wall 256.6s closed=False
+MAXRSS_KB 6401888 ELAPSED 284.82
+EXIT M 0 Sun Nov  8 05:27:24 UTC 2026
+QUEUE DONE Sun Nov  8 05:27:24 UTC 2026

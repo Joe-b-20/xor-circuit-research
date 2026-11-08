@@ -1006,6 +1006,7 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   branch budget was spent before this was understood. Continuation: rerun the open branches as pure
   minimisation with the helper universe restricted to the never-level-3 fan set, on a free machine
   (hours). D4 >= 75 stands; the statements remain about circuits whose weight-2 set is exactly P89.
+- Continuation (d4c2, 05:40 UTC): the no-two-helper sub-scope is closed for every level pattern; see F38.
 
 ## F23. SAT on the plateau's mobile part: no 87 is a one-factor or small two-factor rewrite of four 88 plateaus (satmob agent, high; `satmob/REPORT.md`) [measured; exclusions proved as stated by the sat87 encoding]
 
@@ -1407,7 +1408,7 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   88 -> 87 behaves like 89 -> 88 (the only calibration available); anchors are 30 s-sample predecessors,
   not direct parents (direct parents can only be closer; min k_min is already 13).
 
-## F35. The pre-registered 1 h / 12-worker transition-log experiment: trails are LOCAL (translog agent; `translog/exp1/REPORT.md`) [measured; pre-registered analysis]
+## F35. The pre-registered 1 h / 12-worker transition-log experiment: trails are LOCAL (translog agent; `translog/exp1/REPORT.md`) [measured; pre-registered analysis] [reading revised by F37: a short memory of the start, not a region]
 
 Design as registered in F30: D0 settings, restarts off, six distinct hunt D 88 records each given to
 two workers (same-start pairs as positive control, 15 cross-seed pairs), the 30 s sampler alongside;
@@ -1484,6 +1485,28 @@ two workers (same-start pairs as positive control, 15 cross-seed pairs), the 30 
   "disconnected" cannot be told from "too large to revisit", so meeting tests at this scale are
   uninformative and helper distance cannot see structure past its ~0.85 ceiling. Plateau changes are
   rare events inside a dense plateau-internal shuffle.
+
+## F38. Depth 4 over the 89's first layer, continued: every circuit without a "helper + helper" level-4 output needs >= 89 gates, for every level pattern (d4c2 agent, Opus xhigh; `d4c2/REPORT.md`) [SAT-scoped; scope C still OPEN overall]
+
+- Scope: normal-form depth-<= 4 circuits for one MixColumns column whose weight-2 masks are exactly
+  P89 (the 89's 26 pairs) or a byte rotation of it; level-2 gates free. Pure CP-SAT core
+  minimisation (no upper bound given), 4 threads, every run capped at 1,400 s; no feasible point in
+  any run; no FOUND_88AT4.
+- Closed [SAT-scoped]: if no level-4 gate has two level-3 helpers as operands, G >= 89. Exhaustive,
+  disjoint split by m (weight-5 outputs at level 4) and j (realisable weight-7 outputs at level 3):
+  m = 0, j = 0 (d4c's run, bound 31), m = 0, j >= 1 (bound 31 at 64 s), m >= 1 (bound 31 at 1,175 s);
+  31 = |L2| + |H3| means G >= 89. The single run over the whole sub-scope stopped at 30, hence the
+  split. So an 88 over P89, if one exists, has at least one helper + helper output (the 89 has six).
+- Open, with proved bounds on |L2| + |H3| (31 would close): two-helper recipes allowed with the 89's
+  level pattern, every |L2|: 26 (G >= 84; d4c had 25); m = 0, j >= 1: 27 (G >= 85); m >= 1: 12 (the
+  weak point; 6.4 GB memory, a 2-worker rerun also stayed at 12); |L2| = 24 with helpers restricted to
+  the never-level-3 fan set (sound): 30, no core in 456 s.
+- Method finding, extended: fixing a count (|L2| = 24, or exactly 6 helpers) stalls at the bound the
+  fixed count gives at once, exactly like giving an upper bound did; only free-objective minimisation
+  climbs. Only linearisation-0 core workers found cores, so later runs used four of them.
+- What this changes: the remaining 88@4 question over P89 is entirely about helper + helper outputs;
+  the next run is the m >= 1 branch with two-helper recipes (bound 12) on a machine with more memory.
+  D4 >= 75 in general stands; these statements are about circuits whose weight-2 set is exactly P89.
 
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 

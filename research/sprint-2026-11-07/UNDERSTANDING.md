@@ -288,7 +288,8 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   optimality OPEN by the owner's latest checkpoint, whose default replay passes here). Depth
   <= 4: 89 is the best construction; no depth-4 bound above 75 in general (F22: proved layer facts
   give only G >= 57 unconditionally; over the 89's first layer plus its family's level-2 vocabulary,
-  G >= 89 is SAT-proved; over the first layer alone, open). Inverse: depth >= 5 is proved
+  G >= 89 is SAT-proved; over the first layer alone, open, but closed for every circuit
+  without a "helper + helper" level-4 output, F38). Inverse: depth >= 5 is proved
   (weight-19 outputs), 118@5 is a construction (optimality open), 88-gate unrestricted inverse
   constructions at depths 19 and 33 are recorded in the archive. Structural: any circuit with <= 89
   gates has >= 3 odd-weight non-output helpers (h = 0, 1, 2 cases proved / replayed here, F20; premise
