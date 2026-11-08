@@ -37,7 +37,12 @@ def q(xs, p):
 
 
 def load_rows(path):
-    rows = [json.loads(line) for line in open(path)]
+    rows = []
+    for line in open(path):
+        try:
+            rows.append(json.loads(line))
+        except ValueError:
+            pass                                 # partial last line of a live log
     meta = {"open": None, "close": None}
     body = []
     for r in rows:

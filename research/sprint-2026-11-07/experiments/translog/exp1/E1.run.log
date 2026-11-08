@@ -1,0 +1,23 @@
+campaign translog-exp1  seed 20261109  duration 1:00:00  profiles default  backend xorflux
+
+target          inputs  outputs  matrix sha256     spec
+aes-mixcolumns  32      32       2a16955dfe321e1b  aes-mixcolumns
+
+worker  target          objective  cap   gate limit  seed                                                                                                                      rng seed  settings
+p0-00   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d6-0f7bfd6b155e8d61.json  20261109  c5280fb3e38a
+p0-01   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d6-0f7bfd6b155e8d61.json  21261112  c5280fb3e38a
+p1-00   aes-mixcolumns  gates      none  none        88@7 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d7-7c7fa4de7dd8770e.json  22261115  c5280fb3e38a
+p1-01   aes-mixcolumns  gates      none  none        88@7 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d7-7c7fa4de7dd8770e.json  23261118  c5280fb3e38a
+p2-00   aes-mixcolumns  gates      none  none        88@5 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-01/records/g88-d5-1e8fb929c0e58ce0.json  24261121  c5280fb3e38a
+p2-01   aes-mixcolumns  gates      none  none        88@5 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-01/records/g88-d5-1e8fb929c0e58ce0.json  25261124  c5280fb3e38a
+p3-00   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-01/records/g88-d6-5f30b0c413d242c6.json  26261127  c5280fb3e38a
+p3-01   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-01/records/g88-d6-5f30b0c413d242c6.json  27261130  c5280fb3e38a
+p4-00   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-02/records/g88-d6-0888d11ca3f2c9f4.json  28261133  c5280fb3e38a
+p4-01   aes-mixcolumns  gates      none  none        88@6 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-02/records/g88-d6-0888d11ca3f2c9f4.json  29261136  c5280fb3e38a
+p5-00   aes-mixcolumns  gates      none  none        88@5 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-03/records/g88-d5-0de2e30531aeec59.json  30261139  c5280fb3e38a
+p5-01   aes-mixcolumns  gates      none  none        88@5 /home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-03/records/g88-d5-0de2e30531aeec59.json  31261142  c5280fb3e38a
+
+frozen into /home/joebachir20/xs-campaigns/2026-11-07-sprint/translog/exp1/runs/E1
+stop with:   python3 xorflux-translog/xorflux stop /home/joebachir20/xs-campaigns/2026-11-07-sprint/translog/exp1/runs/E1   (or Ctrl-C here)
+status with: python3 xorflux-translog/xorflux status /home/joebachir20/xs-campaigns/2026-11-07-sprint/translog/exp1/runs/E1
+

@@ -1,0 +1,81 @@
+# exp1: 1 h, 12 MixColumns workers, uncapped, v8 defaults as hunt D0, translog on, restarts off.
+# Six 2-worker groups p0..p5, each pair started on the same hunt-D 88 record (same-start pairs are
+# the positive control for meeting/separation; the 15 cross pairs test trail meetings).
+
+[campaign]
+name = "translog-exp1"
+seed = 20261109
+duration = "60m"
+profiles = ["default"]
+sharing = "off"
+
+[set]
+"scheduler.reference" = [[97, 3], [89, 4], [88, 5]]
+"engine.records_per_point" = 100000
+"engine.record_stride" = 4096
+"worker.records_per_point" = 100000
+"restart.enabled" = false
+"restart.w_fresh" = 1.0
+"restart.w_elite" = 0.0
+"restart.w_shared" = 0.0
+"restart.w_best" = 0.0
+"translog.enabled" = true
+"translog.band_gates" = 89
+"translog.id_gates" = 88
+"translog.rotate_bits" = 8
+"translog.values" = "entry"
+"translog.values_gates" = 89
+
+# D0 free-00 root anneal3#1141859207 v3 8dbbee2e15ccd15b depth 6
+[[workers]]
+name = "p0"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d6-0f7bfd6b155e8d61.json"]
+
+# D0 free-00 root bp#3169708717 v3 a868582fe5e2574a depth 7
+[[workers]]
+name = "p1"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-00/records/g88-d7-7c7fa4de7dd8770e.json"]
+
+# D0 free-01 root anneal3#3643351544 v3 b3df853f1132727b depth 5
+[[workers]]
+name = "p2"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-01/records/g88-d5-1e8fb929c0e58ce0.json"]
+
+# D0 free-01 root bp#1814475354 v3 4a4af8618a12cce0 depth 6
+[[workers]]
+name = "p3"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-01/records/g88-d6-5f30b0c413d242c6.json"]
+
+# D0 free-02 root anneal3#3966054777 v3 865438fe8d4502b7 depth 6
+[[workers]]
+name = "p4"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-02/records/g88-d6-0888d11ca3f2c9f4.json"]
+
+# D0 free-03 root bp#1892371543 v3 3a43078aa6fbc78b depth 5
+[[workers]]
+name = "p5"
+target = "aes-mixcolumns"
+count = 2
+objective = "gates"
+depth_cap = "none"
+seeds = ["/home/joebachir20/xs-campaigns/2026-11-07-sprint/hunt/runsD/D0/workers/free-03/records/g88-d5-0de2e30531aeec59.json"]

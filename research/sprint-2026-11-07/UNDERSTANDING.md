@@ -168,7 +168,9 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   states; hops change ~30 % of the helpers; the 8 cross-chain meetings among 1,462 visits are what
   independent wandering over ~1e5 effective nodes predicts (null model, R2; hunt D's 10 meetings in
   2.1 M pairs give the same 2e5), so the sampled graph says nothing about whether the neighbourhoods
-  connect [measured + model]. The walk lives on the 88+89 band: an in-engine log (F30, one chain, 20 min) shows ~2,600 entries
+  connect [measured + model]. The in-engine experiment (F35, 12 workers, 1 h, pre-registered) then
+  showed the trails are LOCAL: chains from different 88 seeds shared 0 plateaus against 24 expected
+  under independent wandering, chains from the same seed re-met all hour [measured]. The walk lives on the 88+89 band: an in-engine log (F30, one chain, 20 min) shows ~2,600 entries
   into 88 per hour, excursions to 89 of median 0.02 s (99.65 % shorter than 30 s), 56 / 34 / 10 % of
   the time at 88 / 89 / 90, and 0.72 departures per second; the 30 s sampler saw 3 % of the stays, so
   every sampler-based rate in F11/F14 ("~44 hops per chain-hour", "distinct plateaus per worker-hour")
@@ -318,9 +320,11 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
 - How many 88 plateaus there are, more precisely than "3e4-5e5, floor 2,500" (F12): the exact
   catalogue of all 3,845 sampled 88 states and the 8 unresolved giants (giants/catalogue_all.sh, 6
   workers since 21:45 UTC, ~1 core-day) would give ~100 coincidences and pin the size exponent.
-- Whether the 88 cores form one connected graph under the +1 band: as sampled at 30 s the data cannot
-  tell (F11, R2); finer sampling (every ~1 s, or logging every 88 <-> 89 transition in the engine) is needed; the instrument exists now (F30: in-engine transition log, 0.3 % overhead) with a
-  pre-registered 1 h / 12-worker design. No core with a down-exit has been seen anywhere (0 of 4,314 sampled states, exhaustive
+- Whether the 88 cores form one connected graph under the +1 band: at the hour scale they do not
+  behave like one pool (F35: 0 shared plateaus across seeds vs 24 expected; same-seed chains re-meet),
+  so a chain explores a local region; whether regions are disconnected or merely far apart needs
+  longer runs, and the exact-plateau count per chain-hour needs the 3,300 logged signatures
+  catalogued. No core with a down-exit has been seen anywhere (0 of 4,314 sampled states, exhaustive
   remove1; 0 at any fanned member of the catalogued plateaus, every member for the 155 of <= 2e4
   states).
 - Why the gates minimum of a map sits at a middle depth (F10: klsw17-m-8x8-gf256 321@10 beats

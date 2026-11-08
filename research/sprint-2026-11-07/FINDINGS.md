@@ -1399,6 +1399,33 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   88 -> 87 behaves like 89 -> 88 (the only calibration available); anchors are 30 s-sample predecessors,
   not direct parents (direct parents can only be closer; min k_min is already 13).
 
+## F35. The pre-registered 1 h / 12-worker transition-log experiment: trails are LOCAL (translog agent; `translog/exp1/REPORT.md`) [measured; pre-registered analysis]
+
+Design as registered in F30: D0 settings, restarts off, six distinct hunt D 88 records each given to
+two workers (same-start pairs as positive control, 15 cross-seed pairs), the 30 s sampler alongside;
+00:41-01:39 UTC; 4.5-5.4 M steps per worker; no state below 88 (0 of 24,950 entries).
+- Q1 (rates): 24,950 entries into 88 (median 2,371 per worker-hour); excursions to 89 median 0.017 s,
+  99.8 % shorter than 30 s, 98 % shorter than 2 s; stays ~0.47 s; strong seed dependence (time at 88
+  from 3 % to 71 % per worker).
+- Q2 (identity): 3,300 distinct v3 signatures; 7-2,214 per worker-hour (median 127): two regimes by
+  seed (hoppers versus chains sitting on 2-25 signatures). Exact cataloguing (30-min cap): in 39 of 40
+  tested sub-2 s hops the stay before and after lie on the SAME exact plateau (15 of them with
+  different v3 signatures), so the 20 ms 88 -> 89 -> 88 hops are plateau-internal two-step moves and
+  v3 over-counts plateau changes; the exit-state reconstruction from 89 values failed by design (the
+  engine should log the 88 key at departure).
+- Q3 (connectivity, the registered test): cross-seed pairs: M = 0 shared v3 nodes against 23.7
+  expected under the R2 null model at N_eff = 1.3e5 (interval [14, 33]): LOCAL TRAILS (independent
+  wandering would need N_eff >= 1e6); same-start pairs: 138 shared against 5.2 [0.7, 9.7]: chains from
+  one state keep re-meeting all hour (64 and 57 re-meetings in the two hopping pairs). The "one pool
+  sparsely wandered" reading of F11/R2 is refuted at the hour scale; the meetings seen in hunts A-D
+  come from shared ancestry, not from a common pool.
+- Q4 (sampler calibration): 557 88-samples, 545 sampler hops, 76 % with no 89 sample (F11's 68 %
+  reproduced); the sampler saw 9 % of the signatures and 4 of 144 shared nodes; correction factors:
+  entries / sampler hops 46x, v3 visits / sampler hops 22x, distinct v3 11x.
+- Not settled: the exact-plateau count per chain-hour (needs cataloguing the 3,300 signatures), and
+  whether seed regions are disconnected or just far apart (needs longer runs). Instrument: `translog/
+  translog.diff` (277 lines, 0.3 % overhead), kept apart from v8.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26
