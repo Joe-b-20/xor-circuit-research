@@ -1,0 +1,73 @@
+
+Starting CP-SAT solver v9.15.6755
+Parameters: max_time_in_seconds: 300 log_search_progress: true optimize_with_core: true linearization_level: 1 num_search_workers: 1 log_to_stdout: false
+
+Initial optimization model '': (model_fingerprint: 0x857477e9d8a2d6be)
+#Variables: 576'987 (#bools: 139'591 in objective) (576'960 primary variables)
+  - 576'987 Booleans in [0,1]
+#kBoolAnd: 874'740 (#enforced: 874'740) (#literals: 1'749'480)
+#kBoolOr: 138'569 (#literals: 625'838)
+#kLinear1: 26
+#kLinear2: 243 (#enforced: 243)
+#kLinear3: 207 (#enforced: 207)
+#kLinearN: 138'134 (#enforced: 138'119) (#terms: 1'088'666)
+
+Starting presolve at 1.35s
+  7.16e-01s  0.00e+00d  [DetectDominanceRelations] 
+  5.57e+00s  0.00e+00d  [PresolveToFixPoint] #num_loops=4 #num_dual_strengthening=3 
+  2.89e-02s  0.00e+00d  [ExtractEncodingFromLinear] 
+  8.99e-02s  0.00e+00d  [DetectDuplicateColumns] 
+  2.25e-01s  0.00e+00d  [DetectDuplicateConstraints] #duplicates=118 
+[Symmetry] Graph for symmetry has 1'183'862 nodes and 2'071'371 arcs.
+[Symmetry] Graph too large. Skipping. You can use symmetry_level:3 or more to force it.
+[SAT presolve] num removable Booleans: 198'489 / 251'538
+[SAT presolve] num trivial clauses: 0
+[SAT presolve] [0s] clauses:501'008 literals:1'541'234 vars:251'538 one_side_vars:1060 simple_definition:198'605 singleton_clauses:0
+[SAT presolve] [1.3332s] clauses:500'897 literals:1'540'849 vars:251'538 one_side_vars:1060 simple_definition:198'612 singleton_clauses:0
+[SAT presolve] [2.54672s] clauses:454'773 literals:1'534'563 vars:205'705 one_side_vars:1066 simple_definition:72'154 singleton_clauses:0
+  1.23e-01s  0.00e+00d  [DetectDuplicateConstraintsWithDifferentEnforcements] 
+  5.65e+00s  1.20e+00d *[Probe] #probed=503'302 
+  2.63e+00s  1.00e+00d *[MaxClique] 
+  7.22e-01s  0.00e+00d  [DetectDominanceRelations] 
+  1.85e+00s  0.00e+00d  [PresolveToFixPoint] #num_loops=1 #num_dual_strengthening=1 
+  2.88e-01s  0.00e+00d  [ProcessAtMostOneAndLinear] 
+  2.32e-01s  0.00e+00d  [DetectDuplicateConstraints] 
+  1.66e-01s  0.00e+00d  [DetectDuplicateConstraintsWithDifferentEnforcements] 
+  3.99e-02s  8.13e-05d  [DetectDominatedLinearConstraints] #relevant_constraints=2 
+  3.98e-02s  0.00e+00d  [DetectDifferentVariables] 
+  1.19e+00s  8.31e-03d  [ProcessSetPPC] #relevant_constraints=454'775 #num_inclusions=24 
+  6.23e-01s  4.86e-03d  [TransformClausesToExactlyOne] #num_amos=305'524 #num_clauses=149'249 #num_checked=149'249 
+  9.67e-02s  0.00e+00d  [DetectEncodedComplexDomains] 
+  4.91e-02s  0.00e+00d  [FindAlmostIdenticalLinearConstraints] 
+  1.32e+00s  1.00e+00d *[FindBigAtMostOneAndLinearOverlap] 
+  2.65e-01s  1.00e+00d *[FindBigVerticalLinearOverlap] 
+  3.64e-02s  2.71e-04d  [FindBigHorizontalLinearOverlap] #linears=2 
+  4.25e-01s  4.62e-03d  [MergeClauses] #num_collisions=43'610 #num_merges=43'610 #num_saved_literals=122'149 
+  6.24e-01s  0.00e+00d  [DetectDominanceRelations] 
+  1.77e+00s  0.00e+00d  [PresolveToFixPoint] #num_loops=1 #num_dual_strengthening=1 
+  -3.39e-01s  0.00e+00d  [DetectDominanceRelations] 
+  8.42e-01s  0.00e+00d  [PresolveToFixPoint] #num_loops=1 #num_dual_strengthening=1 
+  5.45e-02s  0.00e+00d  [DetectDuplicateColumns] 
+  5.91e-02s  0.00e+00d  [DetectDuplicateConstraints] 
+[Symmetry] Graph for symmetry has 1'094'015 nodes and 1'850'885 arcs.
+[Symmetry] Graph too large. Skipping. You can use symmetry_level:3 or more to force it.
+[SAT presolve] num removable Booleans: 152'656 / 205'705
+[SAT presolve] num trivial clauses: 0
+[SAT presolve] [0s] clauses:454'773 literals:1'534'563 vars:205'705 one_side_vars:1066 simple_definition:72'154 singleton_clauses:0
+[SAT presolve] [0.948053s] clauses:454'773 literals:1'534'563 vars:205'705 one_side_vars:1066 simple_definition:72'154 singleton_clauses:0
+[SAT presolve] [1.63897s] clauses:454'773 literals:1'534'563 vars:205'705 one_side_vars:1066 simple_definition:72'154 singleton_clauses:0
+  1.15e-01s  0.00e+00d  [DetectDuplicateConstraintsWithDifferentEnforcements] 
+  6.89e+00s  1.20e+00d *[Probe] #probed=503'302 
+  2.23e+00s  1.00e+00d *[MaxClique] 
+  6.47e-01s  0.00e+00d  [DetectDominanceRelations] 
+  1.47e+00s  0.00e+00d  [PresolveToFixPoint] #num_loops=1 #num_dual_strengthening=1 
+  2.52e-01s  0.00e+00d  [ProcessAtMostOneAndLinear] 
+  1.41e-01s  0.00e+00d  [DetectDuplicateConstraints] 
+  1.19e-01s  0.00e+00d  [DetectDuplicateConstraintsWithDifferentEnforcements] 
+  3.85e-02s  8.13e-05d  [DetectDominatedLinearConstraints] #relevant_constraints=2 
+  3.64e-02s  0.00e+00d  [DetectDifferentVariables] 
+  6.45e-01s  8.31e-03d  [ProcessSetPPC] #relevant_constraints=454'775 #num_inclusions=24 
+  3.97e-01s  4.86e-03d  [TransformClausesToExactlyOne] #num_amos=305'524 #num_clauses=149'249 #num_checked=149'249 
+  5.49e-02s  0.00e+00d  [DetectEncodedComplexDomains] 
+  2.89e-02s  0.00e+00d  [FindAlmostIdenticalLinearConstraints] 
+  8.58e-01s  1.00e+00d *[FindBigAtMostOneAndLinearOverlap] 

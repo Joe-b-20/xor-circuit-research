@@ -987,6 +987,25 @@ Scope: circuits of depth <= 4 (every gate a 2-input XOR, outputs any gate), one 
   can be at level 3 over the 89's pairs (the other 6 never can); then per recorded first layer /
   single-pair exchanges; a full depth-4 bound needs conditioning on the pair-graph partition as the
   depth-3 proof does. Conjecture [weak support]: D4 = 89.
+- Scope C follow-up (d4c agent, xhigh, 01:10 UTC, `d4c/REPORT.md`): still OPEN. An exact CP-SAT model
+  of scope C in strict normal form (1,060 level-2 candidates, 188,557 level-3 masks; the earlier
+  scope-C model was a relaxation since weight-2 masks are pairs in normal form; witness -> circuit ->
+  check.py verifier tested on the 89) with proved cuts. New exact facts over the 89's pairs P89
+  [finite-checked / CP-SAT optimal]: PC(W5) = 16 (the 89's 22 level-2 gates are a minimum parent
+  cover of the 20 weight-5 outputs plus 6 extras used only by helpers; 31 = 16 + 6 + 9); the six
+  weight-7 outputs that can never sit at level 3 need >= 6 helpers even with every level-2 mask free;
+  helper-free level-4 recipes exist only for two output pairs; a weight-7 output is served by a single
+  helper only through 1,707 specific masks. So an 88 over P89, if any, saves its gate in the
+  level-2/helper coupling. Closed [SAT-scoped]: over the 89's level pattern (20 weight-5 outputs at
+  level 3, 12 weight-7 at level 4) no circuit WITHOUT a two-helper output recipe has <= 88 gates (core
+  bound 31 reached in 276 s): an 88 over P89 with that pattern must use a "helper + helper" level-4
+  output. Open with bounds: the pattern-free case >= 25 (climbing), the full scope without two-helper
+  recipes >= 25, |L2| = 24 at bound 30 after 900 s (the decisive call), several families not run.
+  Methodological finding: every CP-SAT call given a hard upper bound stalled at its propagation
+  bound while pure core minimisation climbed steadily and closed the sub-scope; about half the
+  branch budget was spent before this was understood. Continuation: rerun the open branches as pure
+  minimisation with the helper universe restricted to the never-level-3 fan set, on a free machine
+  (hours). D4 >= 75 stands; the statements remain about circuits whose weight-2 set is exactly P89.
 
 ## F23. SAT on the plateau's mobile part: no 87 is a one-factor or small two-factor rewrite of four 88 plateaus (satmob agent, high; `satmob/REPORT.md`) [measured; exclusions proved as stated by the sat87 encoding]
 
