@@ -1321,6 +1321,37 @@ repo 1); no other campaign ever recorded a 118 (inv-star from scratch 124; v9c/v
   groups (sizes 2-5) are the next lever. A continuing campaign (`satmob2/campaignB.sh`, one child,
   idempotent, `satmob2/STOP`) runs the free-4 singles, span-pool variants and free-4 pairs.
 
+## F32. Joint hub configurations: two limit hubs never share a missing label; label-class rows cut the survivors 789 -> 686 (qjoint agent, xhigh; `qjoint/REPORT.md`) [claimed proofs + finite-checked with ONE implementation; UNDER INDEPENDENT CHECK; no certificates; no bound improvement]
+
+- Vertex classification [measured, MILP oracle with unrecorded time-limit status]: of the 551
+  load-bearing keys, 450 have an integer-feasible case system and 101 are LP-feasible but
+  integer-infeasible (both load-bearing M^T q = 1 keys among them). Integer solutions split into
+  configurations with hubs forced to share full helpers (115 keys always, 287 sometimes) and
+  configurations with no hub forced to meet a full helper; L5 is tight in 1,687 of 1,860 solutions.
+- The joint family [claimed proved]: for any set of hubs meeting full helpers, the union of the per-hub
+  C1 families with shared full-helper coordinates plus one mixed vector per pair of hubs sharing a
+  hub-only missing label is independent in any normalized circuit containing the configuration (the
+  C1 pivot steps applied to all hubs at once; Lemmas 1.1, 4.1, 4.4, 4.6, F2, F3).
+- Finite fact J1 [finite-checked, one implementation]: in both orientations two LIMIT hubs (r + m = 3)
+  never share a missing label, full-met or hub-only (0 independent joint families among 4,224 / 13,728
+  same-label candidate pairs; exhaustive over all 2,016 pair-value neighbours of every limit
+  configuration for hub-only sharing: the largest partner class is 2). Realizable locally: two limit
+  hubs sharing a full helper at DIFFERENT labels (hundreds to thousands of independent pairs), and two
+  r = 0 hubs with m = 2 sharing a full-met label (27,072 pairs on M): so "several hubs on the same few
+  full helpers" cannot be excluded by local conditions; "limit hubs sharing labels" can.
+- Lemma P (five label-class rows P1-P5 on the type counts in the exact hub case A = a, from Lemma 4.6,
+  the packing numbers D(a,3,2) and the per-label rank) and row LIM (at most one limit hub carrying all
+  hub-only labels when a < q; label-disjoint limit hubs when a = q) [claimed proved; LIM rests on J1].
+- Circuit check: 1,264 phases, 0 violations (A = 0 and no limit hub on any known phase; only two rows
+  exercised). Recount [measured]: load-bearing keys 551 -> 452 (P1-P5) -> 388 (+ LIM); full scan: claims
+  789 -> 686 (372 M, 314 M^T), identical (k, l) on 633; 814 LP-feasible / 483 load-bearing keys.
+  Cumulative at G = 75: 1,508 -> 1,313 -> 996 -> 863 -> 789 -> 686. What dies: the M^T q = 4 cluster and
+  the M q = 3-4 keys needing limit hubs that share labels; what survives: q = 5-6 keys with limit hubs
+  plus sub-limit partners or no forced hub, the q = 2-3 many-full-helper keys, M^T small-h q = 7-8.
+- Not done: a second implementation of J1 (as H2 got), certificates for the 103 newly excluded claims,
+  the two global label-sharing enumerations (M^T q = 1 with 7-8 full helpers; M q = 2 with ten). The
+  bound stays 75.
+
 ## R3. Corrections from the third round of independent checks (bridgecheck, q89check, qrealcheck, d3replay; 23:00 UTC onward)
 
 - F15 (q89check): census and plateau CONFIRMED with independent code; P2's population corrected (26

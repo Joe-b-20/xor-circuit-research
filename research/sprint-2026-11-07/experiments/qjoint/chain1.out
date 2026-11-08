@@ -1,0 +1,20 @@
+== patch
+patched ok
+== limit
+M r=1: 64 limit values, 352 limit configurations; 39s
+M r=1: 1534992 joint tests; largest partner class (r2 + m2) per limit configuration: hub-only sharing {1: 112, 2: 240}, same-label sharing {1: 40, 2: 312}; independent partner classes (r2, m2): hub-only {(0, 1): 35376, (1, 0): 24000, (1, 1): 528, (2, 0): 1632}, same-label {(0, 1): 86720, (0, 2): 3360, (1, 1): 4416}; 94s
+M r=2: 12 limit values, 48 limit configurations; 94s
+M r=2: 232976 joint tests; largest partner class (r2 + m2) per limit configuration: hub-only sharing {2: 48}, same-label sharing {2: 48}; independent partner classes (r2, m2): hub-only {(0, 1): 10368, (0, 2): 192, (1, 0): 4800, (1, 1): 352, (2, 0): 720}, same-label {(0, 1): 5952, (0, 2): 192, (1, 1): 384}; 101s
+M: J1 (no limit hub shares a missing label with another limit hub, r2 + m2 = 3): HOLDS
+Mt r=0: 20 limit values, 480 limit configurations; 1s
+Mt r=0: 2583200 joint tests; largest partner class (r2 + m2) per limit configuration: hub-only sharing {1: 480}, same-label sharing {2: 480}; independent partner classes (r2, m2): hub-only {(0, 1): 35712, (1, 0): 28800}, same-label {(0, 1): 176640, (0, 2): 11328, (1, 1): 8320}; 98s
+Mt r=1: 120 limit values, 720 limit configurations; 98s
+Mt r=1: 3418384 joint tests; largest partner class (r2 + m2) per limit configuration: hub-only sharing {1: 160, 2: 560}, same-label sharing {1: 76, 2: 644}; independent partner classes (r2, m2): hub-only {(0, 1): 95424, (1, 0): 52720, (1, 1): 1200, (2, 0): 4080}, same-label {(0, 1): 177312, (0, 2): 9696, (1, 1): 9088}; 213s
+Mt r=2: 24 limit values, 96 limit configurations; 213s
+Mt r=2: 496544 joint tests; largest partner class (r2 + m2) per limit configuration: hub-only sharing {2: 96}, same-label sharing {2: 96}; independent partner classes (r2, m2): hub-only {(0, 1): 25200, (0, 2): 480, (1, 0): 10080, (1, 1): 880, (2, 0): 1488}, same-label {(0, 1): 11904, (0, 2): 480, (1, 1): 768}; 230s
+Mt: J1 (no limit hub shares a missing label with another limit hub, r2 + m2 = 3): HOLDS
+== lbkeys JOINT
+variant GstarN1HUB2DARKPKFMJOINT: of 551 baseline-feasible keys, 452 still feasible; by q [(1, 1), (2, 62), (3, 95), (4, 110), (5, 61), (6, 87), (7, 25), (8, 11)]; by ori {'M': 241, 'Mt': 211}; 10s
+== lbkeys JOINTLIM
+variant GstarN1HUB2DARKPKFMJOINTLIM: of 551 baseline-feasible keys, 388 still feasible; by q [(1, 1), (2, 62), (3, 84), (4, 57), (5, 61), (6, 87), (7, 25), (8, 11)]; by ori {'M': 188, 'Mt': 200}; 8s
+CHAIN1_DONE

@@ -294,7 +294,8 @@ acceptance, restarts, sharing) and the IMPLEMENTATION (cost per step). F-numbers
   the hub and dark-label rows of F21 (independently checked and certified: 4,523 per-case Farkas
   certificates), 789 with the
   exact hub capacity 3 - r and two packing rows of F27 (independently checked and certified: 4,950
-  per-case certificates); every reduction from 1,508 to 789 is proved, checked and certified; real 88 circuits violate no package row and leave every capacity row (L1)-(L23) slack >= 10
+  per-case certificates); every reduction from 1,508 to 789 is proved, checked and certified; a further joint-hub
+  reduction to 686 (F32) is claimed with one implementation and under independent check; real 88 circuits violate no package row and leave every capacity row (L1)-(L23) slack >= 10
   (only Lemma 7.4 and two of the new rows are tight); the drift identity has no slack for any circuit
   of any gate count (margin = -(E_B + L_H) <= 0; real 88s lose only 0-7 units there), so the missing
   content is entirely in the local rows: realizability of low-Y/V/q profiles, not sharpening
