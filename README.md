@@ -6,7 +6,7 @@
 Small, shallow XOR circuits for linear maps used in ciphers, the search that found them
 (XORFlux), how that search came to be, and two lower-bound proofs for AES MixColumns.
 
-**201 circuits for 59 maps.** A circuit is written **G@D**: G two-input XOR gates, with every
+**208 circuits for 59 maps.** A circuit is written **G@D**: G two-input XOR gates, with every
 output at depth at most D (inputs are at depth 0). Fewer gates is better, and so is a lower
 depth; a circuit at a lower depth also counts for every higher one.
 
@@ -24,12 +24,12 @@ depth. NIST's circuits are those of its
 | ARIA | **384@4** | 387@7 |
 | Twofish | **108@8** | 111@8 |
 | CLEFIA M1 | **99@10** | 103@10 |
-| Grøstl | **366@12** | 410@12 |
-| Whirlpool | **394@9** | 425@11 |
-| Khazad | **345@15** | 366@18 |
+| Grøstl | **364@11** | 410@12 |
+| Whirlpool | **391@9** | 425@11 |
+| Khazad | **340@15** | 366@18 |
 | SKOP15 8×8 MDS over GF(2⁴) | **146@14** | 170@19 |
 | JPST17 8×8 MDS over GF(2⁸), inverse | **493@11** | 528@11 |
-| KLSW17 8×8 MDS over GF(2⁸) | **347@6** | 364@11 |
+| KLSW17 8×8 MDS over GF(2⁸) | **347@6**, **321@10** | 364@11 |
 | KLSW17 4×4 MDS over GF(2⁸) | **64@6** | 72@7 |
 
 For 46 of the 53 maps taken from NIST's repository, we have a circuit with fewer gates than
