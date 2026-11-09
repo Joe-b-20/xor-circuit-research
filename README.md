@@ -46,11 +46,14 @@ each circuit are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).
 |---|---|
 | [circuits/](circuits/README.md) | the smallest circuit our search found at each depth, per map, in NIST's file format, each with its logs and the version that found it, next to NIST's circuits; an independent checker |
 | [search/](search/README.md) | XORFlux, an adaptive search for size- and depth-efficient XOR circuits: [how it works](search/HOW-IT-WORKS.md), [how to use it](search/USAGE.md) and [the path to the current version](search/HISTORY.md) |
-| [lower-bound-proofs/](lower-bound-proofs/README.md) | two proofs: AES MixColumns needs at least 75 XOR gates, and at least 93 at depth 3 |
+| [lower-bound-proofs/](lower-bound-proofs/README.md) | two proofs: AES MixColumns needs at least 75 XOR gates, and at least 93 at depth 3; and the certified open cases of the 75 proof at G = 75 (no new bound) |
 
 **Proof status:** the lower-bound proofs were developed with language-model assistance and
 have not been peer reviewed; their checkers replay the finite computations, not the
-mathematical arguments, so a passing check is not a certification of the proofs.
+mathematical arguments, so a passing check is not a certification of the proofs. The folder
+[mixcolumns-lb75-open-cases](lower-bound-proofs/mixcolumns-lb75-open-cases/) records certified partial
+progress inside the 75 proof at G = 75 (open claims 1,508 -> 686 with the November rows, 280 with the
+October rows added); it raises no bound.
 
 Maps (59): AES MixColumns and InvMixColumns, the AES S-box bottom linear layer, FOX MU4 and
 MU8, and every linear map of NIST's
