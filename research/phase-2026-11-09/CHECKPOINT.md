@@ -74,6 +74,21 @@ Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
   oversubscribed A/B the per-trajectory policy must be in proposals (`stall_proposals`) or the
   300-worker arm restarts 15x earlier in CPU terms.
 
+## 3a. Worker-count A/B, trial 1 (seed 20261109, 60 min per arm, MixColumns uncapped, fresh roots,
+no sharing, restart policy in proposals: stall 1.8 M, incumbent x2, root budget off) [measured]
+
+| arm | aggregate proposals/s (per CPU-s) | chains | reached 88 | first 88 (wall s): min / median | 88 arrivals per CPU-hour | g88 records / distinct signatures | memory |
+|---|---:|---:|---:|---|---:|---:|---|
+| 20 workers | 31,400 (1,597) | 35 (15 restarted) | 23 | 77 / 632 (from root) | 1.15 | 222 / 94 | 0.7 GB |
+| 300 workers | 22,700 (1,160) | 300 (0 restarted) | 54 | 673 / 2,316 | 2.7 | 234 / 93 | 8.9 GB |
+
+Reading: 300 trajectories cost 28 % of the throughput, delayed the first 88 by 9x and the median
+trajectory by 3.7x, produced 2.3x more ARRIVALS at 88 per wall-hour (its trajectories never reach
+the post-arrival stall period, which the 20 arm spends hopping between 88 plateaus through 89), and
+exactly the same number of distinct 88 plateau signatures per wall-hour (93 vs 94; 0 shared). So the
+extra arrivals are the restart-policy effect in disguise (F6), not more exploration. No 87 in either
+arm. Trial 2 (seed 20261110, arms 20 / 100 / 300) runs 18:02-21:10 UTC to check this holds.
+
 ## 3b. Step 5 decision (17:20 UTC, before the A/B result; revisit if the A/B wins convincingly)
 
 Intervention: a "foundation restart" source in v8 (knob `restart.w_foundation`, default 0 = no
