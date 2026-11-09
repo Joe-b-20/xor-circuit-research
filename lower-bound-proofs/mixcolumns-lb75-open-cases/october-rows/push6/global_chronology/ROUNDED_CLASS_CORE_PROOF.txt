@@ -1,0 +1,136 @@
+ROUNDED CLASS-CORE INEQUALITIES FROM EXACT OUTPUT MASKS
+2026-10-23
+
+THEOREM
+
+Let a normalized binary XOR circuit compute AES MixColumns M or M^T.
+For an odd helper, r counts its ACTUAL represented H--B incidences and
+u its ACTUAL missing-label H--B incidences.  Let q be the number of
+missing even labels.  Put t=5 for M and t=7 for M^T.
+
+For every positive integer d, the following is necessary:
+
+  sum_(r>=2) floor((r-1+u)/d)*n_(r,u,v)
+     <= min_(1<=k<=t) floor[ t*floor((4*k+q)/d) / k ].       (1)
+
+Only d<=q+2 can have nonzero coefficients, because r<=3 and u<=q.
+The d=1 case is the previous global repeated-contact core inequality.
+The final scalar model appends d=2,...,q+2, taking the strongest
+right-hand side over k for each divisor.
+
+The theorem applies to arbitrary depth, cancellation, output reuse,
+HH edges, and EE gates.  It does not prescribe values for helpers
+having r<2.  The final row is linear in the actual helper-type counts;
+their integrality is used in its mathematical derivation, not silently
+assumed of a numerical LP witness.
+
+1. THE EXACT MASK FACT THAT LOCALIZES THE CORE
+
+The complete boundary-triple census gives all possible repeated helper
+values (r>=2): 440 for M and 616 for M^T.  Every expression of a given
+candidate uses output coordinates from exactly ONE bit-position class.
+Each class has exactly four output coordinates.  There are t classes.
+
+The strengthened contact-pair fact is:
+
+  If distinct repeated candidates H,K satisfy H+K=B_i+B_j, every
+  output among B_i,B_j belongs to the class of H or the class of K.
+
+The raw input coordinates are unrestricted in this statement.  It is
+checked for all 11,520 forward and 16,992 transpose candidate pairs
+with a boundary-pair difference.  Pairs not realizable together are
+included, so the census is a superset of actual possibilities.
+
+Independent implementations:
+
+  push6/root/audit_exact_mask_core.py
+  push6/root/EXACT_MASK_CORE_INDEPENDENT_AUDIT.json
+  push6/global_chronology/repeated_contact_core.py
+  push6/global_chronology/REPEATED_CONTACT_CORE_RESULTS.json
+
+Neither enumerator imposes a finite vocabulary on arbitrary signals.
+Membership in this complete census follows from two ACTUAL represented
+incidences and the independence of chronological gate equations.
+
+2. OWNERSHIP FOR EVERY SUBSET OF CLASSES
+
+Choose any k of the t classes, and take all actual repeated helpers in
+those classes.  Select their represented H--B gates and the required
+distinct B--B reference gates.  For each missing label with at least
+two contacts among these selected helpers, select those contacts too.
+
+The strengthened pair fact puts every output anchor of the additional
+contacts in the same chosen k classes.  The actual-birth ownership
+argument of REPEATED_CONTACT_CORE_PROOF.txt therefore works with
+C replaced by 4k.  It gives
+
+  E_rep(S) + sum_e max(0,m_e(S)-1) <= 4k,
+
+and, since there are at most q colors,
+
+  E_rep(S) + U_rep(S) <= 4k+q.                             (2)
+
+Define the integer helper weight w_H=(r_H-1)+u_H for r_H>=2.
+Equation (2) is precisely sum_(H in S) w_H<=4k+q.
+
+3. FLOOR LOCALLY, THEN COUNT HOW OFTEN EACH HELPER OCCURS
+
+For a fixed divisor d, the sum of the individual floors is no larger
+than the floor of the sum.  Thus every k-class subset obeys
+
+  sum_(H in S) floor(w_H/d) <= floor((4k+q)/d).             (3)
+
+Sum (3) over ALL binom(t,k) class subsets of size k.  Each helper
+belongs to exactly binom(t-1,k-1) of them.  Consequently, writing
+T_d for the total sum of floor(w_H/d) over repeated helpers,
+
+  binom(t-1,k-1)*T_d <= binom(t,k)*floor((4k+q)/d),
+
+so
+
+  T_d <= (t/k)*floor((4k+q)/d).
+
+T_d is an integer in every actual circuit.  Taking the final floor
+and minimizing over k proves (1).
+
+This last integer step yields a valid linear inequality for all
+circuits.  A continuous relaxation can include that proved inequality
+without claiming that its own variable values are integers.
+
+4. A CONCRETE EXCLUSION: NINE REPEATED HELPERS AT q=7
+
+The two selected integral M witnesses after the first push6 scan had
+six r=2,u=2 helpers and three r=3,u=1 helpers, with q=7.  Every one
+has w=3.  Take t=5,d=3,k=4 in (1):
+
+  T_3 <= floor[(5/4)*floor((16+7)/3)]
+      = floor[(5/4)*7] = 8.
+
+Those vectors instead have T_3=9.  Therefore neither can represent
+an actual AES circuit, irrespective of its HH degree realization.
+
+Equivalently, placing nine such helpers in five classes leaves some
+class with at most one.  The other four classes then contain at least
+eight helpers, requiring weight at least 24.  Equation (2) permits
+only 16+7=23.  This simple contradiction captures the additional
+information supplied by the exact output classes.
+
+The earlier saturated_M_class_assignments.py independently enumerated
+1,271 missing-contact graphs, reduced them to 21 permutation orbits,
+and found no assignment after 3,875 backtracking nodes.  The analytic
+argument above supersedes that enumeration for the exclusion.  It
+requires neither the class adjacency graph nor the extra missing-pair
+restrictions used by that more detailed check.
+
+5. VALIDATION AND LIMITS
+
+The census/control verifier reconstructs the localized pair fact and
+checks every applicable divisor row on all ten retained 88-gate
+controls and their canonical transposes: 20 orientations in total.
+
+The theorem is a new family of necessary conditions.  Its effect on
+G=75 profiles is reported separately by the versioned scalar screen,
+exact partial certificates, and rational survivor audit.  Rejecting
+the displayed vectors does not alone reject their scalar profiles,
+which may admit different helper-type vectors.  No new global gate
+lower bound is inferred without complete exact scalar coverage.

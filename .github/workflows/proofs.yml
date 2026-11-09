@@ -1,7 +1,7 @@
 # Lower-bound checkers. They replay the proofs' finite computations, not the mathematical
 # arguments (see lower-bound-proofs/README.md).
-#   quick: the full lb75 check (about 1 min) and the lb93 quick check, on every change to
-#          lower-bound-proofs/ and on request;
+#   quick: the full lb75 check (about 1 min), the lb75 open-cases certificates (about 85 s; no
+#          new bound) and the lb93 quick check, on every change to lower-bound-proofs/ and on request;
 #   full-depth3: the complete lb93 replay (about 20 min, needs g++), monthly and on request.
 name: proofs
 
@@ -36,8 +36,11 @@ jobs:
         run: |
           (cd lower-bound-proofs/mixcolumns-lb75 && sha256sum -c --quiet SHA256SUMS.txt)
           (cd lower-bound-proofs/mixcolumns-lb93-depth3 && sha256sum -c --quiet SHA256SUMS.txt)
+          (cd lower-bound-proofs/mixcolumns-lb75-open-cases && sha256sum -c --quiet SHA256SUMS.txt)
       - name: At least 75 gates (complete check)
         run: python3 lower-bound-proofs/mixcolumns-lb75/verify_all.py
+      - name: Open cases of the 75 proof at G = 75 (certificates and October finite facts; the bound stays 75)
+        run: python3 lower-bound-proofs/mixcolumns-lb75-open-cases/verify_all.py
       - name: At least 93 gates at depth 3 (quick check, not a proof replay)
         run: python3 lower-bound-proofs/mixcolumns-lb93-depth3/verify_all.py --quick
 

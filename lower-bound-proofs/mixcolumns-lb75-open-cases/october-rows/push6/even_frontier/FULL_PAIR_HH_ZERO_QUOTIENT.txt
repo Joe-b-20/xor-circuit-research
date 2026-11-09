@@ -1,0 +1,162 @@
+FULL/FULL HELPER EDGES CANNOT FEED A LONE EXCEPTIONAL EE LABEL
+23 October 2026.  Exact-mask extension of the preceding push6 theorems.
+
+AUDIT STATUS
+
+PASS.  The discovery checker and the root's independent regeneration both
+verify the finite statement below.  The independent audit reconstructs AES
+with generic GF(256) multiplication, uses low-pivot elimination on the full
+64-coordinate rows, checks form consistency, and also checks every skipped
+candidate-pair/palette substitution.  Its paths are
+  push6/root/audit_full_pair_dark.py
+  push6/root/FULL_PAIR_DARK_INDEPENDENT_AUDIT.json.
+The audit agrees on all counts and all zero residuals.  The resulting
+q<=6 OR y<=3 scalar scope supersedes the q<=5 scope of the earlier file.
+
+F5. EXACT FINITE STATEMENT
+
+Let H1,H2 be any two distinct full-helper candidate values for the transpose
+boundary B, and let T1,T2 be their chosen boundary-triple forms.  Put
+d=H1+H2 and Fd=T1+T2.  Let a,b be actual even values, each represented by
+either a boundary pair or a repeated-helper triple plus one boundary
+coordinate.  Thus a,b have forms Fa,Fb of support at most four.
+
+Whenever d+a+b=0, the boundary relation
+
+                              Fd+Fa+Fb
+
+lies in R10.  This includes arbitrary cancellations of boundary coordinates.
+
+The statement uses complete candidate sets forced by the boundary, not a
+restricted library of permitted circuit masks.  An actual r=3 helper is
+necessarily one of the 112 full candidates.  An actual repeated-bright
+label is necessarily one of the complete repeated-helper-plus-boundary
+values, though a candidate value need not have that incidence in a circuit.
+
+FINITE PROOF AND COVERAGE
+
+Let R be all 2,016 conceivable boundary-pair values.  Let P be all values
+H+B for candidates H with at least two boundary-triple forms, excluding R;
+|P|=30,340.  Every value of P has a chosen boundary four-form.
+
+Changing the triple form of a helper changes Fd by a relation of support
+at most six, in R10.  Changing a chosen four-form of an actual color
+changes Fa or Fb by a relation of support at most eight, also in R10.
+Therefore one chosen form per value suffices for the quotient calculation.
+
+First cover the cases that do NOT need a finite EE search.  Even if d is
+DARK in the actual circuit, its mask may belong to R or P; actual incidence
+and conceivable representations must not be confused.
+
+  * If d belongs to R, its actual HH six-form differs from the conceivable
+    pair by a relation of support <=8.  Replace it modulo R10 by that
+    pair; the remaining EE relation has support <=2+4+4=10.
+
+  * If d belongs to P, its actual HH six-form differs from the conceivable
+    four-form by a relation of support <=10.  Replace it modulo R10 by
+    that four-form.  If a or b has a pair-form, the remaining row has
+    support <=10; otherwise all three colors belong to P and F1 applies.
+
+No actual BB reference or actual repeated HB contact for d is asserted
+or required in these two substitutions.
+
+There remain exactly 4,608 possible d values outside P union R, arising
+from 4,800 unordered pairs of full-helper candidates.  Of these d values,
+4,416 have one candidate full pair and 192 have two; ALL 4,800 pair pivots
+are checked separately.  The distinct d count alone must not be mistaken
+for uniqueness of its helper pair.
+
+For each pivot Fd, enumerate every unordered a,b in P with a+b=d, and
+every a in R,b in P with a+b=d.  The checker tests respectively
+
+                917,376 P/P alternatives,
+                199,184 R/P alternatives.
+
+EVERY corresponding full 64-coordinate row reduces to ZERO against the
+independently established rank-29 basis of R10.  The remaining R/R rows
+have support <=6+2+2=10 analytically.  This covers every EE possibility
+in F5.  All 4,800 individual joint quotient spaces have rank zero.
+
+Discovery implementation and report:
+  push6/even_frontier/full_pair_dark_q6.py
+  push6/even_frontier/FULL_PAIR_DARK_Q6.json
+
+The independent audit additionally checks all 504 full-candidate pairs
+whose difference lies in R, and all 912 whose difference lies in P.
+Their short-form replacement residuals are all zero.
+
+The checker reconstructs the AES transpose matrix, all 41,664 boundary
+triples, all full/repeated candidates, and every relevant color pair.  It
+does not use a supplied list of possible intermediate masks.  Its initial
+q=6 rank-pattern question turned out to have the stronger zero-rank answer.
+
+CONSEQUENCE FOR ONE EXCEPTIONAL COLOR
+
+Assume every helper is anchored and every HH endpoint is full.  Suppose
+there is exactly one exceptional missing label d.
+
+If d is bright, every even label has a four-form, all non-EE equations
+have support <=10, and F2 bounds the entire exceptional EE quotient space
+by two.  This case is impossible for every q and y.
+
+If d is dark and lies on an HH edge, pivot it as the six-form from that
+edge.  The inherited full-helper incompatibility permits at most one
+full/full HH edge of a fixed color.  Thus all other HH rows have known
+four-form labels and are short.  Every EE row involving d is now in R10
+by F5; all other EE rows are good by F1.  The complete boundary rank32
+cannot fit in R10 of rank29.  This case is also impossible for every q,y.
+
+Therefore a lone exceptional color in this incidence class must be DARK
+and occur ONLY in EE equations.  It needs at least FOUR such equations:
+one eliminates the color coordinate, and at least three remaining
+independent rows must supply the quotient dimensions.  In particular,
+
+                 one exception ==> y>=4.                 (F5a)
+
+It also needs at least SEVEN missing colors in total.  The fixed-d EE
+matching and restricted-six capacity prove this directly.  Write qB=q-1
+for the other, repeated-bright labels.  If an RR pivot is available, all
+RB alternatives are short and three BB alternatives need six bright
+labels.  If an RB pivot is chosen, it consumes one bright label; three
+dimensions require at least two BB alternatives plus a nonzero remaining
+RB difference.  These use at least 1+4+1=6 distinct bright labels.  If all
+pivots are BB, four BB equations are needed, using eight bright labels.
+Thus qB>=6, so
+
+                 one exception ==> q>=7.                 (F5b)
+
+The RR/RB/BB matching follows from the actual value equation d=a+b: two
+distinct such EE equations cannot share either other label.  F3 limits
+ALL RB differences, not just one arbitrarily selected pair, to rank one.
+
+STRONGER SCALAR CUT
+
+The previous theorem with all helpers anchored and all HH endpoints full
+therefore needs at least two exceptional labels whenever
+
+                         q<=6 OR y<=3.                   (C)
+
+Let h0 be the number of helpers with r=0 and W=sum_(r=1 or r=2)v.  The
+same integer incidence case split used for the q<=5 theorem now gives,
+for EVERY transpose circuit satisfying (C),
+
+                     A-2h0-W <= q-2,
+                 Z+E-6h0-3W <= 3(q-2).                   (F5c)
+
+When h0=W=0, two exceptions give p<=q-2.  When h0=0,W>=1, the earlier
+all-anchored obstruction gives at least one exception, so p<=q-1.
+When h0>=1, the generic p<=q suffices.  These imply p<=q-2+2h0+W;
+then A<=p and Z+E<=3p give (F5c).  The final rows are linear, even
+though their proof starts with integer circuit incidences.
+
+This strengthens the condition under which the previously audited S1/S2
+rows apply.  It does not alter the separately proved matching-budget
+rows or make the all-bright conditional theorem unconditional.
+
+LIMITS
+
+F5 handles one full/full HH-derived label together with two pair/four-form
+labels.  It does not assert that arbitrary EE equations with two or three
+dark HH-derived labels have zero quotient.  Nor does it claim that every
+remaining aggregate point is realizable or that a complete global lower
+bound has already increased.

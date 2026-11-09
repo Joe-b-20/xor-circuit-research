@@ -1,0 +1,218 @@
+GLOBAL FORWARD AES CUT FROM CHRONOLOGICAL FULL-HELPER CORES
+======================================================================
+
+Scope and result
+----------------
+This is a necessary condition for EVERY normalized acyclic two-input XOR
+circuit computing standard forward AES MixColumns.  Intermediate masks,
+cancellation, fan-out, depth, output ordering and output reuse are free.
+It fixes no output-parent incidence.  It is not, by itself, a new numerical
+lower bound on the total gate count.
+
+The stronger BOTH-orientation joint ownership theorem, independently
+reconstructed after this cycle argument, is in
+  ../odd_spine/FULL_HELPER_LABEL_OWNERSHIP_INDEPENDENT.txt
+and its companion JSON/checker.  Write N2 for the actual number of helpers
+with r_H=2 and N3 for the number with r_H=3.  That theorem proves
+
+  3*N3 + q <= x+y                         (both orientations),
+  N2 + 5*N3 <= x+20                       (forward M),
+  N2 + 5*N3 <= x+28                       (transpose M^T).
+
+These are the full-helper rows used in the cumulative G=75 model.  The
+forward cycle-budget restrictions below remain additional valid geometry.
+The letter F below means N3; it must NOT be confused with the inherited
+LP key's F, which means the next canonical transpose's EE-gate count.
+
+Use the original unrestricted-75 proof's definitions:
+  x = number of odd+odd gates;
+  y = number of even+even gates;
+  h = number of non-output odd gate values;
+  r = dimension of the span of all actual even signal masks;
+  delta = x-r;
+  F = number of actual odd helpers with THREE represented H--B incidences.
+An incidence is represented only when its even label has an ACTUAL B--B
+reference edge in the odd-signal graph.  Possible decompositions alone do
+not count.  B is the set of 32 input units and 32 required outputs.
+
+The new cuts are:
+
+  F <= 10;
+  F >= 9  ==> delta >= 1 and x >= 25;
+  F = 10  ==> delta >= 5 and x >= 30.
+
+Equivalently, with the inherited universal r>=24:
+
+  x=24       ==> F<=8;
+  25<=x<=29  ==> F<=9;
+  x>=30      ==> F<=10.
+
+In particular, the previously saved forward G=75 aggregate example with
+x=24 and F=10 cannot describe an executable circuit.  Excluding that
+example does not exclude every remaining aggregate example or every
+75-gate circuit.
+
+1. The exact cycle budget
+-------------------------
+Construct the full odd-signal graph Gamma.  Its vertices are every odd
+signal, including all raw inputs, all required outputs and every odd
+helper.  Each OO gate a+b=e contributes edge {a,b}; each OE gate a+e=b
+contributes edge {a,b}.  EE gates contribute no edge.  All edges retain the
+physical gate identity.  Normalization and acyclicity imply the graph is
+simple: the same two odd values determine the same even value, and two
+gates with the same three-value equation would require a cycle of births.
+
+At every prefix, follow the unique earlier odd parent of an OE result to
+a raw input.  Every odd value differs from this root unit by earlier even
+values.  An EE birth does not extend the even span; an OO birth extends it
+only by the difference of the two odd-genealogy root units, modulo the
+earlier span.  Thus the current even span is exactly the parity-zero space
+within the raw-input blocks connected by the current odd graph.
+
+If there are c final components, r=32-c.  The graph has 64+h vertices and
+x+32+h edges.  Its graphic cycle rank is therefore
+
+  beta(Gamma) = (x+32+h)-(64+h)+c = x-r = delta.       (1)
+
+Every selected subgraph has cycle rank at most delta.  This is an exact
+chronological identity, not an assumption that the circuit is a forest.
+For AES, the inherited graph-code partition theorem gives c<=8, r>=24.
+
+2. Complete fixed-boundary facts
+-------------------------------
+The checker reconstructs the AES matrix from multiplication by 02/03 with
+modulus 0x11B.  It enumerates ALL C(64,3)=41664 boundary triples, without
+restricting any intermediate signal mask.
+
+The 2016 distinct boundary pairs have distinct XOR values (Sidon).
+No helper value has more than three boundary-triple representations.
+Exactly 80 values have three representations.  They split into five
+classes of 16, indexed by k in {0,2,5,6,7}.
+
+Write I_k={x_k,x_(k+8),x_(k+16),x_(k+24)} and similarly O_k for the four
+outputs at bit position k.  All three representations of a full helper
+in class k use only boundary values in
+
+  I_(k-1 mod8) union I_k union O_k.                     (2)
+
+Every individual triple contains at most ONE raw input from I_(k-1).
+Consequently its possible raw reference pairs never lie wholly within
+I_(k-1).  The complete possible B--B reference-pair palettes for different
+classes are disjoint.  Each palette contains 48 boundary pairs.  By Sidon,
+their actual even label values are also disjoint.
+
+For each helper, pivot one of its three helper+boundary-triple relations.
+The other two are boundary-only relations.  The complete span of these
+relations has dimension FOUR in each class.
+
+The checker verifies these facts directly from the matrix.  They concern
+only values forced by actual r_H=3 incidences; arbitrary other helpers and
+even signals are still allowed.
+
+3. At most two full helpers in one class
+---------------------------------------
+Actual defining gate equations are independent as formal signal equations:
+take the last-created result in a proposed nonzero dependence.  Its own
+defining row is the only selected row that can contain that result without
+a still later selected gate result, a contradiction.
+
+For each represented H--B edge, add its unique B--B reference row.  This
+eliminates the even label and yields helper+boundary-triple.  Shared
+reference rows do not destroy independence: retain the reference rows and
+perform invertible row operations on the actual gate equations.
+
+Two representations of the same helper using the same boundary triple
+would give identical transformed rows, contradicting independence.  Thus
+an actual full helper uses all THREE distinct representations of its value.
+After one row per helper is pivoted, all remaining boundary-only rows are
+jointly independent.  Each full helper contributes two such rows.  The
+rank-four fact in section 2 therefore permits at most TWO actual full
+helpers per class, and F<=10 globally.
+
+4. Two full helpers close a 12-gate core
+--------------------------------------
+Take two actual full helpers in one class.  Their six helper-triple rows
+are independent.  The complete enumeration has 240 such possible pairs:
+130 W3/W3, 100 W3/W5 and 10 W5/W5.  For each pair, each of the six triples
+has three possible choices of its represented B--B reference pair.  All
+3^6 choices are covered.  Every choice has SIX distinct reference labels.
+
+Thus the selected physical gate set consists of six H--B gates and six
+B--B reference gates, a total of TWELVE distinct mixed gates.  Every gate
+result belongs to this set of at most twelve non-input signal values:
+
+  two selected helpers + four class outputs + six even labels.
+
+An input cannot be a gate result in a normalized circuit.  Distinct gates
+have distinct results.  Therefore the twelve selected gates produce all
+twelve of these values, once each.  No birth of any of them can occur
+outside the selected gate set.  This is an exact ownership statement.
+
+In particular, all six even labels are born at selected mixed gates, so
+they are OO results.  Outputs computed early and reused later cause no
+exception.  Existing labels supplied by an outside EE birth would leave
+too few remaining result values for the twelve selected gates.
+
+Hence p classes containing two full helpers force at least 6p distinct OO
+births.  Section 2 proves these labels cannot be shared across classes.
+If F=10, all five classes are paired, so x>=30.                  (3)
+
+Chronological closure independently rejects every W5/W5 pair, as in the
+inherited October 13 birth theorem.  This exclusion is NOT needed for (3)
+or the graph-cycle argument; keeping the impossible pairs only enlarges
+the finite necessary-condition set.
+
+5. Shared inputs force cycles between adjacent full cores
+---------------------------------------------------------
+Each selected paired-class core has twelve odd-graph edges.  Its odd
+vertices are contained in the eight raw inputs in (2), the four class
+outputs and the two helpers: at most fourteen vertices.
+
+Different cores have disjoint gate-edge sets because their represented
+reference labels are disjoint; H--B edges also contain different helpers.
+For neighboring classes, their possible raw-input supports share a set of
+four inputs.  The relevant class-overlap graph is
+
+  5 -- 6 -- 7 -- 0,    with class 2 isolated.
+
+Two adjacent paired cores consequently have 24 edges on at most 24 odd
+vertices.  Every nonempty graph has at least one component, so their union
+has cycle rank at least 24-24+1=1.  By (1), delta>=1.
+
+If F>=9, at most two full helpers per class forces at least four paired
+classes.  Every four-subset of these five classes contains two adjacent
+members of the path.  Thus F>=9 forces delta>=1.  Since r>=24, x>=25.
+
+If F=10, all four path classes are paired.  Their union has 48 edges on at
+most 44 odd vertices: 20 raw inputs, 16 outputs and eight helpers.  Hence
+its cycle rank is at least 48-44+1=5.  Therefore delta>=5.  The separate
+closed-birth count (3) strengthens the resulting x>=29 to x>=30.
+
+For three consecutive paired classes the same count gives delta>=3.
+These more detailed cuts can be retained when the selected classes are
+known; the scalar F/x cut above needs only the two- and four-class cases.
+
+6. Reproduction and limits
+--------------------------
+Run:
+  python push5/global_chronology/full_pair_cycles.py
+
+The standard-library checker reconstructs all fixed-boundary facts, all
+240 independent pairs and all 174960 local choices.  It also replays all
+ten archived 88-gate controls, computes ACTUAL represented incidences and
+checks both (1) and the new cut.  The data are in FULL_PAIR_CYCLES.json.
+The controls have no actual full represented helpers; their acceptance
+checks that none of the definitions accidentally counts mere conceivable
+representations as actual incidences.  Independent verification of the
+new finite argument is handled separately, not inferred from these controls.
+
+The cut is global for forward AES but does not apply unchanged to M^T,
+whose fixed-boundary geometry is different.  Its use in a stabilized
+transpose model must identify which side computes M.  A numerical LP
+screen can show remaining aggregate cases, but only exact certificates
+covering every required scalar state could establish a new gate bound.
+
+For the completed cumulative scan and exact PARTIAL certificates, read
+SCAN_AND_CERTIFICATE_STATUS.txt.  The final model includes the stronger
+both-orientation joint ownership theorem and the separately proved
+transpose exceptional-label rows, rather than only this forward cut.

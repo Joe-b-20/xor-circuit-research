@@ -1,0 +1,235 @@
+EXACT LABEL MATCHING STRENGTHENS THE HH QUOTIENT BUDGET
+23 October 2026.  Companion to HH_EXCEPTIONAL_LABEL_BUDGET.txt.
+
+SCOPE
+
+Every normalized acyclic XOR circuit for AES MixColumns transpose is
+covered.  Arbitrary intermediate masks, depth, cancellation, parent reuse,
+and output reuse remain allowed.  All definitions, the rank-29 space R10,
+the full-kernel elimination principle, and finite facts F1/F2/F3/F4 are
+as in the prior push5 and current push6 theorems.
+
+These refinements exclude both integral two-phase aggregate points returned
+by the first push6 scan.  They do not by themselves exclude the other
+rational aggregate witnesses or establish a higher global numerical bound.
+
+CURRENT STRONGER SCOPE: the independently audited F5 extension in
+FULL_PAIR_HH_ZERO_QUOTIENT.txt now applies the S1/S2 scalar rows whenever
+q<=6 OR y<=3.  The q<=5 proof below remains valid and records the purely
+analytic precursor; its condition is no longer the strongest known one.
+
+1. MATCHING AT THE UNANCHORED HELPER
+
+Split the unanchored helpers into
+
+  U0 = {H:r=u=0},
+  U+ = {H:r=0,u>0}.
+
+Write h00=|U0|, V00=sum_U0 v, Vplus=sum_U+ v, and
+
+                    Mplus=sum_U+ min(v,q-u).
+
+A fixed even label is a matching at the odd vertices: given its value e
+and one odd endpoint H, the other endpoint is uniquely H+e.  Distinct
+defining edges cannot repeat the same unordered three-signal equation
+in a normalized acyclic circuit.  Thus the u missing labels on a helper's
+HB edges are distinct and cannot appear on any of its HH edges.  Its
+number of missing-label HH edges is at most min(v,q-u).
+
+Suppose Q_* is empty.  Use the pivots from the previous theorem:
+represented labels have two-forms, anchored helpers three-forms, all
+missing labels four-forms, and U+ helpers five-forms.  The only HH rows
+that can remain outside R10 or contain a U0 coordinate are:
+
+  (i)  an edge touching U0;
+  (ii) an edge joining two U+ helpers;
+  (iii) a missing-label edge joining U+ to an anchored helper.
+
+An anchored--anchored HH row has support <=3+3+4=10.  A represented-label
+U+--anchored HH row has support <=5+3+2=10, so neither is in this list.
+
+Charge an edge of type (i) one unit to a U0 endpoint.  Charge an edge of
+type (ii) one half unit to the v incidence at each U+ endpoint.  Charge
+an edge of type (iii) one half to its U+ v incidence and one half to that
+endpoint's missing-label HH incidence.  The total charge budget is at most
+
+                         V00 + (Vplus+Mplus)/2.
+
+These charges may overcount some edges, which is safe.  For example, an
+edge between U0 and U+ can receive unused half-incidence credit at U+
+as well as its full charge at U0.  No potentially long edge is undercounted.
+
+The U0 projection still has full rank h00 and occurs only in rows on this
+list.  Eliminating those h00 coordinates consumes at least h00 row
+dimensions.  To provide the three required boundary dimensions outside
+R10, it follows that
+
+     Q_*=empty ==> D2:=2V00+Vplus+Mplus-2h00 >= 6.           (M)
+
+Universally V00>=h00, from the full-kernel projection onto U0; hence D2>=0.
+If Q_* is nonempty, p<=q-1 for the number p of repeated-bright colors.
+Using A<=p and Z+E<=3p, exactly the earlier two-case argument proves
+
+                         6A-D2 <= 6(q-1),                 (M1)
+                     2(Z+E)-D2 <= 6(q-1).                 (M2)
+
+These are linear helper-type rows for every fixed q.  Their min(v,q-u)
+coefficient is known for each type.  They strengthen the previous V0
+rows, since D2/2<=V0-h00.  The separately derived z rows can still add
+information, and the z<=2 conditional cuts should also be retained.
+
+2. ANCHORED CIRCUITS WITH FULL HELPER--HELPER ENDPOINTS
+
+THEOREM.  Suppose every helper is anchored and every endpoint of every
+HH edge has r=3.  If q<=5, then at least TWO missing labels are exceptional.
+
+First, zero exceptions are already excluded: all helpers have three-forms,
+all missing labels four-forms, all HH rows have support <=10, and F1 makes
+every EE row short.  Boundary rank32 cannot fit in R10 of rank29.
+
+Suppose there is exactly one exceptional label d.  Let qB=q-1<=4 be the
+number of other missing labels; all these labels are repeated-bright.
+All ordinary HB rows are short after the usual pivots.
+
+CASE A: d IS BRIGHT.
+
+Then d also has a four-form, so all HH rows are short.  An EE row can
+escape R10 only by using d and two repeated-bright labels.  Their complete
+quotient space has rank at most two by F2.  This cannot provide three
+dimensions.  This case is impossible for ANY q and ANY z when all helpers
+are anchored; the small-q hypothesis is unnecessary for this case.
+
+CASE B: d IS DARK AND OCCURS ON AN HH EDGE.
+
+Both endpoints are full helpers.  The inherited full-helper incompatibility
+allows AT MOST ONE HH edge of a fixed label with both endpoints full.
+For missing labels this follows from the complete rank test for two
+disjoint full pairs with the same difference; for represented labels a
+full/full HH edge is itself impossible.  A shared endpoint is also
+excluded by label matching.  See SUPPLEMENT.md Section 1 in the original
+75 proof bundle; the property was independently audited in push5.
+
+Pivot d on its unique HH edge.  Its boundary expression is the XOR of
+two full-helper triples, so it is a restricted six-form in the sense of
+F3 (or a form of support <=4 after cancellation).  All other HH rows are
+short because their labels have four-forms.  The only possible new
+quotient contributions are EE rows involving d.
+
+Classify such an EE row by its OTHER TWO labels:
+
+  RR: two represented labels.  Their pair forms give d a four-form;
+      its difference from the chosen six-form has support <=10.
+
+  RB: one represented and one repeated-bright label.  They give d a
+      restricted six-form, because the bright four-form comes from a
+      repeated-helper triple plus one boundary coordinate.  All these
+      differences together span dimension at most one by F3.
+
+  BB: two repeated-bright labels.  They give d an eight-form and may
+      contribute one unrestricted quotient dimension per row.
+
+For a fixed actual d, the pairs of other labels in DISTINCT EE equations
+are disjoint: d=a+b and d=a+c force b=c, making the equations identical.
+Thus BB rows consume disjoint pairs of the qB bright labels.
+
+There are at most two BB rows.  If there are two, they use all four bright
+labels, so no RB row can exist.  The RR rows contribute zero, and the
+total quotient rank is at most two.  If there is at most one BB row,
+its contribution plus the entire RB difference space has rank at most
+1+1=2.  Again three dimensions are impossible.
+
+CASE C: d IS DARK AND OCCURS ON NO HH EDGE.
+
+It has no HB edge either, since every helper is anchored and it is dark;
+it has no BB reference by definition.  Its coordinate occurs only in EE
+rows.  There must be at least one such row, by the full-kernel property.
+
+If an RR row exists, pivot d on it as a four-form.  Other RR and RB rows
+then have support <=10.  The disjoint BB pairs give at most two possibly
+long rows, so quotient rank<=2.
+
+Otherwise, if an RB row exists, pivot d on it as a restricted six-form.
+This pivot consumes one bright label in the fixed-d pair matching.
+The remaining RB rows together give at most one quotient dimension by
+F3, and at most one BB row is possible among the remaining <=3 bright
+labels.  Quotient rank is at most two.
+
+Otherwise every d row is BB.  There are at most two such rows total;
+pivoting d consumes one, leaving at most one boundary relation.
+
+Every possible case contradicts the required quotient dimension three.
+This proves the theorem.
+
+3. LINEARIZATION OF THE SMALL-q THEOREM
+
+Let h0 count all unanchored helpers, and let
+
+                         W=sum_(r=1 or r=2) v.
+
+Assume q<=5.  If h0=W=0, the theorem gives p<=q-2.  If h0=0 and W>=1,
+the previously proved all-anchored obstruction still gives p<=q-1.
+If h0>=1, the unconditional p<=q suffices.  Because these are integer
+incidence counts in an actual circuit, the three cases imply
+
+                         p <= q-2+2h0+W.
+
+Consequently, for EVERY transpose circuit with q<=5,
+
+                     A-2h0-W <= q-2,                     (S1)
+                 Z+E-6h0-3W <= 3(q-2).                   (S2)
+
+These are valid linear inequalities on the convex relaxation as well:
+the proof covers every actual integral incidence profile, and the final
+inequalities themselves are linear.  No conditional rule is being
+applied to fractional helper counts during optimization.
+
+4. THE TWO NEW DISPLAYED PROFILES
+
+The first returned transpose profile has q=3,z=3 and helper types
+  1*(0,2,3), 1*(2,1,0), 2*(2,2,0),
+  4*(3,0,0), 3*(3,0,1), 2*(3,1,0).
+It has Z+E=9, h00=V00=0, Vplus=3, Mplus=1, so D2=4.
+The left side of (M2) is 18-4=14, exceeding 6(q-1)=12 by two.
+
+The second has q=5,z=2 and helper types
+  2*(1,3,0), 4*(2,2,0), 4*(3,0,1), 2*(3,1,0).
+It has Z+E=12 and h0=W=0.  The left side of (S2) is12,
+exceeding 3(q-2)=9 by three.
+
+These calculations exclude the displayed incidence profiles.  A scan
+can choose different helper-type mixtures within the same scalar state;
+it must be rerun and exactly certified before conclusions about those
+states, or about all circuits of the given gate count, are drawn.
+
+5. ADDITIONAL ALL-BRIGHT COROLLARY
+
+If every helper is anchored and EVERY missing label is bright, then
+
+                             A <= q-3
+
+for arbitrary z.  Indeed all missing labels have four-forms and all HH
+rows have support <=10.  If at most two missing labels fail to be
+full-bright, the entire EE quotient space has rank at most two by F4,
+contradicting the required three dimensions.  Full-helper missing
+contacts are distinct colors, so A is the full-bright color count.
+
+This is explicitly conditional on all missing labels being bright.
+It is NOT inserted into the aggregate scalar model unless that condition
+is separately established; neither q nor the helper-type counts alone
+automatically establish it.
+
+6. AUDIT AND REPRODUCTION
+
+The root and odd-spine agents independently audited the matching charges,
+all bright/dark pivot cases, the fixed-d EE matching, and the scalar case
+split.  The audit record is
+  push6/odd_spine/PUSH6_INDEPENDENT_LOGIC_AUDIT.txt, Sections 3--6.
+
+Run
+  python3 push6/even_frontier/check_matching_refinements.py
+
+It checks the two archived returned profiles with exact arithmetic and
+checks every new applicable row on the ten actual-mask canonical
+transposes used in the preceding theorem's control report.  The report
+is HH_LABEL_MATCHING_REFINEMENTS_CHECKS.json.  The original finite F1--F4
+audits and full-helper incompatibility audits remain prerequisites.

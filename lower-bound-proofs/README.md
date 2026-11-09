@@ -9,6 +9,15 @@ binary matrix over GF(2)), counting two-input XOR gates.
 | [mixcolumns-lb93-depth3](mixcolumns-lb93-depth3/) | Every circuit of depth ≤ 3 has ≥ 93 gates (with a 97-gate circuit: 93 ≤ D₃ ≤ 97) | Inputs at depth 0, outputs at depth ≤ 3; cancellation allowed | `python3 lower-bound-proofs/mixcolumns-lb93-depth3/verify_all.py` | 17–23 min |
 | | quick check: hashes and first five finite stages, not a proof replay | | `python3 lower-bound-proofs/mixcolumns-lb93-depth3/verify_all.py --quick` | ~10 s |
 
+[mixcolumns-lb75-open-cases](mixcolumns-lb75-open-cases/) is not a new bound. It is a partial result
+inside the 75 proof's machinery at G = 75. Of the 1,508 oriented claims that the 75 proof's own rows
+leave open there (an LP count), four batches of new rows, proved in written addenda and certified by
+exact integer certificates, exclude 822, so 1,508 -> 1,313 -> 996 -> 789 -> 686. With the author's
+October 2026 rows (push5/push6) added, 406 more are excluded by exact certificates and 280 remain open
+(LP counts). The 280 claims are still open and **the bound stays 75**. Check:
+`python3 lower-bound-proofs/mixcolumns-lb75-open-cases/verify_all.py` (~85 s; certificate arithmetic,
+coverage and the October rows' finite facts only, not the arguments).
+
 Needs Python 3.10+ (standard library only); the depth-3 proof also needs `g++` with C++17. Both
 checks are single-threaded. Do not run with `-O`. Neither proof determines the optimum, and the 93
 bound says nothing about depth > 3.

@@ -1,0 +1,274 @@
+INDEPENDENT LOGIC AUDIT: EXCEPTIONAL EE LABELS
+2026-10-22
+
+AUDIT RESULT
+
+The pivot, chronology, sharing, and quotient-capacity arguments described
+below are sound. The finite capacities are separate premises: the root's
+independent enumeration regenerates them. This note audits their use in
+the proofs, not a second regeneration of those finite word tables.
+
+The resulting necessary conditions concern arbitrary live normalized
+circuits for M transpose, with no H--H edges (z=0):
+
+  * zero exceptional missing labels is impossible;
+  * exactly one exceptional label which is weak bright is impossible,
+    for every number q of missing labels;
+  * exactly one exceptional label which is dark requires q>=7;
+  * therefore q<=6 requires at least two exceptional labels.
+
+Two immediate aggregate consequences in the last case are
+
+  A <= q-2,          Z <= 3(q-2),
+
+where A=sum_(r=3)u and Z=sum_(r>=2)(r-1)u. Both require Mt,z=0,q<=6.
+
+Here repeated-bright means a missing label with an actual H--B incidence
+at a helper having r>=2 represented incidences; exceptional means a
+missing label which is not repeated-bright.
+
+A separate strengthened corollary, using the full-helper palette, is also
+logically valid conditional on its stated finite joint capacity: with z=0
+and NO dark missing labels, at least three missing labels fail to be
+full-bright (incident at an r=3 helper). Thus A<=q-3, where the inherited
+full-helper incompatibility identifies A=sum_(r=3)u with the number of
+distinct full-bright labels.
+
+1. ALL PIVOTS ARE LEGITIMATE ACTUAL EQUATIONS
+
+Let R10 be the formal boundary relation space of weight at most ten,
+with rank 29. The full circuit produces 32 independent boundary relations.
+
+Pivot represented labels by their actual B--B reference rows. Pivot each
+anchored helper by an actual represented H--B row. These give two- and
+three-boundary forms respectively. Pivot bright missing labels by actual
+H--B rows at anchored helpers, giving forms of size at most four. A
+repeated-bright label can be pivoted at a helper with r>=2, ensuring its
+four-form contains a repeated-helper triple whenever it has size four.
+
+Every unanchored helper used below has a bright contact and can be pivoted
+there, giving a form of size at most five. This requirement is automatic
+in the stated live z=0 cases. A nonoutput odd helper has its defining odd
+edge and at least one use edge, so its graph degree is at least two. If
+there is only one dark label, label matching prevents both incidences from
+having that label. An unanchored helper has no represented H--B incidence,
+and z=0 excludes H--H edges. It must therefore touch a bright label.
+When all missing labels are bright the conclusion is immediate.
+
+All selected pivot rows are distinct actual gate equations, and each
+eliminates its intended variable with coefficient one. After eliminating
+every nonboundary variable, exactly 32 independent boundary rows remain.
+No birth orientation is assumed: an EE equation is the unordered relation
+among its result and its two parents. Pivoting a variable algebraically
+does not assert that the corresponding gate physically produced it.
+
+2. WHY CANCELLATION AND ALTERNATIVE FORMS ARE COVERED
+
+Every two four-boundary forms for the same label differ by a dependency
+of weight at most eight. Consequently they are identical modulo R10.
+If a missing label has a conceivable boundary-pair form, it can be
+replaced by that pair modulo R10, whether or not an actual B--B reference
+exists. Any EE relation containing such a pair and two four-forms then
+has weight at most ten and contributes no quotient direction.
+
+Thus a nonzero EE quotient relation among three four-forms must be a
+weight-twelve relation with a DISJOINT 4+4+4 split. Cancelling any repeated
+boundary coordinate would shorten it to weight at most ten. The complete
+4+4+4 census therefore covers all potentially nonzero EE rows, including
+all alternate choices of pivots and all cancellations.
+
+Similarly, a difference of two at-most-six forms can be nonzero modulo
+R10 only if both forms have size six, are disjoint, and give one of the
+complete weight-twelve 6+6 splits. These are exactly the cases used by the
+restricted-six capacity audit.
+
+3. ONE WEAK-BRIGHT EXCEPTION
+
+Assume every missing label except w is repeated-bright, while w is bright
+but not repeated-bright. There are no dark labels. All non-EE residual
+boundary rows have weight at most ten. Every EE row without w is good and
+lies in R10 by the all-repeated-bright finite fact. A row containing w and
+a represented label also lies there, by the bound 4+4+2<=10.
+
+All remaining quotient rows therefore have the form w+b1+b2 with two
+repeated-bright labels. The complete 4+4+4 audit groups such rows by the
+ACTUAL even value w and bounds their combined quotient span by dimension
+two. That bound includes all possible four-forms for w and both b's. If
+w itself happens to belong to the repeated-helper palette despite having
+only weak actual contacts, the all-palette zero-capacity fact is stronger.
+
+Consequently all 32 residual boundary relations span at most 29+2=31
+dimensions, a contradiction. The conclusion is impossibility for every q;
+the earlier q>=7 counting statement is superseded by this capacity bound.
+
+4. RESTRICTED SIX-FORMS: EXACT COVERAGE OF THE ONE-DARK CASE
+
+A restricted six-form means either any even boundary form of size at most
+four, or a size-six form containing a triple whose evaluated helper value
+has at least two boundary-triple representations. The new finite premise
+is that differences of all restricted forms of any fixed actual even
+value d have quotient rank at most ONE modulo R10. Call this space K_d.
+
+Every dark H--B pivot form chi_H is restricted: pivot H by one repeated-
+bright four-form psi_b plus its boundary endpoint, then use the dark
+endpoint. If the resulting six-form has no cancellation, it contains the
+chosen repeated-helper triple. If cancellation occurs, its size is at most
+four and it is restricted by definition. The same argument covers every
+d=bright+represented form. A represented+represented form has size at
+most four and is automatically restricted.
+
+Therefore the finite restricted-six census covers ALL of the forms used
+in the argument. It is not enough to count only selected canonical forms;
+the stated census instead includes every relevant six-form with the
+required literal triple and all shorter forms, whose differences vanish
+automatically when paired with an at-most-six form.
+
+5. ONE DARK LABEL WITH k>=1 DARK-INCIDENT HELPERS
+
+Let k count unanchored helpers incident to d; all its H--B contacts are
+unanchored because d is dark. Let t count the distinct bright labels that
+share one of these helpers with d. Distinct helpers cannot share both d
+and the same bright label: equality of their two boundary differences
+violates Sidonicity or gives a four-row gate-equation dependency. Thus
+the touched bright sets are disjoint. Liveness gives t>=k; canonical
+reverse degree three would give the stronger t>=2k, but is not needed.
+
+Pivot d through one dark-incident helper. The other k-1 dark rows are
+differences of restricted six-forms, so together have quotient rank at
+most min(k-1,1). All other non-EE residuals lie in R10.
+
+An EE row using d and a TOUCHED bright label adds no dimension beyond
+these dark rows. Here is the exact cancellation. At a helper H, choose
+the bright pivot a with endpoint A, the dark endpoint D, and the touched
+bright b with endpoint B. Its local dark form is chi_H=psi_a+A+D; its
+remaining bright row is psi_a+A+B+psi_b in R10. An EE row d+b+ell, after
+adding the dark pivot-change row and that bright row, reduces to
+
+  D+B+psi_ell.
+
+This is itself a true boundary dependency of weight at most six, since
+ell is represented or bright. Thus it lies in R10. This calculation is
+valid for every EE birth orientation and every choice of helper pivot.
+
+All EE rows d+bright+represented lie in K_d modulo the chosen dark pivot.
+Only d+bright+bright rows with BOTH bright colors untouched can escape
+K_d. Since K_d has dimension at most one and three quotient dimensions
+are required, at least two such escaping EE rows are necessary.
+
+For fixed nonzero d, the pairs (a,b) with a+b=d are disjoint. A repeated
+unordered triple would repeat an actual defining equation, forbidden by
+normalization and gate-equation independence. Hence the two required
+bright--bright rows consume four distinct untouched colors. When k=1,
+there is no non-EE dark row at all, so at least three potentially
+contributing EE rows are needed; the third consumes another untouched
+bright color. Therefore
+
+  qB-t >= max(4,6-k),    k>=1.
+
+Combining t>=k gives qB>=6 and hence q=qB+1>=7. Extra sharing of physical
+signals or extra EE gates cannot evade the fixed-d pair disjointness.
+
+6. THE k=0 CASE IS COVERED SEPARATELY
+
+If d has no H--B contacts, z=0 and darkness also exclude all other odd
+graph incidences. It must be EE-born and can be pivoted by an EE equation.
+All non-EE boundary residuals lie in R10. At least four EE equations using
+d are needed: one is consumed as its pivot and at least three residual
+rows must supply the missing quotient rank.
+
+Choose a d pivot minimizing its number of bright partners.
+
+  RR exists. Give d a four-form. Every d row with a represented partner
+  lies in R10. Three distinct bright--bright rows are required, consuming
+  six distinct bright colors.
+
+  No RR but BR exists. The pivot is restricted six. Differences of all
+  bright--represented forms have quotient rank at most one. At least two
+  bright--bright rows are needed to escape that space. There are at least
+  four d equations total, and none is RR. Their disjoint partner pairs
+  therefore consume at least 2+2+1+1=6 bright colors.
+
+  All pairs BB. At least four disjoint pairs consume at least eight bright
+  colors. No short-form capacity assumption is needed in this last case.
+
+Thus qB>=6 also when k=0. This closes the possible EE-only dark-label gap.
+
+7. TWO NON-FULL-BRIGHT EXCEPTIONS, WITH NO DARK LABELS
+
+This corollary uses a different palette: full-bright colors have an actual
+contact at an r=3 helper. Suppose z=0, every missing color is bright, and
+at most two colors w1,w2 are not full-bright. The same actual pivots make
+all non-EE rows lie in R10.
+
+The additional complete finite premises are:
+
+  (a) for fixed w, EE quotient rows w+fullbright+fullbright span at most
+      one dimension;
+  (b) for an unordered pair w1,w2 supporting a nonzero quotient triangle
+      with one full-bright color, adjoin that direction to BOTH individual
+      spaces in (a); their joint span has dimension at most one.
+
+All EE rows are classified by their number of exceptional colors. Zero
+exceptions gives a good row. One gives a direction in an individual space.
+Two gives the actual triple w1+w2+s, whose third value s is forced. A
+duplicate such triple cannot be an additional actual gate equation.
+Three exceptions cannot occur because there are at most two colors.
+
+If the two-exception triple has a nonzero quotient direction, (b) bounds
+the complete EE quotient span by one. If it has no nonzero direction, the
+two individual spaces together have dimension at most two. Either way
+the required three-dimensional quotient cannot be supplied. Thus at least
+three colors must be outside the full-bright set.
+
+The final aggregate translation A<=q-3 uses the INHERITED separate fact
+that a missing label contacts at most one full helper; that fact identifies
+A=sum_(r=3)u with the count of distinct full-bright colors. The new
+full-helper REFERENCE-label disjointness proved elsewhere concerns
+represented labels and must not be substituted for this missing-label
+incompatibility premise. That inherited fact was also independently
+regenerated during this audit: all actual-compatible pairs of full helper
+values have differences outside B+B. The complete M/Mt counts are in
+FULL_HELPER_LABEL_OWNERSHIP_INDEPENDENT.json.
+
+8. WEIGHTED EXCESS COROLLARY
+
+For each missing color e, let
+
+  z_e = sum_{helpers incident to e, r>=2}(r-1).
+
+The inherited complete per-color weighted-capacity theorem gives z_e<=3.
+Its per-color form is explicitly proved in Section 3 of
+research_next/dual/SUPPLEMENT.md, using the rank-seven projected-row bound,
+full-helper incompatibility, and the complete r3/r2/r2 exclusion.
+
+An exceptional label has NO actual anchored H--B incidence at an r>=2
+helper, by definition. It therefore has z_e=0. When Mt,z=0,q<=6, the
+one-exception exclusions proved above require at least two exceptional
+labels. At most q-2 missing labels can contribute to Z=sum_e z_e, giving
+
+  Z <= 3(q-2).                                           (18)
+
+Similarly, only repeated-bright labels can meet an r=3 helper. At most
+q-2 labels can do so, and full-helper incompatibility limits each to one
+such incidence. Hence
+
+  A <= q-2.                                             (19)
+
+No canonical-reverse hypothesis is used in these two conditional cuts.
+For q<2 their negative right-hand sides express impossibility of the
+entire z=0 class. The restriction q<=6 is essential for this particular
+two-exception deduction; it must remain visible in a global relaxation.
+
+9. LIMITATIONS OF THIS AUDIT
+
+The finite facts used here are precisely the all-palette zero-capacity
+fact, the fixed weak-label rank-two bound, the restricted-six rank-one
+bound, and the full-bright individual/joint capacities. Their independent
+enumeration is owned by the root audit. This note verifies that these
+facts cover all formal residuals and that the resulting dimension and
+color counts survive arbitrary sharing, cancellations, output reuse,
+unbounded depth, and every EE result/parent orientation.
+
+No unrestricted numerical gate lower bound is asserted by this note
+alone. Its conditions must be integrated into a complete global budget
+or certificate argument before a numerical improvement is claimed.
