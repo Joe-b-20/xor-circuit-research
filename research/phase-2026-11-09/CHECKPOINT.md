@@ -42,7 +42,13 @@ Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
   400ad09: top-level README pointer). Branches `sprint-2026-11-07-linear-maps` and `phase-2026-11-09`
   pushed to origin. Bound stays 75; 280 open claims (LP status) with all validated rows combined.
 
-## 2. Running / in progress
+- 18:03-21:05 UTC: A/B trial 2 (20 / 100 / 300). 21:07-23:08 UTC: foundation benchmark B1-B3.
+  Results and conclusions in [REPORT-2026-11-09.md](REPORT-2026-11-09.md) sections 4-6: worker
+  count UNHELPFUL under the tested conditions (first target 5-9x later, no more distinct plateaus
+  per hour, 5-28 % throughput cost); foundation restart FALSIFIED on the hard diagnostic at this
+  budget, uninformative on calibration, no benefit on InvMC. Phase closed 23:20 UTC; nothing running.
+
+## 2. Running / in progress (none at 23:20 UTC 2026-11-09)
 
 - Proof reconciliation audit agent (xhigh), started 15:17 UTC, writing
   `~/xs-campaigns/2026-11-09-phase/recon/REPORT.md`: audit of the October push5/push6 rows'
