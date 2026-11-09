@@ -229,7 +229,8 @@ class ValueSet:
       ``targets`` (distinct nonzero rows), ``tset`` (frozenset of them), ``cap``,
       ``tri``, ``level``, ``par``, ``kids`` (see invariants), ``p2`` (index or None),
       ``p2_multi`` (its keys with count >= 2), ``p2_mpairs``, ``p2_adj``, ``p2_removed`` /
-      ``p2_added`` (pending changes).
+      ``p2_added`` (pending changes), ``l1allow`` (the level-1 restriction or None; set it
+      with ``restrict_level1``).
 
     Invariants (``check()`` recomputes them):
       tri[v]  = {x in U : v ^ x in U}                      for v in U
@@ -242,7 +243,7 @@ class ValueSet:
     """
     __slots__ = ('n', 'inputs', 'iset', 'rows', 'targets', 'tset', 'cap',
                  'tri', 'level', 'par', 'kids', 'p2', 'p2_multi', 'p2_removed', 'p2_added',
-                 'p2_adj', 'p2_mpairs',
+                 'p2_adj', 'p2_mpairs', 'l1allow',
                  '_log', '_open')
 
     # ------------------------------------------------------------------------- build
@@ -263,6 +264,7 @@ class ValueSet:
         self.targets = tuple(dict.fromkeys(t for t in rows if t))
         self.tset = frozenset(self.targets)
         self.cap = cap
+        self.l1allow = None
         self._log = None
         self._open = []
         iset = self.iset
@@ -619,14 +621,37 @@ class ValueSet:
                             kids[y ^ k].add(y)
             d += 1
 
+    # ------------------------------------------------------------------- restriction
+    def restrict_level1(self, allowed):
+        """Forbid new weight-2 values outside ``allowed`` (a set of masks); None lifts it.
+
+        Under the restriction ``add`` refuses (returns False) any weight-2 value not in
+        ``allowed``, and ``repair_candidates`` (so ``valid_repairs`` too) never offers one, so
+        the level-1 set of every state reachable by edits stays within ``allowed``.  Removals,
+        of members of ``allowed`` included, are not restricted.  U must already satisfy it
+        (ValueError otherwise).  The engine's pinned foundation phase uses it
+        (``restart.foundation``); an unrestricted state pays one attribute test per ``add``.
+        """
+        if allowed is not None:
+            allowed = frozenset(allowed)
+            bad = [v for v in self.tri if v.bit_count() == 2 and v not in allowed]
+            if bad:
+                raise ValueError('level-1 values outside the allowed set: %s'
+                                 % sorted(bad)[:8])
+        self.l1allow = allowed
+
     # ------------------------------------------------------------------- mutations
     def add(self, w, partners=None):
-        """Insert value w and update levels; False if w is 0, an input or already in U.
+        """Insert value w and update levels; False if w is 0, an input or already in U, or a
+        weight-2 value the level-1 restriction forbids (``restrict_level1``).
 
         w's triples come from ``partners`` when given (a superset of the values x with x ^ w in
         U, e.g. the map ``valid_repairs`` fills), else from the pair index (its pairs of w), else
         from one O(|U|) scan.  w may end up stuck if it has no recipe within the cap.
         """
+        allow = self.l1allow
+        if allow is not None and w.bit_count() == 2 and w not in allow:
+            return False
         rec = self._add(w, partners)
         if rec is None:
             return False
@@ -1032,7 +1057,7 @@ class ValueSet:
         With the pair index it visits only the ``p2_multi`` neighbours of each stuck value and
         the pairs of each candidate (``_repairs_by_index``); without it, each candidate is
         tested by an O(|U|) scan.  ``stuck`` may repeat values or contain realized ones (they
-        are ignored).
+        are ignored).  Under a level-1 restriction, forbidden weight-2 values are left out.
         """
         if self.p2 is not None and len(self.p2_added) + len(self.p2_removed) > _P2_PENDING_MAX:
             self.p2_sync()
@@ -1050,6 +1075,9 @@ class ValueSet:
             out = self._repairs_by_scan(stuck, list(level), forbid)
         else:
             out = self._repairs_by_index(stuck, forbid)
+        allow = self.l1allow
+        if allow is not None:
+            out = [w for w in out if w in allow or w.bit_count() != 2]
         out.sort()
         return out
 
@@ -1444,6 +1472,8 @@ class ValueSet:
             assert best is not None and best[0] == lv - 1, ('level/recipe', v)
             assert self.par[v] == best[1], ('witness not canonical', v)
         assert set(self.par) == {v for v in level if v not in iset}, 'parents'
+        if self.l1allow is not None:
+            assert all(v in self.l1allow for v in tri if v.bit_count() == 2), 'level-1 set'
         assert set(self.kids) == set(tri), 'kids keys'
         for x, ks in self.kids.items():
             for v in ks:

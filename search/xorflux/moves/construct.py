@@ -41,6 +41,9 @@ Public API
 ``build_root(name, target, rng, cap=None, budget=None, cfg=None) -> (values, info)``
 ``choose_root(rng, cfg=None, target=None, cap=None) -> name``
 ``ROOTS``: name -> builder ``(n, rows, rng, cap, budget, cfg) -> (triples, info)``
+``build_restricted_root(names, target, allowed, rng, cap=None, budget=None, cfg=None)``: a root
+whose level-1 set (weight-2 values) lies within ``allowed`` (foundation restarts; ``l1tree``
+or a ``ROOTS`` constructor with its forbidden-pair recipes dropped), ``level1(values)``.
 Helpers shared with depth3/structural: ``target_rows``, ``needed_rows``, ``bits_of``, ``emit``,
 ``verify_gates``.
 """
@@ -896,3 +899,185 @@ def build_root(name, target, rng, cap=None, budget=None, cfg=None):
             "depth": depth, "work": child.used, "fallback": reason}
     info.update(stats)
     return values, info
+
+
+# ---------------------------------------------------------------- level-1-restricted roots
+# Roots whose level-1 set (weight-2 values) lies inside an allowed set A, for the foundation
+# restart (engine/restart.py, ``restart.foundation``).  Evidence: 2026-11-02 foundations
+# (~/xs-campaigns/2026-11-02-why/foundations/REPORT.md section 3): with the 89@4 level-1 set held
+# fixed, roots built this way and completed by the engine re-found 89@4 in 9 of 13 runs.
+L1TREE_TRIES = 200      # random trees per target before the root fails (as in l1root.py)
+L1TREE_PAIRS = 4        # most allowed pairs combined in one cancellation representation
+
+
+def level1(values) -> set[int]:
+    """The level-1 set of a value collection: its weight-2 masks (XORs of two inputs)."""
+    return {v for v in values if v.bit_count() == 2}
+
+
+def _l1_valid(m, allowed) -> bool:
+    """``m`` may appear in a restricted root: nonzero, not an input, not a forbidden pair."""
+    w = m.bit_count()
+    return w > 2 or (w == 2 and m in allowed)
+
+
+def _l1_merge(nodes, allowed, cap, rng):
+    """Recipes merging ``nodes`` ``[(level, mask)]`` into their XOR, shallowest first, never
+    creating a value ``_l1_valid`` rejects and never deeper than ``cap``; None if stuck."""
+    nodes = list(nodes)
+    out = []
+    while len(nodes) > 1:
+        rng.shuffle(nodes)
+        nodes.sort(key=lambda x: x[0])
+        la, a = nodes.pop(0)
+        j = None
+        for i, (_, b) in enumerate(nodes):
+            if _l1_valid(a ^ b, allowed):
+                j = i
+                break
+        if j is None:
+            return None
+        lb, b = nodes.pop(j)
+        level = (la if la > lb else lb) + 1
+        if cap is not None and level > cap:
+            return None
+        out.append((a ^ b, a, b))
+        nodes.append((level, a ^ b))
+    return out
+
+
+def _l1_reps(t, allowed, budget, keep=40):
+    """Cheapest representations t = XOR(P) ^ singles with P at most ``L1TREE_PAIRS`` allowed
+    pairs (pairs may reach outside t: cancellation), as ``[(cost, P)]``, cheapest first."""
+    from itertools import combinations
+    al = sorted(allowed)
+    out = []
+    for r in range(1, min(L1TREE_PAIRS, len(al)) + 1):
+        before = len(out)
+        for pairs in combinations(al, r):
+            x = 0
+            for m in pairs:
+                x ^= m
+            out.append((r + (t ^ x).bit_count(), pairs))
+        budget.tick(len(out) - before)
+    out.sort(key=lambda z: z[0])
+    return out[:keep]
+
+
+def _l1_target(t, allowed, cap, rng, get_reps):
+    """Recipes building target ``t`` as one tree over allowed pairs (level 1) and inputs
+    (level 0), or None.  First a random maximal matching of t's bits by allowed pairs inside
+    its support; then a cheap representation with cancellation (``get_reps()``, cached by
+    the caller)."""
+    edges = [m for m in sorted(allowed) if m & t == m]
+    rng.shuffle(edges)
+    used = 0
+    pairs = []
+    for m in edges:
+        if m & used == 0:
+            used |= m
+            pairs.append(m)
+    for attempt in range(2):
+        if attempt == 1:
+            reps = get_reps()
+            if not reps:
+                return None
+            low = reps[0][0]
+            pairs = list(rng.choice([p for c, p in reps if c <= low + 1]))
+        x = 0
+        for m in pairs:
+            x ^= m
+        leaves = [(1, m) for m in pairs] + [(0, b) for b in bits_of(t ^ x)]
+        merged = _l1_merge(leaves, allowed, cap, rng)
+        if merged is not None:
+            return [(m, m & -m, m ^ (m & -m)) for m in pairs] + merged
+    return None
+
+
+def _l1tree(n, rows, rng, cap, budget, allowed):
+    """Port of the 2026-11-02 ``l1root.build_root``: each target separately as a tree of depth
+    <= cap over allowed pairs and single inputs (``L1TREE_TRIES`` random tries per target).
+    Unlike the prototype the cancellation fallback combines at most ``L1TREE_PAIRS`` pairs on
+    every try (the prototype went to 6 in the second half; C(26, 6) combinations per target
+    was the slow part)."""
+    triples = []
+    for t in needed_rows(rows):
+        cache = []
+
+        def get_reps(t=t, cache=cache):
+            if not cache:
+                cache.append(_l1_reps(t, allowed, budget))
+            return cache[0]
+        for _ in range(L1TREE_TRIES):
+            got = _l1_target(t, allowed, cap, rng, get_reps)
+            budget.tick(1)
+            if got is not None:
+                triples.extend(got)
+                break
+            if budget.exhausted():
+                raise ValueError("l1tree: work budget spent")
+        else:
+            raise ValueError(f"l1tree: no restricted tree for row {t:#x}")
+    return triples, {}
+
+
+RESTRICTED_ROOTS = ("l1tree", *ROOTS)
+"""Constructors ``build_restricted_root`` accepts: the dedicated ``l1tree`` and every root of
+``ROOTS`` run with the restriction (their recipes creating a forbidden pair are dropped; they
+complete only when the rest of their recipes still reach every row)."""
+
+
+def build_restricted_root(names, target, allowed, rng, cap=None, budget=None, cfg=None):
+    """A verified root whose level-1 set lies within ``allowed``, from the first constructor
+    of ``names`` that can complete under that restriction.
+
+    ``l1tree`` builds for the restriction (see ``_l1tree``); a ``ROOTS`` constructor runs
+    unchanged and its recipes that would create a weight-2 value outside ``allowed`` are
+    dropped before ``emit``, so it completes only if the rest still reach every row.
+    Weight-2 rows are always allowed (every circuit holds them).  Returns ``(values, info)``
+    like ``build_root`` (``info["built"]`` names the constructor that completed and
+    ``info["tried"]`` lists ``(name, reason)`` for those that did not); raises ValueError when
+    none completes.
+    """
+    n, rows = target_rows(target)
+    allowed = frozenset(allowed) | {t for t in rows if t.bit_count() == 2}
+    view = _construct_view(cfg)
+    if cap is not None and min_depth(rows) > cap:
+        raise ValueError(f"no circuit within cap {cap}: rows need depth {min_depth(rows)}")
+    parent = budget if budget is not None else Budget(None)
+    tried = []
+    for name in names:
+        if name not in RESTRICTED_ROOTS:
+            raise ValueError(f"unknown restricted root {name!r}")
+        if name != "l1tree":
+            reason = root_reason(name, (n, rows), cap)
+            if reason is not None:
+                tried.append((name, reason))
+                continue
+        section = view.get(name) if name != "l1tree" else None
+        child = parent.child(section.get("work") if section is not None else None)
+        try:
+            if name == "l1tree":
+                triples, stats = _l1tree(n, rows, rng, cap, child, allowed)
+            else:
+                triples, stats = ROOTS[name](n, rows, rng, cap, child, view)
+                triples = [r for r in triples if _l1_valid(r[0], allowed)]
+            result = emit(n, rows, triples, cap)
+        except ValueError as exc:
+            result, stats = None, {"reason": str(exc)}
+        parent.tick(child.used)
+        if result is None:
+            tried.append((name, stats.get("reason") or "could not complete under the "
+                          "restriction"))
+            continue
+        gates, values, depth = result
+        if verify_gates(n, rows, gates, cap) != depth:
+            raise AssertionError("emit and verify disagree on depth")
+        if not level1(values) <= allowed:
+            raise AssertionError("restricted root left the allowed level-1 set")
+        info = {"name": name, "built": name, "gates": gates, "gate_count": len(gates),
+                "depth": depth, "work": child.used, "tried": tried}
+        info.update({k: v for k, v in stats.items() if k != "reason"})
+        return values, info
+    raise ValueError("no constructor completed under the level-1 restriction: "
+                     + "; ".join(f"{a}: {b}" for a, b in tried))

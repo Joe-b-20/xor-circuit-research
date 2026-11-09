@@ -22,6 +22,11 @@ from the shared campaign pool, or the worker best.  Evidence behind the defaults
   tight point, 4.4/h, then 1.1/h at 15-30 min and 0.5/h at 30-60 min.  Hence 900 s and x2.
 * Pull-on-stall sharing of distinct elites replaced forced adoption (diversity collapse); ``w_shared``
   is the pull probability.
+* The opt-in ``foundation`` source (``w_foundation``, default 0; ``restart.foundation.*``) keeps a
+  donor's level-1 set, builds a restricted root over it and pins the new chain to it for
+  ``pin_proposals`` proposals (``Engine._foundation_source``, ``Engine._unpin``).  2026-11-02
+  foundations: on MixColumns cap 4 the level-1 set largely decides the reachable gate count; with
+  the 89@4 set held fixed the engine re-found 89@4 in 9 of 13 runs within 300 s.
 
 Seconds-based triggers depend on the wall clock and so are not replayable across runs; the
 ``stall_work`` / ``stall_proposals`` triggers are, and either kind may be used alone.
@@ -31,7 +36,7 @@ from __future__ import annotations
 
 from ..config.schema import Knob, Section
 
-KNOBS = Section("restart", "When and from where a stalled chain restarts.", {
+RESTART_KNOBS = Section("restart", "When and from where a stalled chain restarts.", {
     "enabled": Knob(True, "Restart stalled chains (false: one persistent chain per worker)."),
     "stall_seconds": Knob(900.0, "Restart after this long without a chain-best improvement "
                           "(2026-10-28: next-improvement rate after 15 min was 1/10 of the "
@@ -57,6 +62,12 @@ KNOBS = Section("restart", "When and from where a stalled chain restarts.", {
                      "the worker's search cap (0: last resort; sharing.mode = off disables "
                      "pulls).", min=0),
     "w_best": Knob(0.1, "Weight of the worker best (0: last resort).", min=0),
+    "w_foundation": Knob(0.0, "Weight of a foundation restart: a fresh root built over the "
+                         "level-1 set of the worker best or an archive elite, then a pinned "
+                         "phase that adds no other level-1 value (restart.foundation). Opt-in: "
+                         "0 never uses it, not even as a last resort (2026-11-02 foundations: "
+                         "the 89@4 level-1 set held fixed re-found 89@4 in 9 of 13 runs).",
+                         min=0),
     "build_work": Knob(0, "Work budget for building a constructor root (0 = unbounded).", min=0),
     "repair_exit": Knob(5, "Restart a chain whose repair expired this many times in a row while the "
                         "worker has no feasible best to revert to (2026-10-29: two FOX Mu8 cap-9 "
@@ -64,7 +75,37 @@ KNOBS = Section("restart", "When and from where a stalled chain restarts.", {
                         min=0),
 })
 
-SOURCES = ("fresh", "elite", "shared", "best")
+FOUNDATION_KNOBS = Section("restart.foundation", "Foundation restarts (restart.w_foundation): "
+                           "keep a donor circuit's level-1 set (its XORs of two inputs), "
+                           "rebuild everything above it from a restricted root, and hold the "
+                           "level-1 set within that set for a pinned phase.", {
+    "elite_p": Knob(0.5, "Probability that the donor is a distinct archive elite instead of "
+                    "the worker best (either one when the other is missing).", min=0, max=1),
+    "swap_pairs": Knob(0, "Perturbation: replace this many donor level-1 pairs by random "
+                       "useful pairs (two inputs that occur together in some output row) not "
+                       "in the set (2026-11-02: one swap on the 89's set gave 92-95, four "
+                       "gave 97-102 in 300 s).", min=0),
+    "drop_pairs": Knob(0, "Perturbation: remove this many donor level-1 pairs without "
+                       "replacement (weight-2 output rows are never removed).", min=0),
+    "pin_proposals": Knob(200_000, "Proposals of the pinned phase, in which no weight-2 value "
+                          "outside the allowed set can be added (members may still be "
+                          "dropped). Lifted at the first periodic check after this many "
+                          "proposals (replayable). 2026-11-02: pinned completions reached "
+                          "89@4 within 4-230 s on MixColumns cap 4.", min=1),
+    "constructors": Knob(["l1tree", "paar", "naive"], "Root constructors tried in order under "
+                         "the restriction (first one that completes wins; none: the source "
+                         "fails and the next restart source is tried). l1tree builds each "
+                         "row over allowed pairs (2026-11-02 l1root.py); naive/paar/bp/anneal3 "
+                         "run unchanged with their forbidden-pair recipes dropped and rarely "
+                         "complete."),
+})
+
+KNOBS = (RESTART_KNOBS, FOUNDATION_KNOBS)
+
+SOURCES = ("fresh", "elite", "shared", "best", "foundation")
+OPT_IN = frozenset({"foundation"})
+"""Sources never used with weight 0, not even as a last resort (they change what a restart
+does, so they must be asked for)."""
 
 
 class RestartController:
@@ -84,7 +125,7 @@ class RestartController:
         self.size_exponent = cfg.size_exponent
         self.incumbent_factor = cfg.incumbent_factor
         self.weights = {"fresh": cfg.w_fresh, "elite": cfg.w_elite, "shared": cfg.w_shared,
-                        "best": cfg.w_best}
+                        "best": cfg.w_best, "foundation": cfg.w_foundation}
         self.build_work = cfg.build_work
         self.root_t = self.root_it = self.root_work = 0
         self.best_t = self.best_it = self.best_work = 0
@@ -136,12 +177,12 @@ class RestartController:
     def order(self, rng, available: dict) -> list[str]:
         """Restart sources to try, in order: one drawn by weight among the available ones, then
         the remaining available ones by decreasing weight (fallbacks if the first fails).
-        Zero-weight sources are tried only when no weighted source is available; an empty list
-        (nothing available) makes the engine log ``restart_failed`` and wait another stall
-        period."""
+        Zero-weight sources are tried only when no weighted source is available, except the
+        ``OPT_IN`` ones (``foundation``), which need a weight; an empty list (nothing available)
+        makes the engine log ``restart_failed`` and wait another stall period."""
         cands = [s for s in SOURCES if available.get(s) and self.weights[s] > 0]
         if not cands:
-            return [s for s in SOURCES if available.get(s)]
+            return [s for s in SOURCES if available.get(s) and s not in OPT_IN]
         total = sum(self.weights[s] for s in cands)
         r = rng.random() * total
         acc = 0.0

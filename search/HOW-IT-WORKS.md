@@ -31,6 +31,15 @@ flowchart LR
     X --> B
 ```
 
+**Foundation restarts** are an optional fifth restart source, off by default
+(`restart.w_foundation = 0`). A circuit's *level-1 set* is its XORs of two inputs. A
+foundation restart keeps the level-1 set of the worker best or an archive elite (optionally
+with a few pairs swapped or dropped), builds a fresh root over it, and runs the new chain
+pinned: for a fixed number of proposals no other level-1 value can enter, so everything above
+level 1 is rebuilt; then the chain continues as usual. The reason is the 2026-11-02
+foundations study: on MixColumns at depth 4 the level-1 set largely decides how good a circuit
+can get, and the walk changes it only one pair at a time.
+
 ## A campaign: many workers
 
 A **campaign** runs many workers under one coordinator. Workers never trust each other: every

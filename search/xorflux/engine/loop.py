@@ -222,6 +222,11 @@ def canonical_state(factory: Callable, values, cap):
     return state
 
 
+def _level1(values) -> set[int]:
+    """The level-1 set of a value collection: its weight-2 masks (XORs of two inputs)."""
+    return {v for v in values if v.bit_count() == 2}
+
+
 def _rng_to_json(state) -> list:
     version, internal, gauss = state
     return [version, list(internal), gauss]
@@ -343,6 +348,11 @@ class Engine(DossierMixin):
         self.archive = Archive(settings.view("archive"))
         self.restarter = RestartController(settings.view("restart"))
         self._build_work = settings.view("restart").build_work or None
+        # The pinned phase of a foundation restart (None: no restriction anywhere).  A dict
+        # with ``allowed`` (frozenset), ``start``/``until`` (proposal counts) and ``length``.
+        self._pin = None
+        self._pending_pin = None        # set by the foundation source, taken by _restart
+        self._useful = None             # useful weight-2 pairs of the target (lazy)
 
         if state_factory is None:
             state_factory = valueset_factory(target, settings,
@@ -392,8 +402,12 @@ class Engine(DossierMixin):
             source(self.epoch_fields)
 
     def _make_state(self, values, cap):
-        """A canonical chain state from ``values`` (see ``canonical_state``)."""
-        return canonical_state(self._state_factory, values, cap)
+        """A canonical chain state from ``values`` (see ``canonical_state``), under the level-1
+        restriction while a foundation pin is active."""
+        state = canonical_state(self._state_factory, values, cap)
+        if self._pin is not None:
+            state.restrict_level1(self._pin["allowed"])
+        return state
 
     def _bind_rng(self) -> None:
         """Point every move context at the proposal RNG (the reseeded ``_prng``, or the engine
@@ -802,6 +816,9 @@ class Engine(DossierMixin):
     # ------------------------------------------------------------------ periodic work ---
     def _periodic(self) -> None:
         self._t = t = self.recorder.now()
+        pin = self._pin
+        if pin is not None and self.it >= pin["until"]:
+            self._unpin("proposals")
         if self._repair_expired:
             self._repair_expired = False
             if not self._feasible(self.chain_best_g, self.chain_best_d):
@@ -891,10 +908,16 @@ class Engine(DossierMixin):
                      "elite": any(k != self.chain_best_values for k in self.archive.keys()),
                      "shared": self.pool is not None,
                      "best": self.worker_best_values is not None}
+            if self.restarter.weights["foundation"] > 0:
+                avail["foundation"] = self._construct is not None and (
+                    avail["best"] or avail["elite"])
             order = self.restarter.order(self.rng, avail)
             plans = None
         state = None
+        # A running pin restricts the old chain, not the candidate states.
+        old_pin, self._pin = self._pin, None
         for i, source in enumerate(order):
+            self._pending_pin = None
             got = plans[i] if plans is not None else self._restart_source(source)
             if got is None:
                 continue
@@ -903,11 +926,18 @@ class Engine(DossierMixin):
             if state.ok():
                 break
             state = None
+        self._pin = old_pin
         if state is None:
+            self._pending_pin = None
             self.restarter.improved(self.it, self.work_total, t)
             self.counters["restart_failed"] += 1
             self.recorder.event("restart_failed", reason=reason, tried=order)
             return False
+        if old_pin is not None:
+            self._unpin("restart")             # the pinned chain ends before its pin did
+        if source == "foundation":
+            self._pin, self._pending_pin = self._pending_pin, None
+            state.restrict_level1(self._pin["allowed"])
         self._close_plateau("restart")
         old_phase = self.phase.phase
         self._begin_chain(state, root, source, donor)
@@ -972,7 +1002,99 @@ class Engine(DossierMixin):
             return self.worker_best_values, source, {"id": "best",
                                                      "parent": self._parent_of(
                                                          self.worker_best_values)}, None
+        if source == "foundation":
+            return self._foundation_source()
         raise ValueError(f"unknown restart source {source}")
+
+    # ------------------------------------------------------------------ foundations -----
+    def _useful_pairs(self) -> list[int]:
+        """Weight-2 masks contained in some output row, ascending (the swap-in candidates)."""
+        if self._useful is None:
+            n = self._n
+            rows = [int(t) for t in self.target.rows]
+            self._useful = [m for m in ((1 << i) | (1 << j) for i in range(n)
+                                        for j in range(i + 1, n))
+                            if any(t & m == m for t in rows)]
+            self._useful.sort()
+        return self._useful
+
+    def _foundation_source(self):
+        """``(values, "foundation", root_info, None)``: a fresh root built over a donor's
+        level-1 set (optionally perturbed), or None.  Leaves the pin for ``_restart`` in
+        ``_pending_pin`` (DESIGN.md, foundation restarts)."""
+        construct = self._construct
+        if construct is None:
+            return None
+        get = self.settings.__getitem__
+        rng = self.rng
+        best = self.worker_best_values
+        entry = None
+        if rng.random() < get("restart.foundation.elite_p") or best is None:
+            entry = self.archive.sample_diverse(self.chain_best_values, rng)
+        if entry is not None:
+            donor_values, kind = entry.key, "elite"
+            donor = {"seq": entry.seq, "from": entry.origin, "gates": entry.gates,
+                     "depth": entry.depth}
+        elif best is not None:
+            donor_values, kind = best, "best"
+            donor = {"gates": self.worker_best_g, "depth": self.worker_best_d}
+        else:
+            return None
+        forced = {int(t) for t in self.target.rows if int(t).bit_count() == 2}
+        base = _level1(donor_values) | forced
+        removable = sorted(base - forced)
+        swap = min(get("restart.foundation.swap_pairs"), len(removable))
+        drop = min(get("restart.foundation.drop_pairs"), len(removable) - swap)
+        out = rng.sample(removable, swap + drop) if swap + drop else []
+        swapped_out, dropped = sorted(out[:swap]), sorted(out[swap:])
+        swapped_in = []
+        if swap:
+            pool = [m for m in self._useful_pairs() if m not in base]
+            swapped_in = sorted(rng.sample(pool, min(swap, len(pool))))
+        allowed = frozenset(base.difference(out).union(swapped_in))
+        length = get("restart.foundation.pin_proposals")
+        names = list(get("restart.foundation.constructors"))
+        seed = rng.getrandbits(32)
+        budget = Budget(self._build_work, None, None, self._check_every)
+        started = perf_counter()
+        fields = {"donor_kind": kind, "donor": donor, "level1_size": len(base),
+                  "swapped_out": swapped_out, "swapped_in": swapped_in, "dropped": dropped,
+                  "allowed_size": len(allowed), "seed": seed}
+        try:
+            values, info = construct.build_restricted_root(
+                names, self.target, allowed, random.Random(seed), self._cap, budget,
+                self.settings)
+        except ValueError as exc:
+            self.recorder.event("foundation_failed", reason=str(exc), constructors=names,
+                                **fields)
+            return None
+        root = {"id": f"foundation:{kind}#{seed}", "constructor": info["built"],
+                **fields, "level1": sorted(base), "pin_proposals": length,
+                "gates": info.get("gate_count"), "depth": info.get("depth"),
+                "tried": info.get("tried"), "build_s": round(perf_counter() - started, 6),
+                "improvement": self._parent_of(donor_values)}
+        self._pending_pin = {"allowed": allowed, "start": self.it, "until": self.it + length,
+                             "length": length}
+        return list(values), "foundation", root, None
+
+    def _unpin(self, reason: str) -> None:
+        """End the pinned phase: lift the restriction and log ``foundation_unpin`` with the
+        chain best and whether the level-1 set still equals the allowed set."""
+        pin, self._pin = self._pin, None
+        lift = getattr(self.state, "restrict_level1", None)
+        if lift is not None:
+            lift(None)
+        allowed = pin["allowed"]
+        cur = _level1(self.state.key())
+        best = _level1(self.chain_best_values)
+        self.recorder.event(
+            "foundation_unpin", reason=reason, engine_chain=self.chain_seq,
+            proposals=self.it - pin["start"], pin_proposals=pin["length"],
+            chain_best=score(self.chain_best_g, self.chain_best_d),
+            chain=score(self.cur_g, self.cur_d), allowed_size=len(allowed),
+            level1_size=len(cur), level1_equals_allowed=cur == allowed,
+            level1_missing=sorted(allowed - cur),
+            best_level1_equals_allowed=best == allowed)
 
     # ------------------------------------------------------------------ persistence -----
     def checkpoint(self) -> dict:
@@ -991,7 +1113,7 @@ class Engine(DossierMixin):
         if self.worker_best_key is not None:
             wb = {"values": sorted(self.worker_best_values), "gates": self.worker_best_g,
                   "depth": self.worker_best_d}
-        return {
+        data = {
             "version": CHECKPOINT_VERSION, "worker": self.worker_id, "rng_seed": self.rng_seed,
             "rng": _rng_to_json(self.rng.getstate()), "it": self.it, "work": self.work_total,
             "chain": {"seq": self.chain_seq, "root": self.root, "source": self.source,
@@ -1014,6 +1136,9 @@ class Engine(DossierMixin):
             "plateau": self._plateau.checkpoint(),
             "moves": {m.name: m.state() for m in self._moves},
         }
+        if self._pin is not None:          # only while pinned: other checkpoints unchanged
+            data["foundation_pin"] = {**self._pin, "allowed": sorted(self._pin["allowed"])}
+        return data
 
     @classmethod
     def resume(cls, data, target, objective, settings, *, recorder, pool=None, moves=None,
@@ -1041,6 +1166,9 @@ class Engine(DossierMixin):
         self.it = data["it"]
         self.work_total = data["work"]
         self._t = t = self.recorder.now()
+        pin = data.get("foundation_pin")
+        if pin is not None:
+            self._pin = {**pin, "allowed": frozenset(pin["allowed"])}
         chain = data["chain"]
         self._set_state(self._make_state(chain["values"], self._cap))
         self.cur_g, self.cur_d = self._size(), self.state.depth()

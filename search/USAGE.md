@@ -113,6 +113,16 @@ most:
 | `engine.record_polish_nodes` | node limit of the own-depth polish of new points (0 turns it off) |
 | `scheduler.reference` | (gates, depth) points used to weigh improvements by how close they are to them (the campaigns set their goal points) |
 
+**Foundation restarts (off by default).** `restart.w_foundation` (default 0) adds a restart
+source that keeps the *level-1 set* (the XORs of two inputs) of the worker best or an archive
+elite, builds a fresh root over it, and pins it: for `restart.foundation.pin_proposals`
+proposals no other level-1 value can be added (members may still be dropped), then the chain
+continues as an ordinary one. `swap_pairs` / `drop_pairs` perturb the set first. The
+`restart` event names the donor and the set; `foundation_unpin` reports the chain best at the
+unpin. Try it with `--set restart.w_foundation=1.0`; `config explain restart` lists the knobs.
+Evidence: 2026-11-02 foundations study (MixColumns cap 4: holding the 89@4 level-1 set fixed
+re-found 89@4 in 9 of 13 runs; not shown for InvMixColumns).
+
 ## Adding a map
 
 ```bash

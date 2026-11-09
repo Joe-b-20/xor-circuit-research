@@ -99,6 +99,8 @@ def replay_dossier(dossier: dict, target, objective, settings, *, move=None,
         state_factory = valueset_factory(target, settings, walk)
     cap = replay.get("cap", objective.search_cap)
     state = canonical_state(state_factory, values, cap)
+    if replay.get("level1_allowed") is not None:     # made in a pinned foundation phase
+        state.restrict_level1(replay["level1_allowed"])
     limit = replay.get("work_limit")
     ctx = MoveContext(state=state, target=target, objective=objective, best_key=(),
                       rng=random.Random(seed), cfg=move.cfg,

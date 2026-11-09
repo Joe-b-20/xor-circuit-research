@@ -164,6 +164,10 @@ class DossierMixin:
             reasons.append("wall_clock")
         info = {"seed": seed, "engine_seed": self.rng_seed, "cap": self._cap,
                 "work_limit": self._proposal_work, "recipe": REPLAY_RECIPE}
+        pin = getattr(self, "_pin", None)
+        if pin is not None:
+            # A pinned foundation phase: the state was under a level-1 restriction.
+            info["level1_allowed"] = sorted(pin["allowed"])
         if move is not None:
             calls = self.scheduler.pulls[self._moves.index(move)]
             info["move_calls"] = calls

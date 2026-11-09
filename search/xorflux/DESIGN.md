@@ -63,6 +63,25 @@ distinct elite of the campaign pool or the worker best (weights `restart.w_*`). 
 circuit size above `restart.size_ref` gates; a chain holding the worker best gets
 `incumbent_factor` more time.
 
+**Foundation restarts** (opt-in, `restart.w_foundation`, default 0; never a last resort at
+weight 0): the donor is the worker best or, with probability `restart.foundation.elite_p`, a
+distinct archive elite. Its level-1 set L (weight-2 values; weight-2 rows always belong) is
+perturbed by `swap_pairs` (members out, random *useful* pairs in: two inputs together in some
+row) and `drop_pairs`, giving the allowed set A. A root with level-1 set within A comes from
+the first of `restart.foundation.constructors` that completes under the restriction
+(`construct.build_restricted_root`: `l1tree` builds each row over pairs of A and inputs, the
+port of the 2026-11-02 `l1root.py`; the other constructors run with their forbidden-pair
+recipes dropped); none completing makes the source fail like any other. The new chain is
+pinned: its ValueSet carries `restrict_level1(A)` (`add` refuses, `repair_candidates` never
+offers, a weight-2 value outside A; removals are free), every state the engine rebuilds while
+pinned gets it too, and dossiers record A for replay. At the first periodic check after
+`pin_proposals` proposals the restriction is lifted (`foundation_unpin` event); a restart
+before that ends it early (reason `restart`). Unpinned states pay one attribute test per
+`add` and per `repair_candidates`. Evidence: 2026-11-02 foundations (MixColumns cap 4: 89's
+level-1 set held fixed re-found 89@4 in 9 of 13 runs; NIST's gave 90 in 11 of 11; one pair
+swapped gave 92-95). Not shown to help InvMixColumns. Notes:
+`research/phase-2026-11-09/foundation-restart/IMPLEMENTATION.md`.
+
 **Sharing**: workers save verified records. The coordinator keeps a campaign pool of distinct
 verified DAGs per frontier point. Workers pull from it only when they restart (`sharing.mode =
 "pull"`, the default; `"off"` disables sharing), never mid-chain.
@@ -276,7 +295,8 @@ every event has `v`, `t` (seconds since campaign start, monotonic, continuing ac
 | `epoch` | every `telemetry.epoch_seconds` | per-move counters (proposals, valid, accepted, neutral, uphill, improved, work, cpu_s), per-combination counters, acceptance state, scheduler weights, chain/best score, plateau and diversity metrics |
 | `improve` | new worker best or nondominated feasible point | id, kind (`gates`, `depth`, `frontier`), before/after score, move, components, phase, plateau age, root, dossier path, verified |
 | `plateau` | a plateau closes | id, level, duration (it, s), proposals, neutral accepts, distinct states, drift, exit kind |
-| `restart` | chain restarts | reason, source (fresh/elite/shared/best), root, donor, previous chain summary |
+| `restart` | chain restarts | reason, source (fresh/elite/shared/best/foundation), root, donor, previous chain summary |
+| `foundation_unpin`, `foundation_failed` | a foundation pin ends; a foundation root could not be built | chain best, level-1 set vs the allowed set; donor, perturbation, reason |
 | `pull`, `pool_sample` | a restart drew a pooled elite | record id, donor worker, point, pool version |
 | `record` | a distinct DAG saved at an existing point | point, DAG hash |
 | `followup` | `telemetry.followup_iterations` after an improvement | id, further improvements, plateau length so far |

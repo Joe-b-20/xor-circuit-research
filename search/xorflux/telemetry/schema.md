@@ -215,6 +215,8 @@ when a move proposed for `telemetry.warn_dead_epochs` epochs without one valid p
 | `seed_rejected` | `reason`, `cap`: the seed circuit is unrealizable at the search cap (a root is built instead) |
 | `root_failed` | `constructor`, `seed`, `reason` |
 | `restart_failed` | `reason`, `tried` (sources in order): nothing usable; the chain gets another stall period |
+| `foundation_failed` | `reason`, `constructors`, `donor_kind` (`best`/`elite`), `donor`, `level1_size`, `swapped_out`, `swapped_in`, `dropped`, `allowed_size`, `seed`: no constructor built a root under the level-1 restriction (the next restart source is tried). A successful foundation restart is a `restart` event with `source = "foundation"` whose `root` holds the same fields plus `level1` (the donor's set), `constructor`, `pin_proposals` and `tried` |
+| `foundation_unpin` | `reason` (`proposals`: the pin ran out; `restart`: the chain restarted first), `engine_chain`, `proposals` (run while pinned), `pin_proposals`, `chain_best`, `chain`, `allowed_size`, `level1_size` (current state), `level1_equals_allowed`, `level1_missing` (allowed pairs the state dropped), `best_level1_equals_allowed` (the chain best's set) |
 | `adopt_best` | `point`, `donor`, `record`: a pulled elite became the worker best without a dossier (not this worker's discovery) |
 | `verify_fail` | `kind`, `id` (rejected dossier, or null for a sampled record), `point`, `result` (the verifier's summary); the chain restarts from the last verified best |
 
@@ -357,7 +359,9 @@ seed drawn from the engine RNG, so one proposal is a function of `values_before`
 rebuilt from them as the engine builds states: sorted values, trimmed, at `replay.cap`), the
 seed, the move's knobs (frozen settings), `replay.work_limit` and the move's own memory.
 `engine.replay.replay_dossier(dossier, target, objective, settings)` re-runs it and compares
-with `values_after`.
+with `values_after`. A proposal made in the pinned phase of a foundation restart also has
+`replay.level1_allowed` (the allowed level-1 set); the replay puts the rebuilt state under the
+same restriction.
 
 | `replayable` | meaning |
 |---|---|
