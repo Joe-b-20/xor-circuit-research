@@ -1,0 +1,109 @@
+EXACT HELPER VALUES LOCALIZE SHARING TO ADJACENT OUTPUT-BIT CLASSES
+23 October 2026
+
+This refines the push6 repeated-contact core ownership inequality. It is
+a structural family of necessary conditions, not a new numerical global
+gate lower bound. No class-assignment optimization is claimed here.
+
+1. COMPLETE FIXED-BOUNDARY FACTS
+
+Use B = the 32 input units and the 32 required output masks, in either
+the forward AES orientation M or its transpose Mt. A repeated candidate
+is any value with at least two distinct unordered B-triple expressions.
+Actual helpers with at least two represented HB incidences must be in
+this complete list. Arbitrary other helper masks remain unrestricted.
+
+The independent census audit_exact_mask_core.py reconstructs AES with
+generic GF(256) multiplication, enumerates all triples, and verifies:
+
+(a) Every repeated candidate has exactly ONE output-bit class k: every
+    output coordinate in every one of its triple forms has index k mod 8.
+    Each class contains 88 candidates.
+
+    M classes: 0,2,5,6,7.  Mt classes: 0,1,2,3,4,5,6.
+
+(b) If two distinct repeated candidate values h,k satisfy
+       h+k = B_i+B_j,
+    then every OUTPUT endpoint among i,j belongs to the union of the
+    classes of h and k. Input endpoints need no additional restriction.
+
+(c) A fixed even value can have repeated-helper contacts h+B_i=e in
+    at most two different classes. If two, those classes are adjacent
+    in exactly the following possible-class graphs:
+
+    M:  the path 5--6--7--0, and the isolated class 2;
+    Mt: the path 0--1--2--3--4--5--6.
+
+    Every adjacent class pair has 480 candidate-helper pairs with a
+    boundary-pair difference, and 358 even values with contacts in both
+    classes. These are complete algebraic candidate counts; they do NOT
+    assert all contacts are jointly executable. No nonadjacent pair or
+    three-class color occurs in the complete census.
+
+2. A FAMILY OF EXACT OWNERSHIP INEQUALITIES
+
+Let S be any subset of the output-bit classes. Select the actual helpers
+with r>=2 whose class lies in S. Let N2(S),N3(S) count their r=2/r=3
+members, and write
+
+    E(S) = N2(S)+2*N3(S).
+
+For each actual missing even label e, let m_e(S) be its number of HB
+contacts at these selected repeated helpers. Then
+
+    E(S) + sum_e max(0,m_e(S)-1) <= 4*|S|.              (1)
+
+Proof. Select all represented HB equations of those helpers and one
+actual BB reference equation for each of their represented labels.
+Their output coordinates belong to the four output positions of each
+class in S. For every missing label with m_e(S)>=2, select all of those
+HB equations too. By (b), their boundary output endpoints also belong
+to classes in S. Their even label is their only possible new noninput
+value beyond the helpers, references and 4|S| outputs already allowed.
+
+Every selected actual gate has a distinct birth result in this set of
+noninput values. Counting selected gates against those values gives
+exactly (1), by the same injection as the global core ownership proof.
+This includes arbitrary cancellation, output reuse and gate birth order.
+
+If U(S)=sum_e m_e(S), and p(S) counts labels with m_e(S)>0, (1) becomes
+
+    E(S)+U(S) <= 4*|S|+p(S) <= 4*|S|+q.               (2)
+
+Taking S to be all classes recovers the new global core inequality.
+For individual classes, the available slack is 4-E({k}). A class with
+E({k})=4 cannot have two repeated-helper contacts in one missing label.
+For any collection of such saturated classes, no missing label can have
+two repeated-helper contacts anywhere within that collection. Exact
+class adjacency further prohibits shared colors across nonadjacent
+classes even if an aggregate count leaves capacity for them.
+
+3. THE SAME SUBSET ALSO HAS AN OO-BIRTH CHARGE
+
+Let L(S) count the distinct represented labels used by the selected
+helpers and let U_multi(S)=sum_{m_e(S)>=2}m_e(S). Then
+
+    L(S)+E(S)+U_multi(S) <= x+4*|S|.                    (3)
+
+Every selected EE-born label requires a birth outside the selected
+all-odd-edge subsystem. The same birth injection bounds the number of
+such outside births and proves (3). Here x is the GLOBAL OO count; one
+must NOT sum (3) over different subsets without controlling shared labels.
+Using L(S)>=3*N3(S) and the existing per-label contact bounds yields
+localized analogues of the two global OO rows if useful in a future
+model with actual class assignments.
+
+4. WHAT THIS DOES AND DOES NOT ESTABLISH
+
+The theorem rigorously limits sharing by exact signal value, extending
+parity and weight arguments. Its finite census is complete because r>=2
+forces the enumerated triple representations; it is not a guessed bank
+of allowed intermediate masks.
+
+The current aggregate screen records helper types (r,u,v), not a full
+assignment to these classes and exact masks. Its final v4 model includes
+integer-rounded consequences of the localized subset family, as proved in
+global_chronology/ROUNDED_CLASS_CORE_PROOF.txt. It does not directly impose
+the complete class assignments or the adjacency graph. A surviving
+aggregate type vector still requires class assignment, color matching,
+exact mask compatibility and chronological realization.

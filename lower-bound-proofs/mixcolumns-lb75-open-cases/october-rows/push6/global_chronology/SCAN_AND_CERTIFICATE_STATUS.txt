@@ -1,0 +1,244 @@
+PUSH6 FINAL STATUS: EXACT OUTPUT CLASSES CONSTRAIN SHARED EXPANSIONS
+2026-10-23
+
+FROZEN MODEL
+------------
+The authoritative unsuffixed model is:
+
+  push6-core-rounded-overload-p-capacity-v4
+
+All final screens, certificates, and survivor witnesses below use this
+exact model version.  Push5 is preserved unchanged.  The final finite
+scope extension includes the transpose condition (q<=6 OR y<=3).
+
+FINAL RESULT
+------------
+The push5 necessary-condition relaxation retained 810 oriented G=75
+profiles.  Push6 excludes 301 more profiles by exact nonnegative-integer
+certificates.  The remaining 509 profiles each have an exactly verified
+rational helper-type witness in both phases.
+
+Of those RETURNED witnesses, 5 have integral helper-type counts in both
+phases; all 5 have exactly verified simple H--H graph realizations in both
+phases.  The artifact selects 2 of those points as explicit examples,
+with exact type counts, row slacks, degree sequences, and H--H edges.
+
+The integral/graphical counts concern the returned witnesses, not all
+possible alternatives for each scalar profile.  In particular they do
+not prove that any other profile lacks an integral or graphical witness.
+Nor do integral counts or an abstract H--H graph supply actual signal
+masks, label assignments, compatible parents, or a gate chronology.
+
+Push5 certified 698 exclusions relative to the earlier 1,508 surviving
+profiles.  The new 301 exclusions are disjoint, giving 999 cumulative
+exact profile exclusions and 509 remaining rational relaxation points.
+This is partial coverage of the 7,416-state oriented scalar domain.
+
+The unrestricted gate ledger remains 75--88.  This checkpoint does not
+establish a global 76 lower bound, construct an 87-gate circuit, or prove
+88 optimality.  It proves new necessary conditions on unrestricted
+circuits and exact exclusions within their aggregate relaxation.
+
+FINAL EXACT CHECKS
+------------------
+  G=75 scalar states:                                     3,708
+  Scalar states with both phase orientations:             7,416
+  Frozen push5 survivor baseline:                           810
+  Additional oriented profiles excluded exactly:            301
+  Local nonnegative integer Farkas certificates:           3,407
+  Helper-type coefficients checked:                     134,962
+  Certificate references in partial coverage:              5,656
+  Direct geometric references:                            1,076
+  Largest weighted right-hand side:                          -1
+  Remaining profiles with exact rational witnesses:          509
+  Returned witnesses integral in both phases:                   5
+  Returned integral witnesses H--H graphical in both phases:    5
+  Explicit selected examples saved:                            2
+
+The certificate checker reconstructs the local coefficients and the
+global scalar domain.  It verifies nonnegative integer multipliers
+lambda with lambda*A>=0 and lambda*b<0 for A*n<=b,n>=0.  Coverage checks
+each required q,z case beneath the claimed local lower bound and the
+inherited scalar or two-step transpose-potential contradiction.
+
+Its default mode uses only Python's standard library.  Numerical LPs
+discover candidate multipliers; their numerical status is not a proof
+premise.  The remaining 509 witnesses are independently rationalized and
+every aggregate inequality is rechecked exactly.
+
+WHAT THE EXACT MASKS ADDED
+-------------------------
+All helpers with at least two ACTUAL represented H--B incidences belong
+to a complete boundary-triple census: 440 candidate values for M and 616
+for M transpose.  Every such candidate belongs to one output-bit class;
+there are 5 classes for M and 7 for M transpose, with 4 outputs per class.
+
+If two such helper values differ by a boundary pair, every output
+endpoint of that pair lies in one of those two helper classes.  The
+complete census checks 11,520 forward and 16,992 transpose contact pairs,
+with no exception.  This was independently rebuilt from AES arithmetic
+by the root audit and by this branch.  Arbitrary other helpers retain
+unrestricted masks.
+
+For any selected class subset S, actual-birth ownership now gives
+
+  E_rep(S)+sum_e max(0,m_e(S)-1) <= 4*|S|,
+  E_rep(S)+U_rep(S) <= 4*|S|+p.
+
+Here E_rep=N2+2*N3, U_rep counts missing-label contacts at repeated
+helpers, m_e counts those contacts for one color, and p is the number
+of missing colors with any repeated contact.  Always p<=q.  A color
+shared across multiple repeated helpers cannot be reused without
+consuming the remaining birth capacity in their exact output core.
+
+The full-class selection and the inherited per-color capacity 3 yield
+
+  N2+2*N3+U_rep <= C+p,
+  2*N2+10*N3+3*U_rep <= 2*x+2*C+3*p,
+  N2+5*N3+2*U_rep+A <= x+C+3*p,
+
+with C=20/28.  A counts full-helper missing incidences.  The first
+push5 selected M witness violates the first row by 4: 28<=24 would be
+required.  Its exact shared endpoints leave no room for those births.
+
+The localized theorem also yields rounded class inequalities.  Put
+w_H=r_H-1+u_H for repeated helpers.  For t=C/4 classes, every d>=1 gives
+
+  sum_H floor(w_H/d)
+    <= min_(1<=k<=t) floor[(t/k)*floor((4*k+p)/d)].
+
+The implemented row uses the proved CONSTANT upper bound q_eff for p
+inside these floors.  For M,q=7,d=3,k=4 the bound is 8.  A returned
+vector with nine repeated helpers all having w=3 therefore fails 9<=8.
+This exact class obstruction supersedes a larger contact-graph search.
+
+A second family follows from sum_c max(W_c-4,0)<=p, where W_c is the
+total weight in a class.  For rational 0<=a/d<=1,
+
+  sum_H floor(a*w_H/d) <= t*floor(4*a/d)+p.
+
+All nontrivial distinct rows of this one-parameter family are covered
+by reduced positive fractions with denominator<=max(4,q+2).  The
+omitted initial row 0<=p is true by definition.
+
+TRANSPOSE COLOR CAPACITY IS COUPLED TO THOSE RESOURCES
+----------------------------------------------------
+The even-frontier proofs bound p by the actual H--H incidence and label
+matching budget.  The final model includes the independently checked
+full-pair HH quotient fact, extending the two-exception condition to
+M^T with q<=6 OR y<=3 under the stated helper-defect budget.
+
+The coefficient generator combines each resource K<=base+c*p with
+each proved budget s*p-g(n)<=b by the single exact rule
+
+  s*K-c*g <= s*base+c*b.
+
+It replaces p by a constant inside rounded subset expressions only
+when the proof supplies that constant.  New rows are deduplicated by
+coefficient vector, retaining the smallest RHS.  Dividing by a gcd
+common to both coefficients and RHS is exact over the reals.  The
+entire push5 coefficient prefix is unchanged.
+
+ACTUAL USE IN THE SUCCESSFUL CERTIFICATES
+----------------------------------------
+Final Farkas certificates use all three core/OO resource families,
+including their couplings to HH label matching, HH incidence/edge
+deficiency, and the anchored-full-HH color budget.  They also use
+rounded subset divisors 2, 3, 4 and overload ratios
+
+  1/2, 1/3, 1/4, 2/3, 2/5, 2/7, 5/7.
+
+This records the support of the returned successful certificates; it
+does not establish that each named row is individually indispensable.
+FINAL_CERTIFICATE_RESOURCE_USAGE.json lists the used rows and families.
+
+NOTATION THAT MUST REMAIN DISTINCT
+---------------------------------
+The inherited local key is(h,y,F_T,orientation,q,z).  Code inherited
+from the original generator sometimes calls F_T simply F.  It is the
+EE count of the next canonical transpose, NOT a full-helper count.
+N3 is the full-helper count here; N2 counts r=2 helpers.
+
+E_rep=N2+2*N3 is the represented excess/core weight.  In transpose
+capacity notation Q=Z+E_overflow, where E_overflow is a different
+quantity.  The p-resource note keeps these meanings separate.
+
+PROOF AND AUDIT FILES
+---------------------
+  REPEATED_CONTACT_CORE_PROOF.txt
+  ROUNDED_CLASS_CORE_PROOF.txt
+  P_COUPLED_RESOURCE_ROWS.txt
+  repeated_contact_core.py
+  REPEATED_CONTACT_CORE_RESULTS.json
+
+  ../root/LOCALIZED_SHARING_THEOREM.txt
+  ../root/EXACT_MASK_CORE_INDEPENDENT_AUDIT.json
+  ../root/FULL_PAIR_DARK_INDEPENDENT_AUDIT.json
+  ../root/ROOT_PROOF_AUDIT.txt
+
+  ../even_frontier/HH_EXCEPTIONAL_LABEL_BUDGET.txt
+  ../even_frontier/HH_LABEL_MATCHING_REFINEMENTS.txt
+  ../even_frontier/FULL_PAIR_HH_ZERO_QUOTIENT.txt
+  ../odd_spine/PUSH6_INDEPENDENT_LOGIC_AUDIT.txt
+
+The finite core and rounding checks pass for all ten archived 88-gate
+controls and their canonical transposes, 20 orientations in total.
+These controls are implementation checks, not the source of universality.
+
+FINAL DATA AND REPRODUCTION
+---------------------------
+  model_full_cuts.py
+    Final v4 standard-library coefficient generator, importing the
+    frozen push5 generator without modifying it.
+
+  SCREEN75_FULL_CUT.json
+    Final numerical discovery screen, baseline 810 and survivors 509.
+
+  G75_NEW_CUT_PARTIAL_CERTIFICATES.json
+    Exact integer multipliers and 301 partial-coverage claims.
+
+  G75_NEW_CUT_PARTIAL_VERIFIED.json
+    Exact verification result and used-row list.
+
+  EXACT_REMAINING_RELAXATION_POINTS.json
+    Exact rational audit of all 509 final profiles; counts 5 integral,
+    5 graphical; 2 selected review examples with graph edge lists.
+
+  CUMULATIVE_PARTIAL_COVERAGE.json
+    Set-level check that the 698 push5 claims and 301 push6 claims
+    are disjoint and partition the 1,508 original survivors together
+    with the 509 final remaining profiles.
+
+From the workspace/package root, standard-library exact replays:
+
+  python push6/global_chronology/certify75_partial.py
+  python push6/global_chronology/extract_relaxation_points.py
+  python push6/global_chronology/repeated_contact_core.py
+
+Optional numerical rediscovery requires NumPy and SciPy:
+
+  python push6/global_chronology/screen75_full_cut.py
+  python push6/global_chronology/certify75_partial.py --generate
+
+The coefficient dependency chain is the frozen push5 model, then the
+unchanged original research_deep/root/certify75.py in the saved 75-proof
+source.  The original file is a G=74 global certificate generator; its
+local inequalities are reused at G=75.  It must not be described as a
+complete G=75 exclusion.
+
+VERSION HISTORY
+----------------
+V1: 517 survivors; 293 additional exclusions exactly certified at that
+stage; 2 returned integral/graphical witnesses.  Its displayed M and
+Mt vectors were later excluded by stronger exact conditions.
+
+V2: 514 numerical survivors after additional Mt matching/full-HH rows.
+V3: 514 numerical survivors after rounded class-core rows using q.
+V2 and V3 were intermediate screens; no separate exact-release claim
+is made for them.
+
+V4 FINAL: 509 exact rational survivors; 301 additional exact exclusions;
+5 returned integral/graphical witnesses;2 selected examples saved.
+The final v4 includes p-capacity coupling, overload-floor rows, and
+the audited F5 scope extension.  Files suffixed V1/V2/V3 are historical
+snapshots and are not inputs to the final release checker.

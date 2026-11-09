@@ -1,0 +1,299 @@
+FINAL STATUS: NEW GLOBAL NECESSARY CONDITIONS, EXACT PARTIAL G=75 EXCLUSIONS
+============================================================================
+
+This branch is frozen after the final Z+E exceptional-label refinement, the
+H--H degree-realizability row, and the arbitrary-z unanchored-helper
+coupling.  The numerical screen, exact certificates, and saved survivor
+witnesses were regenerated with all refinements.
+
+RESULT
+------
+The inherited G=75 scalar relaxation admitted 1,508 oriented profiles.
+With the new globally valid rows, 810 profiles remain.  ALL 698 additional
+oriented-profile exclusions have exact nonnegative-integer certificates.
+ALL 810 remaining profiles have exactly verified rational feasible
+helper-type witnesses.  Of the returned witnesses, 58 have integral
+helper-type counts on both phases, and 54 of those have exactly verified
+simple H--H degree realizations on both phases.  The three selected examples
+are drawn from those 54 and include explicit H--H edge lists.
+
+These are aggregate necessary-condition profiles, NOT executable circuits.
+The present relaxation still admits G=75.  This work does not establish a
+global 76 lower bound, does not establish optimality of 88, and does not
+construct an 87-gate circuit.  The unrestricted gate ledger remains 75--88.
+
+The integral and graphical counts describe the particular returned
+witnesses.  They do not prove that another profile lacks an integral or
+graphical alternative.  A graphical H--H degree sequence does not establish
+actual mask, label, incidence, or chronological realizability.
+
+The intermediate counts 271 / 1,237 / 105 and 357 / 1,151 were superseded.
+The last pre-H--H screen had 391 / 1,117 / 71.  Adding the H--H degree row
+left the first two counts unchanged but changed the returned witnesses to
+153 integral and 117 graphical.  The arbitrary-z h0 coupling then gives
+the final counts: 698 exact additional exclusions, 810 exact rational
+survivors, 58 returned integral witnesses, and 54 returned witnesses with
+integral counts and graphical H--H degrees in both phases.
+
+FINAL EXACT-CERTIFICATE TOTALS
+-----------------------------
+  Total scalar states reconstructed at G=75:               3,708
+  Total scalar states with the two phase orientations:     7,416
+  Additional oriented profiles excluded exactly:             698
+  Local integer Farkas certificates checked:               4,688
+  Helper-type coefficients checked:                     165,424
+  Certificate references in partial coverage:              8,840
+  Direct geometric references:                            1,990
+  Largest weighted right-hand side:                          -1
+  Remaining profiles with exact rational witnesses:          810
+  Returned witnesses integral in both phases:                 58
+  Returned integral witnesses H--H graphical in both phases:  54
+
+The exact dataset covers the listed 698 profiles.  It is NOT a complete
+exact exclusion of every other G=75 scalar state in the 7,416-state domain.
+In particular, the older G=74 certificate package should not be described
+as a complete G=75 exclusion.  The scope of each claim is recorded explicitly.
+
+NOTATION: TWO DIFFERENT MEANINGS OF F MUST NOT BE CONFUSED
+--------------------------------------------------------
+The inherited local LP key is
+
+  (h, y, F_T, orientation, q, z).
+
+In the code this third entry retains the old name F.  It is the EE-gate
+count of the NEXT canonical transpose, a reverse fan-out resource.  It is
+NOT the number of full represented helpers.
+
+For the new mathematics, use N3 for the number of actual helpers with
+r_H=3 represented H--B incidences, and N2 for those with r_H=2.  Some early
+proof prose called N3 'F'; that prose explicitly warns about this conflict.
+
+The scalar state order is
+
+  (a,b,Y,V,h_even,h_odd,l_even,l_odd,S_even,S_odd,budget).
+
+Here a,b are the alternating OO counts; Y,V are the alternating EE counts;
+h_even/h_odd are odd-helper counts.  The word 'even' here means the index
+of the transpose iteration, not the parity of a signal.  The orientation
+field identifies whether the even-indexed phase computes M or M^T.
+
+EXACT NEW ROWS IN THE FINAL MODEL
+--------------------------------
+For a helper type (r,u,v), v is its degree in the H--H graph, which has z
+edges and no loops.  Thus every actual helper has v<=z.  The original type
+generator is retained unchanged, and the model appends the nonnegative
+zero-bound row
+
+  sum_(types with v>z) n_(r,u,v) <= 0.
+
+This is a graph-realizability condition; even a loopless multigraph must
+satisfy it.  It does not alone enforce the full simple-graph degree criteria.
+
+Let C=20 for M and C=28 for M^T.  Let x=75-32-h-y in this fixed-G scan.
+The independently reconstructed fixed-boundary geometry gives:
+
+  3*N3 + q <= x+y,
+  N2 + 5*N3 <= x+C.
+
+The model also retains the valid integer roundings
+
+  N3 <= min(C/2, floor((x+C)/5)),
+  N3 <= floor((x+y-q)/3).
+
+These are justified by actual represented gate incidences and ownership of
+their chronological births.  They do not count merely possible boundary
+decompositions and do not constrain any other intermediate masks.
+
+For M^T with z=0, define
+
+  A = sum_(r=3) u*n_(r,u,v),
+  Z = sum (r-1)_+*u*n_(r,u,v),
+  E = sum_(r=3) (u-2)_+*n_(r,u,v).
+
+Set k_exc=2 when q<=6, and k_exc=1 when q>=7.  The final model adds
+
+  A <= q-k_exc,
+  Z+E <= 3*(q-k_exc).
+
+An exceptional label has no r>=2 helper contact.  At least one such label
+is necessary whenever z=0; at least two are necessary for q<=6.  The
+inherited per-label excess/overflow proof charges only repeated-bright
+labels, so the exceptional labels supply no capacity to Z+E.
+
+For M^T at any z, let h0=sum_(r=0) n_(r,u,v), the number of helpers with
+no represented H--B incidence.  The final model also adds
+
+  A-h0 <= q-1,
+  Z+E-3*h0 <= 3*(q-1).
+
+When h0=0, triple pivots for all helpers make every H--H equation short
+if no missing label is exceptional.  Together with the short H--B and
+EE relations this would put 32 independent boundary rows inside R10,
+whose dimension is 29.  Thus an exceptional label is required even when
+z>0.  For h0>=1 the rows follow from the inherited A<=q and Z+E<=3*q.
+These rows do not assume a stabilized transpose or a maximal EE count.
+
+All inequalities from the inherited PROOF75 system remain in the model.
+No solver-selected assumption or finite vocabulary for arbitrary signals
+has been added.
+
+MATHEMATICAL DEPENDENCIES
+------------------------
+The H--H degree condition and the exact graphical audit are documented in:
+
+  HH_DEGREE_REALIZABILITY.txt
+
+The audit constructs a simple graph for each returned integral degree
+sequence when possible, then independently replays the edge list to check
+the degree counts, absence of loops, and absence of duplicate edges.
+
+The full-helper and repeated-helper ownership proof, with a separate
+complete census for both orientations, is:
+
+  ../odd_spine/FULL_HELPER_LABEL_OWNERSHIP_INDEPENDENT.txt
+  ../odd_spine/FULL_HELPER_LABEL_OWNERSHIP_INDEPENDENT.json
+  ../odd_spine/independent_full_helper_audit.py
+
+Its finite evidence covers 80 forward and 112 transpose full-helper values,
+240/336 independent full-helper pairs, and every represented-edge choice.
+The independent checker covers all 419,904 choices through the stronger
+fact that each pair's six triples have 18 distinct possible reference pairs.
+It also reconstructs all 440/616 repeated-helper values and their output
+support unions of size 20/28.
+
+The forward cycle-budget proof, retained as additional geometry, is:
+
+  FULL_HELPER_CYCLE_CUT.txt
+  full_pair_cycles.py
+  FULL_PAIR_CYCLES.json
+
+It proves the complete odd graph has cycle rank delta=x-r, and records the
+extra delta requirements caused by neighboring saturated full-helper cores.
+The full-helper proof explicitly points to the stronger both-orientation
+joint ownership note used in the final scalar model.
+
+The transpose exceptional-label and EE quotient proof is:
+
+  ../even_frontier/EE_QUOTIENT_CHARGE_THEOREM.txt
+
+Its finite premises and independent root audit are preserved with the
+surrounding push5 package.  The final model uses the Z+E version and the
+arbitrary-z unanchored-helper coupling, not the earlier weaker Z-only or
+A-only variants.
+
+The inherited coefficient generator is imported UNCHANGED from:
+
+  ../sources/xor/AES_MixColumns_Lower_Bound_75/
+    research_deep/root/certify75.py
+
+The theoretical reduction to stabilized scalar states is the inherited
+PROOF74/PROOF75 transpose-potential argument.  The universal rank bound
+r>=24 is inherited from the earlier even-span graph-code partition theorem;
+it is not a new push5 finding.
+
+EXACT CERTIFICATE FORMAT AND CHECKING
+------------------------------------
+For a fixed local key, the inherited plus new rows have the form
+
+  A*n <= b,   n >= 0.
+
+Each saved certificate is a vector of nonnegative INTEGERS lambda with
+
+  lambda*A >= 0 coefficientwise,   lambda*b < 0.
+
+Consequently 0 <= (lambda*A)*n <= lambda*b < 0, an exact contradiction.
+The checker computes every coefficient and weighted right-hand side using
+integer arithmetic.  The numerical optimizer only discovers multipliers.
+
+The partial coverage checker reconstructs the scalar domain, verifies every
+listed oriented state belongs to it, checks every q,z case below the claimed
+s lower bounds, and checks that the bounds violate a scalar upper bound or
+force the inherited positive two-step potential drift.
+
+Key files:
+
+  model_full_cuts.py
+    Standard-library coefficient wrapper.  Imports the inherited generator
+    unchanged and appends the new integer rows.
+
+  G75_NEW_CUT_PARTIAL_CERTIFICATES.json
+    Exact integer multipliers and the 698 partial coverage claims.
+
+  certify75_partial.py
+    Exact standard-library checker; --generate additionally needs NumPy/SciPy.
+
+  G75_NEW_CUT_PARTIAL_VERIFIED.json
+    Final exact verification counts listed above.
+
+  SCREEN75_FULL_CUT.json
+    Final numerical discovery screen and its type-count witnesses.
+
+  EXACT_REMAINING_RELAXATION_POINTS.json
+    Exact rational audit of all 810 remaining profiles, with three explicit
+    integral examples, exact slacks for the new inequalities, and explicit
+    verified H--H graph realizations for both phases of each example.
+
+  extract_relaxation_points.py
+    Converts saved numerical type counts to rationals and rechecks every
+    inequality exactly.  It also checks every returned integral H--H degree
+    sequence by graph construction and independent edge replay.  Its
+    feasibility conclusion is only about the aggregate model; it never
+    asserts that the point is a circuit.
+
+REPRODUCTION COMMANDS
+---------------------
+Run from the workspace/package root.  The default exact checker and the
+rational survivor audit need only Python's standard library:
+
+  python push5/global_chronology/certify75_partial.py
+  python push5/global_chronology/extract_relaxation_points.py
+
+Independent geometry and the original forward core audit:
+
+  python push5/odd_spine/independent_full_helper_audit.py
+  python push5/global_chronology/full_pair_cycles.py
+
+Optional rediscovery, requiring NumPy and SciPy:
+
+  python push5/global_chronology/screen75_full_cut.py
+  python push5/global_chronology/certify75_partial.py --generate
+
+The screen can reuse the unchanged inherited baseline from the retained
+M_ONLY snapshot.  Without that cache it reconstructs the baseline itself.
+Historical files with M_ONLY, BOTH_COST_ONLY, BOTH_LABELS, EXCEPTIONAL_Q4,
+Q5, BEFORE_WEIGHTED_ROW, WEIGHTED_Z_ONLY, or BEFORE_HH_DEGREE in their names
+are intermediate snapshots.  BEFORE_H0_COUPLING snapshots preserve the
+last pre-coupling screen and its certificates and survivor witnesses.
+Only the unsuffixed final SCREEN75_FULL_CUT.json and final exact certificate
+files define the reported result.
+
+WHAT THE REMAINING WITNESSES SHOW
+--------------------------------
+One explicit surviving pair has a=25, b=24, Y=4, V=3 and computes M on
+the even-indexed phase.  Its local keys are
+
+  M phase:   (h=14,y=4,F_T=3,q=4,z=0),
+  M^T phase: (h=16,y=3,F_T=4,q=2,z=1).
+
+Both helper-type vectors are integral and satisfy every row exactly.
+The M phase has types
+
+  2*(0,3,0) + 4*(2,1,0) + 4*(3,0,0) + 4*(3,1,0),
+
+and the M^T phase has types
+
+  1*(0,2,1) + 1*(1,1,1) + 6*(2,1,0) + 8*(3,0,0).
+
+The first phase's H--H graph has no edges; the second phase's H--H graph
+is a single edge joining the two degree-one helpers.  Both edge lists were
+checked exactly.  Their s counts are 4 and 3, attaining the scalar sum
+budget 7.  The M^T phase has h0=1 and attains its weighted unanchored-helper
+bound Z+E-3*h0=3*(q-1).  It also has z=1, so the stronger z=0 exceptional-
+color theorem does not apply.  This is a concrete remaining point in the
+aggregate proof model, not a proposed circuit architecture.  No actual
+signal masks, label assignments, or gate chronology are supplied.
+
+The next global advance must reject such counts by additional valid
+geometry/chronology constraints, or demonstrate an exact construction.
+Repeating the same LP screen, or identifying one more familiar helper
+decomposition, cannot by itself close the remaining gate-count gap.

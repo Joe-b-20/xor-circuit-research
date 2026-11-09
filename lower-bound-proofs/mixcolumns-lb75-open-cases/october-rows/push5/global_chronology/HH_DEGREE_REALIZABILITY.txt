@@ -1,0 +1,59 @@
+H--H DEGREE REALIZABILITY ROW
+============================
+
+Scope
+-----
+This condition holds in every normalized XOR circuit's odd-signal graph,
+in both matrix orientations.  It restricts no helper mask, depth, fan-out,
+output reuse, or cancellation.
+
+Let z be the total number of edges with two odd-helper endpoints.  Let v_H
+be the number of these edges incident to a specified helper H.  There are
+no loops: the two odd endpoints of a defining gate equation are distinct.
+Each of the z edges therefore contributes at most one incidence to H, so
+
+  v_H <= z.
+
+The inherited helper-type generator used only
+
+  v <= min(2*z,h-1),
+
+which includes types that satisfy the total handshake budget but cannot be
+the degree of one vertex.  Keep the inherited type list and all original
+coefficients unchanged.  Add the exact nonnegative-count row
+
+  sum_(r,u,v : v>z) n_(r,u,v) <= 0.
+
+Because all type counts are nonnegative, this forces every impossible
+type to have count zero.  For example, a profile assigning v=2 to one
+helper when z=1 fails this condition.  Both endpoints of the one edge must
+instead contribute one incidence each.
+
+This elementary row was absent from the inherited aggregate coefficient
+generator.  It was identified during the root review of the first saved
+integral surviving profiles; those profiles are preserved only in the
+BEFORE_HH_DEGREE snapshots.
+
+Degree-sequence audit
+---------------------
+The final survivor-extraction script additionally expands every integral
+type vector to its H--H degree sequence.  It applies Havel--Hakimi and,
+when a graph is returned, independently replays every edge to verify:
+
+  * no edge is a loop;
+  * no edge is repeated;
+  * each helper has exactly its claimed H--H degree.
+
+The selected final examples prefer profiles with a verified simple H--H
+graph in both phases.  This auxiliary degree-sequence audit does not feed
+additional unproved conditions into the LP.  Even a realized simple
+degree sequence is not an XOR circuit: actual masks, label assignments,
+other incidences, and chronological births remain to be constructed.
+
+Implementation
+--------------
+  model_full_cuts.py: new HH degree realizability <=
+  extract_relaxation_points.py: hh_graph(), explicit edge replay
+
+The final numerical and exact-certificate counts are recorded in
+SCAN_AND_CERTIFICATE_STATUS.txt, not in the earlier snapshots.

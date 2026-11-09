@@ -1,0 +1,228 @@
+HELPER--HELPER EQUATIONS MUST PAY FOR THE THREE MISSING BOUNDARY DIMENSIONS
+23 October 2026.  New push6 theorem; push5 remains unchanged.
+
+SCOPE AND PRINCIPAL RESULT
+
+These are necessary conditions for every normalized acyclic two-input XOR
+circuit computing AES MixColumns TRANSPOSE.  All nonzero signal masks,
+parent choices, depths, cancellation, fanout, and output reuse are allowed.
+Nothing assumes that an aggregate feasible point is an executable circuit.
+
+Let Q_* be the missing even labels that are NOT repeated-bright.  If Q_*
+is empty, then
+
+                    z_U - h_00 >= 3.                         (T)
+
+Here z_U is the number of helper--helper (HH) equations with at least one
+unanchored helper endpoint, and h_00 counts helpers having no helper--
+boundary (HB) equation at all.  Consequently z-h_00>=3 as well, where z
+counts every HH equation.
+
+In particular, z<=2 forces at least one exceptional missing label.  This
+excludes all three displayed transpose profiles in the frozen push5
+EXACT_REMAINING_RELAXATION_POINTS.json.  It does not by itself exclude
+all other aggregate profiles or improve the numerical global gate bound.
+
+1. DEFINITIONS AND INHERITED EXACT-BOUNDARY FACTS
+
+The boundary B consists of the 32 raw inputs and 32 required outputs of
+M^T.  These are distinct odd values.  Its formal evaluation map has rank
+32; therefore its complete relation space has dimension 64-32=32.
+Let R10 be the span of its true relations with support at most ten.
+The complete fixed-boundary census gives dim(R10)=29.
+
+Normalize to distinct nonzero signal values.  Each gate contributes its
+three-signal defining equation.  All defining rows are independent: the
+latest gate result in a proposed dependence cannot cancel.  Since raw
+inputs are present, these rows span the full formal evaluation kernel.
+Eliminating all nonboundary signal coordinates must leave the complete
+32-dimensional boundary relation space.
+
+In the odd-signal graph, each OO or OE gate equation is an edge joining
+its two odd signals, labeled by its even signal.  A nonoutput odd signal
+is a helper.  An even label is represented if an ACTUAL boundary--boundary
+(BB) defining edge exists.  The other q even labels are missing.
+
+At a helper H, r counts its represented-label HB edges, u its missing-label
+HB edges, and v its HH edges.  It is anchored if r>0.  A missing label is
+repeated-bright if an actual HB edge in that label touches a helper with
+r>=2.  Q_* is the set of missing labels that fail this property.
+
+Let h_00=#{H:r=u=0}, V0=sum_(r=0)v, and z_U be the number of HH edges
+touching at least one helper with r=0.  Always z_U<=z and z_U<=V0.
+
+The prior complete exact-mask theorem F1 states: after represented labels
+are written as boundary pairs, anchored helpers as boundary triples, and
+repeated-bright labels as boundary four-forms, every EE equation using
+only represented or repeated-bright labels lies in R10.  This is not a
+support-size assertion: a 4+4+4 row could have weight twelve.  F1 excludes
+the nonzero quotient rows using the COMPLETE boundary mask census.
+
+F1 and dim(R10)=29 are independently audited in
+  push5/even_frontier/EE_QUOTIENT_CHARGE_THEOREM.txt, Sections 1--2;
+  push5/root/audit_bright_ee.py;
+  push5/root/BRIGHT_EE_INDEPENDENT_AUDIT.json.
+
+2. PIVOTS WHEN Q_* IS EMPTY
+
+Perform these ordinary invertible row operations on the full defining-
+equation system, in the stated order.
+
+  (a) For every represented even label, choose its BB reference row and
+      pivot that label as a boundary pair.
+
+  (b) For every anchored helper, choose one represented-label HB edge and
+      pivot that helper as a boundary triple.
+
+  (c) Every missing label is repeated-bright.  Choose an HB edge at an
+      anchored helper with r>=2, and pivot that label as a boundary form
+      of support at most four.
+
+  (d) Every unanchored helper with u>0 now has an HB row whose even label
+      has a four-form.  Choose one such row and pivot the helper as a
+      boundary form of support at most five.
+
+Each pivot introduces one previously uneliminated coordinate.  The rows
+used in these four stages are distinct: respectively BB, represented HB,
+missing HB at an anchored helper, and missing HB at an unanchored helper.
+There is no circular substitution or presupposed chronological order of
+the expressions.  The operations preserve the complete defining-row span.
+
+Only the h_00 helper coordinates with r=u=0 remain outside B.  They have
+no HB rows, by definition, and occur only in HH rows.
+
+Every remaining NON-HH row is a boundary relation in R10:
+
+  * remaining anchored HB rows have support at most 3+4+1=8;
+  * remaining unanchored HB rows have support at most 5+4+1=10;
+  * every EE row is good and belongs to R10 by the exact-mask fact F1;
+  * BB reference substitutions give boundary-only relations of support
+    at most four (normalization/Sidonicity usually makes these vacuous).
+
+Every HH row with two anchored endpoints also lies in R10, since its
+support is at most 3+3+4=10.  Thus only the z_U remaining HH rows can
+supply anything outside R10 or contain an h_00 coordinate.
+
+3. EXACT RESIDUAL-RANK COUNT
+
+Let U denote the h_00 remaining formal helper coordinates.  Their actual
+values need not be linearly independent.  They are nonetheless independent
+FORMAL coordinates, and each has a kernel relation consisting of that
+coordinate plus its expression in the raw-input basis.  Consequently the
+projection of the complete residual relation space onto U has rank h_00.
+
+All rows other than the z_U HH rows have zero U projection.  Therefore
+the span S of those HH rows projects onto U with rank h_00.  Since
+dim(S)<=z_U, its combinations with zero U projection have dimension
+
+                        dim(S intersect B)<=z_U-h_00.
+
+The short rows already lie in R10 and have zero U projection.  Adding
+them cannot permit a combination with a nonzero U projection to become
+a boundary relation.  The entire boundary relation space is therefore
+contained in R10 + (S intersect B), so
+
+                  32 <= 29 + z_U - h_00.
+
+This proves (T).  Sharing of parent signals and cancellation of boundary
+coordinates are included in the formal row operations; neither changes
+the dimension count.  No helper-degree or canonical-transpose assumption
+is used.
+
+The same projection argument, without Q_*=empty and without any pivots,
+also proves the universally valid nonnegativities
+
+           z_U-h_00>=0, z-h_00>=0, V0-h_00>=0.             (N)
+
+Indeed r=u=0 helper coordinates occur only in HH rows in the original
+system, and the full kernel projects onto all of them.
+
+4. AGGREGATE CUTS
+
+Write p for the number of repeated-bright missing labels, and define
+
+  A = sum_(r=3) u,
+  Z = sum (r-1)_+ u,
+  E = sum_(r=3) max(u-2,0).
+
+Inherited exact-label capacity and full-helper incompatibility give
+
+                       A<=p,   Z+E<=3p.                   (C)
+
+If Q_* is nonempty, p<=q-1.  If Q_* is empty, (T) makes each of
+z-h_00 and V0-h_00 at least three.  Combine these two cases with
+the nonnegativities (N) to obtain FOUR valid linear inequalities for
+arbitrary z:
+
+              3A - V0 + h_00 <= 3(q-1),                  (L1)
+             Z+E - V0 + h_00 <= 3(q-1),                  (L2)
+                     3A+h_00 <= 3(q-1)+z,                (L3)
+                    Z+E+h_00 <= 3(q-1)+z.                (L4)
+
+No indicator variables or unknown mask bank are needed for these rows.
+The coefficient h_00 is exactly the sum of helper-type counts with
+r=0 AND u=0.  V0 includes all r=0 types and weights them by v.
+
+For z<=2, (T) rules out Q_*=empty completely.  Thus the stronger
+conditional rows are
+
+                   A <= q-1,
+                   Z+E <= 3(q-1).                        (L5)
+
+The analogous conclusion holds whenever V0-h_00<=2, if that condition
+is known for an integral incidence profile.  Do not apply this conditional
+test to a fractional LP point as a continuous implication without a
+proper disjunction: the all-z linear rows (L1)--(L4) are always safe.
+
+The inherited z=0,q<=6 rows A<=q-2 and Z+E<=3(q-2) remain stronger
+there and should still be retained.  The present theorem extends the
+one-exception requirement to z=1,2 and adds the linear incidence budgets
+for arbitrary z; it does not replace the stronger special cases.
+
+5. THE TARGET SAVED PROFILE
+
+The first saved transpose profile has
+
+  q=2, z=1, h=16, y=3, x=24,
+  1 helper of type (r,u,v)=(0,2,1),
+  1 helper of type (1,1,1),
+  6 helpers of type (2,1,0),
+  8 helpers of type (3,0,0).
+
+It has A=0, Z=6, E=0, h_00=0, V0=1.  Row (L2) requires
+
+                          6-1 <= 3,
+
+which fails by two.  Row (L5) requires 6<=3, failing by three.
+This excludes every executable circuit with that aggregate profile.
+
+Its masks also admit a more explicit contradiction.  Z=3q saturates
+the per-color capacity and forces both missing colors repeated-bright.
+The unique unanchored helper uses both on its two HB edges, so its HH
+edge must use a represented label: a fixed even label is a matching at
+the odd vertices.  The opposite HH endpoint is the anchored (1,1,1)
+helper.  Pivot that endpoint as a triple and this represented HH row
+to make the unanchored helper a five-form.  All surviving rows then
+lie directly in R10, contradicting the required boundary rank 32.
+
+The generic proof above is stronger: it also excludes the displayed
+q=2,z=2 transpose profile and the displayed q=5,z=2 profile without
+fixing which HH edge has a represented label.
+
+6. REPRODUCTION AND STATUS
+
+  python3 push6/even_frontier/check_hh_exceptional_budget.py
+
+The checker evaluates the new cuts on all saved exact selected profiles,
+using Fraction for every helper-type count; replays all ten archived
+88-gate circuits in canonical transpose form; checks their actual masks,
+defining-row ranks and h_00 projection ranks; and checks all applicable
+new cuts.  Its report is HH_EXCEPTIONAL_LABEL_BUDGET_CHECKS.json.
+
+This script does not replace the complete finite audit of F1.  That audit
+is an inherited prerequisite, identified in Section 1.  The new elimination
+and all-z case split are mathematical arguments in Sections 2--4.
+
+A cumulative scalar scan must still cover every required state, followed
+by exact certification, before any stronger global numerical gate lower
+bound can be claimed.  Excluding these saved examples alone is insufficient.

@@ -1,0 +1,657 @@
+{
+ "summary": {
+  "circuits": 316,
+  "controls": 13,
+  "phases": 1264,
+  "violations": 0,
+  "phases_with_degree2_helper": 314,
+  "q_range": [
+   7,
+   16
+  ],
+  "z_range": [
+   0,
+   9
+  ],
+  "Mt_phases_with_z_le_2": 460,
+  "Mt_phases_with_z0": 34,
+  "Mt_phases_small_palette_scope": 0,
+  "N3_max": 4,
+  "N2_max": 15,
+  "A_max": 0,
+  "h0_hist": {
+   "0": 659,
+   "2": 164,
+   "1": 349,
+   "3": 58,
+   "4": 25,
+   "5": 9
+  },
+  "seconds": 7.4
+ },
+ "violations": [],
+ "min_slack_by_family": {
+  "new HH degree realizability [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 0
+  },
+  "new HH degree realizability [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 0
+  },
+  "new full helper chronological cap [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 6
+  },
+  "new full helper chronological cap [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 7
+  },
+  "new full helper distinct represented labels [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 6
+  },
+  "new full helper distinct represented labels [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 6
+  },
+  "new repeated helper joint birth ownership [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 28
+  },
+  "new repeated helper joint birth ownership [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 32
+  },
+  "new transpose full missing exceptional colors [ctrl]": {
+   "rows_evaluated": 6,
+   "min_slack": 6
+  },
+  "new transpose full missing exceptional colors [real]": {
+   "rows_evaluated": 28,
+   "min_slack": 10
+  },
+  "new transpose full missing unanchored coupling [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 8
+  },
+  "new transpose full missing unanchored coupling [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 10
+  },
+  "new transpose weighted excess exceptional colors [ctrl]": {
+   "rows_evaluated": 6,
+   "min_slack": 18
+  },
+  "new transpose weighted excess exceptional colors [real]": {
+   "rows_evaluated": 28,
+   "min_slack": 22
+  },
+  "new transpose weighted excess unanchored coupling [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 24
+  },
+  "new transpose weighted excess unanchored coupling [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 18
+  },
+  "push6 class overload ratio a/d / HH edge deficiency [ctrl]": {
+   "rows_evaluated": 898,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / HH edge deficiency [real]": {
+   "rows_evaluated": 22360,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / HH label matching deficiency [ctrl]": {
+   "rows_evaluated": 1164,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / HH label matching deficiency [real]": {
+   "rows_evaluated": 27234,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / HH unanchored incidence deficiency [ctrl]": {
+   "rows_evaluated": 1164,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / HH unanchored incidence deficiency [real]": {
+   "rows_evaluated": 27234,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / fixed repeated-color capacity [ctrl]": {
+   "rows_evaluated": 1839,
+   "min_slack": 7
+  },
+  "push6 class overload ratio a/d / fixed repeated-color capacity [real]": {
+   "rows_evaluated": 44164,
+   "min_slack": 6
+  },
+  "push6 class overload ratio a/d / unanchored helper capacity [ctrl]": {
+   "rows_evaluated": 1246,
+   "min_slack": 8
+  },
+  "push6 class overload ratio a/d / unanchored helper capacity [real]": {
+   "rows_evaluated": 28510,
+   "min_slack": 8
+  },
+  "push6 full contacts / HH edge deficiency [real]": {
+   "rows_evaluated": 1,
+   "min_slack": 31
+  },
+  "push6 full contacts / HH label matching deficiency [ctrl]": {
+   "rows_evaluated": 8,
+   "min_slack": 32
+  },
+  "push6 full contacts / HH label matching deficiency [real]": {
+   "rows_evaluated": 168,
+   "min_slack": 16
+  },
+  "push6 full contacts / HH unanchored incidence deficiency [ctrl]": {
+   "rows_evaluated": 8,
+   "min_slack": 32
+  },
+  "push6 full contacts / HH unanchored incidence deficiency [real]": {
+   "rows_evaluated": 168,
+   "min_slack": 16
+  },
+  "push6 full contacts / unanchored helper capacity [ctrl]": {
+   "rows_evaluated": 12,
+   "min_slack": 8
+  },
+  "push6 full contacts / unanchored helper capacity [real]": {
+   "rows_evaluated": 208,
+   "min_slack": 10
+  },
+  "push6 repeated contact OO full colors / HH edge deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 53
+  },
+  "push6 repeated contact OO full colors / HH edge deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 18
+  },
+  "push6 repeated contact OO full colors / HH label matching deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 51
+  },
+  "push6 repeated contact OO full colors / HH label matching deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 47
+  },
+  "push6 repeated contact OO full colors / HH unanchored incidence deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 51
+  },
+  "push6 repeated contact OO full colors / HH unanchored incidence deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 47
+  },
+  "push6 repeated contact OO full colors / fixed repeated-color capacity [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 20
+  },
+  "push6 repeated contact OO full colors / fixed repeated-color capacity [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 17
+  },
+  "push6 repeated contact OO full colors / unanchored helper capacity [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 54
+  },
+  "push6 repeated contact OO full colors / unanchored helper capacity [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 47
+  },
+  "push6 repeated contact OO three halves / HH edge deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 54
+  },
+  "push6 repeated contact OO three halves / HH edge deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 16
+  },
+  "push6 repeated contact OO three halves / HH label matching deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 54
+  },
+  "push6 repeated contact OO three halves / HH label matching deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 16
+  },
+  "push6 repeated contact OO three halves / HH unanchored incidence deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 54
+  },
+  "push6 repeated contact OO three halves / HH unanchored incidence deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 16
+  },
+  "push6 repeated contact OO three halves / fixed repeated-color capacity [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 16
+  },
+  "push6 repeated contact OO three halves / fixed repeated-color capacity [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 16
+  },
+  "push6 repeated contact OO three halves / unanchored helper capacity [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 81
+  },
+  "push6 repeated contact OO three halves / unanchored helper capacity [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 76
+  },
+  "push6 repeated contact core ownership / HH edge deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / HH edge deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / HH label matching deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / HH label matching deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / HH unanchored incidence deficiency [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / HH unanchored incidence deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / fixed repeated-color capacity [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 7
+  },
+  "push6 repeated contact core ownership / fixed repeated-color capacity [real]": {
+   "rows_evaluated": 1212,
+   "min_slack": 6
+  },
+  "push6 repeated contact core ownership / unanchored helper capacity [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 8
+  },
+  "push6 repeated contact core ownership / unanchored helper capacity [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 8
+  },
+  "push6 rounded class core divisor d [ctrl]": {
+   "rows_evaluated": 52,
+   "min_slack": 7
+  },
+  "push6 rounded class core divisor d [real]": {
+   "rows_evaluated": 1262,
+   "min_slack": 6
+  },
+  "push6 weighted excess / HH edge deficiency [ctrl]": {
+   "rows_evaluated": 24,
+   "min_slack": 22
+  },
+  "push6 weighted excess / HH edge deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 19
+  },
+  "push6 weighted excess / HH label matching deficiency [ctrl]": {
+   "rows_evaluated": 24,
+   "min_slack": 21
+  },
+  "push6 weighted excess / HH label matching deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 18
+  },
+  "push6 weighted excess / HH unanchored incidence deficiency [ctrl]": {
+   "rows_evaluated": 24,
+   "min_slack": 21
+  },
+  "push6 weighted excess / HH unanchored incidence deficiency [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 18
+  },
+  "push6 weighted excess / fixed repeated-color capacity [ctrl]": {
+   "rows_evaluated": 24,
+   "min_slack": 22
+  },
+  "push6 weighted excess / fixed repeated-color capacity [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 18
+  },
+  "push6 weighted excess / unanchored helper capacity [ctrl]": {
+   "rows_evaluated": 26,
+   "min_slack": 8
+  },
+  "push6 weighted excess / unanchored helper capacity [real]": {
+   "rows_evaluated": 606,
+   "min_slack": 18
+  }
+ },
+ "key_hist": [
+  [
+   [
+    "Mt",
+    13,
+    2
+   ],
+   196
+  ],
+  [
+   [
+    "M",
+    13,
+    2
+   ],
+   93
+  ],
+  [
+   [
+    "Mt",
+    14,
+    1
+   ],
+   82
+  ],
+  [
+   [
+    "M",
+    14,
+    2
+   ],
+   72
+  ],
+  [
+   [
+    "M",
+    13,
+    3
+   ],
+   57
+  ],
+  [
+   [
+    "M",
+    12,
+    4
+   ],
+   46
+  ],
+  [
+   [
+    "Mt",
+    14,
+    2
+   ],
+   39
+  ],
+  [
+   [
+    "M",
+    11,
+    4
+   ],
+   37
+  ],
+  [
+   [
+    "M",
+    14,
+    1
+   ],
+   37
+  ],
+  [
+   [
+    "Mt",
+    11,
+    3
+   ],
+   37
+  ],
+  [
+   [
+    "Mt",
+    12,
+    2
+   ],
+   34
+  ],
+  [
+   [
+    "Mt",
+    11,
+    2
+   ],
+   30
+  ],
+  [
+   [
+    "M",
+    15,
+    1
+   ],
+   29
+  ],
+  [
+   [
+    "Mt",
+    12,
+    3
+   ],
+   28
+  ],
+  [
+   [
+    "Mt",
+    13,
+    3
+   ],
+   28
+  ],
+  [
+   [
+    "M",
+    15,
+    2
+   ],
+   27
+  ],
+  [
+   [
+    "M",
+    10,
+    5
+   ],
+   27
+  ],
+  [
+   [
+    "M",
+    12,
+    3
+   ],
+   25
+  ],
+  [
+   [
+    "M",
+    11,
+    5
+   ],
+   24
+  ],
+  [
+   [
+    "Mt",
+    15,
+    0
+   ],
+   24
+  ],
+  [
+   [
+    "M",
+    9,
+    6
+   ],
+   24
+  ],
+  [
+   [
+    "Mt",
+    15,
+    1
+   ],
+   21
+  ],
+  [
+   [
+    "M",
+    12,
+    5
+   ],
+   21
+  ],
+  [
+   [
+    "Mt",
+    10,
+    4
+   ],
+   17
+  ],
+  [
+   [
+    "M",
+    10,
+    6
+   ],
+   17
+  ],
+  [
+   [
+    "Mt",
+    12,
+    4
+   ],
+   16
+  ],
+  [
+   [
+    "Mt",
+    10,
+    3
+   ],
+   16
+  ],
+  [
+   [
+    "Mt",
+    11,
+    4
+   ],
+   15
+  ],
+  [
+   [
+    "M",
+    14,
+    3
+   ],
+   14
+  ],
+  [
+   [
+    "M",
+    13,
+    4
+   ],
+   11
+  ],
+  [
+   [
+    "M",
+    11,
+    6
+   ],
+   11
+  ],
+  [
+   [
+    "M",
+    8,
+    7
+   ],
+   10
+  ],
+  [
+   [
+    "Mt",
+    13,
+    1
+   ],
+   10
+  ],
+  [
+   [
+    "M",
+    10,
+    7
+   ],
+   10
+  ],
+  [
+   [
+    "M",
+    9,
+    7
+   ],
+   6
+  ],
+  [
+   [
+    "Mt",
+    12,
+    1
+   ],
+   6
+  ],
+  [
+   [
+    "M",
+    15,
+    0
+   ],
+   5
+  ],
+  [
+   [
+    "M",
+    16,
+    0
+   ],
+   5
+  ],
+  [
+   [
+    "Mt",
+    11,
+    5
+   ],
+   4
+  ],
+  [
+   [
+    "Mt",
+    13,
+    0
+   ],
+   4
+  ]
+ ]
+}

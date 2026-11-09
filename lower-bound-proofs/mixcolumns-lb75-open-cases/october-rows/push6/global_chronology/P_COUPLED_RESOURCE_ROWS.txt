@@ -1,0 +1,128 @@
+REPEATED-COLOR CAPACITY AND GENERIC COUPLING OF THE FINAL PUSH6 ROWS
+2026-10-23
+
+The final coefficient model is identified by MODEL_VERSION in
+model_full_cuts.py.  This note explains the common generation rule and
+its finite resource families; it does not claim a global gate bound.
+
+1. THE ACTUAL COLOR COUNT IS p, NOT NECESSARILY q
+
+Let p be the number of missing labels with at least one H--B contact
+at a helper having r>=2 represented incidences.  These are the
+repeated-bright labels.  Always p<=q.  Labels without such a contact
+contribute no m_e, no repeated-contact cost, and no full incidence.
+
+The actual-birth proofs therefore give the stronger statements
+
+  E_rep+U_rep <= C+p,
+  2*N2+10*N3+3*U_rep <= 2*x+2*C+3*p,
+  N2+5*N3+2*U_rep+A <= x+C+3*p.
+
+The same change applies to every localized class subset.  Inherited
+per-color capacities give A<=p and Q<=3*p, where Q=Z+E in the
+transpose notation; E here is the overflow term, not E_rep.
+
+2. PROVED UPPER BUDGETS FOR p
+
+For M use p<=q.  For M^T the final model also uses the following
+budgets, whose proofs and independent audits are in the even_frontier
+and odd_spine notes of this push6 checkpoint:
+
+  p <= q-1+h0,
+  3*p <= 3*(q-1)+V0-h00,
+  3*p <= 3*(q-1)+z-h00,
+  6*p <= 6*(q-1)+D2.
+
+Here h0 counts helpers with r=0; h00 counts those with r=u=0;
+V0=sum_(r=0)v.  Write V00=sum_(r=u=0)v and
+Vplus=sum_(r=0,u>0)v, and let
+
+  Mplus=sum_(r=0,u>0) min(v,q-u),
+  D2=2*V00+Vplus+Mplus-2*h00.
+
+For M^T with q<=6 OR y<=3 there is the additional proved upper budget
+
+  p <= q-2+2*h0+W,       W=sum_(r=1,2)v.
+
+This extended scope uses the independently checked full-pair HH EE
+quotient fact in ../even_frontier/FULL_PAIR_HH_ZERO_QUOTIENT.txt and
+../root/FULL_PAIR_DARK_INDEPENDENT_AUDIT.json.  A sole exceptional
+color in the fully anchored/full-HH case would require both q>=7
+and y>=4, which proves the displayed disjunctive scope.
+
+Constant upper bounds are p<=q-1 when z<=2, and p<=q-2 when z=0
+and q<=6.  These follow from the independently proved counts of
+exceptional labels.  The smaller applicable constant is denoted q_eff.
+
+3. ONE GENERATION RULE AVOIDS MANUAL COEFFICIENT SUBSTITUTIONS
+
+For any proved resource K(n)<=base+c*p and any proved budget
+s*p-g(n)<=b, with c,s nonnegative and s>0, generate
+
+  s*K(n)-c*g(n) <= s*base+c*b.
+
+This follows by substitution after multiplying the resource by s.
+All coefficients are exact integers.  The final model applies the
+same function to core ownership, both OO ownership inequalities,
+the A and Q capacities, and the overload-floor resources below.
+
+The push5 coefficient prefix is left unchanged.  New identical
+coefficient vectors keep their smallest right-hand side.  Dividing
+the new row by a common divisor of BOTH coefficients and right-hand
+side is exact over the real numbers, and introduces no extra
+unstated integrality assumption.
+
+4. CLASS OVERLOAD AND A SECOND FLOOR FAMILY
+
+Let W_c=sum_(helpers in class c)(r-1+u).  The localized class theorem
+gives sum_(c in S) W_c<=4*|S|+p for every class subset S.  Taking S
+to be all classes with W_c>4 proves
+
+  sum_c max(W_c-4,0) <= p.
+
+For any rational lambda=a/d in [0,1], with positive denominator,
+floor(lambda*W_c)<=floor(4*lambda)+max(W_c-4,0).  Indeed each
+integer increase of W_c beyond 4 changes the floor by at most one.
+Also the sum of item floors in a class is at most the floor of the
+sum.  Hence
+
+  sum_(r>=2) floor[a*(r-1+u)/d]*n
+     <= t*floor(4*a/d)+p.
+
+This is another resource with coefficient one on p, so the generic
+coupling rule applies to it directly.
+
+As lambda varies, its coefficients and the floor(4*lambda) term
+change only at fractions j/k with k<=max(4,q+2), because the helper
+weights are integers in 1,...,q+2.  The implementation enumerates all
+distinct reduced fractions in (0,1] with those denominators.  This
+covers every distinct NONTRIVIAL row in this one-parameter family,
+including the value attained at each positive breakpoint.  Lambda=0
+and the initial interval before the first positive breakpoint give
+only 0<=p, which is true by the definition of p and is omitted.
+Identical final vectors are deduplicated.
+
+5. THE FIRST FLOOR FAMILY USES A CONSTANT COLOR UPPER BOUND
+
+The subset-averaging family from ROUNDED_CLASS_CORE_PROOF.txt uses
+
+  sum_(r>=2) floor((r-1+u)/d)*n
+     <= min_(1<=k<=t) floor[t*floor((4*k+q_eff)/d)/k].
+
+Only the proved constant q_eff is substituted inside these floors.
+Variable helper-count budgets are handled by the linear resource
+coupling above, so there is no invalid replacement of a variable
+inside an integer rounding operation.
+
+6. STATUS OF NUMERICAL AND EXACT RESULTS
+
+Versioned models and screens preserve earlier stages.  Only the
+unsuffixed final model, final screen, exact certificate JSON and
+verification JSON, and exact rational survivor JSON define the
+reported cumulative result.  The exact certificate generator uses
+the frozen push5 survivor set as its baseline, so its exclusion
+count is additional to the 698 already certified in push5.
+
+The mathematical row proofs, exact local certificates, scalar
+coverage, and rational witness feasibility are distinct checks.
+A feasible aggregate witness is not an executable AES circuit.

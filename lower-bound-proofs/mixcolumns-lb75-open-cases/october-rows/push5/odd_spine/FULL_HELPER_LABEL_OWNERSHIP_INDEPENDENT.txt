@@ -1,0 +1,260 @@
+INDEPENDENT AUDIT: FULL-HELPER REFERENCES AND THEIR ACTUAL BIRTHS
+2026-10-22
+
+STATUS
+
+The complete fixed-boundary census and the proofs below independently
+support four new necessary inequalities for unrestricted AES circuits:
+
+                     M                 M transpose
+  full count         F <= 10           F <= 14
+  OO ownership       5F <= x+20        5F <= x+28
+  joint ownership    N2+5F <= x+20     N2+5F <= x+28
+  distinct labels    3F+q <= x+y       3F+q <= x+y
+  total gates        G >= 32+4F+q      G >= 32+4F+q.
+
+Here x is the number of OO births, y the number of EE births, F the number
+of nonoutput odd helpers with THREE ACTUAL represented H--B incidences,
+and q the number of actual even labels without an actual B--B reference.
+N2 counts helpers with exactly two actual represented H--B incidences.
+The total-gate inequality follows from h>=F and G=32+h+x+y.
+
+These are universal necessary conditions. This note does not independently
+claim that they exclude any proposed total gate budget. That requires the
+separate complete global counting/certificate argument.
+
+1. DEFINITIONS AND EQUATION INDEPENDENCE
+
+Normalize the binary XOR circuit so every noninput value has one birth.
+Let B consist of the 32 raw input units and the 32 required odd outputs.
+Let H be the other odd signals. Every gate containing two odd values
+defines an odd-graph edge between those values, labelled by its even value.
+This includes OO births and OE births. EE births define no odd edge.
+
+An even label E is represented if the ACTUAL odd graph contains an edge
+between two boundary values A,B with E=A+B. The AES boundary is Sidon:
+all 2,016 unordered boundary-pair XORs are distinct. Consequently a
+represented label has a unique possible boundary reference pair.
+
+A represented H--B incidence at helper h has an actual equation
+
+  h+C+E=0,
+
+and the represented label supplies another actual equation E+A+B=0.
+Adding them gives the formal helper relation h+A+B+C=0. Both equations
+are actual gate births even when the even value is not their result.
+
+All actual gate equations are formally independent: in chronological
+signal coordinates each has its own new result as its latest coordinate.
+The helper relations are also independent. A nontrivial combination of
+them would expand to a nontrivial combination of the distinct H--B gate
+equations and some B--B reference equations, contradicting that fact.
+
+In particular two actual incidences at one helper cannot give the same
+boundary triple. A full helper (three actual represented incidences)
+must therefore have at least three different boundary-triple expressions.
+The complete census has maximum multiplicity three, so it must use all
+three expressions of one of the enumerated values. This deduction does
+not restrict other intermediate masks to a selected vocabulary.
+
+2. COMPLETE CENSUS IN BOTH ORIENTATIONS
+
+The independent verifier generates AES from byte arithmetic, transposes
+the resulting bit matrix directly, and enumerates all 41,664 triples of
+the corresponding 64 boundary values in each orientation. It does not
+import the global_chronology enumerator or its helper tables.
+
+For M there are 80 full candidate values in five classes k=0,2,5,6,7.
+For M transpose there are 112 in seven classes k=0,1,2,3,4,5,6.
+Each class contains 16 values and involves only the four output
+coordinates of that bit position. The raw input coordinates belong to
+two adjacent bit families: {k-1,k} modulo eight for M, and {k,k+1} for
+M transpose.
+
+For each helper, pivot one of its three formal helper relations. The two
+remaining relations are pure boundary relations. The complete span of
+these excess relations has rank FOUR in every class, in both orientations.
+Actual helper relations are jointly independent, so F_k helpers in that
+class contribute 2F_k independent pure boundary relations. Hence F_k<=2.
+This proves F<=10 and F<=14 respectively.
+
+There are exactly 48 pairs in each class whose six formal helper relations
+are independent: 240 pairs for M, and 336 for M transpose. Any actual pair
+of full helpers must be one of these independent pairs.
+
+For EVERY such pair, the six boundary triples have the following exact
+properties:
+
+  * their union contains exactly four output coordinates and eight inputs;
+  * the 18 possible unordered boundary pairs, three per triple, are ALL
+    DISTINCT.
+
+The second statement verifies all 3^6 possible choices of actual reference
+pair simultaneously: each choice has six distinct reference labels by
+Sidonicity. This covers 174,960 possible selections for M and 244,944 for
+M transpose, totaling 419,904, without sharing the other enumerator's
+per-recipe execution logic.
+
+Finally, the complete palette of possible boundary reference pairs in a
+class has 48 members. The palettes of different classes are pairwise
+DISJOINT. Sidonicity converts pair disjointness into label-value
+disjointness. There is no hidden assumption that references are input
+pairs: the census includes input--output and output--output references.
+
+As a separate cross-check, the verifier also regenerates the inherited
+full-helper pair incompatibility on ALL pairs, including different
+classes. For M, 360 candidate pairs have joint helper-row rank five and
+a difference in B+B; the other 2,800 have rank six and no boundary-pair
+difference. For M transpose the counts are 504 and 5,712. Thus two ACTUAL
+full helpers, whose joint rows must have rank six, cannot share any H--B
+label: such sharing would make their difference a boundary pair. This
+independently validates both represented-reference disjointness and the
+missing-label incompatibility used to interpret A=sum_(r=3)u as a count
+of distinct full-bright labels. The latter fact was already recorded in
+research_next/dual/SUPPLEMENT.md; it is not asserted as a new census here.
+
+3. ALL FULL-HELPER REFERENCES ARE GLOBALLY DISTINCT
+
+A single full helper uses three distinct triples and three distinct actual
+references. Two actual full helpers in one class have independent helper
+relations, so the 18-pair criterion above makes their six references
+distinct. There are at most two full helpers per class. References from
+different classes cannot coincide because their palettes are disjoint.
+
+Therefore F full helpers force 3F DISTINCT actual represented even values.
+The q missing even values, by definition, are not represented. Thus
+
+  3F+q <= number of actual even values = x+y.              (1)
+
+No claim is made that these 3F values are all OO-born; the next section
+prices their birth types. From (1), h>=F, and the exact gate ledger,
+
+  G=32+h+x+y >= 32+4F+q.                                 (2)
+
+For example G=75 implies F<=10 in BOTH orientations, before any other
+global counting conditions are applied.
+
+4. ACTUAL-BIRTH OWNERSHIP
+
+General counting lemma. Select m distinct actual gate equations, and let
+V be the set of noninput signal values appearing in them. Their m birth
+results are distinct members of V. Exactly |V|-m values in V therefore
+have their first birth outside the selected equations. This statement
+permits arbitrary earlier gates, output reuse, depth, and cancellation.
+
+SINGLE FULL HELPER. Select its three actual H--B equations and the three
+actual B--B reference equations. These are six distinct physical births.
+The noninput values appearing are the helper, its three even references,
+and o boundary outputs, where the census gives o in {2,3,4}. Consequently
+there are o-2 outside births among those 4+o values.
+
+An EE-born reference even must be one of these outside births: every
+selected equation involving it has two odd endpoints and could only
+produce that even by an OO birth. Thus at most o-2 of the three references
+can be EE-born, and at least
+
+  3-(o-2)=5-o                                             (3)
+
+are OO-born. Every single full helper forces at least one OO reference.
+The complete type counts are:
+
+  helper weight  output coordinates  minimum OO      M       Mt
+       3                  2                3         20       28
+       3                  3                2         40       56
+       5                  4                1         20       28.
+
+TWO FULL HELPERS IN ONE CLASS. Select all six H--B and all six reference
+equations. There are twelve distinct actual births. By the independent
+pair census the noninput values are exactly two helpers, four outputs,
+and six even references: also twelve. Every one is therefore born in
+this selected subsystem. In particular ALL SIX references are OO-born.
+
+Let s1 be the number of classes with one actual full helper and s2 the
+number with two. If there are t classes, then
+
+  F=s1+2s2,       s1+s2<=t.
+
+The references are disjoint across classes. Applying the singleton and
+doubleton OO costs gives
+
+  x >= s1+6s2 = F+4s2 >= 5F-4t.                          (4)
+
+Thus 5F<=x+20 for M and 5F<=x+28 for M transpose. The argument does not
+require every enumerated pair to be executable. Any actual pair is
+executable by hypothesis and satisfies these necessary ownership counts;
+nonexecutable algebraic candidates only enlarge the audited universe.
+
+5. STRONGER JOINT OWNERSHIP INCLUDING THE r=2 HELPERS
+
+The complete boundary triple census also contains all possible helpers
+with at least two represented incidences. There are 440 candidate values
+for M (360 with exactly two expressions, 80 with three), and 616 for M
+transpose (504 with two expressions, 112 with three). The union of output
+coordinates in ALL these expressions consists of exactly C=20 positions
+for M and C=28 positions for M transpose.
+
+Select all actual represented H--B incidences of every r=2 or r=3 helper,
+and one B--B reference equation for each distinct even label they use.
+Let L be the number of such distinct reference labels. There are
+
+  2N2+3F+L selected actual births,
+
+and at most N2+F+L+C noninput values appearing in them. Hence at most
+
+  C-N2-2F
+
+of those values have their births outside the selected subsystem. Every
+EE-born reference must occupy one such outside birth. Therefore the
+number of OO-born reference labels is at least
+
+  L+N2+2F-C.
+
+This gives the stronger exact joint ownership inequality
+
+  L+N2+2F <= x+C.                                       (5)
+
+The globally distinct full-helper references imply L>=3F, so
+
+  N2+5F <= x+C,                                         (6)
+
+with C=20 or 28 respectively. Reference sharing involving r=2 helpers is
+fully allowed. No disjointness claim for their labels is needed. Also,
+the same outside-birth ledger immediately recovers N2+2F<=C.
+
+6. OPTIONAL CYCLE / RANK CONSEQUENCES
+
+Each full-pair class forces six distinct OO labels supported on its two
+raw bit families. Two adjacent full-pair classes therefore force twelve
+distinct OO labels supported on twelve raw inputs. All labels are even,
+so their rank is at most eleven and their nullity is at least one.
+Four consecutive full-pair classes force 24 labels supported on twenty
+raw inputs, with rank at most nineteen and nullity at least five.
+
+All these dependencies are dependencies among actual OO seeds, so they
+contribute to delta=x-r, where r is the even-span rank. Equivalently, the
+inherited prefix partition theorem identifies delta with the full odd
+graph's cycle rank; the same cycles appear in the selected subgraphs.
+
+For M, the class adjacency graph is the path 5--6--7--0 and isolated 2.
+If F=9, at least four classes have full pairs, hence an adjacent pair
+exists and delta>=1. If F=10 all five classes have full pairs, including
+the four-class path, and delta>=5. The direct OO bounds already force
+x>=25 and x>=30 respectively; the delta conclusions retain additional
+information about the rank/cycle split.
+
+7. REPLAY AND SCOPE
+
+Run:
+
+  python3 push5/odd_spine/independent_full_helper_audit.py
+
+The adjacent JSON contains every full helper's three boundary expressions,
+every independent pair's 18 possible reference pairs, all class palettes,
+the singleton census, and the new inequalities checked against all ten
+retained 88-gate circuits. Both orientations are regenerated from scratch.
+
+These checks concern the complete fixed AES boundary, so they retain
+arbitrary other helpers and even masks. They do not fix first-birth output
+parent incidence and do not assume a particular existing 88-gate pattern.
+The global numerical consequence, if any, is supplied by the separate
+complete budget/certificate calculation using these audited inequalities.
