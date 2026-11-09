@@ -17,6 +17,20 @@ Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
   kste, translog included), NIST-beating map set unchanged (46 of 53). Twelve maps have a new
   any-depth minimum (see the README commit message); the rest are depth-limited improvements.
 
+- 15:17-15:55 UTC: reconciliation audit (xhigh agent, `~/xs-campaigns/2026-11-09-phase/recon/REPORT.md`,
+  `ROW_INVENTORY.md`): push5/push6 and the sprint use the same domain (3,708 states / 7,416 claims),
+  key convention, type columns and package base rows (the missing archive `certify75.py` is the
+  package's, by sha256). All 8 push5 rows and the push6 resource/budget/divisor rows have written
+  necessity proofs the agent followed without finding a gap; finite facts behind R1-R6/D/P5.2-P5.4
+  recomputed with its own code, F1/F2/F3/F5 only replayed via the archive's root audits (PASS). Only
+  shared row: N1 = push5's P5.3. Combined LP scan: sprint-only 686 (reproduced), push-only 509
+  (reproduced, identical (k,l)), intersection 419, COMBINED 280 open claims (148 M / 132 Mt) [measured];
+  406 new exclusions CERTIFIED (4,653 exact certificates, two matrix constructions, J1-free). F1-free
+  subset of push rows: 581. Independent re-check commissioned 16:00 UTC (`recon-check/`). Bound: 75.
+- Worker-count cost curve [measured, hunt-A config, 8 min each, window 120-460 s]: 20 workers 28,100
+  proposals/s (1,429 per CPU-s); 100 workers 25,500 (1,272; -10 %); 300 workers 13,700 (758; -47 %).
+  RSS ~27-30 MB per worker. So 100 trajectories are nearly free, 300 cost half the compute.
+
 ## 2. Running / in progress
 
 - Proof reconciliation audit agent (xhigh), started 15:17 UTC, writing
@@ -27,7 +41,11 @@ Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
 - Worker-count feasibility: `workers/feas300` (300 workers, 8 min) then `feas20`, hunt-A
   configuration, 15:18 UTC. Early: 303 processes, RSS 8.2-8.5 GB total (~27 MB each), load 230.
   Analysis: `workers/throughput.py RUN_DIR`.
-- Planned A/B (not launched): `ab20.toml` vs `ab300.toml`, 60 min each, same campaign seed per
+- Packaging agent (opus) done 15:57 UTC: `lower-bound-proofs/mixcolumns-lb75-open-cases/` (README,
+  PROVENANCE, 4 addenda, 4 certificate files, 5 checkers with one path edit each, verify_all.py 8.9 s,
+  SHA256SUMS; proofs.yml and lower-bound-proofs/README.md edited). UNCOMMITTED; the README's section
+  on the October campaigns is a placeholder until the recon re-check lands.
+- A/B trial 1 launched 15:57 UTC (`chain1.sh` -> `ab_driver.sh 1 20261109 ab20 ab300`; ends ~18:00 UTC): `ab20.toml` vs `ab300.toml`, 60 min each, same campaign seed per
   trial (the 20 roots are the first 20 of the 300), restart policy in PROPOSALS (stall 1.8 M
   proposals = v8's 900 s at the measured ~2,000 proposals/s per full-speed worker; incumbent
   factor 2; root_seconds disabled in both arms). Outcomes: per-trajectory time to 88 and success
