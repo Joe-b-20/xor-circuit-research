@@ -108,6 +108,18 @@ unproductive upper walk instead of restarting from scratch. Implementation agent
 - B3 transfer: InvMixColumns cap 5 from our 168@5 (level to reach within 40 min; 6 workers per arm);
   the foundation finding did not transfer cleanly to InvMC in the why campaign, so this is a real test.
 Design data (used to choose the change) = the 2026-11-02 foundations study; evaluation data = B1-B3.
+- 18:40 UTC: implemented and COMMITTED on this branch (8e544ba; default path byte-identical by
+  fixed-seed digest; 13 new tests, suite 371 OK; notes in `foundation-restart/IMPLEMENTATION.md`).
+  Not on main. Limitation: only the `l1tree` restricted constructor completes in practice
+  (paar/naive/bp fail under the restriction); roots over a 90@4 foundation are 110-112@4.
+- Benchmark queued (`~/xs-campaigns/2026-11-09-phase/foundation/chain3.sh`, starts when
+  `workers/AB_DONE_t2` appears, ~21:12 UTC; log `foundation/chain3.log`, runs in `foundation/runs/`):
+  phase A b1_base (12 x 30 min) + b2_base (6 x 40 min); phase B b1_found + b2_found; phase C
+  b3_base + b3_found (6 + 6 x 40 min). Common timers per benchmark: B1/B3 stall 300 s, incumbent 1
+  (both arms); B2 v8 timers. Foundation arms: B1/B3 every restart is a foundation restart
+  (swap_pairs 2, pin 150,000 proposals); B2 w_fresh 0.5 / w_foundation 0.5. Analysis:
+  `hunt/descents.py` on `foundation/runs` (time to 89 at cap 4; to 88 uncapped; InvMC levels),
+  `xorflux status`, the `foundation_unpin` / `foundation_failed` events.
 
 ## 4. Open
 
