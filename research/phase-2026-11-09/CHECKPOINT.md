@@ -31,6 +31,17 @@ Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
   proposals/s (1,429 per CPU-s); 100 workers 25,500 (1,272; -10 %); 300 workers 13,700 (758; -47 %).
   RSS ~27-30 MB per worker. So 100 trajectories are nearly free, 300 cost half the compute.
 
+- 16:00-16:45 UTC: independent re-check of the reconciliation (xhigh agent, `recon-check/REPORT.md`):
+  from-scratch stdlib checker passes on all 4,653 + 43 certificates; own LP scan reproduces 686 / 509 /
+  280 with identical survivor sets; proofs of P5.2-P5.8, R1-R3, (T)/B3-B5, B6, R6/D followed, no gap,
+  no coding mismatch; finite facts F1, F2, F3, F5 and the census facts recomputed with own code (55 s);
+  0 violations on 1,264 phases.
+- ~17:05 UTC: proof update PUBLISHED on `main` and pushed (185c0cd: folder
+  `lower-bound-proofs/mixcolumns-lb75-open-cases/` with addenda A-D, 4 + 2 certificate files, 6
+  checkers, the October row proofs verbatim with provenance, verify_all.py ~85 s, proofs.yml step;
+  400ad09: top-level README pointer). Branches `sprint-2026-11-07-linear-maps` and `phase-2026-11-09`
+  pushed to origin. Bound stays 75; 280 open claims (LP status) with all validated rows combined.
+
 ## 2. Running / in progress
 
 - Proof reconciliation audit agent (xhigh), started 15:17 UTC, writing
