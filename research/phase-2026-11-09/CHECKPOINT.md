@@ -74,6 +74,26 @@ Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
   oversubscribed A/B the per-trajectory policy must be in proposals (`stall_proposals`) or the
   300-worker arm restarts 15x earlier in CPU terms.
 
+## 3b. Step 5 decision (17:20 UTC, before the A/B result; revisit if the A/B wins convincingly)
+
+Intervention: a "foundation restart" source in v8 (knob `restart.w_foundation`, default 0 = no
+change): at a restart take the worker best or an archive elite, keep its level-1 set (weight-2
+values), optionally swap k pairs for useful pairs, rebuild everything above it with the constructors
+under the restriction, run the new chain PINNED (no new weight-2 value outside the set) for a fixed
+number of proposals, then unpin. Mechanism it targets: the walk changes level 1 one pair at a time
+and cannot cross the steep landscape between foundations (2026-11-02-why foundations §3-§5), while
+the upper structure above a good foundation is cheap to rebuild (pinned completion re-finds 89@4 in
+minutes from its foundation). It keeps the configuration that made an elite good and discards the
+unproductive upper walk instead of restarting from scratch. Implementation agent (opus) started
+17:20 UTC; evaluation after the A/B frees the machine (~21:10 UTC):
+- B1 hard diagnostic: cap-4 MixColumns from ~10 recorded 90@4 states with DIFFERENT first layers
+  (the 89's layer is never supplied; swaps are random), 1 worker each, 30 min, foundation on vs off;
+  success = any 89@4 within budget, time to target.
+- B2 calibration: MixColumns uncapped from fresh roots, time to 88 per chain, 6 workers x 40 min per arm.
+- B3 transfer: InvMixColumns cap 5 from our 168@5 (level to reach within 40 min; 6 workers per arm);
+  the foundation finding did not transfer cleanly to InvMC in the why campaign, so this is a real test.
+Design data (used to choose the change) = the 2026-11-02 foundations study; evaluation data = B1-B3.
+
 ## 4. Open
 
 - Proof publication layout (after the audit): a self-contained extension folder under
