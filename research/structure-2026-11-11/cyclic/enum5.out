@@ -1,0 +1,86 @@
+== sets S = units + X in F_2^5, by size |X| ==
+size  circuit_sets  cyclic_sets  cyclic_not_circuit
+   0             1            1                   0
+   1            10           10                   0
+   2            75           75                   0
+   3           465          465                   0
+   4          2690         2690                   0
+   5         14247        14247                   0
+   6         72210        72270                  60
+   7        319540       320740                1200
+   8       1092205      1099180                6975
+   9       2715695      2729755               14060
+  10       5095937      5110179               14242
+  11       7661979      7670421                8442
+  12       9647000      9650085                3085
+  13      10398740     10399480                 740
+  14       9657490      9657620                 130
+  15       7726144      7726160                  16
+  16       5311734      5311735                   1
+  17       3124550      3124550                   0
+  18       1562275      1562275                   0
+  19        657800       657800                   0
+  20        230230       230230                   0
+  21         65780        65780                   0
+  22         14950        14950                   0
+  23          2600         2600                   0
+  24           325          325                   0
+  25            26           26                   0
+  26             1            1                   0
+total     65374699     65423650               48951
+wrote 1260 non-circuit cyclic sets of size <= 7 to n5_noncircuit_small.txt
+
+== all 2^26 target sets M of non-unit vectors in F_2^5 ==
+sets with L_cyc > L (must be 0): 0
+sets with L_cyc < L: 49086   largest gap L - L_cyc: 1
+rows  L_cyc  L  count
+   5      6   7  60
+   6      6   7  60
+   6      7   8  60
+   7      7   8  1200
+   7      8   9  15
+   8      8   9  6975
+   9      9  10  14060
+  10     10  11  14242
+  11     11  12  8442
+  12     12  13  3085
+  13     13  14  740
+  14     14  15  130
+  15     15  16  16
+  16     16  17  1
+
+examples with the fewest rows (5), first 6, each with one cyclic witness S:
+  M = { 01110 11110 10101 11101 11011 }  L_cyc=6 L=7
+     S\units = { 01110 11110 10101 11101 11011 11111 }
+  M = { 10110 11110 01101 11101 11011 }  L_cyc=6 L=7
+     S\units = { 10110 11110 01101 11101 11011 11111 }
+  M = { 01110 11110 11101 10011 11011 }  L_cyc=6 L=7
+     S\units = { 01110 11110 11101 10011 11011 11111 }
+  M = { 11110 01101 11101 10011 11011 }  L_cyc=6 L=7
+     S\units = { 11110 01101 11101 10011 11011 11111 }
+  M = { 10110 11110 11101 01011 11011 }  L_cyc=6 L=7
+     S\units = { 10110 11110 11101 01011 11011 11111 }
+  M = { 11110 10101 11101 01011 11011 }  L_cyc=6 L=7
+     S\units = { 11110 10101 11101 01011 11011 11111 }
+
+== invertible 5x5 matrices up to row order: 83328 ==
+L_cyc(A) != L_cyc(A^-1): 0 (theorem: 0)
+L_cyc(A) != L_cyc(A^T) : 0 (theorem: 0)
+L(A) != L(A^T)         : 0 (transposition principle: 0)
+L(A) != L(A^-1)        : 0
+L_cyc(A) < L(A)        : 0
+histogram  L(A)  L(A^-1)  count
+              0        0  1
+              1        1  20
+              2        2  240
+              3        3  2020
+              4        4  10850
+              5        5  31300
+              6        6  32995
+              7        7  5880
+              8        8  22
+
+== flavour: invertible, all rows and columns of odd weight, rows of weight >= 3: 12 ==
+with L_cyc < L: 0 ; with L(A) != L(A^-1): 0
+histogram  L_cyc  L(A)  L(A^-1)  count
+               8     8        8  12

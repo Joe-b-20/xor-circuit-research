@@ -1,0 +1,18 @@
+1. field-arithmetic MixColumns == repository matrix: True
+2. formula (3.1) equals the repository row for all 32 outputs: True ; mismatching rows: []
+3. M == multiplication by 2+3y+y^2+y^3 with b(y) = sum b_c y^(c): False
+3. M == multiplication by 2+3y+y^2+y^3 with b(y) = sum b_c y^(-c): True
+3. M == multiplication by 2+y+y^2+3y^3 with b(y) = sum b_c y^(c): True
+3. M == multiplication by 2+y+y^2+3y^3 with b(y) = sum b_c y^(-c): False
+4. (1+y)^4 = [0, 0, 0, 0] (y^4 + 1 = 0 in R, so (1+y)^4 = 0 there; in F_256[y] it equals y^4+1 since char 2)
+5. 1 + (1+y)(3+y^2) = [2, 3, 1, 1] == [2,3,1,1]: True
+6. 3+y^2 is a unit: inverse [70, 0, 203, 0] check [1, 0, 0, 0]
+7. dim_F2 (1+y)^j R for j = 0..4: [32, 24, 16, 8, 0]
+   dim of masks vanishing on (1+y)^j R, j = 0..3: [0, 8, 16, 24]
+   record's W_k := masks vanishing on (1+y)^(4-k) R has dims k=1,2,3: [24, 16, 8]
+   block descriptions: dims 8 16 24
+   block W_1: == ann((1+y)^3 R)? False;  == ann((1+y)^1 R)? True;  == (1+y)^3 R itself? True
+   block W_2: == ann((1+y)^2 R)? True;  == ann((1+y)^2 R)? True;  == (1+y)^2 R itself? True
+   block W_3: == ann((1+y)^1 R)? False;  == ann((1+y)^3 R)? True;  == (1+y)^1 R itself? True
+8. M: (A - 1) W_k subset W_(k-1) for k = 1, 2, 3, 4 (W_4 = all): [True, True, True, True]
+8. M^T (mask action): (A - 1) W_k subset W_(k-1) for k = 1, 2, 3, 4 (W_4 = all): [True, True, True, True]

@@ -1,0 +1,7 @@
+graph-code words of weight <= 6: {6: 84}
+max over weight-6 words z of 64 - 6 - c_greedy(1+z): (51, '0x1', 7) -> single-point bound <= 56 everywhere
+c_greedy(all-ones) = 8 (F1 says c(1) = 8)
+two points with x1 = all-ones: full six-inequality LP over random x2
+  max LP value (upper bound on the true LP optimum): 56.0
+  k = 2 random points: max LP value 56.0 at ['0xffffffff', '0xffff7fff']
+  k = 3 random points: max LP value 56.0 at ['0xffffffff', '0x2e361d01', '0xbb4f2edc']

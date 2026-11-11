@@ -8,7 +8,7 @@ For a mask mu, look at its four bits on each block, (mu_0, mu_1, mu_2, mu_3):
   level 3: all blocks even, some block has mu_0 != mu_2   (in W3, not in W2)
   level 2: every block is 0000, 1111, 1010 or 0101, some block is 1010 or 0101 (in W2, not W1)
   level 1: every block constant, mask nonzero   (in W1)
-W_k is the annihilator of (1+y)^(4-k) R, R = F_256[y]/(y^4+1); MixColumns acts on W_k/W_(k-1)
+W_k is the annihilator of (1+y)^k R, R = F_256[y]/(y^4+1); MixColumns acts on W_k/W_(k-1)
 as the identity. Prints the partition of the circuit, the level histogram and the gate types.
 Standard library only; examines existing circuits, searches nothing.
 """

@@ -1,0 +1,26 @@
+== Example 2 (n = 6) ==
+B rows: ['010001', '001100', '100110', '000011', '101000', '110010']
+A = B^-1 rows: ['100101', '111110', '100111', '110111', '011010', '011110']
+  B: row weights [2, 2, 3, 2, 2, 3], column weights [3, 2, 2, 2, 3, 2], minimum relation weight 3
+  A: row weights [3, 5, 4, 5, 3, 4], column weights [4, 4, 3, 5, 5, 3], minimum relation weight 3
+circuit of B with 7 gates verified
+the same masks in output coordinates: 13 vectors, contain the units and the rows of A; triple rank 7 = 7; closure of the units has 6 of 13 elements
+exhaustive: no cyclic system for A with fewer than 7 elements; no circuit for A with 7 gates
+explicit circuit set for A with 8 gates verified (extras ['011000', '100100'])
+=> L(B) <= 7,  L_cyc(A) = 7,  L(A) = 8
+
+== Example 3 (n = 7, MixColumns flavour) ==
+B rows: ['0101010', '1110000', '1010001', '0110001', '1011000', '0001110', '0010011']
+A = B^-1 rows: ['1110101', '1101101', '0111000', '1001001', '0101111', '1100100', '1011101']
+  B: row weights [3, 3, 3, 3, 3, 3, 3], column weights [3, 3, 5, 3, 1, 3, 3], minimum relation weight 4
+  A: row weights [5, 5, 3, 3, 5, 3, 5], column weights [5, 5, 3, 5, 5, 1, 5], minimum relation weight 4
+circuit of B with 10 gates verified
+the same masks in output coordinates: 17 vectors, contain the units and the rows of A; triple rank 10 = 10; closure of the units has 7 of 17 elements
+exhaustive: no cyclic system for A with fewer than 10 elements; no circuit for A with 10 gates
+explicit circuit set for A with 11 gates verified (extras ['1100000', '0110000', '1100101', '0101101'])
+=> L(B) <= 10,  L_cyc(A) = 10,  L(A) = 11
+
+
+real	0m1.534s
+user	0m1.538s
+sys	0m0.164s

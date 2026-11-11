@@ -1,0 +1,30 @@
+kind gadget   : generated 9024, triangles per system 11..37
+    systems fully checked                            1500
+      of which not a circuit on its basis triangles  1500
+    degenerate dual (skipped)                        6013
+    dual reduced                                     219
+    dual not reduced                                 2781
+    double duals built                               1454
+kind reencoded: generated 3071, triangles per system 10..32
+    systems fully checked                            1500
+      of which not a circuit on its basis triangles  1500
+    degenerate dual (skipped)                        1571
+    dual reduced                                     898
+    dual not reduced                                 2102
+    double duals built                               1500
+all assertions passed; statements checked:
+    1.2  G = m + x + y + h with y = #EEE triangles, x = #even variables - y
+    2.1  every component of the odd graph contains an input; the input blocks of the components are the partition: a variable has odd weight on block K iff it is odd and lies in component K; x >= n - c
+    3.1  the dual has G + m - n triangles, as many non-input variables, is uniquely solvable, computes M^T
+    3.2  #EEE triangles of the dual <= F = sum_v max(0, D_v - 2 - K_v/2), equality for the canonical splitting
+    6.1  Q = 2 x(dual) for every splitting (Q = triangles with odd adjoint)
+    6.2  weighted degree = K_v at helpers, K_v - 1 (odd) at boundary vertices; sum = 2(Q - e1); (A); (B)
+    7.1  the adjoint in the dual of a dual triangle equals the value of its origin
+    7.2  Q(dual) = 2 x(C)
+    7.3  F(dual) >= y(C); the canonical double dual has y = F(dual), x = x(C) and computes M
+    7.4  canonical dual: every odd non-boundary variable lies in >= 3 triangles
+    8.1  e(canonical dual) = sum of f_v over odd v
+
+real	0m33.923s
+user	0m33.910s
+sys	0m0.004s
