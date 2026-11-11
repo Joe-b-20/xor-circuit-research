@@ -220,8 +220,8 @@ unit vectors of b and every vector supported on a (zero included) are available 
 sequence of XOR gates computing the four vectors [b: E_c] + [a: s_c], c = 0..3, has at least 10 gates,
 and 10 suffice. Operands may be free vectors, units of b or earlier gates; gate values are arbitrary;
 nothing is assumed distinct or nonzero. Decided four times with code that shares nothing: two SAT
-encodings by the investigator and the main agent (the latter's 9-gate run was not finished when this was
-written), and by the reviewer a third SAT encoding (9 gates impossible in 23 s with two justified
+encodings by the investigator and the main agent (the latter decided 8 and 10 gates; its 9-gate run
+timed out undecided after 50 minutes, so it does not count for the 9-gate case), and by the reviewer a third SAT encoding (9 gates impossible in 23 s with two justified
 symmetry breaks) and an exhaustive search in C (`review-charges/lemma_exh.c`: nothing with at most 9
 gates among 48.5 million nodes, 4 s). The C program is the certificate to rerun. By hand only 9 is
 proved: the b-parts of the gates must contain a circuit for the four E_c (6 gates), and the a-parts need
@@ -267,8 +267,9 @@ the support of g contains j and j' and lies in both supports, so j' is in the su
 in that of sheet j'. No such pair exists (inspection of the eight sets; also checked by program). QED
 
 **Scope.** 7.1 is about all circuits. 7.2 is a restricted-family theorem; the class contains all
-cancellation-free circuits and all recorded MixColumns circuits, is defined relative to the
-bit-position blocks, and excludes exactly the mechanism that wins in the m = 3 example below. Neither
+cancellation-free circuits and the three MixColumns circuits recorded in this repository, but only
+about a quarter of the wider corpora of known 88-gate circuits (section 9). It is defined relative to
+the bit-position blocks, and excludes exactly the mechanism that wins in the m = 3 example below. Neither
 statement uses the parity framework, Sidon facts or transposition. Neither is a bound for unrestricted
 circuits: the published bound stays 75.
 
@@ -328,3 +329,85 @@ cheaply available.
 - **Relation to MixColumns.** The same spanning inequality gives G >= 88 + 2h - rho_4(B u H) there (the
   identity of section 2). The M2 argument does not transfer: it needs the slack to be one gate, sheets
   with a 4-term relation, and outputs lying in boundary parallelograms; MixColumns has none of these.
+
+## 9. Block-monotone circuits need 83; where a gate can serve two sheets (`rotation/REPORT-PART2.md`)
+
+Delegated follow-up. I re-derived the proofs of the two theorems; both then had an independent machine
+review (`review-83/REVIEW.md`), whose corrections are applied here. The review confirmed 9.1 and 9.2 and
+found my first version of the last two paragraphs wrong or overstated.
+
+**Theorem 9.1 (three-term sheet; proved by hand given the local lemma of section 7).** Let blocks a, k, b
+have four inputs each, with every vector supported on a alone or on k alone free, and vectors meeting
+both a and k not free. Computing the four vectors [b: E_c] + [a: s_c] + [k: s_c] takes at least 13 gates,
+and 13 suffice (a 13-gate circuit is verified; the lower bound rests on the proof, a direct SAT run for
+12 gates timed out undecided).
+*Reason.* Ten gates are needed on block b as before. The a-parts and the k-parts of the outputs each have
+rank 3 and are the same vectors, so they must enter through three "entry" events on each side; an entry
+that serves both sides at once is a gate living on a and k, which costs a gate itself.
+*Proof of the lower bound.* Discard gates whose value is free. Call a gate of type B if it is nonzero on
+b and of type M if it is zero on b and nonzero on both a and k. A B-gate has both operands nonzero on b,
+or exactly one operand zero on b (an entry); that operand lies on a alone (class E_a; a zero operand is
+put here), on k alone (E_k) or is an M-gate. Set k to zero and keep, for each restricted value of a
+B-gate that is not a unit, the first B-gate carrying it, redirecting the readers of the others. An E_k
+entry repeats its other operand and is not kept; an M-gate restricts to a vector on a, which is free in
+the local lemma. The kept gates form a circuit of the local lemma, so #B >= 10 + |E_k|; likewise
+#B >= 10 + |E_a|. By induction the (a,k)-part of every signal nonzero on b lies in A + K + M', the spans
+of the (a,k)-parts of the three classes of entry operands, with dim A <= |E_a|, dim K <= |E_k| and
+dim M' <= s, the number of distinct M-gates used as entry operands. The outputs have (a,k)-parts
+(s_c, s_c); projecting to a gives 3 <= dim A + s, to k gives 3 <= dim K + s. The total is at least
+#B + #M >= 10 + max(|E_a|, |E_k|) + s >= 10 + (3 - s)+ + s >= 13. QED
+The bound is tight in every regime: 13-gate solutions with 0, 1, 2 and 3 gates of type M all occur.
+
+**Theorem 9.2 (proved given the local lemma).** Every block-monotone circuit for MixColumns has at least
+83 gates.
+*Proof.* For j = 0..7 let F_j be the gates that are output gates of sheet j or ancestors of one and are
+nonzero on block j; for j = 3 add those that are nonzero on both block 2 and block 7. In a
+block-monotone circuit the ancestors of sheet j are supported inside the support S_j of sheet j. A gate
+in F_j and F_j' with j != j' has its support inside both S_j and S_j', and that support contains j and j'
+(or, for j = 3, blocks 2 and 7, which lie together only in S_3); by the inspection in Corollary 7.2 no
+such pair exists, so the eight sets are pairwise disjoint. |F_j| >= 10 by Theorem 7.1, and |F_3| >= 13
+by Theorem 9.1 with a = 2, k = 7: restricted to blocks 2, 3, 7 the ancestors of sheet 3 form a circuit
+of that model, in which the gates on block 2 alone or block 7 alone are free and the others are exactly
+the B- and M-gates. Total 7 x 10 + 13 = 83. QED
+
+**These eight families cannot give more (observed).** Over 4,544 block-monotone circuits (4,300 from the
+public kste corpus, 241 hunt records, the 3 of this repository) no two families overlap, the minimum of
+each F_j is 10, of F_3 13, and the minimum total is 83, attained by one corpus circuit. For the recorded
+88 the families have sizes 11, 11, 10, 15, 10, 10, 10, 10 (87; one gate lies in none).
+
+**Why not 88 yet.** Sheet 1 may borrow two-block gates from sheet 0 (both live on blocks 0 and 7), and
+sheet 4 may borrow from sheet 3 (blocks 3 and 7); block 7 serves five sheets. The missing statements are
+two joint local problems: sheets 0 and 1 together with block 7 free (proved between 20 and 22), and
+sheets 7, 3, 4 together with blocks 6 and 2 free (between 33 and 36). **Observed:** in all 4,541
+block-monotone 88-gate circuits of the corpora the three parts 30 + (0,1) + (7,3,4) are exactly 30, 22,
+36. **Conjectured:** 22 and 36 are the true local values, which would make 88 optimal among
+block-monotone circuits. The joint problems have 12 and 20 non-free inputs; plain SAT calls did not
+decide them in the budget.
+
+**Most known 88s are not block-monotone (observed; corrects an impression given in section 7).** Of the
+18,938 valid circuits of the public kste corpus 4,300 are block-monotone and 14,638 are not; of 415 hunt
+records 241 are and 174 are not. In every non-monotone kste circuit there is exactly one gate that
+cancels a whole block while the union of its operands' blocks lies in no single sheet support; that
+union always contains blocks 1, 2, 7 (it is {0,1,2,7} in 10,351 circuits), and the cancelled block is 2
+in 14,600 of them. Only 4,264 of these circuits keep every gate inside some sheet support; the other
+10,374 contain a gate living on blocks such as {0,1,2,7} or {0,2,7}. All of them still have 88 gates:
+the double service buys nothing in the corpus.
+
+**Where a block can be cancelled (proved, for circuits whose gates each live inside one sheet's support;
+Lemma II.6).** Join two blocks when some sheet's support contains both. If such a gate g = a + b cancels a
+block, then either the support of g lies inside the support of a or of b ("exit-like"), or the three
+blocks involved form a triangle of this graph. For the rotation model with m >= 4 the graph is a cycle
+without triangles, exits live on one block, and a circuit of this kind whose exits are sums of two
+earlier signals of that block has at least 10m gates (Lemma II.7). For m = 3 the graph is a triangle,
+which is how the 28-gate circuit wins (four such gates). For MixColumns the graph is the 8-cycle plus
+four chords to block 7; its triangles are {0,1,7}, {1,2,7}, {2,3,7}, {3,4,7}, and {1,2,7} is the only
+one not inside a single sheet support. No analogue of Lemma II.7 is proved for MixColumns: exits there
+can land on two blocks, and triangles inside one sheet support can also break monotonicity. Two hunt
+records are of this kind (an exit inside the support of sheet 4 landing on blocks 3 and 7, with gates
+charged to sheets 3 and 4), with no cancellation on {1,2,7}.
+
+**What this says about an 87 (corrected).** Theorem 9.2 excludes block-monotone circuits with at most 82
+gates. It does not exclude a block-monotone 87; that would follow from the conjecture above. For
+circuits that are not block-monotone nothing beyond the published 75 is proved. The corpus shows that
+the search already produces such circuits in three shapes (a gate outside every sheet support; the
+triangle {1,2,7}; an exit onto two blocks) and that none of them has yet gained a gate.

@@ -7,11 +7,17 @@ best construction stays 88; optimality is open.
 Aim: understand what forces XOR circuits to have unavoidable cost, with AES MixColumns as the
 central example, and obtain arguments that cover whole families of circuits by one reason.
 
+- `SUMMARY.md`: a short reader's guide: the picture, results by status, the open questions.
 - `RECORD.md`: the research record. Proved statements, conjectures, counterexamples, failed ideas
   and unresolved dependencies, kept apart, each with its status.
 - `tools/`: small standard-library scripts that examine recorded circuits or check algebra. They
   search nothing and prove nothing by themselves.
-- One sub-directory per delegated investigation, each with its own `REPORT.md` and scripts.
+- One sub-directory per delegated investigation, each with its own `REPORT.md` and scripts:
+  `restriction/` (restriction, gate elimination, connectivity, literature), `cyclic/` (cyclic systems
+  versus circuits, audit of the published proof), `rotation/` (the rotation model, the charge theorem,
+  `REPORT-PART2.md` for MixColumns), `double-map/` (the two-point quotient).
+- `review-record/`, `review-cyclic/`, `review-charges/`, `review-83/`: independent machine reviews,
+  each by a model instance that did not write the reviewed text.
 
 Status words used throughout: **proved** (complete argument written here), **conditional** (proved
 given a named hypothesis), **conjectured**, **observed** (seen on recorded circuits or small cases;

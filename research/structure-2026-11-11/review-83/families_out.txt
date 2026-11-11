@@ -1,0 +1,35 @@
+matrix rows equal to formula (3.1) with output r = (c, j), r = 8c + j: True
+sheet supports: [[0, 7], [0, 1, 7], [1, 2], [2, 3, 7], [3, 4, 7], [4, 5], [5, 6], [6, 7]]
+block graph edges: [(0, 1), (0, 7), (1, 2), (1, 7), (2, 3), (2, 7), (3, 4), (3, 7), (4, 5), (4, 7), (5, 6), (6, 7)]
+triangles: [(0, 1, 7), (1, 2, 7), (2, 3, 7), (3, 4, 7)]  not inside a single sheet support: [(1, 2, 7)]
+aes-mixcolumns-xor88-depth5.circ.txt G 88 mono True F {0: 11, 1: 11, 2: 10, 3: 15, 4: 10, 5: 10, 6: 10, 7: 10} total 87 overlap [] loc {'B': 13, 'M': 2, 'Ea': 1, 'Ek': 3, 's': 2, 'dA': 1, 'dK': 3, 'ok': True} canc 0
+aes-mixcolumns-xor89-depth4.circ.txt G 89 mono True F {0: 10, 1: 12, 2: 10, 3: 13, 4: 11, 5: 10, 6: 10, 7: 10} total 86 overlap [] loc {'B': 13, 'M': 0, 'Ea': 3, 'Ek': 3, 's': 0, 'dA': 3, 'dK': 3, 'ok': True} canc 0
+aes-mixcolumns-xor97-depth3.circ.txt G 97 mono True F {0: 10, 1: 13, 2: 10, 3: 16, 4: 14, 5: 10, 6: 10, 7: 11} total 94 overlap [] loc {'B': 16, 'M': 0, 'Ea': 5, 'Ek': 4, 's': 0, 'dA': 4, 'dK': 3, 'ok': True} canc 0
+kste files: ['circuits_1.txt', 'circuits_2.txt', 'circuits_3.txt', 'circuits_depth5.txt'] lines 19184 classes: {('G', 88, 'distinct', 88, 'dead', 0): 18938, 'not MixColumns / bad': 246}
+== kste (G=88, distinct, no dead) circuits: 18938  monotone: 4300  not: 14638
+  [mono] min family sizes: {0: 10, 1: 10, 2: 10, 3: 13, 4: 10, 5: 10, 6: 10, 7: 10}  min total: 83  total hist: {87: 1574, 85: 562, 88: 849, 86: 1204, 84: 110, 83: 1}
+  [mono] F3 hist: {14: 3034, 15: 895, 13: 371}  circuits with overlapping families: 0
+  [mono] sheet-3 local inequalities all hold: True  (B,M,|Ea|,|Ek|,s) most common: [((13, 1, 2, 2, 1), 1466), ((14, 0, 3, 3, 0), 968), ((14, 1, 2, 4, 1), 368), ((14, 0, 3, 4, 0), 328), ((15, 0, 3, 5, 0), 243)]  min B+M: 13  s hist: {1: 2243, 0: 1784, 2: 273}
+  [mono] with a block-cancelling gate: 565  cross-window cancellations in monotone: 0
+  [non] cross-window cancelling gates per circuit: {1: 14638}
+  [non] all cancelling gates per circuit: {1: 14003, 2: 613, 3: 22}
+  [non] cancelled block sets of cross gates: {(2,): 14600, (1,): 31, (7,): 7}
+  [non] triangles of cross gates: {(): 5315, ((1, 2, 7),): 4264, ((0, 1, 2), (1, 2, 7)): 4410, ((0, 2, 7), (1, 2, 7)): 643, ((1, 2, 3), (1, 2, 7)): 6}
+  [non] union supports of cross gates: {(0, 1, 2, 7): 10351, (1, 2, 7): 4264, (1, 2, 3, 7): 23}
+  [non] window-local: 4264
+  [non] non-cross cancel patterns (cancelled, union): {((7,), (2, 3, 7)): 541, ((7,), (0, 1, 7)): 115, ((1,), (0, 1, 7)): 1}
+  [non] family totals: {91: 3438, 90: 5143, 89: 4059, 87: 340, 88: 1623, 86: 34, 94: 1}  with overlap: 14607  overlap pairs: {(1, 2): 14600, (2, 3): 7, (0, 1): 1}
+== hunt records circuits: 415  monotone: 241  not: 174
+  [mono] min family sizes: {0: 10, 1: 10, 2: 10, 3: 13, 4: 10, 5: 10, 6: 10, 7: 10}  min total: 84  total hist: {87: 117, 86: 65, 88: 38, 85: 18, 84: 3}
+  [mono] F3 hist: {14: 115, 13: 95, 15: 31}  circuits with overlapping families: 0
+  [mono] sheet-3 local inequalities all hold: True  (B,M,|Ea|,|Ek|,s) most common: [((13, 0, 3, 3, 0), 52), ((12, 1, 2, 2, 1), 41), ((13, 1, 2, 2, 1), 37), ((14, 0, 3, 3, 0), 25), ((14, 0, 3, 4, 0), 25)]  min B+M: 13  s hist: {0: 112, 2: 14, 1: 115}
+  [mono] with a block-cancelling gate: 10  cross-window cancellations in monotone: 0
+  [non] cross-window cancelling gates per circuit: {1: 172, 0: 2}
+  [non] all cancelling gates per circuit: {2: 22, 1: 152}
+  [non] cancelled block sets of cross gates: {(2,): 165, (7,): 5, (1,): 2}
+  [non] triangles of cross gates: {((1, 2, 7),): 87, ((0, 1, 2), (1, 2, 7)): 77, ((0, 2, 7), (1, 2, 7)): 5, (): 2, ((1, 2, 7), (1, 3, 7)): 1}
+  [non] union supports of cross gates: {(1, 2, 7): 87, (0, 1, 2, 7): 84, (1, 2, 3, 7): 1}
+  [non] window-local: 89
+  [non] non-cross cancel patterns (cancelled, union): {((7,), (3, 7)): 4, ((4,), (3, 4, 7)): 2, ((7,), (2, 3, 7)): 17, ((7,), (0, 7)): 1}
+  [non] family totals: {91: 26, 88: 22, 89: 50, 90: 65, 87: 8, 93: 2, 86: 1}  with overlap: 172  overlap pairs: {(1, 2): 165, (2, 3): 5, (3, 4): 2}
+exit 0

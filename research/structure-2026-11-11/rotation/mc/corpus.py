@@ -50,6 +50,10 @@ def summarise(name, rows):
         print(f"   [{label}] G01:", dict(sorted(Counter(r["G01"] for r in sub).items())),
               " G34:", dict(sorted(Counter(r["G34"] for r in sub).items())),
               " G01+G34:", dict(sorted(Counter(r["G01"] + r["G34"] for r in sub).items())))
+        print(f"   [{label}] G347:", dict(sorted(Counter(r["G347"] for r in sub).items())),
+              " G34 + pure-7 gates not serving sheet 7:", dict(sorted(Counter(r["G34"] + r["pure7_not_sheet7"] for r in sub).items())),
+              " charge2+charge5+charge6+G01+G347:",
+              dict(sorted(Counter(r["charges"][2] + r["charges"][5] + r["charges"][6] + r["G01"] + r["G347"] for r in sub).items())))
         print(f"   [{label}] pure block-7 gates:", dict(sorted(Counter(r["pure7"] for r in sub).items())),
               " of which not serving sheet 7:", dict(sorted(Counter(r["pure7_not_sheet7"] for r in sub).items())),
               " gates on {2,7}:", dict(sorted(Counter(r["M27"] for r in sub).items())))
@@ -139,6 +143,7 @@ def main():
     print(f"== distinct value sets over all sources: {len(valuesets)}  (by first source: {dict(Counter(valuesets.values()))})")
     closed = Counter()
     nonsheet = Counter()
+    klass = Counter()
     for vs, src in valuesets.items():
         pats = {"".join(map(str, sorted(mc.blocks(v)))) for v in vs}
         ns_p = sorted(p for p in pats if p not in SHEET_PATTERNS)
@@ -146,6 +151,16 @@ def main():
         closed[(src, ok)] += 1
         if ns_p:
             nonsheet[(src, ",".join(ns_p))] += 1
+            klass[(src, "no monotone wiring: a value lies in no sheet support")] += 1
+        elif ok:
+            klass[(src, "monotone wiring exists (support-closed)")] += 1
+        elif not mc.sheets_derivable(vs):
+            klass[(src, "no monotone wiring: some sheet not derivable inside its support")] += 1
+        else:
+            klass[(src, "undecided by these tests")] += 1
+    print("   classification of value sets:")
+    for k, v in sorted(klass.items()):
+        print("      ", k, v)
     print("   value sets admitting a support-closed (hence block-monotone) wiring, by source:", dict(sorted(closed.items())))
     print("   value sets containing a value whose support lies in no sheet support, by source and patterns:")
     for k, v in sorted(nonsheet.items(), key=lambda kv: -kv[1])[:20]:

@@ -1,0 +1,59 @@
+non-monotone circuits studied: 14638
+block-cancelling gates per circuit: {1: 14003, 2: 613, 3: 22}
+block-cancelling gates by support pattern (operand supports -> result support), top 25:
+   0127+27->017           5298
+   027+12->017            4410
+   12+27->17              4249
+   012+27->017            643
+   237+37->23             541
+   017+07->01             115
+   1237+17->237           17
+   12+17->27              8
+   17+27->12              7
+   12+137->237            6
+   017+017->07            1
+sets of cancellation patterns per circuit, top 12:
+     5298  0127+27->017
+     4193  027+12->017
+     4072  12+27->17
+      402  012+27->017
+      214  012+27->017 ; 237+37->23
+      163  027+12->017 ; 237+37->23
+      142  12+27->17 ; 237+37->23
+       46  017+07->01 ; 027+12->017
+       31  017+07->01 ; 12+27->17
+       17  1237+17->237
+       16  012+27->017 ; 017+07->01
+       10  012+27->017 ; 017+07->01 ; 237+37->23
+violating gates by (support, sheets served), top 25:
+   support 12    serves sheets 12     43800
+   support 27    serves sheets 13     14600
+   support 2     serves sheets 123    14600
+   support 0127  serves sheets 1      5298
+   support 027   serves sheets 1      4410
+   support 012   serves sheets 1      643
+   support 12    serves sheets 23     59
+   support 17    serves sheets 13     31
+   support 1     serves sheets 123    31
+   support 1237  serves sheets 3      17
+   support 27    serves sheets 23     14
+   support 17    serves sheets 12     8
+   support 7     serves sheets 012347 7
+   support 137   serves sheets 3      6
+   support 017   serves sheets 01     3
+   support 1     serves sheets 012    1
+example: circuits_1.txt line 1: charges [11, 12, 11, 13, 13, 10, 10, 10], sum mu 90, excess 3, uncharged 1, G01 25, G34 27
+   violating gate 36: [2:e2] + [2:e3] = [2:s2]  serves sheets [1, 2, 3]
+   violating gate 55: [1:e1] + [2:s2] = [1:e1 2:s2]  serves sheets [1, 2]
+   violating gate 65: [2:s2] + [7:s2] = [2:s2 7:s2]  serves sheets [1, 3]
+   violating gate 74: [1:e0] + [1:e1 2:s2] = [1:s0 2:s2]  serves sheets [1, 2]
+   violating gate 76: [1:E0] + [1:s0 2:s2] = [1:E1 2:s2]  serves sheets [1, 2]
+   violating gate 77: [0:s1 7:d1] + [1:E1 2:s2] = [0:s1 1:E1 2:s2 7:d1]  serves sheets [1]
+   cancelling gate 78: [2:s2 7:s2] + [0:s1 1:E1 2:s2 7:d1] = [0:s1 1:E1 7:s1]
+example: circuits_1.txt line 5: charges [10, 13, 11, 14, 10, 10, 10, 11], sum mu 89, excess 3, uncharged 2, G01 25, G34 26
+   violating gate 35: [2:e0] + [2:e2] = [2:d0]  serves sheets [1, 2, 3]
+   violating gate 36: [1:e2] + [2:d0] = [1:e2 2:d0]  serves sheets [1, 2]
+   violating gate 41: [1:e1] + [1:e2 2:d0] = [1:s1 2:d0]  serves sheets [1, 2]
+   violating gate 42: [1:e0] + [1:s1 2:d0] = [1:E3 2:d0]  serves sheets [1, 2]
+   violating gate 58: [2:d0] + [7:s3] = [2:d0 7:s3]  serves sheets [1, 3]
+   cancelling gate 59: [1:E3 2:d0] + [2:d0 7:s3] = [1:E3 7:s3]

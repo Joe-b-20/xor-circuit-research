@@ -102,12 +102,13 @@ def analyse(gates, targets=TARGETS):
     pure7 = [g for g in range(n, n + G) if sup[g] == frozenset([7])]
     g01 = sum(1 for g in (anc[0] | anc[1]) if sup[g] != frozenset([7]))
     g34 = sum(1 for g in (anc[3] | anc[4]) if sup[g] not in (frozenset([2]), frozenset([7])))
+    g347 = sum(1 for g in (anc[3] | anc[4] | anc[7]) if sup[g] not in (frozenset([2]), frozenset([6])))
     m27 = sum(1 for g in range(n, n + G) if sup[g] == frozenset([2, 7]))
     pats = Counter("".join(map(str, sorted(sup[g]))) for g in range(n, n + G))
     return dict(G=G, distinct=len(set(vals[n:])), monotone=not viol, violating=len(viol), charges=charges,
                 sum_mu=sum(mu), excess=sum(max(0, x - 1) for x in mu), uncharged=mu.count(0), dead=dead,
                 pure7=len(pure7), pure7_not_sheet7=sum(1 for g in pure7 if g not in anc[7]),
-                G01=g01, G34=g34, M27=m27, patterns=dict(pats),
+                G01=g01, G34=g34, G347=g347, M27=m27, patterns=dict(pats),
                 uncharged_patterns=dict(Counter("".join(map(str, sorted(sup[n + i]))) for i, x in enumerate(mu) if x == 0)))
 
 
@@ -130,6 +131,28 @@ def support_closed_wiring(values):
                 pending.discard(v)
                 progress = True
     return not pending
+
+
+def sheets_derivable(values):
+    """Necessary condition for a block-monotone wiring of a value set: every output of sheet j is derivable
+    from the inputs of the blocks of sheet j using only values supported inside the support of sheet j."""
+    values = set(values)
+    for j in range(8):
+        bm = sum(BLOCKMASK[b] for b in SHEET_SUPPORT[j])
+        pool = [v for v in values if not (v & ~bm)]
+        avail = {1 << i for i in range(32) if (1 << i) & bm}
+        pending = set(pool)
+        progress = True
+        while pending and progress:
+            progress = False
+            for v in list(pending):
+                if any((a ^ v) in avail for a in avail):
+                    avail.add(v)
+                    pending.discard(v)
+                    progress = True
+        if any(TARGETS[8 * c + j] not in avail for c in range(4)):
+            return False
+    return True
 
 
 def main():

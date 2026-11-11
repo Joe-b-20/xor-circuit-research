@@ -1,0 +1,36 @@
+q3_28.txt: m = 3, 28 gates
+         g0 =   in(1,0) + in(2,0)   PROD [0:s1          ] blocks [0] serves sheets [0, 1, 2] mu=1 VIOLATING
+         g1 =   in(3,0) + in(0,1)   PROD [0:e3 1:e0     ] blocks [0, 1] serves sheets [1, 2] mu=1 VIOLATING
+         g2 =   in(2,1) + in(3,1)   PROD [1:s2          ] blocks [1] serves sheets [0, 1, 2] mu=1 VIOLATING
+         g3 =   in(3,0) + in(0,2)   PROD [0:e3 2:e0     ] blocks [0, 2] serves sheets [0, 2] mu=2 VIOLATING
+         g4 =        g0 + g2        SUM  [0:s1 1:s2     ] blocks [0, 1] serves sheets [0, 1, 2] mu=2 VIOLATING
+         g5 =        g2 + in(3,2)   HELP [1:s2 2:e3     ] blocks [1, 2] serves sheets [0, 1, 2] mu=2 VIOLATING
+         g6 =   in(0,0) + g4        HELP [0:E3 1:s2     ] blocks [0, 1] serves sheets [0, 1, 2] mu=2 VIOLATING
+   OUT(1,1) =   in(0,1) + g4        OUT  [0:s1 1:E1     ] blocks [0, 1] serves sheets [1] mu=1 
+         g8 =   in(0,2) + g5        PROD [1:s2 2:s3     ] blocks [1, 2] serves sheets [0, 1, 2] mu=2 VIOLATING
+   OUT(3,0) =        g6 + g8        OUT  [0:E3 2:s3     ] blocks [0, 2] serves sheets [0, 1, 2] mu=2 VIOLATING
+        g10 =   in(1,1) + g8        HELP [1:E0 2:s3     ] blocks [1, 2] serves sheets [1, 2] mu=2 VIOLATING
+   OUT(2,2) =   in(1,2) + g8        OUT  [1:s2 2:E2     ] blocks [1, 2] serves sheets [2] mu=1 
+        g12 =   in(2,0) + OUT(3,0)  PROD [0:s0 2:s3     ] blocks [0, 2] serves sheets [0, 1, 2] mu=2 VIOLATING
+   OUT(0,1) =       g12 + g10       OUT  [0:s0 1:E0     ] blocks [0, 1] serves sheets [1, 2] mu=1 VIOLATING
+        g14 =   in(2,2) + g12       HELP [0:s0 2:E1     ] blocks [0, 2] serves sheets [0, 2] mu=2 VIOLATING
+        g15 =   in(3,1) + OUT(0,1)  PROD [0:s0 1:s1     ] blocks [0, 1] serves sheets [1, 2] mu=1 VIOLATING
+   OUT(2,0) =        g3 + g14       OUT  [0:E2 2:s2     ] blocks [0, 2] serves sheets [0, 2] mu=2 VIOLATING
+        g17 =        g1 + g15       SUM  [0:E2 1:E3     ] blocks [0, 1] serves sheets [1, 2] mu=1 VIOLATING
+   OUT(1,2) =       g15 + g14       OUT  [1:s1 2:E1     ] blocks [1, 2] serves sheets [2] mu=1 
+        g19 =   in(1,2) + OUT(2,0)  PROD [0:E2 2:E0     ] blocks [0, 2] serves sheets [0, 2] mu=2 VIOLATING
+   OUT(3,1) =   in(1,0) + g17       OUT  [0:s3 1:E3     ] blocks [0, 1] serves sheets [1] mu=1 
+   OUT(2,1) =       g17 + g6        OUT  [0:s2 1:E2     ] blocks [0, 1] serves sheets [1] mu=1 
+        g22 =        g0 + g19       SUM  [0:E1 2:E0     ] blocks [0, 2] serves sheets [0] mu=1 
+        g23 =       g17 + g19       SUM  [1:E3 2:E0     ] blocks [1, 2] serves sheets [2] mu=1 
+   OUT(0,0) =       g14 + g22       OUT  [0:E0 2:s0     ] blocks [0, 2] serves sheets [0] mu=1 
+   OUT(1,0) =   in(3,2) + g22       OUT  [0:E1 2:s1     ] blocks [0, 2] serves sheets [0] mu=1 
+   OUT(3,2) =       g10 + g23       OUT  [1:s3 2:E3     ] blocks [1, 2] serves sheets [2] mu=1 
+   OUT(0,2) =   in(2,1) + g23       OUT  [1:s0 2:E0     ] blocks [1, 2] serves sheets [2] mu=1 
+charges per sheet: [12, 13, 14]  violating gates: 17
+block-cancelling gates:
+   OUT(3,0): [0, 1] + [1, 2] -> [0, 2]   cancelled [1]   triangle   [0:E3 1:s2] + [1:s2 2:s3] = [0:E3 2:s3]
+   OUT(0,1): [0, 2] + [1, 2] -> [0, 1]   cancelled [2]   triangle   [0:s0 2:s3] + [1:E0 2:s3] = [0:s0 1:E0]
+   OUT(1,2): [0, 1] + [0, 2] -> [1, 2]   cancelled [0]   triangle   [0:s0 1:s1] + [0:s0 2:E1] = [1:s1 2:E1]
+        g23: [0, 1] + [0, 2] -> [1, 2]   cancelled [0]   triangle   [0:E2 1:E3] + [0:E2 2:E0] = [1:E3 2:E0]
+types: {'triangle': 4}
