@@ -1,0 +1,11 @@
+# m = 5 instances for run_exh.py file mode (one T per line; rows = column indices, '|' between rows)
+1|2|3|4|0        # 5-cycle (permutation)
+1|2|3|4|01       # arc matrix, one non-root
+1|2|3|4|02       # 5-cycle plus one extra entry
+4|0|14|2|3       # multiplication by x mod x^5+x^2+1 (companion)
+4|0|14|24|3      # multiplication by x mod x^5+x^4+x^3+x^2+1, diagonal removed
+4|04|1|24|3      # M2-like pattern: one coincidence, one defective row
+2|3|4|01|12      # sheet 0 has a helper position with three boundary-triple representations
+34|2|01|14|013   # sheet 0 coset with four difference vectors (star candidate)
+1|0|3|4|2        # swap + 3-cycle
+1|2|0|4|03       # 3-cycle, 4 and 3 chained

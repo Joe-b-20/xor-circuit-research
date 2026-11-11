@@ -1,0 +1,12 @@
+== Example 1 ==
+triples: [['a', 'b', 'e5'], ['a', 'e4', 'q1'], ['b', 'c', 'e1'], ['b', 'e3', 'q3'], ['c', 'e2', 'q2'], ['q1', 'q2', 'q3']]
+triples match claim: True
+cyclic: True  closure of E = ['e1', 'e2', 'e3', 'e4', 'e5']
+Ex1 M=Q: per k (cyclic, circuit, bad, size): {0: (1, 0, 0, 6), 1: (19, 6, 0, 7), 2: (182, 108, 0, 8), 3: (1116, 893, 0, 9)}
+Ex1 M=Q: L_cyc = 6, L = 7  (None = > searched range)
+Ex1 M=Q-b: per k (cyclic, circuit, bad, size): {0: (0, 0, 0, 5), 1: (1, 0, 0, 6), 2: (60, 42, 0, 7), 3: (803, 671, 0, 8)}
+Ex1 M=Q-b: L_cyc = 6, L = 7  (None = > searched range)
+n=5 non-circuit cyclic sets of size 6: 60  orbit of Ex1 under S_5: 60  equal: True
+n=5 non-circuit cyclic sets of size <= 5: 0
+n=4 non-circuit cyclic sets (all sizes): 0
+example 1: 2.25 s user

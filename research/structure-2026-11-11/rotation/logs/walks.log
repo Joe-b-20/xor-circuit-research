@@ -1,0 +1,16 @@
+scheme s0,d0,d1 -> s1,s3,d0 found
+scheme s0,d1,t -> s1,s3,d1 found
+scheme s0,s2,d0 -> s0,d1,t found
+scheme s0,s3,t -> s1,d1,t found
+scheme s1,d1,t -> s0,d0,d1 found
+scheme s1,s2,t -> s3,d1,t found
+scheme s1,s3,d0 -> s0,s3,t found
+scheme s1,s3,d0 -> s1,s3,d1 found
+scheme s1,s3,d1 -> s0,s3,t found
+scheme s1,s3,d1 -> s1,s2,t found
+scheme s2,d0,d1 -> s0,s2,d0 found
+scheme s3,d1,t -> s2,d0,d1 found
+schemes: 12  all verified and pure: True
+m = 7: no walk of this length (use the direct circuit)
+m = 4..40 (except 7): circuits with 10m gates verified for all m: True []
+exit 0

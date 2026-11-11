@@ -191,13 +191,118 @@ cyclic system is a circuit exactly when its equations can be solved one at a tim
   stays uniquely solvable under arbitrary nonzero coefficients over a field with at least three
   elements. Arguments that use the gate equations only through linear algebra over F_2 (independence,
   rank, parity, counting) are arguments about cyclic systems.
-- **Conditional (audit, one machine pass, review pending):** no lemma of PROOF uses the gate order
-  essentially; ten are written with it and each has an order-free proof. If so, PROOF shows
-  L_cyc(MixColumns) >= 75, and therefore L(InvMixColumns) >= 75 and the same for every systematic form
-  of the same [64,32] code. It also means that this kind of argument can never prove more than
-  L_cyc(MixColumns), which is at most 88 and not known to equal L(MixColumns).
+- **Conditional (on PROOF being correct for circuits; audited, then independently machine-reviewed,
+  `review-cyclic/REVIEW.md`):** no lemma of PROOF uses the gate order essentially; eleven are written
+  with it and each has an order-free proof. The review found three gaps in the audit as written (the
+  span inequality in Lemma 2.1 was argued in the wrong direction; "the transpose of a minimum system is
+  minimum with distinct values" needed a counting argument; signals of fan-out 1 were not handled) and
+  supplied a short repair for each; with the repairs it confirms the conclusion. So PROOF shows
+  L_cyc(MixColumns) >= 75, and therefore **L(InvMixColumns) >= 75** and the same for every systematic
+  form of the same [64,32] code. No human has checked this. The companion remark, that an argument using
+  the gate equations only through linear algebra over F_2 cannot prove more than L_cyc(MixColumns)
+  (at most 88, not known to equal L(MixColumns)), is a heuristic about a style of argument, not a theorem.
+- **Correction:** the n = 7 example is odd in rows and columns but one column has weight 1, so it is
+  not MixColumns-like in the transposed orientation. Whether L_cyc < L can happen for a matrix whose
+  code and dual code both have minimum distance at least 4 with no unit-weight column is not known.
 - **Observed:** the recorded 88-gate MixColumns circuit read from its outputs is not a circuit for the
   inverse (only 44 of 120 masks are reachable), while the recorded 88-gate inverse circuit read from
   its outputs is a circuit for MixColumns.
 - **Open:** whether L_cyc(MixColumns) = L(MixColumns); whether L <= C L_cyc in general (every observed
   gap is 1; only L <= L_cyc^2 is proved).
+
+## 7. The charge theorem: each sheet is served by ten gates of its own (otation/REPORT.md, 	ools/charges.py)
+
+The theorem for the rotation model is the delegated investigator's (rotation/REPORT.md 3.4, 3.5). The
+MixColumns version below, and its proof as written here, are the main agent's; under independent machine
+review.
+
+**Local lemma (SAT-certified, 8 inputs).** Let blocks a and b have four inputs each. Suppose the four
+unit vectors of b and ALL fifteen nonzero vectors supported on a are available at no cost. Then any
+sequence of XOR gates computing the four vectors [b: E_c] + [a: s_c], c = 0..3, has at least 10 gates,
+and 10 suffice. Decided by exhaustive SAT with two independent encodings (rotation/free_prev.py;
+tools/local_lemma.py: 8 gates impossible, 10 possible; the 9-gate run of the second encoding is recorded
+when it finishes). No stored certificate; no hand proof yet.
+
+**Definitions.** For a circuit computing MixColumns, sheet j is the set of the four outputs (c, j). For a
+gate g let mu(g) be the number of sheets j such that (i) the mask of g is nonzero on block j and (ii) g is
+an output gate of sheet j or an ancestor of one. A circuit is *block-monotone* if, whenever g is an
+ancestor of an output o, every block on which the mask of g is nonzero is a block on which o is nonzero.
+(Cancellation inside a block is allowed; what is excluded is a gate carrying a nonzero component on a
+block which every path to some output it feeds must cancel completely. Every cancellation-free circuit is
+block-monotone.)
+
+**Theorem 7.1 (charges; conditional on the local lemma).** In every circuit computing MixColumns, for
+every sheet j at least 10 gates are nonzero on block j and are output gates of sheet j or ancestors of
+one. Hence the sum of mu(g) over all gates is at least 80, and
+
+    G >= 80 - (sum over gates of (mu(g) - 1)+) + #{gates with mu = 0}.
+
+**Proof.** Fix j, let b = block j and a = block j-1 (block 7 for j = 0). By (3.1) the outputs of sheet j
+are [b: E_c] + [a: s_c] plus, for j = 1, 3, 4, a term on block 7, which is neither a nor b. Set every
+input outside a and b to zero. Let A be the set of gates that are output gates of sheet j or ancestors
+of one, and D the gates of A whose mask is nonzero on b. After the restriction, a gate of A not in D has
+a value supported on a (free, or zero); an input is a unit of a (free), a unit of b, or zero. So every
+gate of D is the sum of two values, each of which is free, zero, a unit of b, or the value of an earlier
+gate of D. Deleting the gates of D that repeat an earlier value or a unit leaves a circuit in the model
+of the local lemma that computes the four restricted outputs (each is nonzero on b, so its gate is in
+D). Hence |D| >= 10. Summing over j counts each gate mu(g) times. QED
+
+**Corollary 7.2 (conditional on the local lemma).** Every block-monotone circuit for MixColumns has at
+least 80 gates. More generally a circuit with fewer than 80 gates must contain gates with mu >= 2: a
+gate that is nonzero on the own blocks of two different sheets and feeds outputs of both.
+*Proof.* Sheet j's outputs are nonzero exactly on blocks {j-1, j}, plus block 7 for j = 1, 3, 4, and on
+{7, 0} for j = 0. If mu(g) >= 2 with sheets j != j' in a block-monotone circuit, the support of g contains
+j and j' and lies in both supports, so j' is in the support of sheet j and j in that of sheet j'. If
+j' = j-1 then j must be j-2 or 7 with j-1 in {1,3,4}: impossible. If j' = 7 with j in {1,3,4} then j must
+be 6 or 7: impossible. QED
+
+**Scope.** 7.1 is about all circuits. 7.2 is a restricted-family theorem. It does not use the parity
+framework, Sidon facts or transposition. It is not a bound for unrestricted circuits: the published
+bound stays 75.
+
+**Observed.** The three recorded MixColumns circuits (88, 89, 97 gates) are block-monotone, with no gate
+of mu >= 2. In the 88 the charges per sheet are 11, 11, 10, 13, 10, 10, 10, 10 (sum 85) and three gates
+have mu = 0 (they live on blocks 2 and 7 only and serve sheet 3).
+
+**Counterexample showing the hypothesis matters.** For the rotation model with m = 3 there is a 28-gate
+circuit, below the block-monotone minimum 30; it has 17 gates violating block-monotonicity
+(rotation/circuits/q3_28.txt). For m >= 4 the search found nothing below 10m; whether cross-block
+cancellation can help there, or for MixColumns, is open. It is a direct-sum question: can one gate
+usefully carry components that belong to two unrelated sheets.
+
+**What this explains.** For the rotation model Q_8 (MixColumns without its three field-reduction terms)
+80 gates are attained by explicit periodic circuits and are optimal among block-monotone circuits.
+Adding the reduction terms one at a time gave 82, 85, 88 in bounded heuristic runs (observed, not
+proved): the recorded 88 reads as 80 for the eight sheets plus 8 for the three extra terms.
+
+## 8. The double map: the second-level cost isolated (double-map/REPORT.md; delegated, no second review yet)
+
+D_T: (u, v) -> (u + T(u+v), v + T(u+v)) on 2m inputs is MixColumns restricted to inputs (u, v, u, v) when
+T is multiplication by x. Each bit position is a sheet with two inputs and two outputs; the baseline is
+3m = 2m outputs + m span gates, and eps(T) = L(D_T) - 3m is the cost of translation vectors that are not
+cheaply available.
+
+- **Proved (Theorem C):** eps(T) = 0 exactly when the relation code of the boundary is generated by its
+  4-term relations, and exactly when T is a direct sum of explicit 'arc blocks' (a cyclic permutation
+  with rows extended along the cycle up to chosen roots). The last step of the proof is causal: around a
+  cycle of sheets each sheet imports one vector and exports another, and this can be scheduled in time
+  only if all sheets that export their own input difference point the same way.
+- **Proved, computer-assisted (Theorem D): L(M2) = 26**, where M2 is the half-size quotient of
+  MixColumns (16 inputs). Two finite checks (the rank of 4-term relations; a scan of 32,736 candidate
+  helper masks leaving four) and then a time-order argument: the first outputs of the eight sheets need
+  seven distinct labels and two more are forced, against eight available. An exhaustive search confirms
+  the case of 8-block partitions.
+- **Invariant:** delta(T) = 2m - (rank of the 4-term relations among the boundary vectors) = the number
+  of sheet vectors that no other sheet shares. Helper-free circuits need at least 3m + delta gates
+  (proved). **Conjectured:** eps(T) >= max(delta(T), delta(T^T)) for all circuits; observed in all 70
+  classes with m <= 4 whose optimum was determined (equality in 67, one more in 3).
+- **Disproved along the way:** 'an optimal circuit always uses the natural partition' (a 4 x 4 example:
+  13 gates against 14); 'delta is transposition invariant' (so the bound must take the maximum over the
+  two orientations); 'a helper adds at most two independent 4-term relations' (M2: four masks add 3).
+- **What blocks a general proof, in the investigator's words:** each use of a helper beyond the first
+  could save a gate; in every case analysed a linear dependency among the labels at that helper cancels
+  the saving, but the dependency is tied to the saving only through time order, and this was made
+  precise for one helper only.
+- **Relation to MixColumns.** The same spanning inequality gives G >= 88 + 2h - rho_4(B u H) there (the
+  identity of section 2). The M2 argument does not transfer: it needs the slack to be one gate, sheets
+  with a 4-term relation, and outputs lying in boundary parallelograms; MixColumns has none of these.

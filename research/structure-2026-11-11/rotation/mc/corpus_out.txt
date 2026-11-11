@@ -1,0 +1,65 @@
+aes-mixcolumns-xor88-depth5.circ.txt {'G': 88, 'distinct': 88, 'monotone': True, 'violating': 0, 'charges': [11, 11, 10, 13, 10, 10, 10, 10], 'sum_mu': 85, 'excess': 0, 'uncharged': 3, 'dead': 0, 'pure7': 3, 'pure7_not_sheet7': 0, 'G01': 22, 'G34': 26, 'M27': 2, 'uncharged_patterns': {'27': 2, '37': 1}}
+aes-mixcolumns-xor89-depth4.circ.txt {'G': 89, 'distinct': 89, 'monotone': True, 'violating': 0, 'charges': [10, 12, 10, 13, 11, 10, 10, 10], 'sum_mu': 86, 'excess': 0, 'uncharged': 3, 'dead': 0, 'pure7': 5, 'pure7_not_sheet7': 2, 'G01': 22, 'G34': 25, 'M27': 0, 'uncharged_patterns': {'7': 2, '37': 1}}
+aes-mixcolumns-xor97-depth3.circ.txt {'G': 97, 'distinct': 97, 'monotone': True, 'violating': 0, 'charges': [10, 13, 10, 16, 14, 10, 10, 11], 'sum_mu': 94, 'excess': 0, 'uncharged': 3, 'dead': 0, 'pure7': 4, 'pure7_not_sheet7': 1, 'G01': 24, 'G34': 31, 'M27': 0, 'uncharged_patterns': {'7': 1, '07': 1, '37': 1}}
+kste: 19184 lines read, 246 not valid trimmed 88-gate MixColumns circuits
+== kste (wiring as published): 18938 circuits with wiring
+   block-monotone: 4300   not block-monotone: 14638
+   gate counts: {88: 18938}
+   [monotone] sum mu: {82: 1, 83: 69, 84: 409, 85: 1007, 86: 1478, 87: 938, 88: 398}  uncharged: {0: 398, 1: 938, 2: 1478, 3: 1007, 4: 409, 5: 69, 6: 1}  excess: {0: 4300}
+   [monotone] violating gates: {0: 4300}
+   [monotone] charges per sheet, most common: [((10, 12, 10, 13, 11, 10, 10, 10), 523), ((10, 12, 10, 14, 11, 10, 10, 10), 413), ((10, 11, 10, 13, 11, 10, 10, 10), 346), ((10, 11, 10, 14, 11, 10, 10, 10), 286), ((10, 12, 10, 14, 12, 10, 10, 10), 238), ((10, 12, 10, 13, 10, 10, 10, 10), 215), ((11, 11, 10, 13, 11, 10, 10, 10), 196), ((10, 11, 10, 14, 12, 10, 10, 10), 196)]
+   [monotone] min charge per sheet: [10, 10, 10, 11, 10, 10, 10, 10]  max: [11, 12, 10, 15, 13, 10, 10, 10]
+   [monotone] G01: {22: 4300}  G34: {25: 1105, 26: 3195}  G01+G34: {47: 1105, 48: 3195}
+   [monotone] pure block-7 gates: {3: 2758, 4: 1522, 5: 20}  of which not serving sheet 7: {0: 3195, 1: 1105}  gates on {2,7}: {0: 1784, 1: 2243, 2: 273}
+   [monotone] (G01, G34, charge2, charge5, charge6, charge7, other uncharged) most common: [((22, 26, 10, 10, 10, 10, 0), 3195), ((22, 25, 10, 10, 10, 10, 1), 1105)]
+   [monotone] support patterns of uncharged gates (total over circuits): {'0': 19, '07': 2662, '27': 2789, '37': 2327, '7': 1105}
+   [non-monotone] sum mu: {84: 22, 85: 284, 86: 1072, 87: 2530, 88: 4189, 89: 3979, 90: 2561, 93: 1}  uncharged: {0: 20, 1: 2571, 2: 3983, 3: 4173, 4: 2522, 5: 1068, 6: 280, 7: 21}  excess: {0: 38, 3: 14599, 6: 1}
+   [non-monotone] violating gates: {4: 17, 5: 4270, 6: 10350, 10: 1}
+   [non-monotone] charges per sheet, most common: [((11, 12, 11, 13, 13, 10, 10, 10), 2020), ((11, 12, 11, 13, 12, 10, 10, 10), 1535), ((11, 12, 11, 12, 12, 10, 10, 10), 1096), ((11, 12, 11, 12, 13, 10, 10, 10), 1038), ((11, 12, 11, 13, 11, 10, 10, 10), 772), ((11, 12, 11, 11, 12, 10, 10, 10), 661), ((11, 11, 11, 13, 12, 10, 10, 10), 590), ((11, 11, 11, 12, 12, 10, 10, 10), 564)]
+   [non-monotone] min charge per sheet: [10, 11, 10, 11, 10, 10, 10, 10]  max: [13, 13, 11, 15, 13, 10, 10, 11]
+   [non-monotone] G01: {22: 38, 25: 14600}  G34: {25: 510, 26: 4350, 27: 9747, 29: 3, 30: 28}  G01+G34: {49: 7, 50: 510, 51: 4353, 52: 9768}
+   [non-monotone] pure block-7 gates: {3: 12612, 4: 1211, 5: 815}  of which not serving sheet 7: {0: 14453, 1: 185}  gates on {2,7}: {0: 19, 1: 9951, 2: 3190, 3: 1478}
+   [non-monotone] (G01, G34, charge2, charge5, charge6, charge7, other uncharged) most common: [((25, 27, 11, 10, 10, 10, -5), 9740), ((25, 26, 11, 10, 10, 10, -4), 3003), ((25, 26, 11, 10, 10, 11, -5), 1347), ((25, 25, 11, 10, 10, 11, -4), 456), ((25, 25, 11, 10, 10, 10, -3), 54), ((22, 30, 10, 10, 10, 10, -4), 28), ((22, 27, 11, 10, 10, 10, -2), 7), ((22, 29, 10, 10, 10, 10, -3), 3)]
+   [non-monotone] support patterns of uncharged gates (total over circuits): {'027': 4410, '07': 576, '2': 3382, '27': 20751, '37': 11007, '7': 185}
+   circuits containing a gate whose support lies in no sheet support, by pattern: {'012': 643, '0127': 5298, '027': 4410, '1237': 17, '137': 6}
+== hunt records (wiring as recorded): 415 circuits with wiring
+   block-monotone: 241   not block-monotone: 174
+   gate counts: {88: 415}
+   [monotone] sum mu: {83: 2, 84: 9, 85: 55, 86: 92, 87: 63, 88: 20}  uncharged: {0: 20, 1: 63, 2: 92, 3: 55, 4: 9, 5: 2}  excess: {0: 241}
+   [monotone] violating gates: {0: 241}
+   [monotone] charges per sheet, most common: [((10, 12, 10, 13, 11, 10, 10, 10), 20), ((10, 12, 10, 14, 11, 10, 10, 10), 13), ((10, 11, 10, 13, 12, 10, 10, 10), 12), ((11, 11, 10, 13, 11, 10, 10, 10), 12), ((10, 11, 10, 13, 13, 10, 10, 10), 10), ((11, 11, 10, 14, 11, 10, 10, 10), 10), ((11, 11, 10, 12, 12, 10, 10, 10), 10), ((10, 11, 10, 13, 11, 10, 10, 10), 9)]
+   [monotone] min charge per sheet: [10, 10, 10, 11, 10, 10, 10, 10]  max: [11, 12, 10, 15, 13, 10, 10, 10]
+   [monotone] G01: {22: 241}  G34: {25: 22, 26: 219}  G01+G34: {47: 22, 48: 219}
+   [monotone] pure block-7 gates: {3: 191, 4: 46, 5: 4}  of which not serving sheet 7: {0: 219, 1: 22}  gates on {2,7}: {0: 112, 1: 113, 2: 16}
+   [monotone] (G01, G34, charge2, charge5, charge6, charge7, other uncharged) most common: [((22, 26, 10, 10, 10, 10, 0), 219), ((22, 25, 10, 10, 10, 10, 1), 22)]
+   [monotone] support patterns of uncharged gates (total over circuits): {'07': 118, '27': 145, '37': 173, '7': 22}
+   [non-monotone] sum mu: {85: 5, 86: 12, 87: 25, 88: 56, 89: 58, 90: 16, 92: 2}  uncharged: {1: 21, 2: 64, 3: 54, 4: 22, 5: 8, 6: 5}  excess: {0: 7, 2: 3, 3: 162, 5: 1, 6: 1}
+   [non-monotone] violating gates: {4: 6, 5: 83, 6: 84, 7: 1}
+   [non-monotone] charges per sheet, most common: [((11, 12, 11, 14, 11, 10, 10, 10), 16), ((11, 12, 11, 14, 10, 10, 10, 10), 12), ((11, 12, 11, 13, 11, 10, 10, 10), 11), ((11, 11, 11, 13, 12, 10, 10, 10), 11), ((11, 12, 11, 15, 11, 10, 10, 10), 11), ((11, 11, 11, 13, 11, 10, 10, 10), 10), ((11, 11, 11, 14, 11, 10, 10, 10), 8), ((11, 12, 11, 15, 10, 10, 10, 10), 8)]
+   [non-monotone] min charge per sheet: [10, 10, 10, 11, 10, 10, 10, 10]  max: [11, 13, 11, 17, 14, 10, 10, 11]
+   [non-monotone] G01: {22: 9, 25: 165}  G34: {25: 23, 26: 82, 27: 67, 29: 1, 30: 1}  G01+G34: {47: 1, 48: 4, 49: 2, 50: 22, 51: 79, 52: 66}
+   [non-monotone] pure block-7 gates: {3: 110, 4: 57, 5: 7}  of which not serving sheet 7: {0: 154, 1: 20}  gates on {2,7}: {0: 1, 1: 131, 2: 33, 3: 9}
+   [non-monotone] (G01, G34, charge2, charge5, charge6, charge7, other uncharged) most common: [((25, 27, 11, 10, 10, 10, -5), 65), ((25, 26, 11, 10, 10, 10, -4), 56), ((25, 26, 11, 10, 10, 11, -5), 22), ((25, 25, 11, 10, 10, 11, -4), 14), ((25, 25, 11, 10, 10, 10, -3), 8), ((22, 26, 11, 10, 10, 10, -1), 2), ((22, 26, 10, 10, 10, 10, 0), 2), ((22, 27, 11, 10, 10, 10, -2), 2)]
+   [non-monotone] support patterns of uncharged gates (total over circuits): {'027': 77, '07': 11, '2': 66, '27': 216, '37': 79, '7': 20}
+   circuits containing a gate whose support lies in no sheet support, by pattern: {'012': 5, '0127': 2, '027': 77, '123': 1}
+hunt samples with 88 gates: 1096
+== distinct value sets over all sources: 18972  (by first source: {'kste': 17462, 'hunt_r': 415, 'hunt_s': 1095})
+   value sets admitting a support-closed (hence block-monotone) wiring, by source: {('hunt_r', False): 184, ('hunt_r', True): 231, ('hunt_s', False): 453, ('hunt_s', True): 642, ('kste', False): 13967, ('kste', True): 3495}
+   value sets containing a value whose support lies in no sheet support, by source and patterns:
+       ('kste', '027') 4386
+       ('kste', '0127') 4233
+       ('kste', '012') 643
+       ('hunt_s', '027') 113
+       ('hunt_r', '027') 77
+       ('hunt_s', '012') 46
+       ('hunt_s', '0127') 27
+       ('kste', '1237') 17
+       ('kste', '137') 6
+       ('hunt_r', '012') 5
+       ('hunt_s', '137') 3
+       ('hunt_r', '0127') 2
+       ('hunt_r', '123') 1
+       ('hunt_s', '1237') 1
+       ('hunt_s', '012,234') 1
+       ('hunt_s', '123') 1
+       ('hunt_s', '234') 1

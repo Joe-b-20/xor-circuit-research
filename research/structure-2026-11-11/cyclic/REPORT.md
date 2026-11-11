@@ -398,3 +398,13 @@ leaf property (or the order directly) somewhere.
 | `mc_reencode.py` | recorded MixColumns / InvMixColumns circuits read from the outputs | `python3 mc_reencode.py` |
 
 All runs under `ulimit -v 8000000`, at most 4 threads, about 15 CPU-minutes in total. No SAT solver.
+
+## 7. Addendum after independent review (main agent, 2026-11-11)
+
+The review in ../review-cyclic/REVIEW.md confirms the examples and Theorems A, B, C(i), C(ii), W, and
+finds three gaps in section 3 as written, each with a short repair given there: (G1) in 3.2 the span of
+the even elements must be shown to CONTAIN the within-block even space (walk along a path of the odd
+graph); (G2) Lemma 3.1 needs the count showing that the dual of a minimum system has distinct nonzero
+values; (G3) two-term stars must be merged in Theorem C(iii) and in the audits of 7.1 and 7.4. Section
+3.4 should be read with these repairs. Example 3 has a column of weight 1 and is MixColumns-like in one
+orientation only. The statements 'bounds L_cyc and nothing more' are heuristics, not theorems.

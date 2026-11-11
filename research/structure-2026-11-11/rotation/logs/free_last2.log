@@ -1,0 +1,29 @@
+last block, K = 11
+SAT
+   g0 = b0 + b1   [b:s0]
+   g1 = b1 + b2   [b:s1]
+   g2 = b0 + b3   [b:s3]
+   g3 = b2 + b3   [b:s2]
+   g4 = b2 + a:s2   [a:s2 b:e2]
+   g5 = a:d0 + g0   [a:d0 b:s0]
+   g6 = g2 + g4   [a:s2 b:E1]
+   g7 = g4 + g5   [a:s3 b:E3]  = OUT 3
+   g8 = a:d1 + g6   [a:s1 b:E1]  = OUT 1
+   g9 = g1 + g6   [a:s2 b:E2]  = OUT 2
+   g10 = g5 + g8   [a:s0 b:E0]  = OUT 0
+exit 0
+last block, K = 12
+SAT
+   g0 = b1 + b2   [b:s1]
+   g1 = b0 + g0   [b:E3]
+   g2 = b2 + g1   [b:s0]
+   g3 = a:s3 + g1   [a:s3 b:E3]  = OUT 3
+   g4 = b3 + g2   [b:E2]
+   g5 = a:d1 + g3   [a:s0 b:E3]
+   g6 = b1 + g4   [b:s3]
+   g7 = a:s2 + g4   [a:s2 b:E2]  = OUT 2
+   g8 = b2 + g6   [b:E1]
+   g9 = g5 + g6   [a:s0 b:E0]  = OUT 0
+   g10 = b0 + g8   [b:s2]
+   g11 = a:s1 + g8   [a:s1 b:E1]  = OUT 1
+exit 0

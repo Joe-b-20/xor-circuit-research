@@ -1,0 +1,17 @@
+outputs only, K = 5: UNSAT  (0.0 s)
+outputs only, K = 6: UNSAT  (0.4 s)
+outputs only, K = 7: UNSAT  (0.2 s)
+outputs only, K = 8: UNSAT  (2.2 s)
+outputs only, K = 9: UNSAT  (55.2 s)
+outputs only, K = 10: SAT  (0.1 s)
+   g0 = b3 + a:s3   [a:s3 b:e3]
+   g1 = b0 + a:t   [a:t b:e0]
+   g2 = b2 + g1   [a:t b:d0]
+   g3 = a:s2 + g1   [a:s0 b:e0]
+   g4 = g0 + g2   [a:s1 b:E1]  = OUT 1
+   g5 = a:s1 + g4   [b:E1]
+   g6 = b1 + g5   [b:t]
+   g7 = g0 + g6   [a:s3 b:E3]  = OUT 3
+   g8 = g3 + g6   [a:s0 b:E0]  = OUT 0
+   g9 = g2 + g8   [a:s2 b:E2]  = OUT 2
+exit 0
