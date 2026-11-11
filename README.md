@@ -55,6 +55,17 @@ mathematical arguments, so a passing check is not a certification of the proofs.
 progress inside the 75 proof at G = 75 (open claims 1,508 -> 686 with the November rows, 280 with the
 October rows added); it raises no bound.
 
+**Current research status (11 November 2026):** the proved bounds are unchanged: AES MixColumns needs
+at least 75 XOR gates (75 ≤ L ≤ 88) and at least 93 at depth 3 (93 ≤ D₃ ≤ 97). The work toward 76 is
+incomplete. At G = 75, 7,136 of the 7,416 oriented claims are excluded by exact certificates and 280
+are open. The exclusions also assume that the 75 proof's framework applies at G = 75, which has not
+been reviewed independently, and they rest on new rows whose proofs have had language-model review
+only. [ACCOUNTING-G75.md](lower-bound-proofs/mixcolumns-lb75-open-cases/ACCOUNTING-G75.md) lists these
+obligations. Work in progress, including experimental search-engine changes that are not on `main`, is
+on the branch [`phase-2026-11-09`](https://github.com/Joe-b-20/xor-circuit-research/tree/phase-2026-11-09/research/phase-2026-11-09)
+(`research/phase-2026-11-09/CHECKPOINT.md`); the sprint of 7-8 November is kept as the tag
+`sprint-2026-11-07-final`.
+
 Maps (59): AES MixColumns and InvMixColumns, the AES S-box bottom linear layer, FOX MU4 and
 MU8, and every linear map of NIST's
 [circuit repository](https://github.com/usnistgov/Circuits/tree/master/data/slp/2021-linearmaps)

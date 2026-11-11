@@ -93,6 +93,28 @@ independently:
 The two audit reports (`recon/REPORT.md`, `recon-check/REPORT.md`) and the audits' other files stay in
 those directories and are not part of this folder.
 
+## Package-row certificates at G = 75 and the domain accounting (added 11 November 2026)
+
+`package-rows-g75/` and `ACCOUNTING-G75.md` come from the proof follow-up of the phase of 9 November
+2026 (branch `phase-2026-11-09`, folder `research/phase-2026-11-09/proof-followup/`, commit
+`94cc603c`; the state of that work on 2026-11-11 is the tag `phase-2026-11-09-pilot-q3`). The generator
+and the checker were written by the main language-model agent under the author's direction; the
+checker takes its rows from the package's `lp_regen.rows_for`, the generator from `certify75.system`.
+
+| File here | Original | SHA-256 | Change |
+|---|---|---|---|
+| `package-rows-g75/CERTIFICATES_PKG75_G75.json` | `proof-followup/package75/` | `d8a7f2970b3b133c1f43b2314b54ab36253afd0b9dc9b1da4e8df7bbf38eebd7` | byte-identical |
+| `package-rows-g75/check_pkg75.py` | same | `d4da6376b7f5c876652c6d6a2ab8d4f4626121e811fe5f81069f11803e7fe77c` | byte-identical |
+| `package-rows-g75/published_sets.json` | same | `ed84085bd755ac46cc677b0fb86afdc04b10ce445b8b06fe1b837ea2f52750e9` | byte-identical |
+| `package-rows-g75/CHECKED_PKG75_G75.json` | same | `43981dbab7ffd44a7ad0980fdf7e0dc055872fbabebe19aff5f1d36f002c03c1` | byte-identical |
+| `package-rows-g75/gen_pkg75.py` | same | `cbfef23deb68ce891f88b263c063020c6371a149c62edc97f857f15cfd8a9fc4` (original) | two lines: the package path made relative to the folder, and the accounting file's name in the docstring |
+| `ACCOUNTING-G75.md` | `proof-followup/OBLIGATIONS-76.md` | in `SHA256SUMS.txt` here | rewritten for this folder (paths, section 5) |
+
+`published_sets.json` was written by `proof-followup/scope/domain_accounting.py` from the certificate
+files of this folder and from the LP scan of the open claims; `verify_all.py` checks it against the
+certificate files. The follow-up's other results (the coverage manifest of the 280 claims, the pilot
+enumeration and its review) stay on the branch and are not part of this folder.
+
 ## Review status
 
 The finite computations replayed by `verify_all.py` are the certificate arithmetic and the case and

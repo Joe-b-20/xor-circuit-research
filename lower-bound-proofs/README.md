@@ -14,8 +14,13 @@ inside the 75 proof's machinery at G = 75. Of the 1,508 oriented claims that the
 leave open there (an LP count), four batches of new rows, proved in written addenda and certified by
 exact integer certificates, exclude 822, so 1,508 -> 1,313 -> 996 -> 789 -> 686. With the author's
 October 2026 rows (push5/push6) added, 406 more are excluded by exact certificates and 280 remain open
-(LP counts). The 280 claims are still open and **the bound stays 75**. Check:
-`python3 lower-bound-proofs/mixcolumns-lb75-open-cases/verify_all.py` (~85 s; certificate arithmetic,
+(LP counts). Since 11 November 2026 the 5,908 claims that the 75 proof's own rows exclude at G = 75
+also have exact certificates, so 7,136 of the 7,416 claims are excluded by certificates and the 280
+others are identified by name. The 280 claims are still open and **the bound stays 75**. A bound of 76
+would also need an independent review that the 75 proof's framework applies at G = 75 and review of
+the new rows' proofs; see
+[ACCOUNTING-G75.md](mixcolumns-lb75-open-cases/ACCOUNTING-G75.md). Check:
+`python3 lower-bound-proofs/mixcolumns-lb75-open-cases/verify_all.py` (~90 s; certificate arithmetic,
 coverage and the October rows' finite facts only, not the arguments).
 
 Needs Python 3.10+ (standard library only); the depth-3 proof also needs `g++` with C++17. Both
