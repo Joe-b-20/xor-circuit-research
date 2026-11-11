@@ -1,0 +1,22 @@
+{
+ "domain_claims": 7416,
+ "scalar_states": 3708,
+ "package_rows_dead_LP_status_only": 5908,
+ "package_rows_open": 1508,
+ "sizes": {
+  "batch1_certified": 195,
+  "batch2_certified": 317,
+  "batch3_certified": 207,
+  "batch4_certified": 103,
+  "combined_certified": 406,
+  "open_combined_LP": 280
+ },
+ "pairwise_disjoint": true,
+ "union_equals_package_open_set": true,
+ "union_minus_package_open": 0,
+ "package_open_minus_union": 0,
+ "every_listed_claim_in_domain": true,
+ "partition_of_domain_holds": true,
+ "J1_dependent_batch4_claims": 38,
+ "note": "package_rows_dead are excluded at G = 75 by LP status only; the package's exact certificates are for G = 74. Certified sets are certified by the published checkers (verify_all.py)."
+}
