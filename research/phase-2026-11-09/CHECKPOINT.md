@@ -39,17 +39,16 @@ running, kept verbatim and marked superseded; nothing in section 4 describes the
   budget was never run; if the feature is revisited, run that control first.
 - **Search defaults kept** (owner, 2026-11-10): 20 workers, foundation restart disabled, no new large 87 campaign.
 - Report: [REPORT-2026-11-09.md](REPORT-2026-11-09.md) (sections 4-5 corrected 2026-11-10; section 6
-  superseded by the proof follow-up below).
+  rewritten 2026-11-11 from the proof follow-up below; section 7 is the current next step).
 
-## 2. Proof follow-up (2026-11-10, in progress)
+## 2. Proof follow-up (2026-11-10/11, complete)
 
 Owner's brief (2026-11-10): before any enumeration, establish exactly how it connects to the remaining
 proof obligations; produce a machine-readable coverage manifest; specify one family with a completeness
 argument; run one bounded pilot with controls and an independent check; keep the bound at 75.
 Work folder `~/xs-campaigns/2026-11-10-proof/`; deliverables under `research/phase-2026-11-09/proof-followup/`.
 
-Running / in progress at the time of this commit: see the "Status" line at the end of this section
-(updated with each commit).
+Nothing is running; the "Status" line at the end of this section is the current state.
 
 - Scope measurements done (`scope/`): hypothetical scans with the published driver and the independent
   checker's matrices (`hypo_scan.py`): full 280 / 229 reproduced; **if every leaf with A >= 2 were
@@ -78,7 +77,23 @@ Running / in progress at the time of this commit: see the "Status" line at the e
 - Pilot agent (high) launched 21:20 UTC on the M^T q = 3 block (brief
   `~/xs-campaigns/2026-11-10-proof/PILOT_BRIEF.md`; outputs `~/xs-campaigns/2026-11-10-proof/pilot/`).
 
-Status (22:02 UTC 2026-11-10): pilot agent running; independent review and final report not started.
+- 2026-11-10 ~23:00 UTC: the pilot's naive brute-force control grew to 28 GB, was OOM-killed and took WSL
+  down; the owner restarted the machine on 2026-11-11. Since then every process runs under
+  `ulimit -v 8000000`.
+- 2026-11-11: pilot finished ([proof-followup/PILOT.md](proof-followup/PILOT.md)): 207 leaves of the M^T
+  q = 3 block, 186 excluded (78 with exact certificates at skeleton level, 107 by the joint-family
+  search, 1 by integrality of a gate count), 21 surviving with local witnesses, 0 unresolved; all 21 ladder keys excluded under the stated
+  assumptions; 8 claims would close (276 / 273 / 272 open depending on the grade accepted); published
+  count unchanged at 280. Independent review ([proof-followup/REVIEW.md](proof-followup/REVIEW.md), own
+  code): no mismatch touching an exclusion; one leaf rests on integrality of y2 (proved exactly), Lemma
+  3.10 of the specification is false for r >= 2 (affects no result), one first-run bug fixed with no effect.
+- 2026-11-11: [proof-followup/OBLIGATIONS-76.md](proof-followup/OBLIGATIONS-76.md): the 7,416 claims
+  accounted by identifier; exact certificates for the package's 5,908 exclusions at G = 75
+  (`proof-followup/package75/`, checker passes, mutation tests reject).
+
+Status (16:20 UTC 2026-11-11): follow-up complete; nothing running. Bound 75. Next step proposed in
+REPORT section 7 (skeleton step on the ladder keys from q = 4; independent review of the framework at
+G = 75); not started.
 
 ## 3. Decisions and their reasons
 

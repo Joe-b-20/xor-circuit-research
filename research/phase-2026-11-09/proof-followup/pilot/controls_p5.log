@@ -1,0 +1,50 @@
+real phases: 344432 3-label sub-configurations, 60299 with >= 2 dark labels (outside the domain, skipped), 2614 distinct (orientation, skeleton) shapes with d <= 1; 15s
+planted (M^T): {'lim3': 75, 'pair': 152, 'mixA1': 150, 'mixA2': 150} 18s
+{
+ "objects": 9651,
+ "constrained": 9026,
+ "free_only": 625,
+ "by_source": {
+  "planted:lim3|constrained": 75,
+  "planted:mixA1|constrained": 150,
+  "planted:mixA2|constrained": 150,
+  "planted:pair|constrained": 152,
+  "real|constrained": 8499,
+  "real|free_only": 625
+ },
+ "distinct_constrained_shapes": 2476,
+ "modes": {
+  "segments": 4981,
+  "single": 4045
+ },
+ "feature_counts": {
+  "A=1": 150,
+  "A=2": 150,
+  "A=3": 227,
+  "dark_label": 3253,
+  "free_component": 5866,
+  "full_u2": 59,
+  "label_with_>=3_carriers": 5269,
+  "r0_u1_rider": 2663,
+  "r0_u>=2_constrained": 821,
+  "r1": 8407,
+  "r2": 6652,
+  "segments=1": 4045,
+  "segments=2": 3989,
+  "segments=3": 992,
+  "u2": 3699,
+  "u3": 254
+ },
+ "step_S_misses": 0,
+ "step_G_misses": 0,
+ "unguided": {
+  "None": 47,
+  "True": 33
+ },
+ "unguided_misses": 0,
+ "real_subconfigurations_scanned": 344432,
+ "skipped_two_dark": 60299,
+ "passed": true,
+ "seconds": 441,
+ "cpu_seconds": 440
+}

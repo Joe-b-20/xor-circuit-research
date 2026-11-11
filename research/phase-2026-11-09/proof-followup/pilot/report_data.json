@@ -1,0 +1,511 @@
+{
+ "leaves": 207,
+ "agg": {
+  "EXCLUDED": 186,
+  "excluded_by:step G (geometry)": 106,
+  "grade:finite-checked": 103,
+  "excluded_by:step S (LP)": 78,
+  "grade:certified": 78,
+  "excluded_by:step S (LP + MILP)": 2,
+  "grade:measured": 2,
+  "SURVIVING": 21,
+  "grade:measured (geometry finite-checked; MILP prunes used)": 3
+ },
+ "by_ad": {
+  "(0, 0)": {
+   "EXCLUDED": 34,
+   "SURVIVING": 14
+  },
+  "(0, 1)": {
+   "EXCLUDED": 21
+  },
+  "(1, 0)": {
+   "EXCLUDED": 43,
+   "SURVIVING": 6
+  },
+  "(1, 1)": {
+   "EXCLUDED": 30
+  },
+  "(2, 0)": {
+   "EXCLUDED": 33,
+   "SURVIVING": 1
+  },
+  "(2, 1)": {
+   "EXCLUDED": 25
+  }
+ },
+ "nodes_G_total": 442911348,
+ "skeleton_status": {
+  "done": 2128,
+  "not_run": 20,
+  "timeout": 212,
+  "capped": 120
+ },
+ "nodes_S_total": 256180,
+ "prune_hist_G": {
+  "prune_R7": 1448843628,
+  "prune_dead_role": 162836105,
+  "prune_rank": 2163221905,
+  "prune_R1lab": 1286111,
+  "combo_R7": 162540971,
+  "combo_R1": 77546106
+ },
+ "stepS_prunes": {
+  "lp_mono_pruned": 1120237,
+  "lp_exact_pruned": 126033,
+  "R5": 518082,
+  "B1": 34547,
+  "R4": 256
+ },
+ "layer": {
+  "first": {
+   "EXCLUDED": 48
+  },
+  "behind": {
+   "EXCLUDED": 138,
+   "SURVIVING": 21
+  }
+ },
+ "int_vs_result": {
+  "?|EXCLUDED": 138,
+  "?|SURVIVING": 21,
+  "feasible|EXCLUDED": 43,
+  "infeasible|EXCLUDED": 5
+ },
+ "witnesses_stored": 379,
+ "witness_verify_milp": {
+  "True|feasible": 379
+ },
+ "surviving_leaves": [
+  [
+   [
+    13,
+    5,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    13,
+    5,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   1,
+   0,
+   {
+    "feasible": 30
+   }
+  ],
+  [
+   [
+    13,
+    5,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   2,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    15,
+    3,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   {
+    "feasible": 7
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    0,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 1
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    1,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 12
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    2,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 47
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    2,
+    "Mt",
+    3,
+    1
+   ],
+   1,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    3,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 47
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    3,
+    "Mt",
+    3,
+    1
+   ],
+   1,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    4,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 47
+   }
+  ],
+  [
+   [
+    15,
+    4,
+    4,
+    "Mt",
+    3,
+    1
+   ],
+   1,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    16,
+    2,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   {
+    "feasible": 8
+   }
+  ],
+  [
+   [
+    16,
+    3,
+    0,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 1
+   }
+  ],
+  [
+   [
+    16,
+    3,
+    1,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 6
+   }
+  ],
+  [
+   [
+    16,
+    3,
+    2,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 67
+   }
+  ],
+  [
+   [
+    16,
+    3,
+    2,
+    "Mt",
+    3,
+    1
+   ],
+   1,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    16,
+    3,
+    3,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   {
+    "feasible": 67
+   }
+  ],
+  [
+   [
+    16,
+    3,
+    3,
+    "Mt",
+    3,
+    1
+   ],
+   1,
+   0,
+   {
+    "feasible": 5
+   }
+  ],
+  [
+   [
+    18,
+    1,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   {
+    "feasible": 2
+   }
+  ],
+  [
+   [
+    18,
+    1,
+    1,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   {
+    "feasible": 2
+   }
+  ]
+ ],
+ "surviving_with_milp_feasible_witness": 21,
+ "unresolved_leaves": [],
+ "example_witness": {
+  "key": [
+   13,
+   5,
+   0,
+   "Mt",
+   3,
+   2
+  ],
+  "A": 0,
+  "qD": 0,
+  "skeleton": [
+   [
+    1,
+    [
+     0,
+     1
+    ]
+   ],
+   [
+    2,
+    [
+     0,
+     2
+    ]
+   ],
+   [
+    2,
+    [
+     1,
+     2
+    ]
+   ],
+   [
+    2,
+    [
+     2
+    ]
+   ]
+  ],
+  "verify": true,
+  "milp": "feasible",
+  "milp_status": 0,
+  "object": {
+   "ori": "Mt",
+   "labels": [
+    {
+     "value": 131589,
+     "status": "B"
+    },
+    {
+     "value": 50528261,
+     "status": "B"
+    },
+    {
+     "value": 131590,
+     "status": "B"
+    }
+   ],
+   "helpers": [
+    {
+     "mask": 131588,
+     "r": 2,
+     "triples": [
+      131588,
+      565148976939008
+     ],
+     "labels": [
+      0,
+      2
+     ],
+     "role": 1
+    },
+    {
+     "mask": 33686022,
+     "r": 2,
+     "triples": [
+      8657043458,
+      2199023257088
+     ],
+     "labels": [
+      1,
+      2
+     ],
+     "role": 2
+    },
+    {
+     "mask": 16777476,
+     "r": 1,
+     "triples": [
+      16777476
+     ],
+     "labels": [
+      0,
+      1
+     ],
+     "role": 0
+    },
+    {
+     "mask": 67371012,
+     "r": 2,
+     "triples": [
+      67371012,
+      4398046513160
+     ],
+     "labels": [
+      2
+     ],
+     "role": 3
+    }
+   ]
+  }
+ }
+}

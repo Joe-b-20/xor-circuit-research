@@ -1,0 +1,44 @@
+naive {'lines': 191716, 'rank_tests': 814712, 'cpu': 8.5}
+pruned sym=False {'lines': 191716, 'stats': {'nodes': 222069, 'root_candidates': 1729, 'prune_R7': 225960, 'survivors': 191716, 'prune_R1lab': 3664, 'prune_dead_role': 724}, 'cpu': 9.6}
+pruned sym=True {'lines': 217784, 'stats': {'nodes': 62656, 'root_candidates': 457, 'prune_R7': 61188, 'survivors': 54446, 'prune_R1lab': 916, 'prune_dead_role': 181}, 'cpu': 7.6}
+{
+ "LSET_size": 8126,
+ "PMAX": 2,
+ "naive": {
+  "lines": 191716,
+  "rank_tests": 814712,
+  "cpu": 8.5,
+  "sha256_sorted_unique": "aab7b0476284b385f1a45824339272cc83b5c1ff727ea0449186aca71bb4c626",
+  "distinct": 95858
+ },
+ "pruned_nosym": {
+  "lines": 191716,
+  "stats": {
+   "nodes": 222069,
+   "root_candidates": 1729,
+   "prune_R7": 225960,
+   "survivors": 191716,
+   "prune_R1lab": 3664,
+   "prune_dead_role": 724
+  },
+  "cpu": 9.6,
+  "sha256_sorted_unique": "aab7b0476284b385f1a45824339272cc83b5c1ff727ea0449186aca71bb4c626",
+  "distinct": 95858
+ },
+ "pruned_sym": {
+  "lines": 217784,
+  "stats": {
+   "nodes": 62656,
+   "root_candidates": 457,
+   "prune_R7": 61188,
+   "survivors": 54446,
+   "prune_R1lab": 916,
+   "prune_dead_role": 181
+  },
+  "cpu": 7.6,
+  "sha256_sorted_unique": "aab7b0476284b385f1a45824339272cc83b5c1ff727ea0449186aca71bb4c626",
+  "distinct": 95858
+ },
+ "passed": true,
+ "seconds": 29
+}

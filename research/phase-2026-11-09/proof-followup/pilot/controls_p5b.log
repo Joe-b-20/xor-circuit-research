@@ -1,0 +1,28 @@
+weight-6 zero-sum words from the triple table: 84
+planted triangles accepted by verify_q3: 240 {'triangle': 238, 'triangle+hub': 2} tries 1562 8s
+{
+ "objects": 240,
+ "kinds": {
+  "triangle": 238,
+  "triangle+hub": 2
+ },
+ "r_profiles": {
+  "(1, 1, 1)": 222,
+  "(1, 1, 2)": 16,
+  "(1, 1, 1, 2)": 2
+ },
+ "feature_counts": {
+  "segments=1": 240,
+  "u2": 240,
+  "triangle": 240,
+  "r1": 240,
+  "r2": 18,
+  "label_with_>=3_carriers": 2
+ },
+ "misses": 0,
+ "unguided": {
+  "None": 60
+ },
+ "passed": true,
+ "seconds": 910
+}

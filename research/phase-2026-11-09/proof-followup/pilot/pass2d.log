@@ -1,0 +1,251 @@
+V1: {'decided_available': 86, 'tested': 36, 'join_done': 36, 'disagreements': 0, 'both_realizable': 0, 'both_empty': 36, 'cpu': 4}
+V2: {'objects': 445, 'misses': 0, 'cpu': 21}
+round D targets: 60 distinct skeletons in UNRESOLVED leaves; running 10 with cap 100.0s
+  capped survivors 0 seg_counts [144, 576, 150000] combos None compatible None cpu 1.83s [[0, [0, 1, 2]], [1, [0]], [2, [1]], [2, [1]], [2, [1]], [2, [2]], [2, [2]], [2, [2]]] BBB
+  capped survivors 0 seg_counts [144, 150000] combos None compatible None cpu 11.18s [[0, [0, 1]], [1, [0, 2]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [1]], [2, [2]]] BBB
+  capped survivors 0 seg_counts [144, 150000] combos None compatible None cpu 11.0s [[0, [0, 1]], [1, [0, 2]], [2, [0]], [2, [1]], [2, [1]], [2, [1]], [2, [2]], [2, [2]]] BBB
+  capped survivors 0 seg_counts [144, 12888, 150000] combos None compatible None cpu 2.48s [[0, [0, 1, 2]], [1, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [1]], [2, [2]], [2, [2]]] BBB
+  done survivors 1 seg_counts [47520, 12888] combos 87844 compatible 107 cpu 14.31s [[0, [0, 1]], [1, [0, 2]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [2]], [2, [2]]] BBB
+  capped survivors 0 seg_counts [3852, 12888, 12888] combos 5000001 compatible 2298 cpu 44.43s [[0, [0, 1, 2]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [2]], [2, [2]]] BBB
+  capped survivors 0 seg_counts [144, 12888, 12888] combos 5000001 compatible 6887 cpu 50.93s [[0, [0, 1, 2]], [2, [0]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [2]], [2, [2]]] BBB
+  done survivors 1 seg_counts [144, 12888, 53760] combos 3868489 compatible 20712 cpu 57.45s [[0, [0, 1, 2]], [2, [0]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [2]]] BBB
+  capped survivors 0 seg_counts [144, 62496, 53760] combos 5000001 compatible 2441 cpu 50.25s [[0, [0, 1, 2]], [1, [0]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [1]], [2, [2]]] BBB
+  done survivors 0 seg_counts [144, 576, 53760] combos 3300912 compatible 84272 cpu 98.65s [[0, [0, 1, 2]], [2, [0]], [2, [0]], [2, [0]], [2, [1]], [2, [1]], [2, [1]], [2, [2]]] BBB
+{
+ "V1": {
+  "decided_available": 86,
+  "tested": 36,
+  "join_done": 36,
+  "disagreements": 0,
+  "both_realizable": 0,
+  "both_empty": 36,
+  "cpu": 4
+ },
+ "V2": {
+  "objects": 445,
+  "misses": 0,
+  "cpu": 21
+ },
+ "validated": true,
+ "roundD": {
+  "targets": 60,
+  "run": 10,
+  "outcomes": {
+   "capped": 7,
+   "done": 3
+  },
+  "with_survivors": 2,
+  "cpu": 343
+ },
+ "changed_leaves": [
+  [
+   [
+    15,
+    3,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    15,
+    4,
+    0,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    15,
+    4,
+    1,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    15,
+    4,
+    2,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    15,
+    4,
+    3,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    15,
+    4,
+    4,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    16,
+    0,
+    1,
+    "Mt",
+    3,
+    3
+   ],
+   0,
+   0,
+   "UNRESOLVED"
+  ],
+  [
+   [
+    16,
+    0,
+    2,
+    "Mt",
+    3,
+    3
+   ],
+   0,
+   0,
+   "UNRESOLVED"
+  ],
+  [
+   [
+    16,
+    0,
+    3,
+    "Mt",
+    3,
+    3
+   ],
+   0,
+   0,
+   "UNRESOLVED"
+  ],
+  [
+   [
+    16,
+    2,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    16,
+    3,
+    0,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    16,
+    3,
+    1,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    16,
+    3,
+    2,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    16,
+    3,
+    3,
+    "Mt",
+    3,
+    1
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    18,
+    1,
+    0,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ],
+  [
+   [
+    18,
+    1,
+    1,
+    "Mt",
+    3,
+    2
+   ],
+   0,
+   0,
+   "SURVIVING"
+  ]
+ ],
+ "seconds": 137
+}
