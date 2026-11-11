@@ -91,7 +91,20 @@ Nothing is running; the "Status" line at the end of this section is the current 
   accounted by identifier; exact certificates for the package's 5,908 exclusions at G = 75
   (`proof-followup/package75/`, checker passes, mutation tests reject).
 
-Status (16:20 UTC 2026-11-11): follow-up complete; nothing running. Bound 75. Next step proposed in
+- 2026-11-11 ~19:50 UTC, branch reconciliation (owner's instruction). Findings: the sprint branch
+  (`882c962`, equal to the tag `sprint-2026-11-07-final`, which was local only and is now pushed,
+  unmoved) is an ancestor of this branch, so all sprint work is here; the two commits that `main` had
+  and this branch lacked (`185c0cd`, `400ad09`) were cherry-picks of `b61b268` and `e2a8485` here, and
+  the merge of `main` changed no file. The commit of the completed pilot, `438794a`, is the annotated
+  tag `phase-2026-11-09-pilot-q3`. Published to `main` (`a6ef62d`): the exact certificates for the
+  package's 5,908 exclusions at G = 75 with checker, generator and identifier accounting
+  (`lower-bound-proofs/mixcolumns-lb75-open-cases/package-rows-g75/`, a stage of that folder's
+  `verify_all.py`), `ACCOUNTING-G75.md` (from `proof-followup/OBLIGATIONS-76.md`) and the README
+  status; all of `main`'s CI checks were run locally and pass. Kept here only: `research/` (sprint and
+  phase folders, coverage manifest, pilot, review) and the engine changes of the sprint and of the
+  foundation restart (`search/`, 11 files). `main` is merged back, so this branch is 0 behind.
+
+Status (2026-11-11, after the reconciliation): follow-up complete; nothing running. Bound 75. Next step proposed in
 REPORT section 7 (skeleton step on the ladder keys from q = 4; independent review of the framework at
 G = 75); not started.
 
