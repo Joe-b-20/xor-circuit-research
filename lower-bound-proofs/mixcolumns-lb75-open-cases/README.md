@@ -12,6 +12,15 @@ validated, 280 claims remain open (section below). Any one claim that remains op
 the argument, so a smaller number of open claims is not a bound increase. Nothing here bears on whether a
 circuit with 87 gates or fewer exists.
 
+**Update, 11 November 2026.** [`package-rows-g75/`](package-rows-g75/) adds exact certificates for the
+5,908 claims that the 75 proof's own rows exclude at G = 75, which until now were an LP status. Every
+exclusion at G = 75 now has an exact certificate (5,908 + 822 + 406 = 7,136 of 7,416 claims), and the
+280 open claims are identified as exactly the claims that no certificate file excludes.
+[`ACCOUNTING-G75.md`](ACCOUNTING-G75.md) gives the accounting by identifier and lists what a bound of
+76 would still require: an independent review that the 75 proof's framework applies at G = 75, review
+of the addenda and of the October rows, and the 280 claims. It also summarizes the research in
+progress on those claims, which is not part of this folder. No count of open claims changes.
+
 ## Read
 
 - [`PROOF_ADDENDUM.md`](addenda/PROOF_ADDENDUM.md) (Addendum A, batch 1),
@@ -37,18 +46,21 @@ python3 lower-bound-proofs/mixcolumns-lb75-open-cases/verify_all.py
 It checks the SHA-256 of the certificate and checker files and works in a temporary copy. It runs the
 four sprint checkers in order, then the independent checker of the combined certificates
 (`checkers/check_combined75.py`), then the recomputation of the finite facts behind the October rows
-(`checkers/finite_facts_october.py`). For each stage it checks the exit status, the stage's own pinned
+(`checkers/finite_facts_october.py`), then the checker of the package-row certificates at G = 75
+(`package-rows-g75/check_pkg75.py`). For each stage it checks the exit status, the stage's own pinned
 counts and the key fields of its report. The finite-fact output must also equal the recorded run
 `checkers/finite_facts_october.recorded.json`. Finally it checks across the five certificate files
-that the excluded claims are pairwise disjoint. Logs go to `verification/run_<timestamp>/` (not
+that the excluded claims are pairwise disjoint, and against `package-rows-g75/published_sets.json` that
+the seven sets of [`ACCOUNTING-G75.md`](ACCOUNTING-G75.md) partition the 7,416 claims. Logs go to `verification/run_<timestamp>/` (not
 tracked). It ends with
 
 ```text
-ALL CHECKS PASSED: 1,772 + 4,523 + 4,950 + 4,361 + 4,653 (+43) exact certificates; open claims at G = 75: 1,508 -> 1,313 -> 996 -> 789 -> 686 (sprint rows) -> 280 (with the October rows); finite facts of the October rows recomputed; the bound stays 75.
+ALL CHECKS PASSED: 1,772 + 4,523 + 4,950 + 4,361 + 4,653 (+43) exact certificates; open claims at G = 75: 1,508 -> 1,313 -> 996 -> 789 -> 686 (sprint rows) -> 280 (with the October rows); finite facts of the October rows recomputed; 5,908 package-row exclusions certified (15,742 certificates) and all 7,416 claims accounted by identifier (7,136 certified excluded, 280 open); the bound stays 75.
 ```
 
 It took 85 s on 2026-11-09 on a machine under a load of about 20. The finite facts took 53 s, the
-combined checker 11 s, and the four sprint checkers 0.7-8.9 s each (0.3-3.8 s on an idle machine). Do
+combined checker 11 s, and the four sprint checkers 0.7-8.9 s each (0.3-3.8 s on an idle machine). The
+stage added on 2026-11-11 takes about 3 s more. Do
 not use `-O`: the checkers rely on assertions, and the wrapper refuses to run optimized.
 
 ## What the 75 proof leaves open at G = 75, and why
@@ -152,7 +164,10 @@ multiplier is checked exactly. A time limit is not a result: a case that timed o
 ## What remains open
 
 This section describes the sprint rows alone. With the October rows added, 280 claims remain open;
-see the section on the October 2026 campaigns below.
+see the section on the October 2026 campaigns below. For the 280, the 101 keys and the two enumerations
+mentioned here, the state of 11 November 2026 is in [`ACCOUNTING-G75.md`](ACCOUNTING-G75.md), section 5:
+the 101 keys were never used and stay unresolved, and the two enumerations address no key that is
+still live.
 
 **686 oriented claims (372 M, 314 M<sup>T</sup>) remain open at G = 75 by LP status.** Their shortfall
 `budget - (k + l)` is 0 for 382 of them, 1 for 221, 2 for 59 and 3 for 24. The final scan has 814
@@ -222,7 +237,9 @@ The certificates and the two checker programs are in [`combined/`](combined/) an
 | `combined/` | The combined certificates `CERTIFICATES_COMBINED75.json` (4,653) and `CERTIFICATES_COMBINED75_J1FREE_ADDENDUM.json` (43), byte-identical to the audit's |
 | `combined/measurement/` | LP-status measurements and stress controls (`push_rows.py`, `combined_scan.py`, `scan.py`, `compare_scans.json`, `scan_leaves.json`, `stress_push.json`); they need SciPy and the sprint generators and are **not run by `verify_all.py`** (see its `README.md`) |
 | `october-rows/` | The author's October 2026 documents behind the push5/push6 rows, verbatim, in their archive layout; `ROW_INVENTORY.md`; `PROVENANCE.md` |
-| `verify_all.py` | Runs the five checkers, the finite-fact recomputation and the cross-file checks |
+| `package-rows-g75/` | Exact certificates at G = 75 for the 5,908 claims excluded by the 75 proof's own rows, their checker and generator, and the claim identifiers of the published sets (added 2026-11-11; see its `README.md`) |
+| `ACCOUNTING-G75.md` | The 7,416 claims by identifier, the inherited lemmas, and what a bound of 76 would still require |
+| `verify_all.py` | Runs the six checkers, the finite-fact recomputation and the cross-file checks |
 | `PROVENANCE.md`, `SHA256SUMS.txt` | Sources and hashes of this folder's files |
 
 ## Review status
@@ -235,5 +252,7 @@ the soundness of appending the October rows to the sprint's case systems, and th
 reductions. Those arguments are for expert review. The sprint work and the October documents were
 developed with language-model agents under the author's direction. Every sprint lemma was checked by a
 second agent, and every October row's proof was followed by two audit agents. There has been no human
-peer review and no formalization. **The lower bound stays 75. With the sprint rows 686 claims remain
+peer review and no formalization. That the 75 proof's framework applies at G = 75 at all has been read
+by one agent and not reviewed independently ([`ACCOUNTING-G75.md`](ACCOUNTING-G75.md), section 2).
+**The lower bound stays 75. With the sprint rows 686 claims remain
 open at G = 75; with the October rows added, 280.**

@@ -9,10 +9,12 @@ only under verification/run_<timestamp>/):
   1-4  the sprint's four independent checkers (batches 1-4, Addenda A-D): 822 claims excluded;
   5    the independent checker of the combined certificates (sprint rows + the October 2026 push5/push6
        rows): 406 further claims excluded, plus the 43-certificate J1-free addendum;
-  6    the recomputation of the finite facts behind the October rows (about a minute).
-A passing run shows that 822 + 406 = 1,228 distinct oriented claims at G = 75 are excluded by exact
-integer Farkas certificates. It does not raise the lower bound, which stays 75, and it does not check
-the written arguments.
+  6    the recomputation of the finite facts behind the October rows (about a minute);
+  7    the checker of the certificates for the 5,908 claims that the 75 proof's own rows exclude at
+       G = 75 (package-rows-g75/), and the accounting of all 7,416 claims by identifier.
+A passing run shows that 5,908 + 822 + 406 = 7,136 distinct oriented claims at G = 75 are excluded by
+exact integer Farkas certificates and that the other 280 claims of the domain have none. It does not
+raise the lower bound, which stays 75, and it does not check the written arguments.
 """
 import hashlib
 import json
@@ -46,6 +48,9 @@ PINNED = {
     "checkers/check_combined75.py": "40be8f22a4e0a072182016c661031bddb86cc441318f0df79dce445c565945c7",
     "checkers/finite_facts_october.py": "c7d9bc075edf4a4bb38e285486fcc86adee91f9de599ea9bb068f1b9b531ee68",
     "checkers/finite_facts_october.recorded.json": "a5deae2157f7941d99824686e59673caa42c13116455f4b67fe7b64a2f311357",
+    "package-rows-g75/CERTIFICATES_PKG75_G75.json": "d8a7f2970b3b133c1f43b2314b54ab36253afd0b9dc9b1da4e8df7bbf38eebd7",
+    "package-rows-g75/check_pkg75.py": "d4da6376b7f5c876652c6d6a2ab8d4f4626121e811fe5f81069f11803e7fe77c",
+    "package-rows-g75/published_sets.json": "ed84085bd755ac46cc677b0fb86afdc04b10ce445b8b06fe1b837ea2f52750e9",
 }
 
 # (batch, checker, certificate file, report the checker writes, fields the report must contain,
@@ -116,6 +121,15 @@ FINITE_EXPECTED = {
     ("Mt", "F5", "RP_alternatives"): 199184, ("Mt", "F5", "nonzero_remainders"): 0,
 }
 
+# Stage 7: the report of package-rows-g75/check_pkg75.py (it must also equal the recorded report).
+PKG_EXPECTED = {
+    "gates": 75, "scalar_states": 3708, "claims": 7416, "excluded_certified": 5908, "open": 1508,
+    "certificates": 15742, "coefficients_checked": 827190, "certificate_references": 33536,
+    "largest_weighted_rhs": -1, "uncertified_keys_reported_by_generator": 0,
+    "disjoint_from_published_sets": True, "excluded_plus_published_equals_domain": True,
+    "open_here_equals_union_of_published_sets": True,
+}
+
 
 def require(condition, message):
     if not condition:
@@ -179,9 +193,34 @@ def check_claim_bookkeeping(work):
             "open_claim_chain": list(chain) + [COMBINED_OPEN]}
 
 
-def run(work, script, logs, env):
-    result = subprocess.run([sys.executable, "-B", str(work / "checkers" / script)],
-                            cwd=str(work / "checkers"), env=env, text=True,
+def check_domain_accounting(work):
+    """package-rows-g75/published_sets.json against the certificate files: its five certified sets are
+    the claim lists of those files, and its six sets are pairwise disjoint with 1,508 claims in all.
+    check_pkg75.py has checked that their union is exactly the set of claims the package rows leave
+    open and that it is disjoint from the 5,908 claims certified there. So the 280 claims of the sixth
+    set are exactly the claims of the domain that no certificate file excludes."""
+    raw = json.loads((work / "package-rows-g75" / "published_sets.json").read_text(encoding="utf-8"))
+    require(set(raw) == {"batch1", "batch2", "batch3", "batch4", "combined", "open_LP"}, "published_sets.json: set names")
+    sets = {name: {(tuple(s), o) for s, o in value} for name, value in raw.items()}
+    require(all(len(sets[name]) == len(raw[name]) for name in raw), "published_sets.json: repeated claim")
+    for batch, _, cert_name, _, _, _ in STAGES:
+        data = json.loads((work / "certificates" / cert_name).read_text(encoding="utf-8"))
+        claims = {(tuple(c["state"]), c["orientation"]) for c in data["claims"]}
+        require(sets[f"batch{batch}"] == claims, f"published_sets.json: batch{batch} differs from {cert_name}")
+    data = json.loads((work / "combined" / "CERTIFICATES_COMBINED75.json").read_text(encoding="utf-8"))
+    claims = {(tuple(c[0]), c[1]) for c in data["claims_excluded"]}
+    require(sets["combined"] == claims, "published_sets.json: combined differs from CERTIFICATES_COMBINED75.json")
+    union = set().union(*sets.values())
+    require(len(union) == sum(len(v) for v in sets.values()) == CHAIN[0], "published sets overlap or do not total 1,508")
+    require(len(sets["open_LP"]) == COMBINED_OPEN, "open set is not 280 claims")
+    return {"domain_claims": 7416, "claims_certified_excluded_package_rows": 5908,
+            "claims_certified_excluded_total": 5908 + CHAIN[0] - COMBINED_OPEN,
+            "claims_without_certificate": len(sets["open_LP"])}
+
+
+def run(work, script, logs, env, folder="checkers"):
+    result = subprocess.run([sys.executable, "-B", str(work / folder / script)],
+                            cwd=str(work / folder), env=env, text=True,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     log = logs / (script.removesuffix(".py") + ".log")
     log.write_text(result.stdout, encoding="utf-8")
@@ -221,6 +260,7 @@ def main():
         work = Path(temporary)
         shutil.copytree(ROOT / "checkers", work / "checkers")
         shutil.copytree(ROOT / "certificates", work / "certificates")
+        shutil.copytree(ROOT / "package-rows-g75", work / "package-rows-g75")
         (work / "combined").mkdir()
         for name in ("CERTIFICATES_COMBINED75.json", "CERTIFICATES_COMBINED75_J1FREE_ADDENDUM.json"):
             shutil.copyfile(ROOT / "combined" / name, work / "combined" / name)
@@ -266,15 +306,33 @@ def main():
               f"dim R10(Mt) = 29, F1 0 of 4,250,400, F2, F3, F5 0 nonzero remainders; equal to the recorded run",
               flush=True)
 
+        print("Package rows at G = 75: check_pkg75.py on CERTIFICATES_PKG75_G75.json ...", flush=True)
+        t = time.monotonic()
+        out, log = run(work, "check_pkg75.py", logs, env, folder="package-rows-g75")
+        require("PASSED: 5,908 package-row exclusions" in out, "check_pkg75.py: no completion line")
+        report = json.loads((work / "package-rows-g75" / "CHECKED_PKG75_G75.json").read_text(encoding="utf-8"))
+        for key, value in PKG_EXPECTED.items():
+            require(report.get(key) == value, f"Unexpected CHECKED_PKG75_G75.json: {key}={report.get(key)!r}")
+        recorded = json.loads((ROOT / "package-rows-g75" / "CHECKED_PKG75_G75.json").read_text(encoding="utf-8"))
+        require(report == recorded, "CHECKED_PKG75_G75.json differs from the recorded report")
+        shutil.copyfile(work / "package-rows-g75" / "CHECKED_PKG75_G75.json", logs / "CHECKED_PKG75_G75.json")
+        elapsed = round(time.monotonic() - t, 3)
+        results.append({"stage": "check_pkg75.py", "exit_code": 0, "elapsed_seconds": elapsed,
+                        "claims_certified": report["excluded_certified"], "log": str(log.relative_to(ROOT))})
+        print(f"  passed in {elapsed:.1f} s: {report['excluded_certified']} claims excluded by the package rows "
+              f"({report['certificates']} certificates); {report['open']} open under those rows", flush=True)
+
         bookkeeping = check_claim_bookkeeping(work)
+        bookkeeping.update(check_domain_accounting(work))
     require(check_integrity() == n, "Input inventory changed during verification")
     summary = {
         "started_utc": started.isoformat(), "python": platform.python_version(),
         "platform": platform.platform(), "elapsed_seconds": round(time.monotonic() - start, 3),
         "stages": results, **bookkeeping, "all_checks_passed": True,
-        "scope": ("Exact certificate arithmetic and case/claim coverage for 822 + 406 oriented claims at G = 75, "
-                  "and the finite facts behind the October rows; the survivor counts are LP-status records; the "
-                  "written arguments of Addenda A-D and of the October documents remain for expert review. "
+        "scope": ("Exact certificate arithmetic and case/claim coverage for 5,908 + 822 + 406 oriented claims at "
+                  "G = 75, the accounting of the 7,416 claims by identifier, and the finite facts behind the October "
+                  "rows; the survivor counts are LP-status records; that the 75 proof's framework applies at G = 75 "
+                  "and the written arguments of Addenda A-D and of the October documents remain for expert review. "
                   "The lower bound stays 75."),
     }
     (logs / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
@@ -283,7 +341,9 @@ def main():
           f"Logs: {logs.relative_to(ROOT)}")
     print("ALL CHECKS PASSED: 1,772 + 4,523 + 4,950 + 4,361 + 4,653 (+43) exact certificates; "
           "open claims at G = 75: 1,508 -> 1,313 -> 996 -> 789 -> 686 (sprint rows) -> 280 (with the October rows); "
-          "finite facts of the October rows recomputed; the bound stays 75.")
+          "finite facts of the October rows recomputed; 5,908 package-row exclusions certified (15,742 "
+          "certificates) and all 7,416 claims accounted by identifier (7,136 certified excluded, 280 open); "
+          "the bound stays 75.")
 
 
 if __name__ == "__main__":
