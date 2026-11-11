@@ -70,8 +70,15 @@ Running / in progress at the time of this commit: see the "Status" line at the e
   triples has 13-36 such r = 2 partners. A per-pair finite fact therefore gives no row; what remains is
   joint over whole configurations.
 
-Status: ladders (per-claim key ladders with leaf integer status) computing; manifest, family
-specification, pilot and review not started.
+- Ladders done (`scope/ladder.py`, 47 min): 4,223 LP-feasible keys stand in the 280 claims' ladders
+  (229 first level + 3,994 behind), 68,153 open leaves (1,637 integer-infeasible, 2 unresolved); the
+  ladder evaluation reproduces every driver hypothetical (119 / 153 / 88) and adds INT 236, INT+A01 103.
+  Manifest written: [proof-followup/MANIFEST.md](proof-followup/MANIFEST.md) +
+  `proof-followup/scope/coverage_manifest.json`.
+- Pilot agent (high) launched 21:20 UTC on the M^T q = 3 block (brief
+  `~/xs-campaigns/2026-11-10-proof/PILOT_BRIEF.md`; outputs `~/xs-campaigns/2026-11-10-proof/pilot/`).
+
+Status (22:02 UTC 2026-11-10): pilot agent running; independent review and final report not started.
 
 ## 3. Decisions and their reasons
 
