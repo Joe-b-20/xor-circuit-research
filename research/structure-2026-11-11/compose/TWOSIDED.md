@@ -363,7 +363,11 @@ types (exactly 10); the upper bound is an explicit circuit, the lower bound rest
 exhaustive run over sets of three or four weight-3 exits for four abstract independent labels (one in E),
 every label and exit order, computing chi exactly; P5's o = 3 case was also checked by hand. No solver was
 used. These are small exhaustive computations on five-input objects, labelled as checks; no theorem of the
-record depends on them except the sharpness remark and the "exactly 10" figure.
+record depends on them except the sharpness remark and the "exactly 10" figure. They were newly run on
+2026-11-12, after the instruction excluding exhaustive runs (a departure, acknowledged in phase 7); the
+lower half of "exactly 10" now has a hand proof (`../joint/FINITE_AUDIT.md` section 3, machine-reviewed in
+`../joint/review/`), the sharpness remark still rests on the run, and the exact L_near values of the
+SB and SB' counterexamples (from small exact searches) have one-line hand bounds in the same file.
 **Scope of the new results, restated.** P1 (near1 = 10) and P4 (one exit) assume independent clean labels; P5
 (four entries) also covers dependent labels by a separate argument (S1); dependent labels with five or more
 entries are open; separate one-exit bounds are NOT added for several exits (P4 cleans with respect to one

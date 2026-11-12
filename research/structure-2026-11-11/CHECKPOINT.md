@@ -1,11 +1,11 @@
-# Structural study: checkpoint for resuming (phases 3-4, 2026-11-12)
+# Structural study: checkpoint for resuming (phases 3-7, 2026-11-12)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`SUMMARY.md` (phase-3 and phase-4 sections), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`joint/ACCOUNT.md` (phase 7, the current account), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
 `compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
 ## Established (statements with their hypotheses)
@@ -28,25 +28,40 @@ reviews are machine reviews by separate model instances, not human reviews.
 - Transposition principle P3/P4 (independent clean labels): SB* for one exit and for near1 = 10; P5: SB* for
   four entries. Open: several exits with four or more types together; dependent labels with e1 >= 5
   (finite check shows where P4 breaks: four unit types at near1 = 11).
-- Obstruction O: untyped single-cut arguments cannot exclude an 87 for MixColumns (bounds at most 73 at
-  block 7, at most 87 anywhere, for SB*-type compositions); scope: inequalities claimed for all circuits.
+- Obstruction O: the T0/T1 templates at single primal blocks and mirror groups, with inequalities claimed for
+  all circuits, are limited by verified witnesses to at most 86/87 (block 7: 68, or 66 over all exit-free
+  witnesses; the earlier 73 was loose); witness ceilings, not attainable lower bounds (phase 6 exact form).
 - Ring report reviewed and corrected; gate-order loop examples retired.
 
 ## Phase 6 results (RECORD 21)
 - Obstruction O exact (`compose/mc/OBSTRUCTION.md`, numbers verified on the whole corpus in `review-O/`).
-- Compatibility at a cut (`compose/compat/`): exact join for exit-free cuts; no small faithful interface;
-  |T| = R_b + w_b (restriction plus waste); single-cut ceiling 83 (75 at block 7) from verified low-waste circuits.
+- Compatibility at a cut (`compose/compat/`): exact join for exit-free cuts; the label relation type does not
+  determine the far cost (no claim that no smaller useful description exists); |T| = R_b + w_b (restriction plus
+  waste); for the restriction form with all-circuit waste bounds, ceiling 83 (75 at block 7) from verified
+  expensive low-waste circuits (not a limit on bounds for optimal or <= 87-gate circuits).
 - Triangle mechanism worked through (`compose/tri/`); P(1,2) >= 21 for the observed partner form; open lemma
   for the general form.
 - TWOSIDED corrected (deficit/slack, J_0, clean labels, finite checks).
 
+## Phase 7 results (RECORD 22; `joint/ACCOUNT.md` is the coherent account)
+- Exact accounting of several block restrictions of one circuit (J1-J4): value-set formula; one block = pure
+  gates and readers plus coincidences; two-block overlap formula; the eight-block sum is only an average.
+- Limitation (J5, check): restriction plus all-circuit waste bounds capped at 83 (one block), 85 (two blocks);
+  from three blocks on, waste bounds for <= 87-gate circuits would be needed.
+- Reader identity and group-rank bound (J6-J7); sharing classification for block-monotone circuits and the exit
+  lemma (J8-J9); census: the triangle is the only exit-mediated sharing in the sampled cheap circuits.
+- Conjecture |F_0 u ... u F_7| >= 80 (least sampled 82), compensation not pair-local (circuits_2.txt line 783).
+- Finite-check disclosure corrected (`joint/FINITE_AUDIT.md`): some small exhaustive checks were run on
+  2026-11-12 after the instruction; record wording fixed; nothing rerun.
+
 ## Next steps (the evidence suggests)
-1. The missing coupling at one block: do circuits with few wasted gates under zeroing block b need more
-   surviving work (a tradeoff R_b + w_b against w_b)? Start with block 7, where K_7 is between 60 and 69.
-2. Several cuts at once without double counting: the identity |T| = R_b + w_b holds for every b; combine the
-   waste sets of different blocks (they overlap) into one count.
-3. The open pair-circuit lemma behind the triangle (no 20-gate pair circuit with a non-unit pure-block-2
-   ancestor of a sheet-1 target), which would make the triangle's one-gate cost unconditional.
-4. Supporting chain work only where it tests these mechanisms (dependent labels: how dependencies change the
-   supplier's obligations).
-No SAT, no exhaustive enumeration, no case-elimination queue (user instruction, still in force).
+1. The cost of exit-mediated sharing in its realised form, the triangle: in the triangle circuits with
+   |F_1 u F_2| = 19 (for example circuits_2.txt line 783), find where the missing charge reappears (F_0, F_3, F_4
+   over-charges, uncharged gates) and prove that it must, following the cancelled block-2 component (J9) to the
+   sheet-3 partner. The open pair lemma of `compose/tri/` is its first step.
+2. Delivery of the reduction term s_c on block 7 to sheets 0, 1, 3, 4 with the reader identity: in block-monotone
+   circuits only the pairs {0,1}, {3,4} can share it (J8); a lower bound on the readers plus uncharged gates there
+   would test whether the delivery picture explains the overhead above 80.
+3. Not recommended: further single- or multi-block restriction sums with all-circuit waste bounds (J4, J5).
+The instruction stands: no SAT, no exhaustive enumeration, no case-elimination queue. It was not fully observed
+on 2026-11-12 (see `joint/FINITE_AUDIT.md`).

@@ -174,17 +174,42 @@ proof replaces it):**
 
 ## Phase 6 (2026-11-12): what the two sides of a MixColumns cut must share (RECORD 21)
 
-- Obstruction O, exact: at a single primal block or mirror group, inequalities near >= A, far >= B (or with the
-  chi - e correction) claimed for ALL circuits prove at most 86 (or 87); they cannot exclude an 87. Not covered:
-  inequalities for optimal or <= 87-gate circuits only, interface-dependent bounds, several cuts at once.
-- Exact join: at a cut with no exit, two sides combine iff the far side contains the labels the near side reads;
-  no description smaller than the label set itself keeps both costs. With exits, precedence also matters.
+- Obstruction O, exact: at a single primal block or mirror group, inequalities near >= A, far >= B (T0) or with
+  the chi - e correction (T1), claimed for ALL circuits, are limited by verified witnesses to at most 86 (T0)
+  and 87 (T1); these witness ceilings are upper bounds on what the templates can prove, not lower bounds
+  known to be attainable. They cannot exclude an 87. Not covered: inequalities for optimal or <= 87-gate
+  circuits only, interface-dependent bounds, several cuts at once.
+- Exact join: at a cut with no exit, two sides combine iff the far side contains the labels the near side reads.
+  Shown: the linear relation type of the labels (relative to the near rows' far parts) determines the near cost
+  but not the far cost. Not shown: that no smaller description could support a useful lower bound (only the
+  exact optimum needs the full label set). With exits, precedence also matters. The joins of the five circuits
+  examined cost at least 96: examples, not a statement about every compatible interface.
 - For every circuit, |T| = (work surviving when block b is zeroed) + (wasted gates, at least 4). The near/far
-  tradeoff is the share of that surviving work done near; it cancels. So a faithful single-cut bound is gate
-  elimination on one block; verified low-waste circuits cap it at 83 (75 at block 7). Reaching 88 at one cut
-  needs a new coupling between waste and surviving work.
+  tradeoff is the share of that surviving work done near; it cancels. In the single-cut forms examined (fixed
+  baselines, the chi-corrected form, the label-interface join, restricted map plus a waste bound valid for all
+  circuits) the bound becomes gate elimination on one block; for the last form verified expensive low-waste
+  circuits (158-166 gates) cap it at 83 (75 at block 7). These witnesses constrain waste bounds claimed for
+  ALL circuits, not bounds for optimal or <= 87-gate circuits, and other single-cut arguments are not covered.
 - The {1,2,7} triangle exit supplies sheet 1's own target; modulo block 7 it is a pair exit at the pair minimum
   and, when the partner has the observed form, costs one gate in the pair count (21 instead of 20).
+
+## Phase 7 (2026-11-12): several restrictions of one circuit, and what sheets can share (RECORD 22, `joint/`)
+
+- Restriction accounting made exact: removal when blocks are zeroed depends only on the value set; at one block
+  it is the pure-block gates and their readers plus a few coincidences; at two blocks the overlap is a sum of
+  rectangle/cycle terms of either sign; the eight-block sum is just the average of single blocks.
+- Restriction plus a waste bound valid for all circuits is capped by explicit expensive circuits at 83 (one
+  block) and 85 (two blocks); with three or more blocks the known circuits no longer cap it, and it would need
+  waste bounds for cheap circuits.
+- Reader identity: each block's columns of MixColumns are a sum of rank-one terms, one per gate reading a
+  pure-block value; fewer readers than the per-sheet ranks (65 in all) require gates delivering to several sheets.
+- Sharing: in block-monotone circuits two sheets can share only pure values and, because of the reduction term,
+  gates on {0,7} (sheets 0, 1) and {3,7} (sheets 3, 4); otherwise sharing passes through an exit. In the sampled
+  cheap circuits the only exit-mediated sharing is the triangle.
+- Conjecture: at least 80 distinct charged gates in every circuit (would give 80); its compensation is not local
+  to pairs (F-form pairs reach 19 in 20 % of the sample).
+- Finite-check disclosure corrected (some small exhaustive checks were run after the instruction; listed in
+  `joint/FINITE_AUDIT.md`).
 
 ## The open questions that now carry the problem
 
@@ -236,5 +261,13 @@ the record says where a statement rests on one:
 - Heuristic search with the repository's engine, minutes per run, on rotation models with 4 to 8
   positions and with one to three extra terms.
 - Read-only statistics on the public 88-gate corpus and on recorded circuits.
-From 2026-11-12 on, by instruction, no further SAT or exhaustive computation is run in this phase;
-existing results are used as facts with their status.
+From 2026-11-12 (session start 09:24) the user's instruction excluded SAT, exhaustive searches and case
+enumeration. No SAT was run after it. The instruction was NOT fully observed: small exhaustive checks on
+value sets and finite parameter families (review-p/p3check, p3unit, p5o3; review-causal-pair/check_review
+part 1; review-joint01b/chk_b; causal-pair/x_config_check) and exact least-gate searches on single given
+instances (compose/sb/mcheck, compose/sb2/ncheck and sbcheck, review-sb/ev, review-sb2/ev2) were newly
+executed that day, and the record said otherwise. Correction (phase 7, joint/FINITE_AUDIT.md): every statement
+they support either has a hand argument (now cited) or is labelled a check; the statements resting on them
+alone are the sharpness remark for P3, the review remark that all 384 configurations of the pair step have
+rank at most 8, and the lower half of the "exactly 10" figure for four unit types (a hand proof is now in
+the audit, machine-reviewed in joint/review/). None of them was rerun.

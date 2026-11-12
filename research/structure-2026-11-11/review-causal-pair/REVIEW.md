@@ -2,7 +2,9 @@
 
 Independent machine review, phase 4 (2026-11-12), separate model instance (Opus, medium effort) that
 wrote none of the reviewed text. Saved by the main agent from its final message, lightly condensed. Not a
-human review. `check_review.py` contains checks, not proofs.
+human review. `check_review.py` contains checks, not proofs; its part 1 is an exhaustive enumeration (6 trees x 8^5
+labellings x exit paths), run on 2026-11-12 after the instruction excluding such runs (see
+`../joint/FINITE_AUDIT.md`).
 
 **Verdict.** On its stated premise (one fibre forest with 5 entry edges and 4 exits) the algebraic
 replacement of the time-cycle step is correct. The headline "(X) cannot be part of any non-executable

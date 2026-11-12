@@ -1,8 +1,10 @@
 # One sheet supplying values to a receiver: SB' is false; SB* and Omega2
 
 Delegated investigation, phase 4 (2026-11-12), separate model instance (Opus, high effort); saved by the
-main agent from its final message, lightly condensed. Review status in RECORD 19. No SAT, no search; every
-circuit below was written by hand and checked as a single fixed object (`mcheck.py 3` from ../sb,
+main agent from its final message, lightly condensed. Review status in RECORD 19. No SAT; every
+circuit below was written by hand and checked as a single fixed object, the checkers computing
+L_near by a small exact (Dijkstra) search on that object (see `../../joint/FINITE_AUDIT.md`; the values
+used have one-line hand bounds there) (`mcheck.py 3` from ../sb,
 `sbcheck.py`, `ncheck.py`). Files: ncheck.py, sbcheck.py, sbx5.txt, sbx5_formal.txt, sbx5_mc3.txt,
 t_o2_formal.txt.
 

@@ -1136,13 +1136,72 @@ reconstruction inequality is an upper bound on the gain for every R; the wording
 if its intermediate sums are of little use" is withdrawn (example p = a+b, q = c+d, t = p+q). Section 9: "clean
 labels" defined (cleaning only inside proofs; unclean entries enter through sigma); what the finite checks of
 review-p did (small exhaustive runs on five-input objects, no solver; only the sharpness remark and the
-"exactly 10" figure depend on them).
+"exactly 10" figure depend on them). Phase-7 correction: these runs, and the other small exhaustive checks and
+exact least-gate searches listed in `joint/FINITE_AUDIT.md`, were newly executed on 2026-11-12 after the
+instruction excluding exhaustive computation; the record's earlier statement that none was run was wrong.
 
-**What phase 6 established.** For MixColumns, single-cut arguments in any of the forms examined reduce to: the
-restricted map's cost plus wasted gates. The information the fixed baselines lose is Delta, the part of the
-restricted computation placed on the near side, and once it is retained the cut bound becomes gate elimination
-on one block. Its known ceiling (83, or 75 at block 7, from verified circuits) means a single cut cannot reach
-88 without a new inequality coupling waste to restricted work. The triangle mechanism is, modulo block 7, a pair
+**What phase 6 established.** For MixColumns, single-cut arguments in the forms examined (T0, T1, the
+label-interface join, restricted map plus a waste bound valid for all circuits) reduce to: the restricted map's
+cost plus wasted gates. The information the fixed baselines lose is Delta, the part of the restricted
+computation placed on the near side, and once it is retained the cut bound becomes gate elimination on one
+block. For the restriction form the ceiling from verified expensive circuits (83, or 75 at block 7) means it
+cannot reach 88 with a waste bound valid for all circuits; a waste bound proved only for optimal or <= 87-gate
+circuits is not constrained by those witnesses, and other single-cut arguments are not covered. (Phase-7
+reconciliation: O's 86/87 are witness ceilings, not attainable lower bounds; Prop 2 shows only that the label
+relation type does not determine phi, not that no smaller useful description exists; the joins >= 96 are
+examples.) The triangle mechanism is, modulo block 7, a pair
 exit at the pair minimum, paid for in the pair count when the partner has the observed form.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 22. Several restrictions of one circuit; delivery and sharing between sheets (phase 7; `joint/ACCOUNT.md`; review `joint/review/`)
+
+Phase 7 (2026-11-12, user's direction: which combinations of restricted computations can arise from one cheap
+circuit). The coherent account with proofs is `joint/ACCOUNT.md`; this section lists results and status.
+Proofs by the main agent; machine review `joint/review/REVIEW.md` (own code, independent sample of 826 circuits).
+
+**Exact accounting (proved, reviewed).** For a reduced circuit, a block set B and the first-producer order:
+G = S_B + D_B, with removal categories zero / surviving input / earlier value, and a fourth (dead after
+simplification); U_B = S_B - dead_B >= K_B = L(MixColumns with B zeroed). J1: D_B = |Sigma| - |pi_B Sigma| - 4|B|
+(depends on the value set only). J2: at one block every gate with a pure-b value or a pure-b operand is removed,
+D_b = |L_b| + N_b, N_b the nonlocal coincidences; lambda(g) <= 2. J3: D_bc = D_b + D_c - O_bc with O_bc a sum over
+fibres of (cycle rank - components + 1); positive terms are rectangles such as {0, x_b, x_c, x_b + x_c}, negative
+terms fibres that fall apart. J4: the sum over the eight blocks, 7G = sum U_b + lambda_2 - lambda_0 + N + dead,
+is exactly the average of the single-block identities (no further content); removal is monotone in B, so chains
+of zeroings are gate elimination.
+
+**Limitation (check).** Bounds "L >= K_B + delta_B" with delta_B a waste bound valid for ALL circuits are at most
+83 for |B| = 1 and 85 for |B| = 2 (explicit verified constructions of 152-229 gates, `joint/lowwasteB.py`; caps
+are sample-dependent upper bounds); for |B| >= 3 the known circuits no longer cap the form below 88, and it would
+need waste bounds for circuits with at most 87 gates. The candidate couplings "sum_b D_b >= G" (false in the
+corpus, 86 < 88) and "8 charged gates removed at their own block" (false in general) were discarded.
+
+**Delivery (proved, reviewed).** J6 (reader identity): for every reduced circuit and block b, the block-b
+columns of M equal sum over readers g of rho(g) omega'(p_b(g))^T, rho(g) the parities of paths from g to the
+outputs. J7: for any partition of the rows, |R_b| >= sum of group ranks - sum (t(g) - 1)^+; with the sheet
+partition the ranks are 7 (b < 7) and 16 (b = 7), 65 in all, so fewer readers need readers serving several sheets.
+
+**Sharing (proved, reviewed).** J8: in a block-monotone MixColumns circuit every gate serving two sheets is
+pure, or lies on {0, 7} and serves exactly sheets 0, 1, or on {3, 7} and serves exactly sheets 3, 4 (the only
+window pairs meeting in two blocks; no triple does); corollaries |R_b| >= 7 at b in {1, 2, 4, 5, 6} and
+|R_7| >= 10 there. J9 (every circuit): a gate serving a sheet whose window misses one of its blocks reaches it
+only through an exit at that block.
+
+**Census (check; 763 circuits main, 826 review).** Monotone circuits share exactly as J8 allows and all use both
+reduction pairs. Non-monotone circuits: 598 of 615 (review: 620 of 654) have as their only cross-window sharing
+the triangle (three {1,2} gates serving sheets 1, 2; one {2,7} gate serving 1, 3; plus one pure block-2 gate
+serving sheet 1); the rest none, one variant. Removal is local up to 0-6 coincidences per circuit; dead 0-1.
+
+**Conjecture (holds on all sampled circuits, least value 82; no proof mechanism).** |F_0 u ... u F_7| >= 80 for
+every MixColumns circuit (would give L >= 80). Double service needs an exit (J8, J9), but no cost of exits is
+known, and the compensation is not pair-local: in the F-form |F_1 u F_2| = 19 in 166 of 826 sampled circuits
+(circuits_2.txt line 783, compensated by F_0, F_3, F_4 and uncharged gates); in the P-form line 20 has
+P(1,2) = 21 < 20 + 3 double charges.
+
+**Finite checks (correction).** Small exhaustive checks and exact least-gate searches were newly run on
+2026-11-12 after the user's instruction excluding them; the earlier statements that none was run were wrong.
+`joint/FINITE_AUDIT.md` lists them with their dependents; the "exactly 10" lower bound now has a hand proof
+(delegated, machine-reviewed with fixes); the P3 sharpness remark and the "rank at most 8 in all 384
+configurations" remark rest on the runs alone. Nothing was rerun.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.

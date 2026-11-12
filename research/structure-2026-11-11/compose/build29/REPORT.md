@@ -1,8 +1,9 @@
 # Constructive side of the chain of three: no 29 built; where a 29 could still come from
 
 Delegated investigation, 2026-11-12 (phase 3), separate model instance (Opus, medium effort); saved by the
-main agent from its final message. Machine work, NOT independently reviewed. No search: the scripts
-evaluate hand-designed circuits (checks, not proofs).
+main agent from its final message. Machine work, NOT independently reviewed. The scripts
+evaluate hand-designed circuits (checks, not proofs); twover.py enumerates the 3 x 2^k lift variants of
+one given circuit and keeps the best (only the upper bound 36 is claimed; see ../../joint/FINITE_AUDIT.md).
 
 **Review (`../../review-compose/REVIEW.md`).** The two-pair inequality is correct; alternative (a) below is
 not implied (the inequality forces o2 + (b) + (c) + (d) >= 1 + dup12 + dup23, and o2 is a count, not a set

@@ -3,8 +3,9 @@
 Delegated investigation, phase 4 (2026-11-12), separate model instance (Opus, high effort); saved by the
 main agent from its final message, lightly condensed. Review status in RECORD 19. Uses the corrected
 L_near (exits in time order; each value computed from labels of entries placed before its exit and
-earlier replacement values). No SAT, no search; scripts verify explicit circuits (`mcheck.py`) and list
-signals of fixed mirrors (`tscan.py`). Files: mcheck.py, dangle2.txt, tight_o2.txt, tscan.py, t1-t3.txt.
+earlier replacement values). No SAT. The scripts verify explicit circuits (`mcheck.py`) and list
+signals of fixed mirrors (`tscan.py`); `mcheck.py` also computes L_near by a small exact search on the given circuit (disclosed in
+`../../joint/FINITE_AUDIT.md`; the values used have one-line hand bounds there). Files: mcheck.py, dangle2.txt, tight_o2.txt, tscan.py, t1-t3.txt.
 
 ## 1. SB as stated is false (checked)
 
