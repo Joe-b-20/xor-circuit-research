@@ -31,7 +31,8 @@ omega_k(x) = omega_k(y) != 0.
 
 ## 1. Exit-free cuts are additive [proved]
 
-**Proposition 1.** If an optimal T for MC_l has no exit across cut k, then M_l >= M_k + M_(l-k).
+**Proposition 1.** If an MC_l circuit T has no exit across cut k, then cost(T) >= M_k + M_(l-k). (A
+statement about such circuits, not an inequality for M_l; the proof does not use optimality.)
 
 *Proof.* (a) f + tau >= M_k: chain/REPORT Lemma 1 for an arbitrary cut. A first gate is not an entry
 (an entry keeps the omega of its non-pure operand) and not an exit, so its operands have nonzero,

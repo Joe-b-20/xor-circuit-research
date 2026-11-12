@@ -108,9 +108,13 @@ proof replaces it):**
 
 ## Phase 3 (2026-11-12): how computations compose (RECORD 18, `compose/`)
 
-- A cut of a chain across which no exit occurs is additive: M_l >= M_k + M_(l-k). An exit is a gate that
+- A cut of a chain across which no exit occurs is additive: a circuit C with no exit across cut k has
+  cost(C) >= M_k + M_(l-k) (a statement about such circuits, not an inequality for M_l). An exit is a gate that
   hands a vector back across the cut, made by cancellation inside the earlier part. So any composition
-  saving lives in exits, and a chain below 10 per sheet would need one across every cut (proved, reviewed).
+  saving lives in exits. A shortest-length counterexample to ten gates per sheet (M_j = 10 j for all
+  shorter j) saves exactly one gate and has an exit across every cut; a 29-gate chain of three therefore
+  needs exits across both cuts (proved, reviewed). Without the minimality hypothesis this fails: a longer
+  chain could inherit a saving inside a shorter component across an exit-free cut.
 - At the open end (the free neighbour) the first sheet in its cheapest form is rigid and can hand nothing
   back; any exit there costs it at least one gate, at every length (Lemma R, reviewed).
 - Three sheets: only an adjacent exit (sheet 1 to sheet 2) can produce a saving; skip exits cannot

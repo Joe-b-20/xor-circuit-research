@@ -817,12 +817,17 @@ both of its ends, to decide whether adding a sheet can save. Everything below is
 (section 16, `compose/FRAMEWORK.md` section 0); "cut k" separates groups 1..k from k+1..l; an *exit across
 cut k* is a gate with zero part on groups 1..k whose two operands have equal nonzero parts there.
 
-**Proposition 18.1 (exit-free cuts are additive; main agent; reviewed).** Every MC_l circuit with no exit
-across cut k has cost at least M_k + M_(l-k). *Reason:* the first gates projected to groups 1..k are an
+**Proposition 18.1 (exit-free cuts are additive; main agent; reviewed).** Every MC_l circuit C with no exit
+across cut k has cost(C) >= M_k + M_(l-k). (A statement about such circuits C; it is not an unconditional
+inequality for the optimum M_l.) *Reason:* the first gates projected to groups 1..k are an
 MC_k circuit with the same exports; without exits the gates with zero part there are an MC_(l-k) circuit
 whose exports are the entry labels, and each label use is a distinct entry gate.
-**Corollary 18.2.** If M_j = 10 j for j < l and M_l < 10 l, every optimal MC_l circuit has an exit across
-EVERY cut and M_l = 10 l - 1. A 29 for three sheets needs exits across both cuts.
+**Corollary 18.2.** If M_j = 10 j for every j < l and M_l < 10 l, every optimal MC_l circuit has an exit
+across EVERY cut and M_l = 10 l - 1: a shortest-length counterexample to ten gates per sheet saves exactly
+one gate and has an exit across every cut. Since M_1 = 10 and M_2 = 20, a 29 for three sheets needs exits
+across both cuts. The hypothesis on all shorter lengths is essential: without it a longer chain could
+inherit a saving inside a shorter component while the cut separating it from the rest is exit-free.
+(Scope corrected in phase 4 at the user's request; the summaries had dropped the hypothesis.)
 *Meaning.* The minimum costs of the parts are all one needs to know about them as long as nothing is handed
 back across the cut. A composition saving can only come from exits.
 

@@ -14,7 +14,10 @@ families separately), `RECORD.md` sections 16-18, `compose/FRAMEWORK.md`, `compo
   false, full proof fine; `review-joint01b/`), C (direct-sum bound needs s > 0, RECORD 12), D (corpus totals
   vs circuit-specific claims, RECORD 9, 14, SUMMARY), E (chain recurrence reviewed, `review-chain/`; the
   MixColumns run 5, 6, 7, 0 needs blocks 1-3 zeroed).
-- Composition results (RECORD 18): exit-free cuts additive; a sub-10l chain needs exits across every cut;
+- Composition results (RECORD 18): a circuit with no exit across cut k costs at least M_k + M_(l-k)
+  (not an inequality for M_l); a SHORTEST-length counterexample to 10 per sheet (M_j = 10 j for j < l)
+  saves exactly one gate and has an exit across every cut, so a 29 for three sheets needs exits across
+  both cuts;
   Lemma R and Corollary R (open end rigid, every l); skip-exit lemma; Theorem A (a 29 needs an adjacent
   exit); Proposition H; residual gap (G1), (G2). All machine-reviewed.
 - Constructive side: no 29; Q_3 transplant = 36 (`compose/build29/`); two-pair inequality (reviewed).

@@ -41,8 +41,9 @@ For any families P_j with proved lower bounds lambda_j (|P_j| >= lambda_j in the
 
     G = sum of lambda_j + over + unch - excess                    (an identity, not a bound)
 
-with over = sum of (|P_j| - lambda_j) >= 0, unch = gates in no P_j, excess = sum over gates of (number of
-families containing it - 1). Sharing gives a net gain relative to these families exactly when
+with over = sum of (|P_j| - lambda_j) >= 0, unch = gates in no P_j, excess = sum over gates of max(number of
+families containing it - 1, 0), so that a gate in no family contributes 0, not -1 (corrected in phase 4;
+RECORD 14 has the correct form). Sharing gives a net gain relative to these families exactly when
 excess > over + unch. A "compensation theorem" for a class of circuits is a proof that this cannot
 happen inside the class. Results for one choice of families (for example the 80 charges) do not carry
 over to another (the augmented 83 or the grouped 84) without a separate argument.
@@ -92,7 +93,8 @@ The overlap pattern of the windows decides what is known:
 - no overlap: no gain (proved);
 - a path of two: no gain (proved); a longer path: a gain of at most one gate per further sheet
   (proved), conjecturally none. Since phase 3 (RECORD 18): a cut with no exit across it is additive
-  (M_l >= M_k + M_(l-k)), so a chain below 10 l needs an exit across every cut; at the open end any exit
+  (a circuit with no exit across cut k costs at least M_k + M_(l-k)), so a SHORTEST-length counterexample
+  to 10 per sheet saves exactly one gate and has an exit across every cut; at the open end any exit
   costs the first sheet a gate (Lemma R); for three sheets only an adjacent exit (sheet 1 handing sheet 2
   a vector by cancellation) can produce a saving, and two residual configurations remain;
 - a cycle of three: a gain of two is realised;
