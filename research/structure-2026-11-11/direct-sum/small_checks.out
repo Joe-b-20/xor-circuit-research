@@ -1,0 +1,5 @@
+1. four inputs: 11 vectors of weight >= 2, not reachable in one step: []
+2. subset sums of 3 mixers: classes ['-', '-', '-', 'XY', 'XY', 'XY', 'XY']; d=4 w=3 r=3 bound 2^r-r-1=4; floating=4
+3. Example 1: 7-gate circuit computes all rows: True; m* = 6, L = 7 -> h = 1
+   Example 2: A = B^-1: m* = 6, L = 8 (cyclic/REPORT.md) -> h = 2
+   Example 3: B: m* = 7, L <= 10 -> h <= 3;  A = B^-1: m* = 7, L = 11 -> h = 4

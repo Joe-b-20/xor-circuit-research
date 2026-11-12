@@ -96,10 +96,17 @@ proof replaces it):**
 ## The open questions that now carry the problem
 
 1. **Double service.** When can sharing intermediate values across parts of a linear map reduce the
-   size, and what forces a compensating cost? Settled for parts with disjoint windows: never a net gain
-   (RECORD 11). The three-position rotation model shows it can help when every pair of windows
-   overlaps. Open: sharing between sheets whose windows overlap, starting with two adjacent sheets
-   (is the minimum 20?), then chains, then the rings and triangles of MixColumns.
+   size, and what forces a compensating cost? What is known now (RECORD 11-13):
+   - In general it CAN pay even for unrelated parts: by a known counting argument (fast matrix
+     multiplication), n copies of a generic large matrix are cheaper together than apart. No small or
+     explicit example is known; any example needs both parts with at least four helper gates.
+   - For sheets with disjoint windows it never gives a net gain (proved, all circuits).
+   - For three positions, where every pair of windows overlaps, it gains 2 gates.
+   - Open: sheets whose windows overlap, starting with two adjacent sheets (is the minimum 20?), then
+     chains, then the ring and the triangles of MixColumns.
+   - The charge framework does not use gate order: it has an order-free twin valid for all cyclic
+     systems (RECORD 13, unreviewed). So it cannot exceed the cyclic minimum, and the wiring of the
+     recorded best circuits is unique, so their sharing is a property of the value set.
 2. **Two joint local problems** (sheets 0, 1 with position 7 free: between 20 and 22; sheets 7, 3, 4 with
    positions 6 and 2 free: between 33 and 36), kept as test cases for arguments about shared costs.
 3. **Is the cyclic minimum of MixColumns 88?**

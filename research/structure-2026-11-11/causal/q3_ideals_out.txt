@@ -1,0 +1,54 @@
+|A_0| = 15
+|A_1| = 16
+|A_2| = 22
+A_0 & A_1 & A_2 (8): g0, g2, g4, g5, g6, g8, OUT(3,0), g12
+(A_0 & A_1) minus trunk (0): 
+(A_0 & A_2) minus trunk (4): g3, g14, OUT(2,0), g19
+(A_1 & A_2) minus trunk (5): g1, g10, OUT(0,1), g15, g17
+only A_0 (3): g22, OUT(0,0), OUT(1,0)
+only A_1 (3): OUT(1,1), OUT(3,1), OUT(2,1)
+only A_2 (5): OUT(2,2), OUT(1,2), g23, OUT(3,2), OUT(0,2)
+trunk = ancestors-or-equal of g12 [0:s0 2:s3]
+gates with charge 2: g3[0, 2], g4[0, 1], g5[1, 2], g6[0, 1], g8[1, 2], OUT(3,0)[0, 2], g10[1, 2], g12[0, 2], g14[0, 2], OUT(2,0)[0, 2], g19[0, 2]
+sheet 0 (own block 0, neighbour block 2): 12 charged gates
+   body         g0 = in(1,0) + in(2,0)
+   entry        g3 = in(3,0) + in(0,2)   free operand [2:e0] restricted [2:e0]  pure (lives on the neighbour block)
+   entry        g4 = g0 + g2   free operand [1:s2] restricted [0]  IMPURE: carries a third block, cancelled here or later
+   body         g6 = in(0,0) + g4   (members carrying the third block: g4, g6)
+   entry  OUT(3,0) = g6 + g8   free operand [1:s2 2:s3] restricted [2:s3]  IMPURE: carries a third block, cancelled here or later
+   body        g12 = in(2,0) + OUT(3,0)
+   entry       g14 = g12 + in(2,2)   free operand [2:e2] restricted [2:e2]  pure (lives on the neighbour block)
+   body   OUT(2,0) = g3 + g14
+   entry       g19 = OUT(2,0) + in(1,2)   free operand [2:e1] restricted [2:e1]  pure (lives on the neighbour block)
+   body        g22 = g0 + g19
+   body   OUT(0,0) = g14 + g22
+   entry  OUT(1,0) = g22 + in(3,2)   free operand [2:e3] restricted [2:e3]  pure (lives on the neighbour block)
+sheet 1 (own block 1, neighbour block 0): 13 charged gates
+   entry        g1 = in(0,1) + in(3,0)   free operand [0:e3] restricted [0:e3]  pure (lives on the neighbour block)
+   body         g2 = in(2,1) + in(3,1)
+   entry        g4 = g2 + g0   free operand [0:s1] restricted [0:s1]  pure (lives on the neighbour block)
+   entry        g5 = g2 + in(3,2)   free operand [2:e3] restricted [0]  IMPURE: carries a third block, cancelled here or later
+   entry        g6 = g4 + in(0,0)   free operand [0:e0] restricted [0:e0]  pure (lives on the neighbour block)
+   body   OUT(1,1) = in(0,1) + g4
+   entry        g8 = g5 + in(0,2)   free operand [2:e0] restricted [0]  IMPURE: carries a third block, cancelled here or later
+   body        g10 = in(1,1) + g8   (members carrying the third block: g8, g10)
+   entry  OUT(0,1) = g10 + g12   free operand [0:s0 2:s3] restricted [0:s0]  IMPURE: carries a third block, cancelled here or later
+   body        g15 = in(3,1) + OUT(0,1)
+   body        g17 = g1 + g15
+   entry  OUT(3,1) = g17 + in(1,0)   free operand [0:e1] restricted [0:e1]  pure (lives on the neighbour block)
+   body   OUT(2,1) = g17 + g6
+sheet 2 (own block 2, neighbour block 1): 14 charged gates
+   entry        g3 = in(0,2) + in(3,0)   free operand [0:e3] restricted [0]  IMPURE: carries a third block, cancelled here or later
+   entry        g5 = in(3,2) + g2   free operand [1:s2] restricted [1:s2]  pure (lives on the neighbour block)
+   body         g8 = in(0,2) + g5
+   entry  OUT(3,0) = g8 + g6   free operand [0:E3 1:s2] restricted [1:s2]  IMPURE: carries a third block, cancelled here or later
+   entry       g10 = g8 + in(1,1)   free operand [1:e1] restricted [1:e1]  pure (lives on the neighbour block)
+   body   OUT(2,2) = in(1,2) + g8
+   entry       g12 = OUT(3,0) + in(2,0)   free operand [0:e2] restricted [0]  IMPURE: carries a third block, cancelled here or later
+   body        g14 = in(2,2) + g12   (members carrying the third block: g12, g14)
+   body   OUT(2,0) = g3 + g14   (members carrying the third block: g3, g14, OUT(2,0))
+   entry  OUT(1,2) = g14 + g15   free operand [0:s0 1:s1] restricted [1:s1]  IMPURE: carries a third block, cancelled here or later
+   body        g19 = in(1,2) + OUT(2,0)   (members carrying the third block: OUT(2,0), g19)
+   entry       g23 = g19 + g17   free operand [0:E2 1:E3] restricted [1:E3]  IMPURE: carries a third block, cancelled here or later
+   body   OUT(3,2) = g10 + g23
+   entry  OUT(0,2) = g23 + in(2,1)   free operand [1:e2] restricted [1:e2]  pure (lives on the neighbour block)

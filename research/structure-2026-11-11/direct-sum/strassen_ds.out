@@ -1,0 +1,18 @@
+n = 64, seed 1: circuit computes A x and A y: True
+gates (Strassen-Winograd level + naive blocks): 3724
+two naive row circuits for A: 3990
+ledger: N_X=2256 N_Y=2286 d=1246 w=428 c=1143 beta=323 floating=1142 rY=64 rX=64
+identities: G=NX+NY-d+w True; Euler True; d-bound True; span lemma True
+unmixing gates: type (i) mixed+pure 0, type (ii) mixed+mixed 96
+n = 128, seed 2: circuit computes A x and A y: True
+gates (Strassen-Winograd level + naive blocks): 14430
+two naive row circuits for A: 16174
+ledger: N_X=9385 N_Y=9350 d=5344 w=1039 c=5135 beta=828 floating=5134 rY=128 rX=128
+identities: G=NX+NY-d+w True; Euler True; d-bound True; span lemma True
+unmixing gates: type (i) mixed+pure 0, type (ii) mixed+mixed 192
+n = 16, seed 3: circuit computes A x and A y: True
+gates (Strassen-Winograd level + naive blocks): 248
+two naive row circuits for A: 238
+ledger: N_X=118 N_Y=116 d=45 w=59 c=24 beta=36 floating=23 rY=16 rX=16
+identities: G=NX+NY-d+w True; Euler True; d-bound True; span lemma True
+unmixing gates: type (i) mixed+pure 0, type (ii) mixed+mixed 24
