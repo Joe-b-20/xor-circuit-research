@@ -410,8 +410,17 @@ cancels a whole block while the union of its operands' blocks lies in no single 
 union always contains blocks 1, 2, 7 (it is {0,1,2,7} in 10,351 circuits), and the cancelled block is 2
 in 14,600 of them. Only 4,264 of these circuits keep every gate inside some sheet support; the other
 10,374 contain a gate living on blocks such as {0,1,2,7} or {0,2,7}. Every circuit of the corpus has 88
-gates, with or without such a gate. That is all this establishes: these particular circuits gain
-nothing from their double service; it does not show that double service cannot gain.
+gates, with or without such a gate. *Scope (corrected in phase 3).* That is an observation about totals:
+no corpus circuit with such a gate is smaller than 88, and none without one is either. It does not show
+that the feature contributes no saving inside those circuits: a circuit with the feature could save a
+gate through it and spend one elsewhere, and equal totals cannot distinguish that from "no saving". (An
+earlier wording here, "these particular circuits gain nothing from their double service", claimed that
+counterfactual and is withdrawn.) A circuit-specific statement needs an explicit account for that
+circuit: either a function-preserving rewrite without the feature at no extra cost, or a compensation
+inequality proved for it. The accounts of section 14 are of the second, weaker kind: they verify
+G = 80 + over + unch - excess with excess <= over + unch for chosen charged sets, which is bookkeeping
+relative to those sets, not a proof that removing the feature would leave the size unchanged. Nothing
+here shows that double service cannot gain.
 
 **Where a block can be cancelled (proved, for circuits whose gates each live inside one sheet's support;
 Lemma II.6).** Join two blocks when some sheet's support contains both. If such a gate g = a + b cancels a
@@ -527,9 +536,18 @@ the "L(A) + n_B - c_B" bound supplied by the reviewer).**
   separation that uses a pure signal of the other side.
 - Span lemma: the mixed signals carry at most r independent Y-parts, one per mixed gate that is not new
   on the X side, and then d <= 2^r - r - 1.
-- Theorem: the saving is at most h_B - ceil(log2(h_B + 2)), h_B = L(B) - (number of distinct rows of
-  weight >= 2). Hence additivity whenever one part has h <= 3, in particular whenever one part has at
-  most 4 inputs. Any counterexample needs both parts with h >= 4, at least 5 inputs and joint size >= 13.
+- Theorem: let s = L(A) + L(B) - L(A + B) (always s >= 0, by concatenation) and h_B = L(B) - (number of
+  distinct rows of B of weight >= 2). **If s > 0**, then s <= h_B - ceil(log2(h_B + 2)). Equivalently,
+  0 <= s <= max(0, h_B - ceil(log2(h_B + 2))). Hence additivity whenever one part has h <= 3, in particular
+  whenever one part has at most 4 inputs. Any counterexample needs both parts with h >= 4, at least 5
+  inputs and joint size >= 13.
+  *Correction (phase 3, 2026-11-12).* Until now this record stated the bound without the hypothesis s > 0.
+  Without it the statement is false for h_B = 0 or 1, where the right side is -1 and concatenation gives
+  s = 0. The hypothesis is in the report (`direct-sum/REPORT.md`, Theorem 1) and is used in its proof: from
+  s > 0 the identity G = N_X + N_Y - d + w gives d >= s + w >= 1, so a mixed gate exists, so the first mixed
+  gate is a mixer and w >= 1; with no mixed gate, w = 0 is possible. The corollaries were stated correctly.
+  This is a statement about one argument's bound; it is separate from the literature's existential result
+  above.
 - A partner can never let A use a smaller cyclic system (N_X >= L(A) whatever B is).
 - Separation is free in the gate count only when two mixed signals have equal foreign parts, which
   requires a linear coincidence between the two computations; the matrix-multiplication example lives on
@@ -636,8 +654,14 @@ would need 70 gates under the lifting model used (60 are attainable directly).
 **Observed (existing circuits only).** The pair count is at least 20 for every adjacent pair in all
 19,356 corpus and recorded MixColumns circuits, non-monotone ones included, and in all recorded rotation
 circuits with m >= 4. In eleven inspected non-monotone corpus circuits each double service is matched by
-over-charge and uncharged partner gates, and the total is 88 each time. This shows that these circuits
-gain nothing; it does not show that nothing can be gained.
+over-charge and uncharged partner gates, and the total is 88 each time. *Scope (corrected in phase 3):*
+this verifies the accounting identity with excess <= over + unch for the charged sets used, in each of
+these circuits; the over-charges are not shown to be caused by the double service, and the observation
+does not show that the feature saves nothing within these circuits (an earlier wording said "these
+circuits gain nothing", which claimed more than the totals show; see section 9). One corpus circuit was
+compared by hand with a monotone route for the same values (sharing/REPORT.md section 5: equal cost
+there, plus one gate if a partner vector is absent); that is the only circuit-specific comparison made.
+It does not show that nothing can be gained.
 
 **Attempts to build savings by hand (all failed, with accounts in the report).** A design that takes a
 full-block vector from the next sheet by an exit costs 12 per sheet and, run round the ring, is not
@@ -691,7 +715,7 @@ so it does not extend by a naive induction to chains of three or more sheets. Fo
 only through f + tau >= 10 and tau >= 3 (main agent's reading, not yet checked independently); the
 known upper bound there is 22.
 
-## 16. Chains of adjacent sheets: nine gates per further sheet (`chain/REPORT.md`; delegated; Theorem 16.1 re-derived by the main agent, the rest unreviewed)
+## 16. Chains of adjacent sheets: nine gates per further sheet (`chain/REPORT.md`; delegated; Theorem 16.1 and Cor. 16.2 independently machine-reviewed in phase 3, `review-chain/REVIEW.md`; section 3 of the report unreviewed)
 
 Chain of l sheets: sheets j, .., j+l-1 with block j-1 free and nothing else free. M_l denotes its
 minimum; M_1 = 10 (section 10), M_2 = 20 (section 15), and M_l <= 10 l.
@@ -704,7 +728,16 @@ repeat such a part or have none; there are at least 9 of them by the argument th
 pair: three entries need three even labels (3 + 7), and four entries with only the four triple-sums
 (4 + 4) are excluded by the tree argument.
 *Status.* The two lemmas repeat, at the last level, arguments that were machine-reviewed for the pair;
-the main agent re-derived them for general l. The general statement has had no separate review.
+the main agent re-derived them for general l. *Phase 3:* the general statement now has an independent
+machine review (`review-chain/REVIEW.md`): correct as stated, no hidden use of l = 2, with wording repairs
+(K = |T| + tau holds for the cleaned circuit; "ancestor" includes the outputs; exports with omega = 0 are
+dropped before projecting, tau' <= tau). The case D = N = 4 of the second lemma closes without time order:
+all four triple-sums would be exits along 3-edge paths of a forest with four edges, and such a forest has at
+most two 3-edge paths.
+*What M_3 = 30 would and would not give (correction, phase 3).* An earlier session said that M_3 = 30 would
+give ten gates per sheet for every chain. It would not: with the recurrence of 16.1 it gives only
+M_l >= 30 + 9 (l - 3) = 9 l + 3 for l >= 3. Ten per sheet for all l needs a uniform argument, for example
+Lemma C_l below for every l, or the cut lemma of section 18.
 
 **Corollary 16.2 (rotation model; proved given 16.1).** For m >= 3, L(Q_m) >= M_(m-1) >= 9m - 7: in any
 circuit, restrict nothing, treat the block of one sheet as free and count the ancestors of the other
@@ -712,8 +745,9 @@ m - 1 sheets that are nonzero on one of their own blocks. This exceeds the earli
 7m - 1 + ceil(16m/11) for m >= 13 and has the larger slope (9 against 8.45; the upper bound is 10 m).
 The two bounds agree for m = 11 and 12; for m <= 10 the earlier bound is larger.
 For MixColumns the chain form occurs only on runs that avoid the three reduction terms (sheets 1..6
-with block 7 set to zero: at least 56 gates; sheets 5, 6, 7, 0: at least 38), far below 75. The public
-bound is not affected.
+with block 7 set to zero: at least 56 gates; sheets 5, 6, 7, 0 with block 4 free and blocks 1, 2, 3 set to
+zero: at least 38; the review noted that the zeroing of blocks 1-3 was missing and is needed for the
+restricted gates to form a local circuit of the model), far below 75. The public bound is not affected.
 
 **Open: the tenth gate per sheet (M_3 = 30?).** A 29 for the chain of three would have to be, at the
 last group, one of two configurations (four entries with a basis of labels, at least three odd, and
@@ -738,11 +772,23 @@ proof uses the exports only through f + tau >= 10 and tau >= 3.
 **Theorem 17.2 (proved by hand; reviewed, stands with small repairs to the wording).** A sheet circuit
 (own units w, the other group free) that contains the four targets and three independent diagonal
 vectors has at least 11 gates. This replaces the finite fact that section 10 quoted as checked by SAT
-only. *Plain reason:* neither a target nor a diagonal vector is the sum of two inputs or targets, so
-each of the seven required vectors reads an auxiliary gate; an auxiliary gate has at most one way to
-serve a required vector together with an input or another required vector, and a pure pair-sum has
-none; ten gates leave three auxiliary gates, which cannot serve seven. Whether the true value is 11 or
-12 is open.
+only. *Plain reason (corrected wording, phase 3):* neither a target nor a diagonal vector is the sum of
+two inputs or required vectors, so each required vector reads an auxiliary gate. Besides carrying the one
+required vector that may lie in its own fibre (an entry: aux plus free vector), an auxiliary gate can serve
+at most one required vector whose other operand is an own unit or another required vector, and a pure
+pair-sum can serve none of this kind. Ten gates leave three auxiliary gates; when at most one required
+vector is an entry they cannot serve the other six or more, and the cases with two or three entries fail
+on the order in which the gates can be built. Whether the true value is 11 or 12 is open.
+*Correction and second check (phase 3, `review-joint01b/REVIEW.md`).* The short reason previously written
+here ("an auxiliary gate has at most one way to serve a required vector together with an input or another
+required vector") is false as written. Counterexample (the user's): in coordinates (own | free),
+h = (0111 | 1111) gives a target h + (0000 | 0011) = (0111 | 1100) and a diagonal vector
+h + (1000 | 0000) = (1111 | 1111), and 1111 can belong to an even basis such as {1111, 1100, 0110}; both
+partners are freely available. The full proof (`joint01/REPORT.md` section 4, F3) states the property
+with the own-fibre exception and counts exactly this case (the first service is a required entry, counted
+by p; the second is the aux's single named-partner service). An independent check confirmed every step of
+Theorem A, wrote out hand proofs of N, F2, F3 (previously cited only with a 28-basis program check), and
+found four unstated steps, all wording. Theorems 17.2, 17.3 and Corollary 17.4 stand.
 
 **Theorem 17.3 (proved by hand given 17.2; reviewed, with four implicit steps written out in the
 review).** J_01 >= 21 for local circuits in which no ancestor of a sheet-0 target is nonzero on sheet

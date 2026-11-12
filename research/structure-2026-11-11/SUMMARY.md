@@ -99,8 +99,10 @@ proof replaces it):**
 - "The eight-block partition is the bit positions"; "an optimal circuit uses the natural partition".
 - "2.5 n for the rotation model at every size" (false at three positions: 28 against 30).
 - "All known 88s avoid cross-position cancellation": 77 % of the public corpus contain a gate that
-  cancels a whole position. All circuits of that corpus have 88 gates with or without such a gate;
-  this shows that those circuits gain nothing from it, not that nothing can be gained.
+  cancels a whole position. All circuits of that corpus have 88 gates with or without such a gate.
+  This is a statement about totals only: it does not show that the feature contributes no saving
+  inside those circuits (a saving could be spent elsewhere), still less that nothing can be gained
+  (RECORD 9, scope note of phase 3).
 - "An 87 cannot be block-monotone" (an over-reading of the 83 bound; with RECORD 17 the excluded range
   is 83 and below, still not 87).
 

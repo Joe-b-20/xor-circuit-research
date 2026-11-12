@@ -206,6 +206,9 @@ v an even vector of block 2, charged to sheets 1 and 2; the partner is [2:v 7:s_
 uncharged. Each of the eleven value sets has a sheet with two outputs not derivable from values inside
 that sheet's support, so none has a block-monotone wiring. This establishes only that these circuits pay
 for each double service by over-charge and uncharged partners.
+*Scope note (main agent, phase 3):* "pay for" here means only that the accounting identity holds with
+excess <= over + unch for these charged sets. It is not shown that the over-charges are caused by the
+double service, nor that the double service saves nothing inside these circuits (RECORD 9 and 14).
 
 ## 7. Files
 

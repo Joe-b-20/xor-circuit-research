@@ -9,17 +9,43 @@ Each claim carries its status; the detailed arguments are in the files named.
 
 A map is cut into parts (for MixColumns and the rotation model Q_m: the sheets, one per bit position).
 Sheet j has an own block j and a window (blocks j-1, j; for MixColumns sheets 1, 3, 4 also block 7).
-Computing one sheet alone, with the rest of its window free, costs lambda = 10 gates (13 for a
-three-term sheet); proved by hand, reviewed (RECORD 10).
+Computing one sheet alone, with the rest of its window free, costs 10 gates (proved by hand, reviewed,
+RECORD 10); a three-term sheet with its two neighbour blocks free separately but not jointly costs 13
+(RECORD 9.1).
 
-For any circuit let D_j be the gates that are ancestors of an output of sheet j and nonzero on block j.
-Then |D_j| >= lambda_j for every circuit (RECORD 7), and
+**The counted families must be fixed before any identity is used** (corrected in phase 3, 2026-11-12; the
+earlier text set lambda = 13 for a three-term sheet while counting D_j, which is false). "Ancestor" refers
+to wires and includes the output gates themselves; "nonzero on a block" refers to the gate's value.
+1. **Ordinary charges (the 80).** D_j = gates that are ancestors of an output of sheet j and nonzero on
+   block j. |D_j| >= 10 for EVERY sheet of every circuit, three-term sheets included (RECORD 7). The
+   baseline is 10 for every sheet; a three-term sheet can have |D_j| = 10 exactly (RECORD 9: tight
+   13-gate local solutions with three mixed-neighbour gates occur), so no 13 may be attached to D_j.
+2. **The augmented family (the 83).** F_3 = D_3 together with the ancestors of sheet 3's outputs that
+   are zero on block 3 and nonzero on both block 2 and block 7. |F_3| >= 13 in every circuit (restrict to
+   blocks 2, 3, 7 and apply RECORD 9.1; the extra gates are the M-gates there). The extra gates need not
+   belong to any D_j. Only sheet 3 is augmented: the mixed gates of sheet 1 (blocks 0 and 7) and of
+   sheet 4 (blocks 3 and 7) can lie in D_0 and D_3 even in block-monotone circuits, which is why the
+   analogous augmentation of sheets 1 and 4 gives nothing. The 83 = 7 x 10 + 13 uses D_j (j != 3) and F_3,
+   which are pairwise disjoint in block-monotone circuits.
+3. **The grouped families (the 84).** G_256 = D_2, D_5, D_6 together (at least 30 in block-monotone
+   circuits, where the three are disjoint; for all circuits only the pair bound 20 for sheets 5, 6 and
+   the bound 10 for sheet 2 are known, and they may overlap); G_01 = the gates that are ancestors of an
+   output of sheet 0 or sheet 1 and nonzero on block 0 or block 1 (at least 20 in every circuit, at least
+   21 in block-monotone circuits, RECORD 17); G_734 = D_7 together with D_4 and F_3 (at least 33 in
+   block-monotone circuits, where the three are disjoint). In block-monotone circuits the three groups are
+   pairwise disjoint (each gate's
+   support lies in the support of a sheet it serves, and the inspection of RECORD 7.2 applies), so
+   30 + 21 + 33 = 84. G_01 contains, besides D_0 and D_1, sheet-1 ancestors that are nonzero on block 0
+   but are not ancestors of sheet 0; these belong to no D_j.
+For any families P_j with proved lower bounds lambda_j (|P_j| >= lambda_j in the class considered):
 
     G = sum of lambda_j + over + unch - excess                    (an identity, not a bound)
 
-with over = sum of (|D_j| - lambda_j), unch = gates charged to no sheet, excess = sum over gates of
-(number of sheets charging it - 1). Sharing gives a net gain exactly when excess > over + unch. A
-"compensation theorem" for a family of sheets is a proof that this cannot happen inside the family.
+with over = sum of (|P_j| - lambda_j) >= 0, unch = gates in no P_j, excess = sum over gates of (number of
+families containing it - 1). Sharing gives a net gain relative to these families exactly when
+excess > over + unch. A "compensation theorem" for a class of circuits is a proof that this cannot
+happen inside the class. Results for one choice of families (for example the 80 charges) do not carry
+over to another (the augmented 83 or the grouped 84) without a separate argument.
 
 ## 2. What a shared gate has to do
 

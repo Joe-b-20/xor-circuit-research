@@ -1,0 +1,65 @@
+== path-1a (a,m,x,y)=(0, 1, 2, 3): labels 1:u2 2:u1 3:u0 4:E1 5:u0
+   exits: B0=path[2, 3, 4], B1=path[3, 4, 5], B2=path[1, 2, 3, 4, 5], B3=path[1, 2, 3]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry3{v2,w'0,v3} + entry4{v3,B1,v4} + entry5{v4,w'0,v5} + exit_B1{v2,v5,B1}
+   E-labelled edges [4], N rows [[1]], det(I+N) over F_2 = 0, N acyclic: False
+== path-1a-reversed (a,m,x,y)=(0, 1, 2, 3): labels 1:u0 2:E1 3:u0 4:u1 5:u2
+   exits: B0=path[2, 3, 4], B1=path[1, 2, 3], B2=path[1, 2, 3, 4, 5], B3=path[3, 4, 5]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry1{r,w'0,v1} + entry2{v1,B1,v2} + entry3{v2,w'0,v3} + exit_B1{r,v3,B1}
+   E-labelled edges [2], N rows [[1]], det(I+N) over F_2 = 0, N acyclic: False
+== path-1b (a,m,x,y)=(0, 1, 2, 3): labels 1:u2 2:u1 3:u0 4:E1 5:E3
+   exits: B0=path[2, 3, 4], B1=path[1, 2, 3, 4, 5], B2=path[3, 4, 5], B3=path[1, 2, 3]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry4{v3,B1,v4} + entry5{v4,B3,v5} + exit_B1{r,v5,B1} + exit_B3{r,v3,B3}
+   E-labelled edges [4, 5], N rows [[1, 1], [0, 0]], det(I+N) over F_2 = 0, N acyclic: False
+== path-1b-reversed (a,m,x,y)=(0, 1, 2, 3): labels 1:E3 2:E1 3:u0 4:u1 5:u2
+   exits: B0=path[2, 3, 4], B1=path[1, 2, 3, 4, 5], B2=path[1, 2, 3], B3=path[3, 4, 5]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry1{r,B3,v1} + entry2{v1,B1,v2} + exit_B1{r,v5,B1} + exit_B3{v2,v5,B3}
+   E-labelled edges [1, 2], N rows [[0, 0], [1, 1]], det(I+N) over F_2 = 0, N acyclic: False
+== path-3 (a,m,x,y)=(0, 1, 2, 3): labels 1:E0 2:u1 3:u0 4:E1 5:E2
+   exits: B0=path[2, 3, 4], B1=path[1, 2, 3], B2=path[1, 2, 3, 4, 5], B3=path[3, 4, 5]
+   duplicate fibre vertices: [('r', 'v4')]
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 7
+   dependency (formal sum zero): entry4{v3,B1,v4} + entry5{v4,B2,v5} + exit_B2{r,v5,B2} + exit_B1{r,v3,B1}
+   E-labelled edges [1, 4, 5], N rows [[0, 1, 0], [1, 0, 0], [1, 1, 1]], det(I+N) over F_2 = 0, N acyclic: False
+== path-3-reversed (a,m,x,y)=(0, 1, 2, 3): labels 1:E2 2:E1 3:u0 4:u1 5:E0
+   exits: B0=path[2, 3, 4], B1=path[3, 4, 5], B2=path[1, 2, 3, 4, 5], B3=path[1, 2, 3]
+   duplicate fibre vertices: [('v1', 'v5')]
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 7
+   dependency (formal sum zero): entry1{r,B2,v1} + entry5{v4,B0,v5} + exit_B2{r,v5,B2} + exit_B0{v1,v4,B0}
+   E-labelled edges [1, 2, 5], N rows [[1, 1, 1], [0, 0, 1], [0, 1, 0]], det(I+N) over F_2 = 0, N acyclic: False
+== spider-S1 (p=m, l5=u_z) (m,p,r,z)=(0, 1, 2, 3): labels 1:E0 2:u0 3:u0 4:u2 5:u3
+   exits: B0=path[1, 2, 3], B1=path[3, 4, 5], B2=path[1, 3, 4], B3=path[1, 2, 5]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry1{r,B0,a} + entry2{a,w'0,a2} + entry3{r,w'0,b} + exit_B0{a2,b,B0}
+   E-labelled edges [1], N rows [[1]], det(I+N) over F_2 = 0, N acyclic: False
+== spider-S2 (p!=m, l5=u_p) (m,p,r,z)=(0, 1, 2, 3): labels 1:E0 2:u1 3:u0 4:u2 5:u1
+   exits: B0=path[1, 2, 5], B1=path[1, 2, 3], B2=path[1, 3, 4], B3=path[3, 4, 5]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry1{r,B0,a} + entry2{a,w'1,a2} + entry5{r,w'1,d} + exit_B0{a2,d,B0}
+   E-labelled edges [1], N rows [[1]], det(I+N) over F_2 = 0, N acyclic: False
+== spider-S3 (p!=m, l5=E_r) (m,p,r,z)=(0, 1, 2, 3): labels 1:E0 2:u1 3:u0 4:u2 5:E2
+   exits: B0=path[3, 4, 5], B1=path[1, 2, 3], B2=path[1, 3, 4], B3=path[1, 2, 5]
+   duplicate fibre vertices: none
+   all 9 relations hold as vector identities; F_2 rank of the 9 formal relations: 8
+   dependency (formal sum zero): entry1{r,B0,a} + entry5{r,B2,d} + exit_B2{a,b2,B2} + exit_B0{b2,d,B0}
+   E-labelled edges [1, 5], N rows [[0, 1], [1, 0]], det(I+N) over F_2 = 0, N acyclic: False
+
+Summary over all 24 index choices per case: (rank of 9 relations, duplicate vertex, det(I+N), N acyclic)
+  path-1a                      [(8, False, 0, False)]
+  path-1a-reversed             [(8, False, 0, False)]
+  path-1b                      [(8, False, 0, False)]
+  path-1b-reversed             [(8, False, 0, False)]
+  path-3                       [(7, True, 0, False)]
+  path-3-reversed              [(7, True, 0, False)]
+  spider-S1 (p=m, l5=u_z)      [(8, False, 0, False)]
+  spider-S2 (p!=m, l5=u_p)     [(8, False, 0, False)]
+  spider-S3 (p!=m, l5=E_r)     [(8, False, 0, False)]
