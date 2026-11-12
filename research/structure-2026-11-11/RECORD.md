@@ -599,8 +599,14 @@ G = sum of lambda_i + over + unch - excess, where over = sum of (|D_i| - lambda_
 charged to no part, excess = sum of (mu - 1)+. Sharing pays exactly when excess > over + unch; a
 compensation theorem for a class of circuits is the inequality excess <= over + unch on that class.
 
-**Proved by hand given the ten-gate lemma (unreviewed at the time of writing): the pair problem needs at
-least 19 gates.** Two adjacent sheets with the first neighbour free, any local circuit. Upper bound 20.
+**Review status (`review-pair/REVIEW.md`).** The 19 bound is confirmed step by step. The level-monotone
+chain theorem is confirmed once its induction is stated for mirror-form circuits. The description of
+what a 19 would have to look like is only partly proved. A further proposition of the report about
+window-local circuits (a bound 10m minus 2 per block with a "backward exit") was found WRONG as argued
+and is not used here: a gate can serve the previous sheet by going the long way round the ring.
+
+**Proved by hand given the ten-gate lemma (machine-reviewed): the pair problem needs at least 19
+gates.** Two adjacent sheets with the first neighbour free, any local circuit. Upper bound 20.
 Consequently, in every circuit for the rotation model (m >= 3), and for MixColumns on the sheet pairs
 (1,2), (2,3), (3,4), (4,5), (5,6), (6,7), (7,0), at least 19 gates are ancestors of an output of the pair
 and nonzero on one of its two own blocks. So two adjacent sheets can share at a net gain of at most one
@@ -641,7 +647,7 @@ executable. The route through blocks 1, 2, 7 used by corpus circuits exchanges g
 - Unrelated parts in general: sharing can pay (section 12), but only when both parts need at least four
   helper gates, and the known examples are astronomically large.
 - Sheets with disjoint windows: never a net gain (section 11; all circuits).
-- Two adjacent sheets: a net gain of at most one gate (this section; all circuits; unreviewed), and
-  none in any known circuit.
+- Two adjacent sheets: a net gain of at most one gate (this section; all circuits; machine-reviewed),
+  and none in any known circuit.
 - Three mutually adjacent sheets (three positions): a net gain of two gates is realised.
 - Chains of adjacent sheets, the ring with m >= 4, and MixColumns with its triangles: open.

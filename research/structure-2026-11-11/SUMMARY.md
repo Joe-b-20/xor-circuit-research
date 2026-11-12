@@ -101,9 +101,13 @@ proof replaces it):**
      multiplication), n copies of a generic large matrix are cheaper together than apart. No small or
      explicit example is known; any example needs both parts with at least four helper gates.
    - For sheets with disjoint windows it never gives a net gain (proved, all circuits).
-   - For three positions, where every pair of windows overlaps, it gains 2 gates.
-   - Open: sheets whose windows overlap, starting with two adjacent sheets (is the minimum 20?), then
-     chains, then the ring and the triangles of MixColumns.
+   - For two adjacent sheets the net gain is at most one gate: every circuit spends at least 19 gates
+     on such a pair, against 20 attained (RECORD 14; machine-reviewed). Whether 19 occurs is open.
+   - For three positions, where every pair of windows overlaps, it gains 2 gates (28 = 30 + 9 over-charge
+     - 11 double charges); no pair of that circuit is cheap, the saving is a wrap-around effect.
+   - Open: whether the pair minimum is 19 or 20, chains of adjacent sheets (ten per sheet is proved
+     only when the mirror is level-monotone), the ring with four or more positions, and the triangles
+     of MixColumns.
    - The 80-charge inequality has an order-free twin valid for all cyclic systems, with membership in
      a derivation in place of ancestry (RECORD 13, machine-reviewed). An argument using only those
      inequalities cannot exceed the cyclic minimum. The ancestor-based refinements (block-monotone

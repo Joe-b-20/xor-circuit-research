@@ -6,6 +6,14 @@ final message. Machine work; hand proofs unreviewed at the time of saving (revie
 verify hand designs. Dependency: the r = 1 case of INDEPENDENT-SHEETS.md Theorem 1 ("a circuit on four
 inputs containing the four triple-sums, with tau signals spanning the even vectors, has |T| + tau >= 10").
 
+**Corrections from the independent review (`../review-pair/REVIEW.md`), to be read with the text.**
+Theorem 3.3 (the pair problem needs at least 19) is confirmed. **Proposition 4.1 is wrong as stated and
+its bound is unproved** (a gate can reach the previous sheet the long way round through forward exits;
+explicit 49-gate example). The "proved reductions" for a hypothetical 19 are partly unproved (see the
+review for which sentences). Theorem 3.4 is correct once its induction is stated for mirror-form
+circuits. Lemma 1.1 holds only for the sheet whose window misses the other sheet's own block. Sections 2
+and 6 were reproduced independently.
+
 ## 0. Summary
 
 **Strongest result (overlapping windows, all circuits).** For the pair problem (sheets j, j+1, block j-1
