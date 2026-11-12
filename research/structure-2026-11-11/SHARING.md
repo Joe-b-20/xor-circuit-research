@@ -159,14 +159,22 @@ computation also builds sums the receiver can reuse as exports (Lemma 2.1*). Pro
   labels with equal traces cost the supplier nothing; the repaired form SB* (gain measured after the
   receiver reuses the intermediate sums as exports) holds in every case checked and would give ten gates
   per sheet for every chain.
+Phase 5 (RECORD 20): with independent clean labels, the supplier's transposed computation pays two gates
+per exit and three spare gates for an exit needing four label types; this proves SB* for one exit, for
+near1 = 10, and for four entries. Obstruction O: for MixColumns (and rings) any cut argument with
+interface-independent baselines cannot exceed the sum of those baselines, which verified circuits put
+below 88 at every cut.
 What the interface must record, as learned from these counterexamples: the span of the labels (dimension,
 intersection with the even space), the trace relations among the supplier's entries (free stacks), and
 which intermediate sums the receiver can reuse as exports. A single number per side is not enough.
 
 ## 9. Open problems, in the order in which they would change the picture
 
-1. SB* for one sheet (RECORD 19): it would give ten gates per sheet for every chain. The chain of three
-   (M_3 = 30 or 29) is reduced to Omega1 (four entries) and five or more entries with deep labels.
+1. SB* for one sheet (RECORD 19, 20): it would give ten gates per sheet for every chain. Open: several exits
+   together carrying four or more types, and dependent clean labels with five or more entries. The chain
+   of three (M_3 = 30 or 29): a 29 needs e1 >= 5, near1 >= 11 and two exits, or dependent labels.
+1a. For MixColumns: a cut argument that carries the interface type (typed baselines), or an all-cuts
+   argument (discharging from the charge theorem); Obstruction O rules out untyped single-cut arguments.
 2. The ring with four positions: is L(Q_4) = 40? The proved range is 33..40.
 3. Sheets 0 and 1 of MixColumns with block 7 free: 20, 21 or 22.
 4. Any bound for MixColumns as a whole that uses the pair and chain results; none is known, and the

@@ -282,25 +282,29 @@ Proposition 18.1 gives cost >= M_1 + M_(l-1). If e1 = 3, Theorem 4.1. If e1 >= 4
 above. So M_l >= 10 + M_(l-1) >= 10 l, and M_l <= 10 l (RECORD 16). QED
 **Sufficient, not necessary.** A failure of SB* for some supplier does not give a cheap chain: the receiver
 must also attain Lemma 5.3.1 with equality, i.e. be an optimal MC_(l-1) circuit that gains exactly the
-reconstruction surplus. No equivalence is claimed.
+reconstruction surplus. No equivalence is claimed. The hypothesis of Theorem 7.1 can be weakened to "SB* for
+the suppliers of OPTIMAL MC_l circuits" (review-p), which matters for Obstruction O (RECORD 20).
 
-## 8. The exact reconstruction principle, and the limit of local repairs (proved)
+## 8. The reconstruction principle, and where local repairs stand (inequality proved; assessment heuristic)
 
-The same replacement gives an exact statement that is not local. For a replacement R let J(R) be the least
-size of a far circuit containing R^2..R^l, the label signals and the values of R. Then
+For a replacement R let J(R) be the least size of a far circuit containing R^2..R^l, the label signals and
+the values of R. Then (proved, reviewed)
 
     |P| >= J(R) - (|R| - |S|)    for every replacement R,
 
 so the receiver's gain over its own optimum J_0 (with no exits) is at most
-(|R| - |S|) - (J(R) - J_0): **the reconstruction surplus minus the receiver's marginal cost of also holding
-the reconstructed intermediate values.** A supplied value pays only if it is expensive to rebuild AND its
-intermediate sums are things the receiver could not have used anyway. Lemma 2.1 bounds J(R) - J_0 below by 0
-in effect (no credit), Lemma 2.1' credits unused labels, Lemma 5.3.1 credits intermediate values that can
-serve as exports. Each repair captured one more way in which reconstructed sums are useful to the receiver;
-the next repair would have to credit their use INSIDE the receiver's computation, i.e. the marginal cost
-J(R) - J_0 itself, which is the receiving problem. So SB* is the last form of the comparison that can be
-stated from the interface alone; if SB* fails, the composition genuinely depends on the receiver's
-structure, and further correction terms would be re-describing the whole computation.
+(|R| - |S|) - (J(R) - J_0): **the reconstruction surplus minus the receiver's marginal cost of also holding the
+reconstructed intermediate values.** It is a valid bound for every R; no R is shown to attain equality (P'
+need not be optimal for J(R)), so it is not an exact formula. A supplied value can pay only if it is expensive
+to rebuild AND its intermediate sums are of little use to the receiver. Lemma 2.1 gives no credit for
+J(R) - J_0, Lemma 2.1' credits unused labels, Lemma 5.3.1 credits intermediate values usable as exports.
+*Assessment (heuristic, corrected after review).* An earlier version said SB* is "the last form of the
+comparison that can be stated from the interface alone". That is wrong as a mathematical claim: the least far
+cost phi(I) compatible with an interface I is itself a function of the interface, and
+near1 >= 10 + (M_(l-1) - phi(I)) would be the sharpest interface-only supplier inequality; and within the
+computable family a constant supplier baseline A = min(near1 + e1 - chi) can replace 10. What is defensible:
+SB* is the last refinement in which the correction is a straight-line minimum over labels and reconstruction
+values with a constant baseline; going further means computing phi(I), i.e. solving receiving problems.
 
 ## 9. Proved classes and their common mechanism
 
@@ -312,17 +316,26 @@ Separate results, each with its hypotheses (all reviewed):
 - Theorem S2 (`sb/` section 4 with the review-sb repairs; e1 = 4, outside Omega): SB' holds.
 - Theorem O2 (`sb2/` section 3; e1 = 4, exactly two labels outside E; every near1): SB* holds.
 - Lemma Q / Q' (dim span <= 4: beta <= 2) and the Path Lemma (sub-case (3,8,0)).
-**Common mechanism.** In every proved class the label span meets E in a way that leaves at most one or two
-"expensive" vectors (needing an auxiliary sum), and the supplier's cheapest forms (near1 = 10 or 11) are
-rigid enough (Lemma R, Lemma B, the tight mirror) that it cannot expose those vectors without paying the
-spare gate. The proofs use the parity pattern of the labels relative to E and the trace relations among
-entries (equal traces = free stacks), not the receiver.
-**Remaining scope of SB*.** e1 = 4: only Omega1 (three or four labels outside E, f1 = 7, h1 = 1, tau = 3,
-rigid 8-gate mirror; beta = 2 from a weight-4 exit or three weight-3 exits). e1 >= 5: open in general; with
-span of dimension <= 4 only near1 = 10, h1 = 0, sigma = 1, beta = 2 with two stacked entries; with deep labels
-(dimension >= 5, l >= 3) unconstrained. "SB* holds wherever checked" means: in the proved classes above and,
-as checks only, on the inspected circuits (dangle2, sbx5, tight_o2, t1-t3, recorded chain circuits); the
-checks are not evidence for arbitrary length.
+- (phase 5, `refute/`, reviewed in `review-p/`; ALL UNDER THE HYPOTHESIS THAT THE CLEAN LABELS ARE
+  INDEPENDENT, which excludes e.g. dangle2 and the 6+4 ten-gate form) P1: near1 = 10 gives chi <= e1 - 1,
+  every l, any number of exits; P4: SB* holds for every instance with exactly one exit, every near1; P3 (the
+  mirror lemma behind P4: four triple-sums plus four exit-shifted even vectors need three spare gates, sharp).
+- P5: SB* holds for every instance with e1 = 4 (independent labels by P1-P4 and O2; dependent labels with
+  e1 = 4 span exactly E and are covered by S1). Omega1 is closed.
+**Common mechanism (two levels).** (i) Span level: in the classes S1, O2, Q, the label span meets E so that at
+most one or two vectors need an auxiliary sum, and the supplier's cheapest forms are rigid enough (Lemma R,
+Lemma B, tight mirrors) that exposing them costs the spare gate. (ii) Transposition level (P3, P4): in the
+supplier's mirror every exit costs exactly two gates and must carry the exit's label types as vectors
+Z_j + X; an exit whose rebuilding would need four types (the only way a single exit can beat SB*) needs three
+spare mirror gates, which is exactly the supplier's extra cost. The compensation is a property of the
+supplier's transposed computation, not of span counting.
+**Remaining scope of SB*.** e1 = 4: none (P5). e1 >= 5: with independent clean labels, open only for SEVERAL
+exits whose types together exceed three (test: two disjoint exits of types {a,b,c} and {a,b,d}) and for
+near1 >= 12 with several exits; with DEPENDENT clean labels (traces may be odd; P1-P4 do not apply), open,
+and a finite check shows where P4's argument breaks: four unit types fit a 10-gate T** at near1 = 11, where
+P2 allows chi up to e1 + 2. "SB* holds wherever checked" means the proved classes above and, as checks
+only, the inspected circuits; the checks are not evidence for arbitrary length. For l = 3: a 29 needs e1 >= 5,
+near1 >= 11 and at least two exits, OR dependent clean labels.
 
 ### Historical note (superseded)
 Earlier versions of this file proposed SB as "the proposed theorem" with the implication via Lemma 2.1; that

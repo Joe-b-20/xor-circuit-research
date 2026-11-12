@@ -150,9 +150,26 @@ proof replaces it):**
   executable wirings of the same size, so they show no cost of executability and are retired (reviewed).
 - Phase 5 consolidation (`compose/TWOSIDED.md` sections 5-9): SB and SB' refuted (circuits written out),
   SB* exact, what it depends on (supplier and interface only; still an unbounded one-sheet lower-bound
-  problem), why it would compose (Theorem 7.1), and the exact reconstruction principle: a supplied value's
+  problem), why it would compose (Theorem 7.1), and the reconstruction principle: a supplied value's
   gain is at most the reconstruction surplus minus the receiver's marginal cost of holding the
-  reconstructed sums; SB* is the last interface-only form of that comparison.
+  reconstructed sums (an inequality for every replacement, not an exact formula).
+
+## Phase 5 (2026-11-12): reconstruction, transposition, and the limit of cut arguments (RECORD 20)
+
+- Transposition principle (reviewed; under the hypothesis that the supplier's clean labels are
+  independent): in the supplier's transposed computation every exit costs two gates and must carry its
+  label types; an exit needing four types costs three spare gates. Hence SB* holds for every supplier with
+  one exit, for every supplier with near1 = 10, and (also for dependent labels) for every supplier with four
+  entries. Open: several exits together carrying four or more types; dependent labels with five or more
+  entries. A 29 for three sheets needs at least five entries, near1 >= 11 and two exits, or dependent
+  labels. SB* is not refuted.
+- Obstruction O (reviewed with corrections): every cut of MixColumns is ring-like; any cut argument whose two
+  sides use interface-independent baselines proves at most about their sum, which verified circuits put at
+  most 73 at block 7 and at most 87 anywhere for SB*-type compositions. Such arguments cannot exclude an 87;
+  a MixColumns cut argument must carry the interface type or use all cuts at once. In chains the baselines
+  sum to the truth, which is why the method works there.
+- The {1,2,7} triangle supplies the receiver's own target through an exit, a mechanism different from the
+  chain's reusable sums.
 
 ## The open questions that now carry the problem
 

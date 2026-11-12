@@ -20,6 +20,8 @@ central example, and obtain arguments that cover whole families of circuits by o
 - Phase 4: `compose/TWOSIDED.md` (supplying versus receiving across a cut; definitions), `compose/sb/`,
   `compose/sb2/` (the supply-benefit inequality and its counterexamples), `compose/ring/` (transfer to
   rings); reviews `review-twosided/`, `review-sb/`, `review-sb2/`.
+- Phase 5: `compose/refute/` (attempt to refute SB*; transposition principle), `compose/mc/` (MixColumns;
+  Obstruction O); reviews `review-p/`, `review-ring/`.
 - `tools/`: small standard-library scripts that examine recorded circuits or check algebra. They
   search nothing and prove nothing by themselves.
 - Hand proofs by the main agent, each with its review: `tenth-gate/` (the ten-gate sheet lemma),

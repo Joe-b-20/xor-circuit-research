@@ -6,6 +6,17 @@ main agent from its final message, lightly condensed. Machine work, NOT independ
 cost at every arc cut, reports exits and label counts), `label_types.py` (labels at single-group cuts by
 their parts on the two neighbouring groups), `run_all.sh`.
 
+**Review (phase 5, `../../review-ring/REVIEW.md`).** 1.1-1.4 stand with repairs: L(S) means the least
+straight-line cost from far units, earlier labels and earlier values; DL_1 = 4 exactly; the near minimum is
+N^p_r exactly. "beta <= 2 per receiving group" assumes T reduced and each exit value supported on a single
+far group (window-locality is only one way to get that). 2.1 is conditional: it needs the exit gate and both
+operands in 2-windows; triangle-freeness does not supply this; cancellation-free circuits satisfy it; the
+recorded circuits satisfy it in two summation orders only. Wording corrections: Lemma R and Theorem 4.1 do
+not TRANSFER (no ring counterexample exists); a 7-label exit is "not excluded", not shown; the MixColumns
+mirror window graph has one cross-window triangle ({1,2,3}, dual of the primal {1,2,7}), the other ten lie
+inside the block-7 5-window (machine-checked); 2.3 (c) "forcing mixed labels" is unproved (pure labels can
+span the diagonal with six labels).
+
 **Headline.** The open-chain theory does not carry over to rings as it stands. Lemma 2.1 (honest
 replacement) survives unchanged; Lemma R, Theorem 4.1 and type-independent additivity of exit-free cuts do
 not, and the reason is structural, not exits alone.

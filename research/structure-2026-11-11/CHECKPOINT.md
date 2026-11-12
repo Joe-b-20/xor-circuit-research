@@ -22,11 +22,21 @@ reviews are machine reviews by separate model instances, not human reviews.
 - Gate order (`causal-pair/`, reviewed): replacement only for forest-plus-exits configurations; no cost of
   executability shown.
 
-## Next steps (phase 5 plan; MixColumns no longer deferred)
-1. Main line: whether the export-reuse insight gives a general principle (TWOSIDED section 8: gain <=
-   reconstruction surplus - receiver's marginal cost of the reconstructed sums). Challenge SB* seriously
-   (`compose/refute/`); do not make proving SB* or defending 10 per sheet the required outcome.
-2. In parallel: MixColumns relevance of the interface language (`compose/mc/`) and the review of the ring
-   transfer report (`review-ring/`), with every locality assumption stated.
-3. Gate order: the borrowing-loop examples are retired; pursue order only from a concrete new obstruction.
+## Phase 5 results (RECORD 20)
+- TWOSIDED consolidated (SB, SB' refuted; SB* exact; what it depends on; Theorem 7.1; reconstruction
+  inequality; proved classes with hypotheses).
+- Transposition principle P3/P4 (independent clean labels): SB* for one exit and for near1 = 10; P5: SB* for
+  four entries. Open: several exits with four or more types together; dependent labels with e1 >= 5
+  (finite check shows where P4 breaks: four unit types at near1 = 11).
+- Obstruction O: untyped single-cut arguments cannot exclude an 87 for MixColumns (bounds at most 73 at
+  block 7, at most 87 anywhere, for SB*-type compositions); scope: inequalities claimed for all circuits.
+- Ring report reviewed and corrected; gate-order loop examples retired.
+
+## Next steps (the evidence suggests)
+1. Dependent clean labels at near1 = 11 with four unit types: the place P4 breaks; either a counterexample to
+   SB* (then carry it to a receiver) or the extension of the transposition principle to odd types.
+2. Several exits jointly: extend P3 to two exit variables X, Y (does the mirror pay 2 per exit plus the
+   joint type count?).
+3. MixColumns: typed cut baselines nu(tau), phi(tau) at one cut (start with primal block 2 or mirror group
+   2, where the {1,2,7} exit supplies a target), or an all-cuts discharging argument.
 No SAT, no exhaustive enumeration, no case-elimination queue (user instruction, still in force).

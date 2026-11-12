@@ -1,0 +1,21 @@
+# A tight Omega1-shaped supplier (f1 = 7, h1 = 1, tau = 3, e1 = 4, o = 3), obtained by transposing the
+# 8-gate mirror  W13=W1+W3, W23=W2+W3, W12=W13+W23, W03=W0+W3, E2=W0+W13, E3=W0+W12, E0=W2+W13, E1=W2+W03
+# (zetas W12, W13, W23 on a line, W03 the point).  Hand-built.
+label L12 = u0
+label L03 = u0 u3
+label L23 = u0 u1 u2
+label L13 = u1
+a = w0 + w2
+b = w2 + w3
+c = w0 + w1
+e12 = w3 + L12
+e03 = w1 + L03
+e23 = e12 + L23
+K = a + e12
+T1 = K + L13
+T0 = b + e03
+T2 = c + e23
+h = T1 + e23
+T3 = h + e03
+export a b c
+exit X = a + h

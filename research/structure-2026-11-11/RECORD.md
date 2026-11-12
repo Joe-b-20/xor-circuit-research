@@ -968,13 +968,21 @@ five or more entries with deep labels (span of dimension >= 5, possible from l =
 gain up to dim V - 2 and SB' is false. M_3 is 29 or 30; no 29
 is known. These results do NOT give ten gates per sheet for longer chains: that needs SB* in general.
 
-**Rings and MixColumns (`compose/ring/`; unreviewed).** Only the split and honest replacement survive in
-the ring mirror. Lemma R, Theorem 19.1 and type-independent additivity of exit-free cuts fail (explicit
-objects at m = 4: bounds valid for every label interface sum to at most 38-39 < 40). In a window-local
-triangle-free ring (m >= 4) an exit lands on one neighbour and gains at most 2 per receiving group; in Q_3
-an exit can land inside a window (the 28-gate mechanism). MixColumns needs further arguments: block 7 is a
-five-group window in the mirror; sheets 1, 3, 4 carry a third interface; the J_01 diagonal forces mixed
-labels; the triangle {1, 2, 7}. Proposed: end-free discharging from the charge theorem (programme).
+**Rings and MixColumns (`compose/ring/`; reviewed in `review-ring/`, wording corrected).** Only the split
+and honest replacement transfer to the ring mirror. The PROOFS of Lemma R and Theorem 19.1 do not transfer
+(they need the export boundary and the closed end); no ring counterexample to analogous statements exists for
+m >= 4. Type-independent additivity of exit-free cuts cannot work: bounds valid for every label interface sum
+to at most 33-39 < 40 at m = 4 (explicit, separately valid objects), so the label interface must be carried
+as a variable. Conditional statement: if T is reduced and every exit value is supported on a single far group,
+the receiver gains at most 2 per receiving group (helpers u0+u1, u2+u3 counted). Single-group support follows
+when the exit gate and both its operands lie in 2-windows ("window-local"); a triangle-free overlap graph
+does NOT supply this for general circuits; cancellation-free circuits satisfy it; the recorded 10m circuits
+satisfy it in the two summation orders checked. In Q_3 an exit can land inside a window (the 28-gate
+mechanism). MixColumns (machine-checked): the mirror windows are seven 2-windows and one 5-window
+{0,1,3,4,7} from block 7; the mirror window graph has exactly one cross-window triangle ({1,2,3}, dual of the
+primal {1,2,7}) and ten inside the 5-window; sheets 1, 3, 4 meet three column families; that the J_01
+diagonal forces mixed labels is unproved (pure labels can span it with six labels). Proposed: end-free
+discharging from the charge theorem (programme).
 
 **Gate order (`causal-pair/`, reviewed in `review-causal-pair/`).** The time-cycle step of configuration (X)
 is replaceable by F_2 dependence only for configurations already in forest-plus-exits form; without order
@@ -982,5 +990,78 @@ entries and exits are the same kind of relation and fibres need not be forests, 
 shown to be order-free. The non-executable borrowing loops found are failed wirings: their value sets have
 executable bases of the same size, so they show no cost of executability. Nothing shows that executability
 excludes a profitable sharing pattern.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 20. Reconstruction, transposition, and the limit of cut arguments (phase 5; `compose/TWOSIDED.md` sections 5-9, `compose/refute/`, `compose/mc/`; reviews `review-p/`, `review-ring/`)
+
+Phase 5 (2026-11-12, user's direction): ask whether "rebuilding a supplied value also builds intermediate
+sums that satisfy other obligations" is a general structural principle, without making SB* or ten per sheet
+the required outcome.
+
+**Consolidation.** TWOSIDED now states the comparison in its current form (section 5): SB (refuted,
+dangle2), SB' (refuted, sbx5), SB* (current conjecture: near1 - 10 >= chi - e1), the reconstruction bound
+(Lemma 5.3.1: far1 >= M_(l-1) + e1 - chi), the export-reuse correction (tau_min - tau_R), both
+counterexamples written out gate by gate. Section 6: every term of SB* is determined by the supplying sheet
+and the staged interface; no receiving circuit and no M_(l-1) occur; but SB* is itself a lower-bound statement
+for one-sheet circuits with an unbounded interface, and chi is a straight-line-program minimum, so SB*
+reorganises the chain problem without making it finite. Section 7: the composition (chi - e1 cancels;
+replacement values credited once; simultaneous exits share one replacement; label obligations kept in e1,
+only tau_R charged as exports) and Theorem 7.1 (SB* for the suppliers of optimal MC_l circuits implies
+M_l = 10 l; sufficient, not necessary; reviewed).
+
+**The reconstruction principle (inequality proved, reviewed).** For every replacement R,
+|P| >= J(R) - (|R| - |S|), J(R) = least far size holding the receiver's obligations, the labels and R's values:
+a supplied value gains at most the reconstruction surplus minus the receiver's marginal cost of also holding
+the reconstructed sums. Not an exact formula (no R shown to attain it). The successive repairs SB -> SB' ->
+SB* credited unused labels, then reconstruction values usable as exports. SB* is the last refinement whose
+correction is a straight-line minimum with a constant baseline; it is NOT the last interface-only form (the
+least far cost phi(I) of an interface is interface-only too; computing it means solving receiving problems).
+
+**Transposition principle (proved by a delegated investigator, reviewed; under the hypothesis that the clean
+labels are INDEPENDENT, which excludes for example dangle2 and the 6+4 ten-gate form).**
+- P3 (mirror lemma; sharp by a finite check): no circuit on W0..W3, X contains the four triple-sums E_c(W),
+  four distinct vectors Z_j + X with Z_j even (or three with Z_j spanning), and at most two other gates.
+- P4: in the supplier's mirror every exit costs exactly two gates and must carry its label types as vectors
+  Z_j + X; hence an exit can involve at most f1 + h1 - 5 distinct types, and SB* holds for every instance
+  with exactly one exit, at every near1, every l.
+- P1: near1 = 10 gives chi <= e1 - 1 (every l, any number of exits).
+- P5: SB* holds for every instance with four entries (dependent labels there span E and fall under S1).
+**What it explains.** The only way one exit could beat SB* is to need four label types to rebuild; carrying
+four types next to an exit costs the supplier three spare gates in its transposed computation, which is the
+extra cost. Compensation is a property of the supplier's mirror, not of counting spans.
+**Open.** Several exits whose types together exceed three (test case: two disjoint exits with types
+{a,b,c} and {a,b,d}); near1 >= 12 with several exits; dependent clean labels, where P4's argument breaks (a
+finite check: four unit types fit a 10-gate mirror at near1 = 11, where the type bound allows chi up to
+e1 + 2). Chain of three: a 29 needs e1 >= 5, near1 >= 11 and at least two exits, OR dependent clean labels.
+SB* is not refuted; no 29 is known.
+
+**Obstruction O: the limit of cut arguments for MixColumns (delegated, reviewed with corrections).**
+- Every cut of MixColumns is ring-like (every edge of the 8-cycle lies in a window), so no cut has an export
+  boundary; Lemma R, Theorem 19.1 and S1 have no instance.
+- The near side needs at least 8 gates at every single cut, and 8 is attained for SOME interface (the
+  recorded 97 at blocks 7 and 0).
+- Verified witnesses with no exit at the cut make the far side cheap: at primal block 7 a corpus 88
+  (circuits_3.txt line 13114) has near 24, far 64.
+- Hence any bound of the form near_min + Far_min at one cut is at most 72 at block 7 and at most 86 at the
+  worst cut. A two-inequality (SB*-type) composition has best constant supplier baseline at most 9 (an
+  instance with one entry per required row has sigma = 1), so it can prove at most 73 at block 7 and at most
+  87 at the worst cut: never 88, so it cannot exclude an 87.
+- Scope: O constrains inequalities claimed for ALL circuits; a supplier inequality proved only for optimal
+  circuits is not covered.
+- Same phenomenon in rings: bounds valid for every interface sum to 33-39 < 40 at m = 4 (section 19). In
+  chains the separate baselines sum to 10 + M_(l-1), which is why the cut method can work there at all.
+**What it says.** Any cut argument whose two sides are bounded by interface-independent baselines proves at
+most the sum of those baselines. For chains that sum is the truth; for rings and MixColumns it is not. Cost
+moves across the cut through the label interface (the cheap-far witness has an expensive near side). A cut
+argument for MixColumns must carry the interface type as a variable, or use all cuts at once (discharging
+from the charge theorem). The {1,2,7} triangle (mirror {1,2,3}) supplies the receiver's own TARGET through an
+exit (730 of 731 sampled corpus circuits), a different mechanism from the chain's reusable intermediate sums.
+
+**Ring transfer, reviewed.** Section 19's ring paragraph is corrected accordingly (conditional single-group
+bound; window-locality not implied by triangle-freeness; one cross-window triangle in the MixColumns mirror).
+**Gate order.** The borrowing-loop examples are retired (failed wirings; executable wirings of the same size
+exist); no cost of executability is shown; the algebraic replacement applies only under its reviewed
+forest-plus-exits hypothesis.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.
