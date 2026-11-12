@@ -36,6 +36,8 @@ central example, and obtain arguments that cover whole families of circuits by o
   between unrelated parts, literature), `causal/` (does the order of gates enter), `sharing/`
   (overlapping windows, the three-position circuit), `chain/` (chains of adjacent sheets), `joint01/`
   (MixColumns sheets 0 and 1 with block 7 free, a test case).
+- `cancel/` (phase 8): Lemma W, Theorem K (cancellation chase and the girth of the window graph),
+  Conjecture G (`CANCEL.md`), review in `cancel/review/`.
 - `joint/` (phase 7): several restrictions of one circuit, reader identity, sharing between sheets
   (`ACCOUNT.md`), finite-check audit (`FINITE_AUDIT.md`), review in `joint/review/`.
 - `review-record/`, `review-cyclic/`, `review-charges/`, `review-83/`, `review-phase2/`, `review-pair/`,

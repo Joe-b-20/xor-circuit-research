@@ -1,11 +1,11 @@
-# Structural study: checkpoint for resuming (phases 3-7, 2026-11-12)
+# Structural study: checkpoint for resuming (phases 3-8, 2026-11-12)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`joint/ACCOUNT.md` (phase 7, the current account), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
 `compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
 ## Established (statements with their hypotheses)
@@ -45,23 +45,34 @@ reviews are machine reviews by separate model instances, not human reviews.
 
 ## Phase 7 results (RECORD 22; `joint/ACCOUNT.md` is the coherent account)
 - Exact accounting of several block restrictions of one circuit (J1-J4): value-set formula; one block = pure
-  gates and readers plus coincidences; two-block overlap formula; the eight-block sum is only an average.
-- Limitation (J5, check): restriction plus all-circuit waste bounds capped at 83 (one block), 85 (two blocks);
-  from three blocks on, waste bounds for <= 87-gate circuits would be needed.
+  gates and readers plus coincidences; two-block overlap formula; the eight-block sum is an average (no information by itself).
+- Limitation (J5, check): restriction plus all-circuit waste bounds capped at 83 (one block), 85 (two blocks), 87
+  (four blocks); at three blocks {4,5,6} is not capped by known circuits.
 - Reader identity and group-rank bound (J6-J7); sharing classification for block-monotone circuits and the exit
-  lemma (J8-J9); census: the triangle is the only exit-mediated sharing in the sampled cheap circuits.
-- Conjecture |F_0 u ... u F_7| >= 80 (least sampled 82), compensation not pair-local (circuits_2.txt line 783).
+  lemma (J8-J9); census: the triangle dominates exit-mediated sharing in the sample (one variant).
+- Conjecture |F_0 u ... u F_7| >= 80 (least sampled 81), compensation not pair-local (circuits_2.txt line 783).
 - Finite-check disclosure corrected (`joint/FINITE_AUDIT.md`): some small exhaustive checks were run on
   2026-11-12 after the instruction; record wording fixed; nothing rerun.
 
+## Phase 8 results (RECORD 23; `cancel/CANCEL.md` is the coherent account)
+- Lemma W (charge theorem with its slack); W1 "double charges collapse in window projections" refuted.
+- Theorem K (cancellation chase): closures by plain charged work force a directed cycle of length <= t_j + t_k + 2
+  in the window graph Gamma; girth 2 (Q_2), 3 (Q_3), 4 (MixColumns), acyclic (chains). MixColumns needs >= 2
+  cancellations for a charged closure; observed triangle closures use one cancellation and an uncharged partner;
+  Q_3 closes with the third sheet's charged work. No cost proved.
+- Refuted: "every cancellation costs a gate", "each uncharged partner pays for its double charges".
+- Conjecture G (girth >= 4 => |union F_j| >= 10 per sheet); least sampled |union F_j| is 81.
+- Scope corrections listed in RECORD 23.
+
 ## Next steps (the evidence suggests)
-1. The cost of exit-mediated sharing in its realised form, the triangle: in the triangle circuits with
-   |F_1 u F_2| = 19 (for example circuits_2.txt line 783), find where the missing charge reappears (F_0, F_3, F_4
-   over-charges, uncharged gates) and prove that it must, following the cancelled block-2 component (J9) to the
-   sheet-3 partner. The open pair lemma of `compose/tri/` is its first step.
-2. Delivery of the reduction term s_c on block 7 to sheets 0, 1, 3, 4 with the reader identity: in block-monotone
-   circuits only the pairs {0,1}, {3,4} can share it (J8); a lower bound on the readers plus uncharged gates there
-   would test whether the delivery picture explains the overhead above 80.
-3. Not recommended: further single- or multi-block restriction sums with all-circuit waste bounds (J4, J5).
-The instruction stands: no SAT, no exhaustive enumeration, no case-elimination queue. It was not fully observed
-on 2026-11-12 (see `joint/FINITE_AUDIT.md`).
+1. The cost of a closure that Theorem K leaves open, case (i): one cancellation closed by an uncharged partner in a
+   system of girth >= 4. Target statement: such a closure forces an over-charge on a sheet of the chase walk or an
+   uncharged gate per closing exit, in a form that sums without double counting. Test cases: the MixColumns
+   triangle (walk through sheet 3; circuits_2.txt lines 20 and 783) and the smallest girth-4 ring Q_4, where
+   Conjecture G is L(Q_4) = 40.
+2. Case (iii): what two-exit charged closures can do in MixColumns (cycle 7, 4, 5, 6): whether they can exist at
+   all in a circuit of at most 87 gates (no instance in the sample).
+3. Not recommended: further restriction sums with all-circuit waste bounds (phase 7, J4, J5).
+Method restriction (applies to every agent): no SAT, no exhaustive enumeration or finite-family checks, no exact
+least-gate searches (including BFS or Dijkstra over value sets), no exhaustive subset minimisation. It was not
+observed on 2026-11-12 in the runs listed in `joint/FINITE_AUDIT.md`; nothing was rerun.

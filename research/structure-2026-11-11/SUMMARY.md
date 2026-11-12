@@ -181,8 +181,8 @@ proof replaces it):**
   circuits only, interface-dependent bounds, several cuts at once.
 - Exact join: at a cut with no exit, two sides combine iff the far side contains the labels the near side reads.
   Shown: the linear relation type of the labels (relative to the near rows' far parts) determines the near cost
-  but not the far cost. Not shown: that no smaller description could support a useful lower bound (only the
-  exact optimum needs the full label set). With exits, precedence also matters. The joins of the five circuits
+  but not the far cost. Not shown: that no smaller description could support a useful lower bound (the full label set
+  suffices for the exact optimum; its necessity is not established). With exits, precedence also matters. The joins of the five circuits
   examined cost at least 96: examples, not a statement about every compatible interface.
 - For every circuit, |T| = (work surviving when block b is zeroed) + (wasted gates, at least 4). The near/far
   tradeoff is the share of that surviving work done near; it cancels. In the single-cut forms examined (fixed
@@ -197,19 +197,33 @@ proof replaces it):**
 
 - Restriction accounting made exact: removal when blocks are zeroed depends only on the value set; at one block
   it is the pure-block gates and their readers plus a few coincidences; at two blocks the overlap is a sum of
-  rectangle/cycle terms of either sign; the eight-block sum is just the average of single blocks.
+  rectangle/cycle terms of either sign; the eight-block sum is the average of single blocks and adds no information by itself.
 - Restriction plus a waste bound valid for all circuits is capped by explicit expensive circuits at 83 (one
-  block) and 85 (two blocks); with three or more blocks the known circuits no longer cap it, and it would need
-  waste bounds for cheap circuits.
+  block), 85 (two blocks) and 87 (four blocks); at three blocks one set ({4,5,6}) is not capped by known
+  circuits (which does not show that a bound for cheap circuits only is needed).
 - Reader identity: each block's columns of MixColumns are a sum of rank-one terms, one per gate reading a
   pure-block value; fewer readers than the per-sheet ranks (65 in all) require gates delivering to several sheets.
 - Sharing: in block-monotone circuits two sheets can share only pure values and, because of the reduction term,
   gates on {0,7} (sheets 0, 1) and {3,7} (sheets 3, 4); otherwise sharing passes through an exit. In the sampled
-  cheap circuits the only exit-mediated sharing is the triangle.
+  cheap circuits the dominant exit-mediated sharing is the triangle (one variant in the main sample).
 - Conjecture: at least 80 distinct charged gates in every circuit (would give 80); its compensation is not local
   to pairs (F-form pairs reach 19 in 20 % of the sample).
 - Finite-check disclosure corrected (some small exhaustive checks were run after the instruction; listed in
   `joint/FINITE_AUDIT.md`).
+
+## Phase 8 (2026-11-12): when cancellation-mediated sharing can be closed by charged work (RECORD 23, `cancel/`)
+
+- Lemma W: each sheet's over-charge is at least the number of its charged gates lost in its window projection;
+  but double charges need not be lost there (Q_3; some MixColumns circuits), so this slack does not pay for them.
+- Theorem K (proved, reviewed): draw an arrow from sheet x to sheet y when x's own block lies in y's window. A
+  shared (doubly charged) gate whose cancellations are all closed by other sheets' plain charged work forces a
+  directed cycle of length at most (number of those cancellations) + 2. The shortest cycle is 2 in Q_2, 3 in
+  Q_3, 4 in MixColumns (through block 7), none in chains. So MixColumns needs at least two cancellations for a
+  charged closure, and the triangle (one cancellation) must and does use an uncharged partner; in Q_3 one
+  cancellation closed by the third sheet's charged work suffices, as observed.
+- No cost is proved. Refuted: "every cancellation costs a gate", "each uncharged partner pays for the double
+  charges it closes". Conjecture G: with shortest cycle >= 4 the distinct charges are at least 10 per sheet
+  (would give 80 for MixColumns; least sampled value 81).
 
 ## The open questions that now carry the problem
 

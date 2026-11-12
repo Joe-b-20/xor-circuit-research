@@ -2,8 +2,8 @@
 
 Main agent (Opus 5.5), 2026-11-12. Status words: **proved** = hand argument given here (main agent; machine
 review in `review/REVIEW.md`, not human review); **check** = program output on explicit circuits (scripts in
-this directory; read-only corpus scans or verification of explicit constructions; no SAT, no search over
-circuits, no enumeration of cases); **conjecture**. Nothing here changes 75 <= L(MixColumns) <= 88.
+this directory; read-only corpus scans or verification of explicit constructions; no SAT, no search,
+no exhaustive enumeration); **conjecture**. Nothing here changes 75 <= L(MixColumns) <= 88.
 
 Notation. Inputs x_(c,b) = bit b of byte c (wire 8c + b); block b = the four inputs of bit position b; V_b =
 vectors supported on block b; B(v) = set of blocks where v is nonzero; a value is *pure-b* if it is a nonzero
@@ -60,7 +60,8 @@ the recorded 88: -2, 1, -1, 0, 1, 0, 1, -1; check, jstats.py).
 *Proof.* sum_b |L_b| = sum_g lambda(g) = lambda_1 + 2 lambda_2 = G - lambda_0 + lambda_2; add N; then
 sum_b U_b = 8G - sum_b D_b - sum_b dead_b. QED
 Consequences. (a) J4 is exactly the sum of the eight one-block identities G = U_b + |L_b| + N_b + dead_b
-(lambda_2 - lambda_0 = sum_b |L_b| - G), so it has no content beyond the single blocks: 7G >= sum_b K_b +
+(lambda_2 - lambda_0 = sum_b |L_b| - G), so by itself it adds no information beyond the single blocks (it does
+not rule out a new structural relationship among its terms, which would be new content): 7G >= sum_b K_b +
 lambda_2 - lambda_0 is the average of G >= K_b + |L_b|, and any average of single-block bounds is at most the
 best one. (Review fix: an earlier draft called lambda_2 - lambda_0 "new content".) The joint information lies in
 J3's pair and higher overlaps, not in the eight-block sum. For scale: W* below has 263 gates, lambda_0 = 196,
@@ -80,9 +81,10 @@ outside B; 152-229 gates, all verified and reduced) (caps.py, lowwasteB.py):
 | 2 | 85 | yes | constructions (own D_B 11-28) |
 | 3 | 88 at B = {4,5,6} | no | constructions for 46 of 56 triples; at {4,5,6} the recorded 88 itself (D = 31) |
 | 4 | 87 | yes, narrowly | corpus 88s for all 70 sets |
-So for |B| <= 2 every form of this kind is capped below 88 by explicit circuits. For |B| >= 3 the known
-circuits no longer cap it below 88 everywhere, and any further use needs a lower bound on D_B for circuits with
-at most 87 gates (at B = all blocks, D_B = G is the original problem). These caps constrain universal (all-circuit) waste bounds; they say nothing
+So for |B| = 1, 2 and 4 every form of this kind is capped below 88 by explicit circuits (at |B| = 4 narrowly,
+by corpus 88s); at |B| = 3 one set, {4,5,6}, is not capped below 88 by the known circuits. Not being capped
+by the known witnesses does not show that a waste bound restricted to <= 87-gate circuits is needed, only that
+these witnesses do not exclude a universal one (at B = all blocks, D_B = G is the original problem). These caps constrain universal (all-circuit) waste bounds; they say nothing
 about bounds proved only for optimal circuits or circuits with at most 87 gates (the constructions have
 152-263 gates).
 
@@ -187,17 +189,20 @@ is order-free, as J1's quantities are (J1 depends on the value set only).
 
 ## 6. Strongest statements, conjecture, next direction
 
+(Phase 8 continues this section in `../cancel/CANCEL.md`: Theorem K, the cancellation chase, and the girth
+conjecture; the next direction below was carried out there.)
+
 Strongest exact statements: J1-J3 (exact accounting of several restrictions of one circuit; J4 is their
 eight-block sum), J6-J7 (reader identity and group-rank bound, all circuits), J8-J9 (classification of shared
 gates in block-monotone circuits; cancellation needed otherwise). Limitation: J4 and J5 (the eight-block sum is
 an average of single blocks; block-zeroing forms with waste bounds valid for all circuits are capped at 83 for
-one block and 85 for two by explicit circuits; from three blocks on the known circuits no longer cap them, and
-they need waste bounds for circuits with at most 87 gates).
+one block, 85 for two and 87 for four by explicit circuits; at three blocks the set {4,5,6} is not capped).
 
 **Conjecture (charge form; holds on every sampled circuit; no proof mechanism yet).** In every MixColumns
 circuit the distinct charged gates number at least 80: |F_0 u ... u F_7| >= 80, equivalently
 sum_j (|F_j| - 10) >= sum_g (m(g) - 1)^+, with F_j = ancestors of sheet j nonzero on block j and m(g) = number of
-sheets charging g. This would give L >= 80. On the reviewer's 826 sampled circuits the least value is 82.
+sheets charging g. This would give L >= 80. On the reviewer's 826 sampled circuits the least value found was 82; the phase-8 review found 81 (circuits_3.txt
+line 7651, also in the main stride-25 sample), so the least known value is 81.
 What is known: double service needs an exit (J8, J9: a doubly charged gate must be nonzero on both own blocks,
 which no window intersection allows); this is NOT a cost for the exit. The pair theorems (RECORD 15, 17) bound
 P(j, j+1) (ancestors of either sheet nonzero on either own block), not the F-form, and in the F-form pairs do
@@ -216,6 +221,8 @@ the cancelled block's partner (sheet 3 in the triangle) or by neighbouring sheet
 pure block-2 gate the review added): account, in the sampled triangle circuits where |F_1 u F_2| = 19, where the
 missing charge reappears (the F_0, F_3, F_4 over-charges and the uncharged gates of line 783), and prove that it
 must, following the cancelled block-2 component with J9 to the sheet-3 partner. Evidence: the triangle is the
-only cross-window sharing in 598 of 615 (main sample) and 620 of 654 (review sample) non-monotone circuits;
+dominant cross-window sharing pattern: the only one in 598 of 615 sampled non-monotone circuits (main sample,
+which also contains one variant circuit) and in 620 of 654 (the reviewer's different selection from the same
+corpus); a frequency, not a normal form;
 pair-local accounting fails on it in both the P-form (line 20) and the F-form (line 783); the open pair lemma of
 compose/tri is its first step.

@@ -38,7 +38,8 @@ a linear isomorphism of span(Lambda, S_near) fixing S_near pointwise and mapping
 nu(Lambda) = nu(Lambda') (apply id + A to every near signal; every near far part lies in span Lambda). phi needs
 the actual vectors (sketch: Lambda = all far units and Lambda' = A(units) with A fixing W_b have the same type,
 but phi(units) = L(R_far) while phi(Lambda') >= the number of non-unit values in Lambda' and R_far). So the
-smallest description that keeps both sides is Lambda itself: 22 to 27 vectors at block 7.
+full label set Lambda (22 to 27 vectors at block 7) is a sufficient exact description; its necessity has not
+been established (phase-7 correction).
 
 ## 2. Bounds on nu and phi; the coupling
 

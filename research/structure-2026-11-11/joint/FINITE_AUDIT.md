@@ -64,4 +64,17 @@ Gate lower bound: a vector that is the sum of k linearly independent available v
 - CHECKPOINT.md:52 "No SAT, no exhaustive enumeration ... (user instruction, still in force)": true as an instruction, but the record should say that it was not fully observed.
 - RECORD.md:1138-1139 and TWOSIDED.md:358-366 disclose only review-p (three scripts); the list omits check_review.py, chk_b.py, x_config_check.py and the exact-L_near searches. "no theorem of the record depends on them except the sharpness remark and the 'exactly 10' figure" is correct for review-p once the hand argument above is cited.
 - compose/sb/REPORT.md:6 and compose/sb2/REPORT.md:4 "No SAT, no search" (the checkers run exact BFS/Dijkstra minimum searches, small but searches); compose/build29/REPORT.md:4 "No search" (twover.py enumerates 3 x 2^k lifts); causal-pair/REPORT.md:4 "no enumeration of circuits" is accurate but x_config_check enumerates 24 index choices; review-causal-pair/REVIEW.md:5 calls check_review.py "checks, not proofs" without saying part 1 is a 6 x 8^5 exhaustive enumeration.
-Suggested wording: "After 2026-11-12 09:24 no SAT and no search over circuits was run; small exhaustive checks (list) on value sets or finite parameter families, and exact least-gate computations on one given instance, were run and are listed in joint/FINITE_AUDIT.md; every statement they support is either hand-proved or labelled check."
+Plain disclosure (phase 8, replacing a suggested wording that said "no search over circuits"): several
+exhaustive checks and exact least-gate searches were run on 2026-11-12 despite the instruction. That their
+search states were value sets does not make them anything other than searches.
+
+## 5. Dependency status after the replacements
+
+Formerly computation-dependent, now supported by a hand argument: the lower half of "exactly 10" (section 3,
+delegated, machine-reviewed with fixes); beta = 2 in sbx5, tau_min = 5, sigma = 0 there; beta = 1 in dangle2
+(section 3); P3 itself and P5 case o = 3 (hand case splits existed before; the runs were confirmations).
+Still resting only on a prohibited computation (kept with that status, not rerun): the sharpness of P3; the
+review-causal-pair remark that all 384 configurations have rank <= 8 (so distinctness is not needed in path
+(3)); the "best 36" of build29 as a minimum over the enumerated lifts (only the upper bound 36 is claimed).
+Corpus observations (compose/mc, compat, tri, joint) are read-only measurements of existing circuits and keep
+the status "check".

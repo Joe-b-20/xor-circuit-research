@@ -1094,8 +1094,8 @@ has no instance in MixColumns.
   exit values and the precedence; set data alone is not enough (reduced counterexample in review-compat).
 - No small faithful interface (Prop 2): nu depends only on the linear relation type of Lambda relative to the
   required near far-parts, but phi depends on the actual vectors (an automorphism fixing W_7 changes phi from
-  at most 30 to at least 32; check); the faithful description is the label set itself (22-27 vectors at block
-  7 in the corpus).
+  at most 30 to at least 32; check); the full label set is a sufficient exact description (22-27 vectors at block 7 in the corpus); its
+  necessity has not been established (phase-7 correction).
 - One-block bound (Prop 3): nu_b(Lambda) >= 8 + max(dim W_b, |Lambda|) (27 at block 7, exactly 28 at
   Lambda = S_near).
 - The coupling is gate elimination (Prop 4): |T| = R_b(T) + w_b(T) for every circuit, R_b >= K_b :=
@@ -1167,13 +1167,15 @@ simplification); U_B = S_B - dead_B >= K_B = L(MixColumns with B zeroed). J1: D_
 D_b = |L_b| + N_b, N_b the nonlocal coincidences; lambda(g) <= 2. J3: D_bc = D_b + D_c - O_bc with O_bc a sum over
 fibres of (cycle rank - components + 1); positive terms are rectangles such as {0, x_b, x_c, x_b + x_c}, negative
 terms fibres that fall apart. J4: the sum over the eight blocks, 7G = sum U_b + lambda_2 - lambda_0 + N + dead,
-is exactly the average of the single-block identities (no further content); removal is monotone in B, so chains
+is exactly the average of the single-block identities (by itself no further information; a new structural
+relationship among its terms is not excluded); removal is monotone in B, so chains
 of zeroings are gate elimination.
 
 **Limitation (check).** Bounds "L >= K_B + delta_B" with delta_B a waste bound valid for ALL circuits are at most
 83 for |B| = 1 and 85 for |B| = 2 (explicit verified constructions of 152-229 gates, `joint/lowwasteB.py`; caps
-are sample-dependent upper bounds); for |B| >= 3 the known circuits no longer cap the form below 88, and it would
-need waste bounds for circuits with at most 87 gates. The candidate couplings "sum_b D_b >= G" (false in the
+are sample-dependent upper bounds) and 87 for |B| = 4 (narrowly, by corpus 88s); at |B| = 3 the set {4,5,6} is
+not capped below 88 by known circuits, which does not show that a bound restricted to <= 87-gate circuits is
+needed. The candidate couplings "sum_b D_b >= G" (false in the
 corpus, 86 < 88) and "8 charged gates removed at their own block" (false in general) were discarded.
 
 **Delivery (proved, reviewed).** J6 (reader identity): for every reduced circuit and block b, the block-b
@@ -1190,9 +1192,11 @@ only through an exit at that block.
 **Census (check; 763 circuits main, 826 review).** Monotone circuits share exactly as J8 allows and all use both
 reduction pairs. Non-monotone circuits: 598 of 615 (review: 620 of 654) have as their only cross-window sharing
 the triangle (three {1,2} gates serving sheets 1, 2; one {2,7} gate serving 1, 3; plus one pure block-2 gate
-serving sheet 1); the rest none, one variant. Removal is local up to 0-6 coincidences per circuit; dead 0-1.
+serving sheet 1); the rest none, one variant in the main sample (the review sample is a different selection from
+the same corpus); the triangle dominates the sample but is not a proved normal form. Removal is local up to 0-6 coincidences per circuit; dead 0-1.
 
-**Conjecture (holds on all sampled circuits, least value 82; no proof mechanism).** |F_0 u ... u F_7| >= 80 for
+**Conjecture (holds on all sampled circuits, least value 81 at circuits_3.txt line 7651 (the 82 first
+given here was wrong; phase-8 review); no proof mechanism).** |F_0 u ... u F_7| >= 80 for
 every MixColumns circuit (would give L >= 80). Double service needs an exit (J8, J9), but no cost of exits is
 known, and the compensation is not pair-local: in the F-form |F_1 u F_2| = 19 in 166 of 826 sampled circuits
 (circuits_2.txt line 783, compensated by F_0, F_3, F_4 and uncharged gates); in the P-form line 20 has
@@ -1203,5 +1207,48 @@ P(1,2) = 21 < 20 + 3 double charges.
 `joint/FINITE_AUDIT.md` lists them with their dependents; the "exactly 10" lower bound now has a hand proof
 (delegated, machine-reviewed with fixes); the P3 sharpness remark and the "rank at most 8 in all 384
 configurations" remark rest on the runs alone. Nothing was rerun.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 23. When cancellation-mediated sharing can be closed by charged work (phase 8; `cancel/CANCEL.md`; review `cancel/review/`)
+
+Phase 8 (2026-11-12, user's question: when does cancellation-mediated sharing force extra computation, and what
+property decides it). Main agent's proofs; machine review with own code (no SAT, search or enumeration).
+
+**Lemma W (proved, reviewed).** |F_j| - 10 >= c_j, the number of gates of F_j lost when the ancestors of sheet j
+are projected to blocks {j-1, j} (charge theorem with its slack). Principle W1 "every double charge collapses
+in a window projection" is false: Q_3 has c = 5 < R = 11, and MixColumns circuits with c < R exist
+(circuits_3.txt line 7451).
+
+**Theorem K (cancellation chase; proved, reviewed).** Gamma: sheets, edge x -> y when the own block of x lies in
+W_y; gamma its directed girth. If a gate charged to sheets j and k reaches them along two paths whose chase exits
+(the exits cancelling the block currently followed) all have an off-path operand confined to the window of a
+sheet whose own block it contains and keeps, then Gamma has a directed cycle of length at most t_j + t_k + 2.
+gamma: Q_2 2, Q_3 3, Q_m m, chains acyclic, MixColumns 4 (cycles all pass through block 7; the shortest is
+7, 4, 5, 6). Corollaries: for gamma >= 3 no double charge is exit-free to both sheets; in MixColumns every
+closure by plain charged work needs at least two chase exits; in chains none exists. K restricts the shape of
+closures; it assigns no cost.
+
+**Check (Q_3; 763 + 384 MixColumns circuits).** In Q_3 the 14 confined closing operands are all charged work of
+the third sheet, one exit per closure (gamma = 3 permits it). In MixColumns the only double charges are the
+triangle's, and every needed cancellation is closed by an uncharged, non-confined gate (one partner closes
+all three). Refuted: "every exit costs a gate" (Q_3), "each uncharged partner pays for its double charges"
+(U = 1 < R = 3 occurs). Observation: after zeroing blocks 4, 5, 6 the charged union of sheets 1, 2, 3 is >= 30 in
+every sampled circuit.
+
+**Conjecture G.** For sheet systems with gamma >= 4, |union F_j| >= 10 s; it would give L(MixColumns) >= 80,
+L(Q_m) = 10 m (m >= 4) and M_l = 10 l. Q_2 and Q_3 lie outside its hypothesis. Missing: a cost for closures by
+uncharged partners, for escapes, and for closures with >= gamma - 2 chase exits. Least sampled |union F_j| is
+81 (circuits_3.txt line 7651; RECORD 22's 82 corrected).
+
+**Scope corrections (phase 8, applied in RECORD 21-22, SUMMARY, CHECKPOINT, joint/, compose/compat).** The
+triangle dominates the sampled pattern; the main sample contains a variant, and the reviewer's sample is a
+different selection from the same corpus. The restriction caps include four-block ceilings below 88; only the
+three-block set {4,5,6} is uncapped by known circuits, which does not show that a bound for <= 87-gate circuits
+is needed. The eight-block identity adds no information by itself but does not exclude a new structural relation
+among its terms. The full label set is a sufficient exact interface; its necessity is not established. Finite
+checks: several exhaustive checks and exact least-gate searches were run despite the instruction;
+joint/FINITE_AUDIT.md section 5 separates statements now supported by hand arguments from those resting only
+on those runs.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.
