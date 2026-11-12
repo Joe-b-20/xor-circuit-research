@@ -143,8 +143,12 @@ obvious 27 (`tools/m2_check.py`).
 
 ## 5. Restriction, gate elimination, connectivity (`restriction/REPORT.md`; delegated, not yet re-reviewed)
 
-What these classical tools give for MixColumns, and why they stop. I checked the proof of P1 myself; the
-rest is as reported.
+What these classical tools give for MixColumns in the formulations analysed, and where those
+formulations stop. The negative statements below are about exactly these formulations (one evaluation
+point with the bound of section 1; restriction along the first live gate; zeroing or merging inputs and
+counting dead gates; a two-point colour count; rank-connectivity of the gate graph); other uses of
+restriction or of several points were not analysed. I checked the proof of P1 myself; the rest is as
+reported.
 
 - **Proved (P1):** no evaluation point beats the all-ones point. For x other than 0 and all-ones, the
   complement of (x, Mx) is a codeword of weight w' >= 6, and unless w' >= 31 the support of (x, Mx)
@@ -187,11 +191,14 @@ cyclic system is a circuit exactly when its equations can be solved one at a tim
   its inverse, its transpose (up to m - n) and every other choice of information set. A circuit for A,
   read from its outputs, is a cyclic system for the inverse of A. So L(A) and L(A^-1) can differ only
   through causality.
-- **Proved (Theorem W): what separates the two.** A based cyclic system is a circuit iff every
-  nonempty set of its equations contains a non-input signal occurring in exactly one of them (the *leaf
-  property*); cyclicity only gives a signal occurring an odd number of times. Equivalently a circuit
-  stays uniquely solvable under arbitrary nonzero coefficients over a field with at least three
-  elements.
+- **Proved (Theorem W): what separates the two.** Let S be a cyclic set and T a SPECIFIED basis of its
+  relation space consisting of triples. Then (S, T) is a circuit whose gate equations are exactly the
+  members of T iff every nonempty subset of T contains a non-input element lying in exactly one of its
+  members (the *leaf property*); linear independence of T only gives an element lying in an odd number.
+  Equivalently the equations of T stay uniquely solvable under arbitrary nonzero coefficients over a
+  field with at least three elements. A value set is a circuit set iff SOME basis of triples has the
+  leaf property. It is not claimed, and is false in general, that every triple basis of a circuit set
+  is executable.
 - **Conditional (on PROOF being correct for circuits; audited, then independently machine-reviewed):**
   no lemma of PROOF uses the gate order essentially; eleven are written with it and each has an
   order-free proof. The review found three gaps in the audit as written (the span inequality in Lemma
@@ -214,6 +221,12 @@ cyclic system is a circuit exactly when its equations can be solved one at a tim
 The theorem for the rotation model is the delegated investigator's (rotation/REPORT.md 3.4, 3.5). The
 MixColumns version and its proof as written here are the main agent's. Independently machine-reviewed
 (`review-charges/`); the corrections of that review are applied below.
+
+**Dependency.** Everything in this section and in section 9 is **computer-assisted**: it rests on the
+ten-gate local lemma, which is established by finite computation. By hand alone only 9 gates are
+proved; with 9 in place of 10 the same arguments give 72 charges, 12 for the three-term sheet of
+section 9 and 75 (not 83) for block-monotone circuits. A hand proof of the tenth gate is proposed in
+`tenth-gate/PROOF.md` (section 10) and is under review; the status here changes only if that survives.
 
 **Local lemma (computer-checked, 8 inputs).** Let blocks a and b have four inputs each. Suppose the four
 unit vectors of b and every vector supported on a (zero included) are available at no cost. Then any
@@ -296,14 +309,18 @@ field-reduction terms) 80 gates are attained by explicit periodic circuits and a
 block-monotone circuits. Adding the reduction terms one at a time gave 82, 85, 88 in bounded heuristic
 runs (observed). So as a gate count the recorded 88 is 80 plus 8; the charges do not place those 8 on
 the three sheets with extra terms (sheet 0 carries 11, sheet 4 carries 10), so this is a reading of
-totals, not a per-sheet statement.
+totals, not a per-sheet statement, and the observed totals 80, 82, 85, 88 do not establish an
+unavoidable eight-gate overhead for the reduction terms.
 
 ## 8. The double map: the second-level cost isolated (`double-map/REPORT.md`; delegated, no second review yet)
 
 D_T: (u, v) -> (u + T(u+v), v + T(u+v)) on 2m inputs is MixColumns restricted to inputs (u, v, u, v) when
-T is multiplication by x. Each bit position is a sheet with two inputs and two outputs; the baseline is
-3m = 2m outputs + m span gates, and eps(T) = L(D_T) - 3m is the cost of translation vectors that are not
-cheaply available.
+T is multiplication by x. Each bit position is a sheet with two inputs and two outputs. All statements
+below are for **reduced** T: the diagonal is first made zero (changing T_jj only swaps the two outputs
+of sheet j), and T has no zero row and no zero column. Without this they fail: T = 0 is the identity
+map and needs no gate, a zero row makes two outputs equal to inputs, a zero column allows m + 1 blocks.
+For reduced T the baseline is 3m = 2m outputs + m span gates, and eps(T) = L(D_T) - 3m is the cost of
+translation vectors that are not cheaply available.
 
 - **Proved (Theorem C):** eps(T) = 0 exactly when the relation code of the boundary is generated by its
   4-term relations, and exactly when T is a direct sum of explicit "arc blocks" (a cyclic permutation
@@ -380,9 +397,9 @@ sheet 4 may borrow from sheet 3 (blocks 3 and 7); block 7 serves five sheets. Th
 two joint local problems: sheets 0 and 1 together with block 7 free (proved between 20 and 22), and
 sheets 7, 3, 4 together with blocks 6 and 2 free (between 33 and 36). **Observed:** in all 4,541
 block-monotone 88-gate circuits of the corpora the three parts 30 + (0,1) + (7,3,4) are exactly 30, 22,
-36. **Conjectured:** 22 and 36 are the true local values, which would make 88 optimal among
-block-monotone circuits. The joint problems have 12 and 20 non-free inputs; plain SAT calls did not
-decide them in the budget.
+36. **Conjectured:** 22 and 36 are the true local values. If they are, block-monotone circuits need 88
+(an implication; the converse is not shown, and the two values are test cases, not the programme). The
+joint problems have 12 and 20 non-free inputs; plain SAT calls did not decide them in the budget.
 
 **Most known 88s are not block-monotone (observed; corrects an impression given in section 7).** Of the
 18,938 valid circuits of the public kste corpus 4,300 are block-monotone and 14,638 are not; of 415 hunt
@@ -390,8 +407,9 @@ records 241 are and 174 are not. In every non-monotone kste circuit there is exa
 cancels a whole block while the union of its operands' blocks lies in no single sheet support; that
 union always contains blocks 1, 2, 7 (it is {0,1,2,7} in 10,351 circuits), and the cancelled block is 2
 in 14,600 of them. Only 4,264 of these circuits keep every gate inside some sheet support; the other
-10,374 contain a gate living on blocks such as {0,1,2,7} or {0,2,7}. All of them still have 88 gates:
-the double service buys nothing in the corpus.
+10,374 contain a gate living on blocks such as {0,1,2,7} or {0,2,7}. Every circuit of the corpus has 88
+gates, with or without such a gate. That is all this establishes: these particular circuits gain
+nothing from their double service; it does not show that double service cannot gain.
 
 **Where a block can be cancelled (proved, for circuits whose gates each live inside one sheet's support;
 Lemma II.6).** Join two blocks when some sheet's support contains both. If such a gate g = a + b cancels a
