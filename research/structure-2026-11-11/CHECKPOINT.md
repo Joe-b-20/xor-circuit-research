@@ -32,11 +32,21 @@ reviews are machine reviews by separate model instances, not human reviews.
   block 7, at most 87 anywhere, for SB*-type compositions); scope: inequalities claimed for all circuits.
 - Ring report reviewed and corrected; gate-order loop examples retired.
 
+## Phase 6 results (RECORD 21)
+- Obstruction O exact (`compose/mc/OBSTRUCTION.md`, numbers verified on the whole corpus in `review-O/`).
+- Compatibility at a cut (`compose/compat/`): exact join for exit-free cuts; no small faithful interface;
+  |T| = R_b + w_b (restriction plus waste); single-cut ceiling 83 (75 at block 7) from verified low-waste circuits.
+- Triangle mechanism worked through (`compose/tri/`); P(1,2) >= 21 for the observed partner form; open lemma
+  for the general form.
+- TWOSIDED corrected (deficit/slack, J_0, clean labels, finite checks).
+
 ## Next steps (the evidence suggests)
-1. Dependent clean labels at near1 = 11 with four unit types: the place P4 breaks; either a counterexample to
-   SB* (then carry it to a receiver) or the extension of the transposition principle to odd types.
-2. Several exits jointly: extend P3 to two exit variables X, Y (does the mirror pay 2 per exit plus the
-   joint type count?).
-3. MixColumns: typed cut baselines nu(tau), phi(tau) at one cut (start with primal block 2 or mirror group
-   2, where the {1,2,7} exit supplies a target), or an all-cuts discharging argument.
+1. The missing coupling at one block: do circuits with few wasted gates under zeroing block b need more
+   surviving work (a tradeoff R_b + w_b against w_b)? Start with block 7, where K_7 is between 60 and 69.
+2. Several cuts at once without double counting: the identity |T| = R_b + w_b holds for every b; combine the
+   waste sets of different blocks (they overlap) into one count.
+3. The open pair-circuit lemma behind the triangle (no 20-gate pair circuit with a non-unit pure-block-2
+   ancestor of a sheet-1 target), which would make the triangle's one-gate cost unconditional.
+4. Supporting chain work only where it tests these mechanisms (dependent labels: how dependencies change the
+   supplier's obligations).
 No SAT, no exhaustive enumeration, no case-elimination queue (user instruction, still in force).

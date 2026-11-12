@@ -1051,6 +1051,9 @@ SB* is not refuted; no 29 is known.
   circuits is not covered.
 - Same phenomenon in rings: bounds valid for every interface sum to 33-39 < 40 at m = 4 (section 19). In
   chains the separate baselines sum to 10 + M_(l-1), which is why the cut method can work there at all.
+*(Phase 6: the exact statement, domain, quantifiers and verified per-cut table are in section 21 and
+`compose/mc/OBSTRUCTION.md`; the block-7 figure 73 above is a looser cap, the verified values are 68 at the
+least-far witness and 66 over all exit-free witnesses.)*
 **What it says.** Any cut argument whose two sides are bounded by interface-independent baselines proves at
 most the sum of those baselines. For chains that sum is the truth; for rings and MixColumns it is not. Cost
 moves across the cut through the label interface (the cheap-far witness has an expensive near side). A cut
@@ -1063,5 +1066,83 @@ bound; window-locality not implied by triangle-freeness; one cross-window triang
 **Gate order.** The borrowing-loop examples are retired (failed wirings; executable wirings of the same size
 exist); no cost of executability is shown; the algebraic replacement applies only under its reviewed
 forest-plus-exits hypothesis.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 21. Compatibility of the two sides inside MixColumns (phase 6; `compose/mc/OBSTRUCTION.md`, `compose/compat/`, `compose/tri/`; reviews `review-O/`, `review-compat/`)
+
+Phase 6 (2026-11-12, user's direction): investigate directly the information that the fixed-baseline cut
+comparison discards for MixColumns.
+
+**Obstruction O, exact (main agent; numbers verified independently on the whole kste corpus, 18,938 valid
+circuits, and the recorded 88, 89, 97).** Domain: single primal blocks and single mirror groups (16 cuts);
+split near = f + h, far = |P| + e, |T| = near + far; no exports. Lemma O.1 (proved, reviewed): at a cut with no
+exit, chi = tau_min exactly (this gives the lower bound on chi that the supplier direction needs). Templates:
+(T0) near >= A and far >= B for EVERY circuit; (T1) near >= A + (chi - e) and far >= B - (chi - e) for EVERY
+circuit. Then (T0) gives A + B <= 8 + minfar <= 86 and (T1) gives A <= 9 (constructed instances with sigma = 1,
+verified at all 16 cuts) and A + B <= 9 + (far - sigma) of any exit-free witness, at most 87 at every cut and
+exactly 87 at primal blocks 5, 6 and mirror groups 2, 5, 6 (corpus caps from checks, not theorems). Neither
+template can prove 88 at any single cut. NOT covered: inequalities claimed only for optimal or at-most-87-gate
+circuits; interface-dependent bounds; several cuts at once; other corrections. O does not say cuts are
+unusable; it says the chain mechanism (a free-neighbour export boundary, then separately minimised baselines)
+has no instance in MixColumns.
+
+**What must agree across a cut (proved by a delegated investigator; reviewed).**
+- Exact join at a cut with no exit (Prop 1): two sides join into a valid circuit iff every label value the near
+  side reads is a signal of the far side; so the least size of a circuit with no exit at cut b equals
+  min over label sets Lambda of [nu_b(Lambda) + phi_b(Lambda)]. With exits the interface must also carry the
+  exit values and the precedence; set data alone is not enough (reduced counterexample in review-compat).
+- No small faithful interface (Prop 2): nu depends only on the linear relation type of Lambda relative to the
+  required near far-parts, but phi depends on the actual vectors (an automorphism fixing W_7 changes phi from
+  at most 30 to at least 32; check); the faithful description is the label set itself (22-27 vectors at block
+  7 in the corpus).
+- One-block bound (Prop 3): nu_b(Lambda) >= 8 + max(dim W_b, |Lambda|) (27 at block 7, exactly 28 at
+  Lambda = S_near).
+- The coupling is gate elimination (Prop 4): |T| = R_b(T) + w_b(T) for every circuit, R_b >= K_b :=
+  L(MixColumns with block b zeroed), w_b >= 4 (the wasted gates under zeroing block b); the near/far tradeoff
+  is the share Delta of the restricted computation done on the near side, and it cancels in the sum. Given
+  Theorem 16.1, K_7 >= 60, so circuits with no exit at block 7 need at least 64, beating the separately
+  minimised canonical baselines (at most 58) by at least 6; still below 75.
+- Limit of the faithful single-cut bound (check): K_b <= 77 at blocks 0-6 and <= 69 at block 7 (corpus and
+  recorded circuits), and explicit verified circuits have waste 5 or 6 at every block; so any bound of the form
+  K_b + (a waste bound valid for all circuits) is at most 83 (75 at block 7). Going further at one cut needs a
+  COUPLING between waste and the restricted part (low waste forcing a large restricted part); none is known,
+  and the sample shows none at block 4 (min R and min w in the same circuit).
+- Why the cheap sides do not combine (check): the cheap near side (recorded 97 at block 7: near 8, 32 entries,
+  27 labels, 19 of them two-block vectors built only as labels) and the cheap far side (corpus 88: far 64,
+  23 entries, labels mostly units) need different label sets; 19 of the 97's labels are not signals of the 88's
+  far side; every ordered join of the five circuits examined costs at least 96. In restriction terms the far
+  side's 16-gate saving is paid by 13 more gates of restricted work on the near side, offset by 6 less waste.
+
+**The {1,2,7} triangle mechanism (delegated; reviewed; `compose/tri/`).** Worked example circuits_2.txt line 20
+(88 gates): at primal block 2 the exit g78 = g65 + g77 supplies sheet 1's target (1,1) = [0:s1 1:E1 7:s1]
+exactly; the partner g65 = [2:s2 7:s2] is a gate sheet 3 needs anyway; the five labels on the route sum to
+(1,1) (honest rebuilding 4 gates; the route's dedicated gates 2); the supplied target is reused inside sheet 1
+through g72 = (1,1) + (3,1); nothing on the route is exported to another sheet. Structural: zeroing blocks 3..7
+turns the triangle exit into an ordinary exit of the pair (1,2) problem at the pair minimum 20. Proved (review
+version): P(1,2) >= 20 + (gates of P(1,2) whose restriction is free, an input, or repeats another's); so a
+partner [2:x] + [7:y] ancestor of sheet 1 forces P(1,2) >= 21 when x is a unit or when one operand of the
+partner lies on block 7 alone (every observed case). Open: the general construction (equivalently, no 20-gate
+pair circuit contains a non-unit pure-block-2 ancestor of a sheet-1 target). Corpus (stride 20): all 744
+non-monotone circuits have exactly 3 double charges and P(1,2) >= 21; whether the exit gate itself equals a
+target is a matter of bracketing; invariant: the three-term sum is a sheet-1 target serving only sheet 1. Unlike
+the chain mechanism, the supplied value is the receiver's own target and the reuse stays inside one sheet.
+
+**Corrections to TWOSIDED (main agent).** Section 7: with delta = (chi - e1) - (near1 - 10) and
+epsilon = far1 - [M_(l-1) - (chi - e1)], cost = 10 + M_(l-1) - delta + epsilon; a saving needs only
+epsilon < delta (equality in the receiver bound is forced only when delta = 1); epsilon concerns the
+reconstructed far chain P', not the receiver with exits. Section 8: J(Y) and J_0 defined (no export cost); the
+reconstruction inequality is an upper bound on the gain for every R; the wording "a supplied value can pay only
+if its intermediate sums are of little use" is withdrawn (example p = a+b, q = c+d, t = p+q). Section 9: "clean
+labels" defined (cleaning only inside proofs; unclean entries enter through sigma); what the finite checks of
+review-p did (small exhaustive runs on five-input objects, no solver; only the sharpness remark and the
+"exactly 10" figure depend on them).
+
+**What phase 6 established.** For MixColumns, single-cut arguments in any of the forms examined reduce to: the
+restricted map's cost plus wasted gates. The information the fixed baselines lose is Delta, the part of the
+restricted computation placed on the near side, and once it is retained the cut bound becomes gate elimination
+on one block. Its known ceiling (83, or 75 at block 7, from verified circuits) means a single cut cannot reach
+88 without a new inequality coupling waste to restricted work. The triangle mechanism is, modulo block 7, a pair
+exit at the pair minimum, paid for in the pair count when the partner has the observed form.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.

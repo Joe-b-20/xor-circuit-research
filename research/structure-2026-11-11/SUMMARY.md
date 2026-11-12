@@ -164,12 +164,27 @@ proof replaces it):**
   entries. A 29 for three sheets needs at least five entries, near1 >= 11 and two exits, or dependent
   labels. SB* is not refuted.
 - Obstruction O (reviewed with corrections): every cut of MixColumns is ring-like; any cut argument whose two
-  sides use interface-independent baselines proves at most about their sum, which verified circuits put at
-  most 73 at block 7 and at most 87 anywhere for SB*-type compositions. Such arguments cannot exclude an 87;
+  sides use interface-independent baselines proves at most their sum, which verified circuits put at most
+  68 at block 7 (66 with the best exit-free witness) and at most 87 anywhere for SB*-type compositions
+  (exact statement and scope in phase 6 below; an earlier figure of 73 at block 7 was a looser cap). Such arguments cannot exclude an 87;
   a MixColumns cut argument must carry the interface type or use all cuts at once. In chains the baselines
   sum to the truth, which is why the method works there.
 - The {1,2,7} triangle supplies the receiver's own target through an exit, a mechanism different from the
   chain's reusable sums.
+
+## Phase 6 (2026-11-12): what the two sides of a MixColumns cut must share (RECORD 21)
+
+- Obstruction O, exact: at a single primal block or mirror group, inequalities near >= A, far >= B (or with the
+  chi - e correction) claimed for ALL circuits prove at most 86 (or 87); they cannot exclude an 87. Not covered:
+  inequalities for optimal or <= 87-gate circuits only, interface-dependent bounds, several cuts at once.
+- Exact join: at a cut with no exit, two sides combine iff the far side contains the labels the near side reads;
+  no description smaller than the label set itself keeps both costs. With exits, precedence also matters.
+- For every circuit, |T| = (work surviving when block b is zeroed) + (wasted gates, at least 4). The near/far
+  tradeoff is the share of that surviving work done near; it cancels. So a faithful single-cut bound is gate
+  elimination on one block; verified low-waste circuits cap it at 83 (75 at block 7). Reaching 88 at one cut
+  needs a new coupling between waste and surviving work.
+- The {1,2,7} triangle exit supplies sheet 1's own target; modulo block 7 it is a pair exit at the pair minimum
+  and, when the partner has the observed form, costs one gate in the pair count (21 instead of 20).
 
 ## The open questions that now carry the problem
 

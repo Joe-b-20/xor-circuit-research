@@ -280,24 +280,46 @@ MC_l circuit with e1 >= 4, for every l, then M_l = 10 l for every l >= 1.
 *Proof.* Induction on l; M_1 = 10. For l >= 2 take an optimal, hence reduced, T. If no exit crosses cut 1,
 Proposition 18.1 gives cost >= M_1 + M_(l-1). If e1 = 3, Theorem 4.1. If e1 >= 4, add the two inequalities
 above. So M_l >= 10 + M_(l-1) >= 10 l, and M_l <= 10 l (RECORD 16). QED
-**Sufficient, not necessary.** A failure of SB* for some supplier does not give a cheap chain: the receiver
-must also attain Lemma 5.3.1 with equality, i.e. be an optimal MC_(l-1) circuit that gains exactly the
-reconstruction surplus. No equivalence is claimed. The hypothesis of Theorem 7.1 can be weakened to "SB* for
+**Sufficient, not necessary; what a failure of SB* means (corrected in phase 6).** For a reduced MC_l
+circuit T with e1 >= 4 write
+
+    delta := (chi - e1) - (near1 - 10)     (positive exactly when SB* fails for T's supplier),
+    epsilon := far1 - [M_(l-1) - (chi - e1)] >= 0     (the receiver's slack above Lemma 5.3.1).
+
+Then, identically, cost(T) = near1 + far1 = 10 + M_(l-1) - delta + epsilon. So T beats the baseline
+10 + M_(l-1) exactly when epsilon < delta. An earlier sentence here said a cheap chain "must attain Lemma
+5.3.1 with equality"; that is too strong: equality (epsilon = 0) is forced only when delta = 1 (integers). In
+general a failure of SB* with deficit delta leaves room for receiver slack up to delta - 1.
+Two different objects must be kept apart. The receiver WITH exits is the far part P of T (cost far1). The
+object to which Lemma 5.3.1 compares it is the RECONSTRUCTED ordinary far chain P' (P with the exits
+replaced by R, exporting tau_R of the labels and R-values), an MC_(l-1) circuit of cost
+|P'| + tau_R = far1 - e1 + (|R| - |S|) + tau_R. epsilon >= 0 measures how far P' (with that export choice and
+the best R) lies above M_(l-1); it is a statement about P', not about P. A counterexample to SB* therefore
+supports an actual cheaper chain only together with a reconstructed far chain P' within delta - 1 of
+M_(l-1). No equivalence between SB* and ten per sheet is claimed. The hypothesis of Theorem 7.1 can be weakened to "SB* for
 the suppliers of OPTIMAL MC_l circuits" (review-p), which matters for Obstruction O (RECORD 20).
 
 ## 8. The reconstruction principle, and where local repairs stand (inequality proved; assessment heuristic)
 
-For a replacement R let J(R) be the least size of a far circuit containing R^2..R^l, the label signals and
-the values of R. Then (proved, reviewed)
+**Definitions (made precise in phase 6).** Fix T, its labels (as far signal VALUES) and its exits. For a set
+Y of far vectors, J(Y) := the least number of gates of an ordinary circuit on the units of w^2..w^l (no exits,
+no supplied values) whose signals include R^2..R^l, every label value, and every vector of Y; no export cost
+is counted in J. J_0 := J(empty set). For a replacement R, J(R) := J(val R). Then (proved, reviewed)
 
     |P| >= J(R) - (|R| - |S|)    for every replacement R,
 
-so the receiver's gain over its own optimum J_0 (with no exits) is at most
-(|R| - |S|) - (J(R) - J_0): **the reconstruction surplus minus the receiver's marginal cost of also holding the
-reconstructed intermediate values.** It is a valid bound for every R; no R is shown to attain equality (P'
-need not be optimal for J(R)), so it is not an exact formula. A supplied value can pay only if it is expensive
-to rebuild AND its intermediate sums are of little use to the receiver. Lemma 2.1 gives no credit for
-J(R) - J_0, Lemma 2.1' credits unused labels, Lemma 5.3.1 credits intermediate values usable as exports.
+since P' (P with exits replaced by R) is such a circuit with |P| - |S| + |R| gates. Equivalently
+J_0 - |P| <= (|R| - |S|) - (J(R) - J_0). This is an UPPER BOUND on the receiver's gain J_0 - |P| over its own
+exit-free optimum, valid for every R; no R is shown to attain it (P' need not be optimal for J(R)).
+**What it does not say.** It gives no necessary condition for profitable supply. In particular the earlier
+wording "a supplied value can pay only if its intermediate sums are of little use to the receiver" does not
+follow and is withdrawn. Example (the user's): to supply t = a + b + c + d from labels a, b, c, d, the
+replacement p = a+b, q = c+d, t = p+q has surplus |R| - |S| = 2 whether the receiver needs only t or all of
+p, q, t; under these definitions J(R) - J_0 can be 0 in both situations (if t, or p, q, t, are signals of
+some optimal exit-free receiver anyway), so the bound is the same, while the actual benefit of supplying t
+differs. The inequality, its slack, and SB*'s explicit export-basis credit (Lemma 5.3.1: crediting
+R-values only as exports, through tau_R) are three different things. Lemma 2.1 gives no credit, Lemma 2.1'
+credits unused labels, Lemma 5.3.1 credits R-values usable as exports; none of them is J(R) itself.
 *Assessment (heuristic, corrected after review).* An earlier version said SB* is "the last form of the
 comparison that can be stated from the interface alone". That is wrong as a mathematical claim: the least far
 cost phi(I) compatible with an interface I is itself a function of the interface, and
@@ -322,6 +344,30 @@ Separate results, each with its hypotheses (all reviewed):
   mirror lemma behind P4: four triple-sums plus four exit-shifted even vectors need three spare gates, sharp).
 - P5: SB* holds for every instance with e1 = 4 (independent labels by P1-P4 and O2; dependent labels with
   e1 = 4 span exactly E and are covered by S1). Omega1 is closed.
+**Clean labels (definition, phase 6).** Cleaning is Step 0 of tenth-gate/PROOF applied to the level-1 gates:
+keep the gates that carry a target (E_i | p_i) or are ancestors of one; remove a gate whose two operands are
+both far (it is a far gate) or whose value is free; entries that survive are the *clean entries*, their labels
+the *clean labels*; the other entries (for example dangling stacks feeding only exits) are *unclean*.
+Cleaning never increases f1 + h1, keeps every target and its ancestors and the traces zeta of the clean
+entries, and is used only INSIDE proofs (to read off T* and the traces); every theorem is stated for the
+original circuit T, its full e1 and its full label set. Unclean entries are not discarded by any theorem:
+they enter through sigma (each unclean entry raises e1 without raising tau_min). In P4 the cleaning is done
+with respect to the targets AND the one exit considered, so the exit and its sources are kept. The hypothesis
+"clean labels independent" of P1 and P4 is a hypothesis on T, not a normalisation; it excludes for example
+dangle2 and every supplier in the 6+4 ten-gate form.
+**What the finite checks of `review-p/` did.** p3check.py: an exhaustive run over all value sets on the five
+inputs W0..W3, X with at most two or three further gates; P3 itself has a hand proof (case split), the run
+confirms it and supplies the explicit witnesses showing three further gates suffice (sharpness).
+p3unit.py: an exhaustive small run giving the least number of gates holding E_c and W_c + X for the four unit
+types (exactly 10); the upper bound is an explicit circuit, the lower bound rests on that run. p5o3.py: an
+exhaustive run over sets of three or four weight-3 exits for four abstract independent labels (one in E),
+every label and exit order, computing chi exactly; P5's o = 3 case was also checked by hand. No solver was
+used. These are small exhaustive computations on five-input objects, labelled as checks; no theorem of the
+record depends on them except the sharpness remark and the "exactly 10" figure.
+**Scope of the new results, restated.** P1 (near1 = 10) and P4 (one exit) assume independent clean labels; P5
+(four entries) also covers dependent labels by a separate argument (S1); dependent labels with five or more
+entries are open; separate one-exit bounds are NOT added for several exits (P4 cleans with respect to one
+exit; exits sharing computation are open).
 **Common mechanism (two levels).** (i) Span level: in the classes S1, O2, Q, the label span meets E so that at
 most one or two vectors need an auxiliary sum, and the supplier's cheapest forms are rigid enough (Lemma R,
 Lemma B, tight mirrors) that exposing them costs the spare gate. (ii) Transposition level (P3, P4): in the
