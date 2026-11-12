@@ -1,0 +1,19 @@
+MixColumns pairs that restrict to the pair problem: [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 0)]
+circuits examined: 19356
+   pair (1, 2): min |D| = 20  histogram {20: 803, 21: 15217, 22: 3327, 23: 9}
+   pair (2, 3): min |D| = 23  histogram {23: 471, 24: 3190, 25: 12905, 26: 2706, 27: 82, 28: 2}
+   pair (3, 4): min |D| = 24  histogram {24: 4354, 25: 7065, 26: 7936, 31: 1}
+   pair (4, 5): min |D| = 20  histogram {20: 1924, 21: 6389, 22: 6126, 23: 4915, 24: 2}
+   pair (5, 6): min |D| = 20  histogram {20: 19356}
+   pair (6, 7): min |D| = 20  histogram {20: 17516, 21: 1840}
+   pair (7, 0): min |D| = 20  histogram {20: 2846, 21: 16440, 22: 69, 24: 1}
+   first circuits attaining |D| <= 20: {((1, 2), 20): 'circuits_1.txt:3', ((4, 5), 20): 'aes-mixcolumns-xor88-depth5.circ.txt', ((5, 6), 20): 'aes-mixcolumns-xor88-depth5.circ.txt', ((6, 7), 20): 'aes-mixcolumns-xor88-depth5.circ.txt', ((7, 0), 20): 'circuits_1.txt:3'}
+q3_28.txt: |D| for the pairs (j, j+1), j = 0..2: [23, 24, 24]
+q4_40.txt: |D| for the pairs (j, j+1), j = 0..3: [20, 20, 20, 20]
+walk_q4_40.txt: |D| for the pairs (j, j+1), j = 0..3: [20, 20, 20, 20]
+q5_50.txt: |D| for the pairs (j, j+1), j = 0..4: [20, 20, 20, 20, 20]
+q6_60.txt: |D| for the pairs (j, j+1), j = 0..5: [20, 20, 20, 20, 20, 20]
+q7_70.txt: |D| for the pairs (j, j+1), j = 0..6: [20, 20, 20, 20, 20, 20, 20]
+q8_80.txt: |D| for the pairs (j, j+1), j = 0..7: [20, 20, 20, 20, 20, 20, 20, 20]
+walk_q8_80.txt: |D| for the pairs (j, j+1), j = 0..7: [20, 20, 20, 20, 20, 20, 20, 20]
+q12_120.txt: |D| for the pairs (j, j+1), j = 0..11: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20]

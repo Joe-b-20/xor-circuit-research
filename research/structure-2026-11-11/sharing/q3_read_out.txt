@@ -1,0 +1,44 @@
+PART 1  gates (window of sheet j is {j-1, j}: sheet 0 = {2,0}, sheet 1 = {0,1}, sheet 2 = {1,2})
+         g0 =   in(1,0) + in(2,0)   [0:s1        ] blocks [0]  charged to sheets [0]
+         g1 =   in(3,0) + in(0,1)   [0:e3 1:e0   ] blocks [0, 1]  charged to sheets [1]
+         g2 =   in(2,1) + in(3,1)   [1:s2        ] blocks [1]  charged to sheets [1]
+         g3 =   in(3,0) + in(0,2)   [0:e3 2:e0   ] blocks [0, 2]  charged to sheets [0, 2]
+         g4 =        g0 + g2        [0:s1 1:s2   ] blocks [0, 1]  charged to sheets [0, 1]
+         g5 =        g2 + in(3,2)   [1:s2 2:e3   ] blocks [1, 2]  charged to sheets [1, 2]
+         g6 =   in(0,0) + g4        [0:E3 1:s2   ] blocks [0, 1]  charged to sheets [0, 1]
+   OUT(1,1) =   in(0,1) + g4        [0:s1 1:E1   ] blocks [0, 1]  charged to sheets [1]
+         g8 =   in(0,2) + g5        [1:s2 2:s3   ] blocks [1, 2]  charged to sheets [1, 2]
+   OUT(3,0) =        g6 + g8        [0:E3 2:s3   ] blocks [0, 2]  charged to sheets [0, 2]
+        g10 =   in(1,1) + g8        [1:E0 2:s3   ] blocks [1, 2]  charged to sheets [1, 2]
+   OUT(2,2) =   in(1,2) + g8        [1:s2 2:E2   ] blocks [1, 2]  charged to sheets [2]
+        g12 =   in(2,0) + OUT(3,0)  [0:s0 2:s3   ] blocks [0, 2]  charged to sheets [0, 2]
+   OUT(0,1) =       g12 + g10       [0:s0 1:E0   ] blocks [0, 1]  charged to sheets [1]
+        g14 =   in(2,2) + g12       [0:s0 2:E1   ] blocks [0, 2]  charged to sheets [0, 2]
+        g15 =   in(3,1) + OUT(0,1)  [0:s0 1:s1   ] blocks [0, 1]  charged to sheets [1]
+   OUT(2,0) =        g3 + g14       [0:E2 2:s2   ] blocks [0, 2]  charged to sheets [0, 2]
+        g17 =        g1 + g15       [0:E2 1:E3   ] blocks [0, 1]  charged to sheets [1]
+   OUT(1,2) =       g15 + g14       [1:s1 2:E1   ] blocks [1, 2]  charged to sheets [2]
+        g19 =   in(1,2) + OUT(2,0)  [0:E2 2:E0   ] blocks [0, 2]  charged to sheets [0, 2]
+   OUT(3,1) =   in(1,0) + g17       [0:s3 1:E3   ] blocks [0, 1]  charged to sheets [1]
+   OUT(2,1) =       g17 + g6        [0:s2 1:E2   ] blocks [0, 1]  charged to sheets [1]
+        g22 =        g0 + g19       [0:E1 2:E0   ] blocks [0, 2]  charged to sheets [0]
+        g23 =       g17 + g19       [1:E3 2:E0   ] blocks [1, 2]  charged to sheets [2]
+   OUT(0,0) =       g14 + g22       [0:E0 2:s0   ] blocks [0, 2]  charged to sheets [0]
+   OUT(1,0) =   in(3,2) + g22       [0:E1 2:s1   ] blocks [0, 2]  charged to sheets [0]
+   OUT(3,2) =       g10 + g23       [1:s3 2:E3   ] blocks [1, 2]  charged to sheets [2]
+   OUT(0,2) =   in(2,1) + g23       [1:s0 2:E0   ] blocks [1, 2]  charged to sheets [2]
+gates with mu >= 2: g3[0, 2], g4[0, 1], g5[1, 2], g6[0, 1], g8[1, 2], OUT(3,0)[0, 2], g10[1, 2], g12[0, 2], g14[0, 2], OUT(2,0)[0, 2], g19[0, 2]
+PART 2
+  sheet 0: |D_j| = 12 = own window 9 + single-block 1 + borrowed 2   borrowed: g4[0:s1 1:s2], g6[0:E3 1:s2]
+  sheet 1: |D_j| = 13 = own window 9 + single-block 1 + borrowed 3   borrowed: g5[1:s2 2:e3], g8[1:s2 2:s3], g10[1:E0 2:s3]
+  sheet 2: |D_j| = 14 = own window 8 + single-block 0 + borrowed 6   borrowed: g3[0:e3 2:e0], OUT(3,0)[0:E3 2:s3], g12[0:s0 2:s3], g14[0:s0 2:E1], OUT(2,0)[0:E2 2:s2], g19[0:E2 2:E0]
+  G = 28;  10m + over + uncharged - excess = 30 + 9 + 0 - 11 = 28
+  gates by support: {(0,): 1, (0, 1): 9, (0, 2): 9, (1,): 1, (1, 2): 8}
+PART 3  block-cancelling gates
+  OUT(3,0) = g6[0:E3 1:s2] + g8[1:s2 2:s3] = [0:E3 2:s3]  cancels block [1]; operands charged to [0, 1] and [1, 2]
+  OUT(0,1) = g12[0:s0 2:s3] + g10[1:E0 2:s3] = [0:s0 1:E0]  cancels block [2]; operands charged to [0, 2] and [1, 2]
+  OUT(1,2) = g15[0:s0 1:s1] + g14[0:s0 2:E1] = [1:s1 2:E1]  cancels block [0]; operands charged to [1] and [0, 2]
+  g23 = g17[0:E2 1:E3] + g19[0:E2 2:E0] = [1:E3 2:E0]  cancels block [0]; operands charged to [1] and [0, 2]
+PART 4  lift to the 2-fold cover Q_6
+  minimum number of (gate, class) pairs: 35  -> lifted circuit for Q_6 with 70 gates (k * 28 = 56; block-monotone bound 10 m = 60)
+  gates needed in more than one class: {'g1': [0, 1], 'g5': [0, 1], 'g8': [0, 1], 'g10': [0, 1], 'OUT(0,1)': [0, 1], 'g15': [0, 1], 'g17': [0, 1]}

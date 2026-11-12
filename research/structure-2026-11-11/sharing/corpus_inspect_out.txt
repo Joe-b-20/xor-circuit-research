@@ -1,0 +1,148 @@
+== kste circuits_1.txt line 1  pattern 0127+27->017: G = 88, violating gates 6
+   charges [11, 12, 11, 13, 13, 10, 10, 10]  sum mu 90  = 80 + over 10;  G = 80 + over + uncharged - excess = 80 + 10 + 1 - 3 = 88
+   mu>=2  g55: [1:e1] + [2:s2] = [1:e1 2:s2]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g74: [1:e0] + [1:e1 2:s2] = [1:s0 2:s2]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g76: [1:E0] + [1:s0 2:s2] = [1:E1 2:s2]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g65: [2:s2 7:s2]  serves sheets [1, 3]
+   cancel g78: [2:s2 7:s2] + [0:s1 1:E1 2:s2 7:d1] = [0:s1 1:E1 7:s1]   (27+0127->017)
+   families |F_j| = [11, 12, 11, 14, 13, 10, 10, 10] sum 91  union 88  gates in two families: 3  gates in none: 0
+   value set: U1 (no decomposition inside own support) = 0: []
+              U2 (outside the support closure) = 2: ['[0:s1 1:E1 7:s1]', '[0:s3 1:E3 7:s3]']
+              values in no sheet support: ['[0:s1 1:E1 2:s2 7:d1]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [1, 3])]  -> block-monotone wiring impossible
+== kste circuits_1.txt line 5  pattern 12+27->17: G = 88, violating gates 5
+   charges [10, 13, 11, 14, 10, 10, 10, 11]  sum mu 89  = 80 + over 9;  G = 80 + over + uncharged - excess = 80 + 9 + 2 - 3 = 88
+   mu>=2  g36: [1:e2] + [2:d0] = [1:e2 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g41: [1:e1] + [1:e2 2:d0] = [1:s1 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g42: [1:e0] + [1:s1 2:d0] = [1:E3 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g58: [2:d0 7:s3]  serves sheets [1, 3]
+   mu=0   g110: [3:s0 7:s0]  serves sheets [4]
+   cancel g59: [1:E3 2:d0] + [2:d0 7:s3] = [1:E3 7:s3]   (12+27->17)
+   families |F_j| = [10, 13, 11, 15, 10, 10, 10, 11] sum 90  union 87  gates in two families: 3  gates in none: 1
+   value set: U1 (no decomposition inside own support) = 1: ['[1:E3 7:s3]']
+              U2 (outside the support closure) = 3: ['[0:s0 1:E0 7:s0]', '[1:E3 7:s3]', '[0:s3 1:E3 7:s3]']
+              values in no sheet support: []
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [0, 3])]  -> block-monotone wiring impossible
+== kste circuits_1.txt line 28  pattern 027+12->017: G = 88, violating gates 6
+   charges [10, 11, 11, 12, 11, 10, 10, 10]  sum mu 85  = 80 + over 5;  G = 80 + over + uncharged - excess = 80 + 5 + 6 - 3 = 88
+   mu>=2  g64: [1:e3] + [2:s1] = [1:e3 2:s1]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g65: [1:e0] + [1:e3 2:s1] = [1:s3 2:s1]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g98: [1:e2] + [1:s3 2:s1] = [1:E1 2:s1]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g44: [3:e0 7:d0]  serves sheets [4]
+   mu=0   g56: [2:d1]  serves sheets [3]
+   mu=0   g61: [2:d1 7:s0]  serves sheets [3]
+   mu=0   g104: [2:s1 7:s1]  serves sheets [1, 3]
+   mu=0   g107: [0:s1 2:s1 7:s1]  serves sheets [1]
+   mu=0   g114: [0:s0 7:s0]  serves sheets [1]
+   cancel g108: [1:E1 2:s1] + [0:s1 2:s1 7:s1] = [0:s1 1:E1 7:s1]   (12+027->017)
+   families |F_j| = [10, 11, 11, 14, 11, 10, 10, 10] sum 87  union 84  gates in two families: 3  gates in none: 4
+   value set: U1 (no decomposition inside own support) = 0: []
+              U2 (outside the support closure) = 2: ['[0:s1 1:E1 7:s1]', '[0:s3 1:E3 7:s3]']
+              values in no sheet support: ['[0:s1 2:s1 7:s1]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [1, 3])]  -> block-monotone wiring impossible
+== kste circuits_1.txt line 44  pattern 1237+17->237: G = 88, violating gates 5
+   charges [10, 12, 10, 14, 12, 10, 10, 10]  sum mu 88  = 80 + over 8;  G = 80 + over + uncharged - excess = 80 + 8 + 0 - 0 = 88
+   cancel g106: [1:d0 7:s2] + [1:d0 2:s0 3:E0 7:t] = [2:s0 3:E0 7:s0]   (17+1237->237)
+   families |F_j| = [10, 12, 10, 14, 12, 10, 10, 10] sum 88  union 88  gates in two families: 0  gates in none: 0
+   value set: U1 (no decomposition inside own support) = 0: []
+              U2 (outside the support closure) = 2: ['[2:s0 3:E0 7:s0]', '[2:s2 3:E2 7:s2]']
+              values in no sheet support: ['[1:d0 2:s0 3:E0 7:t]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(3, [0, 2])]  -> block-monotone wiring impossible
+== kste circuits_2.txt line 1511  pattern 012+27->017: G = 88, violating gates 6
+   charges [10, 13, 11, 14, 10, 10, 10, 11]  sum mu 89  = 80 + over 9;  G = 80 + over + uncharged - excess = 80 + 9 + 2 - 3 = 88
+   mu>=2  g56: [1:e0] + [2:d0] = [1:e0 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g64: [1:e3] + [1:e0 2:d0] = [1:s3 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g65: [1:e2] + [1:s3 2:d0] = [1:E1 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g62: [2:d0 7:s1]  serves sheets [1, 3]
+   mu=0   g89: [3:s2 7:s2]  serves sheets [4]
+   cancel g93: [2:d0 7:s1] + [0:s1 1:E1 2:d0] = [0:s1 1:E1 7:s1]   (27+012->017)
+   families |F_j| = [10, 13, 11, 15, 10, 10, 10, 11] sum 90  union 87  gates in two families: 3  gates in none: 1
+   value set: U1 (no decomposition inside own support) = 0: []
+              U2 (outside the support closure) = 2: ['[0:s1 1:E1 7:s1]', '[0:s2 1:E2 7:s2]']
+              values in no sheet support: ['[0:s1 1:E1 2:d0]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [1, 2])]  -> block-monotone wiring impossible
+== kste circuits_2.txt line 2041  pattern 012+27->017 ; 237+37->23: G = 88, violating gates 6
+   charges [10, 13, 11, 13, 11, 10, 10, 10]  sum mu 88  = 80 + over 8;  G = 80 + over + uncharged - excess = 80 + 8 + 3 - 3 = 88
+   mu>=2  g36: [1:e2] + [2:d0] = [1:e2 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g41: [1:e1] + [1:e2 2:d0] = [1:s1 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g42: [1:e0] + [1:s1 2:d0] = [1:E3 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g40: [7:s3]  serves sheets [0, 1, 3]
+   mu=0   g46: [2:s1]  serves sheets [3]
+   mu=0   g58: [2:d0 7:s3]  serves sheets [1, 3]
+   cancel g75: [2:d0 7:s3] + [0:s3 1:E3 2:d0] = [0:s3 1:E3 7:s3]   (27+012->017)
+   cancel g108: [3:s2 7:s2] + [2:s2 3:E2 7:s2] = [2:s2 3:E3]   (37+237->23)
+   families |F_j| = [10, 13, 11, 14, 11, 10, 10, 10] sum 89  union 86  gates in two families: 3  gates in none: 2
+   value set: U1 (no decomposition inside own support) = 1: ['[2:s2 3:E3]']
+              U2 (outside the support closure) = 4: ['[0:s0 1:E0 7:s0]', '[2:s2 3:E3]', '[0:s3 1:E3 7:s3]', '[2:s3 3:E3 7:s3]']
+              values in no sheet support: ['[0:s3 1:E3 2:d0]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [0, 3])]  -> block-monotone wiring impossible
+== kste circuits_3.txt line 3435  pattern 12+17->27: G = 88, violating gates 4
+   charges [10, 12, 10, 12, 12, 10, 10, 10]  sum mu 86  = 80 + over 6;  G = 80 + over + uncharged - excess = 80 + 6 + 2 - 0 = 88
+   mu=0   g62: [2:t 7:t]  serves sheets [3]
+   mu=0   g86: [2:s0 7:s2]  serves sheets [3]
+   cancel g86: [1:d0 2:s0] + [1:d0 7:s2] = [2:s0 7:s2]   (12+17->27)
+   families |F_j| = [10, 12, 10, 14, 12, 10, 10, 10] sum 88  union 88  gates in two families: 0  gates in none: 0
+   value set: U1 (no decomposition inside own support) = 1: ['[2:s0 7:s2]']
+              U2 (outside the support closure) = 4: ['[2:s0 3:E0 7:s0]', '[2:s0 7:s2]', '[2:s2 3:d1 7:s2]', '[2:s2 3:E2 7:s2]']
+              values in no sheet support: []
+              sheets whose outputs are not derivable from values inside the sheet support: [(3, [0, 2])]  -> block-monotone wiring impossible
+== kste circuits_3.txt line 3658  pattern 017+07->01 ; 027+12->017: G = 88, violating gates 6
+   charges [10, 12, 11, 13, 11, 10, 10, 11]  sum mu 88  = 80 + over 8;  G = 80 + over + uncharged - excess = 80 + 8 + 3 - 3 = 88
+   mu>=2  g36: [1:e2] + [2:d0] = [1:e2 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g67: [1:e1] + [1:e2 2:d0] = [1:s1 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g69: [1:e0] + [1:s1 2:d0] = [1:E3 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g58: [2:d0 7:s3]  serves sheets [1, 3]
+   mu=0   g81: [2:s1]  serves sheets [3]
+   mu=0   g89: [0:s3 2:d0 7:s3]  serves sheets [1]
+   cancel g90: [1:E3 2:d0] + [0:s3 2:d0 7:s3] = [0:s3 1:E3 7:s3]   (12+027->017)
+   cancel g98: [0:E3 7:s3] + [0:s3 1:E3 7:s3] = [0:E0 1:E3]   (07+017->01)
+   families |F_j| = [10, 12, 11, 14, 11, 10, 10, 11] sum 89  union 86  gates in two families: 3  gates in none: 2
+   value set: U1 (no decomposition inside own support) = 1: ['[0:E0 1:E3]']
+              U2 (outside the support closure) = 3: ['[0:E0 1:E3]', '[0:s3 1:E3 7:s3]', '[0:s2 1:E2 7:s2]']
+              values in no sheet support: ['[0:s3 2:d0 7:s3]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [2, 3])]  -> block-monotone wiring impossible
+== kste circuits_3.txt line 3713  pattern 027+12->017 ; 237+37->23: G = 88, violating gates 6
+   charges [10, 12, 11, 13, 11, 10, 10, 11]  sum mu 88  = 80 + over 8;  G = 80 + over + uncharged - excess = 80 + 8 + 3 - 3 = 88
+   mu>=2  g36: [1:e2] + [2:d0] = [1:e2 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g72: [1:e1] + [1:e2 2:d0] = [1:s1 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu>=2  g107: [1:e0] + [1:s1 2:d0] = [1:E3 2:d0]  charged to [1, 2]; serves sheets [1, 2]
+   mu=0   g51: [2:s1]  serves sheets [3]
+   mu=0   g88: [2:d0 7:s3]  serves sheets [1, 3]
+   mu=0   g89: [0:s3 2:d0 7:s3]  serves sheets [1]
+   cancel g108: [0:s3 2:d0 7:s3] + [1:E3 2:d0] = [0:s3 1:E3 7:s3]   (027+12->017)
+   cancel g114: [3:s2 7:s2] + [2:s2 3:E2 7:s2] = [2:s2 3:E3]   (37+237->23)
+   families |F_j| = [10, 12, 11, 14, 11, 10, 10, 11] sum 89  union 86  gates in two families: 3  gates in none: 2
+   value set: U1 (no decomposition inside own support) = 1: ['[2:s2 3:E3]']
+              U2 (outside the support closure) = 4: ['[2:s2 3:E3]', '[0:s3 1:E3 7:s3]', '[0:s2 1:E2 7:s2]', '[2:s3 3:E3 7:s3]']
+              values in no sheet support: ['[0:s3 2:d0 7:s3]']
+              sheets whose outputs are not derivable from values inside the sheet support: [(1, [2, 3])]  -> block-monotone wiring impossible
+== hunt g88-d7-d1a7d70c18e1b7cf.json: G = 88, violating gates 7
+   charges [11, 10, 10, 17, 14, 10, 10, 10]  sum mu 92  = 80 + over 12;  G = 80 + over + uncharged - excess = 80 + 12 + 2 - 6 = 88
+   mu>=2  g32: [3:e0] + [4:e0] = [3:e0 4:e0]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g55: [3:e0 4:e0] + [4:s1] = [3:e0 4:E3]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g70: [3:e1] + [3:e0 4:E3] = [3:s0 4:E3]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g76: [3:e0 4:E3] + [3:e3] = [3:s3 4:E3]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g88: [7:s0] + [3:s0 4:E3] = [3:s0 4:E3 7:s0]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g103: [3:s3 4:E3] + [7:s3] = [3:s3 4:E3 7:s3]  charged to [3, 4]; serves sheets [3, 4]
+   mu=0   g68: [2:s3 7:s3]  serves sheets [3]
+   mu=0   g89: [0:d0 7:d0]  serves sheets [1]
+   cancel g111: [3:s0 4:E3 7:s0] + [3:s3 4:E3 7:s3] = [3:d1 7:d1]   (347+347->37)
+   families |F_j| = [11, 10, 10, 18, 14, 10, 10, 10] sum 93  union 87  gates in two families: 6  gates in none: 1
+   value set: U1 (no decomposition inside own support) = 1: ['[3:d1 7:d1]']
+              U2 (outside the support closure) = 6: ['[2:s0 3:E0 7:s0]', '[3:d1 7:d1]', '[3:d1 4:s1 7:d1]', '[2:d1 3:E0 7:d1]', '[2:s2 3:E2 7:s2]', '[3:s2 4:E2 7:s2]']
+              values in no sheet support: []
+              sheets whose outputs are not derivable from values inside the sheet support: [(3, [0, 2])]  -> block-monotone wiring impossible
+== hunt g88-d8-4d178ce621827217.json: G = 88, violating gates 6
+   charges [11, 11, 10, 17, 13, 10, 10, 10]  sum mu 92  = 80 + over 12;  G = 80 + over + uncharged - excess = 80 + 12 + 1 - 5 = 88
+   mu>=2  g53: [3:e0] + [4:s1] = [3:e0 4:s1]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g70: [4:e0] + [3:e0 4:s1] = [3:e0 4:E3]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g85: [3:e1] + [3:e0 4:E3] = [3:s0 4:E3]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g98: [3:e0 4:E3] + [3:e3 7:s3] = [3:s3 4:E3 7:s3]  charged to [3, 4]; serves sheets [3, 4]
+   mu>=2  g99: [7:s0] + [3:s0 4:E3] = [3:s0 4:E3 7:s0]  charged to [3, 4]; serves sheets [3, 4]
+   mu=0   g66: [2:s3 7:s3]  serves sheets [3]
+   cancel g112: [3:s0 4:E3 7:s0] + [3:s3 4:E3 7:s3] = [3:d1 7:d1]   (347+347->37)
+   families |F_j| = [11, 11, 10, 18, 13, 10, 10, 10] sum 93  union 88  gates in two families: 5  gates in none: 0
+   value set: U1 (no decomposition inside own support) = 1: ['[3:d1 7:d1]']
+              U2 (outside the support closure) = 6: ['[2:s0 3:E0 7:s0]', '[3:d1 7:d1]', '[3:d1 4:s1 7:d1]', '[2:d1 3:E0 7:d1]', '[2:s2 3:E2 7:s2]', '[3:s2 4:E2 7:s2]']
+              values in no sheet support: []
+              sheets whose outputs are not derivable from values inside the sheet support: [(3, [0, 2])]  -> block-monotone wiring impossible

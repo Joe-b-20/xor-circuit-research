@@ -591,3 +591,57 @@ L(M2) = 26 for partitions other than the natural one. Initial segments of a circ
 inequalities; whether the corresponding statements for adjacent sheets have order-free twins is open,
 because the local-system minimum is not known to equal the local-circuit minimum there. Whether order
 can yield a bound that fails for cyclic systems of MixColumns-like maps is open.
+
+## 14. Sharing between sheets with overlapping windows (`sharing/REPORT.md`; delegated; under review)
+
+**Accounting (identity).** For parts with per-part local minima lambda_i and charged sets D_i:
+G = sum of lambda_i + over + unch - excess, where over = sum of (|D_i| - lambda_i), unch = number of gates
+charged to no part, excess = sum of (mu - 1)+. Sharing pays exactly when excess > over + unch; a
+compensation theorem for a class of circuits is the inequality excess <= over + unch on that class.
+
+**Proved by hand given the ten-gate lemma (unreviewed at the time of writing): the pair problem needs at
+least 19 gates.** Two adjacent sheets with the first neighbour free, any local circuit. Upper bound 20.
+Consequently, in every circuit for the rotation model (m >= 3), and for MixColumns on the sheet pairs
+(1,2), (2,3), (3,4), (4,5), (5,6), (6,7), (7,0), at least 19 gates are ancestors of an output of the pair
+and nonzero on one of its two own blocks. So two adjacent sheets can share at a net gain of at most one
+gate, with no monotonicity assumed.
+*How the proof counts.* In the mirror, split the gates by their part on the first sheet's group: gates
+that bring a new first part (they contain the first sheet's own mirror together with the exports: at
+least 10 with the exports), gates that repeat a first part (at least as many as the "entries" that add a
+vector of the second group: at least 3), and gates with no first part (at least the four triple-sums of
+the second group). With exactly three entries their operands are three even vectors of the second group,
+which are three more gates: 20. With four or more entries the count is 18 plus what is forced, and one
+configuration (four entries, nothing else) is excluded by a tree argument: 19.
+*What is open.* Whether 19 can occur. It would need the first sheet's mirror to be optimal and one of
+two exactly described configurations, both built on a "T-exit": a vector of the second group obtained as
+the difference of two signals with the same first part.
+
+**Proved (restricted class, unreviewed): chains whose mirror is level-monotone need ten gates per
+sheet.** Level of a mirror vector = the first group where it is nonzero; the class requires that no gate
+cancels the leading group of both operands. It contains every recorded 10m circuit on every run tested
+and excludes the three-position 28-gate circuit on every pair.
+
+**The three-position circuit, accounted.** 28 = 30 + 9 - 11: nine gates of over-charge, eleven double
+charges, no uncharged gate. All eleven double-charged gates are two-block gates of one sheet's window
+borrowed by the previous sheet. Its three pairs of adjacent sheets have 23, 24 and 24 gates, so the
+saving is not visible in any pair: it is a wrap-around effect. Lifting the circuit to six positions
+would need 70 gates under the lifting model used (60 are attainable directly).
+
+**Observed (existing circuits only).** The pair count is at least 20 for every adjacent pair in all
+19,356 corpus and recorded MixColumns circuits, non-monotone ones included, and in all recorded rotation
+circuits with m >= 4. In eleven inspected non-monotone corpus circuits each double service is matched by
+over-charge and uncharged partner gates, and the total is 88 each time. This shows that these circuits
+gain nothing; it does not show that nothing can be gained.
+
+**Attempts to build savings by hand (all failed, with accounts in the report).** A design that takes a
+full-block vector from the next sheet by an exit costs 12 per sheet and, run round the ring, is not
+executable. The route through blocks 1, 2, 7 used by corpus circuits exchanges gates one for one.
+
+**Where the sharing question stands.**
+- Unrelated parts in general: sharing can pay (section 12), but only when both parts need at least four
+  helper gates, and the known examples are astronomically large.
+- Sheets with disjoint windows: never a net gain (section 11; all circuits).
+- Two adjacent sheets: a net gain of at most one gate (this section; all circuits; unreviewed), and
+  none in any known circuit.
+- Three mutually adjacent sheets (three positions): a net gain of two gates is realised.
+- Chains of adjacent sheets, the ring with m >= 4, and MixColumns with its triangles: open.
