@@ -145,8 +145,14 @@ proof replaces it):**
 - Chain of three: a 29 needs exits across both cuts (with M_1 = 10, M_2 = 20), an adjacent exit, at least
   four entries, and with exactly four it lies in Omega1. M_3 is still 29 or 30.
 - Rings: only the split and honest replacement survive; Lemma R and the three-entry theorem need the
-  free-neighbour end (unreviewed transfer study). Gate order: the replaced time step covers only
-  forest-shaped configurations; no cost of executability has been shown (reviewed).
+  free-neighbour end (transfer study under review). Gate order: the replaced time step covers only
+  forest-shaped configurations; the examined borrowing loops were failed wirings of value sets that have
+  executable wirings of the same size, so they show no cost of executability and are retired (reviewed).
+- Phase 5 consolidation (`compose/TWOSIDED.md` sections 5-9): SB and SB' refuted (circuits written out),
+  SB* exact, what it depends on (supplier and interface only; still an unbounded one-sheet lower-bound
+  problem), why it would compose (Theorem 7.1), and the exact reconstruction principle: a supplied value's
+  gain is at most the reconstruction surplus minus the receiver's marginal cost of holding the
+  reconstructed sums; SB* is the last interface-only form of that comparison.
 
 ## The open questions that now carry the problem
 

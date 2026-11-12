@@ -1,7 +1,9 @@
-# Supplying a value across a cut, and what the receiver can gain: definitions and first theorem
+# Supplying a value across a cut, and what the receiver can gain
 
-Main agent (Opus 5.5), phase 4, 2026-11-12. Statements carry their status. "Proved" = complete hand
-argument here; independent machine review pending unless stated (see RECORD 19).
+Main agent (Opus 5.5), phases 4-5, 2026-11-12. Statements carry their status. "Proved" = complete hand
+argument; "reviewed" = independent machine review (not human review). **Current state: section 5 onward.**
+The comparison conjectures SB and SB' are REFUTED (section 5.1, 5.2); the current conjecture is SB* (5.3);
+sections 6-8 say what kind of statement it is, why it would compose, and where local repairs stop.
 
 ## 0. The setting (from `FRAMEWORK.md`, `prove3/REPORT.md`)
 
@@ -95,7 +97,8 @@ its operands, and each such label's signal precedes its entry, which precedes th
 has only ordinary far gates, contains R^2..R^l and every label signal (labels that were exit values are
 now computed honestly), so P' with the e1 labels as exports is an MC_(l-1) circuit:
 |P'| + e1 >= M_(l-1). Doing the replacements jointly costs at most L_near(S) gates instead of |S|. QED
-*Remark.* beta is an upper bound on the receiver's gain measured against the labels only; the receiver's
+*Superseded as the best bound* by Lemma 2.1' (`sb/`) and Lemma 5.3.1 below, which also credit unused
+labels and reusable intermediate sums. *Remark.* beta is an upper bound on the receiver's gain measured against the labels only; the receiver's
 own other signals can make the honest replacement cheaper, so the true gain can be smaller. The bound
 counts all exits jointly (shared intermediate sums are counted once), as the user asked.
 
@@ -147,33 +150,186 @@ cannot occur here (V has zero part beyond w^2).
 cut 1 and an exit across cut 1. For l = 3: a 29 has e1 >= 4. Hence the residual configuration (G1) of
 prove3 reduces to e1 >= 4; (G2) already has e1 = b >= 4.
 
-## 5. The proposed theorem, and why it would give ten per sheet at every length
+## 5. Current state of the comparison (consolidated in phase 5; supersedes the earlier section 5)
 
-**Conjecture SB (supply-benefit inequality for one sheet).** For every instance of (N) realised by a
-reduced circuit (labels Lambda with e1 >= 4 entries, exit values S),
+**Read this first.** The current conjecture is SB* (5.3). SB (5.1) and SB' (5.2) are REFUTED by verified
+circuits and must not be used as targets. Reviews: `../review-sb/`, `../review-sb2/`.
 
-    near1 - 10 >= L_near(S) - |S|,
+Notation for one instance (the level-1 gates of a reduced MC_l circuit with their entries and exits):
+Lambda = (lambda_1..lambda_e1) the labels in entry order; S = the exit values across cut 1, each with its
+position in time; E = Even(w^2) + 0 (a fixed 3-dimensional subspace of the far space: vectors that are
+zero on w^3..w^l and have EVEN HAMMING WEIGHT ON w^2; "even label" means membership in E, which is not
+Hamming parity of the whole label: (u0 | a) with a a unit of w^3 has weight 2 but is not in E).
+A *replacement* R is a straight-line list of XOR gates, placed in time, that ends with each exit value at
+its exit's position, each gate reading only label values of entries placed before that position and earlier
+values of R. L_near(S) = least |R|. beta = L_near(S) - |S| >= 0. tau_min = fewest labels whose span contains
+E; sigma = e1 - tau_min >= 0. For a replacement R, tau_R = fewest elements of (labels) together with (values
+of R) whose span contains E; chi = min over replacements R of (|R| - |S| + tau_R).
 
-with L_near defined from the near side alone (labels of entries placed before each exit; section 2). In
-this form SB is a statement about one sheet and its exit positions; with a static L it would be too weak for
-Lemma 2.1, and with the far side's label order it would depend on the far circuit. [Restated after review.]
+### 5.1 SB (refuted)
 
-(Weaker variants that also suffice for a given far side: replace L_Lambda(S) by the honest cost from the
-receiver's actual signals.)
-**Implication (proved; reviewed).** If SB (with L_near) holds for every reduced instance with e1 >= 4, then
-every reduced MC_l circuit has cost >= 10 + M_(l-1): for e1 = 3 by Theorem 4.1, for e1 >= 4 by
-near1 + far1 >= (10 + beta) + (M_(l-1) - beta). Optimal circuits are reduced, so M_l >= 10 + M_(l-1); with
-M_1 = 10 and the upper bound M_l <= 10 l (RECORD 16), M_l = 10 l for every l. The induction is explicit: SB
-concerns one sheet (problem (N) depends on l only through the abstract label space U), and Lemma 2.1 holds
-for any far chain. In particular M_3 = 30; SB would exclude (G1) and (G2) (sufficient, not equivalent).
-**Status.** Open. Known instances: SB holds when e1 = 3 (Theorem 4.1) and when S is empty (near1 >= 10).
-It is not known whether SB is true; a counterexample to SB need not give a 29 (the receiver must also be
-able to use the values, and beta overstates the gain), so a counterexample would show only that the
-proof must use the receiver's structure as well, i.e. that the composition depends on BOTH sides beyond
-(Lambda, S). That would itself answer the user's question about what information a compositional proof
-must retain.
+*Statement:* near1 - 10 >= beta. *Counterexample* (`sb/dangle2.txt`, MC_2, verified by `sb/mcheck.py` and
+independently by `review-sb/ev.py`). Gates (g1_c = units of w^1 = w_c, g2_c = units of w^2 = u_c):
+- first sheet, first gates: x = w0+w1, y = w2+w3, z = w1+w2 (the three exports), F3 = x+w2 = E_3,
+  F2 = x+w3 = E_2, F1 = y+w0 = E_1, F0 = y+w1 = E_0 (7 first gates);
+- a dangling stack of entries d1 = w0+u0, d2 = d1+u1, d3 = d2+u2, and the exit B3 = d3+w0 = u0+u1+u2
+  = E_3(w^2) (placed before the remaining entries);
+- far gates p0 = u3+u0, p1 = u0+u1, p2 = u1+u2, p3 = u2+u3, B0 = p2+u3, B1 = p3+u0, B2 = p1+u3;
+- entries A_i = F_i + p_i (i = 0..3).
+Counts: 22 gates + tau 3 = cost 25; f1 = 7, h1 = 0, tau = 3: near1 = 10; entries 7 (labels u0, u1, u2, then
+p0..p3): e1 = 7; far gates 7 ordinary + 1 exit: |P| = 8, far1 = 15. The exit costs 2 honestly (u0+u1, then
++u2): beta = 1 > near1 - 10 = 0. *Why it is not a saving:* the receiver pays three entries (booked in far1)
+and one exit gate for a value it could build in two gates; SB compared the supplier with an inflated
+receiver bound (Lemma 2.1 charges every entry as an export).
 
-## 6. The closed-end formulation, and why "18" does not settle M_3 by itself
+### 5.2 SB' (refuted)
+
+*Statement:* near1 - 10 >= beta - sigma (credit the receiver for labels beyond the tau_min it needs as
+exports; Lemma 2.1': far1 >= M_(l-1) - beta + sigma). In dangle2: tau_min = 3 (p0, p1, p2), sigma = 4,
+beta - sigma = -3 <= 0: SB' holds there.
+*Counterexample* (`sb2/sbx5_mc3.txt`, MC_3, verified by `sb/mcheck.py 3` and independently by
+`review-sb2/ev2.py`). g3_c = units of w^3 = a_c. Gates:
+- far labels: L1 = u2+a0, L2 = u3+a0, L3 = u1+a1, L4 = u3+a1, L5 = u0+u3 (L1..L4 are "deep": nonzero on
+  w^3; only L5 is in E);
+- entries (a chain and one more): n1 = w1+L1, n2 = n1+L2, n3 = n2+L3, n4 = n3+L4, gC = w3+L5;
+- first gates: P1 = w0+w2, P2 = w1+w2, P3 = w0+w3 (the exports), A3 = P1+n2, A0 = P2+gC, Q = A3+gC,
+  A1 = Q+n4, A2 = P3+n4 (check of s-parts: A3 has L1+L2 = u2+u3 = p_3; A0 has L5 = p_0; A1 has
+  L3+L4+L5 = u0+u1 = p_1; A2 has L1+L2+L3+L4 = u1+u2 = p_2);
+- the exit X = w1 + n4 = L1+L2+L3+L4 = (u1+u2 | 0);
+- a deliberately plain far side: a = a0+a1, b = a2+a3, C3 = a+a2, C2 = a+a3, C1 = b+a0, C0 = b+a1,
+  c = u0+u1, d = u2+u3, e3 = c+u2, e2 = c+u3, e1 = d+u0, e0 = d+u1, q0 = a3+a0, q2 = a1+a2, B0 = e0+q0,
+  B1 = e1+a, B2 = e2+q2, B3 = e3+b.
+Counts: f1 = 8 (P1, P2, P3, A3, A0, Q, A1, A2), h1 = 0, tau = 3: near1 = 11; e1 = 5; |P| = 24 (5 labels,
+the exit, 18 others), far1 = 29; cost 40. Labels independent, span of dimension 5; the only labels in E are
+L5, so tau_min = 5 and sigma = 0; L_near(X) = 3 (L1+L2, L3+L4, sum), beta = 2 > near1 - 10 = 1: SB' fails.
+(The full circuit costs 40, far above 30: this refutes the abstract supplying-side bound, not 10 per sheet.)
+*Mechanism:* the traces satisfy zeta_1 = zeta_2 and zeta_3 = zeta_4 ("free stacks"): two pairs of deep
+labels whose sums L1+L2 = u2+u3 and L3+L4 = u1+u3 lie in E, each pair acting like one even label at no cost
+to the supplier; one spare mirror gate links the pairs into one fibre path of four labels.
+
+### 5.3 SB* (current conjecture) and the export-reuse correction
+
+**Lemma 5.3.1 (reconstruction bound, proved every l, reviewed; = Lemma 2.1* of `sb2/`).**
+far1 >= M_(l-1) + e1 - chi.
+*Proof.* Take a replacement R; delete the exit gates and insert R (each R-gate just before the exit it
+serves, which is possible because it reads only values placed earlier). The result P' has
+|P'| = |P| - |S| + |R| gates, none of them an exit, and contains R^2..R^l, every label signal and every value
+of R. Choose tau_R elements of (labels) together with (values of R) spanning E as exports: P' with these
+exports is an MC_(l-1) circuit, so |P'| + tau_R >= M_(l-1). Hence far1 = |P| + e1 >= M_(l-1) + e1 -
+(|R| - |S| + tau_R); minimise over R. QED
+**The export-reuse correction, precisely.** Lemma 2.1' used as exports only labels (tau_min of them);
+5.3.1 may also export values that the reconstruction itself builds. Since tau_R <= tau_min,
+chi - e1 <= beta - sigma; the correction is the amount tau_min - tau_R, credited only for a replacement that
+actually builds those values, and only once (each R-value is one gate of P').
+**Conjecture SB*.** For every instance arising from a reduced MC_l circuit (any l, any e1 >= 4):
+
+    near1 - 10 >= chi - e1.
+
+*In dangle2:* chi = 4 (R = {u0+u1, B3}, |R| - |S| = 1; tau_R = 3), chi - e1 = -3 <= 0. *In sbx5:*
+R = {L1+L2, L3+L4, X}: |R| - |S| = 2; L5, L1+L2, L3+L4 span E, so tau_R = 3; chi = 5 (the reviewer showed 5 is
+exact), chi - e1 = 0 <= near1 - 10 = 1: SB* holds. *Why the comparison changes:* rebuilding X honestly
+produces exactly the two shallow even vectors L1+L2 and L3+L4, which the receiver can export instead of the
+four deep labels L1..L4; the two extra reconstruction gates are repaid by two fewer exports
+(Lemma 5.3.1 gives far1 >= 20 + 5 - 5 = 20, so this supplier cannot help any receiver).
+
+## 6. What kind of statement SB* is
+
+**What determines each term.** near1 = f1 + h1 + tau: the supplying sheet's level-1 gates and its exports.
+e1, Lambda (as abstract vectors with entry times), S (with exit times): the interface. chi: a finite
+minimisation over straight-line computations on the interface data only (labels, staging, exit values, and
+the fixed subspace E); it does NOT involve the receiving circuit. The baseline 10 is M_1. So SB* contains no
+receiving circuit and no optimisation over receiving chains; M_(l-1) does not occur in it.
+**What it quantifies over.** All supplying sheets that occur in reduced MC_l circuits, for every l. As an
+abstract statement it is stronger to require it for the relaxation (N) (TWOSIDED section 1): a circuit on
+the units of w^1 in which each entry adds an abstract label (a formal input read once), containing the four
+targets (E_i | p_i), tau exports whose w^1-parts span Even(w^1), and exits (pairs of signals with equal
+w^1-part); label space U of any dimension (the labels of an MC_l circuit span at most min(e1, 4(l-1))
+dimensions; for l >= 3 they may be deep), any e1, any number of simultaneous exits, any staging; "reduced"
+meaning only what is visible on the near side (no zero gate, no repeated near value, exit values nonzero,
+distinct and not equal to a label value). The relaxation drops that labels may depend on exits through the
+receiver (TWOSIDED section 1), so it is a sufficient, not an equivalent, form.
+**Normalisation.** The only restriction used in the implication is "reduced", and only for optimal
+circuits, which are reduced; no restriction to productive or minimal interfaces is used. (Cleaning is used
+inside proofs of special cases, never as a hypothesis of SB*.)
+**Is it simpler than the original problem?** Partly. It removes the receiving chain and the length l
+entirely, and its right side is computable from the interface. But it is itself a lower-bound statement for
+a family of one-sheet circuits whose interface is unbounded (any number of entries, labels of any
+dimension, many exits), and chi is a straight-line-program minimum on that interface. By the mirror identity
+of `sb/REPORT.md` section 5 it is equivalent to lower bounds for small mirrored maps with an unbounded set of
+extra coordinates. So it reorganises the global problem into a one-sheet problem; it does not make it
+finite.
+
+## 7. Why SB* would compose, and the induction for SB*
+
+Write the two inequalities side by side for a reduced MC_l circuit with e1 >= 4:
+
+    supplier (SB*):          near1 >= 10 + (chi - e1)
+    receiver (Lemma 5.3.1):  far1  >= M_(l-1) - (chi - e1)
+
+and add: cost >= 10 + M_(l-1). What cancels is the single quantity chi - e1: the receiver's possible gain is
+measured by the one best replacement R (chosen once, used for every exit at the same time), net of the
+labels it no longer needs to export. Crediting: each value of R is one gate of P' and may serve once as an
+export in the MC_(l-1) bound; R's gates are counted in |R| once, the deleted exits in |S| once, the entries
+once in e1 (far1) and nowhere in near1. Simultaneous exits share R (chi is a minimum over joint
+replacements, not a sum of per-exit charges). Label obligations: the labels remain signals of P'; the
+MC_(l-1) bound charges only the tau_R chosen exports; the other labels' entries remain in e1, which is
+exactly the credit in -e1. Availability: every R-gate reads values placed before its exit (definition of a
+replacement), and exports in MC_(l-1) carry no timing condition.
+**Theorem 7.1 (proved, given the cited results).** If SB* holds for every instance arising from a reduced
+MC_l circuit with e1 >= 4, for every l, then M_l = 10 l for every l >= 1.
+*Proof.* Induction on l; M_1 = 10. For l >= 2 take an optimal, hence reduced, T. If no exit crosses cut 1,
+Proposition 18.1 gives cost >= M_1 + M_(l-1). If e1 = 3, Theorem 4.1. If e1 >= 4, add the two inequalities
+above. So M_l >= 10 + M_(l-1) >= 10 l, and M_l <= 10 l (RECORD 16). QED
+**Sufficient, not necessary.** A failure of SB* for some supplier does not give a cheap chain: the receiver
+must also attain Lemma 5.3.1 with equality, i.e. be an optimal MC_(l-1) circuit that gains exactly the
+reconstruction surplus. No equivalence is claimed.
+
+## 8. The exact reconstruction principle, and the limit of local repairs (proved)
+
+The same replacement gives an exact statement that is not local. For a replacement R let J(R) be the least
+size of a far circuit containing R^2..R^l, the label signals and the values of R. Then
+
+    |P| >= J(R) - (|R| - |S|)    for every replacement R,
+
+so the receiver's gain over its own optimum J_0 (with no exits) is at most
+(|R| - |S|) - (J(R) - J_0): **the reconstruction surplus minus the receiver's marginal cost of also holding
+the reconstructed intermediate values.** A supplied value pays only if it is expensive to rebuild AND its
+intermediate sums are things the receiver could not have used anyway. Lemma 2.1 bounds J(R) - J_0 below by 0
+in effect (no credit), Lemma 2.1' credits unused labels, Lemma 5.3.1 credits intermediate values that can
+serve as exports. Each repair captured one more way in which reconstructed sums are useful to the receiver;
+the next repair would have to credit their use INSIDE the receiver's computation, i.e. the marginal cost
+J(R) - J_0 itself, which is the receiving problem. So SB* is the last form of the comparison that can be
+stated from the interface alone; if SB* fails, the composition genuinely depends on the receiver's
+structure, and further correction terms would be re-describing the whole computation.
+
+## 9. Proved classes and their common mechanism
+
+Separate results, each with its hypotheses (all reviewed):
+- Theorem 4.1 (exactly three entries at cut 1; every l): cost >= 10 + M_(l-1). Depends on Lemma R, the
+  ten-gate lemma, Lemma 2.1.
+- Theorem S1 (`sb/` section 3; every label in E; any e1 >= 4; every l): beta <= 1 <= sigma, so SB' and SB*
+  hold.
+- Theorem S2 (`sb/` section 4 with the review-sb repairs; e1 = 4, outside Omega): SB' holds.
+- Theorem O2 (`sb2/` section 3; e1 = 4, exactly two labels outside E; every near1): SB* holds.
+- Lemma Q / Q' (dim span <= 4: beta <= 2) and the Path Lemma (sub-case (3,8,0)).
+**Common mechanism.** In every proved class the label span meets E in a way that leaves at most one or two
+"expensive" vectors (needing an auxiliary sum), and the supplier's cheapest forms (near1 = 10 or 11) are
+rigid enough (Lemma R, Lemma B, the tight mirror) that it cannot expose those vectors without paying the
+spare gate. The proofs use the parity pattern of the labels relative to E and the trace relations among
+entries (equal traces = free stacks), not the receiver.
+**Remaining scope of SB*.** e1 = 4: only Omega1 (three or four labels outside E, f1 = 7, h1 = 1, tau = 3,
+rigid 8-gate mirror; beta = 2 from a weight-4 exit or three weight-3 exits). e1 >= 5: open in general; with
+span of dimension <= 4 only near1 = 10, h1 = 0, sigma = 1, beta = 2 with two stacked entries; with deep labels
+(dimension >= 5, l >= 3) unconstrained. "SB* holds wherever checked" means: in the proved classes above and,
+as checks only, on the inspected circuits (dangle2, sbx5, tight_o2, t1-t3, recorded chain circuits); the
+checks are not evidence for arbitrary length.
+
+### Historical note (superseded)
+Earlier versions of this file proposed SB as "the proposed theorem" with the implication via Lemma 2.1; that
+implication is correct as an implication but its hypothesis is false (5.1). The induction for SB* is
+Theorem 7.1, not the earlier one.
+
+## 10. The closed-end formulation, and why "18" does not settle M_3 by itself
 
 **4E boundary.** N_2 := the least |T| (no export cost counted) over circuits T on two groups of four
 inputs, written (y | x), that contain (E_j(y) | q_j(x)) and (0 | E_j(x)) for j = 0..3 (q_j the adjacent
@@ -191,5 +347,5 @@ review-compose), and f + D >= |T*| + 4.
 unclean h, but NOT tau = 3 with h clean and |T*| = 18. So a lower bound of 18 does not settle M_3 through
 this reduction (not shown: that 18 together with Theorem A and Proposition H cannot close (Y')); one would
 need N_2 >= 19 (false? unknown) or a joint statement using the near part's left exports and its right
-labels at once. The open-end target SB (section 5) is the better-founded target: it is about one rigid
+labels at once. The open-end target (now SB*, section 5.3) is the better-founded target: it is about one rigid
 sheet, it is uniform in l, and Theorem 4.1 is its first proved case.

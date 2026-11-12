@@ -129,11 +129,13 @@ bound, and it does not establish an unavoidable overhead for the reduction terms
 - **Order of gates.** The 80-charge inequality has a twin that holds for all cyclic systems (RECORD
   13), so by itself it cannot exceed the cyclic minimum. The proof of the pair theorem, in its
   five-entry case, uses the order in which gates are created ("a cycle in time"). Phase 3
-  (`causal-pair/REPORT.md`, unreviewed): that step is replaceable by algebra (the nine relations are
-  F_2-dependent), so it does not show that order matters; whether the pair bound holds for cyclic systems
-  stays open because other steps (fibres being forests, configuration (Y)) use order. Round a ring,
-  non-executable F_2-consistent borrowing loops exist (at no saving), so there order could be a genuine
-  constraint.
+  (`causal-pair/REPORT.md`, reviewed in `review-causal-pair/`): the time-cycle step can be replaced by
+  F_2 dependence ONLY for configurations already known to have the forest-plus-exits shape; without order,
+  entries and exits are the same kind of relation and fibres need not be forests, so the pair theorem is
+  not shown to be order-free, and the cyclic minimum is untouched. The non-executable borrowing loops
+  examined there failed only for their particular wirings: the same value sets admit executable wirings of
+  the same size. They establish no extra cost of executability and are retired as evidence (phase 5). Other
+  uses of order remain open, to be pursued only from a concrete new obstruction.
 - **Rigidity is not inductive.** The pair proof gets its last gate from a tight case in which a small
   mirror circuit is completely determined. One level up the corresponding circuit has room, and the
   same residual configurations return with one unit less slack. A proof of ten gates per sheet for

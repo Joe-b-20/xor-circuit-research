@@ -22,13 +22,11 @@ reviews are machine reviews by separate model instances, not human reviews.
 - Gate order (`causal-pair/`, reviewed): replacement only for forest-plus-exits configurations; no cost of
   executability shown.
 
-## Next steps, in the order the evidence suggests
-1. SB* for one sheet. Test it first where SB' fails (deep labels, five or more entries, free stacks) and in
-   Omega1 (four entries, three or four odd labels, f1 = 7, h1 = 1, rigid 8-gate mirror). A proof would give
-   M_l = 10 l for every chain; a counterexample to SB* would have to be confronted with a far side, which
-   is the next place a net saving could appear.
-2. For rings: the end-free formulation proposed in `compose/ring/REPORT.md` (local discharging from the
-   charge theorem, triangle-free hypothesis for m >= 4); review that report first.
-3. Only then MixColumns (block 7 five-group window, third interfaces at sheets 1, 3, 4, J_01 diagonal,
-   triangle {1,2,7}).
+## Next steps (phase 5 plan; MixColumns no longer deferred)
+1. Main line: whether the export-reuse insight gives a general principle (TWOSIDED section 8: gain <=
+   reconstruction surplus - receiver's marginal cost of the reconstructed sums). Challenge SB* seriously
+   (`compose/refute/`); do not make proving SB* or defending 10 per sheet the required outcome.
+2. In parallel: MixColumns relevance of the interface language (`compose/mc/`) and the review of the ring
+   transfer report (`review-ring/`), with every locality assumption stated.
+3. Gate order: the borrowing-loop examples are retired; pursue order only from a concrete new obstruction.
 No SAT, no exhaustive enumeration, no case-elimination queue (user instruction, still in force).
