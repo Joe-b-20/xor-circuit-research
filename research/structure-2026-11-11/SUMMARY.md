@@ -106,6 +106,27 @@ proof replaces it):**
 - "An 87 cannot be block-monotone" (an over-reading of the 83 bound; with RECORD 17 the excluded range
   is 83 and below, still not 87).
 
+## Phase 3 (2026-11-12): how computations compose (RECORD 18, `compose/`)
+
+- A cut of a chain across which no exit occurs is additive: M_l >= M_k + M_(l-k). An exit is a gate that
+  hands a vector back across the cut, made by cancellation inside the earlier part. So any composition
+  saving lives in exits, and a chain below 10 per sheet would need one across every cut (proved, reviewed).
+- At the open end (the free neighbour) the first sheet in its cheapest form is rigid and can hand nothing
+  back; any exit there costs it at least one gate, at every length (Lemma R, reviewed).
+- Three sheets: only an adjacent exit (sheet 1 to sheet 2) can produce a saving; skip exits cannot
+  (Theorem A, reviewed). Two residual configurations remain; M_3 is 29 or 30. A natural transplant of the
+  three-position mechanism costs 36. M_3 = 30 would give only 9l + 3 for longer chains.
+- What the shorter chain's minimum cost forgets: how its cost depends on the parity type of the labels it
+  receives, and what it can do with an extra base vector delivered by an exit. The missing statement is
+  two-sided (a pair receiving one extra base vector at its open end).
+- Rings have no end, so Lemma R has nothing to act on; the three-position circuit saves with exactly the
+  adjacent exits that Theorem A leaves open. MixColumns is of the ring kind.
+- Gate order: the time-order step of the pair proof is replaceable by an F_2 dependency (unreviewed); the
+  pair theorem for cyclic systems remains open.
+- Corrections of this phase: the direct-sum bound needs s > 0; corpus totals do not show that a feature
+  saves nothing inside a circuit; the counted families of the 80, 83 and 84 are defined separately; the
+  short wording of RECORD 17.2 was false (the proof is fine); block-monotone circuits can have exits.
+
 ## The open questions that now carry the problem
 
 1. **Double service.** When can sharing intermediate values across parts of a linear map reduce the
@@ -123,7 +144,7 @@ proof replaces it):**
      - 11 double charges); no pair of that circuit is cheap (23, 24, 24), the saving is a wrap-around
      effect: given an expensive pair, the third sheet costs only 4 or 5 more gates.
    - For a chain of l adjacent sheets every circuit spends at least 9l + 2 gates (RECORD 16; by hand,
-     given the pair theorem; the general statement not separately reviewed), against 10l attained. So a
+     given the pair theorem; machine-reviewed in phase 3), against 10l attained. So a
      chain can share at a net gain of at most one gate per sheet beyond the second. For the rotation
      model this gives L(Q_m) >= 9m - 7, better than the earlier bound from m = 13 on.
    - Open: the tenth gate per sheet in chains of three or more (proved only when the mirror is

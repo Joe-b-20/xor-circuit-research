@@ -47,8 +47,10 @@ exports is an MC_(l-k) circuit: N + e >= M_(l-k). Entries are distinct duplicate
 Add (a) and (b). QED
 
 **Corollary 2.** Suppose M_j = 10 j for j < l but M_l < 10 l. Then every optimal circuit for MC_l has an
-exit across every one of its l - 1 cuts, and M_l = 10 l - 1 (by chain/REPORT Theorem 1, whose review is
-pending). For l = 3: a 29 needs exits across both cuts.
+exit across every one of its l - 1 cuts, and M_l = 10 l - 1 (by chain/REPORT Theorem 1, independently
+reviewed in `../review-chain/`). For l = 3: a 29 needs exits across both cuts. (Proposition 1 and this
+corollary: machine-reviewed, `../review-compose/REVIEW.md`; the proof never uses optimality, so every
+exit-free circuit costs at least M_k + M_(l-k).)
 
 **What this says.** The minimum costs M_k are the only information needed about the two parts of a chain
 as long as no gate of the later part hands a pure vector back across the cut. Everything a
@@ -62,14 +64,24 @@ Across cut k two things flow, in opposite directions.
   vector of the far side costs the far side nothing extra; any other label is a further gate there (in
   the pair: "N_0 >= 4 + number of even labels", fact (E) of pair/PROOF).
 - **Exits** go back: two signals of one fibre differ by a pure vector, and one gate makes that vector
-  available on the far side. Its value is a sum of labels along a path inside the fibre. An exit gives the
-  far side, for one gate, a sum of several of its own labels.
+  available on the far side. Its value lies in the span of the labels and is never 0 or a single label
+  (either would repeat a value). When every duplicate of the fibre is an entry, the value is the sum of the
+  labels along the path between the two signals; with non-entry duplicates it can combine labels of other
+  fibres (review counterexample: entries x = w0 + u1, y = w1 + u2, non-entry duplicate h = x + y in the
+  fibre of r = w0 + w1, exit r + h = u1 + u2). An exit gives the far side, for one gate, a combination of
+  several of its own labels. [Corrected after review.]
 
-In primal terms (transposing): the mirror groups are the sheets. A signal of the mirror with omega = 0
-whose operands have equal nonzero omega is the adjoint of a primal signal whose formal influence on the
-outputs of sheets <= k cancels (it is read twice on the way to those sheets), while it still influences
-sheets > k. This is double service across the cut in the derivation sense of RECORD 13 (membership in a
-derivation, not ancestry). Block-monotone circuits have none.
+In primal terms (transposing): the mirror groups are the sheets. A mirror gate is a partial sum of the
+adjoints of the readers of one primal signal v (a fan-out branch of v; which partial sums occur depends on
+the summation order chosen in the transposition). An exit is such a partial sum whose omega vanishes
+although its two parts do not: two branches of v influence the outputs of sheets <= k identically, so
+their joint influence there cancels, while they still influence sheets > k. This is double service across
+the cut in the derivation sense of RECORD 13. Cancellation-free circuits have no exits in any summation
+order (the readers' adjoints have disjoint supports). Block-monotone circuits CAN have exits: the reviewer
+built a valid block-monotone pair circuit (r1 = x0 + x1, r2 = x0 + x2, r1 + r2 cancelling x0 inside block
+b1) in which summing adj(r1) and adj(r2) first gives an exit across cut 1 (`../review-compose/
+bm_exit_check.py`). An earlier version of this paragraph said block-monotone circuits have none; that was
+false.
 
 **Why the minimum cost of the shorter chain is not enough.** In the pair proof the compensation for exits
 is Lemma B: when the labels are a basis with three or four labels outside Even(w') (odd labels), the
@@ -91,7 +103,13 @@ nonzero pure even vectors on w^1; N_1 = 8, 17 <= N_2 <= ?). And the bound in the
 its tightest case, more than both numbers: the rigidity of the 8-gate T*, i.e. the complete list of its
 signals. That is what does not survive one level up.
 
-## 3. The two ends are different, and the two peelings use different ends [proved observations]
+## 3. The two ends are different, and the two peelings use different ends [observations proved; the two "forms" at the end are programmes, not stated theorems]
+
+(Results obtained along the open-end route since this section was written: `prove3/REPORT.md`, Lemma R,
+Corollary R and Theorem A, machine-reviewed; see RECORD 18.) For "pure" in the 4E boundary an unstated step
+is needed: injectivity of the label map forces the trace coordinates of groups below l - 1 to vanish, so
+each trace lives on one group (review). N_2 >= 17 follows directly from M_2 = 20 by using three of the four
+even vectors as exports.
 
 - Peeling the closed end (cut l - 1; chain/REPORT) leaves a long near side (l - 1 sheets) and a single far
   sheet. Its bound f + tau >= M_(l-1) uses the near side's left boundary (exports) and forgets its right
@@ -121,7 +139,8 @@ For l = 2 the two forms coincide with the pair proof.
   standard export boundary at its left end (labels spanning Even(w^(k+r)) + 0, from s(R^(k+r-1)_i)), and at
   its right end a second label obligation: s(R^(k-1)_i) = E_i(w^(k-1)), so the labels must also span all
   of F_2^4 on the far arc's last group (units of that group do this at no gate cost, but each needs an
-  entry: at least 3 + 4 = 7 entries in all). So the boundary types of a ring cut are different from those
+  entry: at least 3 + 4 = 7 entries in all when the far arc has at least two groups; when it is a single
+  group the two obligations fall on the same group and only F_2^4, at least 4 entries, is forced). So the boundary types of a ring cut are different from those
   of an open chain on both sides, and bounds for open chains (M_l) do not transfer: the additional argument
   needed is the cost of arcs with these ends, together with control of exits across both interfaces.
   Consistent with Q_3: its pairs cost 23 and 24 > 20, no pair bound is violated, and the exit-free bound

@@ -6,6 +6,10 @@ untouched (tag `sprint-2026-11-07-final` = 882c962). Scripts and run data for th
 `~/xs-campaigns/2026-11-09-phase/` (phase 1) and `~/xs-campaigns/2026-11-10-proof/` (proof follow-up).
 Evidence tags as in the sprint: [proved] [checked] [measured] [cited] [guess].
 
+**Since 2026-11-11 the research on this branch is the structural study in
+`research/structure-2026-11-11/`; its own resume point is `research/structure-2026-11-11/CHECKPOINT.md`
+(phase 3, 2026-11-12). This file covers the earlier search and proof work.**
+
 Sections 1-3 are the current state. Section 4 is the historical log: entries written while work was
 running, kept verbatim and marked superseded; nothing in section 4 describes the present.
 

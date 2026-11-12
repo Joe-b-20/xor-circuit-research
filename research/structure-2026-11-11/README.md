@@ -12,6 +12,11 @@ central example, and obtain arguments that cover whole families of circuits by o
   and unresolved dependencies, kept apart, each with its status.
 - `SHARING.md`: the second phase (from 2026-11-12) in one place: when sharing intermediate values
   between sheets can and cannot reduce the size, what compensates, and what is open.
+- `CHECKPOINT.md`: where phase 3 stopped and what to do next.
+- `compose/` (phase 3, from 2026-11-12): how chain computations compose. `FRAMEWORK.md` (exit-free cuts
+  are additive; what flows across a cut), `prove3/` (Lemma R, Theorem A for three sheets), `build29/`
+  (constructive attempts, two-pair inequality). Reviews: `review-compose/`, `review-chain/`,
+  `review-joint01b/`; gate order: `causal-pair/`.
 - `tools/`: small standard-library scripts that examine recorded circuits or check algebra. They
   search nothing and prove nothing by themselves.
 - Hand proofs by the main agent, each with its review: `tenth-gate/` (the ten-gate sheet lemma),

@@ -809,3 +809,89 @@ configurations for K = 20 are (tau, f, D, N_0) = (3,7,4,6), (3,7,5,5), (3,8,4,5)
 from a single even vector. Upper bound 22 (two different known shapes: four exports and four entries,
 or three exports and five entries). The values 20..22 here, like 33..36 for sheets 7, 3, 4, remain
 test cases; they do not establish an unavoidable overhead for the reduction terms.
+
+## 18. How chain computations compose: cuts, exits, the open end (phase 3; `compose/`; main agent and delegated; machine-reviewed in `review-compose/REVIEW.md`)
+
+Phase 3 (from 2026-11-12, main agent Opus 5.5) asked what must be known about a partial computation, at
+both of its ends, to decide whether adding a sheet can save. Everything below is in the mirror chain MC_l
+(section 16, `compose/FRAMEWORK.md` section 0); "cut k" separates groups 1..k from k+1..l; an *exit across
+cut k* is a gate with zero part on groups 1..k whose two operands have equal nonzero parts there.
+
+**Proposition 18.1 (exit-free cuts are additive; main agent; reviewed).** Every MC_l circuit with no exit
+across cut k has cost at least M_k + M_(l-k). *Reason:* the first gates projected to groups 1..k are an
+MC_k circuit with the same exports; without exits the gates with zero part there are an MC_(l-k) circuit
+whose exports are the entry labels, and each label use is a distinct entry gate.
+**Corollary 18.2.** If M_j = 10 j for j < l and M_l < 10 l, every optimal MC_l circuit has an exit across
+EVERY cut and M_l = 10 l - 1. A 29 for three sheets needs exits across both cuts.
+*Meaning.* The minimum costs of the parts are all one needs to know about them as long as nothing is handed
+back across the cut. A composition saving can only come from exits.
+
+**What flows across a cut (proved descriptions, corrected by the review).** Labels go forward (the far
+part supplies vectors that the near part adds in); a label that is an input or required vector of the far
+part costs it nothing, any other label is a further gate there. Exits go back: one gate gives the far part
+a vector in the span of its own labels, obtained by cancellation inside a fibre of the near part. In
+primal terms an exit is a fan-out branch of a signal whose joint influence on the earlier sheets cancels.
+Cancellation-free circuits have no exits; block-monotone circuits can have them (review counterexample).
+
+**What the minimum cost of the shorter chain does not record.** (a) How the cost of a part depends on the
+*parity type* of the labels it receives ("odd" = outside the even space of the next block): with three or
+four odd labels among four the near part's own mirror needs four distinct even traces (generalised Lemma B,
+reviewed), a cost the number M_k does not show. (b) How much a part can save when an exit hands it an
+extra base vector. (c) In the pair proof's tightest case, the complete list of the near sheet's signals
+(rigidity), which is a property of one sheet and does not survive one level up.
+
+**Lemma 18.3 (Lemma R; the rigid open end; delegated, reviewed; every l).** If the gates of an MC_l circuit
+that are nonzero on group 1 number exactly ten with three duplicates, there is no exit across cut 1.
+**Corollary 18.4 (every l).** In an optimal MC_l circuit with an exit across cut 1, the first sheet's part
+(first gates, exports and duplicates at cut 1) costs at least 14, against 13 in the standard form. So at
+the open end (the free neighbour) handing anything back always costs the first sheet at least one gate, at
+every length; with odd labels Lemma B charges two.
+**Skip-exit lemma (every l).** An exit from level 1 straight to level m >= 3 needs a level-1 gate that is a
+duplicate at cut m - 1.
+**Theorem 18.5 (Theorem A; l = 3; delegated, reviewed).** A 29-gate chain of three must contain an exit of
+the adjacent kind: a gate of the second sheet's level made by cancellation from two first-sheet signals.
+Exits that jump from sheet 1 to sheet 3 cannot produce the saving (they need a first-sheet duplicate at
+both cuts, and the tight closed end leaves no room).
+**Proposition 18.6 (reduction; reviewed).** If moreover the projection to sheets 1-2 has no exit, the far
+pair is exactly configuration (X) of the pair proof except that one edge carries a label that is not a
+value of the circuit.
+**Remaining gap for M_3 (exact):** (G1) the projection R to sheets 1-2 (cost |R| + tau = 20) has an exit
+across its own cut; or (G2) the near-(X) configuration of 18.6 (with the review's additions: a length-1
+path along the special edge is possible, its label may be even, time order still applies partly). M_3 is
+29 or 30; no 29 is known.
+
+**Why the open-end route stops (reviewed account).** An adjacent exit gives the second sheet an extra base
+vector; both far-side bounds then lose about one gate (example: 1111 on the second group supplied by one
+exit makes the four triple-sums cost 4). The first sheet's charge is fixed by the parity type of its labels
+(1 or 2), the far side's gain by the exit's value, and no statement relates the two. The missing statement
+is two-sided: the cost of a chain (here a pair) that receives one extra base vector at its open end. Both
+peelings arrive at the same object (the pair with a 4E boundary, conjectured 18 gates, at least 17).
+
+**Constructive side (delegated; inequality reviewed).** No 29 was built. Transplanting the three-position
+mechanism into the chain costs 36 (verified): the six double-charged gates of the wrap window turn into
+eight duplicated gates while the over-charge that paid for all eleven sharings stays. A primal two-pair
+inequality (both pair bounds at once) shows a 29 needs sheet-2 over-charge, a pure block-2 gate used by
+sheets 1 and 3 only, or cross-family gates; the one consistent tally found is a "hub" in which one
+redundant gate pays for two double charges inside a pair that still costs 20.
+
+**Gate order (delegated, unreviewed; `causal-pair/REPORT.md`).** The "cycle in time" of configuration (X)
+in the pair proof is replaceable by algebra: the nine relations involved are always F_2-dependent (in one
+sub-case two signals coincide). So (1) "the proof uses order" is true but removable at that step, and (2)
+"the pair theorem fails for cyclic systems" is unsupported; it is open, because "fibres are forests" and
+the (Y) arguments use order. Round a ring, F_2-consistent borrowing loops that are not executable exist
+(explicit example for m = 3, 4, 5, at no saving), so there "a closed loop of borrowings cannot pay" would
+be a genuinely causal constraint.
+
+**Chains, rings, MixColumns.** Lemma R needs the export boundary, i.e. an end of the chain with a free
+neighbour. A ring has no end: cutting the ring mirror into arcs forces four prescribed even vectors at one
+end of the near arc and a label obligation on all of F_2^4 at the far arc's end (reduction proved, values
+open). The 28-gate three-position circuit saves with exactly the adjacent exits that Theorem 18.5 does not
+exclude (1, 1 and 2 exits when each single group is cut off; check), and has no end at which Lemma R could
+charge them. MixColumns is a ring of eight with three extra terms; chain results apply to it only on runs
+with a zeroed neighbour (section 16), far below 75. A bound for the whole map would need an interface lemma
+that works without an end, i.e. a charge for adjacent exits in a ring with m >= 4 (no triangle), which the
+three-position example shows must fail at m = 3.
+
+**Statuses.** 18.1-18.6 and the skip-exit lemma: proved, machine-reviewed. The account of what is lost and
+the ring reduction: proved descriptions, reviewed. The gate-order results: unreviewed. Nothing here
+changes 75 <= L(MixColumns) <= 88.

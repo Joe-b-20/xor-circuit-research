@@ -68,7 +68,7 @@ sheets is a cancellation of a whole own-block component. Two consequences:
 |---|---|---|---|---|---|
 | r sheets with pairwise disjoint windows | at least 10 r | mirror gates (8r - c, c = classes of a parity partition) plus exports (3r + kappa) | groups of variables split over two parity classes lower the mirror count by at most kappa, the number of connected clusters of split groups (c <= r + kappa) | each cluster forces one more export (3r + kappa) | proved, reviewed (RECORD 11) |
 | two adjacent sheets, first neighbour free | at least 20 | new first parts with exports (10); repeats, one per entry; gates of the second group (triple-sums and even labels) | an exit makes a triple-sum of the second group in one gate, so no even vector of that group is built (4 gates instead of 6 or 7) | all borrowed vectors are then odd, and the first sheet's own mirror needs four separate even traces: 12 gates instead of 10; the last unit by rigidity and parity | proved, reviewed (RECORD 15) |
-| chain of l adjacent sheets | at least 9 l + 2 | as above, peeling the last sheet | the same exits at each level | only 9 of the 10 gates per further sheet are shown | proved given the pair theorem; general statement not separately reviewed (RECORD 16) |
+| chain of l adjacent sheets | at least 9 l + 2 | as above, peeling the last sheet | the same exits at each level | only 9 of the 10 gates per further sheet are shown | proved given the pair theorem; machine-reviewed in phase 3 (RECORD 16) |
 
 The pair theorem applies to the MixColumns pairs (1,2), .., (7,0) and to every adjacent pair of the
 rotation model. The chain bound gives L(Q_m) >= 9m - 7.
@@ -91,7 +91,10 @@ rotation model. The chain bound gives L(Q_m) >= 9m - 7.
 The overlap pattern of the windows decides what is known:
 - no overlap: no gain (proved);
 - a path of two: no gain (proved); a longer path: a gain of at most one gate per further sheet
-  (proved), conjecturally none;
+  (proved), conjecturally none. Since phase 3 (RECORD 18): a cut with no exit across it is additive
+  (M_l >= M_k + M_(l-k)), so a chain below 10 l needs an exit across every cut; at the open end any exit
+  costs the first sheet a gate (Lemma R); for three sheets only an adjacent exit (sheet 1 handing sheet 2
+  a vector by cancellation) can produce a saving, and two residual configurations remain;
 - a cycle of three: a gain of two is realised;
 - a cycle of four or more (the rotation model with m >= 4), and the MixColumns pattern (an 8-cycle
   with the three extra windows through block 7): open. Nothing above bounds these as a whole; the
@@ -123,17 +126,26 @@ bound, and it does not establish an unavoidable overhead for the reduction terms
 
 - **Order of gates.** The 80-charge inequality has a twin that holds for all cyclic systems (RECORD
   13), so by itself it cannot exceed the cyclic minimum. The proof of the pair theorem, in its
-  five-entry case, uses the order in which gates are created ("a cycle in time"). Whether the pair
-  bound of 20 also holds for cyclic systems has not been examined; the remark only records that this
-  proof, unlike the earlier counting arguments, is not visibly order-free.
+  five-entry case, uses the order in which gates are created ("a cycle in time"). Phase 3
+  (`causal-pair/REPORT.md`, unreviewed): that step is replaceable by algebra (the nine relations are
+  F_2-dependent), so it does not show that order matters; whether the pair bound holds for cyclic systems
+  stays open because other steps (fibres being forests, configuration (Y)) use order. Round a ring,
+  non-executable F_2-consistent borrowing loops exist (at no saving), so there order could be a genuine
+  constraint.
 - **Rigidity is not inductive.** The pair proof gets its last gate from a tight case in which a small
   mirror circuit is completely determined. One level up the corresponding circuit has room, and the
   same residual configurations return with one unit less slack. A proof of ten gates per sheet for
   chains needs a statement that carries a condition at both ends of the chain (`chain/REPORT.md`).
+  Phase 3 made this precise (RECORD 18): the open end (free neighbour) is rigid at every length (Lemma R),
+  and what is missing is the cost of a chain that receives one extra base vector, by an exit, at its open
+  end. Proving M_3 = 30 would give only M_l >= 9 l + 3; ten per sheet for every l needs a uniform form of
+  that missing statement.
 
 ## 8. Open problems, in the order in which they would change the picture
 
-1. Ten gates per sheet for a chain of three (M_3 = 30), or a 29-gate chain.
+1. The chain of three: M_3 = 30 or a 29. Reduced (RECORD 18) to two residual configurations, (G1) and (G2),
+   both with an adjacent exit; the natural tool is a two-sided statement: a pair receiving one extra base
+   vector at its open end. Ten per sheet for all chains needs a uniform version of it.
 2. The ring with four positions: is L(Q_4) = 40? The proved range is 33..40.
 3. Sheets 0 and 1 of MixColumns with block 7 free: 20, 21 or 22.
 4. Any bound for MixColumns as a whole that uses the pair and chain results; none is known, and the
