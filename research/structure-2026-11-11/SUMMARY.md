@@ -68,6 +68,9 @@ heuristic runs. These are observed totals. They do not establish an unavoidable 
   three-term sheet costs at least 13, also by hand); a sheet with nothing free costs exactly 12.
 - Sheets with pairwise disjoint windows cannot share at a net gain: in every circuit, any such family
   of r sheets is served by at least 10r gates, even if single gates serve several of them (RECORD 11).
+- Two adjacent sheets cannot share at a net gain either: with the first neighbour free, the pair needs
+  20 gates in every circuit (RECORD 15; by hand, machine-reviewed). For MixColumns this covers the pairs
+  (1,2) to (7,0), not the pair (0,1).
 
 **Computer-assisted (each rests on a finite computation, named in the record, until a mathematical
 proof replaces it):**
@@ -101,13 +104,17 @@ proof replaces it):**
      multiplication), n copies of a generic large matrix are cheaper together than apart. No small or
      explicit example is known; any example needs both parts with at least four helper gates.
    - For sheets with disjoint windows it never gives a net gain (proved, all circuits).
-   - For two adjacent sheets the net gain is at most one gate: every circuit spends at least 19 gates
-     on such a pair, against 20 attained (RECORD 14; machine-reviewed). Whether 19 occurs is open.
+   - For two adjacent sheets it never gives a net gain: every circuit spends at least 20 gates on such
+     a pair (RECORD 15; machine-reviewed). The one mechanism that could undercut 20 is an "exit" (a
+     vector of one sheet obtained in a single gate as the difference of two signals of the other); it
+     saves gates on one sheet only by making all borrowed vectors odd, and then the other sheet's own
+     computation needs four separate even vectors, 12 gates instead of 10.
    - For three positions, where every pair of windows overlaps, it gains 2 gates (28 = 30 + 9 over-charge
-     - 11 double charges); no pair of that circuit is cheap, the saving is a wrap-around effect.
-   - Open: whether the pair minimum is 19 or 20, chains of adjacent sheets (ten per sheet is proved
-     only when the mirror is level-monotone), the ring with four or more positions, and the triangles
-     of MixColumns.
+     - 11 double charges); no pair of that circuit is cheap (23, 24, 24), the saving is a wrap-around
+     effect: given an expensive pair, the third sheet costs only 4 or 5 more gates.
+   - Open: chains of three or more adjacent sheets (ten per sheet is proved only when the mirror is
+     level-monotone; the pair proof has no slack to induct on), the ring with four or more positions,
+     and the triangles of MixColumns, including the pair of sheets 0 and 1.
    - The 80-charge inequality has an order-free twin valid for all cyclic systems, with membership in
      a derivation in place of ancestry (RECORD 13, machine-reviewed). An argument using only those
      inequalities cannot exceed the cyclic minimum. The ancestor-based refinements (block-monotone

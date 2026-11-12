@@ -592,7 +592,7 @@ inequalities; whether the corresponding statements for adjacent sheets have orde
 because the local-system minimum is not known to equal the local-circuit minimum there. Whether order
 can yield a bound that fails for cyclic systems of MixColumns-like maps is open.
 
-## 14. Sharing between sheets with overlapping windows (`sharing/REPORT.md`; delegated; under review)
+## 14. Sharing between sheets with overlapping windows (`sharing/REPORT.md`; delegated; machine-reviewed, see the review status below)
 
 **Accounting (identity).** For parts with per-part local minima lambda_i and charged sets D_i:
 G = sum of lambda_i + over + unch - excess, where over = sum of (|D_i| - lambda_i), unch = number of gates
@@ -618,9 +618,7 @@ vector of the second group: at least 3), and gates with no first part (at least 
 the second group). With exactly three entries their operands are three even vectors of the second group,
 which are three more gates: 20. With four or more entries the count is 18 plus what is forced, and one
 configuration (four entries, nothing else) is excluded by a tree argument: 19.
-*What is open.* Whether 19 can occur. It would need the first sheet's mirror to be optimal and one of
-two exactly described configurations, both built on a "T-exit": a vector of the second group obtained as
-the difference of two signals with the same first part.
+*Superseded on the same day by section 15: 19 does not occur, the pair needs 20.*
 
 **Proved (restricted class, unreviewed): chains whose mirror is level-monotone need ten gates per
 sheet.** Level of a mirror vector = the first group where it is nonzero; the class requires that no gate
@@ -647,7 +645,46 @@ executable. The route through blocks 1, 2, 7 used by corpus circuits exchanges g
 - Unrelated parts in general: sharing can pay (section 12), but only when both parts need at least four
   helper gates, and the known examples are astronomically large.
 - Sheets with disjoint windows: never a net gain (section 11; all circuits).
-- Two adjacent sheets: a net gain of at most one gate (this section; all circuits; machine-reviewed),
-  and none in any known circuit.
+- Two adjacent sheets with the first neighbour free: no net gain (section 15; all circuits;
+  machine-reviewed).
 - Three mutually adjacent sheets (three positions): a net gain of two gates is realised.
-- Chains of adjacent sheets, the ring with m >= 4, and MixColumns with its triangles: open.
+- Chains of three or more adjacent sheets, the ring with m >= 4, and MixColumns with its triangles
+  (including the pair of sheets 0, 1, which the pair theorem does not cover): open.
+
+## 15. Two adjacent sheets need twenty gates (`pair/PROOF.md`; main agent; independently machine-reviewed)
+
+**Theorem 15.1 (proved by hand; review in `pair/review/REVIEW.md`: every step correct).** The pair
+problem (sheets j, j+1, block j-1 free, nothing else free) needs at least 20 gates; 20 is attained.
+Consequently, in every circuit for the rotation model (m >= 3), and for MixColumns on the sheet pairs
+(1,2), (2,3), (3,4), (4,5), (5,6), (6,7), (7,0), at least 20 gates are ancestors of an output of the pair
+and nonzero on one of its two own blocks. No monotonicity is assumed. The MixColumns pair (0,1) is not
+covered (sheet 1 has a term on block 7).
+*Dependencies.* The ten-gate lemma with its mirror (section 10) and the mirror form of the pair problem
+with f + tau >= 10 (section 14). No computation.
+*Plain reason.* In the mirror the gates fall into three groups: those bringing a new first part (the
+first sheet's own cost, 10 with the exports), those repeating a first part (at least one per "entry",
+where a vector of the second group is added), and those with no first part (the second sheet's
+triple-sums and the even vectors used as entry labels). The only way to undercut 10 + 10 is an "exit":
+a second-group vector obtained in one gate as the difference of two signals with the same first part,
+which lets the third group shrink to the four triple-sums and makes every label odd. But the first two
+groups together are themselves a one-sheet circuit with the second group free (Lemma A of the proof),
+and its own mirror must show, as separate even signals, which targets each entry influences; with
+three or four odd labels among four these are four distinct vectors (Lemma B), so that mirror has 8
+gates instead of 6 or 7 and the first two groups have 12 gates instead of 10. This gives 19 at once;
+the last gate comes from the tight case, where the 8-gate mirror forbids stacking entries, so the only
+exits are four cross sums that add to zero while the four triple-sums add to 1111. Five entries are
+excluded by a short analysis of the forests with five edges.
+*What is counted, where sharing reduces it, what compensates:* `pair/PROOF.md` section 5.
+*Challenging examples.* The three-position 28-gate circuit has pairs of 23, 24, 24 gates with five or six
+entries, mostly odd labels and exits; the theorem holds there with room. The standard circuits have
+three even labels and no exit. No recorded or perturbed circuit comes near the tight configurations,
+so those were checked by reasoning only.
+*Relevance.* Sharing between two adjacent sheets is fully compensated inside the pair. The known
+profitable sharing (three positions) is therefore not a pair effect, and the pair theorem says nothing
+about it: the pairs of that circuit are expensive (23, 24, 24), and the third sheet then costs only 4 or
+5 further gates.
+*Limits.* The final contradictions use the specific targets. The proof has no slack in the tight case,
+so it does not extend by a naive induction to chains of three or more sheets. For the MixColumns pair
+(0,1) with block 7 free the argument should give "at least 20" unchanged, since it uses the exports
+only through f + tau >= 10 and tau >= 3 (main agent's reading, not yet checked independently); the
+known upper bound there is 22.
