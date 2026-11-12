@@ -44,15 +44,17 @@ of label signals and a finite set S of *supplied* vectors on w^2..w^l.
 - Compatibility (from T): each s in S is nonzero, is not the value of an earlier signal, and lies in the
   span of the labels of entries placed before its supply gate; more precisely s = Phi(c_s) where c_s is
   the formal difference n(x) + n(y) of the two level-1 operands (section 3), a nonzero vector of formal
-  label coordinates supported on entries that are ancestors of x or y. Support: s may have any
-  w^2-part; s has zero w^2-part (a "skip" X13 value) only if its formal support involves labels with
-  zero w^2-part. Parity: s is even (in Even(w^2) + 0) whenever all labels in its support are even.
+  label coordinates supported on entries that are ancestors of x or y. Support: s has zero w^2-part (a
+  "skip" value, X1m with m >= 3) exactly when the w^2-parts of the labels in its formal support cancel;
+  this can happen with labels that all have nonzero w^2-parts (review: lambda_1 = u, lambda_2 = u + v with
+  u a w^2 unit and v on w^3; two entries on one signal r give the exit v). Parity: s is even (in
+  Even(w^2) + 0) whenever all labels in its support are even. [Corrected after review.]
 - Required: R^2..R^l (all four of each) and the label signals, which must be signals of the far circuit
   (inputs, ordinary far gates or supply gates) whose span contains Even(w^2) + 0.
 - Cost: number of far gates (ordinary + supply) + number of entries e1 (one per label use).
-- Static relaxation: S available from the start (drops the ordering of labels before supplies). The
-  staged version is what a circuit gives; every bound below uses only the staged version's consequences
-  that hold in the static one unless stated.
+- Staging is essential. A static relaxation (S available from the start) is NOT used below: Lemma 2.1
+  needs every label signal used to replace an exit to precede that exit; statically a label could be
+  computed from the supplied value and the replacement would become circular. [Corrected after review.]
 
 **(N) The supplying problem: one sheet that hands values back.** Data: an abstract label list
 Lambda = (lambda_1..lambda_t) (vectors of some space U containing a copy of Even(F_2^4), with span
@@ -60,8 +62,10 @@ containing Even + 0), and a set S of required exit values.
 - Inputs (free): the units of w^1; base: each lambda_j may be added once, as an entry (entries cost 0 in
   near1; they were booked to (F)).
 - Required: the four vectors (E_i(w^1) | p_i) with p_i the adjacent pair-sums of the Even part; tau
-  export signals spanning Even(w^1) + 0 (cost 1 each); for each s in S two signals with equal w^1-part
-  whose U-parts differ by s.
+  export signals whose w^1-parts span Even(w^1) (cost 1 each; in T they may be far signals or have U-parts
+  that cancel); for each s in S two signals with equal w^1-part whose U-parts differ by s.
+- (N) is a relaxation, not an equivalent problem: in T a label is available to the near side only once its
+  far signal exists, and that signal may itself depend on exits; (N) drops this interleaving.
 - Cost: near1 = f1 + h1 + tau (first gates, non-entry duplicates, exports).
 For l = 2 this is the pair proof's "first sheet with the second group free"; for every l it is the same
 one-sheet problem, with U = the far space and "even" = Even(w^2) + 0.
@@ -74,26 +78,33 @@ by the far side), with the staging above.
 
 ## 2. The receiver's gain is bounded by the cost of computing the supplied values from the labels
 
-**Lemma 2.1 (honest replacement; proved, every l).** For a reduced MC_l circuit, let S be its set of exit
-values across cut 1 and Lambda its labels. Let L_Lambda(S) be the least number of XOR gates that compute
-all of S starting from the label signals (any order consistent with the staging). Then
+**Lemma 2.1 (honest replacement; proved, every l; machine-reviewed, `../review-twosided/REVIEW.md`).** For
+a reduced MC_l circuit, let S be its set of exit values across cut 1 and Lambda its labels. Define
+L_near(S) as the least number of XOR gates in a straight-line computation that produces each exit value s
+using only label values of entries placed BEFORE the exit of s and values computed earlier in it; exits
+whose values are themselves used as labels are replaced earlier, in time order, so no value is used
+before it is computed. (A definition allowing "the label signals" in any order is circular: an exit later
+used as a label could be computed from itself at cost 0.) Then L_near(S) >= |S| (each s is nonzero,
+distinct and not an earlier value) and
 
-    far1 >= M_(l-1) - beta,        beta := L_Lambda(S) - |S|        (beta can be 0).
+    far1 >= M_(l-1) - beta,        beta := L_near(S) - |S| >= 0.
 
 *Proof.* Go through P in order; replace each exit gate, value s, by gates that compute s from label
 signals placed before it (they exist: s lies in the span of the labels of entries that are ancestors of
 its operands, and each such label's signal precedes its entry, which precedes the exit). The result P'
 has only ordinary far gates, contains R^2..R^l and every label signal (labels that were exit values are
 now computed honestly), so P' with the e1 labels as exports is an MC_(l-1) circuit:
-|P'| + e1 >= M_(l-1). Doing the replacements jointly costs at most L_Lambda(S) gates instead of |S|. QED
+|P'| + e1 >= M_(l-1). Doing the replacements jointly costs at most L_near(S) gates instead of |S|. QED
 *Remark.* beta is an upper bound on the receiver's gain measured against the labels only; the receiver's
 own other signals can make the honest replacement cheaper, so the true gain can be smaller. The bound
 counts all exits jointly (shared intermediate sums are counted once), as the user asked.
 
 **Why counting supplied values is not enough (the all-ones example).** With the four units of w^2 as
-labels (all odd, free for the far side), the single supplied value 1111 on w^2 has L_Lambda = 3 (three
-additions of units), so beta = 2: the four triple-sums cost 4 instead of 6. With labels a basis of the
-even space, 1111 is a sum of two labels and beta = 0. The gain of one value depends on how it sits in the
+labels (all odd, free for the far side), the single supplied value 1111 on w^2 has L_near = 3 (three
+additions of units), so beta = 2; the actual gain on the four triple-sums is 6 - (4 + 1) = 1 (beta is only
+the bound). With labels a basis of the even space it depends on the basis: for {1100, 0011, 0110}, 1111 is
+a sum of two labels (beta = 0); for {1100, 1010, 1001} it is the sum of all three (beta = 1). [Corrected
+after review.] The gain of one value depends on how it sits in the
 span of the labels, not on its number; and the cost of the labels to the supplier depends on their parity
 type (Lemma B charges two gates for three or four odd labels among four independent ones).
 
@@ -112,17 +123,21 @@ injective. So the compensation question becomes a question about ONE circuit:
 
 ## 4. The case of three entries composes at every length
 
-**Theorem 4.1 (proved; every l >= 2; review pending).** Every reduced MC_l circuit with exactly three
+**Theorem 4.1 (proved; every l >= 2; machine-reviewed with one step added, `../review-twosided/`).** Every reduced MC_l circuit with exactly three
 entries at cut 1 has cost at least 10 + M_(l-1).
 *Proof.* e1 = 3 and V contains the 3-dimensional Even(w^2) + 0, so the labels are a basis of it and
-V = Even(w^2) + 0. Every exit value lies in V, is nonzero and is not a label (reduced), so it is a sum of
+V = Even(w^2) + 0. Every exit value lies in V and is nonzero. It is not a label: it differs from every
+other signal pi_j (reduced), and the exit gate g cannot itself be the label signal of an entry j, since
+entry j would then come after g and not be an ancestor of its operands, so lambda_j = s(g) would lie in the
+span of the other two labels, contradicting independence (step added after review). So it is a sum of
 two labels or of all three; exit values are distinct, so at most one exit has the value
 lambda_1 + lambda_2 + lambda_3, and its honest replacement costs at most 2 gates; a two-label sum costs 1.
 By Lemma 2.1, far1 >= M_(l-1) - 1, and far1 >= M_(l-1) if no exit has the three-label value or there is no
 exit at all. Near side: if there is no exit, Proposition 18.1 gives the bound. If there is an exit and
 h1 >= 1, near1 = (f1 + tau) + h1 >= 11. If h1 = 0, then D1 = 3; the level-1 gates are a local circuit for
 sheet 1 (pair Lemma A) and so number at least 10 (ten-gate lemma); exactly 10 would forbid every exit
-(Lemma R, prove3 section 2); so f1 + 3 >= 11, f1 >= 8 and near1 >= 8 + tau >= 11. In all cases
+(Lemma R, prove3 section 2; its proof uses only rigidity and the absence of repeated values, so it
+applies to every reduced T); so f1 + 3 >= 11, f1 >= 8 and near1 >= 8 + tau >= 11 (tau >= 3). In all cases
 cost = near1 + far1 >= 11 + M_(l-1) - 1. QED
 *What it says.* When the first sheet takes the cheapest kind of labels (three even ones), handing values
 back can gain the receiver at most one gate, and it always costs the supplier one: the composition is
@@ -137,15 +152,20 @@ prove3 reduces to e1 >= 4; (G2) already has e1 = b >= 4.
 **Conjecture SB (supply-benefit inequality for one sheet).** For every instance of (N) realised by a
 reduced circuit (labels Lambda with e1 >= 4 entries, exit values S),
 
-    near1 - 10 >= L_Lambda(S) - |S|.
+    near1 - 10 >= L_near(S) - |S|,
+
+with L_near defined from the near side alone (labels of entries placed before each exit; section 2). In
+this form SB is a statement about one sheet and its exit positions; with a static L it would be too weak for
+Lemma 2.1, and with the far side's label order it would depend on the far circuit. [Restated after review.]
 
 (Weaker variants that also suffice for a given far side: replace L_Lambda(S) by the honest cost from the
 receiver's actual signals.)
-**Implication (proved).** If SB holds, then every reduced MC_l circuit has cost >= 10 + M_(l-1)
-(near1 + far1 >= 10 + beta + M_(l-1) - beta), hence M_l >= 10 + M_(l-1) and, with M_1 = 10, M_l = 10 l for
-every l; the induction is explicit: SB is a statement about ONE sheet (problem (N) does not depend on l
-except through the abstract label space U), and Lemma 2.1 holds for any far chain. In particular
-M_3 = 30, and (G1), (G2) are the l = 3 instances of SB with e1 >= 4.
+**Implication (proved; reviewed).** If SB (with L_near) holds for every reduced instance with e1 >= 4, then
+every reduced MC_l circuit has cost >= 10 + M_(l-1): for e1 = 3 by Theorem 4.1, for e1 >= 4 by
+near1 + far1 >= (10 + beta) + (M_(l-1) - beta). Optimal circuits are reduced, so M_l >= 10 + M_(l-1); with
+M_1 = 10 and the upper bound M_l <= 10 l (RECORD 16), M_l = 10 l for every l. The induction is explicit: SB
+concerns one sheet (problem (N) depends on l only through the abstract label space U), and Lemma 2.1 holds
+for any far chain. In particular M_3 = 30; SB would exclude (G1) and (G2) (sufficient, not equivalent).
 **Status.** Open. Known instances: SB holds when e1 = 3 (Theorem 4.1) and when S is empty (near1 >= 10).
 It is not known whether SB is true; a counterexample to SB need not give a 29 (the receiver must also be
 able to use the values, and beta overstates the gain), so a counterexample would show only that the
@@ -168,7 +188,8 @@ review-compose), and f + D >= |T*| + 4.
 **Reduction for l = 3 (proved from chain/REPORT section 3 as re-derived in review-compose).** A 29 is
 (Z') or (Y') at the closed end. (Z'): tau = 3, D = 4, N = 5, f = 17 = |T*|, so N_2 >= 18 excludes it.
 (Y'): D = 5, N = 4, f + tau = 20, |T*| <= 21 - tau if h is clean, so N_2 >= 18 excludes tau = 4 and an
-unclean h, but NOT tau = 3 with h clean and |T*| = 18. So a lower bound of 18 does not settle M_3; one would
+unclean h, but NOT tau = 3 with h clean and |T*| = 18. So a lower bound of 18 does not settle M_3 through
+this reduction (not shown: that 18 together with Theorem A and Proposition H cannot close (Y')); one would
 need N_2 >= 19 (false? unknown) or a joint statement using the near part's left exports and its right
 labels at once. The open-end target SB (section 5) is the better-founded target: it is about one rigid
 sheet, it is uniform in l, and Theorem 4.1 is its first proved case.

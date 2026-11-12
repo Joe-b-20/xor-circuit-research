@@ -4,7 +4,18 @@ Delegated investigation, 2026-11-12 (phase 3), separate model instance (Opus); s
 from its final message. Machine work, NOT yet independently reviewed. No SAT, no enumeration of circuits;
 the two scripts verify the stated identities on the explicit configurations (checks, not proofs).
 
-**Outcome.** No 19-relation cyclic system was found. Configuration (X) of `../pair/PROOF.md` cannot be part
+**Review (phase 4, `../review-causal-pair/REVIEW.md`) and corrected outcome.** The time-cycle step at the
+end of configuration (X) can be replaced by F_2 dependence FOR CONFIGURATIONS ALREADY KNOWN TO HAVE THE
+FOREST-PLUS-EXITS FORM (checked: all 384 such configurations have rank <= 8, so even path (3) falls to rank
+alone). The claim below that (X) "cannot be part of any non-executable mirror system" over-claims: without
+order, entries and exits are the same kind of relation and fibres need not be forests, so the order-free
+version of (X) is a larger class that was not analysed. Many other steps of the pair proof still use order
+(normalisation, cleaning, (Y), the forest premise). Examples (a) and (b) are non-executable only as the
+given wirings: their value sets have executable bases of the same size (greedy closure), so they show no
+complexity gap, and the "genuinely causal constraint round the ring" sentence is a framing, not a result.
+Nothing here shows that executability excludes a profitable sharing pattern.
+
+**Outcome (original wording, superseded where the paragraph above corrects it).** No 19-relation cyclic system was found. Configuration (X) of `../pair/PROOF.md` cannot be part
 of any non-executable mirror system: its nine relations are always linearly dependent over F_2 (in two
 sub-cases two signals coincide). So the order step in (X) is replaceable by algebra. Whether the whole pair
 theorem holds for cyclic systems remains open, because other steps of the reduction to (X) use order.
