@@ -60,7 +60,8 @@ heuristic runs. These are observed totals. They do not establish an unavoidable 
 - Double maps D_T for reduced T (zero diagonal after the normalisation, no zero row, no zero column;
   without this the statements fail, e.g. T = 0 is the identity map with no gates): L >= 3m; zero extra
   cost iff T is a sum of arc blocks; helper-free circuits need 3m + delta gates (RECORD 8).
-- Rotation model: L(Q_m) <= 10m for m >= 4; all-circuit lower bound 7m - 1 + ceil(16m/11) (rotation/).
+- Rotation model: L(Q_m) <= 10m for m >= 4; all-circuit lower bounds 7m - 1 + ceil(16m/11) (rotation/)
+  and 9m - 7 (RECORD 16, from chains of adjacent sheets; larger from m = 13 on).
 - The ten-gate sheet lemma, by hand (RECORD 10; two different proofs, both machine-reviewed). Until
   2026-11-12 it rested on finite computation; it no longer does. Consequently, with no computation:
   the charge theorem (at least 10 charged gates per sheet in every MixColumns circuit, RECORD 7); every
@@ -112,9 +113,14 @@ proof replaces it):**
    - For three positions, where every pair of windows overlaps, it gains 2 gates (28 = 30 + 9 over-charge
      - 11 double charges); no pair of that circuit is cheap (23, 24, 24), the saving is a wrap-around
      effect: given an expensive pair, the third sheet costs only 4 or 5 more gates.
-   - Open: chains of three or more adjacent sheets (ten per sheet is proved only when the mirror is
-     level-monotone; the pair proof has no slack to induct on), the ring with four or more positions,
-     and the triangles of MixColumns, including the pair of sheets 0 and 1.
+   - For a chain of l adjacent sheets every circuit spends at least 9l + 2 gates (RECORD 16; by hand,
+     given the pair theorem; the general statement not separately reviewed), against 10l attained. So a
+     chain can share at a net gain of at most one gate per sheet beyond the second. For the rotation
+     model this gives L(Q_m) >= 9m - 7, better than the earlier bound from m = 13 on.
+   - Open: the tenth gate per sheet in chains of three or more (proved only when the mirror is
+     level-monotone; the pair proof closes its tight case by a rigidity that is lost one level up),
+     the ring with four or more positions, and the triangles of MixColumns, including the pair of
+     sheets 0 and 1.
    - The 80-charge inequality has an order-free twin valid for all cyclic systems, with membership in
      a derivation in place of ancestry (RECORD 13, machine-reviewed). An argument using only those
      inequalities cannot exceed the cyclic minimum. The ancestor-based refinements (block-monotone

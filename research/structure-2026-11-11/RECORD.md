@@ -688,3 +688,38 @@ so it does not extend by a naive induction to chains of three or more sheets. Fo
 (0,1) with block 7 free the argument should give "at least 20" unchanged, since it uses the exports
 only through f + tau >= 10 and tau >= 3 (main agent's reading, not yet checked independently); the
 known upper bound there is 22.
+
+## 16. Chains of adjacent sheets: nine gates per further sheet (`chain/REPORT.md`; delegated; Theorem 16.1 re-derived by the main agent, the rest unreviewed)
+
+Chain of l sheets: sheets j, .., j+l-1 with block j-1 free and nothing else free. M_l denotes its
+minimum; M_1 = 10 (section 10), M_2 = 20 (section 15), and M_l <= 10 l.
+
+**Theorem 16.1 (proved by hand given section 15).** M_l >= M_(l-1) + 9. Hence M_3 >= 29 and
+M_l >= 9 l + 2 for l >= 2.
+*Plain reason.* Peel the LAST group of the mirror. The gates bringing a new part on the earlier groups
+are, with the exports, a mirror circuit for the shorter chain (at least M_(l-1)). The remaining gates
+repeat such a part or have none; there are at least 9 of them by the argument that gave 19 for the
+pair: three entries need three even labels (3 + 7), and four entries with only the four triple-sums
+(4 + 4) are excluded by the tree argument.
+*Status.* The two lemmas repeat, at the last level, arguments that were machine-reviewed for the pair;
+the main agent re-derived them for general l. The general statement has had no separate review.
+
+**Corollary 16.2 (rotation model; proved given 16.1).** For m >= 3, L(Q_m) >= M_(m-1) >= 9m - 7: in any
+circuit, restrict nothing, treat the block of one sheet as free and count the ancestors of the other
+m - 1 sheets that are nonzero on one of their own blocks. This exceeds the earlier all-circuit bound
+7m - 1 + ceil(16m/11) for m >= 13 and has the larger slope (9 against 8.45; the upper bound is 10 m).
+The two bounds agree for m = 11 and 12; for m <= 10 the earlier bound is larger.
+For MixColumns the chain form occurs only on runs that avoid the three reduction terms (sheets 1..6
+with block 7 set to zero: at least 56 gates; sheets 5, 6, 7, 0: at least 38), far below 75. The public
+bound is not affected.
+
+**Open: the tenth gate per sheet (M_3 = 30?).** A 29 for the chain of three would have to be, at the
+last group, one of two configurations (four entries with a basis of labels, at least three odd, and
+either five pure gates and no further duplicate, or four pure gates and one non-entry duplicate with
+all labels units), and at the same time contain a long exit at the first group (investigator's
+derivation, unreviewed). The pair proof closed its tight case because the mirror of the first sheet
+had eight prescribed vectors and eight gates, hence no freedom. One level up that mirror is a 17- or
+18-gate pair circuit with only twelve prescribed vectors, and the same residual cases reappear inside
+it with one unit less slack: this is the gate lost per level. A closed induction seems to need a
+statement with a condition at both ends of the chain. No circuit below 30 is known; 600 perturbed
+chain circuits and all recorded ones have 30 (a test, not a proof).
