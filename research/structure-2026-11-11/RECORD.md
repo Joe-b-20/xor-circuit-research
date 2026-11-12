@@ -900,3 +900,87 @@ three-position example shows must fail at m = 3.
 **Statuses.** 18.1-18.6 and the skip-exit lemma: proved, machine-reviewed. The account of what is lost and
 the ring reduction: proved descriptions, reviewed. The gate-order results: unreviewed. Nothing here
 changes 75 <= L(MixColumns) <= 88.
+
+## 19. Supplying a value across a cut and what the receiver can gain (phase 4; `compose/TWOSIDED.md`, `compose/sb/`, `compose/sb2/`, `compose/ring/`; reviews `review-twosided/`, `review-sb/`, `review-sb2/`)
+
+Phase 4 (2026-11-12, user's direction): relate what a computation must do to SUPPLY an intermediate value
+through an exit to what a compatible receiver can SAVE by obtaining it. Setting: the open cut of the mirror
+chain MC_l (cut 1: the first sheet against the rest). Definitions in full in `compose/TWOSIDED.md`.
+
+**The exact split (identity; reviewed).** For a reduced MC_l circuit, cost = near1 + far1 with
+near1 = f1 + h1 + tau (the first sheet's first gates, non-entry duplicates, exports) and far1 = |P| + e1
+(the far gates, exits included, plus one unit per entry, booked to the receiver as its export cost).
+near1 >= 10 always; far1 >= M_(l-1) when there is no exit. The supplier is problem (N) of TWOSIDED (a
+relaxation: it ignores that labels may depend on exits through the far side); the receiver is problem (F)
+(a far chain with supplied values, each costing its exit gate, available only from its exit on, staged).
+
+**Honest replacement (receiver's gain bounded by the cost of computing the supplied values; reviewed).**
+Replacing every exit, in time order, by gates computing its value from labels of entries placed before it
+gives an exit-free far circuit. Three successively sharper forms, all proved for every l:
+- Lemma 2.1: far1 >= M_(l-1) - beta, beta = L_near(S) - |S| (L_near: strict staging; a looser definition is
+  circular).
+- Lemma 2.1': far1 >= M_(l-1) - beta + sigma, sigma = e1 - tau_min (tau_min = fewest labels spanning
+  Even(w^2) + 0). Needed because the supplier can attach entries that feed nothing; those extra labels are
+  paid by the receiver (`compose/sb/`, counterexample to the first form of SB).
+- Lemma 2.1* (`compose/sb2/`; reviewed, `review-sb2/`): far1 >= M_(l-1) + e1 - chi, chi = min over replacements R of
+  (|R| - |S| + tau_R), tau_R = fewest elements of the labels and the replacement values spanning
+  Even(w^2) + 0. The receiver may export the intermediate sums that the honest replacement builds.
+The all-ones example: 1111 on w^2 supplied once gains the four triple-sums one gate (6 against 4 + 1); the
+bound beta is 2 with unit labels, 0 or 1 with an even basis depending on the basis. The gain of a supplied
+value depends on how it sits relative to the labels, not on the number of values.
+
+**Composition theorems (supplier charge >= receiver gain).**
+- Theorem 19.1 (Theorem 4.1 of TWOSIDED; main agent; reviewed with one step added): a reduced MC_l circuit
+  with exactly three entries at the open cut costs at least 10 + M_(l-1), every l.
+- Theorem 19.2 (S1; reviewed): if every label is even (lies in Even(w^2) + 0) then beta <= 1, so the cut is
+  additive (cost >= 10 + M_(l-1)) for every e1, every l. What matters is only that the labels saturate a
+  3-dimensional space.
+- Theorem 19.3 (S2 with the review's repairs; reviewed): with four entries the inequality
+  near1 - 10 >= beta - sigma holds except in the residual case Omega (near1 = 11, two or more odd labels,
+  beta = 2). Lemma Q: four independent labels give beta <= 2.
+- Theorem 19.4 (O2; reviewed): with four entries and exactly two odd labels the repaired inequality
+  SB* (near1 - 10 >= chi - e1) holds; this closes the part Omega2 of Omega.
+- **SB' is false (counterexample verified by two independent evaluators; `compose/sb2/sbx5_mc3.txt`).** At three sheets
+  with five entries: labels that are deep (nonzero on w^3) pair into "free stacks" (equal traces), each
+  pair behaving like one even label at no cost to the supplier, and one spare gate links them into a path
+  whose exit has weight 4 (beta = 2) while near1 - 10 = 1 and sigma = 0. SB* holds there: the honest
+  replacement builds the two pair sums, which are exactly the cheap even exports the receiver needs, so the
+  receiver gains nothing. **This is the main structural lesson of phase 4:** the receiver's gain from a
+  supplied value and its export economy are coupled; paying honestly for a supplied value builds
+  intermediate sums that serve as the receiver's exports. A compositional proof must retain, about the
+  interface, at least: the span of the labels (its dimension and its intersection with the even space),
+  the trace relations among the supplier's entries (which pairs are free stacks), and which intermediate
+  sums the receiver can reuse as exports.
+
+**Implication (proved; reviewed in both forms).** If SB* holds for every reduced
+one-sheet instance with at least four entries, then every reduced MC_l circuit costs at least
+10 + M_(l-1) (three entries by 19.1), hence M_l = 10 l for every l (with M_l <= 10 l from section 16). The
+induction is explicit: SB* concerns one sheet; honest replacement holds for any far chain.
+
+**Chain of three: what is settled and what is open.** A 29 must (Corollary 18.2) have exits across both
+cuts, (Theorem A) an adjacent exit, (19.1) at least four entries at the open cut, and (19.3, 19.4) if it has
+exactly four, lie in Omega1 (three or four odd labels, f1 = 7, h1 = 1, tau = 3, rigid 8-gate mirror, near1 = 11,
+far1 = 18, beta = 2 from a weight-4 exit or from three weight-3 exits, and chi = 6, so no other exit may add an
+even value); the residual (G2) with four entries is excluded, and with honest replacement in the form 2.1*
+the split into (G1) and (G2) is no longer needed (review-sb2). Open: Omega1; five entries with shallow labels
+(span of dimension <= 4) only in the form near1 = 10, h1 = 0, sigma = 1, beta = 2 with two stacked entries; and
+five or more entries with deep labels (span of dimension >= 5, possible from l = 3 on), where one exit can
+gain up to dim V - 2 and SB' is false. M_3 is 29 or 30; no 29
+is known. These results do NOT give ten gates per sheet for longer chains: that needs SB* in general.
+
+**Rings and MixColumns (`compose/ring/`; unreviewed).** Only the split and honest replacement survive in
+the ring mirror. Lemma R, Theorem 19.1 and type-independent additivity of exit-free cuts fail (explicit
+objects at m = 4: bounds valid for every label interface sum to at most 38-39 < 40). In a window-local
+triangle-free ring (m >= 4) an exit lands on one neighbour and gains at most 2 per receiving group; in Q_3
+an exit can land inside a window (the 28-gate mechanism). MixColumns needs further arguments: block 7 is a
+five-group window in the mirror; sheets 1, 3, 4 carry a third interface; the J_01 diagonal forces mixed
+labels; the triangle {1, 2, 7}. Proposed: end-free discharging from the charge theorem (programme).
+
+**Gate order (`causal-pair/`, reviewed in `review-causal-pair/`).** The time-cycle step of configuration (X)
+is replaceable by F_2 dependence only for configurations already in forest-plus-exits form; without order
+entries and exits are the same kind of relation and fibres need not be forests, so the pair theorem is not
+shown to be order-free. The non-executable borrowing loops found are failed wirings: their value sets have
+executable bases of the same size, so they show no cost of executability. Nothing shows that executability
+excludes a profitable sharing pattern.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.

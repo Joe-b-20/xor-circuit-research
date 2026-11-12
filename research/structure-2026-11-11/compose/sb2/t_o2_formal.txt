@@ -1,0 +1,14 @@
+# formal version of ../sb/tight_o2.txt near part: z1=u0, z2=u3 (odd pair), z3=u2+u3, z4=u1+u3
+r  = w2 + w3
+e1 = r + z1
+e2 = e1 + z2
+e3 = w1 + z3
+e4 = w0 + z4
+A0 = e2 + w1
+A1 = e2 + e4
+i2 = e3 + e4
+A2 = i2 + w3
+i3 = e3 + w0
+A3 = i3 + w2
+targets A0 A1 A2 A3
+exports w0 w1 w2 w3

@@ -143,11 +143,28 @@ bound, and it does not establish an unavoidable overhead for the reduction terms
   end. Proving M_3 = 30 would give only M_l >= 9 l + 3; ten per sheet for every l needs a uniform form of
   that missing statement.
 
-## 8. Open problems, in the order in which they would change the picture
+## 8. Supplying versus receiving across a cut (phase 4, RECORD 19)
 
-1. The chain of three: M_3 = 30 or a 29. Reduced (RECORD 18) to two residual configurations, (G1) and (G2),
-   both with an adjacent exit; the natural tool is a two-sided statement: a pair receiving one extra base
-   vector at its open end. Ten per sheet for all chains needs a uniform version of it.
+At the open cut of a chain the cost splits exactly into what the first sheet does (near1) and what the
+rest does including one unit per label it hands over (far1). A value handed back by an exit can save the
+receiver at most what it would cost to compute that value honestly from earlier labels, and the honest
+computation also builds sums the receiver can reuse as exports (Lemma 2.1*). Proved (reviewed):
+- if the first sheet uses exactly three entries, or if all its labels are even, the cut is additive at
+  every length (Theorems 19.1, 19.2);
+- with four entries, additivity holds except in one residual configuration (Omega1);
+- the natural inequality "supplier's extra cost >= receiver's gain" is FALSE in its first two forms (SB,
+  SB'): the first fails because unused entries can be piled up, the second because two pairs of "deep"
+  labels with equal traces cost the supplier nothing; the repaired form SB* (gain measured after the
+  receiver reuses the intermediate sums as exports) holds in every case checked and would give ten gates
+  per sheet for every chain.
+What the interface must record, as learned from these counterexamples: the span of the labels (dimension,
+intersection with the even space), the trace relations among the supplier's entries (free stacks), and
+which intermediate sums the receiver can reuse as exports. A single number per side is not enough.
+
+## 9. Open problems, in the order in which they would change the picture
+
+1. SB* for one sheet (RECORD 19): it would give ten gates per sheet for every chain. The chain of three
+   (M_3 = 30 or 29) is reduced to Omega1 (four entries) and five or more entries with deep labels.
 2. The ring with four positions: is L(Q_4) = 40? The proved range is 33..40.
 3. Sheets 0 and 1 of MixColumns with block 7 free: 20, 21 or 22.
 4. Any bound for MixColumns as a whole that uses the pair and chain results; none is known, and the

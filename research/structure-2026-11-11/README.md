@@ -16,7 +16,10 @@ central example, and obtain arguments that cover whole families of circuits by o
 - `compose/` (phase 3, from 2026-11-12): how chain computations compose. `FRAMEWORK.md` (exit-free cuts
   are additive; what flows across a cut), `prove3/` (Lemma R, Theorem A for three sheets), `build29/`
   (constructive attempts, two-pair inequality). Reviews: `review-compose/`, `review-chain/`,
-  `review-joint01b/`; gate order: `causal-pair/`.
+  `review-joint01b/`; gate order: `causal-pair/`, `review-causal-pair/`.
+- Phase 4: `compose/TWOSIDED.md` (supplying versus receiving across a cut; definitions), `compose/sb/`,
+  `compose/sb2/` (the supply-benefit inequality and its counterexamples), `compose/ring/` (transfer to
+  rings); reviews `review-twosided/`, `review-sb/`, `review-sb2/`.
 - `tools/`: small standard-library scripts that examine recorded circuits or check algebra. They
   search nothing and prove nothing by themselves.
 - Hand proofs by the main agent, each with its review: `tenth-gate/` (the ten-gate sheet lemma),

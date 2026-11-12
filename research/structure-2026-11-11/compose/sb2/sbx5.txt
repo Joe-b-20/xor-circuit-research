@@ -1,0 +1,23 @@
+# Near side (problem N, l >= 3) with five independent labels, sigma = 0, near1 = 11, beta = 2.
+# Built as the transpose of an 8-gate mirror; chain w1 -> g1 -> g2 -> g3 -> g4 in fibre w1.
+g1 = w1 + z1
+g2 = g1 + z2
+g3 = g2 + z3
+g4 = g3 + z4
+P1 = w0 + w2
+A3 = P1 + g2
+gC = w3 + z5
+P2 = w1 + w2
+A0 = P2 + gC
+Q  = A3 + gC
+A1 = Q + g4
+P3 = w0 + w3
+A2 = P3 + g4
+targets A0 A1 A2 A3
+exports P1 P2 P3
+exit w1 g4
+label z1 0010 1000
+label z2 0001 1000
+label z3 0100 0100
+label z4 0001 0100
+label z5 1001 0000

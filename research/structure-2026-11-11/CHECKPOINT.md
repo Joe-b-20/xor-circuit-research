@@ -1,36 +1,34 @@
-# Structural study: checkpoint for resuming (phase 3, 2026-11-12)
+# Structural study: checkpoint for resuming (phases 3-4, 2026-11-12)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`SUMMARY.md` (guide, phase-3 section), `SHARING.md` (sharing question; section 1 now defines the counted
-families separately), `RECORD.md` sections 16-18, `compose/FRAMEWORK.md`, `compose/prove3/REPORT.md`,
-`review-compose/REVIEW.md`.
+`SUMMARY.md` (phase-3 and phase-4 sections), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
-## Done in phase 3
-- Focused checks requested by the user: A (counted families, SHARING 1), B (RECORD 17.2 short wording
-  false, full proof fine; `review-joint01b/`), C (direct-sum bound needs s > 0, RECORD 12), D (corpus totals
-  vs circuit-specific claims, RECORD 9, 14, SUMMARY), E (chain recurrence reviewed, `review-chain/`; the
-  MixColumns run 5, 6, 7, 0 needs blocks 1-3 zeroed).
-- Composition results (RECORD 18): a circuit with no exit across cut k costs at least M_k + M_(l-k)
-  (not an inequality for M_l); a SHORTEST-length counterexample to 10 per sheet (M_j = 10 j for j < l)
-  saves exactly one gate and has an exit across every cut, so a 29 for three sheets needs exits across
-  both cuts;
-  Lemma R and Corollary R (open end rigid, every l); skip-exit lemma; Theorem A (a 29 needs an adjacent
-  exit); Proposition H; residual gap (G1), (G2). All machine-reviewed.
-- Constructive side: no 29; Q_3 transplant = 36 (`compose/build29/`); two-pair inequality (reviewed).
-- Gate order: (X) time step replaceable by an F_2 dependency (`causal-pair/`, unreviewed).
-- Correction: M_3 = 30 gives only M_l >= 9l + 3.
+## Established (statements with their hypotheses)
+- Proposition 18.1: a circuit C with no exit across cut k has cost(C) >= M_k + M_(l-k) (not an inequality
+  for M_l). Corollary 18.2: if M_j = 10 j for every j < l, a counterexample at length l saves exactly one
+  gate and has an exit across every cut; so a 29 for three sheets needs exits across both cuts.
+- Lemma R / Corollary R: at the open end an exit costs the first sheet at least one gate (every l).
+- Theorem A: a 29-gate chain of three needs an adjacent exit (not: "skip exits never help").
+- Phase 4 (RECORD 19): exact split near1 + far1; honest replacement 2.1, 2.1', 2.1*; Theorem 19.1 (three
+  entries: cost >= 10 + M_(l-1), every l); 19.2 (all labels even: additive, every l); 19.3 (four entries,
+  except Omega); 19.4 (O2). SB and SB' false (verified counterexamples). SB* => M_l = 10 l (explicit
+  induction). All machine-reviewed.
+- Rings (`compose/ring/`, unreviewed): only the split and honest replacement survive.
+- Gate order (`causal-pair/`, reviewed): replacement only for forest-plus-exits configurations; no cost of
+  executability shown.
 
 ## Next steps, in the order the evidence suggests
-1. The two-sided statement: the cost of the pair (mirror MC_2) when an exit hands it one extra base vector
-   at its open end, against the charge on the giving sheet (Lemma B / Corollary R). It would close (G1) and
-   (G2), and a uniform version would give 10 per sheet for all chains. Test object: the pair with a 4E
-   boundary (17 <= N_2, conjectured 18).
-2. A ring interface lemma for m >= 4 (no triangle): a charge for adjacent exits without an end. Q_3 shows
-   it must fail at m = 3; Q_4 (33..40) is the first test.
-3. Review `causal-pair/REPORT.md`; then decide whether the pair theorem holds for cyclic systems.
-4. Only then: relevance to MixColumns (ring of eight plus reduction terms, triangles through block 7).
+1. SB* for one sheet. Test it first where SB' fails (deep labels, five or more entries, free stacks) and in
+   Omega1 (four entries, three or four odd labels, f1 = 7, h1 = 1, rigid 8-gate mirror). A proof would give
+   M_l = 10 l for every chain; a counterexample to SB* would have to be confronted with a far side, which
+   is the next place a net saving could appear.
+2. For rings: the end-free formulation proposed in `compose/ring/REPORT.md` (local discharging from the
+   charge theorem, triangle-free hypothesis for m >= 4); review that report first.
+3. Only then MixColumns (block 7 five-group window, third interfaces at sheets 1, 3, 4, J_01 diagonal,
+   triangle {1,2,7}).
 No SAT, no exhaustive enumeration, no case-elimination queue (user instruction, still in force).

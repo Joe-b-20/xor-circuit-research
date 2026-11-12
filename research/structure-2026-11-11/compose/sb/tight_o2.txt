@@ -1,0 +1,22 @@
+# MC_2 check: first sheet in the tight form |T*| = 7 with two odd labels (u0, u3) stacked on the pure
+# signal r, two even labels; exports = the four units of w^1 (tau = 4); near1 = 6 + 1 + 4 = 11.
+l3 = g2_2 + g2_3
+l4 = g2_1 + g2_3
+r  = g1_2 + g1_3
+e1 = r + g2_0
+e2 = e1 + g2_3
+e3 = g1_1 + l3
+e4 = g1_0 + l4
+A0 = e2 + g1_1
+A1 = e2 + e4
+i2 = e3 + e4
+A2 = i2 + g1_3
+i3 = e3 + g1_0
+A3 = i3 + g1_2
+X  = r + e2          # the only exit available: u0 + u3, a sum of two labels
+B0 = l4 + g2_2
+B1 = l3 + g2_0
+B2 = l4 + g2_0
+q  = l3 + l4
+B3 = q + g2_0
+export g1_0 g1_1 g1_2 g1_3

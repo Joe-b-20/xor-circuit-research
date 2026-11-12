@@ -1,0 +1,28 @@
+# MC_2: a cost-10 first sheet (7 first gates + 3 exports, four even-label entries) plus a dangling
+# stack of three unit-label entries on g1_0 and one exit across cut 1 giving E_3(w^2) = u0+u1+u2.
+x  = g1_0 + g1_1
+y  = g1_2 + g1_3
+z  = g1_1 + g1_2
+F3 = x + g1_2
+F2 = x + g1_3
+F1 = y + g1_0
+F0 = y + g1_1
+# dangling stack and exit (placed before the other entries)
+d1 = g1_0 + g2_0
+d2 = d1 + g2_1
+d3 = d2 + g2_2
+B3 = d3 + g1_0
+# far side
+p0 = g2_3 + g2_0
+p1 = g2_0 + g2_1
+p2 = g2_1 + g2_2
+p3 = g2_2 + g2_3
+B0 = p2 + g2_3
+B1 = p3 + g2_0
+B2 = p1 + g2_3
+# entries giving the first sheet's targets
+A0 = F0 + p0
+A1 = F1 + p1
+A2 = F2 + p2
+A3 = F3 + p3
+export x y z

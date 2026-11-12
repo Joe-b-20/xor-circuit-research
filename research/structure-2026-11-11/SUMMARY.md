@@ -131,6 +131,23 @@ proof replaces it):**
   saves nothing inside a circuit; the counted families of the 80, 83 and 84 are defined separately; the
   short wording of RECORD 17.2 was false (the proof is fine); block-monotone circuits can have exits.
 
+## Phase 4 (2026-11-12): what a supplied value is worth (RECORD 19, `compose/TWOSIDED.md`, `compose/sb*/`)
+
+- At the open cut of a chain, cost = (first sheet's own gates and exports) + (the rest, plus one unit per
+  label handed over); an identity. A value handed back by an exit gains the receiver at most the cost of
+  computing it honestly from earlier labels; the honest computation also builds sums the receiver can use
+  as exports (proved, every length, reviewed).
+- Additive at every length when the first sheet uses exactly three entries, or when all its labels are
+  even (reviewed). With four entries additive except one residual case.
+- "Supplier's extra cost >= receiver's gain" is false in its first two forms, by verified counterexamples
+  (unused entries piled up; pairs of deep labels with equal traces). The repaired form SB* holds wherever
+  checked and would give ten gates per sheet for every chain; it is not proved.
+- Chain of three: a 29 needs exits across both cuts (with M_1 = 10, M_2 = 20), an adjacent exit, at least
+  four entries, and with exactly four it lies in Omega1. M_3 is still 29 or 30.
+- Rings: only the split and honest replacement survive; Lemma R and the three-entry theorem need the
+  free-neighbour end (unreviewed transfer study). Gate order: the replaced time step covers only
+  forest-shaped configurations; no cost of executability has been shown (reviewed).
+
 ## The open questions that now carry the problem
 
 1. **Double service.** When can sharing intermediate values across parts of a linear map reduce the
