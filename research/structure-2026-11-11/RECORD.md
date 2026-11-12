@@ -506,14 +506,18 @@ the first neighbour free. Whether its minimum is 20 for all local circuits is op
 **Known from the literature (existential).** For 2-input XOR circuits of unbounded depth,
 L(A + B) = L(A) + L(B) is false in general: n copies of a generic n x n matrix A can be computed together
 through a fast matrix-multiplication algorithm with O(n^2.81) gates, while n separate copies cost about
-n^3 / (2 log n). Sources read by the investigator: notes of Jukna crediting Sergeev (web page), Paul 1976
-(scan, partly illegible), Find et al. (arXiv, read). No explicit or small example is known; by the
+n^3 / (2 log n). Sources: two web notes of S. Jukna (the first, of 22 May 2015, credits "Igor"; the
+attribution to Sergeev is an inference; the second attributes the argument to an anonymous referee of
+Paul 1976 and adds depth-2 additivity, which is what makes the failure an unbounded-depth one), Paul
+1976 (scan, partly illegible), Find et al. (arXiv). A second reader confirmed the two notes and Find et
+al. from the pages themselves (`review-phase2/REVIEW.md`). No explicit or small example is known; by the
 investigator's own computation the counting argument starts to certify a failure only near n = 2^37.
 Additivity is known for depth-2 XOR circuits, SUM/OR circuits, monotone circuits and cancellation-free
 XOR circuits. So "sharing between unrelated parts never helps" is false as a general principle, and any
 compensation theorem must use properties of the parts.
 
-**Proved by the investigator (every circuit; unreviewed).**
+**Proved by the investigator (every circuit; machine-reviewed: all confirmed, with a missing proof of
+the "L(A) + n_B - c_B" bound supplied by the reviewer).**
 - Count: classify each gate by whether its X-part and its Y-part are new. G = N_X + N_Y - d + w, with d
   the gates new on both sides and w those new on neither, and N_X >= L(A), N_Y >= L(B). What is counted:
   new values on each side. Where sharing reduces the count: a gate new on both sides. What compensates:
@@ -549,18 +553,22 @@ These results correct two statements made earlier in this record and in my repor
   is a matter of orientation" is wrong for such value sets; and "profitable sharing is the case where the
   part-by-part orientation exists but is not executable" is disproved (if G < 10m, no basis at all,
   executable or not, is free of double charges).
-- **Proved given the joint local lemma (unreviewed): the charge theorem has an order-free twin.** For
-  every cyclic system of the rotation model or of MixColumns, every basis T of triples and every family
-  J of pairwise non-adjacent sheets, at least 10|J| members of T occur (with odd multiplicity) in the
-  derivation of an output of J and have two members nonzero on the blocks of J. The joint local lemma
-  itself (section 11, Theorem 11.1) was re-derived independently in a form valid for non-executable
-  local systems. Consequently: the premises of the charge framework hold for all cyclic systems, so that
-  framework cannot prove more than the cyclic minimum (a statement about these premises). And applying
-  the charge count to every initial segment of a circuit adds nothing, because each such inequality is
-  indexed by a set of outputs and has an order-free twin.
+- **Proved given the joint local lemma (machine-reviewed; one gap repaired by the reviewer): the charge
+  inequality has an order-free twin.** For every cyclic system of the rotation model or of MixColumns,
+  every basis T of triples and every family J of pairwise non-adjacent sheets, at least 10|J| members of
+  T occur (with odd multiplicity) in the derivation of an output of J and have two members nonzero on
+  the blocks of J. (The report's one-line reason was false as stated; the repair chooses a row basis and
+  a column basis containing the outputs, `review-phase2/REVIEW.md`.) The joint local lemma itself
+  (section 11, Theorem 11.1) was re-derived independently in a form valid for non-executable local
+  systems, and that form is confirmed. What follows, in the reviewer's corrected wording: an argument
+  that uses ONLY these twin inequalities cannot exceed the cyclic minimum. The twin counts membership in
+  a derivation, not ancestry, and the two counts differ (three-position circuit: 12, 13, 14 by wires,
+  12, 12, 13 by derivations). Arguments that use ancestor structure are NOT covered: block-monotonicity
+  as defined for circuits, the cancellation lemmas of section 9, and the 83. "Block-monotone needs 80"
+  transfers only to a weaker, basis-dependent notion for cyclic systems.
   *Correction:* in an earlier report I called the charge theorem "genuinely causal" because it uses
-  ancestors. It is not: derivation-membership replaces ancestry. The 83 argument was not examined for a
-  twin.
+  ancestors. That was too strong: the 80-charge inequality has a twin without ancestry. Whether the
+  ancestor-based refinements have one is not known.
 - **Proved given the double-map report (unreviewed): L_cyc(D_T) = 3m iff delta(T) = 0 iff L(D_T) = 3m.**
   *Correction:* section 8 called the last step of double-map Theorem C "causal". It uses only that the
   leaf vectors sum to zero round the cycle; no gap between cyclic systems and circuits appears there.
@@ -576,8 +584,10 @@ These results correct two statements made earlier in this record and in my repor
 - **Still open:** two adjacent sheets (not bounded by 20); whether the cyclic minimum of any rotation
   model is below 10m or below its circuit minimum.
 
-**State of the causal question.** Nothing proved so far in this study needs the gate order: the 75
-argument (audited), the charge theorem and the family theorem all have order-free forms. The only
-places where order is used and not yet shown removable are the last step of L(M2) = 26 (for partitions
-other than the natural one) and the 83 argument (not examined). Whether order can yield a bound that
-fails for cyclic systems of MixColumns-like maps is open.
+**State of the causal question (after review).** The 75 argument (audited), the 80-charge inequality and
+the family theorem have order-free forms. Not shown to have one: the block-monotone bounds as stated for
+circuits (they use ancestors), the 83 argument, the cancellation lemmas, and the last step of
+L(M2) = 26 for partitions other than the natural one. Initial segments of a circuit give no new charge
+inequalities; whether the corresponding statements for adjacent sheets have order-free twins is open,
+because the local-system minimum is not known to equal the local-circuit minimum there. Whether order
+can yield a bound that fails for cyclic systems of MixColumns-like maps is open.

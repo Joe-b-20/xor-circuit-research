@@ -104,9 +104,11 @@ proof replaces it):**
    - For three positions, where every pair of windows overlaps, it gains 2 gates.
    - Open: sheets whose windows overlap, starting with two adjacent sheets (is the minimum 20?), then
      chains, then the ring and the triangles of MixColumns.
-   - The charge framework does not use gate order: it has an order-free twin valid for all cyclic
-     systems (RECORD 13, unreviewed). So it cannot exceed the cyclic minimum, and the wiring of the
-     recorded best circuits is unique, so their sharing is a property of the value set.
+   - The 80-charge inequality has an order-free twin valid for all cyclic systems, with membership in
+     a derivation in place of ancestry (RECORD 13, machine-reviewed). An argument using only those
+     inequalities cannot exceed the cyclic minimum. The ancestor-based refinements (block-monotone
+     bounds as stated, the 83) are not covered by this. The wiring of the recorded best circuits is
+     unique, so their sharing is a property of the value set.
 2. **Two joint local problems** (sheets 0, 1 with position 7 free: between 20 and 22; sheets 7, 3, 4 with
    positions 6 and 2 free: between 33 and 36), kept as test cases for arguments about shared costs.
 3. **Is the cyclic minimum of MixColumns 88?**

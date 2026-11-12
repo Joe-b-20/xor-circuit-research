@@ -10,6 +10,12 @@ verified).
 Model: A acts on input set X, B on input set Y, A + B block-diagonal; L = least number of 2-input XOR
 gates, unbounded depth and fan-out, cancellation allowed.
 
+**Review (`../review-phase2/REVIEW.md`).** Section 2 is confirmed (Theorem 2's proof, missing here, is
+supplied in the review; Lemma 3(c) needs one extra sentence). Literature: the two Jukna notes and Find
+et al. were confirmed from the pages; the first note credits only "Igor" (the attribution to Sergeev is
+an inference) and does not itself say "unbounded depth" (that follows from the depth-2 additivity in
+the second note).
+
 ## 0. Summary
 
 **Known.** L(A + B) = L(A) + L(B) is **false** for XOR circuits of unbounded depth, but only

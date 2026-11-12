@@ -5,6 +5,17 @@ final message. Machine work, no human review, nothing formalised, and no second 
 SAT and no search over circuits or systems; scripts inspect recorded circuits or test proved statements
 on designed objects, which proves nothing universal. Status words as in ../README.md.
 
+**Corrections from the independent review (`../review-phase2/REVIEW.md`), to be read with the text.**
+Theorem 3.2 is correct but its one-line reason is false as stated; the repair (a row basis of Lam_J and a
+column basis containing the outputs) is in the review. "The premises of the charge framework hold for
+all cyclic systems" and "block-monotone cyclic systems need 80" are overstated: what is proved is a twin
+inequality with derivation-membership in place of ancestry, and 80 for dual-block-monotone BASED systems;
+arguments using ancestor structure are not covered. "For m = 3 it is vacuous" (3.5(c)) is wrong. "Each
+has an order-free twin" (5.2) holds only where the local-system and local-circuit minima are known to
+agree. "Theorem 3.4 shows the Q_3 mechanism needs all sheets pairwise adjacent" (section 6) is
+overstated. Lemma 1.1, Lemma 2.3, Theorem 2.4, Corollary 3.5(a)(b), Proposition 4.1 and the rigidity
+counts are confirmed.
+
 ## 0. Conventions
 
 E is the set of inputs; S contains E and consists of distinct nonzero vectors; P(S) is the set of its

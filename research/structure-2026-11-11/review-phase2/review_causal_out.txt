@@ -1,0 +1,44 @@
+== q3_28.txt: n=12 G=28 |S|-n=28 collinear triples=28 (gate triples are 28 of them)
+   T_o equals odd-path-parity set for every output: True
+   block-monotone: False
+   wire charges |D_j| = [12, 13, 14] sum 39; #mu=2: 11, #mu>=3: 0
+   dual charges |Lam_j| = [12, 12, 13] sum 37
+   families tested: 3; naive projection (Lam_J x U') not square-invertible for 0: []
+   OUT(1,2) = [1:0110 2:1011]; triples of S containing it:
+      ['g14[0:1100 2:1011]', 'g15[0:1100 1:0110]', 'g18[1:0110 2:1011]']
+   lemma 2.3 on repaired local system, J = (0,) {'K0': 12, 'K': 12, 'tau': 6, 'r': 4, 'Sstar': 10, 'n3': 6, 'formula': 6, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 12, 'quads': 1, 'quad_le2': True, 'I': 1, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 4}
+   lemma 2.3 on repaired local system, J = (1,) {'K0': 12, 'K': 12, 'tau': 6, 'r': 4, 'Sstar': 10, 'n3': 6, 'formula': 6, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 12, 'quads': 1, 'quad_le2': True, 'I': 1, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 4}
+   lemma 2.3 on repaired local system, J = (2,) {'K0': 13, 'K': 13, 'tau': 7, 'r': 4, 'Sstar': 10, 'n3': 6, 'formula': 6, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 13, 'quads': 1, 'quad_le2': True, 'I': 1, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 4}
+   random cyclic systems from Q3 28: {'systems': 956, 'nonexec': 28, 'lam_viol': 0, 'naive_bad': 33, 'naive_bad_nonexec': 23, 'rep_fail': 0, 'l23_fail': 0, 'l23_runs': 359}; first non-executable naive failure: ((0,), 14, 15, 14)
+== q4_40.txt: n=16 G=40 |S|-n=40 collinear triples=40 (gate triples are 40 of them)
+   T_o equals odd-path-parity set for every output: True
+   block-monotone: True
+   wire charges |D_j| = [10, 10, 10, 10] sum 40; #mu=2: 0, #mu>=3: 0
+   dual charges |Lam_j| = [10, 10, 10, 10] sum 40
+   families tested: 6; naive projection (Lam_J x U') not square-invertible for 0: []
+   lemma 2.3, J = (0, 2) {'K0': 20, 'K': 20, 'tau': 6, 'r': 8, 'Sstar': 22, 'n3': 14, 'formula': 14, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 20, 'quads': 2, 'quad_le2': True, 'I': 0, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 8}
+   lemma 2.3, J = (1, 3) {'K0': 20, 'K': 20, 'tau': 6, 'r': 8, 'Sstar': 22, 'n3': 14, 'formula': 14, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 20, 'quads': 2, 'quad_le2': True, 'I': 0, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 8}
+== q8_80.txt: n=32 G=80 |S|-n=80 collinear triples=80 (gate triples are 80 of them)
+   T_o equals odd-path-parity set for every output: True
+   block-monotone: True
+   wire charges |D_j| = [10, 10, 10, 10, 10, 10, 10, 10] sum 80; #mu=2: 0, #mu>=3: 0
+   dual charges |Lam_j| = [10, 10, 10, 10, 10, 10, 10, 10] sum 80
+   families tested: 46; naive projection (Lam_J x U') not square-invertible for 0: []
+MixColumns: adjacency supports [{0, 7}, {0, 1, 7}, {1, 2}, {2, 3, 7}, {3, 4, 7}, {4, 5}, {5, 6}, {6, 7}]; independent families (nonempty): 37; largest: [(0, 2, 4, 6)]
+== aes-mixcolumns-xor88-depth5.circ.txt: n=32 G=88 |S|-n=88 collinear triples=88 (gate triples are 88 of them)
+   T_o equals odd-path-parity set for every output: True
+   block-monotone: True
+   wire charges |D_j| = [11, 11, 10, 13, 10, 10, 10, 10] sum 85; #mu=2: 0, #mu>=3: 0
+   dual charges |Lam_j| = [11, 11, 10, 13, 10, 10, 10, 10] sum 85
+   families tested: 37; naive projection (Lam_J x U') not square-invertible for 0: []
+   lemma 2.3, J = (0, 2, 4, 6) {'K0': 41, 'K': 41, 'tau': 13, 'r': 16, 'Sstar': 44, 'n3': 28, 'formula': 28, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 41, 'quads': 4, 'quad_le2': True, 'I': 0, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 16}
+   lemma 2.3, J = (1, 3, 5) {'K0': 34, 'K': 34, 'tau': 14, 'r': 12, 'Sstar': 32, 'n3': 20, 'formula': 20, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 34, 'quads': 3, 'quad_le2': True, 'I': 1, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 12}
+   lemma 2.3, J = (1, 4, 6) {'K0': 31, 'K': 31, 'tau': 10, 'r': 12, 'Sstar': 33, 'n3': 21, 'formula': 21, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 31, 'quads': 3, 'quad_le2': True, 'I': 0, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 12}
+   lemma 2.3, J = (7,) {'K0': 10, 'K': 10, 'tau': 3, 'r': 4, 'Sstar': 11, 'n3': 7, 'formula': 7, 'cyclic': True, 'c1': True, 'c2': True, 'c3': True, 'pcheck': True, 'lam': 10, 'quads': 1, 'quad_le2': True, 'I': 0, 'a_ok': True, 'b_ok': True, 'ten': True, 'dual_targets': 4}
+   random cyclic systems from MC 88: {'systems': 304, 'nonexec': 0, 'lam_viol': 0, 'naive_bad': 10, 'naive_bad_nonexec': 0, 'rep_fail': 0, 'l23_fail': 0, 'l23_runs': 142}; first non-executable naive failure: None
+== aes-mixcolumns-xor89-depth4.circ.txt: n=32 G=89 |S|-n=89 collinear triples=91 (gate triples are 89 of them)
+   T_o equals odd-path-parity set for every output: True
+   block-monotone: True
+   wire charges |D_j| = [10, 12, 10, 13, 11, 10, 10, 10] sum 86; #mu=2: 0, #mu>=3: 0
+   dual charges |Lam_j| = [10, 12, 10, 13, 11, 10, 10, 10] sum 86
+   families tested: 37; naive projection (Lam_J x U') not square-invertible for 0: []
