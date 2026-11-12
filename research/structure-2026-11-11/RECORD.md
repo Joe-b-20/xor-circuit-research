@@ -465,7 +465,9 @@ faults in the remarks after the proof, all repaired. The reviewer also tested th
 **Conditional by-product (reviewer).** The joint problem of sheets 0 and 1 is at least 21 for
 block-monotone circuits, conditional on one finite fact that is so far only SAT-checked without
 certificate (a sheet circuit containing three diagonal gates [0: sigma] + [7: sigma], sigma over a basis
-of the even space, has at least 11 gates). Not used anywhere.
+of the even space, has at least 11 gates). Not used anywhere. *Update, same day:* that fact now has a
+hand proof and the statement is unconditional (section 17, where it gives 84 for block-monotone
+circuits).
 
 ## 11. Sheets with disjoint windows cannot share at a net gain (`sharing/INDEPENDENT-SHEETS.md`; main agent; independently machine-reviewed)
 
@@ -723,3 +725,41 @@ had eight prescribed vectors and eight gates, hence no freedom. One level up tha
 it with one unit less slack: this is the gate lost per level. A closed induction seems to need a
 statement with a condition at both ends of the chain. No circuit below 30 is known; 600 perturbed
 chain circuits and all recorded ones have 30 (a test, not a proof).
+
+## 17. Sheets 0 and 1 of MixColumns with block 7 free: a test case (`joint01/REPORT.md`; delegated; machine-reviewed, `joint01/review/REVIEW.md`)
+
+The joint local problem J_01 of section 9. In the mirror it differs from the pair problem of section 15
+only in the exports, which must span a space containing the diagonal {(e | e) : e even} instead of
+Even + 0 (proved; checked against the MixColumns matrix by the reviewer).
+
+**Theorem 17.1 (proved by hand, given section 15; reviewed).** J_01 >= 20 for all circuits: the pair
+proof uses the exports only through f + tau >= 10 and tau >= 3.
+
+**Theorem 17.2 (proved by hand; reviewed, stands with small repairs to the wording).** A sheet circuit
+(own units w, the other group free) that contains the four targets and three independent diagonal
+vectors has at least 11 gates. This replaces the finite fact that section 10 quoted as checked by SAT
+only. *Plain reason:* neither a target nor a diagonal vector is the sum of two inputs or targets, so
+each of the seven required vectors reads an auxiliary gate; an auxiliary gate has at most one way to
+serve a required vector together with an input or another required vector, and a pure pair-sum has
+none; ten gates leave three auxiliary gates, which cannot serve seven. Whether the true value is 11 or
+12 is open.
+
+**Theorem 17.3 (proved by hand given 17.2; reviewed, with four implicit steps written out in the
+review).** J_01 >= 21 for local circuits in which no ancestor of a sheet-0 target is nonzero on sheet
+1's own block. Block-monotone circuits, restricted to blocks 7, 0, 1, satisfy this.
+*Plain reason:* the gates on sheet 1's block and the ancestors of sheet 0 are disjoint sets of at least
+ten gates. If sheet 1 uses exactly ten, the vectors it borrows are three independent diagonal vectors
+that are gates off its block; either they are all ancestors of sheet 0, whose circuit then has eleven
+gates by 17.2, or one of them is a twenty-first gate.
+
+**Corollary 17.4 (block-monotone circuits; proved given 17.3 and the decomposition of section 9).**
+Every block-monotone MixColumns circuit has at least 30 + 21 + 33 = 84 gates (previously 83). This is a
+statement about a restricted class; it says nothing about circuits that cancel a whole block
+component, and the public bound for all circuits stays 75.
+
+**Open.** For arbitrary circuits 20 is not excluded: after the review's corrections the remaining
+configurations for K = 20 are (tau, f, D, N_0) = (3,7,4,6), (3,7,5,5), (3,8,4,5), (4,6,5,5), and
+(3,8,5,4), (3,7,6,4), (4,6,6,4) with exactly four entries. All contain an exit or a triple-sum built
+from a single even vector. Upper bound 22 (two different known shapes: four exports and four entries,
+or three exports and five entries). The values 20..22 here, like 33..36 for sheets 7, 3, 4, remain
+test cases; they do not establish an unavoidable overhead for the reduction terms.

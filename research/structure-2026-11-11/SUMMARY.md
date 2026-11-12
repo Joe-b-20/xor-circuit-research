@@ -40,7 +40,8 @@ A circuit for MixColumns can be looked at in three ways, and each way sees a dif
    cancellation-free circuits) need at least 80 by this count, and at least 83 by an augmented count
    that adds, for one sheet with a reduction term, the gates living on its two neighbouring positions
    (RECORD 9). The 80 and the 83 are different arguments: a statement about the 80 charges does not
-   automatically cover the augmented family.
+   automatically cover the augmented family. Since 2026-11-12 the same decomposition gives 84 for
+   block-monotone circuits, because sheets 0 and 1 together need 21 gates in that class (RECORD 17).
 
 The recorded 88 has, as a total, 8 gates more than the 80-gate circuits of the rotation-invariant model
 without the three field-reduction terms; adding the terms one at a time gave 82, 85, 88 in short
@@ -69,6 +70,11 @@ heuristic runs. These are observed totals. They do not establish an unavoidable 
   three-term sheet costs at least 13, also by hand); a sheet with nothing free costs exactly 12.
 - Sheets with pairwise disjoint windows cannot share at a net gain: in every circuit, any such family
   of r sheets is served by at least 10r gates, even if single gates serve several of them (RECORD 11).
+- Sheets 0 and 1 of MixColumns with position 7 free (RECORD 17; delegated, machine-reviewed): at least
+  20 gates in every circuit; at least 21 when nothing feeding sheet 0 touches sheet 1's own position,
+  which holds in block-monotone circuits. Hence every block-monotone MixColumns circuit has at least
+  84 gates (30 + 21 + 33; previously 83). A restricted class; the bound for all circuits stays 75. The
+  eleven-gate lemma this rests on, formerly only computed, is now proved by hand.
 - Two adjacent sheets cannot share at a net gain either: with the first neighbour free, the pair needs
   20 gates in every circuit (RECORD 15; by hand, machine-reviewed). For MixColumns this covers the pairs
   (1,2) to (7,0), not the pair (0,1).
@@ -95,7 +101,8 @@ proof replaces it):**
 - "All known 88s avoid cross-position cancellation": 77 % of the public corpus contain a gate that
   cancels a whole position. All circuits of that corpus have 88 gates with or without such a gate;
   this shows that those circuits gain nothing from it, not that nothing can be gained.
-- "An 87 cannot be block-monotone" (an over-reading of the 83 bound: only 82 and below are excluded).
+- "An 87 cannot be block-monotone" (an over-reading of the 83 bound; with RECORD 17 the excluded range
+  is 83 and below, still not 87).
 
 ## The open questions that now carry the problem
 
@@ -126,8 +133,9 @@ proof replaces it):**
      inequalities cannot exceed the cyclic minimum. The ancestor-based refinements (block-monotone
      bounds as stated, the 83) are not covered by this. The wiring of the recorded best circuits is
      unique, so their sharing is a property of the value set.
-2. **Two joint local problems** (sheets 0, 1 with position 7 free: between 20 and 22; sheets 7, 3, 4 with
-   positions 6 and 2 free: between 33 and 36), kept as test cases for arguments about shared costs.
+2. **Two joint local problems** (sheets 0, 1 with position 7 free: between 20 and 22 for all circuits,
+   21 or 22 for block-monotone ones; sheets 7, 3, 4 with positions 6 and 2 free: between 33 and 36),
+   kept as test cases for arguments about shared costs.
 3. **Is the cyclic minimum of MixColumns 88?**
 4. (Closed 2026-11-12: the tenth gate of the local lemma is proved by hand, RECORD 10.)
 

@@ -10,14 +10,25 @@ central example, and obtain arguments that cover whole families of circuits by o
 - `SUMMARY.md`: a short reader's guide: the picture, results by status, the open questions.
 - `RECORD.md`: the research record. Proved statements, conjectures, counterexamples, failed ideas
   and unresolved dependencies, kept apart, each with its status.
+- `SHARING.md`: the second phase (from 2026-11-12) in one place: when sharing intermediate values
+  between sheets can and cannot reduce the size, what compensates, and what is open.
 - `tools/`: small standard-library scripts that examine recorded circuits or check algebra. They
   search nothing and prove nothing by themselves.
+- Hand proofs by the main agent, each with its review: `tenth-gate/` (the ten-gate sheet lemma),
+  `sharing/INDEPENDENT-SHEETS.md` (sheets with disjoint windows), `pair/` (two adjacent sheets need
+  twenty gates).
 - One sub-directory per delegated investigation, each with its own `REPORT.md` and scripts:
   `restriction/` (restriction, gate elimination, connectivity, literature), `cyclic/` (cyclic systems
   versus circuits, audit of the published proof), `rotation/` (the rotation model, the charge theorem,
-  `REPORT-PART2.md` for MixColumns), `double-map/` (the two-point quotient).
-- `review-record/`, `review-cyclic/`, `review-charges/`, `review-83/`: independent machine reviews,
-  each by a model instance that did not write the reviewed text.
+  `REPORT-PART2.md` for MixColumns), `double-map/` (the two-point quotient), `direct-sum/` (sharing
+  between unrelated parts, literature), `causal/` (does the order of gates enter), `sharing/`
+  (overlapping windows, the three-position circuit), `chain/` (chains of adjacent sheets), `joint01/`
+  (MixColumns sheets 0 and 1 with block 7 free, a test case).
+- `review-record/`, `review-cyclic/`, `review-charges/`, `review-83/`, `review-phase2/`, `review-pair/`,
+  and the `review/` sub-directories: independent machine reviews, each by a model instance that did not
+  write the reviewed text.
+- In the second phase no SAT and no exhaustive computation was run; programs only evaluate given
+  circuits, check small algebraic lemmas, or test inequalities on recorded and perturbed circuits.
 
 Status words used throughout: **proved** (complete argument written here), **conditional** (proved
 given a named hypothesis), **conjectured**, **observed** (seen on recorded circuits or small cases;
