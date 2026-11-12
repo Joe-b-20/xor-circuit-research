@@ -222,11 +222,12 @@ The theorem for the rotation model is the delegated investigator's (rotation/REP
 MixColumns version and its proof as written here are the main agent's. Independently machine-reviewed
 (`review-charges/`); the corrections of that review are applied below.
 
-**Dependency.** Everything in this section and in section 9 is **computer-assisted**: it rests on the
-ten-gate local lemma, which is established by finite computation. By hand alone only 9 gates are
-proved; with 9 in place of 10 the same arguments give 72 charges, 12 for the three-term sheet of
-section 9 and 75 (not 83) for block-monotone circuits. A hand proof of the tenth gate is proposed in
-`tenth-gate/PROOF.md` (section 10) and is under review; the status here changes only if that survives.
+**Dependency.** Everything in this section and in section 9 rests on the ten-gate local lemma. Until
+2026-11-12 that lemma was established only by finite computation (four programs), and these sections
+were computer-assisted. It now has a hand proof (`tenth-gate/PROOF.md`, section 10), confirmed by an
+independent machine review; a second, different hand proof is the case r = 1 of section 11. With it the
+charge theorem, the 80 and the 83 for block-monotone circuits no longer depend on any computation; they
+depend on PROOF Lemma 3.1 (transposition) and Lemmas 2.1-2.2 (partition), and on machine review only.
 
 **Local lemma (computer-checked, 8 inputs).** Let blocks a and b have four inputs each. Suppose the four
 unit vectors of b and every vector supported on a (zero included) are available at no cost. Then any
@@ -429,3 +430,72 @@ gates. It does not exclude a block-monotone 87; that would follow from the conje
 circuits that are not block-monotone nothing beyond the published 75 is proved. The corpus shows that
 the search already produces such circuits in three shapes (a gate outside every sheet support; the
 triangle {1,2,7}; an exit onto two blocks) and that none of them has yet gained a gate.
+
+## 10. The ten-gate lemma by hand (`tenth-gate/PROOF.md`; main agent; independently machine-reviewed)
+
+**Statement.** As in section 7: with the units of block b and all vectors of block a free, computing
+the four vectors (E_c on b) + (s_c on a) takes at least 10 gates.
+
+**Why six plus three cannot be attained.** By hand it was known that the parts on b need 6 gates and the
+parts on a need 3 "entry" gates (gates that add a free vector). The two requirements are not
+independent. Mirror the circuit (transpose it, PROOF Lemma 3.1): the non-entry gates become a circuit T
+on four inputs that computes the four triple-sums of its inputs, with exactly K - tau gates, and each
+entry gate leaves a trace in T, namely a signal of T whose mask is the set of targets that entry
+influences. Because the s_c have rank 3 with the single relation "all four sum to zero", these traces
+must span all even-weight vectors. With three entries the traces are three independent even vectors,
+hence three gates of T besides the four outputs (inputs and outputs are odd): |T| >= 7 and K >= 10. With
+four or more entries, K >= 6 + 4. A six-gate T has only two signals besides its outputs.
+
+**Status.** Proved; the review found every step sound, one small gap (a degenerate first gate) and three
+faults in the remarks after the proof, all repaired. The reviewer also tested the intermediate claims on
+1,600 constructed circuits containing every degenerate case (a test, not a proof).
+
+**By-products (proved by the same mirror).**
+- A sheet with nothing free costs exactly 12 gates (its transpose has 8 distinct non-input outputs on 4
+  inputs, and the transposition count adds 4). The earlier computation had shown only "at least 11".
+- The three-term sheet costs at least 13 (Theorem 9.1) directly, without the ten-gate lemma: there must
+  be three entries on each of the two free sides, so tau >= 6, and with exactly six the three traces of
+  one side are three even gates of the mirror.
+- General form: for targets (p_c | q_c), c = 1..r, with the units of a block B as base and a free side,
+  the least number of gates is min(|T| + tau) + |B| - r, where T computes the columns of P on r inputs
+  and tau of its signals span the column space of Q. (My first statement of this omitted |B| - r and was
+  false; the reviewer gave the counterexample.)
+
+**Conditional by-product (reviewer).** The joint problem of sheets 0 and 1 is at least 21 for
+block-monotone circuits, conditional on one finite fact that is so far only SAT-checked without
+certificate (a sheet circuit containing three diagonal gates [0: sigma] + [7: sigma], sigma over a basis
+of the even space, has at least 11 gates). Not used anywhere.
+
+## 11. Sheets with disjoint windows cannot share at a net gain (`sharing/INDEPENDENT-SHEETS.md`; main agent; independently machine-reviewed)
+
+**Theorem 11.1 (local).** Take r sheets with own blocks b_1..b_r and a common free part (every vector
+supported on it is free, including vectors meeting several of its blocks), with targets
+(E_c on b_j) + (a free part), where the free parts admit no vanishing sum other than unions of whole
+groups of four. Any local circuit containing the 4r targets has at least 10r gates.
+
+**Theorem 11.2 (all circuits).** In any circuit for the rotation model or for MixColumns, let J be a set
+of sheets whose windows {j-1, j} are pairwise disjoint and none of whose outputs has a part on the own
+block of another sheet of J. Then at least 10|J| gates are ancestors of an output of J and nonzero on
+the own block of some sheet of J.
+
+**What is counted, where sharing reduces the count, and why compensation appears.** The count is the set
+of gates serving the family; a gate that serves several sheets of J is counted once. In the mirror the
+family becomes one circuit T computing r independent groups of four triple-sums, and each entry is a
+signal of T. Sharing shows up in T as blocks of the parity partition that are larger than "two per
+group" or that join groups; each such merging saves gates of T but, through the partition lemma, forces
+either more odd+odd gates or more entries: with c blocks, and kappa components of the graph of split
+groups, |T| >= 8r - c and tau >= 3r + kappa, while c <= r + kappa always. The sum is at least 10r.
+
+**Scope.** All circuits; no monotonicity; no computation. It applies only to sheets with disjoint
+windows. For the rotation model with an even number m of positions: the even sheets need 5m gates and
+the odd sheets 5m, and a circuit with fewer than 10m gates must contain gates lying in both sets. For
+three positions the theorem is empty, as it must be. For MixColumns: at least 40 gates serve sheets
+0, 2, 4, 6, at least 30 serve sheets 1, 3, 5, at least 10 serve sheet 7; the three sets can overlap, so
+this is not a total, and it concerns the 80 charges, not the augmented 83.
+
+**Observed (reviewer, read-only).** On the three recorded circuits, 18,938 corpus circuits and the
+recorded Q_8 circuits no family count is below 10|J|; the corpus contains no gate serving two sheets of
+one family, so it does not exercise the theorem.
+
+**What remains.** Sharing between sheets whose windows overlap. Smallest case: two adjacent sheets with
+the first neighbour free. Whether its minimum is 20 for all local circuits is open.

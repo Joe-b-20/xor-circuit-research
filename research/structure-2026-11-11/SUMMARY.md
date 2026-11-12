@@ -31,7 +31,9 @@ A circuit for MixColumns can be looked at in three ways, and each way sees a dif
 3. **As eight sheets, one per bit position.** Output (c, j) is "the other three inputs of position
    j" plus "the adjacent pair c, c+1 of position j-1", plus the same pair at position 7 for j = 1, 3, 4
    (RECORD 3). Setting all inputs outside two adjacent positions to zero leaves a single sheet with its
-   neighbour free, and that costs 10 gates. So every circuit has, for each sheet, 10 gates on that
+   neighbour free, and that costs 10 gates (proved by hand: mirrored, each "entry" from the neighbour
+   must appear as an even signal of a circuit for four triple-sums, and six gates leave room for only
+   two). So every circuit has, for each sheet, 10 gates on that
    sheet's own position that are ancestors of its outputs: 80 charges in all (RECORD 7). A circuit with
    fewer than 80 gates must use one gate for two sheets ("double service"). Circuits that never carry a
    whole-position component which is later cancelled (block-monotone circuits; the class contains all
@@ -59,17 +61,19 @@ heuristic runs. These are observed totals. They do not establish an unavoidable 
   without this the statements fail, e.g. T = 0 is the identity map with no gates): L >= 3m; zero extra
   cost iff T is a sum of arc blocks; helper-free circuits need 3m + delta gates (RECORD 8).
 - Rotation model: L(Q_m) <= 10m for m >= 4; all-circuit lower bound 7m - 1 + ceil(16m/11) (rotation/).
-- A sheet with nothing free costs exactly 12 (by transposition; tenth-gate/PROOF.md, under review).
+- The ten-gate sheet lemma, by hand (RECORD 10; two different proofs, both machine-reviewed). Until
+  2026-11-12 it rested on finite computation; it no longer does. Consequently, with no computation:
+  the charge theorem (at least 10 charged gates per sheet in every MixColumns circuit, RECORD 7); every
+  block-monotone MixColumns circuit has at least 80 gates (RECORD 7) and at least 83 (RECORD 9; the
+  three-term sheet costs at least 13, also by hand); a sheet with nothing free costs exactly 12.
+- Sheets with pairwise disjoint windows cannot share at a net gain: in every circuit, any such family
+  of r sheets is served by at least 10r gates, even if single gates serve several of them (RECORD 11).
 
 **Computer-assisted (each rests on a finite computation, named in the record, until a mathematical
 proof replaces it):**
-- The ten-gate sheet lemma (exhaustive search certificate `review-charges/lemma_exh.c`, plus SAT runs).
-  A hand proof is proposed in `tenth-gate/PROOF.md` and is under independent review; until that review
-  is in, the lemma and everything below it stay computer-assisted. By hand alone only 9 is established,
-  which would give 12 for the three-term sheet and 75 for block-monotone circuits.
-- Charge theorem: at least 10 charged gates per sheet in every MixColumns circuit (RECORD 7).
-- Every block-monotone MixColumns circuit has at least 80 gates (RECORD 7) and at least 83 (RECORD 9).
 - L(M2) = 26 for the half-size quotient of MixColumns (RECORD 8).
+- The upper bounds and "no period-1 scheme" statements for the rotation model (rotation/).
+- The published 75 itself (finite facts and certificates of the published proof; unchanged here).
 
 **Conditional:** the published argument proves L_cyc(MixColumns) >= 75 and hence L(InvMixColumns) >= 75
 (conditional on the published proof; audit machine-reviewed with three repaired gaps).
@@ -92,12 +96,14 @@ proof replaces it):**
 ## The open questions that now carry the problem
 
 1. **Double service.** When can sharing intermediate values across parts of a linear map reduce the
-   size, and what forces a compensating cost? The three-position rotation model shows it can help.
-   For MixColumns and for four or more positions nothing is decided.
+   size, and what forces a compensating cost? Settled for parts with disjoint windows: never a net gain
+   (RECORD 11). The three-position rotation model shows it can help when every pair of windows
+   overlaps. Open: sharing between sheets whose windows overlap, starting with two adjacent sheets
+   (is the minimum 20?), then chains, then the rings and triangles of MixColumns.
 2. **Two joint local problems** (sheets 0, 1 with position 7 free: between 20 and 22; sheets 7, 3, 4 with
    positions 6 and 2 free: between 33 and 36), kept as test cases for arguments about shared costs.
 3. **Is the cyclic minimum of MixColumns 88?**
-4. **The tenth gate of the local lemma by hand** (proposed proof under review).
+4. (Closed 2026-11-12: the tenth gate of the local lemma is proved by hand, RECORD 10.)
 
 ## Computation actually performed in this study
 

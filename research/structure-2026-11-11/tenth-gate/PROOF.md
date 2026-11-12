@@ -1,8 +1,9 @@
 # The ten-gate sheet lemma by hand
 
-Main agent, 2026-11-12. Status: **proposed proof, under independent machine review** (see the end of
-this file for the review outcome when available). It is meant to replace the computer check that
-`RECORD.md` section 7 and everything depending on it (Theorems 7.1, 7.2, 9.1, 9.2) currently rest on.
+Main agent, 2026-11-12. Status: **proved by hand; confirmed by an independent machine review**
+(`review/REVIEW.md`: every step sound; one small gap in Step 4 and three faults in the remarks after the
+proof, all repaired below). Not a human review and not a formal verification. It replaces the computer
+check that `RECORD.md` section 7 and everything depending on it (Theorems 7.1, 7.2, 9.1, 9.2) rested on.
 
 ## Statement
 
@@ -71,10 +72,13 @@ the tau vectors zeta_i.
 **Step 4 (six gates leave room for two even signals).** The inputs of T have weight 1 and the E_c(w)
 weight 3, all odd; the E_c(w) are four distinct non-input vectors, so four distinct gates of T carry
 them. *T has at least 6 gates:* an odd vector is the sum of an odd and an even vector, and every even
-signal of T is a gate, so T has an even gate; suppose it has only five gates, i.e. exactly one even gate
-v besides the four E_c(w). The first gate of T adds two inputs, so v = w_i + w_j. Each E_c(w) is v plus an
-odd signal. Adding an input w_k gives the two triple-sums that contain both i and j. The other two,
-E_i(w) and E_j(w), differ by v, so each would have to be made from the other: impossible.
+signal of T is a gate, so T has an even gate; suppose it has only five gates, i.e. exactly one further
+gate v besides the four carrying the E_c(w), and v is even. The first gate of T adds two inputs; its
+value has weight 2 or 0, so it is v. If v = 0 (the same input twice), every E_c(w) is the sum of v and an
+odd signal, i.e. a copy of an earlier odd signal, and the first one built would equal an input:
+impossible. So v = w_i + w_j with i != j. Each E_c(w) is v plus an odd signal. Adding an input w_k gives
+the two triple-sums that contain both i and j. The other two, E_i(w) and E_j(w), differ by v, so each
+would have to be made from the other: impossible.
 
 **Step 5 (count).**
 - tau >= 4: K = (K - tau) + tau >= 6 + 4 = 10.
@@ -83,30 +87,44 @@ E_i(w) and E_j(w), differ by v, so each would have to be made from the other: im
   3 + 4 = 7 gates and K >= 7 + 3 = 10.
 - tau <= 2 is excluded by (*).  QED
 
-Both cases are attained: the recorded 10-gate schemes have 3 entries and 7 mirrored gates.
+Both cases are attained: the recorded 10-gate schemes have 3 entries and 7 mirrored gates; six gates
+for the E_c on block b followed by four entries adding the s_c have 4 entries and 6 mirrored gates.
 
 ## What the proof shows about the earlier "6 + 3" count
 
 The hand count "six gates for the b-parts, three entries for the a-parts" treats the two requirements as
 independent. They are not: with three entries, each entry must influence an even set of targets, and
-those three sets must be visible as signals of the mirrored circuit. A six-gate mirrored circuit is
-rigid (four outputs and two pair-sums), and two pair-sums cannot be three independent even vectors.
+those three sets must be visible as signals of the mirrored circuit. A six-gate mirrored circuit has
+only two signals besides its four outputs, so at most two even signals, and two even vectors cannot be
+three independent ones. (It need not consist of two pair-sums: w0+w1 and the sum of all four also occur.)
 
-## A general form (same proof)
+## A general form (same proof; corrected after review)
 
 **Duality lemma (free side).** Let the targets be t_c = (p_c | q_c), c = 1..r, with p_c in F_2^B (a block
-whose unit vectors are base signals) and q_c in F_2^A (a block all of whose vectors are free). Let P be
-the r x |B| matrix of the p_c (no zero column) and Q the r x |A| matrix of the q_c. Then the least number
-of gates of a local circuit containing the targets equals the least value of
+whose unit vectors are base signals) and q_c in F_2^A (a part all of whose vectors are free). Let P be
+the r x |B| matrix of the p_c, with no zero row and no zero column, and Q the r x |A| matrix of the q_c.
+Then the least number of gates of a local circuit containing the targets is
 
-    (number of gates of T) + tau
+    min ( |T| + tau )  +  |B| - r,
 
-over circuits T on r inputs w_1..w_r that compute the columns of P (as vectors over the w) and lists
-zeta_1..zeta_tau of masks of signals of T whose span contains the row space... more precisely the
-orthogonal complement of the left kernel of Q.
+the minimum over circuits T on r inputs w_1..w_r that compute the columns of P (as vectors over the w)
+together with lists zeta_1..zeta_tau of masks of signals of T whose span contains the column space of Q
+(read as vectors over the w). Steps 0-3 above give ">=" (the count in Step 3 is
+(2K + r) - (|B| + tau + K) = K + r - |B| - tau; in the lemma |B| = r = 4); the reviewer notes that
+transposing T back gives "<=". The first version of this paragraph omitted the term |B| - r and was
+false (counterexample: |B| = 1, targets b0 + a0 and b0 + a1: two gates suffice, while |T| + tau >= 3).
 
-Only the inequality ">=" is proved above (Steps 0-3 use nothing about E and s); the reverse inequality
-is expected by transposing back but is not needed and not claimed here.
+**The three-term sheet by the same mirror (the reviewer's argument; I re-derived it).** Blocks a, k, b;
+vectors on a alone or on k alone are free, vectors meeting both are not; targets
+(E_c on b) + (s_c on a) + (s_c on k). Claim: at least 13 gates, with no appeal to the ten-gate lemma.
+Clean as in Step 0, but delete a gate with two free operands only when their sum is free; the remaining
+ones add a vector of a to a vector of k. Give every use of a free operand its own formal input z_i, and
+put i in I_a or I_k according to the block of that operand. Projecting the target equations to a
+involves only I_a, so the zeta_i with i in I_a span the even vectors, and likewise for I_k: |I_a| >= 3,
+|I_k| >= 3, tau >= 6. The mirror T has K - tau gates, computes the four triple-sums (at least 6 gates),
+and contains every zeta_i as a signal. If tau >= 7 then K >= 6 + 7. If tau = 6, the three zeta_i of I_a
+are independent even vectors, hence three gates of T besides the four outputs: |T| >= 7 and
+K >= 7 + 6. QED. (This is RECORD Theorem 9.1; the proof there used the ten-gate lemma as a black box.)
 
 **Corollary (a sheet with nothing free costs exactly 12; proved by hand).** The 8-input, 4-output map
 with rows (E_c | s_c) has no zero row or column, so its minimum is that of its transpose plus 8 - 4

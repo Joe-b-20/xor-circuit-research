@@ -1,7 +1,8 @@
 # Sheets with disjoint windows cannot share profitably
 
-Main agent, 2026-11-12. Status: **proposed theorem with a hand proof, under independent machine
-review.** No computer check is used. It contains a second, self-contained proof of the ten-gate sheet
+Main agent, 2026-11-12. Status: **proved by hand; confirmed by an independent machine review**
+(`../tenth-gate/review/REVIEW.md`, part B: every step sound, nothing to repair). Not a human review and
+not a formal verification. No computer check is used. It contains a second, self-contained proof of the ten-gate sheet
 lemma (the case r = 1), independent of `../tenth-gate/PROOF.md` Step 4.
 
 ## 1. Statement
@@ -127,7 +128,9 @@ family problem containing the 4r targets (each is nonzero on its own block). By 
 - For m = 3 no two sheets have disjoint windows, so the theorem is empty there, consistent with the
   28-gate circuit.
 - For MixColumns: at least 40 gates serve sheets 0, 2, 4, 6 (on blocks 0, 2, 4, 6), at least 30 serve
-  sheets 1, 3, 5 (on blocks 1, 3, 5), at least 10 serve sheet 7 (on block 7). This is the 80-charge count
-  regrouped so that inside each group no double counting occurs; it is not the augmented 83 argument.
+  sheets 1, 3, 5 (on blocks 1, 3, 5), at least 10 serve sheet 7 (on block 7). Inside each group nothing is
+  counted twice, but the three sets can overlap, so this is not a total of 80; and each set may contain
+  gates charged to no single sheet of its group. It concerns the original 80 charges, not the augmented
+  83 argument.
 - What remains is sharing between sheets whose windows overlap. The smallest instance is two adjacent
   sheets j, j+1 with block j-1 free ("the pair problem"): is its minimum 20?
