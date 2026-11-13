@@ -8,7 +8,7 @@ for the external comparison). Outputs go wherever `OUT` points.
 ```bash
 # majority of 3: every accepted move, circuits before/after each improvement
 python3 nonlinear/boolflux/cli.py run --target maj3 --model xag --objective a,cost --iters 3000 \
-    --seeds 1 --jobs 1 --out OUT/maj3 --set tracemoves=OUT/maj3/moves.txt
+    --seeds 1 --jobs 1 --out OUT/maj3 --set tracemoves=OUT/maj3/moves.txt --set skip_noop=0
 python3 nonlinear/boolflux/bench/show_trace.py OUT/maj3/moves.txt
 
 # AES: deterministic replay of a recorded job (NIST a36-ad4-g142-gd13 -> 131, seed 3; the job's config
@@ -21,8 +21,8 @@ python3 nonlinear/boolflux/cli.py run --target aes --model nist \
 python3 nonlinear/boolflux/bench/show_trace.py OUT/aes142/moves.txt
 ```
 
-(`skip_noop=0` reproduces the kernel the run was recorded with; the no-op filter changes the
-random trajectory.)
+(`skip_noop=0` reproduces the kernel both traces were recorded with; the no-op filter, on by
+default from commit 7ae20c8, changes the random trajectory.)
 
 ## Rebuild penalty
 

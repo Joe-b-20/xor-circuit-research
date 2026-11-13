@@ -60,8 +60,11 @@ def best_at(r, t, key='cost'):
 
 
 def med(xs):
-    xs = [x for x in xs if x is not None]
-    return round(st.median(xs), 1) if xs else '-'
+    """median over runs that have a value, with the count when some runs have none"""
+    n = len(xs); xs = [x for x in xs if x is not None]
+    if not xs: return '- (0/%d)' % n
+    v = round(st.median(xs), 1)
+    return v if len(xs) == n else '%s (%d/%d)' % (v, len(xs), n)
 
 
 def fmt_t(xs, n):
@@ -72,7 +75,9 @@ def fmt_t(xs, n):
 def linear(runs):
     print('## Linear maps: XORFlux v8 vs XOR-only BoolFlux (same start, same CPU, 120 s each)\n')
     print('Target = the repository\'s best known circuit at that cap (XORFlux records, hours of search).\n')
-    print('| map | cap | start | tool | final G (median, best, worst) | reach best known | reach best+2 | best-so-far median at 5/15/60/120 s | peak RSS MB | start-up s |')
+    print('Memory: XORFlux = its whole Python process; BoolFlux = C kernel / Python driver (measured from v3 on; '
+          'about 20 MB in the driver, review2 C1), so the whole-tool memory of both is of the same order.\n')
+    print('| map | cap | start | tool | final G (median, best, worst) | reach best known | reach best+2 | best-so-far median at 5/15/60/120 s | peak RSS MB (XORFlux: process; BoolFlux: kernel) | start-up s |')
     print('|---|---|---|---|---|---|---|---|---|---|')
     groups = defaultdict(list)
     for r in runs:
@@ -99,7 +104,7 @@ def linear(runs):
 
 def nonlinear(runs, prefix, title):
     print('## %s\n' % title)
-    print('| target | config | runs | target | final cost/G (median, best) | A median | reach target | best-so-far median at checkpoints | overhead s (start, skel, synth) | peak RSS MB |')
+    print('| target | config | runs | target | final cost/G (median, best) | A median | reach target | best-so-far median at checkpoints | overhead s (start, skel, synth) | peak RSS MB kernel / driver |')
     print('|---|---|---|---|---|---|---|---|---|---|')
     groups = defaultdict(list)
     for r in runs:
@@ -126,7 +131,8 @@ def nonlinear(runs, prefix, title):
         print('| %s | %s %s | %d%s | %s | %s, %s | %s | %s | %s | %s | %s |' % (
             tgt, cfg, ver, len(rs), (' (%d failed)' % len(errs)) if errs else '', desc,
             med([m['cost'] for m in fin]), min([m['cost'] for m in fin]) if fin else '-', med([m['A'] for m in fin]),
-            fmt_t(tt, len(rs)), curve, ov, med([r['peak_rss_kb'] / 1024 for r in rs])))
+            fmt_t(tt, len(rs)), curve, ov, '%s / %s' % (med([r['peak_rss_kb'] / 1024 for r in rs]),
+                                                          med([(r.get('driver_rss_kb') or 0) / 1024 or None for r in rs]))))
     print()
 
 

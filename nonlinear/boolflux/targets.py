@@ -85,6 +85,8 @@ def linear_map(name):
     output j = XOR of the inputs i with rows[j][i] = 1 (input i = x_i, msb first)."""
     toks = (REPO / 'circuits' / name / (name + '.mat.txt')).read_text().split()
     m, n = int(toks[1]), int(toks[2])
+    if len(toks) != 3 + m * n:
+        raise ValueError('%s: affine constant or extra data in the matrix file is not supported' % name)
     bits = [int(t) for t in toks[3:3 + m * n]]
     return n, m, [bits[j * n:(j + 1) * n] for j in range(m)]
 

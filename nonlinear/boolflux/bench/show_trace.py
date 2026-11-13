@@ -65,13 +65,13 @@ def main():
             if op in nl: oa.setdefault(out, []).append(ops_)
         gone = [o for o in ob if o not in oa]; new = [o for o in oa if o not in ob]
         rewired = [o for o in ob if o in oa and sorted(ob[o]) != sorted(oa[o])]
-        print('  AND gates: %d removed, %d with a new function, %d rewired (same output, different operands)'
+        print('  AND functions: %d no longer computed, %d new, %d rewired (same output, different operands)'
               % (len(gone), len(new), len(rewired)))
         KIND.append((it, len(gone), len(new), len(rewired), len(b.gates) - len(a.gates)))
         shown += 1
         if shown >= mx: break
     if KIND:
-        print('summary: %d improving moves; moves that removed ANDs %d, added new AND functions %d, rewired ANDs %d, XOR-only %d'
+        print('summary: %d improving moves; moves that replaced an AND function %d, added an AND function %d, rewired an AND %d, XOR-only %d'
               % (len(KIND), sum(1 for k in KIND if k[1]), sum(1 for k in KIND if k[2]), sum(1 for k in KIND if k[3]),
                  sum(1 for k in KIND if not (k[1] or k[2] or k[3]))))
 

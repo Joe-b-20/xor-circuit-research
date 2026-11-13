@@ -322,7 +322,7 @@ def run_skel(c, table, out, tag, seed, args, extra):
     sk2 = skeleton.read_skel(so.read_text())
     model = core.Model.load(args.model)
     # three synthesis variants (greedy; Paar per AND level; Paar also for the outputs): keep the smallest
-    # synthesis variants: seeded with the parent circuit (reuses every parent gate whose function
+    # synthesis variants (seeded + three from forms): seeded with the parent circuit (reuses every parent gate whose function
     # survives), and from forms only (greedy; Paar per AND level; Paar also for the outputs)
     variants = [skeleton.synthesize(sk2, model.ops(), name=tag, parent=c)]
     if extra.get('synth.unseeded', '1') != '0':

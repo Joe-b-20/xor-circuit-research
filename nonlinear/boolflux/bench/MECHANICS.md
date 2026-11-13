@@ -5,8 +5,8 @@ Paths are relative to `nonlinear/boolflux/`. Line numbers refer to commit `19480
 
 ## 1. What came from XORFlux, what was replaced, what is new
 
-BoolFlux imports no XORFlux code (`grep` for `xorflux`/`search/` in `*.py`, `kernel/*.c` finds
-nothing). What it shares is design.
+BoolFlux imports no XORFlux code (the package modules and kernels never reference `search/`; only
+the benchmark scripts in `bench/` run XORFlux as a separate process). What it shares is design.
 
 | XORFlux v8 (`search/xorflux/`) | BoolFlux | status |
 |---|---|---|
@@ -28,8 +28,11 @@ nothing). What it shares is design.
   every signal (`2^N` bits; `W` 64-bit words; `sim`, l.93). `state_refresh` (l.334) also computes
   levels, required levels from the caps, and fanout counts.
 - **Target**: the start circuit's output tables (`TGT`, set in `main`). Every candidate circuit is
-  re-simulated on all patterns and compared with `TGT` (`eval_cand`, l.608); a mismatch aborts.
-- **Exact linear mode** (`linear 1`, set automatically for XOR-only libraries): signals are
+  re-simulated on all simulated patterns (all 2^N inputs, or the N+1 patterns of linear mode) and
+  compared with `TGT` (`eval_cand`, l.608) before `fraig` runs; a mismatch aborts. An accepted
+  circuit is checked again after `fraig` by `state_refresh` (l.334).
+- **Exact linear mode** (`linear 1`; `bench/bench.py` sets it for XOR-only libraries, `cli.py` does
+  not, which is correct but slower): signals are
   simulated on the `N+1` patterns `0, e_0, ..., e_{N-1}` only. Every gate is affine, an affine
   function is determined by those values, and an XOR circuit's observability of a signal does not
   depend on the input, so this is exact, not a sample.
@@ -43,21 +46,23 @@ nothing). What it shares is design.
 3. **MFFC cost** (`mffc_cost`, l.389): cost of the gates that die if `s` is replaced; the new
    expression may cost at most `MFFC + uphill` (`budget`).
 4. **Required levels**: `req = max(required(s), level(s))` for gate depth and AND depth, so a
-   candidate never breaks a cap (and never deepens `s` in repair mode).
+   candidate never breaks a depth cap (and never deepens `s` in repair mode). The AND-count cap is
+   not pruned; it is enforced by acceptance (a feasible state is never left).
 5. **Candidates** (`find_cands`, l.479), all compared with `s` on `CARE` only:
    - level 0: an existing divisor equal to `s` on the care set;
    - level 1: every `op(d1, d2)` over the first `pdiv` (90) divisors, every library op and
      orientation, plus `NOT d` (`build_pairs`, l.432: a hash table of masked values);
    - level 2a: `XOR/XNOR(op(d1,d2), d3)`: one hash lookup of `s ^ d3` per divisor;
-   - level 2b: `op2(op(d1,d2), d3)` with `op2` nonlinear, sampled `d3`: per input pattern the
+   - level 2b: `op2(op(d1,d2), d3)` with `op2` and `d3` sampled (`op2` from every binary library op,
+     XOR/XNOR included; `nl_samples` = 12 per move): per input pattern the
      required value of the inner gate is derived from `op2`'s truth table (forced, or free when
      `op2` ignores it there), then all pair values are scanned against it;
    - level 3: `XOR/XNOR(op(d1,d2), op'(d3,d4))` via hash lookups of `s ^ pair`.
    Up to `cand_cap` (40) candidates are kept by reservoir sampling.
 6. **Rebuild** each candidate (`rebuild`, l.167): redirect `s` to the new root, DFS from the
    outputs (topological order, dead gates dropped), simplify gates with equal operands,
-   structural hashing; then `fraig` (l.580) merges any gate whose complete function equals an
-   earlier signal that is not deeper. Then metrics and the full re-simulation check.
+   structural hashing; then the re-simulation check; then `fraig` (l.580) merges any gate whose
+   complete function equals an earlier signal that is not deeper; then metrics.
    **Correctness condition**: the new root equals `s` on every pattern where `s` is observable, so
    every output is unchanged on every input; the re-simulation confirms it.
 
@@ -66,18 +71,23 @@ nothing). What it shares is design.
 - Objective: lexicographic weights (`cli.objective_weights`: 1, 1e-4, 1e-8) over cost, G, A, GD,
   AD, plus `1e6 * violation + 1e4 * per-gate excess` when a cap is broken (`metrics`, l.123).
 - Selection (main loop): the best strict improvement if any (never from feasible to infeasible);
-  else, with probability 0.75 or when no uphill candidate exists, a random equal-cost candidate
-  (plateau walk; `neutral 0` disables it); else a random uphill candidate accepted with
+  else a random equal-cost candidate (plateau walk; `neutral 0` disables it) when no uphill
+  candidate exists, when the temperature is 0, or otherwise with probability 0.75; else a random
+  uphill candidate accepted with
   `exp(-delta/T)`, `T = T0 (1 - phase)` with a sawtooth over `Tperiod_it` iterations, never more
   than `max_excess` above the best.
-- **No-op filter** (`skip_noop`, added after the traces): a candidate whose rebuilt circuit is
-  gate-for-gate identical to the current one is discarded instead of counting as a neutral move.
+- **No-op filter** (`skip_noop`, added after the traces, on by default from commit 7ae20c8): a
+  candidate whose rebuilt circuit is gate-for-gate identical to the current one is discarded
+  instead of counting as a neutral move. This changes the random trajectory, so runs recorded
+  before 7ae20c8 replay only with `skip_noop 0`. `odc 0` disables care sets for observable signals
+  (an unobservable signal can still be replaced by anything).
 - **Repair**: a start that violates a cap is searched with the penalty; required levels are
   relaxed to "not deeper than now" so moves exist; the summed per-gate excess rewards shortening
   any too-deep path.
 - **Restart**: after `stall_it` (60,000) iterations without a new best, `cur` returns to `best`.
 - Determinism: all randomness from one seeded xoshiro256** (`seed_rng`); with an iteration budget
-  a run is reproducible exactly.
+  and iteration-based schedules (`Tperiod_it`, `stall_it`, as `cli.DEFAULTS` sets; the kernel's own
+  defaults are wall-clock based) a run is reproducible exactly.
 
 ## 5. Skeleton level and rebuilding
 
@@ -99,20 +109,25 @@ nothing). What it shares is design.
     still there (inputs; parent ANDs whose core truth table is one of the new ANDs; linear gates
     whose operands map). Those parent gates are copied first, ANDs reuse their parent operands,
     and only the forms the skeleton moves broke are built greedily; unused copies are swept.
-- **Penalty investigation** (`bench/rebuild_penalty.py`, data `bench/data/rebuild_penalty.json`):
+- **Penalty investigation** (`bench/rebuild_penalty.py`; data in the review bundle,
+  `data/rebuild_penalty.json`):
   rebuilding an *unchanged* skeleton from forms costs +31 to +72 gates on NIST AES circuits
   (104 -> 152, 131 -> 203, 142 -> 173): the systematic part of the reported 40-50 gate penalty was the
   rebuild algorithm, not the AND moves. The seeded rebuild reproduces every unchanged skeleton
   exactly (+0). After skeleton moves the seeded penalty grows with the number of AND functions
   changed (1 accepted move: +0 to +19; 25-90 moves: +45 to +100), because every XOR that combined a
-  changed AND's output has to be rebuilt. On AES the skeleton kernel's best skeleton is usually the
-  start (no move lowers K + 0.02 E), so its output was the unchanged skeleton and the whole loss was
-  rebuild cost; `emit_current 1` returns the drifted skeleton instead.
+  changed AND's output has to be rebuilt. Under the benchmark settings the skeleton kernel returned
+  its input skeleton unchanged in 11 of 12 AES cases (review2, M3): no move lowers K + 0.02 E, so
+  the stage's output is the start and, with the old rebuild, the whole loss was rebuild cost.
+  `emit_current 1` returns the drifted skeleton instead.
 
 ## 6. Worker coordination
 
 There is no communication inside a run. `cli.py run` and `pipe` start one kernel process per seed
 (up to `--jobs` at once); after each round the distinct best circuits (up to `--pool`, by objective)
 become the start circuits of the next round's jobs, round-robin; the best over all rounds is
-reported. `pipe` alternates per job: skeleton kernel, rebuild (seeded and unseeded variants, the
-cheapest kept), gate kernel. Campaign scripts (`campaigns/*.sh`) run independent `cli.py` commands.
+reported. In `pipe` a fraction `--skel-share` (default 0.5, by a golden-ratio sequence over the job
+index) of the jobs run skeleton kernel + rebuild (seeded and unseeded variants, the cheapest kept)
+before the gate kernel; the rest run the gate kernel only. The benchmark driver's `full`
+configuration instead alternates skeleton and gate stages inside one job (`bench/bench.py`).
+Campaign scripts (`campaigns/*.sh`) run independent `cli.py` commands.

@@ -108,11 +108,12 @@ def run_boolflux(run, cpu, wd):
             stages = [('gate', budget - el)]
         else:
             R = run.get('round_s', 10.0)
-            # adaptive (v3): the skeleton slice halves after every round in which the skeleton-derived
-            # candidate did not end the round better than the incoming best (minimum 0.5 s)
+            # adaptive (v3): the skeleton slice halves after every round in which the rebuilt circuit
+            # (straight after synthesis) was not better, feasibility first, than the circuit that went
+            # in (minimum 0.5 s); in v3 the gate stage gets the rest of the round (R - skeleton time)
             share = skel_share if run.get('adaptive') else 0.2
             stages = [('skel', min(R * share, budget - el)), ('gate', None)]
-            synth_gain = False
+            synth_gain = False; round_t0 = time.time()
         cand = cur
         for kind, secs in stages:
             el = time.time() - T0
@@ -137,13 +138,23 @@ def run_boolflux(run, cpu, wd):
                 if run.get('seeded', True): vs.append(skeleton.synthesize(sk2, model.ops(), parent=cand))
                 if run.get('unseeded', True):
                     vs += [skeleton.synthesize(sk2, model.ops(), use_paar=a, paar_outputs=b) for a, b in ((0, 0), (1, 0), (1, 1))]
-                cin = obj(dict(cand.metrics(model)))
-                cand = min(vs, key=lambda c: c.metrics(model)['cost'])
-                synth_gain = obj(dict(cand.metrics(model))) < cin - 1e-12
+                rank = lambda c: (0 if feas(c.metrics(model)) else 1, obj(c.metrics(model)))
+                if run.get('adaptive'):            # v3: by (feasible, objective); keep the input if better
+                    best_v = min(vs, key=rank)
+                    synth_gain = rank(best_v) < rank(cand)
+                    cand = best_v if synth_gain else cand
+                else:                              # v1/v2: cheapest by cost
+                    cin = obj(dict(cand.metrics(model)))
+                    cand = min(vs, key=lambda c: c.metrics(model)['cost'])
+                    synth_gain = obj(dict(cand.metrics(model))) < cin - 1e-12
                 overhead['synth_s'] += time.time() - ts
-                assert cand.value_table() == list(table)
+                if cand.value_table() != list(table):
+                    raise RuntimeError('rebuilt circuit does not compute the target')
             else:
-                secs = secs if secs is not None else max(0.5, budget - (time.time() - T0)) if run['config'] == 'gate' else min(run.get('round_s', 10.0) * 0.8, budget - (time.time() - T0))
+                if secs is None:
+                    rem = budget - (time.time() - T0)
+                    if run.get('adaptive'): secs = min(max(0.5, run.get('round_s', 10.0) - (time.time() - round_t0)), rem)
+                    else: secs = min(run.get('round_s', 10.0) * 0.8, rem)
                 (wd / 'g.in').write_text(core.to_kernel(cand))
                 kernel_cfg(wd / 'g.cfg', wd / 'g.in', wd / 'g.out', model, run, secs, run['seed'] * 1000 + rnd, run.get('set', {}))
                 t_launch = time.time() - T0
@@ -165,7 +176,8 @@ def run_boolflux(run, cpu, wd):
             # than the circuit that went in
             gained = synth_gain
             skel_share = 0.2 if gained else max(0.5 / run.get('round_s', 10.0), skel_share / 2)
-        cur = best_c; rnd += 1
+        cur = best_c if (feas(best_m) or not run.get('adaptive')) else cand   # v3: keep repair progress
+        rnd += 1
         if run['config'] == 'gate': break
     search_s = time.time() - T0
     return best_c, traj, rss, overhead, search_s
@@ -200,9 +212,20 @@ def run_xorflux(run, cpu, wd):
     return c, traj, [r_], {'start_s': round(t_start, 4), 'xorflux_startup_s': round(wall - run['seconds'], 3)}, wall
 
 
+def driver_hwm_reset():
+    try: Path('/proc/self/clear_refs').write_text('5')     # resets VmHWM (Linux >= 4.0)
+    except OSError: pass
+
+
+def driver_hwm_kb():
+    for ln in Path('/proc/self/status').read_text().splitlines():
+        if ln.startswith('VmHWM:'): return int(ln.split()[1])
+    return None
+
+
 def execute(run, cpu, outdir):
     wd = Path(tempfile.mkdtemp(prefix='run-', dir=outdir))
-    t0 = time.time()
+    t0 = time.time(); driver_hwm_reset()
     try:
         if run['tool'] == 'xorflux': c, traj, rss, ov, search_s = run_xorflux(run, cpu, wd)
         else: c, traj, rss, ov, search_s = run_boolflux(run, cpu, wd)
@@ -210,6 +233,7 @@ def execute(run, cpu, outdir):
     except Exception as e:                           # recorded, not hidden
         c, traj, rss, ov, search_s, err = None, [], [], {}, None, repr(e)
     res = {'run': run, 'cpu': cpu, 'error': err, 'trajectory': traj, 'peak_rss_kb': max([r for r in rss if r] or [0]),
+           'driver_rss_kb': driver_hwm_kb() if run['tool'] == 'boolflux' else None,
            'overhead': {k: round(v, 4) for k, v in ov.items()}, 'search_wall_s': search_s}
     if c is not None:
         model = core.Model.load(run['model'] if run['tool'] == 'boolflux' else 'xor')
