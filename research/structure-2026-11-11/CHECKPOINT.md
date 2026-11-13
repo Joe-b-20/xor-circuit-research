@@ -1,5 +1,11 @@
 # Structural study: checkpoint for resuming (phases 3-12, 2026-11-12/13)
 
+**Continuation, 2026-11-13:** the current takeover checkpoint is
+[`../takeover-2026-11-13/CHECKPOINT.md`](../takeover-2026-11-13/CHECKPOINT.md), on
+`research-2026-11-13-structural` based on verified `e89b8a2`. It records independent
+foundational review, joint repair, and new hidden-operand and projection-rank theorems.
+The phase-12 state below remains the historical starting point.
+
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.

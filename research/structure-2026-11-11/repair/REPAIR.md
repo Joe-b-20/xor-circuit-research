@@ -126,6 +126,12 @@ since a circuit with 75-83 gates may have events with sum (w - 2) >= 84 - G. The
 
 ## 3. Sharpness family: one cancellation can save w - 2 (user's; verified)
 
+**Attribution added 2026-11-13.** This construction is the parameter-shifted matrix of
+Boyar and Find, *Cancellation-free circuits: An approach for proving superlinear lower
+bounds for linear Boolean operators*, Theorem 2 (2012), where it is attributed to Svensson.
+See the [primary paper](https://arxiv.org/pdf/1207.5321). Its appearance here is not a claim
+of a new separation family.
+
 The construction:
 - Inputs x, y_1, ..., y_n (n >= 2), each its own block.
 - Required outputs p_i = x + y_1 + ... + y_i (i = 1..n) and T = y_1 + ... + y_n.

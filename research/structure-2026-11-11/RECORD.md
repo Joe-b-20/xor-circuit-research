@@ -1403,3 +1403,55 @@ family has windows but no separation; event-free => block-monotone is one-way; L
 circuits only along paths avoiding the other event.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88, and nothing excludes an 87.
+
+## 28. Takeover: joint hidden work and simultaneous projection repair (2026-11-13)
+
+Current continuation: [`../takeover-2026-11-13/CHECKPOINT.md`](../takeover-2026-11-13/CHECKPOINT.md),
+branch `research-2026-11-13-structural` based on verified local/remote `e89b8a2`.
+The original worktree and its untracked `search/proposals/` were preserved.
+The 10/13 local lemmas and 83/84 block-monotone bounds were independently reconstructed from
+their symbolic proofs. Visible repair and Theorem V survived review. The universal claims
+below have hand arguments and independent machine review, not formal or human certification.
+
+**Hidden operands (proved).** For independent selected event values filling one maximal
+output window and pairwise distinct on every window block, `t <= 2h-c`, where `h` counts
+distinct nonlocal operand gates and `c` counts their operand-graph components. Each event
+has a nonlocal operand; a nonlocal operand has at most one local-partner event; independent
+edge values force a forest. A symbolic family attains the bound.
+
+**Componentwise separation rank (proved; stronger mechanism).** In each nonlocal-operand
+component, all nodes have the same nonzero projection outside the window. Let `D_i` be
+the window blocks incompatible with some block of that projection. Every local partner
+is zero on `D_i`. Thus the `D_i`-projected selected event values have rank at most the
+number of physical nonlocal operands in that component. Sum over the disjoint components.
+This theorem needs neither independent event values nor pairwise distinct block projections.
+It counts gates only after eliminating the uncounted local partners on those coordinates.
+
+**MixColumns (proved class statements).** In sheets 1,3,4,5,6,7, one through four output
+events force at least 1,2,3,3 distinct hidden operands, even with other events present.
+Do not sum across sheets without an overlap argument. If a reduced circuit's entire
+visible set consists of `t` output events in one such sheet, joint reconstruction gives
+the following lower bounds (hidden events unrestricted): sheet 1, `82,82,81,80`; sheet 3,
+`82,81,79,77`; sheets 4,5,6,7, `83,83,82,81`, in order `t=1,2,3,4`.
+The shared reconstruction saves at least `floor(t/2)` charged gates by sharing the common
+pair of two own-block triple sums. These bounds are not claimed attained.
+
+**Global projection repair (proved).** Propagate requested block projections from outputs
+back through operand supports. Their distinct non-input values form an executable
+event-free value set `P`. For reduced original gate values `V`, any event-free lower bound
+`B` gives `G >= B + |V\P| - |P\V|`. Equal clean values are reused globally, including across
+interacting events. This is one-sided: a specified optimal five-gate circuit has one extra
+requested clean value while a differently wired event-free circuit also uses five gates.
+
+**Corrections and verification.** The phase-12 sentence forbidding harmless sharing between
+different `J` sets was too strong and is corrected in VISIBLE; V itself used private chains.
+The prefix sharpness family is attributed in REPAIR to the Boyar–Find/Svensson construction.
+Direct verification checks 12 specified repair cases and one sharp hidden-work circuit by
+exact masks and linear algebra. No SAT, exhaustive enumeration, exact least-gate search,
+heuristic circuit search, or computer-driven case elimination was run.
+
+Full proofs, limitations, reviews, and reproducible fixtures are in
+[`../takeover-2026-11-13/`](../takeover-2026-11-13/).
+The strongest next direction is separation rank across internal visible values or multiple
+windows; neither extension is established here. The unrestricted interval remains
+`75 <= L(MixColumns) <= 88`, with no assumption that 88 is optimal.

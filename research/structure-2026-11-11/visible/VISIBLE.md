@@ -535,8 +535,10 @@ The question was how three things are related:
   Cheap circuits may in principle have many visible events with little hidden work behind them.
 - **Base 83 or 84.** The 84 of Corollary 17.4 combines with the chain slack except for the rebuilt gates in
   X: block-0 gates of sheet-1 borrowers. Those can count towards Theorem 17.3's twenty-first gate (5.5).
-- **Private chains.** Visible events with different J(f) cannot share chain gates without changing which
-  families the shared gate joins. So joint reconstruction is not exploited.
+- **Private chains.** This proof does not exploit joint reconstruction. Sharing gates between events
+  with different J(f) can change family membership, but need not: a shared block-7-only piece for
+  events reaching sheets 0 and 3 stays uncharged. The continuation gives exact accounting for shared
+  in-block pieces: [`../../takeover-2026-11-13/directions/JOINT.md`](../../takeover-2026-11-13/directions/JOINT.md).
 - **The window credit is sharp for general maps** (tail family). kappa is not claimed sharp, and the
   sole-event bounds 81-82 are not claimed attained.
 
