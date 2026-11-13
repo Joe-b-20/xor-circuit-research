@@ -1,0 +1,29 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit gift-gc6-best
+
+  % BoolFlux result for gift (Banik et al., GIFT: A Small Present, CHES 2017 (https://eprint.iacr.org/2017/622); GIFT-COFB NIST LWC round-2 spec Sect. 2 (https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/gift-cofb-spec-round2.pdf))
+  % model gc6, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target gift --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/gift-gc6-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=10 A=4 GD=10 AD=4 AND=3 OR=1 XNOR=2 XOR=4; cost 10.0 under model gc6
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t6
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x1 x3
+XOR t2 x2 t1
+AND t3 x0 t2
+XOR y0 x3 t3
+OR t4 t2 y0
+XOR t5 x1 t4
+XNOR y3 x0 t5
+XNOR y2 t2 y3
+AND t6 y0 y2
+XOR y1 t5 t6
+end SLP
+end circuit

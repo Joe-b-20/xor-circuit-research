@@ -1,0 +1,30 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit rectangle-gc6-best
+
+  % BoolFlux result for rectangle (Zhang et al., RECTANGLE: a bit-slice lightweight block cipher, Sci. China Inf. Sci. 2015 (https://eprint.iacr.org/2014/084))
+  % model gc6, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target rectangle --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/rectangle-gc6-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=11 A=4 GD=8 AD=4 AND=2 NOR=1 OR=1 XNOR=5 XOR=2; cost 11.0 under model gc6
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t7
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XNOR t1 x1 x2
+OR t2 x2 x3
+XOR t3 x0 t2
+XNOR y3 t1 t3
+AND t4 x2 t3
+XNOR t5 x3 t4
+AND t6 y3 t5
+XNOR y0 t1 t6
+NOR t7 y3 y0
+XNOR y1 t5 t7
+XOR y2 x1 t5
+end SLP
+end circuit

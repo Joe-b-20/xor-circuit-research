@@ -1,0 +1,27 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit pride-gc6-best
+
+  % BoolFlux result for pride (Albrecht et al., Block Ciphers - Focus on the Linear Layer (feat. PRIDE), CRYPTO 2014 (https://eprint.iacr.org/2014/453))
+  % model gc6, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target pride --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/pride-gc6-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=8 A=4 GD=6 AD=3 AND=3 NAND=1 XNOR=1 XOR=3; cost 8.0 under model gc6
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t4
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x0 x1
+XOR y0 x2 t1
+AND t2 x1 x2
+XOR y1 x3 t2
+NAND t3 y0 y1
+XNOR y2 x0 t3
+AND t4 y1 y2
+XOR y3 x1 t4
+end SLP
+end circuit

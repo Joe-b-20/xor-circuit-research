@@ -1,0 +1,359 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 15,
+  "AD": 4,
+  "A": 30
+ },
+ "start": "nonlinear/nist/aes-sbox/aes-sbox-a30-ad4-g205-gd15-xx175-54.circ.txt",
+ "start_metrics": {
+  "G": 205,
+  "A": 30,
+  "GD": 15,
+  "AD": 4,
+  "cost": 205.0,
+  "counts": {
+   "AND": 30,
+   "NOT": 1,
+   "XNOR": 53,
+   "XOR": 121
+  }
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "iters": 100000,
+ "seconds_cap": 3600,
+ "rounds": 1,
+ "code_sha256_12": "b0e56ecb18fe",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a30-ad4-g205-gd15-xx175-54/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a30-ad4-g205-gd15-xx175-54.circ.txt --objective cost,gd --cap-a 30 --cap-ad 4 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a30-ad4-g205-gd15-xx175-54",
+ "wall_s": 28.7,
+ "best": {
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a30-ad4-g205-gd15-xx175-54/best.circ.txt",
+  "seed": 6,
+  "round": 0,
+  "feasible": true,
+  "metrics": {
+   "G": 181,
+   "A": 30,
+   "GD": 15,
+   "AD": 4,
+   "cost": 181.0,
+   "counts": {
+    "AND": 30,
+    "NOT": 1,
+    "XNOR": 70,
+    "XOR": 80
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "independent_metrics": {
+   "G": 181,
+   "counts": {
+    "AND": 30,
+    "XNOR": 71,
+    "XOR": 80
+   },
+   "A": 30,
+   "XX": 151,
+   "GD": 15,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 181.0
+  }
+ },
+ "jobs": [
+  {
+   "tag": "r0-s6",
+   "seed": 6,
+   "kernel_seed": 6,
+   "metrics": {
+    "G": 181,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 181.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 70,
+     "XOR": 80
+    }
+   },
+   "wall_s": 28.07,
+   "final": {
+    "cost": 181.0,
+    "G": 181.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 181.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.04
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s4",
+   "seed": 4,
+   "kernel_seed": 4,
+   "metrics": {
+    "G": 186,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 186.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 68,
+     "XOR": 87
+    }
+   },
+   "wall_s": 28.42,
+   "final": {
+    "cost": 186.0,
+    "G": 186.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 186.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.41
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s7",
+   "seed": 7,
+   "kernel_seed": 7,
+   "metrics": {
+    "G": 186,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 186.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 76,
+     "XOR": 79
+    }
+   },
+   "wall_s": 27.91,
+   "final": {
+    "cost": 186.0,
+    "G": 186.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 186.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 27.86
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s1",
+   "seed": 1,
+   "kernel_seed": 1,
+   "metrics": {
+    "G": 188,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 188.0,
+    "counts": {
+     "AND": 30,
+     "XNOR": 78,
+     "XOR": 80
+    }
+   },
+   "wall_s": 28.63,
+   "final": {
+    "cost": 188.0,
+    "G": 188.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 188.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.59
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s2",
+   "seed": 2,
+   "kernel_seed": 2,
+   "metrics": {
+    "G": 190,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 190.0,
+    "counts": {
+     "AND": 30,
+     "XNOR": 85,
+     "XOR": 75
+    }
+   },
+   "wall_s": 28.07,
+   "final": {
+    "cost": 190.0,
+    "G": 190.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 190.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.02
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s8",
+   "seed": 8,
+   "kernel_seed": 8,
+   "metrics": {
+    "G": 191,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 191.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 82,
+     "XOR": 78
+    }
+   },
+   "wall_s": 28.12,
+   "final": {
+    "cost": 191.0,
+    "G": 191.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 191.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.09
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s3",
+   "seed": 3,
+   "kernel_seed": 3,
+   "metrics": {
+    "G": 192,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 192.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 66,
+     "XOR": 95
+    }
+   },
+   "wall_s": 28.73,
+   "final": {
+    "cost": 192.0,
+    "G": 192.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 192.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.72
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s5",
+   "seed": 5,
+   "kernel_seed": 5,
+   "metrics": {
+    "G": 194,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 194.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 89,
+     "XOR": 74
+    }
+   },
+   "wall_s": 28.47,
+   "final": {
+    "cost": 194.0,
+    "G": 194.0,
+    "A": 30.0,
+    "GD": 15.0,
+    "AD": 4.0,
+    "obj": 194.0015,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 28.46
+   },
+   "skel": null
+  }
+ ]
+}

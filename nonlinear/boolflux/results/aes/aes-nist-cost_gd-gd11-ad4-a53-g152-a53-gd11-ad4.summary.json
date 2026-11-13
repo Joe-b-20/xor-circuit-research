@@ -1,0 +1,351 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 11,
+  "AD": 4,
+  "A": 53
+ },
+ "start": "nonlinear/nist/aes-sbox/aes-sbox-a53-ad4-g157-gd11-xx104-31.circ.txt",
+ "start_metrics": {
+  "G": 157,
+  "A": 53,
+  "GD": 11,
+  "AD": 4,
+  "cost": 157.0,
+  "counts": {
+   "AND": 53,
+   "XNOR": 31,
+   "XOR": 73
+  }
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "iters": 100000,
+ "seconds_cap": 3600,
+ "rounds": 1,
+ "code_sha256_12": "b0e56ecb18fe",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a53-ad4-g157-gd11-xx104-31/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a53-ad4-g157-gd11-xx104-31.circ.txt --objective cost,gd --cap-a 53 --cap-ad 4 --cap-gd 11 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a53-ad4-g157-gd11-xx104-31",
+ "wall_s": 46.4,
+ "best": {
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a53-ad4-g157-gd11-xx104-31/best.circ.txt",
+  "seed": 1,
+  "round": 0,
+  "feasible": true,
+  "metrics": {
+   "G": 152,
+   "A": 53,
+   "GD": 11,
+   "AD": 4,
+   "cost": 152.0,
+   "counts": {
+    "AND": 53,
+    "XNOR": 38,
+    "XOR": 61
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "independent_metrics": {
+   "G": 152,
+   "counts": {
+    "AND": 53,
+    "XNOR": 38,
+    "XOR": 61
+   },
+   "A": 53,
+   "XX": 99,
+   "GD": 11,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 152.0
+  }
+ },
+ "jobs": [
+  {
+   "tag": "r0-s1",
+   "seed": 1,
+   "kernel_seed": 1,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 38,
+     "XOR": 61
+    }
+   },
+   "wall_s": 46.15,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 46.14
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s2",
+   "seed": 2,
+   "kernel_seed": 2,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 41,
+     "XOR": 58
+    }
+   },
+   "wall_s": 46.3,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 46.25
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s3",
+   "seed": 3,
+   "kernel_seed": 3,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 41,
+     "XOR": 58
+    }
+   },
+   "wall_s": 45.99,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 45.95
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s4",
+   "seed": 4,
+   "kernel_seed": 4,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 44,
+     "XOR": 55
+    }
+   },
+   "wall_s": 45.34,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 45.28
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s5",
+   "seed": 5,
+   "kernel_seed": 5,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 36,
+     "XOR": 63
+    }
+   },
+   "wall_s": 46.0,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 45.97
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s6",
+   "seed": 6,
+   "kernel_seed": 6,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 40,
+     "XOR": 59
+    }
+   },
+   "wall_s": 45.59,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 45.57
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s7",
+   "seed": 7,
+   "kernel_seed": 7,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 45,
+     "XOR": 54
+    }
+   },
+   "wall_s": 44.98,
+   "final": {
+    "cost": 152.0,
+    "G": 152.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 152.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 44.93
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s8",
+   "seed": 8,
+   "kernel_seed": 8,
+   "metrics": {
+    "G": 153,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 153.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 48,
+     "XOR": 52
+    }
+   },
+   "wall_s": 46.35,
+   "final": {
+    "cost": 153.0,
+    "G": 153.0,
+    "A": 53.0,
+    "GD": 11.0,
+    "AD": 4.0,
+    "obj": 153.0011,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 46.34
+   },
+   "skel": null
+  }
+ ]
+}

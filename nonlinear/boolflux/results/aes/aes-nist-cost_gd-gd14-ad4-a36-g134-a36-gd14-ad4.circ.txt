@@ -1,0 +1,153 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit aes-nist-best
+
+  % BoolFlux result for aes (AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63))
+  % model nist, objective cost,gd, caps {'GD': 14, 'AD': 4, 'A': 36}
+  % command: python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g137-gd14-xx101-22.circ.txt --objective cost,gd --cap-a 36 --cap-ad 4 --cap-gd 14 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a36-ad4-g137-gd14-xx101-22
+  % kernel bfx.c sha256 b0e56ecb18fe
+  % seed 1 round 0
+  % Tally: G=134 A=36 GD=14 AD=4 AND=36 XNOR=36 XOR=62; cost 134.0 under model nist
+
+Inputs: x0 x1 x2 x3 x4 x5 x6 x7
+Outputs: y0 y1 y2 y3 y4 y5 y6 y7
+Internal: t1:t126
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XNOR t1 x5 x6
+XNOR t2 x3 t1
+XNOR t3 x1 x7
+XOR t4 x0 x2
+XOR t5 t3 t4
+AND t6 t2 t5
+XOR t7 x1 x2
+XOR t8 x0 x4
+XOR t9 t7 t8
+XOR t10 x0 x3
+XNOR t11 x0 x5
+XNOR t12 t10 t11
+AND t13 t9 t12
+XNOR t14 t6 t13
+XNOR t15 x2 x4
+XOR t16 t10 t15
+XNOR t17 x6 x7
+XOR t18 t7 t17
+AND t19 t16 t18
+AND t20 t4 t10
+XNOR t21 t19 t20
+XNOR t22 t14 t21
+XOR t23 x5 x7
+AND t24 t5 t23
+XOR t25 x0 t17
+XNOR t26 t7 t23
+AND t27 t25 t26
+XNOR t28 t24 t27
+XNOR t29 x3 t15
+AND t30 t1 t29
+XNOR t31 t13 t30
+XNOR t32 t28 t31
+XOR t33 t22 t32
+XNOR t34 t1 t10
+XOR t35 t3 t15
+AND t36 t34 t35
+XNOR t37 t27 t36
+XNOR t38 x4 t1
+XNOR t39 x3 x5
+AND t40 t38 t39
+XOR t41 t20 t40
+XOR t42 t37 t41
+AND t43 t32 t42
+XOR t44 t33 t43
+AND t45 t33 t44
+XOR t46 t13 t36
+XNOR t47 x7 t8
+AND t48 t18 t47
+XOR t49 x3 t4
+AND t50 t11 t49
+XOR t51 t48 t50
+XNOR t52 t46 t51
+AND t53 t32 t52
+XOR t54 t45 t53
+AND t55 t22 t52
+XOR t56 t42 t52
+XOR t57 t55 t56
+AND t58 t33 t57
+XOR t59 t22 t58
+XOR t60 t54 t59
+AND t61 t34 t60
+XOR t62 t1 t5
+AND t63 t54 t62
+XOR t64 x4 t35
+AND t65 t56 t57
+XOR t66 t53 t65
+AND t67 t64 t66
+XNOR t68 t63 t67
+XNOR t69 t61 t68
+AND t70 t44 t56
+XOR t71 t42 t70
+XOR t72 t66 t71
+XOR t73 t60 t72
+AND t74 t4 t73
+XOR t75 t69 t74
+XOR t76 x2 t38
+AND t77 t72 t76
+XOR t78 t9 t34
+XOR t79 t4 t78
+XOR t80 t59 t71
+AND t81 t79 t80
+XOR t82 t77 t81
+XOR y0 t75 t82
+XNOR t83 t11 t78
+XOR t84 t7 t83
+AND t85 t60 t84
+XOR t86 t81 t85
+XOR t87 t64 t83
+AND t88 t54 t87
+XOR t89 t67 t88
+XOR t90 t86 t89
+XNOR y1 t75 t90
+AND t91 x7 t59
+XOR t92 t82 t91
+AND t93 t5 t71
+XNOR t94 t71 t93
+XOR t95 t85 t94
+XOR t96 t45 t65
+AND t97 t78 t96
+XOR t98 t11 t15
+AND t99 t72 t98
+XNOR t100 t97 t99
+XOR t101 t95 t100
+XNOR y2 t92 t101
+XNOR t102 t77 t85
+AND t103 t12 t73
+XOR t104 t102 t103
+AND t105 t10 t80
+XOR t106 t88 t105
+XOR t107 t69 t106
+XNOR y3 t104 t107
+XOR t108 t64 t76
+AND t109 t71 t108
+XOR t110 t91 t109
+XOR t111 t103 t110
+XOR y4 t107 t111
+XOR t112 x3 t7
+AND t113 t59 t112
+AND t114 t83 t96
+XNOR t115 t113 t114
+XOR t116 t68 t115
+XNOR t117 t95 t116
+XOR t118 t99 t105
+XOR t119 t74 t118
+XOR y5 t117 t119
+AND t120 x6 t66
+XNOR t121 t77 t120
+XOR t122 t109 t114
+XNOR t123 t121 t122
+XNOR y6 t119 t123
+XOR t124 t67 t120
+XNOR t125 t85 t124
+XOR t126 t118 t125
+XOR y7 t111 t126
+end SLP
+end circuit

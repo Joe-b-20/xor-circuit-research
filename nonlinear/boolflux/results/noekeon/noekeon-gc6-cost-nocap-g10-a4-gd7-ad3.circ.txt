@@ -1,0 +1,29 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit noekeon-gc6-best
+
+  % BoolFlux result for noekeon (Daemen, Peeters, Van Assche, Rijmen, Nessie Proposal: NOEKEON, 2000 (https://gro.noekeon.org/), Gamma)
+  % model gc6, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target noekeon --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/noekeon-gc6-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=10 A=4 GD=7 AD=3 AND=3 NAND=1 XNOR=1 XOR=5; cost 10.0 under model gc6
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t6
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x1 x2
+XOR y0 x3 t1
+AND t2 x0 x1
+XNOR t3 x2 t2
+XOR y1 y0 t3
+XOR t4 x0 x1
+NAND t5 y0 y1
+XOR y2 t4 t5
+AND t6 y1 y2
+XOR y3 x0 t6
+end SLP
+end circuit

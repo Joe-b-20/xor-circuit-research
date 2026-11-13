@@ -1,0 +1,30 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit skinny64-bgc-best
+
+  % BoolFlux result for skinny64 (Beierle et al., The SKINNY Family of Block Ciphers, CRYPTO 2016 (https://eprint.iacr.org/2016/660), S4)
+  % model bgc, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target skinny64 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/skinny64-bgc-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=11 A=4 GD=5 AD=2 AND=1 NOT=2 OR=3 XOR=5; cost 11.0 under model bgc
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t7
+GateSyntax: GateName Output Inputs
+
+begin SLP
+OR t1 x0 x1
+XOR t2 x3 t1
+NOT y0 t2
+XOR t3 x1 x2
+OR t4 x1 t3
+XOR t5 x0 t4
+NOT y1 t5
+OR t6 x2 t2
+XOR y2 t3 t6
+AND t7 t2 t5
+XOR y3 x2 t7
+end SLP
+end circuit

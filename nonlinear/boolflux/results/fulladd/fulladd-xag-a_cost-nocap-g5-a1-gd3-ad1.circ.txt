@@ -1,0 +1,24 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit fulladd-xag-best
+
+  % BoolFlux result for fulladd (full adder: output = (carry, sum) = popcount of 3 bits)
+  % model xag, objective a,cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py run --target fulladd --model xag --objective a,cost --iters 20000 --seeds 1-4 --jobs 4 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/fulladd-xag-acost
+  % kernel bfx.c sha256 b0e56ecb18fe
+  % seed 1 round 0
+  % Tally: G=5 A=1 GD=3 AD=1 AND=1 XOR=4; cost 5.0 under model xag
+
+Inputs: x0 x1 x2
+Outputs: y0 y1
+Internal: t1:t3
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR t1 x0 x1
+XOR t2 x1 x2
+AND t3 t1 t2
+XOR y0 x1 t3
+XOR y1 x0 t2
+end SLP
+end circuit

@@ -1,0 +1,32 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit serpent_s2-bgc-best
+
+  % BoolFlux result for serpent_s2 (Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S2)
+  % model bgc, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target serpent_s2 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s2-bgc-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=13 A=4 GD=10 AD=4 AND=2 NOT=1 OR=2 XOR=8; cost 13.0 under model bgc
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t9
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x1 x3
+XOR t2 x0 t1
+XOR t3 x1 t2
+XOR y3 x2 t3
+NOT t4 t2
+OR t5 x2 t4
+XOR t6 x3 t5
+XOR y0 y3 t6
+AND t7 t2 t6
+XOR t8 t3 t7
+OR t9 y0 t8
+XOR y1 t4 t9
+XOR y2 t8 y1
+end SLP
+end circuit

@@ -1,0 +1,25 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit printcipher-bgc-best
+
+  % BoolFlux result for printcipher (Knudsen, Leander, Poschmann, Robshaw, PRINTcipher, CHES 2010 (https://doi.org/10.1007/978-3-642-15031-9_2))
+  % model bgc, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target printcipher --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/printcipher-bgc-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=6 A=3 GD=6 AD=3 AND=2 OR=1 XOR=3; cost 6.0 under model bgc
+
+Inputs: x0 x1 x2
+Outputs: y0 y1 y2
+Internal: t1:t3
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x1 x2
+XOR y0 x0 t1
+OR t2 x1 y0
+XOR y2 x2 t2
+AND t3 x0 y2
+XOR y1 x1 t3
+end SLP
+end circuit

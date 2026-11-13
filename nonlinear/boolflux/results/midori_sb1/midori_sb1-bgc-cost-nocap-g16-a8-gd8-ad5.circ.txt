@@ -1,0 +1,35 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit midori_sb1-bgc-best
+
+  % BoolFlux result for midori_sb1 (Banik et al., Midori, ASIACRYPT 2015 (https://eprint.iacr.org/2015/1142), Sb1)
+  % model bgc, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target midori_sb1 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/midori_sb1-bgc-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s2
+  % Tally: G=16 A=8 GD=8 AD=5 AND=4 NOT=1 OR=4 XOR=7; cost 16.0 under model bgc
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t12
+GateSyntax: GateName Output Inputs
+
+begin SLP
+NOT t1 x3
+AND t2 x1 t1
+AND t3 x1 x2
+AND t4 x0 t3
+OR t5 t2 t4
+OR t6 x0 t5
+XOR y0 t4 t6
+XOR t7 x2 t6
+AND t8 t1 t7
+XOR y1 t3 t8
+XOR t9 t1 t5
+OR t10 x2 t9
+XOR y3 t4 t10
+XOR t11 x0 x1
+OR t12 y3 t11
+XOR y2 t9 t12
+end SLP
+end circuit

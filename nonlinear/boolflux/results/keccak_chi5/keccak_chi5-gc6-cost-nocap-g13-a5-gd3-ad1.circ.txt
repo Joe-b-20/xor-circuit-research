@@ -1,0 +1,32 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit keccak_chi5-gc6-best
+
+  % BoolFlux result for keccak_chi5 (Bertoni, Daemen, Peeters, Van Assche, The Keccak reference 3.0, chi step (https://keccak.team/files/Keccak-reference-3.0.pdf))
+  % model gc6, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target keccak_chi5 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/keccak_chi5-gc6-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=13 A=5 GD=3 AD=1 AND=1 NAND=2 NOR=1 OR=1 XNOR=5 XOR=3; cost 13.0 under model gc6
+
+Inputs: x0 x1 x2 x3 x4
+Outputs: y0 y1 y2 y3 y4
+Internal: t1:t8
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR t1 x1 x2
+NAND t2 x2 t1
+XNOR y0 x0 t2
+OR t3 x2 x3
+XOR y1 t1 t3
+XOR t4 x3 x4
+NAND t5 x4 t4
+XNOR y2 x2 t5
+NOR t6 x0 x4
+XNOR y3 t4 t6
+XNOR t7 x1 x4
+AND t8 x0 x1
+XNOR y4 t7 t8
+end SLP
+end circuit

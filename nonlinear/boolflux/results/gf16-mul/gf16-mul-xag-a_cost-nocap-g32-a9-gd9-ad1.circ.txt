@@ -1,0 +1,51 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit gf16-mul-xag-best
+
+  % BoolFlux result for gf16-mul (GF(2^4) multiplication mod x^4+x+1, input = a<<4 | b)
+  % model xag, objective a,cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target gf16-mul --model xag --objective a,cost --iters 30000 --skel-iters 3000 --seeds 1-8 --jobs 4 --rounds 3 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16mul-xag-acost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s5
+  % Tally: G=32 A=9 GD=9 AD=1 AND=9 XOR=23; cost 32.0 under model xag
+
+Inputs: x0 x1 x2 x3 x4 x5 x6 x7
+Outputs: y0 y1 y2 y3
+Internal: t1:t28
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x1 x5
+XOR t2 x0 x2
+XOR t3 x5 x7
+AND t4 t2 t3
+XOR t5 t1 t4
+XOR t6 x0 x3
+XOR t7 x1 t6
+XOR t8 x2 t7
+XOR t9 t6 t8
+XOR t10 x4 x6
+XOR t11 t3 t10
+AND t12 t9 t11
+XOR t13 t5 t12
+AND t14 x2 x4
+XOR t15 x4 x5
+XOR t16 t11 t15
+AND t17 t8 t16
+AND t18 x3 x7
+XOR t19 t17 t18
+XOR t20 t4 t19
+XOR t21 t14 t20
+AND t22 t7 t10
+XOR t23 t21 t22
+XOR y0 t13 t23
+XOR t24 t2 t6
+AND t25 t15 t24
+XOR y1 t23 t25
+XOR y2 t12 t20
+AND t26 x0 x6
+XOR t27 t1 t14
+XOR t28 t18 t27
+XOR y3 t26 t28
+end SLP
+end circuit

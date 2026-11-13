@@ -1,0 +1,26 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit chi3-bgc-best
+
+  % BoolFlux result for chi3 (chi on 3 bits: b_i = a_i ^ (~a_{i+1} & a_{i+2}))
+  % model bgc, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target chi3 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/chi3-bgc-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=7 A=3 GD=3 AD=1 AND=2 OR=1 XOR=4; cost 7.0 under model bgc
+
+Inputs: x0 x1 x2
+Outputs: y0 y1 y2
+Internal: t1:t4
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR t1 x1 x2
+AND t2 x1 t1
+XOR y0 x0 t2
+AND t3 x0 x2
+XOR y1 t1 t3
+OR t4 x0 x1
+XOR y2 t1 t4
+end SLP
+end circuit

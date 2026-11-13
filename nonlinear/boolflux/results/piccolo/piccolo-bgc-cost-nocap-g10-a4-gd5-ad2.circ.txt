@@ -1,0 +1,29 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit piccolo-bgc-best
+
+  % BoolFlux result for piccolo (Shibutani et al., Piccolo: An Ultra-Lightweight Blockcipher, CHES 2011 (https://doi.org/10.1007/978-3-642-23951-9_23))
+  % model bgc, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target piccolo --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/piccolo-bgc-cost
+  % kernel sha256 b0e56ecb18fe
+  % from job r0-s1
+  % Tally: G=10 A=4 GD=5 AD=2 AND=1 NOT=2 OR=3 XOR=4; cost 10.0 under model bgc
+
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+Internal: t1:t6
+GateSyntax: GateName Output Inputs
+
+begin SLP
+OR t1 x0 x1
+XOR t2 x3 t1
+NOT y0 t2
+OR t3 x1 x2
+XOR t4 x0 t3
+NOT y1 t4
+OR t5 x2 y0
+XOR y2 x1 t5
+AND t6 t2 t4
+XOR y3 x2 t6
+end SLP
+end circuit

@@ -1,0 +1,819 @@
+{
+ "target": "gf16-mul",
+ "target_description": "GF(2^4) multiplication mod x^4+x+1, input = a<<4 | b",
+ "model": "xag",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "NOT": 1
+ },
+ "objective": "a,cost",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "start": "anf",
+ "start_metrics": {
+  "G": 34,
+  "A": 16,
+  "GD": 4,
+  "AD": 1,
+  "cost": 34.0,
+  "counts": {
+   "AND": 16,
+   "XOR": 18
+  }
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "iters": 30000,
+ "seconds_cap": 3600,
+ "rounds": 3,
+ "code_sha256_12": "b0e56ecb18fe",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16mul-xag-acost-gateonly/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 nonlinear/boolflux/cli.py run --target gf16-mul --model xag --objective a,cost --iters 30000 --seeds 1-8 --jobs 4 --rounds 3 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16mul-xag-acost-gateonly",
+ "wall_s": 16.9,
+ "best": {
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16mul-xag-acost-gateonly/best.circ.txt",
+  "seed": 5,
+  "round": 2,
+  "feasible": true,
+  "metrics": {
+   "G": 30,
+   "A": 14,
+   "GD": 6,
+   "AD": 1,
+   "cost": 30.0,
+   "counts": {
+    "AND": 14,
+    "XOR": 16
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "independent_metrics": {
+   "G": 30,
+   "counts": {
+    "AND": 14,
+    "XOR": 16
+   },
+   "A": 14,
+   "XX": 16,
+   "GD": 6,
+   "AD": 1,
+   "dead": 0,
+   "n": 8,
+   "m": 4,
+   "model": "xag",
+   "library_violations": [],
+   "cost": 30.0
+  }
+ },
+ "jobs": [
+  {
+   "tag": "r0-s1",
+   "seed": 1,
+   "kernel_seed": 1,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.71
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s2",
+   "seed": 2,
+   "kernel_seed": 2,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.82,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.78
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s3",
+   "seed": 3,
+   "kernel_seed": 3,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.71,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.68
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s4",
+   "seed": 4,
+   "kernel_seed": 4,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.82,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.78
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s5",
+   "seed": 5,
+   "kernel_seed": 5,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.82,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.78
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s6",
+   "seed": 6,
+   "kernel_seed": 6,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.81,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.79
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s7",
+   "seed": 7,
+   "kernel_seed": 7,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.76,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.76
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s8",
+   "seed": 8,
+   "kernel_seed": 8,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.81,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.8
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s1",
+   "seed": 1,
+   "kernel_seed": 1001,
+   "metrics": {
+    "G": 30,
+    "A": 15,
+    "GD": 6,
+    "AD": 1,
+    "cost": 30.0,
+    "counts": {
+     "AND": 15,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.82,
+   "final": {
+    "cost": 30.0,
+    "G": 30.0,
+    "A": 15.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 15.003,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.8
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s2",
+   "seed": 2,
+   "kernel_seed": 1002,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.76,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.75
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s3",
+   "seed": 3,
+   "kernel_seed": 1003,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.76,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.75
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s4",
+   "seed": 4,
+   "kernel_seed": 1004,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.82,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.81
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s5",
+   "seed": 5,
+   "kernel_seed": 1005,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.76
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s6",
+   "seed": 6,
+   "kernel_seed": 1006,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.72,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.68
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s7",
+   "seed": 7,
+   "kernel_seed": 1007,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.72
+   },
+   "skel": null
+  },
+  {
+   "tag": "r1-s8",
+   "seed": 8,
+   "kernel_seed": 1008,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.71,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.68
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s5",
+   "seed": 5,
+   "kernel_seed": 2005,
+   "metrics": {
+    "G": 30,
+    "A": 14,
+    "GD": 6,
+    "AD": 1,
+    "cost": 30.0,
+    "counts": {
+     "AND": 14,
+     "XOR": 16
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 30.0,
+    "G": 30.0,
+    "A": 14.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 14.003,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.75
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s1",
+   "seed": 1,
+   "kernel_seed": 2001,
+   "metrics": {
+    "G": 30,
+    "A": 15,
+    "GD": 6,
+    "AD": 1,
+    "cost": 30.0,
+    "counts": {
+     "AND": 15,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.76,
+   "final": {
+    "cost": 30.0,
+    "G": 30.0,
+    "A": 15.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 15.003,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.74
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s2",
+   "seed": 2,
+   "kernel_seed": 2002,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.73
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s3",
+   "seed": 3,
+   "kernel_seed": 2003,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.87,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.84
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s4",
+   "seed": 4,
+   "kernel_seed": 2004,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.66,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.65
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s6",
+   "seed": 6,
+   "kernel_seed": 2006,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.72
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s7",
+   "seed": 7,
+   "kernel_seed": 2007,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 6,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 6.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.75
+   },
+   "skel": null
+  },
+  {
+   "tag": "r2-s8",
+   "seed": 8,
+   "kernel_seed": 2008,
+   "metrics": {
+    "G": 31,
+    "A": 16,
+    "GD": 5,
+    "AD": 1,
+    "cost": 31.0,
+    "counts": {
+     "AND": 16,
+     "XOR": 15
+    }
+   },
+   "wall_s": 2.77,
+   "final": {
+    "cost": 31.0,
+    "G": 31.0,
+    "A": 16.0,
+    "GD": 5.0,
+    "AD": 1.0,
+    "obj": 16.0031,
+    "feas": 1.0,
+    "iters": 30000.0,
+    "restarts": 0.0,
+    "seconds": 2.75
+   },
+   "skel": null
+  }
+ ]
+}
