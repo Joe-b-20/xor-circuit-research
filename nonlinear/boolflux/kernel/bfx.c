@@ -686,11 +686,12 @@ int main(int argc, char **argv) {
         ndiv = 0;
         for (int v = 0; v < N + cur.ng; v++) if (!TFO[v]) DIV[ndiv++] = v;
         for (int i = ndiv - 1; i > 0; i--) { int j = rndint(i + 1); int x = DIV[i]; DIV[i] = DIV[j]; DIV[j] = x; }
-        if (ndiv > dmax) ndiv = dmax;
+        if (ndiv > dmax && dmax > 0) ndiv = dmax;
+        if (ndiv == 0) continue;
         find_cands(mv + 1);
         st_cands[mv] += ncand;
         /* evaluate all candidates; take the best improvement, else a random one under Metropolis */
-        int bi = -1; double bobj = 1e300; Metrics m;
+        int bi = -1, bfeas = 0; double bobj = 1e300; Metrics m;
         static int order[1024], neu[1024], up[1024]; static double upd[1024];
         int no = ncand < 1024 ? ncand : 1024, nneu = 0, nup = 0;
         for (int i = 0; i < no; i++) order[i] = i;
@@ -699,19 +700,20 @@ int main(int argc, char **argv) {
             int i = order[q];
             if (!eval_cand(s, &CAND[i], &m)) continue;
             double d = m.obj - mcur.obj;
-            if (m.obj < bobj) { bobj = m.obj; bi = i; }
-            if (fabs(d) <= 1e-9) neu[nneu++] = i;
+            if ((m.feas || !mcur.feas) && m.obj < bobj) { bobj = m.obj; bi = i; bfeas = m.feas; }
+            if (fabs(d) <= 1e-9 && m.feas >= mcur.feas) neu[nneu++] = i;
             else if (d > 0 && m.obj <= mbest.obj + max_excess && m.feas >= mcur.feas) { upd[nup] = d; up[nup++] = i; }
         }
         int accept = -1;
-        if (bi >= 0 && bobj < mcur.obj - 1e-9) accept = bi;
+        /* feasibility first: a feasible state is never left for an infeasible one */
+        if (bi >= 0 && bobj < mcur.obj - 1e-9 && (bfeas || !mcur.feas)) accept = bi;
         else if (nneu && (nup == 0 || T <= 0 || rnd01() < 0.75)) accept = neu[rndint(nneu)];
         else if (nup && T > 0) { int q = rndint(nup); if (rnd01() < exp(-upd[q] / T)) accept = up[q]; }
         if (accept >= 0) {
             eval_cand(s, &CAND[accept], &m);
             circ_copy(&cur, &cand_c); state_refresh();
             st_acc[mv]++;
-            if (mcur.obj < mbest.obj - 1e-9) {
+            if ((mcur.feas || !mbest.feas) && (mcur.obj < mbest.obj - 1e-9 || (mcur.feas && !mbest.feas))) {
                 st_imp[mv]++;
                 circ_copy(&best, &cur); mbest = mcur; last_best = t; last_best_it = it;
                 write_circuit(cfg_out, &best, &mbest, "best");

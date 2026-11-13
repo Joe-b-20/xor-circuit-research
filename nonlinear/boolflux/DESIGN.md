@@ -76,11 +76,16 @@ linear layer. `cli.py run` is the gate level alone.
 
 ## Verification
 
-Every saved circuit is checked by two independent implementations against the complete
-function: `core.Circuit.value_table` (bitsliced, targets from `targets.py`) and
-`independent/verify.py` (written separately from a specification, no shared code: per-input
-evaluation, its own AES and table code, its own metrics and library check). A result counts
-only when both agree with the target and the circuit uses only the model's gates.
+Inside the search, the kernel re-simulates every candidate on the complete truth table against
+the start circuit's function. Every job's final circuit is checked by `core.Circuit.value_table`
+against the target. The reported best circuit of a run (`best.circ.txt`) is checked by two
+independent implementations: `core` (bitsliced, AES computed in `targets.py`, S-box tables from
+`benchmarks/sboxes.json`) and `independent/verify.py` (written separately from a specification,
+no shared code: per-input evaluation, its own AES code, reads the spec table file itself, its
+own metrics, library check and cap check). A result counts only when both match the target, the
+circuit uses only the model's gates, it meets the caps, and the two metric computations agree
+(G, A, GD, AD, cost, counts by type). `campaigns/collect.py` re-runs both checks on every circuit
+copied into `results/`. An independent review with fuzzing is in `review/REVIEW.md`.
 
 ## Reproducibility
 

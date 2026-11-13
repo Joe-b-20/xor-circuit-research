@@ -40,6 +40,25 @@ def build_kernel():
     return KBIN
 
 
+def snapshot(out):
+    """Copy the sources into OUT/src and build private kernel binaries OUT/bin/{bfx,skel}, so
+    a run keeps using the code it started with and records exactly what ran."""
+    import shutil
+    src = Path(out) / 'src'; bindir = Path(out) / 'bin'
+    if not (bindir / 'bfx').exists():
+        src.mkdir(parents=True, exist_ok=True); bindir.mkdir(parents=True, exist_ok=True)
+        for f in ('kernel/bfx.c', 'kernel/skel.c', 'cli.py', 'core.py', 'skeleton.py', 'starts.py', 'targets.py'):
+            shutil.copy(HERE / f, src / Path(f).name)
+        for b in ('bfx', 'skel'):
+            subprocess.run(['gcc', '-O2', '-o', str(bindir / b), str(src / (b + '.c')), '-lm'], check=True)
+    global KBIN, SBIN
+    KBIN = bindir / 'bfx'; SBIN = bindir / 'skel'
+    h = hashlib.sha256()
+    for f in sorted(src.iterdir()):
+        h.update(f.name.encode()); h.update(f.read_bytes())
+    return h.hexdigest()[:12]
+
+
 def kernel_hash():
     """Hash of every source file that can change a result (kernels and the Python side)."""
     h = hashlib.sha256()
@@ -53,9 +72,11 @@ def verify_core(c: core.Circuit, table):
     return c.value_table() == list(table)
 
 
-def verify_independent(path, target, model_path):
+def verify_independent(path, target, model_path, caps=None):
     if target == 'aes': fn = ['--aes']
     elif target == 'aes-inv': fn = ['--aes-inv']
+    elif target in targets.names() and target not in targets.BUILTIN:
+        fn = ['--table', str(targets.SBOX_FILE), '--name', target]   # the spec table itself
     else:
         n, m, table, _ = targets.load(target)
         fj = Path(path).with_suffix('.fn.json')
@@ -63,6 +84,8 @@ def verify_independent(path, target, model_path):
         fn = ['--fn', str(fj)]
     cmd = [sys.executable, str(INDEP), str(path)] + fn + ['--json']
     if model_path: cmd += ['--model', str(model_path)]
+    for k, v in (caps or {}).items():
+        if v is not None: cmd += ['--max-%s' % k, str(v)]
     r = subprocess.run(cmd, capture_output=True, text=True)
     try:
         res = json.loads(r.stdout)[0]
@@ -72,15 +95,24 @@ def verify_independent(path, target, model_path):
     return res
 
 
-def verify_file(path, target, model_name):
+def verify_file(path, target, model_name, caps=None):
+    """Both verifiers; the independent one also checks the caps, and its metrics must equal
+    core's (G, A, GD, AD, cost, counts), else independent_ok is False."""
     model = core.Model.load(model_name)
     n, m, table, _ = targets.load(target)
     c = core.read_ncff(str(path))
     lib_ok = {g[0] for g in c.gates} <= model.ops()
     ok1 = verify_core(c, table)
-    ind = verify_independent(path, target, core.MODELS / ('%s.json' % model.name))
-    return {'file': str(path), 'core_ok': ok1, 'library_ok': lib_ok, 'independent_ok': ind.get('ok'),
-            'metrics': c.metrics(model), 'independent': ind}
+    mpath = Path(model_name) if Path(model_name).exists() else core.MODELS / ('%s.json' % model.name)
+    ind = verify_independent(path, target, mpath, caps)
+    mt = c.metrics(model) if lib_ok else c.metrics()
+    im = ind.get('metrics') or {}
+    agree = all(im.get(k) == mt[k] for k in ('G', 'A', 'GD', 'AD')) and im.get('counts') == mt['counts']
+    if lib_ok and ind.get('ok'):
+        agree = agree and abs(float(im.get('cost', -1)) - mt['cost']) < 1e-6
+    return {'file': str(path), 'core_ok': ok1, 'library_ok': lib_ok,
+            'independent_ok': bool(ind.get('ok')) and agree, 'metrics_agree': agree,
+            'metrics': mt, 'independent': ind}
 
 
 # ---- starting circuits ------------------------------------------------------------------------
@@ -107,6 +139,8 @@ OBJ_KEYS = {'cost': 'w.cost', 'g': 'w.g', 'a': 'w.a', 'gd': 'w.gd', 'ad': 'w.ad'
 def objective_weights(spec):
     """'a,cost,gd' -> lexicographic weights 1, 1e-4, 1e-8."""
     w = {v: 0.0 for v in OBJ_KEYS.values()}
+    if len(spec.split(',')) > 3:
+        raise SystemExit('at most three objective keys')
     for i, k in enumerate(spec.split(',')):
         w[OBJ_KEYS[k.strip()]] += 10.0 ** (-4 * i)
     return w
@@ -165,10 +199,10 @@ def parse_kernel_log(text):
 
 
 def cmd_run(args):
-    build_kernel()
     model = core.Model.load(args.model)
     n, m, table, desc = targets.load(args.target)
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    code_hash = snapshot(out)
     start = make_start(args.target, args.start, model)
     extra = parse_sets(args.set)
     seeds = parse_seeds(args.seeds)
@@ -178,7 +212,7 @@ def cmd_run(args):
                {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a},
                'start': args.start, 'start_metrics': start.metrics(model), 'seeds': seeds,
                'iters': args.iters, 'seconds_cap': args.seconds, 'rounds': args.rounds,
-               'kernel_sha256_12': kernel_hash(), 'settings': {**DEFAULTS, **extra},
+               'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'), 'settings': {**DEFAULTS, **extra},
                'command': ' '.join(['python3', 'nonlinear/boolflux/cli.py'] + sys.argv[1:]),
                'runs': []}
     t_all = time.time()
@@ -210,7 +244,8 @@ def cmd_run(args):
                     c = core.from_kernel(bp.read_text(), '%s-%s' % (args.target, tag))
                     c.in_names = ['x%d' % i for i in range(n)]; c.out_names = ['y%d' % j for j in range(m)]
                     ok = verify_core(c, table)
-                    results.append({'round': rnd, 'seed': seed, 'kernel_seed': seed + 1000 * rnd, 'tag': tag,
+                    results.append({'time_capped': final.get('iters', 0) < args.iters,
+                                    'round': rnd, 'seed': seed, 'kernel_seed': seed + 1000 * rnd, 'tag': tag,
                                     'returncode': p.returncode, 'core_ok': ok,
                                     'metrics': c.metrics(model), 'wall_s': round(time.time() - t0, 2),
                                     'final': final, 'improvements': bests, 'moves': moves,
@@ -241,9 +276,10 @@ def cmd_run(args):
     bpath.write_text(core.write_ncff(bc, model, comments=[
         'BoolFlux result for %s (%s)' % (args.target, desc),
         'model %s, objective %s, caps %s' % (model.name, args.objective, summary['caps']),
-        'command: %s' % summary['command'], 'kernel bfx.c sha256 %s' % summary['kernel_sha256_12'],
+        'command: %s' % summary['command'], 'kernel bfx.c sha256 %s' % summary['code_sha256_12'],
         'seed %d round %d' % (best['seed'], best['round'])]), encoding='utf-8')
-    v = verify_file(bpath, args.target, model.name)
+    caps = {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a}
+    v = verify_file(bpath, args.target, args.model, caps)
     mt = v['metrics']
     feas = ((args.cap_gd is None or mt['GD'] <= args.cap_gd) and (args.cap_ad is None or mt['AD'] <= args.cap_ad)
             and (args.cap_a is None or mt['A'] <= args.cap_a))
@@ -307,10 +343,10 @@ def run_gate(c, out, tag, seed, model, args, extra):
 
 
 def cmd_pipe(args):
-    build_kernel()
     model = core.Model.load(args.model)
     n, m, table, desc = targets.load(args.target)
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    code_hash = snapshot(out)
     start = make_start(args.target, args.start, model)
     extra = parse_sets(args.set)
     seeds = parse_seeds(args.seeds)
@@ -331,7 +367,7 @@ def cmd_pipe(args):
                'caps': {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a},
                'start': args.start, 'start_metrics': start.metrics(model), 'seeds': seeds,
                'iters': args.iters, 'skel_iters': args.skel_iters, 'rounds': args.rounds,
-               'skel_share': args.skel_share, 'kernel_sha256_12': kernel_hash(),
+               'skel_share': args.skel_share, 'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'),
                'settings': {**DEFAULTS, **{'skel.' + k: v for k, v in SKEL_DEFAULTS.items()}, **extra},
                'runs': []}
     pool = [start]; t_all = time.time(); best = None
@@ -354,7 +390,8 @@ def cmd_pipe(args):
             c2.in_names = ['x%d' % k for k in range(n)]; c2.out_names = ['y%d' % k for k in range(m)]
             ok = verify_core(c2, table)
             mt = c2.metrics(model)
-            rec.update({'core_ok': ok, 'metrics': mt, 'obj': objective(mt), 'feasible': feasible(mt),
+            rec.update({'time_capped': final.get('iters', 0) < args.iters,
+                        'core_ok': ok, 'metrics': mt, 'obj': objective(mt), 'feasible': feasible(mt),
                         'final': final, 'improvements': bests, 'moves': moves,
                         'wall_s': round(time.time() - t0, 2)})
             return rec, c2
@@ -393,9 +430,9 @@ def cmd_pipe(args):
     bpath.write_text(core.write_ncff(bc, model, comments=[
         'BoolFlux result for %s (%s)' % (args.target, desc),
         'model %s, objective %s, caps %s' % (model.name, args.objective, summary['caps']),
-        'command: %s' % summary['command'], 'kernel sha256 %s' % summary['kernel_sha256_12'],
+        'command: %s' % summary['command'], 'kernel sha256 %s' % summary['code_sha256_12'],
         'from job %s' % best[2].get('tag')]), encoding='utf-8')
-    v = verify_file(bpath, args.target, model.name)
+    v = verify_file(bpath, args.target, args.model, {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a})
     summary['best'] = {'file': str(bpath), 'job': best[2].get('tag'), 'metrics': v['metrics'],
                        'core_ok': v['core_ok'], 'library_ok': v['library_ok'],
                        'independent_ok': v['independent_ok'],
@@ -415,7 +452,7 @@ def cmd_verify(args):
         good = v['core_ok'] and v['independent_ok'] and v['library_ok']
         ok &= good
         print('%s %s %s core=%s indep=%s lib=%s' % ('ok  ' if good else 'FAIL', f,
-              json.dumps({k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD', 'counts')}),
+              json.dumps({k: v['metrics'].get(k) for k in ('cost', 'G', 'A', 'GD', 'AD', 'counts')}),
               v['core_ok'], v['independent_ok'], v['library_ok']))
     sys.exit(0 if ok else 1)
 

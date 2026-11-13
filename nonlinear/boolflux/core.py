@@ -90,7 +90,7 @@ class Circuit:
             nm = OPNAME.get(op, 'OP%d' % op)
             counts[nm] = counts.get(nm, 0) + 1
             if model is not None:
-                cost += model.cost[op]
+                cost += model.cost.get(op, float('nan'))
         return {'G': len(self.gates), 'A': sum(1 for g in self.gates if g[0] in NONLINEAR_OPS),
                 'GD': max((lg[s] for s in self.outputs), default=0),
                 'AD': max((la[s] for s in self.outputs), default=0),
