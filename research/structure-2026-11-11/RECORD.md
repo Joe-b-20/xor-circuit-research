@@ -1455,3 +1455,57 @@ Full proofs, limitations, reviews, and reproducible fixtures are in
 The strongest next direction is separation rank across internal visible values or multiple
 windows; neither extension is established here. The unrestricted interval remains
 `75 <= L(MixColumns) <= 88`, with no assumption that 88 is optimal.
+
+## 29. Continuation: affine local completions and sparse sharing (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/continuation/README.md`](../takeover-2026-11-13/continuation/README.md).
+This continues reviewed commit `14b89e6` on the same isolated research branch. All universal
+claims below have hand proofs and independent machine review. No search or case-elimination
+campaign was run.
+
+**Cross-window hidden counts are not additive (proved by constructions).** A reduced five-gate
+toy has two maximal-window output events sharing its only hidden gate. A reduced 156-gate
+actual MixColumns circuit does the same for sheets 3 and 4. A separate reduced 149-gate
+MixColumns circuit has a proper-support internal visible event and no hidden gates. Both
+actual maps and visibility counts were directly checked; these are expensive witnesses,
+not obstructions to a theorem restricted to cheap circuits.
+
+**Strong sparse obstruction (proved; exact event-free minimum).** For every r>=1 an explicit
+reduced live circuit has `13r+3` gates, exactly two hidden gates and one nonlocal gate, while
+its map's event-free minimum is `15r+2`. All output weights are 5/7; the boundary minimum
+relation weight is exactly 6; output rows are independent; windows have at most 3 blocks,
+blocks at most 4 coordinates; own-block incidence has no reciprocal pair. Thus savings
+`>=2r-1` cannot be bounded by a fixed multiple of hidden-work count under these combined
+hypotheses. The map is rectangular with one row per own-block family, so this is not a
+MixColumns counterexample. The lower bound counts coordinate deletions inside packed
+private blocks and proves event-freeness only at the final whole-block projection;
+intermediate event-freeness is neither assumed nor needed. Full proof: `continuation/SPARSE.md`.
+
+**Affine-completion theorem (proved).** Partition the nonlocal operand graph of selected
+events into physical components. For one component, K spans its selected values and all
+operands/partners lie in one coset `a+K`. Let E be the local members of that coset. If E
+is nonempty, let Delta span differences of its members. The number h of nonlocal operands
+is at least `dim K-dim Delta`; an appended physical incidence bit can improve this by one.
+With no actual local partner, `h>=dim K+1`. Sum these bounds only over the global disjoint
+components. Delta is obtained by affine linear-system intersections with the prescribed
+window subspaces, not enumeration or an optimal-completion oracle. The theorem includes
+HR and combines with both joint repair bounds across sheets. Scope controls: the quotient
+is zero at full target span and in the 156-gate overlap example; it is exactly one in the
+genuine-saving families. The anchor formulation equals quotienting by span(E), correcting
+an early comparison overstatement without changing the theorem.
+
+**Internal events (proved).** Two local operand masks with surviving support R and cancelled
+support C exist iff two output windows containing C cover R. Inside an enclosing window,
+use the component's full outside signature to identify all possible local-partner windows;
+their complement gives the strongest linear separator based on signature/locality alone.
+The resulting rank bound handles proper-support internal events. A specified independent
+sheet-3 profile with the complete visible set of size m gives `G>=84-2m`; the hypotheses
+are stated in `continuation/INTERNAL.md`.
+
+**Verification and judgment.** Five specified constructions were checked by exact masks and
+Gaussian elimination, including the packed sparse instance r=2 (29 gates versus an explicit
+event-free 32). Universal optima and boundary distance are hand proofs, not enumerations.
+The next useful question is the cost of producing compatible local completions while all
+four structured rows of each implicated MixColumns sheet are required. Coarse support,
+sparsity, boundary distance, and hidden-work counts alone are insufficient. No universal
+MixColumns compatibility lemma has been proved; `75 <= L(MixColumns) <= 88` remains unchanged.

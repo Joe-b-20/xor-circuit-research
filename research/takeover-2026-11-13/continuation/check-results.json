@@ -1,0 +1,90 @@
+{
+  "hub_r3_m3": {
+    "r": 3,
+    "m": 3,
+    "gates": 22,
+    "hidden": 1,
+    "events": 3,
+    "event_free_construction_gates": 27,
+    "event_free_optimality": "hand proof in MULTIWINDOW.md",
+    "components": [
+      {
+        "hidden_operands": 1,
+        "selected_events": 3,
+        "target_rank": 3,
+        "eligible_windows": 9,
+        "completion_difference_rank": 2,
+        "AC": 1,
+        "AC_plus": 1
+      }
+    ]
+  },
+  "mixcolumns_overlap": {
+    "live_gates": 156,
+    "hidden": 1,
+    "components": [
+      {
+        "hidden_operands": 1,
+        "selected_events": 2,
+        "target_rank": 2,
+        "eligible_windows": 5,
+        "completion_difference_rank": 2,
+        "AC": 0,
+        "AC_plus": 1
+      }
+    ]
+  },
+  "mixcolumns_internal_no_hidden": {
+    "live_gates": 149,
+    "hidden": 0,
+    "events": 1,
+    "event_internal": true,
+    "all_32_masks_correct": true,
+    "reduced": true
+  },
+  "internal_tree_h4": {
+    "gates": 10,
+    "hidden": 4,
+    "internal_events": 3,
+    "components": [
+      {
+        "hidden_operands": 4,
+        "selected_events": 3,
+        "target_rank": 3,
+        "eligible_windows": 0,
+        "AC0": 4,
+        "actual_no_local_partner_bound": 4
+      }
+    ]
+  },
+  "sparse_packed_r2": {
+    "r": 2,
+    "inputs": 28,
+    "outputs": 8,
+    "output_rank": 8,
+    "gates": 29,
+    "hidden_gates": 2,
+    "nonlocal_operands": 1,
+    "visible_events": 2,
+    "max_block_dimension": 4,
+    "max_window_blocks": 3,
+    "output_weights": [
+      5,
+      7
+    ],
+    "event_free_construction_gates": 32,
+    "event_free_optimum": "15r+2 by hand proof in SPARSE.md",
+    "boundary_relation_minimum": "6 by hand proof in SPARSE.md; not enumerated",
+    "components": [
+      {
+        "hidden_operands": 1,
+        "selected_events": 2,
+        "target_rank": 2,
+        "eligible_windows": 6,
+        "completion_difference_rank": 1,
+        "AC": 1,
+        "AC_plus": 1
+      }
+    ]
+  }
+}

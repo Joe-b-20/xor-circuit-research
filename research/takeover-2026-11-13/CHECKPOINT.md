@@ -1,6 +1,8 @@
 # XOR structural research: checkpoint, 2026-11-13
 
 Research branch: `research-2026-11-13-structural`.
+Current continuation follows reviewed commit `14b89e6`; see
+[continuation summary](continuation/README.md).
 Verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511` on local and remote
 `phase-2026-11-09`. The original worktree, `boolflux-2026-11-13` worktree, and untracked
 `search/proposals/` were preserved. The new worktree is under this chat's `work/xor-structural`.
@@ -11,12 +13,18 @@ or human certification is claimed.
 
 ## Read next
 
-1. [Summary and judgment](SUMMARY.md).
-2. [Hidden operands: Theorems H and HR](directions/independent.md), especially HR and the
-   MixColumns consequence. This is the strongest new direction.
-3. [Joint reconstruction](directions/JOINT.md), then its combination table in the hidden-work note.
-4. [Global projection repair](directions/PROJECTION.md), including both counterexamples to converses.
-5. [Reviews](reviews/hidden-review.md), [second hidden review](reviews/hidden-second-review.md),
+1. [Current summary and judgment](continuation/README.md).
+2. [Sparse sharing counterexample](continuation/SPARSE.md): constant hidden work can save
+   arbitrarily many gates even with output weights 5/7, boundary relation distance 6,
+   window width 3 and block dimension at most 4.
+3. [Affine local completions](continuation/AFFINE.md): a valid joint count across windows,
+   including its explicit zero-bound controls.
+4. [Internal-event extension](continuation/INTERNAL.md) and [actual overlap](continuation/OVERLAP.md).
+5. [First-pass summary](SUMMARY.md), [H/HR](directions/independent.md),
+   [joint reconstruction](directions/JOINT.md), [projection repair](directions/PROJECTION.md).
+6. [Sparse review](continuation/reviews/sparse-review.md),
+   [second sparse review](continuation/reviews/sparse-second-review.md),
+   [affine reviews](continuation/reviews/affine-second-review.md),
    [foundational reconstruction](reviews/foundations-audit.md).
 
 The earlier entry point is [the phase-12 checkpoint](../structure-2026-11-11/CHECKPOINT.md).
@@ -24,47 +32,47 @@ The old [record](../structure-2026-11-11/RECORD.md) now has a continuation entry
 
 ## Reliable results and limits
 
-- Reconstructed the 10/13 sheet lemmas and the 83/84 block-monotone bounds from symbolic proofs.
-  Checked visible repair and Theorem V. One overstatement about sharing different repair chains
-  was corrected; the theorem itself survives. The old 66-distinct-charge counterexample survives.
-- **H:** independent selected event values on a maximal window, pairwise distinct on each block,
-  force `t <= 2h-c`, where `h` counts distinct nonlocal operand gates and `c` their operand-graph
-  components. A symbolic family attains the bound.
-- **HR (stronger mechanism):** within each nonlocal-operand component, all operands have the
-  same nonzero value outside the window. Project onto blocks incompatible with that outside
-  value: every local partner disappears. The rank of the remaining target projections is at
-  most the number of physical nonlocal operands in that component. Sum only over disjoint
-  components. No target-independence assumption is needed for HR.
-- **MixColumns:** `t=1,2,3,4` output events in any one of sheets `1,3,4,5,6,7` force at least
-  `1,2,3,3` distinct hidden operand gates, even with other visible/hidden events present.
-  Do not add these per-sheet bounds without controlling overlap.
-- Sharing in-block pieces strengthens both forms of V. If the entire visible set consists of
-  `t` output events in one of these sheets, joint reconstruction plus HR gives:
+- **Continuation: sharp limits of hidden-work counting.** A reduced live family has
+  `13r+3` gates versus event-free optimum `15r+2`, exactly two hidden gates (one nonlocal),
+  and independent output rows of weights 5/7. Its boundary minimum relation weight is 6,
+  windows have at most 3 blocks, blocks at most 4 coordinates, and own blocks have no
+  reciprocal incidence. This disproves a universal constant multiple of hidden work as
+  a bound on savings, even under these combined hypotheses. It is rectangular, with
+  one output per own-block family, so is not a MixColumns counterexample.
+- **AC (proved).** In a connected nonlocal-operand component, let K span its selected
+  event values and let E be all local vectors in the operand coset `a+K`. If E is nonempty,
+  put `Delta=span{ell+ell_0:ell in E}`. Then `h>=dim K-dim Delta`; an incidence bit can
+  strengthen this by one. With no actual local partner, `h>=dim K+1`. Sum over the global
+  physical components, not separate per-sheet copies. All spaces are obtained by linear
+  systems on given masks. AC includes HR but can be zero, including for full target span.
+- **Internal events (proved).** Two local operands with surviving support R and cancelled
+  support C are algebraically possible iff two windows containing C cover R. Exact window
+  membership gives a stronger separator than pairwise co-occurrence. A specified independent
+  sheet-3 internal-event profile gives `G>=84-2m` when it is the complete visible set.
+- **Actual MixColumns controls (directly checked).** A reduced 156-gate circuit has one hidden
+  gate shared between two maximal-window output events. A reduced 149-gate circuit has one
+  proper-support internal visible event and no hidden gates. These expensive witnesses
+  refute unconditional overlap/support inferences, not constraints limited to cheap circuits.
 
-  | Sheet | t=1 | t=2 | t=3 | t=4 |
-  |---|---:|---:|---:|---:|
-  | 1 | 82 | 82 | 81 | 80 |
-  | 3 | 82 | 81 | 79 | 77 |
-  | 4,5,6,7 | 83 | 83 | 82 | 81 |
-
-  These are lower bounds for reduced circuits with that exact visible-event profile;
-  hidden events are unrestricted. The numbers are not claimed attainable.
-- **Projection repair:** propagate requested block projections backward through the circuit;
-  their distinct non-input values form an executable event-free value set `P`. For reduced
-  original gate values `V`, `G >= B + |V\P| - |P\V|`. This handles all interacting events
-  simultaneously and reuses equal values globally. It is an upper bound on repair cost, not
-  a characterization of cancellation savings. A specified five-gate optimum refutes the converse.
+The first-pass foundations remain valid: the reconstructed 10/13 sheet lemmas, 83/84
+block-monotone bounds, visible repair, H/HR and their exact-visible-profile table, shared
+in-block reconstruction, and simultaneous projection repair. Their proofs, counterexamples,
+and reviews remain linked in [the first-pass summary](SUMMARY.md). The projection repair
+is one-sided; an optimal five-gate example refutes its converse. The 66-distinct-charge
+counterexample still rules out unconditional distinct-charge counting.
 
 ## Next mathematical target
 
-Pursue the componentwise separation-rank mechanism. The new rank argument works because it
-first makes every uncounted local partner zero on the chosen coordinates. Rank of cancelled
-copies, without that exclusion, failed in phase 10 and should not be revived.
+The internal and multiwindow rank extensions are now proved, with the limits above. The
+next useful question is the extra cost of supplying several local completions of one
+hidden value while computing all four rows of each implicated MixColumns sheet. Use the
+actual fixed incidence and triple/pair row demands. No generic hidden-gate credit follows
+from sparsity, boundary distance, or bounded windows; SPARSE disproves it.
 
-Two genuine extensions remain open: selected internal visible values (which need not span
-their entire output window), and sharing the same hidden operands between different sheets.
-Seek a common separated projection or a proved overlap bound. Do not sum incompatible rank
-claims or infer a global hidden-gate capacity from the single-window theorem.
+The completion-difference space Delta is an explicit place to state a compatibility lemma,
+but a large Delta alone does not force extra hidden gates or rule out useful cancellation.
+Production/ancestry constraints must identify additional cost without charging gates
+already counted by the repair families. No such universal MixColumns lemma is established.
 
 The projection repair is a useful constructive control and source of counterexamples, but
 its five-output limitation makes optimizing its overhead a weaker priority than HR.
@@ -76,6 +84,10 @@ computer-driven case elimination was run. Hand proofs are the evidence for unive
 [Direct checks](checks/README.md) verify 12 specified repair cases and one explicit sharp
 hidden-work circuit by exact masks and linear algebra. Three named external corpus circuits
 are saved as small fixtures; reruns do not require their original external location.
+[Continuation checks](continuation/check-results.json) verify five specified constructions,
+including both actual MixColumns controls and the packed sparse family at `r=2` (29 gates
+versus an explicit event-free 32). Universal optimum and boundary-distance claims are
+proved by hand, not by enumeration.
 
 Windows-backed checkout reports executable-bit differences; Git commands used
 `-c core.filemode=false` and staged only intended research paths. Shared repository config
