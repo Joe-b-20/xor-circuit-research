@@ -1,0 +1,11 @@
+{
+ "name": "nist",
+ "gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "not_as": "XNOR0",
+ "description": "NIST circuit-complexity accounting: gates AND, XOR, XNOR and NOT (written XNOR t a 0), every gate costs 1; G = gate count, A = AND count, GD/AD depths."
+}
