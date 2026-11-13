@@ -247,3 +247,22 @@ TAOCP 4A Sect. 7.1.2:
 Other references, numbers not read: Ullrich et al. 2011 (SKEW, optimal bitsliced 4x4
 search); Bolzer-Duval-Minier 2025 (ePrint 2025/1505, {AND, XOR} at AND-depth 1, up to
 9 bits); Zhang-Huang 2023 (ePrint 2023/1721, new bounds for the Sto16 S-boxes).
+
+## 7. Zhang-Huang 2023 (read from the PDF supplied by the user, 2026-11-13)
+
+Zhang, Huang, "Optimizing S-box Implementations Using SAT Solvers: Revisited", ePrint 2023/1721.
+Definitions (Sect. 2): BGC over {XOR, OR, AND, NOT}; GC over {XOR, XNOR, AND, OR, NAND, NOR}
+plus NOT (Table 2 and Remark 2) - no ANDN/ORN, so our model gc (which has ANDN and ORN) is not
+the literature GC; models/gc6.json is.  [k1, k2] = UNSAT at k1-1, SAT at k2.
+
+| S-box | BGC (Sto16 -> ZH23) | GC (ZH23) | MC |
+|---|---|---|---|
+| Ascon | - -> [12, 16] | [12, 15] | 5 |
+| Keccak chi5 | <= 13 -> [12, 13] | [11, 13] | 5 |
+| RECTANGLE | [10, 12] -> [11, 12] | 11 (determined; Sto16 [10, 11]) | 4 |
+| RECTANGLE^-1 | - | 11 | - |
+| Minalpher | [11, inf] -> [12, 17] | [11, 14] | 5 |
+| ICEPOLE | [12, 26] | [12, 21] | 6 |
+| PRIMATEs | [12, 27] | [12, 23] | 7 (determined) |
+
+Depth (k, w) SAT results (ZH23 Table 12): Ascon (3, 6), Keccak (2, 10).
