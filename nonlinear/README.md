@@ -11,6 +11,7 @@ the ground for extending the search beyond linear maps. The linear search, XORFl
 | the checker: every circuit against its function, twice, plus its metrics against its name and NIST's header | [check.py](check.py) |
 | the importer that wrote `nist/` (pinned to one NIST commit) | [tools/import_nist.py](tools/import_nist.py) |
 | the mathematical representation and the constraints on AND inputs and outputs | [THEORY.md](THEORY.md) |
+| BoolFlux: the optimizer for complete Boolean functions over configurable gate libraries, its results and ledger | [boolflux/](boolflux/README.md) |
 
 ```bash
 python3 nonlinear/check.py                                        # every circuit in nist/ (and circuits/)
