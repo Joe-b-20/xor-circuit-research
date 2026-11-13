@@ -4,6 +4,8 @@
 machine review, not formal verification or human certification. No circuit search was
 used. **Unrestricted MixColumns remains 75 to 88.**
 
+**Subsequent result:** [the augmented pass](../augmented/README.md) closes the remaining eleven-gate core. The augmented minimum is twelve, the no-feedback joint minimum is 22, and the block-monotone MixColumns lower bound is 85. The discussion below records the preceding frontier.
+
 ## What is now proved
 
 [Theorem C and Corollary J10](ODD_CLOSURE.md) close the entire ten-gate producer branch.

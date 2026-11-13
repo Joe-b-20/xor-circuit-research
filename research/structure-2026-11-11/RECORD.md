@@ -1828,3 +1828,81 @@ partial circuit illustrates the limit of the auxiliary argument; it is not an au
 solution. No circuit search or computer-driven elimination was used. The unrestricted
 augmented interval remains 11 to 12, the general no-feedback joint interval remains
 21 to 22, and unrestricted MixColumns remains `75<=L<=88`.
+
+## 35. Augmented minimum twelve, joint 22, block-monotone 85 (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/augmented/README.md`](../takeover-2026-11-13/augmented/README.md).
+This continues reviewed commit `a04558e`. Hand proofs received independent machine review;
+they are not formal verification or human certification. No circuit search was used.
+
+**The augmented gap is closed (proved and attained).** Computing the four first-sheet
+rows and supplying three independent even diagonal values needs at least twelve gates,
+with arbitrary sharing and cancellation permitted. The recorded event-free twelve-gate
+circuit attains this for one diagonal basis. The lower bound holds for every basis;
+a twelve-gate realization of every prescribed basis is not asserted.
+
+**Independent baseline and parity.** Seven required non-input ordinary masks and at
+least three entries force at least ten gates. At ten, the three labels span exactly
+the free even space. For physical even span V, residue rank r and odd-graph component
+count c, `dim V=3+r` and relation rank gives `c+r<=tau+1`; the eight named residues give
+`c>=2^(3-r)`. At ten these force at most one odd helper, and named-pair/even-only counts
+exclude both helper populations. Thus ten is impossible by a short new argument that
+does not use the older finite basis checks. At eleven, projecting away any odd free
+label fixes all targets and deletes its entry, contradicting the ten-gate exclusion.
+All actual free labels are therefore even. Seven first occurrences leave only three
+or four entries.
+
+**Three entries (excluded structurally).** The component bound forces residue rank at
+least two and at most two odd helpers. With zero helpers, at most six non-entry gates
+are available. With one helper, repeated pair representations share one three-term
+named expansion and their formal equation pairs have a common sum, giving odd-pair
+rank at most five; even-only relations add at most one. Eight are required. With two
+helpers, the five even values are independent, with three clean and two nonclean.
+Each of two four-residue classes must be connected, requiring at least six nonclean
+edges. Both nonclean colors would need three representations, impossible by unique
+three-term named expansions of the helpers.
+
+**Four entries (excluded structurally).** Seven first occurrences exhaust all non-entry
+gates. Only the three independent diagonal own masks can occur as even own values,
+so no even-only equation exists. Exactly three physical even values are clean.
+The component bound permits at most three helpers. With zero or one, relation rank
+is below seven. With two, clean pair capacity is at most two, and a saturated pair of
+nonclean colors creates an alternating four-cycle, lowering the available rank below
+seven even when the full even-value set is dependent. With three, one nonclean color
+must connect four residue-pair classes using its one named pair and three helper pairs.
+The four named pair sums become `k,k+h1,k+h2,k+h3`. Their sum is the all-eight named
+relation and forces dependence of the three required diagonals. This final contradiction
+excludes eleven without assuming event-freeness, restricting mixed auxiliaries, or
+requiring every diagonal to be an ancestor of a row.
+
+**Exact joint 22 under no feedback (proved and attained).** Assume no first-sheet target
+ancestor has nonzero consumer-block part. A ten-gate first cone is excluded at total
+21 by the preceding J10 theorem. Twelve first-cone gates plus the ten-gate consumer
+minimum already cost 22. The only remaining profile would be an eleven-gate first cone
+and ten consumer-bearing gates. All consumer entries must then be clean and span the
+diagonal, so that cone would be an eleven-gate augmented supplier, now excluded.
+The explicit event-free 22-gate circuit attains the minimum. The hypothesis still permits
+cancellations elsewhere; the arbitrary-feedback joint problem is not settled.
+
+**Block-monotone MixColumns needs 85 (proved).** Replace the sheet-0/1 charges by their
+joint ancestor family H, excluding pure block-7 values, now of size at least 22. The
+other five own-charge families each cost at least ten; the enlarged sheet-3 family
+costs at least thirteen. The window intersections with H are `{1}`, `{7}`, `{7}`, empty,
+empty, `{7}` for sheets 2 through 7. Own-block charges and the sheet-3 extra block-2
+condition exclude every overlap; pure block-7 values are excluded from H. The other
+families are pairwise disjoint by nonreciprocal own-window incidence. Thus at least
+`22+13+5*10=85` physical gates are counted. This uses the cone definition of block
+monotonicity and includes event-free circuits. It improves the restricted baseline 84,
+not the unrestricted published lower bound.
+
+**Repair and checks.** Generic event-free repair bounds may use baseline 85; the reduced
+projected-value inequality is `G>=85+|V minus P|-|P minus V|`. Its correction can be
+negative, and old charged-slack formulas cannot all be changed numerically without
+checking their proofs. Direct evaluation confirms the specified twelve-gate source and
+22-gate completion, all required values, rank three of the supplied diagonals, distinct
+live gates, event-freeness, and absence of feedback to the first sheet. These are fixed
+construction checks, not searches or computer-driven elimination.
+
+The next direction is structural control of consumer-block feedback into first-sheet
+ancestors, now the only way to escape the exact local no-feedback cost. Unrestricted
+MixColumns remains `75<=L<=88`; no optimality claim about 88 is made.

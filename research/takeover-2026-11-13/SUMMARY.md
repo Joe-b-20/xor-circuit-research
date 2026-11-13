@@ -1,12 +1,12 @@
 # What changed in the takeover
 
-**Current continuation after `a7ff345`:** [the ten-gate producer branch is closed](crossing/README.md).
-Every ten-gate first-sheet cone needs at least 22 joint gates under the stated no-feedback
-hypothesis. The remaining 21-gate route is an eleven-gate row cone already containing
-three independent clean diagonals. The [preceding frontier pass](frontier/README.md)
-excluded rank-one supply and confined even intermediates at rank two; the
-[tradeoff pass](tradeoff/README.md) established relation rank and causal span.
-The [compatibility pass](compatibility/README.md) proved a coset cap and entry deletion.
+**Current continuation after `a04558e`:** [the augmented minimum is twelve](augmented/README.md).
+The exact joint 0/1 cost under no feedback is now 22; disjoint physical charging raises
+the block-monotone MixColumns lower bound to 85. The unrestricted 75-to-88 interval
+is unchanged. The [preceding crossing pass](crossing/README.md) closed the ten-gate
+producer branch, following [rank-one exclusion and even confinement](frontier/README.md),
+[relation rank and causal span](tradeoff/README.md), and
+[coset caps and entry deletion](compatibility/README.md).
 The [row-cost pass](row-cost/README.md)
 proved exact local costs, source saturation, and completion geometry. The [earlier pass](continuation/README.md)
 proved affine-completion bounds and a sparse counterexample to controlling savings by

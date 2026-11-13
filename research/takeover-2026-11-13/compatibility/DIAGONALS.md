@@ -2,6 +2,8 @@
 
 2026-11-13. Symbolic constructions and hand proofs only; no SAT, enumeration, exact-gate search, or computer-driven case elimination. The general question remains open: the existing lower bound is 11 and the explicit upper bound is 12. Nothing here proves that 11 is impossible or changes an unrestricted MixColumns bound.
 
+**Subsequent result:** [Theorem A12](../augmented/PROOF.md) proves the unrestricted augmented minimum is exactly twelve, with the construction below attaining it for one basis. The former open-gap statements below record this earlier phase.
+
 ## Setup
 
 Let `b_0,...,b_3` be ordinary inputs and let every vector on a separate four-coordinate block `a` be free. Write

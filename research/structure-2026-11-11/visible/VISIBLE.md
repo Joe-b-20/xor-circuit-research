@@ -1,5 +1,11 @@
 # Visible cancellations (phase 12)
 
+**Later baseline update (2026-11-13):** [Theorem M85](../../takeover-2026-11-13/augmented/CONSEQUENCES.md)
+raises the block-monotone and event-free lower bound to 85. Generic repair statements
+using only such a baseline may take B=85. The charged-family slack arguments and
+historical 83/84 tables below retain their stated proofs; the new baseline alone does
+not justify replacing every constant in them.
+
 Main agent (Opus 5.5), 2026-11-13.
 - **The user's.** The global repair refinement (section 2), the output-support consequences (section 3) and
   the sole-event window credit (section 4). They were verified here independently.
