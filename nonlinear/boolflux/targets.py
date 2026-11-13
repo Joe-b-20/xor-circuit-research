@@ -77,8 +77,31 @@ BUILTIN = {
 }
 
 
+REPO = HERE.parents[1]
+
+
+def linear_map(name):
+    """(n, m, rows) of circuits/<name>/<name>.mat.txt (NIST format: '1', 'rows cols', bit rows);
+    output j = XOR of the inputs i with rows[j][i] = 1 (input i = x_i, msb first)."""
+    toks = (REPO / 'circuits' / name / (name + '.mat.txt')).read_text().split()
+    m, n = int(toks[1]), int(toks[2])
+    bits = [int(t) for t in toks[3:3 + m * n]]
+    return n, m, [bits[j * n:(j + 1) * n] for j in range(m)]
+
+
 def load(name):
-    """(n, m, table, description) for a target name."""
+    """(n, m, table, description) for a target name; 'map:<name>' is a linear map of circuits/."""
+    if name.startswith('map:'):
+        n, m, rows = linear_map(name[4:])
+        if n > 16: raise ValueError('BoolFlux keeps complete truth tables: at most 16 inputs')
+        table = []
+        for x in range(1 << n):
+            xs = [(x >> (n - 1 - i)) & 1 for i in range(n)]
+            v = 0
+            for j in range(m):
+                v = (v << 1) | (sum(r & b for r, b in zip(rows[j], xs)) & 1)
+            table.append(v)
+        return n, m, table, 'linear map %s (circuits/%s)' % (name[4:], name[4:])
     if name in BUILTIN:
         n, m, f, d = BUILTIN[name]
         return n, m, f(), d

@@ -240,6 +240,8 @@ static u64 cfg_seed = 1;
 static double mv_w[NMOVES] = {1, 1, 1};
 static const char *MVNAME[NMOVES] = {"resub1", "resub2", "resub3"};
 static int dmax = 200, pdiv = 90, nl_samples = 12, cand_cap = 40, use_fraig = 1;
+static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches; linear: see main */
+static char cfg_tracemoves[1024];
 static long max_iters = -1;
 
 static void die(const char *m) { fprintf(stderr, "bfx: %s\n", m); exit(2); }
@@ -279,6 +281,10 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "nl_samples")) nl_samples = atoi(v);
         else if (!strcmp(k, "cand_cap")) cand_cap = atoi(v);
         else if (!strcmp(k, "fraig")) use_fraig = atoi(v);
+        else if (!strcmp(k, "neutral")) use_neutral = atoi(v);
+        else if (!strcmp(k, "odc")) use_odc = atoi(v);
+        else if (!strcmp(k, "linear")) linear_mode = atoi(v);
+        else if (!strcmp(k, "tracemoves")) strcpy(cfg_tracemoves, v);
         else { fprintf(stderr, "bfx: unknown key %s\n", k); exit(2); }
     }
     fclose(f);
@@ -371,6 +377,9 @@ static void tfo_care(int s) {
         if (!TFO[o]) continue;
         for (int w = 0; w < W; w++) CARE[w] |= Vcur[(size_t)o * W + w] ^ ALT[(size_t)o * W + w];
     }
+    int observable = 0;
+    for (int w = 0; w < W; w++) if (CARE[w] & wmask(w)) observable = 1;
+    if (!use_odc && observable) for (int w = 0; w < W; w++) CARE[w] = ~0ULL;   /* ablation: exact equality */
     for (int w = 0; w < W; w++) { CARE[w] &= wmask(w); GT[w] = Vcur[(size_t)s * W + w] & CARE[w]; }
 }
 
@@ -604,6 +613,13 @@ static int eval_cand(int s, const Cand *k, Metrics *m) {
     return 1;
 }
 
+/* ------------------------------------------------------------------ move trace */
+static FILE *tmv; static Circ tmp_before; static Metrics mprev_dummy;
+static const char *OPNAME[16] = {"C0", "NOR", "BANDN", "NOT", "ANDN", "NOTB", "XOR", "NAND",
+                                 "AND", "XNOR", "BUFB", "BORN", "BUF", "ORN", "OR", "C1"};
+static int popc_care(void) { int c = 0; for (int w = 0; w < W; w++) c += __builtin_popcountll(CARE[w] & wmask(w)); return c; }
+static int patterns(void) { int c = 0; for (int w = 0; w < W; w++) c += __builtin_popcountll(wmask(w)); return c; }
+
 /* ------------------------------------------------------------------ main loop */
 static double now_s(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t); return t.tv_sec + t.tv_nsec * 1e-9; }
 static long st_prop[NMOVES], st_acc[NMOVES], st_imp[NMOVES], st_cands[NMOVES];
@@ -629,7 +645,18 @@ int main(int argc, char **argv) {
     } else parse_config(argv[1]);
     seed_rng(cfg_seed);
     read_circuit(cfg_in, &cur);
+    if (linear_mode) {
+        /* Every gate of an XOR/XNOR/NOT library is affine, and an affine function of n inputs is
+         * determined by its values at 0 and at the n unit vectors.  Simulating these n+1 patterns
+         * is therefore exact: two affine circuits agree on all 2^n inputs iff they agree here,
+         * and a signal's care set is all-or-nothing (path parities do not depend on the input). */
+        for (int op = 0; op < 16; op++) if (op_ok[op] && op_nl(op)) die("linear mode needs a linear library");
+        if (N + 1 > 64) die("linear mode supports at most 63 inputs");
+        W = 1; LASTMASK = N + 1 == 64 ? ~0ULL : ((1ULL << (N + 1)) - 1);
+    }
     INV = calloc((size_t)N * W, 8); TGT = calloc((size_t)M * W, 8);
+    if (linear_mode) for (int i = 0; i < N; i++) INV[i] = 1ULL << (i + 1);   /* pattern 0 = zero vector */
+    else
     for (int i = 0; i < N; i++)
         for (int x = 0; x < (1 << N); x++)
             if ((x >> (N - 1 - i)) & 1) INV[(size_t)i * W + (x >> 6)] |= 1ULL << (x & 63);
@@ -656,6 +683,8 @@ int main(int argc, char **argv) {
 
     circ_copy(&best, &cur); mbest = mcur;
     FILE *trace = cfg_trace[0] ? fopen(cfg_trace, "w") : 0;
+    tmv = cfg_tracemoves[0] ? fopen(cfg_tracemoves, "w") : 0;
+    if (tmv) circ_alloc(&tmp_before);
     double t0 = now_s(), last_best = 0, mvsum = 0;
     for (int i = 0; i < NMOVES; i++) mvsum += mv_w[i];
     printf("start cost %.4f G %d A %d GD %d AD %d feas %d obj %.6f\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad, mcur.feas, mcur.obj);
@@ -707,11 +736,32 @@ int main(int argc, char **argv) {
         int accept = -1;
         /* feasibility first: a feasible state is never left for an infeasible one */
         if (bi >= 0 && bobj < mcur.obj - 1e-9 && (bfeas || !mcur.feas)) accept = bi;
-        else if (nneu && (nup == 0 || T <= 0 || rnd01() < 0.75)) accept = neu[rndint(nneu)];
+        else if (use_neutral && nneu && (nup == 0 || T <= 0 || rnd01() < 0.75)) accept = neu[rndint(nneu)];
         else if (nup && T > 0) { int q = rndint(nup); if (rnd01() < exp(-upd[q] / T)) accept = up[q]; }
         if (accept >= 0) {
+            if (tmv) {
+                Cand *k = &CAND[accept]; Gate *gs = &cur.g[s - N];
+                fprintf(tmv, "it %ld t %.4f mv %s target s%d=%s(s%d,s%d) mffc_cost %.2f care %d/%d cands %d | new %d gate(s):",
+                        it, t, MVNAME[mv], s, OPNAME[gs->op], gs->a, gs->b, mc, popc_care(), patterns(), ncand, k->k);
+                for (int q = 0; q < k->k; q++) fprintf(tmv, " n%d=%s(%s%d,%s%d)", q, OPNAME[k->g[q].op],
+                    k->g[q].a >= N + cur.ng ? "n" : "s", k->g[q].a >= N + cur.ng ? k->g[q].a - N - cur.ng : k->g[q].a,
+                    k->g[q].b >= N + cur.ng ? "n" : "s", k->g[q].b >= N + cur.ng ? k->g[q].b - N - cur.ng : k->g[q].b);
+                fprintf(tmv, " root %s%d | before cost %.2f G %d A %d GD %d AD %d", k->root >= N + cur.ng ? "n" : "s",
+                        k->root >= N + cur.ng ? k->root - N - cur.ng : k->root, mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
+            }
+            Circ *before = tmv ? &tmp_before : 0;
+            if (before) circ_copy(before, &cur);
             eval_cand(s, &CAND[accept], &m);
             circ_copy(&cur, &cand_c); state_refresh();
+            if (tmv) {
+                fprintf(tmv, " -> after cost %.2f G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
+                if (mcur.obj < mbest.obj - 1e-9) {
+                    char fn[1200];
+                    snprintf(fn, sizeof fn, "%s.it%ld.before", cfg_tracemoves, it); write_circuit(fn, before, &mprev_dummy, "before");
+                    snprintf(fn, sizeof fn, "%s.it%ld.after", cfg_tracemoves, it); write_circuit(fn, &cur, &mcur, "after");
+                }
+                fflush(tmv);
+            }
             st_acc[mv]++;
             if ((mcur.feas || !mbest.feas) && (mcur.obj < mbest.obj - 1e-9 || (mcur.feas && !mbest.feas))) {
                 st_imp[mv]++;

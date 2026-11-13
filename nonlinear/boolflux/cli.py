@@ -322,8 +322,12 @@ def run_skel(c, table, out, tag, seed, args, extra):
     sk2 = skeleton.read_skel(so.read_text())
     model = core.Model.load(args.model)
     # three synthesis variants (greedy; Paar per AND level; Paar also for the outputs): keep the smallest
-    variants = [skeleton.synthesize(sk2, model.ops(), name=tag, use_paar=up, paar_outputs=po)
-                for up, po in ((False, False), (True, False), (True, True))]
+    # synthesis variants: seeded with the parent circuit (reuses every parent gate whose function
+    # survives), and from forms only (greedy; Paar per AND level; Paar also for the outputs)
+    variants = [skeleton.synthesize(sk2, model.ops(), name=tag, parent=c)]
+    if extra.get('synth.unseeded', '1') != '0':
+        variants += [skeleton.synthesize(sk2, model.ops(), name=tag, use_paar=up, paar_outputs=po)
+                     for up, po in ((False, False), (True, False), (True, True))]
     c2 = min(variants, key=lambda c: c.metrics(model)['cost'])
     if c2.value_table() != list(table):
         raise RuntimeError('synthesized circuit wrong (%s)' % tag)
@@ -334,7 +338,7 @@ def run_gate(c, out, tag, seed, model, args, extra):
     sp = out / ('%s.start.bfx' % tag); sp.write_text(core.to_kernel(c), encoding='utf-8')
     bp = out / ('%s.best.bfx' % tag); cp = out / ('%s.cfg' % tag)
     kernel_config(cp, str(sp), str(bp), model, args, seed,
-                  {k: v for k, v in extra.items() if not k.startswith('skel.')})
+                  {k: v for k, v in extra.items() if not k.startswith(('skel.', 'synth.'))})
     with open(out / ('%s.log' % tag), 'w') as lf:
         r = subprocess.run([str(KBIN), str(cp)], stdout=lf, stderr=subprocess.STDOUT)
     log = (out / ('%s.log' % tag)).read_text()

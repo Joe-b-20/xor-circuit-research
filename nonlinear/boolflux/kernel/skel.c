@@ -159,7 +159,7 @@ static int analyze(void) {    /* returns feasibility; deletes redundant ANDs */
 
 /* ---------------- operand forms for enumeration */
 static u64 FM[200000][MW]; static u64 FT[200000][MAXW]; static int FAD[200000]; static int NF, NXF;
-static int fext = 400, pairs_cap = 60000;
+static int fext = 400, pairs_cap = 60000, emit_current = 0;
 static int form_ad(const u64 *m) { int a = 0; for (int p = 1 + N; p < 1 + N + K; p++) if (mget(m, p)) { int d = AD[p - 1 - N]; if (d > a) a = d; } return a; }
 static void add_form(const u64 *m, const u64 *excl) {
     if (NF >= 200000 || mzero(m)) return;
@@ -384,6 +384,7 @@ int main(int argc, char **argv) {
         else if (!strcmp(k, "w.a")) w_a = atof(v); else if (!strcmp(k, "w.lin")) w_lin = atof(v);
         else if (!strcmp(k, "cap.ad")) cap_ad = atoi(v);
         else if (!strcmp(k, "T0")) T0 = atof(v); else if (!strcmp(k, "Tperiod_it")) Tperiod_it = atof(v);
+        else if (!strcmp(k, "emit_current")) emit_current = atoi(v);
         else if (!strcmp(k, "pairs")) pairs_cap = atoi(v); else if (!strcmp(k, "fext")) fext = atoi(v);
         else if (!strncmp(k, "mv.", 3)) { for (int i = 0; i < 4; i++) if (!strcmp(k + 3, MVN[i])) mvw[i] = atof(v); }
         else { fprintf(stderr, "skel: unknown key %s\n", k); return 2; }
@@ -415,7 +416,9 @@ int main(int argc, char **argv) {
             }
         }
     }
-    memcpy(ands, best_ands, sizeof(And) * best_K); K = best_K;
+    /* emit_current: return the drifted current skeleton when it has no more ANDs than the best
+     * (its linear cost estimate may be worse; the gate level judges the real cost) */
+    if (!(emit_current && K <= best_K)) { memcpy(ands, best_ands, sizeof(And) * best_K); K = best_K; }
     if (!analyze()) { fprintf(stderr, "skel: INTERNAL best infeasible\n"); return 4; }
     write_skel(out, "final");
     printf("final K %d E %.0f obj %.6f iters %ld seconds %.2f\n", K, E_lin, objective(), it, now_s() - t0);

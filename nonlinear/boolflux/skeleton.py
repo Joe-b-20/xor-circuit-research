@@ -68,10 +68,61 @@ def read_skel(text):
     return {'n': n, 'm': m, 'ands': ands, 'outputs': outs}
 
 
-def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True):
+def _form_tables(sk):
+    """Truth tables of the skeleton's basis positions (constant, inputs, ANDs)."""
+    from .core import input_tables
+    n = sk['n']; ones = (1 << (1 << n)) - 1
+    tab = [ones] + input_tables(n)
+
+    def ft(f):
+        t = 0; i = 0
+        while f:
+            if f & 1: t ^= tab[i]
+            f >>= 1; i += 1
+        return t
+    for L, R in sk['ands']:
+        tab.append(ft(L) & ft(R))
+    return tab, ft, ones
+
+
+def parent_forms(sk, parent):
+    """For every signal of the parent circuit, its affine form over the skeleton's basis, or None.
+    Inputs map to inputs; a parent nonlinear gate maps to the skeleton AND with the same core truth
+    table (the gate is ((a^p)&(b^q))^r); a linear gate maps when its operands do.  Matching is by
+    complete truth table, so a mapped signal computes exactly its form."""
+    n = sk['n']
+    tab, ft, ones = _form_tables(sk)
+    by_table = {}
+    for k in range(len(sk['ands'])):
+        by_table.setdefault(tab[1 + n + k], k)
+    ptab = parent.tables()
+    form = [1 << (1 + i) for i in range(n)]
+    for j, (op, a, b) in enumerate(parent.gates):
+        fa, fb = form[a], form[b]
+        if op in NONLINEAR_OPS:
+            p_, q_, r_ = nl_decompose(op)
+            core_t = ptab[n + j] ^ (ones if r_ else 0)
+            k = by_table.get(core_t)
+            form.append(None if k is None else (1 << (1 + n + k)) ^ r_)
+        elif fa is None or (op != OPS['NOT'] and fb is None):
+            form.append(None)
+        elif op == OPS['XOR']: form.append(fa ^ fb)
+        elif op == OPS['XNOR']: form.append(fa ^ fb ^ 1)
+        elif op == OPS['NOT']: form.append(fa ^ 1)
+        else: form.append(None)
+    return form
+
+
+def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True, parent=None):
     """Gates for a skeleton: each needed form is built greedily from already computed signals
     (largest overlap first), constants become XNOR/NOT, ANDs use AND (or ANDN/NOR when a
-    complemented operand can be absorbed and the library has them)."""
+    complemented operand can be absorbed and the library has them).
+
+    With ``parent`` (the circuit the skeleton came from, possibly before skeleton moves), the
+    parent's gates are carried over first wherever their exact function still exists in the new
+    skeleton: every linear gate whose operands carry over, and every AND whose core truth table is
+    one of the new ANDs (with its own operands, when those carry over).  Only what the skeleton
+    moves broke is synthesized from forms; unused copies are swept at the end."""
     n = sk['n']; gates = []
     have = {}                                  # form without constant -> signal
     for i in range(n): have[1 << (1 + i)] = i
@@ -79,6 +130,28 @@ def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True):
 
     def g(op, a, b):
         gates.append((op, a, b)); return n + len(gates) - 1
+
+    pf = parent_forms(sk, parent) if parent is not None else None
+    psig = ([i for i in range(n)] + [None] * len(parent.gates)) if parent is not None else None
+    and_from_parent = {}                       # new AND index -> parent gate index (plain AND)
+    if parent is not None:
+        for j, (op, a, b) in enumerate(parent.gates):
+            f = pf[n + j]
+            if op == OPS['AND'] and f is not None and not (f & 1):
+                and_from_parent.setdefault((f.bit_length() - 1) - 1 - n, j)
+
+    def absorb():
+        """Copy every parent linear gate whose operands are available (one pass, parent order)."""
+        if parent is None: return
+        for j, (op, a, b) in enumerate(parent.gates):
+            sj = n + j
+            if psig[sj] is not None or pf[sj] is None or op in NONLINEAR_OPS: continue
+            if psig[a] is None or (op != OPS['NOT'] and psig[b] is None): continue
+            f = pf[sj]
+            if f in have: psig[sj] = have[f]; continue
+            if op not in ops: continue
+            sig = g(op, psig[a], psig[a] if op == OPS['NOT'] else psig[b])
+            have[f] = sig; psig[sj] = sig
 
     def build(f):
         """Signal computing form f (constant bit 0 must be clear)."""
@@ -88,6 +161,7 @@ def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True):
         while rest:
             best = None; bestgain = 0
             for fm, s in have.items():
+                if fm & 1: continue                       # complemented forms are not terms
                 gain = bin(rest).count('1') - bin(rest ^ fm).count('1')
                 if gain > bestgain or (gain == bestgain and gain > 0 and best is not None and fm < best[0]):
                     best, bestgain = (fm, s), gain
@@ -156,9 +230,16 @@ def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True):
     done_level = set()
     for k in sorted(range(len(sk['ands'])), key=lambda j: (lvl[j], j)):
         L, R = sk['ands'][k]
+        absorb()
         if lvl[k] not in done_level:
             done_level.add(lvl[k])
             if use_paar: paar([f for j, (L2, R2) in enumerate(sk['ands']) if lvl[j] == lvl[k] for f in (L2, R2)])
+        j = and_from_parent.get(k)
+        if j is not None and psig[parent.gates[j][1]] is not None and psig[parent.gates[j][2]] is not None:
+            s = g(OPS['AND'], psig[parent.gates[j][1]], psig[parent.gates[j][2]])
+            p = 1 + n + k
+            pos_sig[p] = s; have[1 << p] = s; psig[n + j] = s
+            continue
         sl, cl = build_affine(L); sr, cr = build_affine(R)
         if not cl and not cr: s = g(OPS['AND'], sl, sr)
         elif cl and not cr and OPS['ANDN'] in ops: s = g(OPS['ANDN'], sr, sl)
@@ -169,6 +250,10 @@ def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True):
             s = g(OPS['AND'], a, b)
         p = 1 + n + k
         pos_sig[p] = s; have[1 << p] = s
+        if parent is not None:                 # a parent AND with this table now maps here
+            for jj, (op, a, b) in enumerate(parent.gates):
+                if psig[n + jj] is None and pf[n + jj] == (1 << p): psig[n + jj] = s
+    absorb(); absorb()
     outs = []
     if paar_outputs: paar(list(sk['outputs']))
     for f in sk['outputs']:
