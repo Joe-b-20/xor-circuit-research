@@ -8,27 +8,35 @@ finite-family check, no case enumeration, no least-gate search (by the main agen
 review: `review/REVIEW.md` (not human review, not formal verification). Nothing here changes
 75 <= L(MixColumns) <= 88.
 
+**Phase-11 note (`../repair/REPAIR.md`).** The next direction of section 8 is superseded: the user's joint
+repair lemma gives G >= 84 + |E| - K, and its direct form already gives s = 5 for a sole event at a weight-7
+output. Corrections of this note's scope are applied below (restriction statement, C5, Corollary Z,
+Proposition R).
+
 ## 0. Verdict
 
-The copy measure, read as "copies cost gates", does not measure computation. Under every precise version of a
+The examined copy formulations, read as "copies cost gates", do not give the desired new MixColumns bound (they
+do not exclude every valid cost relationship: the repair lemma of phase 11 is one). Under every precise version of a
 rank-of-copies measure examined here (section 2, plus the per-recipient baselines found by the reviewer), one of
 the following happens.
 - A linear baseline that frees the inputs (or the outputs) makes it zero (C1).
 - Its rank is carried by the cancelling gates themselves, so it is dominated by counting gates (C2, C3).
 - If the gates it is charged to are the partners instead, their capacity is quadratic (C4): k partner gates
   can carry copies of rank k(k-1)/2.
-- Deciding which copies are "needed elsewhere" needs the actual circuit, which is the unknown optimum (C5).
+- The exemptions for copies "needed elsewhere" were defined through an unknown optimal completion, which needs a
+  justification none of them had (C5). Using the structure of the given circuit is not circular in itself.
 
 The reason is structural. In matrix terms, a removal requirement is a zero-cell equation that every correct
-factorisation at a cut satisfies automatically (Theorem F, Corollary Z), so bounds that depend only on the
-terms' sum at one cut cannot see it. In node terms, a copy is a property of a pair of operands, not of a gate.
+factorisation at a cut satisfies automatically (Theorem F, Corollary Z), so unconstrained counting of rank-one
+terms at one cut cannot see it. In node terms, a copy is a property of a pair of operands, not of a gate.
 The formulation is therefore left. What survives is:
 - the first-exit identity, which contains the phase-7 reader identity J6;
 - a sound connection of the opposite shape, found by the reviewer from results already in the record
   (Proposition V): a circuit with no whole-block cancellation is block-monotone and needs at least 84 gates,
   so cancellation is what buys any saving below 84, and the charge deficit R lies in the ancestor cones of
   the cancelling gates;
-- a sound conditioning inequality (Proposition R), whose use as a route to bounds has a ceiling (section 8).
+- a sound conditioning inequality (Proposition R), whose use as a route to bounds carries a proof obligation
+  (section 8).
 
 ## 1. Objects kept apart
 
@@ -132,7 +140,9 @@ elsewhere" can be decided only relative to the actual circuit:
 - lying in the span of available values does not mean it is available without gates;
 - being an eventual output does not mean it is available when needed;
 - belonging to one optimal circuit does not make it necessary in every circuit.
-A version that exempts such nodes hides the unknown optimum in the exemption.
+Using the structure of an arbitrary given circuit is legitimate: a theorem may do so without knowing an optimum.
+What needs further justification is an exemption defined through an unknown optimal completion, and none of the
+examined versions supplied one.
 
 ## 4. Why removal is invisible to single-cut rank bounds: the first-exit identity
 
@@ -166,7 +176,8 @@ equations add nothing to any bound derived from the terms' sum: rank, the group-
 of the cell sums. Moreover, the least number of rank-one terms summing to M_K is rank M_K (32 for all columns, 4
 for one block) whatever the zero pattern, and J7 with sharing allowed has the same minimum. A cancellation
 requirement can always be met by having no terms on the zero cell, so it costs nothing at a single cut. The
-scope is exactly that: bounds depending only on the term sum at one cut. Families of cuts and ancestry
+scope is exactly that: unconstrained counting of rank-one terms at one cut, ignoring how the factors are produced
+and whether they are compatible with one circuit; circuit-constrained single-cut arguments are not ruled out. Families of cuts and ancestry
 arguments can see removal (Proposition V, section 8). Its cost, when there is one, is the cost
 of the specific terms the circuit chose, that is, of computing the val(p) below the cut and distributing the
 rho(g) above it.
@@ -202,11 +213,12 @@ The intuition separated the examples only through the undefined exemption.
   explicitly. That is the correct treatment of "one physical object, several recipient projections". The copy
   candidate has no such identity: copies are not summands of any prescribed matrix, and on the zero cells,
   where they live, the prescribed sum is 0 (Corollary Z).
-- **Restriction bounds (J1-J5).** (Corrected by the reviewer.) ACCOUNT's D_c zeroes block c, and an event
-  gate is never lost there (0 of 180 (event, block) pairs in the witness, 0 of 7 in the corpus lines, 0 of 4
-  in Q_3). It is lost when only block c is kept, a restriction in which every gate that is zero on c is lost.
-  So copies are a small sub-count of a very large loss count, and the restriction framework gives them no
-  separate weight.
+- **Restriction bounds (J1-J5).** (Corrected in phase 11.) Zeroing a cancelled block c (ACCOUNT's D_c) leaves
+  the event's value unchanged, but an earlier projected value may become equal to it, making the event
+  removable: a = x + y, b = a + z, e = b + x = y + z, with x in block c, and e duplicates b after zeroing (also
+  embedded in MixColumns, `../repair/REPAIR.md` section 8). The reviewer's zero counts (0 of 180 pairs in the
+  witness, 0 of 7 in the corpus lines, 0 of 4 in Q_3) are observations about those circuits. When only block c
+  is kept, every gate that is zero on c is lost, so there copies are a small sub-count of a large loss count.
 - **Interface compatibility (phase 6, |T| = R_b + w_b, single-cut cap 83).** Theorem F is the linear-algebra
   core of a cut interface. Corollary Z says that the interface's zero-cell part carries no rank requirement,
   consistent with the single-cut caps.
@@ -246,12 +258,13 @@ as free inputs: the remaining gates compute Y. QED
 This is the oracle-free form of the user's question: once the shared values H are fixed, the remainders and all
 their sharing are whatever the cheapest completion uses. It holds for every circuit that computes H, and it
 combines globally because the gates computing H and the others are disjoint. It is a tautology for H = {} and
-says nothing until L(Y | X u H) is bounded below. **Ceiling (reviewer).** Free values never raise cost, so
-L(Y | X u H) <= L(Y): a bound T for circuits containing H needs L(Y | X u H) >= T - |H \ X|, which already
-implies the unconditional L(MixColumns) >= T - |H \ X|. For the four byte parities (|H \ X| = 4), 80 would
+says nothing until L(Y | X u H) is bounded below. **Proof obligation of this route (reviewer).** Free values never raise
+cost, so L(Y | X u H) <= L(Y): a bound T for circuits containing H obtained this way needs L(Y | X u H) >=
+T - |H \ X|, which would itself give the unconditional L(MixColumns) >= T - |H \ X|. This is an obligation for
+this particular route, not a general impossibility ceiling or a proved hardness equivalence. For the four byte parities (|H \ X| = 4), 80 would
 need L >= 76, a new unconditional bound; and relative charges are vacuous there (with H_c free each row is one
 gate from free values on its window, so charges give 4 per sheet). Proposition R also credits only |H \ X|
-gates, not the cost of computing H. So the H_c case is not easier than the main problem.
+gates, not the cost of computing H. So this route offers no easier first case.
 
 **Proposition V (no cancellation, no saving below 84; reviewer, from RECORD 7, 9 and 17; proved).** If a
 MixColumns circuit has no event (no gate cancels a whole block component of its operands), then
@@ -272,8 +285,8 @@ buy savings below a no-cancellation bound, rather than copies costing gates. The
 in the triangle 88s, 489 in the witness), and the bound through R alone is vacuous for the witness (R = 154),
 so a quantitative form must not go through R alone.
 
-**Next direction (justified by C1-C5, Corollary Z and Proposition V).** Rank-of-copies measures and single-cut
-rank bounds are provably blind to removal; charges are not (Proposition V). The better-justified direction is
+**Next direction (justified by C1-C5, Corollary Z and Proposition V).** Rank-of-copies measures and unconstrained single-cut
+term counting do not see removal; charges are not (Proposition V). The better-justified direction is
 the savings shape, because its base case is proved: extend Proposition V from "no event" to "few events of
 the observed types", that is, bound how much one whole-block cancellation can save below 84. The observed types
 in near-88 circuits are the triangle's block-2 cancellation at a sheet-1 output and the {0, 7} exit; examined
@@ -281,7 +294,8 @@ circuits have 0-2 events. A first target: every MixColumns circuit with exactly 
 type, has at least 84 - s gates, with s stated and proved by hand. The statement is local, oracle-free and
 precise now. Its known weakness is the many-event regime (the witness has 32 events), which needs another
 argument; the examined circuits (all >= 88 gates) say nothing about the size of the saving. Proposition R is
-kept as a correct inequality, not as the next route (ceiling above). Any dichotomy with a "superposition class"
+kept as a correct inequality, not as the next route (proof obligation above). (Superseded in phase 11 by the
+repair lemma, `../repair/REPAIR.md`.) Any dichotomy with a "superposition class"
 requires that class to be defined first.
 
 ## 9. Scope corrections applied in this phase (brief; no broad audit)
@@ -307,5 +321,6 @@ Verdicts: C5, Theorem F, the table and Proposition R CORRECT; C1-C4, Corollary Z
 WITH FIXES; the J1-J5 comparison WRONG (convention clash). All fixes are applied above: the per-recipient
 baselines (C1), the (event, block) bound (C2), n >= 3 (C3), the block-monotone sentence (C4), rank M_K and
 single-cut scope (Corollary Z), the triangle counts (section 5), J7 as a corollary and the restriction bullet
-(section 6), Proposition V with the cone localisation and the ceiling of Proposition R (section 8), and the
-change of next direction. The reviewer's measurements reproduce every table entry.
+(section 6), Proposition V with the cone localisation and the proof obligation of Proposition R (section 8), and
+the change of next direction. *Phase-11 correction:* the review's fix 5 ("an event gate is never lost when its
+block is zeroed") was itself wrong; see section 6 and `../repair/REPAIR.md` section 8. The reviewer's measurements reproduce every table entry.

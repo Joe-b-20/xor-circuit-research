@@ -1,11 +1,11 @@
-# Structural study: checkpoint for resuming (phases 3-10, 2026-11-12)
+# Structural study: checkpoint for resuming (phases 3-11, 2026-11-12/13)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`copies/COPIES.md` (phase 10), `cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`repair/REPAIR.md` (phase 11), `copies/COPIES.md` (phase 10), `cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
 `compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
 ## Established (statements with their hypotheses)
@@ -80,18 +80,35 @@ reviews are machine reviews by separate model instances, not human reviews.
   cancelling gates), C3 (G = |Y| with copy rank n - 1), C4 (quadratic partner capacity, sharp), C5 (requirement
   is a coset; "needed elsewhere" needs the circuit). One definition gives Q_3 4, triangle 1-2, witness 32 (all on
   outputs), r88 0.
-- Theorem F (first-exit identity; J6 an instance) and Corollary Z (single-cut rank bounds cannot see removal).
+- Theorem F (first-exit identity; J6 an instance) and Corollary Z (unconstrained rank-one-term counting at one
+  cut cannot see removal; circuit-constrained single-cut arguments not ruled out).
 - Proposition V (reviewer, from RECORD 7, 9, 17): no whole-block cancellation => block-monotone => G >= 84;
   doubly charged gates lie in the ancestor cones of cancelling gates (J9).
-- Proposition R (conditioning) holds but has a ceiling: L(Y | X u H) <= L(Y).
-- Machine review `copies/review/REVIEW.md`; all fixes applied (including: cancelling gates are not lost when
-  their block is zeroed).
+- Proposition R (conditioning) holds; a conditional bound by this route carries the obligation of the same
+  unconditional one (an obligation for the route, not an impossibility).
+- Machine review `copies/review/REVIEW.md`; all fixes applied. Phase-11 correction: zeroing a cancelled block can make
+  the event removable (an earlier projected value may equal it).
+
+## Phase 11 results (RECORD 26; `repair/REPAIR.md` is the coherent account)
+- Repair lemma (user's; verified): G >= 84 + |E| - K for every event-free D computing the event values (K gates);
+  event-free => block-monotone => Corollary 17.4 (84). Sequential version: gadgets may read earlier nodes.
+- Direct repair: G >= 84 - sum (w(e) - 2); sole event at a weight-7 output (sheets 1, 3, 4) => 79, weight 5 =>
+  81; G <= 78 => two events or one of weight >= 8 (internal).
+- Sharpness (prefix family): one event saves w - 2 for general maps.
+- Theorem P (new): saving <= s_e + delta_e - 1 (shared ancestors carrying the cancelled blocks without clean
+  projections, counted as in review: gates, nonzero, not values of nodes other than e; circuit reduced and live,
+  first event); private cancelled content is free; Lemma Z (zeroing keeps circuits event-free). Formula exact on
+  all tested circuits: triangle circuits 2 (G >= 82 for them), Q_3 2,2,2,3; no class bound beyond the direct one.
+- Lemma L (reviewer): shared carriers of a sole output event lie in (W_j u C) n W_j'.
+- Phase-10 corrections (restriction remark, C5, Corollary Z, Proposition R wording).
 
 ## Next steps (the evidence suggests)
-1. Savings shape: extend Proposition V from "no whole-block cancellation" to "one cancellation of the triangle
-   type" (and the {0, 7} exit): prove by hand that such circuits have at least 84 - s gates, with s explicit.
-   Do not go through the deficit R alone (vacuous for the witness). Many-event circuits need another argument.
-2. Not recommended: copy or rank-of-copy measures (phase 10), relative complexity for the byte parities as an
+1. Trade-off for shared cancelled content: show that each carrier counted by s_e is paid for elsewhere in the
+   block-monotone accounting (s_e alone is unbounded over wasteful circuits), aiming at "sole event at a sheet-j
+   output => G >= 84 - t_j" with t_j < w - 2. First local question via Lemma L: does an absent clean part of a
+   {1,2} or {2,7} carrier cost a gate in F_2 or J_01? The prefix family must be where the argument fails.
+2. The two-event regime, forced for G <= 78 unless a heavy internal event exists.
+3. Not recommended: copy or rank-of-copy measures (phase 10), relative complexity for the byte parities as an
    easier first case (it contains an improvement of 75), further distinct-charge statements (capped at 66),
    fixed-rule transposes (refuted), restriction sums with all-circuit waste bounds (phase 7).
 Method restriction (applies to every agent): no SAT, no exhaustive enumeration or finite-family checks, no exact

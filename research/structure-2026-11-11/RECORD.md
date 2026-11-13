@@ -1303,26 +1303,63 @@ bounded by the events. C2: one copy per event gate, so the rank is carried by th
 all 32 events are its outputs, rank 32 = |Y|). C3: a reduced circuit with G = |Y| and Q0 = n - 1 (n >= 3), so
 no G >= |Y| + c Q0. C4: partner capacity is quadratic and sharp: k non-output gates carry copy rank
 k(k-1)/2 (construction for k = 5, 6, 8); the valid remnant G - |Y \ X| >= (1 + sqrt(1 + 8 Q2))/2 is a count
-of non-output gates. C5: the recipient's requirement is a coset, the partner b = e + a a node; "needed
-elsewhere" needs the actual circuit. One consistent definition gives Q_3 4, triangle circuits 1-2, witness 32,
+of non-output gates. C5: the recipient's requirement is a coset, the partner b = e + a a node; the "needed
+elsewhere" exemptions were defined through an unknown optimal completion (circuit dependence alone is not
+circular; phase-11 wording). One consistent definition gives Q_3 4, triangle circuits 1-2, witness 32,
 r88/r89 0 (and 0 for all with the span-Y baseline): the phase-9 intuition (0, 1, high) was wrong.
 **Theorem F (first-exit identity; proved; checked).** For any node set A containing the inputs of the columns K,
 M_K = sum over edges p -> g leaving A of rho(g) val_A(p)^T + output terms in A; J6 is an instance, J7 a
-corollary. **Corollary Z:** zero-cell (cancellation) equations hold for every decomposition, so bounds that
-depend only on the term sum at one cut cannot see removal.
+corollary. **Corollary Z:** zero-cell (cancellation) equations hold for every decomposition, so unconstrained
+counting of rank-one terms at one cut cannot see removal (circuit-constrained single-cut arguments are not ruled
+out; phase-11 wording).
 **Proposition V (reviewer, from sections 7, 9, 17; proved).** A MixColumns circuit with no whole-block
 cancellation is block-monotone, hence has at least 84 gates: every circuit with at most 83 gates cancels a
 whole block somewhere. With J9, every doubly charged gate lies in the ancestor cone of a cancelling gate.
 **Proposition R (conditioning; proved).** G(C) >= |H \ X| + L(Y | X u H) for every set H computed by C; since
-L(Y | X u H) <= L(Y), it cannot give a conditional bound without the same unconditional one (ceiling).
-**Correction found by review.** Cancelling gates are not lost when their block is zeroed (D_c); the copy count
-has no separate weight in the restriction framework.
-**Decision.** "Copies cost gates" measured by rank is left. Next: the savings shape, extending Proposition V
-from no event to few events of the observed types (bound the saving s of one triangle-type cancellation
-below 84 by hand).
+L(Y | X u H) <= L(Y), a conditional bound by this route carries the obligation of the same unconditional one (an obligation
+for this route, not an impossibility; phase-11 wording).
+**Restriction remark (corrected in phase 11).** Zeroing a cancelled block leaves the event's value unchanged,
+but an earlier projected value may become equal to it, making the event removable (a = x + y, b = a + z,
+e = b + x; section 26); the zero counts measured in phase 10 are observations.
+**Decision.** "Copies cost gates" measured by rank is left; the examined formulations do not give the desired
+MixColumns bound (C4 is kept as a capacity result). The proposed next target was superseded by the repair
+lemma (section 26).
 **Phase-10 scope corrections** (sections 24, SUMMARY, CHECKPOINT, SUPERPOSITION, FINITE_AUDIT): one fixed
 transposition convention only; "some transposition >= 80" sufficient, converse open; H_c's unwanted part 5 or 6
 blocks; H for the count, liveness only for the two orders; use elsewhere is not zero marginal cost; confinement
 and "exactly 10" wording synchronised.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 26. Repairing whole-block cancellations (phase 11; `repair/REPAIR.md`; review `repair/review/`)
+
+Phase 11 (2026-11-13). The joint repair lemma, the direct repair and the prefix family are the user's,
+verified independently here and by machine review (own code; not human review); no search of any kind.
+**Lemma 1 / Theorem 1 (proved).** For a reduced circuit C with event set E (gates cancelling a whole block) and
+any event-free circuit D on the inputs computing the event values with K gates: recompute D first, keep the
+non-events, redirect. The result is event-free with at most G - |E| + K gates (reuse and pruning keep it
+event-free). Event-free circuits are block-monotone (RECORD 7), so Corollary 17.4 gives
+G >= 84 + |E| - K for MixColumns (status of 84: hand proofs, machine review only; the 80 of the charge
+identity is unchanged). Sequential form: gadgets may read earlier retained and gadget nodes.
+**Theorem 2 (direct repair; proved).** G >= 84 - sum (w(e) - 2). Rows weigh 5 (sheets 0, 2, 5, 6, 7) or 7
+(sheets 1, 3, 4): a sole event at a weight-7 output gives 79, at a weight-5 output 81; all events of weight 2
+give 84; G <= 78 needs two events or one of weight >= 8 (not an output). The triangle event is at a weight-7
+output in four of the five corpus lines (internal, weight 5, in circuits_3.txt line 3001).
+**Sharpness (proved).** Prefix family p_i = x + y_1 + ... + y_i, T = y_1 + ... + y_n: optimal n + 1 gates with
+one event; event-free minimum exactly 2n - 1; saving n - 2 = w(T) - 2. No event-count penalty for general maps.
+**Theorem P (projection repair; new; corrected in review).** Zeroing blocks keeps a circuit event-free
+(Lemma Z). For the first event e of a reduced, fully live circuit, the gadget P(a) + P(b) (P zeroes the
+cancelled blocks) has overhead at most s_e + delta_e - 1, where s_e counts shared gate ancestors carrying the
+cancelled blocks whose nonzero projections are not values of nodes other than e. Only shared cancelled content
+costs; private content is free to remove. The formula equals the explicit overhead on every tested circuit
+(prefix family n - 2, triangle circuits 2, Q_3 2, 2, 2, 3); per circuit only, no class bound beyond Theorem 2.
+**Lemma L (reviewer; proved).** Shared carriers of a sole event at a sheet-j output lie inside
+(W_j u C) n W_j' for the sheet j' they feed; for the triangle, on {1, 2}, {2, 7} or block 2.
+**Correction (phase 10).** Zeroing a cancelled block can make the event removable (a = x + y, b = a + z,
+e = b + x duplicates b; embedded in MixColumns, 148 gates). Wording fixes: C4 kept; circuit dependence is not
+circular; Theorem F limits unconstrained term counting only; Proposition R's 76 is a proof obligation of that
+route.
+**Next.** A trade-off form: show that each shared carrier counted by s_e is paid for elsewhere (first local
+question via Lemma L inside F_2 or J_01); then the two-event regime.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88, and nothing excludes an 87.

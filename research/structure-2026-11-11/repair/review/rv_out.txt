@@ -1,0 +1,71 @@
+MixColumns row weights by sheet: {0: [5], 1: [7], 2: [5], 3: [7], 4: [7], 5: [5], 6: [5], 7: [5]}
+prefix n=2: G 3, events [5], hand event-free circuit 3 = 2n-1 gates verified
+  prefix n=2: G 3, reduced True, live True, events 1, sum(w-2) 0 | joint Lemma-1 direct: K 1, G-|E|+K 3, normalised 3 (sigma +0) | sequential direct 3 (sigma +0) | sequential projection 3 (sigma +0) | bound G >= 3 - min sigma = 3
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(5, 0, 0, 0, 1, 0)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+prefix n=3: G 4, events [7], hand event-free circuit 5 = 2n-1 gates verified
+  prefix n=3: G 4, reduced True, live True, events 1, sum(w-2) 1 | joint Lemma-1 direct: K 2, G-|E|+K 5, normalised 5 (sigma +1) | sequential direct 5 (sigma +1) | sequential projection 5 (sigma +1) | bound G >= 5 - min sigma = 4
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(7, 1, 1, 1, 2, 1)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+prefix n=5: G 6, events [11], hand event-free circuit 9 = 2n-1 gates verified
+  prefix n=5: G 6, reduced True, live True, events 1, sum(w-2) 3 | joint Lemma-1 direct: K 4, G-|E|+K 9, normalised 9 (sigma +3) | sequential direct 9 (sigma +3) | sequential projection 9 (sigma +3) | bound G >= 9 - min sigma = 6
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(11, 3, 3, 3, 4, 3)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+prefix n=8: G 9, events [17], hand event-free circuit 15 = 2n-1 gates verified
+  prefix n=8: G 9, reduced True, live True, events 1, sum(w-2) 6 | joint Lemma-1 direct: K 7, G-|E|+K 15, normalised 15 (sigma +6) | sequential direct 15 (sigma +6) | sequential projection 15 (sigma +6) | bound G >= 15 - min sigma = 9
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(17, 6, 6, 6, 7, 6)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+prefix n=12: G 13, events [25], hand event-free circuit 23 = 2n-1 gates verified
+  prefix n=12: G 13, reduced True, live True, events 1, sum(w-2) 10 | joint Lemma-1 direct: K 11, G-|E|+K 23, normalised 23 (sigma +10) | sequential direct 23 (sigma +10) | sequential projection 23 (sigma +10) | bound G >= 23 - min sigma = 13
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(25, 10, 10, 10, 11, 10)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+--- adversarial circuits (singleton blocks unless stated) ---
+A1 (P(a)=val(e), a shared): G 3, reduced True, live True, events 1, sum(w-2) 0 | joint Lemma-1 direct: K 1, G-|E|+K 3, normalised 3 (sigma +0) | sequential direct 3 (sigma +0) | sequential projection 3 (sigma +0) | bound G >= 3 - min sigma = 3
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(5, 0, 0, 0, 1, 0)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+A2 (projections equal later events' values): G 7, reduced True, live True, events 3, sum(w-2) 3 | joint Lemma-1 direct: K 3, G-|E|+K 7, normalised 7 (sigma +0) | sequential direct 7 (sigma +0) | sequential projection 7 (sigma +0) | bound G >= 7 - min sigma = 7
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(9, 2, 0, 0, 3, 0)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+A3 (projection equals a later non-event node): G 5, reduced True, live True, events 1, sum(w-2) 1 | joint Lemma-1 direct: K 2, G-|E|+K 6, normalised 6 (sigma +1) | sequential direct 6 (sigma +1) | sequential projection 5 (sigma +0) | bound G >= 4 - min sigma = 4
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(7, 1, 0, 0, 2, 0)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 1}
+A4 (dominated partner, delta=1): G 5, reduced True, live True, events 1, sum(w-2) 1 | joint Lemma-1 direct: K 2, G-|E|+K 6, normalised 4 (sigma -1) | sequential direct 4 (sigma -1) | sequential projection 4 (sigma -1) | bound G >= 2 - min sigma = 3
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(7, 1, 1, 0, 2, -1)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+A5 (interacting events): G 6, reduced True, live True, events 3, sum(w-2) 1 | joint Lemma-1 direct: K 3, G-|E|+K 6, normalised 6 (sigma +0) | sequential direct 6 (sigma +0) | sequential projection 6 (sigma +0) | bound G >= 6 - min sigma = 6
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(7, 1, 0, 0, 2, 0), (9, 0, 0, 0, 1, 0)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 2}
+restriction example: G 148, reduced True, live True, events [34] (e = 34, cancelled [7]), category of e at block 7: D; image(e) == image(b): True; image(a) is input x_(1,0): True
+Q_3 q3_28: G 28, reduced True, live True, events 4, sum(w-2) 13 | joint Lemma-1 direct: K 16, G-|E|+K 40, normalised 39 (sigma +11) | sequential direct 39 (sigma +11) | sequential projection 37 (sigma +9) | bound G >= 30 - min sigma = 21
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(21, 3, 5, 2, 3, 2), (27, 3, 5, 2, 3, 2), (34, 3, 8, 2, 3, 2), (41, 4, 10, 3, 4, 3)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+MC r88: G 88, reduced True, live True, events 0, sum(w-2) 0 | joint Lemma-1 direct: K 0, G-|E|+K 88, normalised 88 (sigma +0) | sequential direct 88 (sigma +0) | sequential projection 88 (sigma +0) | bound G >= 84 - min sigma = 84
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): []
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+MC r89: G 89, reduced True, live True, events 0, sum(w-2) 0 | joint Lemma-1 direct: K 0, G-|E|+K 89, normalised 89 (sigma +0) | sequential direct 89 (sigma +0) | sequential projection 89 (sigma +0) | bound G >= 84 - min sigma = 84
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): []
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+MC circuits_2.txt:783: G 88, reduced True, live True, events 1, sum(w-2) 5 | joint Lemma-1 direct: K 6, G-|E|+K 93, normalised 92 (sigma +4) | sequential direct 92 (sigma +4) | sequential projection 90 (sigma +2) | bound G >= 84 - min sigma = 82
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(78, 5, 5, 2, 4, 2)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+    events: node 78 w 7 out (1, 1) cancels [2], B(a) [1, 2] B(b) [0, 2, 7]
+MC circuits_3.txt:7451: G 88, reduced True, live True, events 1, sum(w-2) 5 | joint Lemma-1 direct: K 6, G-|E|+K 93, normalised 92 (sigma +4) | sequential direct 92 (sigma +4) | sequential projection 90 (sigma +2) | bound G >= 84 - min sigma = 82
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(106, 5, 5, 2, 4, 2)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+    events: node 106 w 7 out (1, 1) cancels [2], B(a) [1, 2] B(b) [0, 2, 7]
+MC circuits_3.txt:7651: G 88, reduced True, live True, events 1, sum(w-2) 5 | joint Lemma-1 direct: K 6, G-|E|+K 93, normalised 92 (sigma +4) | sequential direct 92 (sigma +4) | sequential projection 90 (sigma +2) | bound G >= 84 - min sigma = 82
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(71, 5, 5, 2, 4, 2)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+    events: node 71 w 7 out (1, 1) cancels [2], B(a) [1, 2] B(b) [0, 2, 7]
+MC circuits_3.txt:1451: G 88, reduced True, live True, events 2, sum(w-2) 9 | joint Lemma-1 direct: K 11, G-|E|+K 97, normalised 96 (sigma +8) | sequential direct 96 (sigma +8) | sequential projection 93 (sigma +5) | bound G >= 84 - min sigma = 79
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(96, 5, 5, 2, 4, 2), (106, 4, 10, 3, 4, 3)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+    events: node 96 w 7 out (3, 1) cancels [2], B(a) [1, 2] B(b) [0, 2, 7]; node 104 w 6 out None cancels [7], B(a) [0, 7] B(b) [0, 1, 7]
+MC circuits_3.txt:3001: G 88, reduced True, live True, events 2, sum(w-2) 7 | joint Lemma-1 direct: K 9, G-|E|+K 95, normalised 95 (sigma +7) | sequential direct 95 (sigma +7) | sequential projection 93 (sigma +5) | bound G >= 84 - min sigma = 79
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(100, 3, 5, 2, 3, 2), (110, 4, 10, 3, 4, 3)]
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+    events: node 100 w 5 out None cancels [2], B(a) [2, 7] B(b) [1, 2]; node 108 w 6 out None cancels [7], B(a) [0, 1, 7] B(b) [0, 7]
+MC witness_mc_block.json: G 521, reduced True, live True, events 32, sum(w-2) 120 | joint Lemma-1 direct: K 146, G-|E|+K 635, normalised 146 (sigma -375) | sequential direct 146 (sigma -375) | sequential projection 197 (sigma -324) | bound G >= 84 - min sigma = 459
+    projection per event (node, w-2, R1 bound, R2 bound, new gates, sigma_e): [(86, 3, 23, 5, 8, -13), (94, 3, 20, 2, 5, -16), (99, 3, 21, 2, 4, -16), (103, 3, 19, 1, 4, -17), (107, 5, 20, 5, 6, -13), (115, 5, 17, 2, 3, -16), (119, 5, 17, 2, 3, -16), (124, 5, 16, 1, 2, -17)] ...
+    per-event violations of sigma_e <= s_e + delta_e - 1: {'R1': 0, 'R2': 0, 'R3': 0}
+    events: node 86 w 5 out (0, 0) cancels [1, 2, 3, 4, 5, 6], B(a) [0, 1, 2, 3, 4, 5, 6, 7] B(b) [1, 2, 3, 4, 5, 6, 7]; node 107 w 5 out (1, 0) cancels [1, 2, 3, 4, 5, 6], B(a) [0, 1, 2, 3, 4, 5, 6, 7] B(b) [1, 2, 3, 4, 5, 6, 7]; node 128 w 5 out (2, 0) cancels [1, 2, 3, 4, 5, 6], B(a) [0, 1, 2, 3, 4, 5, 6, 7] B(b) [1, 2, 3, 4, 5, 6, 7]; node 148 w 5 out (3, 0) cancels [1, 2, 3, 4, 5, 6], B(a) [0, 1, 2, 3, 4, 5, 6, 7] B(b) [1, 2, 3, 4, 5, 6, 7]; node 169 w 7 out (0, 1) cancels [2, 3, 4, 5, 6], B(a) [0, 1, 2, 3, 4, 5, 6, 7] B(b) [0, 2, 3, 4, 5, 6, 7]; node 190 w 7 out (1, 1) cancels [2, 3, 4, 5, 6], B(a) [0, 1, 2, 3, 4, 5, 6, 7] B(b) [0, 2, 3, 4, 5, 6, 7] ...

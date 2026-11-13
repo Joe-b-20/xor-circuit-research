@@ -242,15 +242,27 @@ proof replaces it):**
 
 ## Phase 10 (2026-11-12): cancellation copies do not measure gates (RECORD 25, `copies/COPIES.md`)
 
-- The phase-9 idea (rank of the copies that cancellations force) was made precise and fails: freeing inputs or
+- The phase-9 idea (rank of the copies that cancellations force) was made precise; the examined versions do not
+  give the desired bound: freeing inputs or
   outputs makes it zero; its rank sits on the cancelling gates themselves (in the 66-charge witness, on the 32
-  output gates); charged to partners instead, k gates can carry copies of rank k(k-1)/2; and "needed elsewhere"
-  can only be decided from the actual circuit.
+  output gates); charged to partners instead, k gates can carry copies of rank k(k-1)/2; and the "needed elsewhere"
+  exemptions were defined through an unknown optimal completion.
 - First-exit identity (contains the reader identity J6): at any cut the target splits into one rank-one term per
-  crossing edge; cancellation requirements are then automatic, so single-cut rank bounds cannot see them.
+  crossing edge; cancellation requirements are then automatic, so unconstrained counting of terms at one cut cannot see them.
 - What does connect cancellation to cost (from earlier theorems): a circuit with no whole-block cancellation
   needs at least 84 gates, so every circuit with at most 83 gates cancels a whole block somewhere.
-- Next: how much one cancellation of the observed (triangle) type can save below 84.
+- (Superseded by phase 11.)
+
+## Phase 11 (2026-11-13): repairing cancellations (RECORD 26, `repair/REPAIR.md`)
+
+- Repair lemma (user's, verified): recompute the cancelling gates' values without cancellation at cost K; the
+  result needs 84 gates, so the original has at least 84 + (number of cancelling gates) - K.
+- Rebuilding each cancelled value from its inputs gives G >= 84 - sum (weight - 2): a circuit whose only
+  cancellation is at a weight-7 output has at least 79 gates (81 for weight 5); below 79 needs two cancellations
+  or a heavy internal one.
+- Sharp for general maps: one cancellation can save weight - 2 (prefix family).
+- New: the saving is bounded by the cancelled content in shared values whose clean versions are absent;
+  private cancelled content is free to remove. No class bound beyond the direct one is proved.
 
 ## The open questions that now carry the problem
 

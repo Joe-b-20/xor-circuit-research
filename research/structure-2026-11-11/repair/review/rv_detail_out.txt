@@ -1,0 +1,19 @@
+783: e = 78 = 76 + 77, cancels [2], val(e) 0:0110 1:1011 7:0110
+   in   18 2:0010                                   shared True  P(u) -> 0
+   in   26 2:0001                                   shared True  P(u) -> 0
+   gate  36 2:0011                                   shared True  P(u) -> 0
+   gate  54 1:0100 2:0011                            shared True  P(u) -> node 9
+   gate  64 2:0011 7:0011                            shared True  P(u) -> node 40
+   gate  74 1:1100 2:0011                            shared True  P(u) -> absent
+   gate  76 1:1011 2:0011                            shared True  P(u) -> absent
+   gate  77 0:0110 2:0011 7:0110                     shared False P(u) -> absent
+A1: e = 5 = 4 + 0, cancels [0], val(e) 110
+   in    0 1                                        shared True  P(u) -> 0
+   gate   3 11                                       shared True  P(u) -> node 1
+   gate   4 111                                      shared True  P(u) -> node 5 (=e)
+A2: e = 9 = 8 + 0, cancels [0], val(e) 11110
+   in    0 1                                        shared True  P(u) -> 0
+   gate   5 11                                       shared True  P(u) -> node 1
+   gate   6 111                                      shared True  P(u) -> node 11 (after e)
+   gate   7 1111                                     shared True  P(u) -> node 10 (after e)
+   gate   8 11111                                    shared True  P(u) -> node 9 (=e)

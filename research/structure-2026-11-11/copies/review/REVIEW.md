@@ -1,5 +1,9 @@
 # Review of copies/COPIES.md (phase 10)
 
+**Phase-11 note.** Fix 5 below and the J1-J5 verdict are wrong: zeroing a cancelled block can make an event
+removable as a duplicate of an earlier projected value (`../../repair/REPAIR.md` section 8). The zero counts
+measured here are observations about the circuits examined.
+
 **This is a machine review** by a separate model instance. It is not a human review and not formal
 verification. **No search was run:** no SAT, no exhaustive or finite-family checks, no case enumeration, no
 least-gate or BFS/Dijkstra computation, no subset minimisation, no corpus or transpose campaigns. What was run is
