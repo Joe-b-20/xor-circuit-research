@@ -1695,3 +1695,64 @@ Remaining mixed patterns are rank one with four nonclean plus one clean label, o
 two with two/three nonclean labels and two independent clean suppliers. The augmented
 source minimum remains 11 or 12. General joint 21-to-22 and unrestricted MixColumns
 75-to-88 intervals remain unchanged.
+
+## 33. Rank-one exclusion and confinement of even supply (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/frontier/README.md`](../takeover-2026-11-13/frontier/README.md).
+This continues reviewed commit `1fffbd0`. Universal statements have hand proofs with
+independent machine review, not formal verification or human certification.
+
+**Rank-one supplier exclusion (proved).** If a ten-gate first-sheet producer's actual
+clean-diagonal span W has rank at most one, it cannot support an eleven-gate consumer
+for the four triples whose required free parts span the rank-three diagonal D. The
+remaining interface would require one actual clean direction together with four
+nonclean values in one coset. Their difference span cannot complete D with W. The even
+case forces independent even physical values and contradicts either relation counts,
+components, or the sum of the four named residue-pair sums. The odd case gives too few
+relations, or a dependent cycle among equations that would all need to be executed.
+The proof also covers the trace possibility in which the clean label is the sum of all
+four nonclean labels. Under the standard no-feedback hypothesis on first-sheet target
+cones, the joint minimum for such a producer is at least 22. One additional supplier,
+including a consumer-block exit, can raise clean rank by at most one and cannot enable
+a ten-gate consumer requiring rank three.
+
+**Projection-tree normal form (proved).** If a ten-gate producer has three independent
+physical even own directions, seven first own-mask occurrences and three independent
+free entries exhaust the budget. Projecting the free block to zero gives seven gates
+whose odd-pair edges form a spanning tree of the cube on the eight odd own masks. All
+physical even values are independent: their span consists of three independent own
+fibre roots plus the independent free labels of even entries. If A counts odd helpers,
+the seven original non-entry edges form a forest on 8+A nodes with A+1 components.
+Adding the A odd-entry edges makes it a tree. The equality between odd-helper and
+odd-entry counts does not identify those physical nodes. The known three-pure-even
+control shows that the hypothesis itself is possible at ten gates.
+
+**Confinement at clean rank two (proved).** For a ten-gate producer of clean rank two,
+every physical even own mask lies in its two-dimensional clean own span W_b. Otherwise
+the tree normal form applies. With no odd helper, five of six even gates must be
+nonclean, including the first even gate. With three helpers, the two clean and one
+nonclean even values cannot connect the four required residue pairs with distinct
+named-pair sums. With one helper, uniqueness of its three-term named expansion limits
+the non-entry relations to six. With two helpers, one nonclean value must have three
+pair representations; any distinct second value with two representations forces an
+alternating four-cycle. At most seven relations then have rank at most six, contrary
+to seven independent gate equations. These four structural counts exhaust the helper
+counts without enumerating circuits or trees. Consequently every even-coset difference
+lies in W, and an even coset cannot supply the missing diagonal direction.
+
+**Restricted augmented minimum twelve (proved and attained).** Four rows and any three
+cycle-pair diagonals need twelve gates if the circuit is event-free and its only mixed
+nodes are the seven required targets. The three paired row/diagonal demands force at
+least three pure-own triples. Those need five pure gates, disjoint from the seven mixed
+targets. The existing twelve-gate construction attains the bound. This leaves open
+an additional mixed intermediate, cancellation, and arbitrary diagonal bases.
+
+**Verification and remaining frontier.** Independent reviews cover all new proofs.
+A direct check of one specified ten-gate construction confirms its projected cube tree,
+physical forest and lifted tree; no circuit search or computer-driven elimination was
+used. In a hypothetical joint 21, the ten-producer/eleven-consumer split now requires
+clean rank exactly two and two or three nonclean labels in an odd diagonal coset. Such
+a coset must cross the two own classes modulo W_b while preserving residue; that route
+remains open. The other split remains the eleven-gate source-only augmented supplier,
+whose minimum is 11 or 12. General joint 21-to-22 and unrestricted MixColumns 75-to-88
+intervals are unchanged.

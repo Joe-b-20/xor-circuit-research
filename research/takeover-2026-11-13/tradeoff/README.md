@@ -4,6 +4,8 @@
 reviews, not formal verification or human certification. The joint 0/1 interval under
 its stated hypothesis remains 21 to 22. **Unrestricted MixColumns remains 75 to 88.**
 
+**Subsequent progress:** [the frontier pass](../frontier/README.md) closes the rank-one branch and proves that rank-two suppliers cannot use an even coset to complete the diagonal span. The remaining-pattern discussion below records this earlier pass.
+
 ## The new coupled bound
 
 [Theorem T](SUPPLY.md) proves that a ten-gate producer with four available values in one

@@ -1,8 +1,10 @@
 # What changed in the takeover
 
-**Current continuation after `4f4d918`:** [coupled supply tradeoffs](tradeoff/README.md).
-It couples clean-diagonal rank with coset occupancy, counts independent physical gate
-relations, and establishes supplier-profile and causal-span constraints. The [preceding
+**Current continuation after `1fffbd0`:** [rank-one exclusion and even-direction confinement](frontier/README.md).
+It closes the rank-one supplier branch, confines every even intermediate of a rank-two
+supplier to its clean own span, and proves a restricted diagonal interface costs twelve.
+The [preceding tradeoff pass](tradeoff/README.md) coupled clean supply with coset occupancy
+and established physical-relation rank and causal-span constraints. The [preceding
 supplier pass](compatibility/README.md) proved a coset cap and entry deletion.
 The [row-cost pass](row-cost/README.md)
 proved exact local costs, source saturation, and completion geometry. The [earlier pass](continuation/README.md)

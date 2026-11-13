@@ -1,0 +1,46 @@
+{
+  "method": "Direct evaluation and linear algebra on one specified circuit; no search.",
+  "construction": {
+    "name": "three_even_directions",
+    "gates": 10,
+    "targets": 4,
+    "entries": 3,
+    "label_rank": 3,
+    "trace_rank_for_four_rows": 3,
+    "trace_masks": [
+      15,
+      5,
+      9
+    ],
+    "entry_labels": [
+      96,
+      160,
+      240
+    ],
+    "all_gates_live_distinct": true
+  },
+  "physical_even_value_rank": 4,
+  "even_own_projection_rank": 3,
+  "independent_nonentry_relations": 7,
+  "projected_cube_tree": {
+    "vertices": 8,
+    "edges": 7,
+    "components": 1,
+    "incidence_rank": 7,
+    "forest": true
+  },
+  "physical_nonentry_forest": {
+    "vertices": 10,
+    "edges": 7,
+    "components": 3,
+    "incidence_rank": 7,
+    "forest": true
+  },
+  "tree_after_odd_entries": {
+    "vertices": 10,
+    "edges": 9,
+    "components": 1,
+    "incidence_rank": 9,
+    "forest": true
+  }
+}
