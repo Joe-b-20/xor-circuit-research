@@ -1,5 +1,9 @@
 # Actual supplier compatibility
 
+**Later continuation:** [coupled clean supply and coset occupancy](../tradeoff/README.md).
+The new theorem prevents simultaneous clean rank two and four values in a nonzero coset.
+The general joint 21-to-22 gap remains open.
+
 2026-11-13, continuing reviewed commit `098e5d4` on `research-2026-11-13-structural`.
 Hand proofs with independent machine reviews, not formal verification or human
 certification. **The unrestricted interval remains 75 <= L(MixColumns) <= 88.**

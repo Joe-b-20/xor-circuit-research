@@ -1,7 +1,7 @@
 # XOR structural research: checkpoint, 2026-11-13
 
 Research branch: `research-2026-11-13-structural`. Current continuation follows reviewed
-commit `098e5d4`; see [actual supplier compatibility](compatibility/README.md).
+commit `4f4d918`; see [coupled supply tradeoffs](tradeoff/README.md).
 Verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511` on local and remote
 `phase-2026-11-09`. The original worktree, the other research worktree, and untracked
 `search/proposals/` were preserved. Our worktree is under this chat's `work/xor-structural`.
@@ -12,13 +12,15 @@ human certification. Local and conditional bounds are not unrestricted bounds.
 
 ## Read next
 
-1. [Current summary and judgment](compatibility/README.md).
-2. [Producer coset cap and joint consequences](compatibility/INTERFACES.md).
-3. [General entry deletion and mixed interfaces](compatibility/QUOTIENT.md),
-   [diagonal supply](compatibility/DIAGONALS.md), and [controls](compatibility/CONTROLS.md).
+1. [Current summary and judgment](tradeoff/README.md).
+2. [Coupled clean-rank/coset theorem](tradeoff/SUPPLY.md) and
+   [physical relation rank](tradeoff/RELATIONS.md).
+3. [Supplier-profile deficiency and causal span](tradeoff/SUPPLY_PROFILE.md),
+   [two-diagonal producer and exact fixed-producer 22](tradeoff/EXPORTS.md).
 4. [Previous pass](row-cost/README.md): exact local costs, source saturation,
    completion geometry, and the eleven-gate avoidance theorem.
-5. [Earlier continuation](continuation/README.md): [sparse sharing](continuation/SPARSE.md),
+5. [Previous supplier work](compatibility/README.md): coset cap, entry deletion, mixed
+   interfaces, and diagonal controls. [Earlier continuation](continuation/README.md): [sparse sharing](continuation/SPARSE.md),
    [affine completion theorem](continuation/AFFINE.md), [internal events](continuation/INTERNAL.md).
 6. [First-pass summary](SUMMARY.md), [H/HR](directions/independent.md),
    [joint reconstruction](directions/JOINT.md), [projection repair](directions/PROJECTION.md),
@@ -29,29 +31,32 @@ and [record](../structure-2026-11-11/RECORD.md) remain the earlier research trai
 
 ## New results and their limits
 
-- **Actual supplier cap.** Any ten-gate first sheet supplies at most four distinct values
-  in each coset of the clean even diagonal D, including inputs and free values. The proof
-  combines parity, first occurrences, and an injective count of possible XOR relations.
-  The five-value all-nonclean eleven-gate consumer therefore cannot follow it.
-- **Rank-one clean supply.** If a ten-gate producer's available clean-diagonal span has
-  rank at most one, an eleven-gate consumer would require four distinct nonclean values
-  in one coset and one nonzero clean value. The previous explicit ten-gate diagonal
-  supplier has no coset of size four, so that particular producer cannot extend to a
-  joint 21. Other producers and mixed interfaces remain open.
-- **General entry deletion.** If selected entry occurrences have label span disjoint
-  from the target free-part span D, projecting that span to zero removes all those gates.
-  Thus `K>=L_D+|I|`, including repeated occurrences, and in particular `K>=L_D+c` for
-  quotient rank c. For four-triple sheets this is the sharp explicit `K>=10+c`.
-  Mixed eleven-gate trace structures are classified by four or five entries; nonclean
-  labels cannot repeat, but clean labels can. Any hypothetical no-feedback joint 21
-  must actually read only even free-a labels.
-- **Diagonal interface.** A compact event-free twelve-gate circuit supplies four rows
-  and three independent diagonals. Requiring all four pure-own triples as well gives
-  exact event-free cost thirteen. The unconstrained augmented cost remains 11 or 12.
-  Controls: two even helpers need not span all-ones, and a ten-gate sheet can supply a
-  rank-three pure-even basis. Neither condition alone forces a further gate.
+- **Coupled supply.** Four available values in one nonzero clean-diagonal coset of a
+  ten-gate producer force clean-diagonal rank at most one. Equivalently, clean rank two
+  forces every nonzero coset to have at most three values. The proof uses independent
+  entry paths in the even case and independence of physical gate equations in the odd case.
+- **Relation rank.** Non-entry gate equations are independent on formal physical nodes.
+  Their number is at most the rank of all available three-value relations. For the
+  graph of odd values with edges coloured by physical even sums, that rank is
+  `|O|-components+dim(Z+colour(cycle space))`, with Z the even-only relation span.
+  In particular `entries>=components+rank(even values)-ordinary input count`.
+- **Actual clean capacity is two.** A new event-free ten-gate producer supplies two
+  independent clean diagonals. The earlier lower bound for three makes rank two the
+  exact maximum at ten gates. This particular producer has exact joint completion cost
+  22, even with a possible consumer-block exit; a matching circuit is directly checked.
+- **Profile and causality.** Let W span actual clean suppliers and Delta_C span differences
+  in one supplied coset. If W and every `W+Delta_C` are proper in D, a fixed-supplier
+  consumer costs at least `L_D+2`. Separately, an exit from a consumer that has read only
+  W cannot create the first clean direction outside W. This makes the (11,10) reduction
+  to an actual source-only augmented supplier valid even when feedback was allowed.
 
 ## Earlier results that constrain future claims
+
+Every ten-gate supplier has at most four values per diagonal coset. The wholly nonclean
+eleven-gate consumer is therefore excluded. Entry deletion gives `K>=L_D+|I|` for a set
+of occurrences whose label span is disjoint from D, hence the sharp four-triple bound
+`K>=10+c`. Eleven-gate mixed interfaces use one nonclean quotient signature, with no
+repeated nonclean labels. A hypothetical no-feedback joint 21 uses only even free-a labels.
 
 The previous pass gives exact one-sheet cost `3f+7` with only free neighbors and
 `4p+3f+8` with ordinary neighbors present; a source-saturation theorem for alternative
@@ -77,19 +82,21 @@ The 66-distinct-charge counterexample still refutes unconditional distinct-charg
 
 ## Next mathematical obligation
 
-Seek a joint bound on clean-diagonal supply and coset occupancy, or extend the relation
-count to several populated cosets. Linear span alone loses the actual-supply obstruction.
-The joint 0/1 problem still needs both: exclude three independent diagonal suppliers in
-eleven first-side gates, and exclude the remaining mixed eleven-gate consumer interfaces
-after a ten-gate producer. The entirely nonclean branch is now excluded. No improved
-unrestricted MixColumns lower bound is established.
+The coupled bound is now proved. Remaining mixed patterns: clean rank one with four
+nonclean labels in one coset and one clean label; or clean rank two with two/three
+nonclean labels and two independent actual clean suppliers. Determine whether either
+can occur at ten producer gates, using relation rank and actual entry labels together.
+The other joint split still needs three independent diagonal suppliers in eleven
+source-side gates; the augmented minimum remains 11 or 12. No improved unrestricted
+MixColumns lower bound is established.
 
 ## Method and reproducibility
 
 No SAT, exhaustive enumeration, exact least-gate search, heuristic circuit search, or
 computer-driven case elimination was run. Universal claims rely on hand proofs.
-[Current checks](compatibility/check-results.json) evaluate six specified constructions:
-one-/two-direction deletion, repeated clean labels, diagonal circuits, and both controls.
+[Current checks](tradeoff/README.md#reviews-and-direct-checks) evaluate the ten-/22-gate
+construction, two specified relation graphs, and the fixed producer's supply profile.
+[Previous checks](compatibility/check-results.json) cover six fixed compatibility constructions.
 [Previous checks](row-cost/README.md#review-and-direct-verification) cover local costs,
 the 188/184 comparison, the 145-gate witness, and the two original interface circuits.
 [Earlier checks](checks/README.md) and [continuation checks](continuation/check-results.json)

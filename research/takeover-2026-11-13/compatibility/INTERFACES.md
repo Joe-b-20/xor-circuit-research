@@ -133,6 +133,13 @@ These are direct identities of the displayed construction, not a search over pro
 
 Thus this particular ten-gate first sheet cannot supply any eleven-gate second-sheet interface. It needs a joint total of at least 22 under the no-feedback hypothesis. This producer-specific obstruction does not assert that every ten-gate first sheet has clean rank at most one or misses every saturated four-value coset.
 
+For completeness, the other total-21 split would add one supplier gate and leave only
+ten consumer-bearing gates. Their actual clean entry labels must span rank three,
+whereas one additional supplier can raise this producer's clean rank from one to at
+most two. This also excludes that split, including a supplier created by feedback.
+The later [causal span lemma](../tradeoff/SUPPLY_PROFILE.md) handles the more delicate
+rank-two supplier situation and makes the augmented-supplier reduction explicit.
+
 ## Remaining scope
 
 The theorem does not say that a ten-gate first sheet has no clean diagonal. The explicit ten-gate construction in `JOINT01.md` supplies one, so mixed clean/nonclean interfaces remain genuine possibilities.

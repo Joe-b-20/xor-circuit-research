@@ -17,6 +17,11 @@ Consequently a 21-gate candidate has `(G_0,G_1)=(11,10)` or `(10,11)`. In the fi
 
 Excluding that case still requires strengthening the known augmented-sheet bound from 11 to 12. In the second case all ten `b'`-free gates belong to the first sheet's computation. It is tempting to assert that such a ten-gate computation contains no clean diagonal value; the explicit example below refutes that assertion.
 
+The later [causal span argument](../tradeoff/SUPPLY_PROFILE.md) supplies an implicit step
+in the first reduction: an extra b'-zero gate created as a consumer exit cannot provide
+the first new independent clean direction. Thus a viable (11,10) profile really yields
+an eleven-gate source-only augmented supplier, even when feedback was initially allowed.
+
 ## A ten-gate first sheet can already contain a clean diagonal
 
 Here is a complete circuit for the four `U_c`, with free `a`-parts:

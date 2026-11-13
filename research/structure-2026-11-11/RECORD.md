@@ -1627,3 +1627,71 @@ mixed trace classification, and the diagonal-interface bound. Next useful target
 clean-diagonal supply and coset occupancy, or relation capacity across several populated
 cosets. Both remaining joint splits still need work. The joint interval remains 21 to 22
 under no-feedback; the unrestricted MixColumns interval remains `75 <= L <= 88`.
+
+## 32. Coupled supply, independent relations, and causal span (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/tradeoff/README.md`](../takeover-2026-11-13/tradeoff/README.md).
+This continues reviewed commit `4f4d918`. The results have hand proofs and independent
+machine reviews, not formal verification or human certification.
+
+**Coupled supply theorem (proved).** If a ten-gate first sheet supplies four distinct
+values in one nonzero coset of the clean even diagonal, its actual clean-diagonal rank
+is at most one. Equivalently, rank two forces all nonzero cosets to contain at most three
+available values. For an even-own coset, seven first ordinary projections plus three
+independent entries exhaust the budget. A repeated free displacement in two different
+ordinary fibres would require disjoint subsets of independent entry labels with equal
+nonzero sums. For an odd-own coset, few even physical gates remain. In the tight mixed
+case, two clean directions require four affine-plane equations whose sum is zero.
+Physical gate equations are independent by their latest-node pivots, so these equations
+cannot all occur in one acyclic circuit. The other parity-count alternatives close by
+relation counts or the dimension of the available formal relation space.
+
+**General relation-rank framework (proved).** Use physical odd values as graph vertices,
+joining a pair when its sum is a physical even value and colouring the edge by that
+value. Let partial be the binary incidence map, chi the edge-colour parity map, and Z
+the span of even-only triple equations. The rank of all available three-node equations
+is `|O|-components+dim(Z+chi(ker partial))`. Non-entry gates cannot exceed this rank.
+Evaluation of the even coordinates gives the upper bound
+`|O|-components+|H|-rank(H)`, hence `entries>=components+rank(H)-ordinary input count`.
+The note also proves population/matching bounds, clean-span restrictions, and an
+odd-coset entry-origin bound. This distinguishes independent executable equations from
+individually valid XOR identities. No circuit enumeration supplies the proof.
+
+**Two diagonals at no extra producer cost (explicit construction).** An event-free
+ten-gate producer supplies two independent clean diagonals. Together with the recorded
+eleven-gate lower bound for three independent diagonals, this establishes exact maximum
+clean-diagonal rank two at ten gates. It refutes the tempting rank-one shortcut. Its
+available clean values span W of rank two, and every within-one-diagonal-coset difference
+also lies in W. That particular producer's joint completion optimum is exactly 22; the
+matching circuit adds two source gates and ten consumer gates. The result concerns the
+specified producer, not the general joint map.
+
+**Supplier-profile certificate (proved).** For a fixed actual supply Sigma, let W span
+the supplied clean values and Delta_C span within-coset differences. If W is proper in
+the required D and every `W+Delta_C` is proper, any consumer costs at least `L_D+2`.
+The entry-deletion theorem limits a consumer within one gate of L_D to one nonclean
+quotient direction, whose actual entries cannot span D under this deficiency condition.
+Extra zero-consumer-part computations are not silently granted for free.
+
+**Causal span (proved).** If every actual consumer entry is clean and all entries so far
+are in W, every consumer-bearing signal has its free-side part in W. An exit cancelling
+the consumer part can only yield another W value. Thus the first new independent clean
+direction must be produced by a gate reading two zero-consumer-part operands. This fills
+an implicit causal step in the (11,10) joint reduction: even allowing a possible exit,
+a viable profile yields an actual eleven-gate source-only augmented supplier. It also
+establishes the fixed-producer 22 result with feedback allowed, after checking the one
+extra supplier gate rather than assuming it is an appended source gate. The older
+one-diagonal fixed-producer exclusion remains valid: one extra supplier cannot raise
+its clean span from rank one to the rank three needed by a ten-gate consumer.
+
+**Verification and remaining scope.** Direct checks evaluate the specified ten-/22-gate
+construction, two affine-plane relation graphs, and the fixed producer's deficient
+supply profile. The four-edge graph has relation rank three; the three-direction graph
+has seven available relations but rank four. A draft verifier's table of 16 free masks
+was only membership bookkeeping; the saved verifier uses a direct predicate, and no
+circuits were searched or eliminated by computation. Independent reviews cover the
+coupled theorem, graph-rank formula, causal reduction, and fixed-producer optimum.
+Remaining mixed patterns are rank one with four nonclean plus one clean label, or rank
+two with two/three nonclean labels and two independent clean suppliers. The augmented
+source minimum remains 11 or 12. General joint 21-to-22 and unrestricted MixColumns
+75-to-88 intervals remain unchanged.
