@@ -1136,7 +1136,8 @@ reconstruction inequality is an upper bound on the gain for every R; the wording
 if its intermediate sums are of little use" is withdrawn (example p = a+b, q = c+d, t = p+q). Section 9: "clean
 labels" defined (cleaning only inside proofs; unclean entries enter through sigma); what the finite checks of
 review-p did (small exhaustive runs on five-input objects, no solver; only the sharpness remark and the
-"exactly 10" figure depend on them). Phase-7 correction: these runs, and the other small exhaustive checks and
+"exactly 10" figure depend on them; the lower half of "exactly 10" now has a hand proof, joint/FINITE_AUDIT.md
+section 3). Phase-7 correction: these runs, and the other small exhaustive checks and
 exact least-gate searches listed in `joint/FINITE_AUDIT.md`, were newly executed on 2026-11-12 after the
 instruction excluding exhaustive computation; the record's earlier statement that none was run was wrong.
 
@@ -1260,7 +1261,8 @@ session; the circuit was rebuilt from the description and verified here and by a
 **Counterexample (proved; verified).** z_c = parity of byte c (28 gates), H_c = parity of the other three bytes
 (6 gates; on every block j its part is E_c(j)); every output is y_(c,j) = H_c + r_(c,j) with the remainder r
 built from inputs outside block j by disjoint-support chains. Under hypothesis H (no step-3 value equals an
-output) the circuit is reduced, fully live, and its distinct charged gates are the 34 globals and the 32 outputs:
+output) its distinct charged gates are the 34 globals and the 32 outputs (reducedness and full liveness are
+verified for the two fixed orders):
 66 (E 140, R 154; G 521-616 depending on the order of the remainder sums). For Q_m, 8m + 2. **Refuted:** the
 phase-7 distinct-charge conjecture and Conjecture G (phase 8) for MixColumns and for Q_m, m >= 4 (Q_4: 34 < 40).
 **Not refuted:** G >= 80, L(Q_4) = 40, size- or U-restricted charge statements, the bounds 75 <= L <= 88.
@@ -1272,14 +1274,55 @@ MixColumns needs a non-confined or escaping partner, not necessarily an uncharge
 per pair of paths, not as distinct expenses. Sheet-system repair: windows need a non-own block, and Lemma W
 projects onto an actual non-own block.
 **Removal (proved).** Lemma S1: cancelling a block of a shared value forces a second copy of that part in the
-partner. Q_3 takes the copy from another sheet's required work (total saving 2); the MixColumns triangle from one
+partner. Q_3 takes the copy from another sheet's charged work (total saving 2; use elsewhere does not by itself make its
+marginal cost zero); the MixColumns triangle from one
 uncharged partner serving three double charges; the superposition witness from 32 uncharged remainders (deficit
 R - E = 14, paid by U >= 446 in the orders tried). Dual identity: G = sum_v (fan-out(v) - 1), the size of the
 transpose. **Two-sided charging refuted (check):** the transpose's charged count depends on the chain order; the
-block-order witness and its reverse-order transpose both have 66, so charging C or C^T does not repair the
-framework, and the "some transposition" variant is essentially the total bound restated.
-**Next:** a copy-rank principle (count the rank of the copies that cancellation forces and that are not values
-needed for other outputs), which combines reuse globally and separates the three mechanisms; first test whether
-"needed for other outputs" can be defined so that it is a lower bound rather than a restatement.
+block-order witness and its reverse-order transpose both have 66, so charging C or C^T under that fixed chain rule does not repair the
+framework (other transposition strategies are not ruled out); "some transposition has at least 80 charged
+gates" is sufficient for G >= 80, and the converse is not established (phase-10 correction).
+**Next (as proposed then):** a copy-rank principle; examined and abandoned in phase 10 (section 25).
+**Phase-10 scope corrections.** H_c's unwanted part outside a MixColumns window occupies 5 or 6 blocks (the full
+remainder 7). Hypothesis H is what the charge count needs; reducedness and full liveness are verified for the two
+fixed orders only (other orders need dead-gate pruning, which removes only uncharged gates).
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 25. Cancellation copies and gate cost: a feasibility study (phase 10; `copies/COPIES.md`; review `copies/review/`)
+
+Phase 10 (2026-11-12, user's question: can the cancellation-copy measure of section 24 be connected validly and
+nontrivially to gate cost?). Main agent's proofs; machine review with its own code (not human review); no
+search of any kind; checks are direct evaluation and linear algebra on specified circuits.
+**Candidate.** For a gate e = a + b, cancelled blocks C(e) = {c : pi_c(a) != 0 = pi_c(e)}; copy
+kappa(e) = pi_C(e)(a); measure = rank of the copies modulo a baseline (none, span X, span Y, staged, per
+recipient), or with events having an input or output operand exempt (Q2); recipient form u(h, j).
+**Status (proved; checks in copyrank.py).** C1: global linear baselines give 0 (inputs, and for invertible maps
+outputs, span everything; no gate raises any rank of available values); per-recipient baselines are nonzero but
+bounded by the events. C2: one copy per event gate, so the rank is carried by the cancelling gates (witness:
+all 32 events are its outputs, rank 32 = |Y|). C3: a reduced circuit with G = |Y| and Q0 = n - 1 (n >= 3), so
+no G >= |Y| + c Q0. C4: partner capacity is quadratic and sharp: k non-output gates carry copy rank
+k(k-1)/2 (construction for k = 5, 6, 8); the valid remnant G - |Y \ X| >= (1 + sqrt(1 + 8 Q2))/2 is a count
+of non-output gates. C5: the recipient's requirement is a coset, the partner b = e + a a node; "needed
+elsewhere" needs the actual circuit. One consistent definition gives Q_3 4, triangle circuits 1-2, witness 32,
+r88/r89 0 (and 0 for all with the span-Y baseline): the phase-9 intuition (0, 1, high) was wrong.
+**Theorem F (first-exit identity; proved; checked).** For any node set A containing the inputs of the columns K,
+M_K = sum over edges p -> g leaving A of rho(g) val_A(p)^T + output terms in A; J6 is an instance, J7 a
+corollary. **Corollary Z:** zero-cell (cancellation) equations hold for every decomposition, so bounds that
+depend only on the term sum at one cut cannot see removal.
+**Proposition V (reviewer, from sections 7, 9, 17; proved).** A MixColumns circuit with no whole-block
+cancellation is block-monotone, hence has at least 84 gates: every circuit with at most 83 gates cancels a
+whole block somewhere. With J9, every doubly charged gate lies in the ancestor cone of a cancelling gate.
+**Proposition R (conditioning; proved).** G(C) >= |H \ X| + L(Y | X u H) for every set H computed by C; since
+L(Y | X u H) <= L(Y), it cannot give a conditional bound without the same unconditional one (ceiling).
+**Correction found by review.** Cancelling gates are not lost when their block is zeroed (D_c); the copy count
+has no separate weight in the restriction framework.
+**Decision.** "Copies cost gates" measured by rank is left. Next: the savings shape, extending Proposition V
+from no event to few events of the observed types (bound the saving s of one triangle-type cancellation
+below 84 by hand).
+**Phase-10 scope corrections** (sections 24, SUMMARY, CHECKPOINT, SUPERPOSITION, FINITE_AUDIT): one fixed
+transposition convention only; "some transposition >= 80" sufficient, converse open; H_c's unwanted part 5 or 6
+blocks; H for the count, liveness only for the two orders; use elsewhere is not zero marginal cost; confinement
+and "exactly 10" wording synchronised.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.

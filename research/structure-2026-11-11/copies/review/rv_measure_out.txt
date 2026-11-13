@@ -1,0 +1,51 @@
+== MixColumns windows (own matrix): {0: [0, 7], 1: [0, 1, 7], 2: [1, 2], 3: [2, 3, 7], 4: [3, 4, 7], 5: [4, 5], 6: [5, 6], 7: [6, 7]}
+sanity: G 5 |Y| 2 reduced True nonout 3 | events 2 (at outputs 2) Q0 2 QX 0 QY 2 | Q2 2 (from 2 events) | max partner cap 2 (node 4) | per-(event,block) rank 2, sum|C| 2 | C-sets [(0,), (1,)]
+chain n=3: G 4 |Y| 4 reduced True nonout 0 | events 2 (at outputs 2) Q0 2 QX 0 QY 0 | Q2 0 (from 0 events) | max partner cap 2 (node 4) | per-(event,block) rank 2, sum|C| 2 | C-sets [(0,), (1,)]
+chain n=4: G 6 |Y| 6 reduced True nonout 0 | events 3 (at outputs 3) Q0 3 QX 0 QY 0 | Q2 0 (from 0 events) | max partner cap 3 (node 6) | per-(event,block) rank 3, sum|C| 3 | C-sets [(0,), (1,), (2,)]
+chain n=8: G 14 |Y| 14 reduced True nonout 0 | events 7 (at outputs 7) Q0 7 QX 0 QY 0 | Q2 0 (from 0 events) | max partner cap 7 (node 14) | per-(event,block) rank 7, sum|C| 7 | C-sets [(0,), (1,), (2,), (3,), (4,), (5,)]
+chain n=2: G 2 |Y| 2 reduced False nonout 0 | events 1 (at outputs 1) Q0 1 QX 0 QY 0 | Q2 0 (from 0 events) | max partner cap 1 (node 2) | per-(event,block) rank 1, sum|C| 1 | C-sets [(0,)]
+pairs k=5: G 25 |Y| 20 reduced True nonout 5 | events 10 (at outputs 10) Q0 10 QX 0 QY 1 | Q2 10 (from 10 events) | max partner cap 4 (node 24) | per-(event,block) rank 10, sum|C| 10 | C-sets [(0,), (1,), (2,), (3,), (4,), (5,)]
+pairs k=6: G 39 |Y| 33 reduced True nonout 6 | events 15 (at outputs 15) Q0 15 QX 0 QY 1 | Q2 15 (from 15 events) | max partner cap 5 (node 38) | per-(event,block) rank 15, sum|C| 15 | C-sets [(0,), (1,), (2,), (3,), (4,), (5,)]
+pairs k=8: G 76 |Y| 68 reduced True nonout 8 | events 28 (at outputs 28) Q0 28 QX 0 QY 1 | Q2 28 (from 28 events) | max partner cap 7 (node 75) | per-(event,block) rank 28, sum|C| 28 | C-sets [(0,), (1,), (2,), (3,), (4,), (5,)]
+pairs k=4: G 14 |Y| 7 reduced False nonout 4 | events 6 (at outputs 6) Q0 6 QX 0 QY 2 | Q2 6 (from 6 events) | max partner cap 3 (node 13) | per-(event,block) rank 6, sum|C| 6 | C-sets [(0,), (1,), (2,), (3,), (4,), (5,)]
+Q_3 q3_28: G 28 |Y| 12 reduced True nonout 16 | events 4 (at outputs 3) Q0 4 QX 0 QY 0 | Q2 4 (from 4 events) | max partner cap 1 (node 31) | per-(event,block) rank 4, sum|C| 4 | C-sets [(0,), (1,), (2,)] | recipient rank 8, one node 2 (node 24) | per-sheet other-outputs baseline 6 | E 9 R 11 U 0 charged 28
+MC r88: G 88 |Y| 32 reduced True nonout 56 | events 0 (at outputs 0) Q0 0 QX 0 QY 0 | Q2 0 (from 0 events) | max partner cap 0 (node -1) | per-(event,block) rank 0, sum|C| 0 | C-sets [] | recipient rank 0, one node 0 (node 83) | per-sheet other-outputs baseline 0 | E 5 R 0 U 3 charged 85
+MC r89: G 89 |Y| 32 reduced True nonout 57 | events 0 (at outputs 0) Q0 0 QX 0 QY 0 | Q2 0 (from 0 events) | max partner cap 0 (node -1) | per-(event,block) rank 0, sum|C| 0 | C-sets [] | recipient rank 0, one node 0 (node 79) | per-sheet other-outputs baseline 0 | E 6 R 0 U 3 charged 86
+MC witness block: G 521 |Y| 32 reduced True nonout 489 | events 32 (at outputs 32) Q0 32 QX 0 QY 0 | Q2 32 (from 32 events) | max partner cap 8 (node 65) | per-(event,block) rank 32, sum|C| 180 | C-sets [(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 7), (0, 1, 2, 3, 6, 7), (0, 1, 2, 5, 6), (0, 1, 4, 5, 6), (0, 3, 4, 5, 6, 7)] | recipient rank 32, one node 8 (node 65) | per-sheet other-outputs baseline 22 | E 140 R 154 U 455 charged 66
+MC witness wire: G 616 |Y| 32 reduced True nonout 584 | events 32 (at outputs 32) Q0 32 QX 0 QY 0 | Q2 32 (from 32 events) | max partner cap 8 (node 65) | per-(event,block) rank 32, sum|C| 180 | C-sets [(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 7), (0, 1, 2, 3, 6, 7), (0, 1, 2, 5, 6), (0, 1, 4, 5, 6), (0, 3, 4, 5, 6, 7)] | recipient rank 32, one node 8 (node 65) | per-sheet other-outputs baseline 22 | E 140 R 154 U 550 charged 66
+MC circuits_3.txt:1451: G 88 |Y| 32 reduced True nonout 56 | events 2 (at outputs 1) Q0 2 QX 0 QY 0 | Q2 1 (from 1 events) | max partner cap 1 (node 96) | per-(event,block) rank 2, sum|C| 2 | C-sets [(2,), (7,)] | recipient rank 2, one node 1 (node 70) | per-sheet other-outputs baseline 1 | E 8 R 3 U 3 charged 85
+MC circuits_3.txt:3001: G 88 |Y| 32 reduced True nonout 56 | events 2 (at outputs 0) Q0 2 QX 0 QY 0 | Q2 1 (from 1 events) | max partner cap 1 (node 107) | per-(event,block) rank 2, sum|C| 2 | C-sets [(2,), (7,)] | recipient rank 2, one node 1 (node 97) | per-sheet other-outputs baseline 1 | E 10 R 3 U 1 charged 87
+MC circuits_3.txt:7451: G 88 |Y| 32 reduced True nonout 56 | events 1 (at outputs 1) Q0 1 QX 0 QY 0 | Q2 1 (from 1 events) | max partner cap 1 (node 69) | per-(event,block) rank 1, sum|C| 1 | C-sets [(2,)] | recipient rank 2, one node 1 (node 66) | per-sheet other-outputs baseline 1 | E 5 R 3 U 6 charged 82
+MC circuits_3.txt:7651: G 88 |Y| 32 reduced True nonout 56 | events 1 (at outputs 1) Q0 1 QX 0 QY 0 | Q2 1 (from 1 events) | max partner cap 1 (node 70) | per-(event,block) rank 1, sum|C| 1 | C-sets [(2,)] | recipient rank 2, one node 1 (node 69) | per-sheet other-outputs baseline 1 | E 4 R 3 U 7 charged 81
+MC circuits_2.txt:783: G 88 |Y| 32 reduced True nonout 56 | events 1 (at outputs 1) Q0 1 QX 0 QY 0 | Q2 1 (from 1 events) | max partner cap 1 (node 77) | per-(event,block) rank 1, sum|C| 1 | C-sets [(2,)] | recipient rank 2, one node 1 (node 76) | per-sheet other-outputs baseline 1 | E 6 R 3 U 5 charged 83
+
+== witness details (block order)
+H_c nodes: {0: 62, 1: 63, 2: 64, 3: 65}
+every event is an output gate y = H_c + r: True | C-set sizes: [5, 6]
+  H_0: outside-window parts rank 8, block counts [5, 6]
+  H_1: outside-window parts rank 8, block counts [5, 6]
+  H_2: outside-window parts rank 8, block counts [5, 6]
+  H_3: outside-window parts rank 8, block counts [5, 6]
+  full remainders r = H_c + y occupy block counts: [7]
+  for every row (c, j): (row + H_c) restricted to blocks {j-1, j} has zero block-j part: True
+
+== event removal under ACCOUNT's zero-one-block restriction (COPIES section 6 claim)
+witness block: (event, cancelled block c) pairs 180; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 180
+circuits_3.txt:1451: (event, cancelled block c) pairs 2; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 2
+circuits_3.txt:3001: (event, cancelled block c) pairs 2; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 2
+circuits_3.txt:7451: (event, cancelled block c) pairs 1; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 1
+circuits_3.txt:7651: (event, cancelled block c) pairs 1; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 1
+circuits_2.txt:783: (event, cancelled block c) pairs 1; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 1
+Q_3: (event, cancelled block c) pairs 4; event removed when ZEROING c (D_c, ACCOUNT J2): 0; removed when KEEPING only c: 4
+
+== Theorem F (first-exit identity) for general node sets A
+Theorem F, r88: 308 node sets (8 pure-block J6 cases, 300 random non-closed), failures 0
+Theorem F, witness block: 68 node sets (8 pure-block J6 cases, 60 random non-closed), failures 0
+Theorem F, circuits_3.txt:1451: 158 node sets (8 pure-block J6 cases, 150 random non-closed), failures 0
+Theorem F, circuits_3.txt:3001: 158 node sets (8 pure-block J6 cases, 150 random non-closed), failures 0
+Theorem F, Q_3: 303 node sets (3 pure-block J6 cases, 300 random non-closed), failures 0
+Theorem F, chain n=8 + input x_3 as an output: 308 node sets (8 pure-block J6 cases, 300 random non-closed), failures 0
+
+== a block-monotone (RECORD 7 sense) MixColumns circuit with Q2 > 0
+r88 modified (sheet-2 output rebuilt through a block-2 cancellation): G 94 |Y| 32 reduced True nonout 62 | events 2 (at outputs 0) Q0 2 QX 0 QY 0 | Q2 2 (from 2 events) | max partner cap 1 (node 115) | per-(event,block) rank 2, sum|C| 2 | C-sets [(1,), (2,)] | recipient rank 0, one node 0 (node 83) | per-sheet other-outputs baseline 1 | E 10 R 0 U 4 charged 90
+   RECORD-7 block-monotone: True | J8 block-monotone (no event): False

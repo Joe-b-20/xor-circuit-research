@@ -219,7 +219,8 @@ proof replaces it):**
   shared (doubly charged) gate whose cancellations are all closed by other sheets' plain charged work forces a
   directed cycle of length at most (number of those cancellations) + 2. The shortest cycle is 2 in Q_2, 3 in
   Q_3, 4 in MixColumns (through block 7), none in chains. So MixColumns needs at least two cancellations for a
-  charged closure, and the triangle (one cancellation) must and does use an uncharged partner; in Q_3 one
+  charged closure, and the triangle (one cancellation) must use a non-confined or escaping partner (confinement
+  is a support condition; the observed partners are uncharged, which K does not force); in Q_3 one
   cancellation closed by the third sheet's charged work suffices, as observed.
 - No cost is proved. Refuted: "every cancellation costs a gate", "each uncharged partner pays for the double
   charges it closes". Conjecture G (refuted in phase 9): with shortest cycle >= 4 the distinct charges are at least 10 per sheet
@@ -233,9 +234,23 @@ proof replaces it):**
 - Consequence: no bound on distinct charged gates valid for all circuits can exceed 66; charging must be combined
   with a bound on the uncharged separation work, or with a structural hypothesis.
 - Theorem K survives as a classification of partner shapes; it constrains no cost.
-- Removing a shared value's unwanted part needs a second copy of it; Q_3 gets the copy free from another sheet,
+- Removing a shared value's unwanted part needs a second copy of it; Q_3 takes the copy from another sheet's
+  charged work,
   the triangle reuses one uncharged copy three times, the witness pays with hundreds of uncharged gates.
-  Charging the transposed circuit instead does not help (both sides can have 66).
+  (Use elsewhere does not by itself make a copy's marginal cost zero.) Charging the transpose built by one
+  fixed chain rule does not help (both sides can have 66); other transposition strategies are not ruled out.
+
+## Phase 10 (2026-11-12): cancellation copies do not measure gates (RECORD 25, `copies/COPIES.md`)
+
+- The phase-9 idea (rank of the copies that cancellations force) was made precise and fails: freeing inputs or
+  outputs makes it zero; its rank sits on the cancelling gates themselves (in the 66-charge witness, on the 32
+  output gates); charged to partners instead, k gates can carry copies of rank k(k-1)/2; and "needed elsewhere"
+  can only be decided from the actual circuit.
+- First-exit identity (contains the reader identity J6): at any cut the target splits into one rank-one term per
+  crossing edge; cancellation requirements are then automatic, so single-cut rank bounds cannot see them.
+- What does connect cancellation to cost (from earlier theorems): a circuit with no whole-block cancellation
+  needs at least 84 gates, so every circuit with at most 83 gates cancels a whole block somewhere.
+- Next: how much one cancellation of the observed (triangle) type can save below 84.
 
 ## The open questions that now carry the problem
 
@@ -294,6 +309,6 @@ part 1; review-joint01b/chk_b; causal-pair/x_config_check) and exact least-gate 
 instances (compose/sb/mcheck, compose/sb2/ncheck and sbcheck, review-sb/ev, review-sb2/ev2) were newly
 executed that day, and the record said otherwise. Correction (phase 7, joint/FINITE_AUDIT.md): every statement
 they support either has a hand argument (now cited) or is labelled a check; the statements resting on them
-alone are the sharpness remark for P3, the review remark that all 384 configurations of the pair step have
-rank at most 8, and the lower half of the "exactly 10" figure for four unit types (a hand proof is now in
-the audit, machine-reviewed in joint/review/). None of them was rerun.
+alone are the sharpness remark for P3 and the review remark that all 384 configurations of the pair step have
+rank at most 8; the lower half of the "exactly 10" figure for four unit types, formerly in that list, now has
+a hand proof (joint/FINITE_AUDIT.md section 3, machine-reviewed in joint/review/). None of them was rerun.

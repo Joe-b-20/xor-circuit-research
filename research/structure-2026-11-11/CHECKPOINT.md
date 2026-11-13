@@ -1,11 +1,11 @@
-# Structural study: checkpoint for resuming (phases 3-9, 2026-11-12)
+# Structural study: checkpoint for resuming (phases 3-10, 2026-11-12)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`copies/COPIES.md` (phase 10), `cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
 `compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
 ## Established (statements with their hypotheses)
@@ -59,7 +59,8 @@ reviews are machine reviews by separate model instances, not human reviews.
 - Theorem K (cancellation chase): closures by plain charged work force a directed cycle of length <= t_j + t_k + 2
   in the window graph Gamma; girth 2 (Q_2), 3 (Q_3), 4 (MixColumns), acyclic (chains). MixColumns needs >= 2
   cancellations for a charged closure; observed triangle closures use one cancellation and an uncharged partner;
-  Q_3 closes with the third sheet's charged work. No cost proved.
+  Q_3 closes with the third sheet's charged work. K forces only a non-confined or escaping partner (confinement
+  is a support condition), not an uncharged one. No cost proved.
 - Refuted: "every cancellation costs a gate", "each uncharged partner pays for its double charges".
 - Conjecture G (girth >= 4 => |union F_j| >= 10 per sheet): REFUTED in phase 9.
 - Scope corrections listed in RECORD 23.
@@ -70,18 +71,29 @@ reviews are machine reviews by separate model instances, not human reviews.
   distinct-charge conjecture and Conjecture G; not G >= 80. No unconditional distinct-charge bound exceeds 66.
 - Theorem K kept as a classification (no cost or reuse constraint); interpretation and sheet-system repairs.
 - Lemma S1 (cancellation needs a second copy of the cancelled part); dual identity G = sum (fan-out - 1).
-- Two-sided charging (C and C^T) refuted: the witness and its reverse-order transpose both have 66.
+- Two-sided charging under one fixed transposition rule refuted: the witness and its reverse-order transpose
+  both have 66 (other strategies not ruled out; "some transposition has >= 80" is sufficient for G >= 80, the
+  converse is not established).
+
+## Phase 10 results (RECORD 25; `copies/COPIES.md` is the coherent account)
+- Copy-rank candidate defined precisely and left: C1 (global linear baselines give 0), C2 (rank carried by the
+  cancelling gates), C3 (G = |Y| with copy rank n - 1), C4 (quadratic partner capacity, sharp), C5 (requirement
+  is a coset; "needed elsewhere" needs the circuit). One definition gives Q_3 4, triangle 1-2, witness 32 (all on
+  outputs), r88 0.
+- Theorem F (first-exit identity; J6 an instance) and Corollary Z (single-cut rank bounds cannot see removal).
+- Proposition V (reviewer, from RECORD 7, 9, 17): no whole-block cancellation => block-monotone => G >= 84;
+  doubly charged gates lie in the ancestor cones of cancelling gates (J9).
+- Proposition R (conditioning) holds but has a ceiling: L(Y | X u H) <= L(Y).
+- Machine review `copies/review/REVIEW.md`; all fixes applied (including: cancelling gates are not lost when
+  their block is zeroed).
 
 ## Next steps (the evidence suggests)
-1. Copy-rank: count the rank of the copies that cancellations force (Lemma S1) and that are not values needed for
-   other outputs; it combines reuse globally and separates Q_3 (copies are other sheets' required values), the
-   triangle (one copy, three double charges) and the superposition witness (high-rank copies, uncharged). First
-   task: a definition of "needed for other outputs" under which the count is a lower bound on gates and not a
-   restatement of G >= 80; test it on the three examples.
-2. Only if 1 gives a usable inequality: its restriction to cheap circuits, with the structural role of the
-   hypothesis stated.
-3. Not recommended: further distinct-charge statements (capped at 66), charging of transposes (refuted), and
-   restriction sums with all-circuit waste bounds (phase 7).
+1. Savings shape: extend Proposition V from "no whole-block cancellation" to "one cancellation of the triangle
+   type" (and the {0, 7} exit): prove by hand that such circuits have at least 84 - s gates, with s explicit.
+   Do not go through the deficit R alone (vacuous for the witness). Many-event circuits need another argument.
+2. Not recommended: copy or rank-of-copy measures (phase 10), relative complexity for the byte parities as an
+   easier first case (it contains an improvement of 75), further distinct-charge statements (capped at 66),
+   fixed-rule transposes (refuted), restriction sums with all-circuit waste bounds (phase 7).
 Method restriction (applies to every agent): no SAT, no exhaustive enumeration or finite-family checks, no exact
 least-gate searches (including BFS or Dijkstra over value sets), no exhaustive subset minimisation. It was not
 observed on 2026-11-12 in the runs listed in `joint/FINITE_AUDIT.md`; nothing was rerun.

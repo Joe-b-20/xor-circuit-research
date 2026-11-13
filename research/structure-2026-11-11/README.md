@@ -36,6 +36,8 @@ central example, and obtain arguments that cover whole families of circuits by o
   between unrelated parts, literature), `causal/` (does the order of gates enter), `sharing/`
   (overlapping windows, the three-position circuit), `chain/` (chains of adjacent sheets), `joint01/`
   (MixColumns sheets 0 and 1 with block 7 free, a test case).
+- `copies/` (phase 10): the cancellation-copy candidate and why it does not measure gates, the first-exit
+  identity, Proposition V (`COPIES.md`), measurements (`copyrank.py`, `cutid.py`), review in `copies/review/`.
 - `cancel/SUPERPOSITION.md` and `cancel/witness/` (phase 9): the 66-charge counterexample, its generator and
   verifier, transposition checks, review in `cancel/witness/review/`.
 - `cancel/` (phase 8): Lemma W, Theorem K (cancellation chase and the girth of the window graph),

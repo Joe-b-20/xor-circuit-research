@@ -18,8 +18,7 @@ Construction (MixColumns; x_(c,j) = bit j of byte c, block j = the four x_(c,j))
 
 **Proposition S.** For any fixed order of the remainder sums such that no value created or reused in step 3
 before an output equals an output value (hypothesis H; it holds for the two orders used here and is verified by
-the reviewer; without it the count can rise: the reviewer built orders giving 69 and 86), the circuit computes MixColumns, is reduced (values distinct, nonzero, not inputs) and fully
-live, and exactly 66 gates are charged to some sheet (F_j = ancestors of sheet j's rows nonzero on block j):
+the reviewer; without it the count can rise: the reviewer built orders giving 69 and 86), the circuit computes MixColumns and exactly 66 of its gates are charged to some sheet (F_j = ancestors of sheet j's rows nonzero on block j):
 the 34 gates of steps 1-2 and the 32 outputs.
 *Proof of the charge count.* A gate of z_c's chain feeds the three H_(c') with c' != c, and each H feeds the
 eight outputs y_(c',0..7); so every global gate (steps 1-2) is an ancestor of rows of all eight sheets, and it is
@@ -30,8 +29,10 @@ inside that node's support; this survives reuse, because by H a reused node is i
 (not an output), and each output y_(c',k) is built as H_(c') + r_(c',k). The
 ancestors of y_(c',k) are H_(c') with its ancestors and r_(c',k) with its ancestors; the latter all have support
 inside supp(r_(c',k)), which misses block k. So a remainder gate (created in step 3, not an output, not reused
-from step 1) is charged to no sheet. QED Reducedness, liveness and "no intermediate equals a
-target" are verified for the fixed orders (witness/build_witness.py asserts them).
+from step 1) is charged to no sheet. QED Hypothesis H is what the charge count needs. Reducedness, full liveness and "no intermediate equals a
+target" are verified only for the two fixed orders used here (witness/build_witness.py asserts them); for an
+arbitrary order satisfying H, full liveness needs dead-gate pruning or a further argument (pruning removes only
+gates that are ancestors of no output, hence charged to no sheet, so it leaves the count 66 unchanged).
 **Check (witness/build_witness.py).** Distinct charged 66 (34 + 32), E = 140, R = 154, |F_j| = 38, 38, 34,
 30, 26, 22, 18, 14. G depends on the order of the remainder sums: 616 (inputs by wire), 521 (by block); the
 user reports 604 for its order. U = G - 66. G is irrelevant to the refutation. U >= 455 is not a lower bound over orders (the reviewer has an order with
@@ -85,12 +86,12 @@ The three diagnostic examples differ in where that second copy comes from and ho
 |---|---|---|---|---|---|
 | Q_3 (28 gates) | gates charged to two sheets | the third block | the third sheet's own charged work (Theorem K, one exit; gamma = 3) | 4 exits for 11 double charges | E 9, R 11, U 0: saves 2 in G |
 | MixColumns triangle (88) | the {1,2} chain (3 gates) | block 2 | one uncharged partner [2:s 7:s], label-type work of sheet 3 | one partner, one exit for all 3 | E >= R in every sampled circuit |
-| superposition (521-616) | H_c (all 8 own blocks) | 7 blocks per output | 32 uncharged remainders | prefix reuse among remainders | E 140, R 154, U 455-550 (orders used) |
+| superposition (521-616) | H_c (all 8 own blocks) | 5 or 6 blocks per output (H_c outside W_j; the full remainder r occupies 7) | 32 uncharged remainders | prefix reuse among remainders | E 140, R 154, U 455-550 (orders used) |
 
 So the charged deficit R - E can be real and large (14 for MixColumns, 2m - 2 for Q_m), but in the
-superposition witness it is paid many times over by the uncharged remainders. In Q_3 the copy is free because it
-is a by-product of another sheet's required work; this is the only one of the three in which the total G falls
-below 10 per sheet.
+superposition witness it is paid many times over by the uncharged remainders. In Q_3 the copy is already present as another sheet's charged work; that a partner is used or charged elsewhere
+does not by itself show that its marginal cost is zero (Q_3 is the only one of the three whose total G falls
+below 10 per sheet, a fact about the whole circuit, not a cost attribution).
 
 **The dual accounting (proved identity; check).** For a fully live circuit with every input used,
 G = sum over all nodes v (inputs and gates) of (d(v) - 1), where d(v) = number of gates reading v plus 1 if v is
@@ -105,24 +106,25 @@ XOR chains: for the block-order witness, 495 (chains in reader order), 66 (rever
 removing duplicate values), 231-339 (random orders); for the wire-order witness 608, 72, 303-389; the recorded
 88/89 give 82-87 for their transposes. So the block-order witness C and its reverse-order transpose C^T both have
 66 distinct charged gates: a circuit "superposed on both sides" exists, and the question "does every circuit
-satisfy max(|union F(C)|, |union F(C^T)|) >= 80 for a fixed transposition rule" is answered negatively. The
-variant "for SOME transposition" is essentially a restatement of the total bound (a circuit with G < 80 has
-union at most G on both sides; one with G >= 80 can be expected to have a transpose with 80 charged gates), so
-it adds no constraint. An earlier draft's sentence "the work uncharged on one side is charged on the other"
-was an artefact of the reader chain order and is withdrawn. Conclusion: transposing does not repair the charge
-framework; charging remains a content count that superposition can defeat on either side.
+satisfy max(|union F(C)|, |union F(C^T)|) >= 80 for a fixed transposition rule" is answered negatively for that convention (the transpose built by one fixed chain rule, here reverse reader
+order); other transposition strategies are not ruled out. The variant "some transposition of C has at least
+80 charged gates" is sufficient for G >= 80 (every transposition of C has G(C) gates, at least its charged
+ones); the reverse implication is not established, so the two are not shown to be equivalent. An earlier draft's sentence "the work uncharged on one side is charged on the other"
+was an artefact of the reader chain order and is withdrawn. Conclusion: the fixed-rule transposition tested does not repair the charge framework; charging remains a
+content count that superposition can defeat on either side of that convention.
 
 ## 4. Scope, gap, next direction
 
 Proved: Proposition S (under H) and its consequences (refutations; the cap 66 on unconditional charge-union
 bounds); Lemma S1; the dual identity. Checks: the numbers above, for the specified circuits only. Refuted by an
-explicit pair: two-sided charging for a fixed transposition rule. Theorem K: retained, reinterpreted as a
+explicit pair: two-sided charging for one fixed transposition rule (not every transposition strategy). Theorem K: retained, reinterpreted as a
 classification. Not established: any lower bound on U in terms of R - E, or any inequality that combines reuse
 of partners, exits or remainders into a cost.
 What remains between the charge framework and a total bound is the separation work: G = 80 + (E - R) + U with
 E - R = -14 in the witness and no lower bound on E - R known in general, and U unbounded above;
 a cost principle must bound U from below in terms of how much shared content is cancelled, allowing reuse.
-**Best justified next direction.** Leave content charging (and its transpose) and count the copies that
+**Next direction proposed in phase 9 (examined and abandoned in phase 10: `../copies/COPIES.md`; the
+intuitions below about the three examples were not borne out by one consistent definition).** Leave content charging (and its transpose) and count the copies that
 cancellation forces. By Lemma S1, removing a shared value's part on blocks outside an output's window requires a
 second copy of that part; for one shared value h serving t sheets the required copies u_j = h restricted outside
 W_j are t vectors whose span depends on the windows (it can be small: with coinciding windows, as in Q_2, they
