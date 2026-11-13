@@ -30,8 +30,8 @@ def main():
                         base = {'target': 'map:' + mp, 'model': 'xor', 'objective': 'cost,gd', 'caps': {'GD': cap},
                                 'start': st, 'seconds': 120, 'seed': s}
                         lab = 'L-%s-c%s-%s-s%d' % (mp, cap or 'none', st_name, s)
-                        tasks.append([dict(base, tool='xorflux', label=lab + '-xorflux'),
-                                      dict(base, tool='boolflux', config='gate', label=lab + '-boolflux-' + tag)])
+                        pair = [dict(base, tool='xorflux', label=lab + '-xorflux')]   # rerun every round: paired CPU
+                        tasks.append(pair + [dict(base, tool='boolflux', config='gate', label=lab + '-boolflux-' + tag)])
     small = [('present', 'bgc', 'cost'), ('rectangle', 'bgc', 'cost'), ('ascon', 'bgc', 'cost'),
              ('prince', 'bgc', 'cost'), ('gf16-mul', 'xag', 'a,cost')]
     if 'N' in only:
@@ -40,7 +40,9 @@ def main():
                 base = {'tool': 'boolflux', 'target': t, 'model': m, 'objective': o, 'start': 'anf', 'seconds': 60,
                         'seed': s, 'round_s': 10}
                 tasks.append([dict(base, config='full', label='N-%s-full-s%d-%s' % (t, s, tag)),
-                              dict(base, config='gate', label='N-%s-gate-s%d-%s' % (t, s, tag))])
+                              dict(base, config='gate', label='N-%s-gate-s%d-%s' % (t, s, tag))]
+                             + ([dict(base, config='full', skel_set={'iters': 0}, label='N-%s-rebuild-s%d-%s' % (t, s, tag))]
+                                if tag != 'v1' else []))
     aes = [('aes-anf', 'anf', {}, 300, [1, 2, 3], 60),
            ('aes-a36g142', NIST + 'aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt', {'A': 36, 'AD': 4, 'GD': 13}, 120, SEEDS, 30),
            ('aes-gd14repair', NIST + 'aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt', {'GD': 14}, 120, SEEDS, 30),
@@ -51,7 +53,9 @@ def main():
                 base = {'tool': 'boolflux', 'target': 'aes', 'model': 'nist', 'objective': 'cost,gd', 'caps': caps,
                         'start': st, 'seconds': secs, 'seed': s, 'round_s': rs}
                 tasks.append([dict(base, config='full', label='A-%s-full-s%d-%s' % (name, s, tag)),
-                              dict(base, config='gate', label='A-%s-gate-s%d-%s' % (name, s, tag))])
+                              dict(base, config='gate', label='A-%s-gate-s%d-%s' % (name, s, tag))]
+                             + ([dict(base, config='full', skel_set={'iters': 0}, label='A-%s-rebuild-s%d-%s' % (name, s, tag))]
+                                if tag != 'v1' else []))
     abl = {'no-resub3': {'mv.resub3': 0}, 'no-resub2+3': {'mv.resub2': 0, 'mv.resub3': 0}, 'no-anneal': {'T0': 0},
            'no-neutral': {'neutral': 0}, 'no-odc': {'odc': 0}, 'no-restart': {'stall_it': 10 ** 15}, 'no-fraig': {'fraig': 0}}
     xt = [('present', 'bgc', 'cost', 'anf', {}, 60), ('rectangle', 'bgc', 'cost', 'anf', {}, 60),

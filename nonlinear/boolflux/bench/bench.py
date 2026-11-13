@@ -122,6 +122,7 @@ def run_boolflux(run, cpu, wd):
                 if (run.get('caps') or {}).get('AD') is not None: scfg['cap.ad'] = run['caps']['AD']
                 scfg.update({'in': wd / 'sk.in', 'out': wd / 'sk.out', 'seed': run['seed'] * 1000 + rnd,
                              'iters': 10 ** 15, 'seconds': secs})
+                if 'iters' in run.get('skel_set', {}): scfg['iters'] = run['skel_set']['iters']   # 0: rebuild only
                 (wd / 'sk.cfg').write_text(''.join('%s %s\n' % kv for kv in scfg.items()))
                 ts = time.time()
                 so, se, r_, wall, rc = timed([str(BIN / 'skel'), str(wd / 'sk.cfg')], cpu)

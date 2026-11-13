@@ -198,29 +198,54 @@ def synthesize(sk, ops, name='skel', use_paar=True, paar_outputs=True, parent=No
 
     def paar(forms):
         """Paar's heuristic: while some pair of terms occurs in two or more of the forms, XOR
-        the most frequent pair once and substitute it (a new pseudo-term) everywhere."""
-        nonlocal_next = [max([1 + n + len(sk['ands'])] + [f.bit_length() for f in forms])]
-        rows = [f & ~1 for f in forms if (f & ~1) and (f & ~1) & ((f & ~1) - 1)]
+        the most frequent pair once and substitute it (a new pseudo-term) everywhere.  Pair counts
+        are kept incrementally with a lazy max-heap (ties: smallest term ids first, the same order
+        as a full recount), so each substitution costs only the rows it touches."""
+        import heapq
+        nxt = max([1 + n + len(sk['ands'])] + [f.bit_length() for f in forms])
+        rows = []
+        for f in forms:
+            r = f & ~1
+            if r and r & (r - 1):
+                rows.append({i for i in range(r.bit_length()) if (r >> i) & 1})
+        cnt = {}; where = {}
+        for ri, r in enumerate(rows):
+            bs = sorted(r)
+            for x in range(len(bs)):
+                for y in range(x + 1, len(bs)):
+                    k = (bs[x], bs[y]); cnt[k] = cnt.get(k, 0) + 1; where.setdefault(k, set()).add(ri)
+        heap = [(-c, k[0], k[1]) for k, c in cnt.items()]; heapq.heapify(heap)
         term_form = {}
-        while True:
-            cnt = {}
-            for r in rows:
-                bits = [i for i in range(r.bit_length()) if (r >> i) & 1]
-                for a in range(len(bits)):
-                    for b in range(a + 1, len(bits)):
-                        key = (bits[a], bits[b]); cnt[key] = cnt.get(key, 0) + 1
-            if not cnt: break
-            (a, b), c = max(cnt.items(), key=lambda kv: (kv[1], -kv[0][0], -kv[0][1]))
-            if c < 2: break
+
+        def bump(k, d, ri):
+            c = cnt.get(k, 0) + d
+            if c: cnt[k] = c
+            else: cnt.pop(k, None)
+            if d > 0: where.setdefault(k, set()).add(ri)
+            else: where.get(k, set()).discard(ri)
+            if c: heapq.heappush(heap, (-c, k[0], k[1]))
+        while heap:
+            negc, a, b = heapq.heappop(heap)
+            if cnt.get((a, b), 0) != -negc: continue          # stale entry
+            if -negc < 2: break
             fa = term_form.get(a, 1 << a); fb = term_form.get(b, 1 << b)
             sa = have[fa] if fa in have else pos_sig[a]
             sb = have[fb] if fb in have else pos_sig[b]
             f = fa ^ fb
             if f not in have: have[f] = g(OPS['XOR'], sa, sb)
-            t = nonlocal_next[0]; nonlocal_next[0] += 1
-            term_form[t] = f
-            rows = [(r ^ (1 << a) ^ (1 << b) | (1 << t)) if ((r >> a) & 1 and (r >> b) & 1) else r for r in rows]
-            rows = [r for r in rows if r & (r - 1)]
+            t = nxt; nxt += 1; term_form[t] = f
+            for ri in list(where.get((a, b), ())):
+                r = rows[ri]
+                others = [x for x in r if x != a and x != b]
+                bump((a, b), -1, ri)
+                for x in others:
+                    bump((min(a, x), max(a, x)), -1, ri); bump((min(b, x), max(b, x)), -1, ri)
+                r.discard(a); r.discard(b)
+                if others:
+                    for x in others: bump((x, t), +1, ri)       # t is larger than every x
+                    r.add(t)
+                else:
+                    r.clear()
 
     # Paar over the operand forms of each AND level, then build the ANDs of that level
     lvl = []
