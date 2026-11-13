@@ -1,0 +1,5210 @@
+{
+ "nist_baseline_commit": "e6ac0d03f4816927f1b0e676996e4d075ab8d1c0",
+ "entries": [
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd11-ad4-a49-g150-a49-gd11-ad4.circ.txt",
+   "sha256": "27a3e42a516afbca2aca81b9272dd7828d0629670d09e474ba8d16fcfca49112",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 11,
+    "AD": 4,
+    "A": 49
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a49-ad4-g164-gd11-xx115-32.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "d446f7f09e4d2cca2b266be9a3750d50aa63aa59ff50e71650aa35b28365d74f",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a49-ad4-g164-gd11-xx115-32.circ.txt --objective cost,gd --cap-a 49 --cap-ad 4 --cap-gd 11 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a49-ad4-g164-gd11-xx115-32",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 45.7,
+   "metrics": {
+    "G": 150,
+    "A": 49,
+    "GD": 11,
+    "AD": 4,
+    "cost": 150.0,
+    "counts": {
+     "AND": 49,
+     "XNOR": 51,
+     "XOR": 50
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a49-ad4-g150-gd11-xx101-51.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd11-ad4-a51-g152-a51-gd11-ad4.circ.txt",
+   "sha256": "c71edae8a1eb6f161141f246587593a0f15ce23c399271985f0a53a976e66cea",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 11,
+    "AD": 4,
+    "A": 51
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a51-ad4-g157-gd11-xx106-28.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "6c4a5c6af794cca39a9a4dc934c028504c617eb17b23ba364023ce9f5fc7f037",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a51-ad4-g157-gd11-xx106-28.circ.txt --objective cost,gd --cap-a 51 --cap-ad 4 --cap-gd 11 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a51-ad4-g157-gd11-xx106-28",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 46.4,
+   "metrics": {
+    "G": 152,
+    "A": 51,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 51,
+     "NOT": 1,
+     "XNOR": 37,
+     "XOR": 63
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a51-ad4-g152-gd11-xxn101-37-1.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd11-ad4-a53-g152-a53-gd11-ad4.circ.txt",
+   "sha256": "84e38126d4b0c6e145f69e64fc48ef280e14fd916031bb715ebeaf67b058fda6",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 11,
+    "AD": 4,
+    "A": 53
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a53-ad4-g157-gd11-xx104-31.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "af7a3a55a026d889488390382106e326fa79c7184be23f42082afacad66d4b00",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a53-ad4-g157-gd11-xx104-31.circ.txt --objective cost,gd --cap-a 53 --cap-ad 4 --cap-gd 11 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a53-ad4-g157-gd11-xx104-31",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 46.4,
+   "metrics": {
+    "G": 152,
+    "A": 53,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 53,
+     "XNOR": 38,
+     "XOR": 61
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a53-ad4-g152-gd11-xx99-38.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd11-g152-a51-gd11-ad4.circ.txt",
+   "sha256": "f9a6d1ea80aaa7d5af42af62cf7762d35532ea55277254860946e256198a0853",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 11,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a51-ad4-g157-gd11-xx106-28.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "6c4a5c6af794cca39a9a4dc934c028504c617eb17b23ba364023ce9f5fc7f037",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a51-ad4-g157-gd11-xx106-28.circ.txt --objective cost,gd --cap-gd 11 --iters 300000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/depth-3/gd11-from-aes-sbox-a51-ad4-g157-gd11-xx106-28 --rounds 3",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 2",
+   "wall_s": 480.1,
+   "metrics": {
+    "G": 152,
+    "A": 51,
+    "GD": 11,
+    "AD": 4,
+    "cost": 152.0,
+    "counts": {
+     "AND": 51,
+     "NOT": 1,
+     "XNOR": 45,
+     "XOR": 55
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a51-ad4-g152-gd11-xxn101-45-1.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd12-ad4-a45-g146-a45-gd12-ad4.circ.txt",
+   "sha256": "b53e44b1b8be7c5935850e0027a73943a1f12cf15c5089fbd91aac7c0a530131",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 12,
+    "AD": 4,
+    "A": 45
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g151-gd12-xx106-26.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "04f4618321e32934e9ced06cc624788cf773aeeab73491dc494b1f6824415203",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g151-gd12-xx106-26.circ.txt --objective cost,gd --cap-a 45 --cap-ad 4 --cap-gd 12 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a45-ad4-g151-gd12-xx106-26",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 3 round 0",
+   "wall_s": 40.9,
+   "metrics": {
+    "G": 146,
+    "A": 45,
+    "GD": 12,
+    "AD": 4,
+    "cost": 146.0,
+    "counts": {
+     "AND": 45,
+     "XNOR": 37,
+     "XOR": 64
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a45-ad4-g146-gd12-xx101-37.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd12-g146-a45-gd12-ad4.circ.txt",
+   "sha256": "8c486cd3a3b95810879a3fd1bb9a3340133864c6f057e62a3eb3e600d70e0aa5",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 12,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g151-gd12-xx106-26.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "04f4618321e32934e9ced06cc624788cf773aeeab73491dc494b1f6824415203",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g151-gd12-xx106-26.circ.txt --objective cost,gd --cap-gd 12 --iters 300000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/depth-3/gd12-from-aes-sbox-a45-ad4-g151-gd12-xx106-26 --rounds 3",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 2",
+   "wall_s": 471.4,
+   "metrics": {
+    "G": 146,
+    "A": 45,
+    "GD": 12,
+    "AD": 4,
+    "cost": 146.0,
+    "counts": {
+     "AND": 45,
+     "XNOR": 46,
+     "XOR": 55
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a45-ad4-g146-gd12-xx101-46.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd13-ad4-a38-g139-a38-gd13-ad4.circ.txt",
+   "sha256": "16a0d17277b4b674bb598a3c6b727d709966ba164080f1416c72b0c20e86ec3e",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 13,
+    "AD": 4,
+    "A": 38
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a38-ad4-g148-gd13-xx110-24.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "1f952d76742582daddab20ac469d31bd8747d94de3c180227c0fd90c782b15e2",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a38-ad4-g148-gd13-xx110-24.circ.txt --objective cost,gd --cap-a 38 --cap-ad 4 --cap-gd 13 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a38-ad4-g148-gd13-xx110-24",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 38.3,
+   "metrics": {
+    "G": 139,
+    "A": 38,
+    "GD": 13,
+    "AD": 4,
+    "cost": 139.0,
+    "counts": {
+     "AND": 38,
+     "XNOR": 36,
+     "XOR": 65
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a38-ad4-g139-gd13-xx101-36.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd13-ad4-a39-g137-a39-gd13-ad4.circ.txt",
+   "sha256": "d2171c0ccda28f8abb4877d9379225bb45db969a353cfdd73b057f7b2886b274",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 13,
+    "AD": 4,
+    "A": 39
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a39-ad4-g148-gd13-xx109-24.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "096c28d615d090ae85ebd6db9acf5d86eb9b8123bce8b4ebba29e19f77e6d05e",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a39-ad4-g148-gd13-xx109-24.circ.txt --objective cost,gd --cap-a 39 --cap-ad 4 --cap-gd 13 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a39-ad4-g148-gd13-xx109-24",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 3 round 0",
+   "wall_s": 38.0,
+   "metrics": {
+    "G": 137,
+    "A": 39,
+    "GD": 13,
+    "AD": 4,
+    "cost": 137.0,
+    "counts": {
+     "AND": 39,
+     "XNOR": 41,
+     "XOR": 57
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a39-ad4-g137-gd13-xx98-41.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd13-g138-a38-gd13-ad4.circ.txt",
+   "sha256": "ab5806e93350882e35ad7185a50c6f0c4c1f761fbb7c91d9e4a9571005257e1c",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 13,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a38-ad4-g148-gd13-xx110-24.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "1f952d76742582daddab20ac469d31bd8747d94de3c180227c0fd90c782b15e2",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a38-ad4-g148-gd13-xx110-24.circ.txt --objective cost,gd --cap-gd 13 --iters 300000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/depth-3/gd13-from-aes-sbox-a38-ad4-g148-gd13-xx110-24 --rounds 3",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 2",
+   "wall_s": 507.8,
+   "metrics": {
+    "G": 138,
+    "A": 38,
+    "GD": 13,
+    "AD": 4,
+    "cost": 138.0,
+    "counts": {
+     "AND": 38,
+     "XNOR": 48,
+     "XOR": 52
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a38-ad4-g138-gd13-xx100-48.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd14-ad4-a28-g176-a28-gd14-ad4.circ.txt",
+   "sha256": "26531369908711c7fd1a21ac0c50f7eaf1f1e45a048d85452e9ef0d4fc94a4c5",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 14,
+    "AD": 4,
+    "A": 28
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g177-gd14-xx149-24.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "7bc3b4fd1cef2bdae4bdbe12b582efdec3447e7abbe7aa224b8d0594af4d9746",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g177-gd14-xx149-24.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 14 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a28-ad4-g177-gd14-xx149-24",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 43.4,
+   "metrics": {
+    "G": 176,
+    "A": 28,
+    "GD": 14,
+    "AD": 4,
+    "cost": 176.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 81,
+     "XOR": 67
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a28-ad4-g176-gd14-xx148-81.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd14-ad4-a36-g134-a36-gd14-ad4.circ.txt",
+   "sha256": "71588eb6b6c76996daadfb9d6946a7039ed690619ddbd3a7462f2ba0a830b404",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 14,
+    "AD": 4,
+    "A": 36
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g137-gd14-xx101-22.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "45df511d91543de2add537d952af5276f386f253f8be4c8af978fa6d0ce46769",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g137-gd14-xx101-22.circ.txt --objective cost,gd --cap-a 36 --cap-ad 4 --cap-gd 14 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a36-ad4-g137-gd14-xx101-22",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 38.2,
+   "metrics": {
+    "G": 134,
+    "A": 36,
+    "GD": 14,
+    "AD": 4,
+    "cost": 134.0,
+    "counts": {
+     "AND": 36,
+     "XNOR": 36,
+     "XOR": 62
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a36-ad4-g134-gd14-xx98-36.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd14-ad4-a36-g135-a36-gd14-ad4.circ.txt",
+   "sha256": "3c7e17f4514ffb066f242ce6c2ad252958ce9d386ff8c41fc88dd41ab0ee7035",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 14,
+    "AD": 4,
+    "A": 36
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g138-gd14-xx102-22.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "4a01f36064a4e85d2abdab421f91a4fa72db97cb7d76f58d7cb23204b34959f6",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g138-gd14-xx102-22.circ.txt --objective cost,gd --cap-a 36 --cap-ad 4 --cap-gd 14 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a36-ad4-g138-gd14-xx102-22",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 6 round 0",
+   "wall_s": 38.1,
+   "metrics": {
+    "G": 135,
+    "A": 36,
+    "GD": 14,
+    "AD": 4,
+    "cost": 135.0,
+    "counts": {
+     "AND": 36,
+     "XNOR": 49,
+     "XOR": 50
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a36-ad4-g135-gd14-xx99-49.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd14-g126-a41-gd14-ad4.circ.txt",
+   "sha256": "12c32b1e71d087a7402bd62d205b493d4d814c0a82f70b6893acfcf25aa5e199",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 14,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "83e5aceec382652fe7bba0aa4f8d556271f9ed146578d79f65c5af55b8773df4",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt --objective cost,gd --cap-gd 14 --iters 300000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/depth-3/gd14-from-aes-sbox-a33-ad4-g116-gd15-xx83-7 --rounds 3",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 2",
+   "wall_s": 460.0,
+   "metrics": {
+    "G": 126,
+    "A": 41,
+    "GD": 14,
+    "AD": 4,
+    "cost": 126.0,
+    "counts": {
+     "AND": 41,
+     "XNOR": 40,
+     "XOR": 45
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a41-ad4-g126-gd14-xx85-40.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad3-a46-g207-a46-gd15-ad3.circ.txt",
+   "sha256": "70ce0f145f35b092761bc6d0dd45de98404b1ba84318f3958565f995b09ff99d",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 15,
+    "AD": 3,
+    "A": 46
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a46-ad3-g250-gd15-xx204-4.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "e5f710299f97d0a8e2cdc16a5d230c7273bc962ace8c09eb28e11b8eb73142d5",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a46-ad3-g250-gd15-xx204-4.circ.txt --objective cost,gd --cap-a 46 --cap-ad 3 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a46-ad3-g250-gd15-xx204-4",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 5 round 0",
+   "wall_s": 35.9,
+   "metrics": {
+    "G": 207,
+    "A": 46,
+    "GD": 15,
+    "AD": 3,
+    "cost": 207.0,
+    "counts": {
+     "AND": 46,
+     "XNOR": 87,
+     "XOR": 74
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a46-ad3-g207-gd15-xx161-87.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad3-a47-g190-a47-gd15-ad3.circ.txt",
+   "sha256": "edbde39100a0e4429ee05c14cc1819b3162160c4e84cc79117c6cb98d80327c2",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 15,
+    "AD": 3,
+    "A": 47
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a47-ad3-g225-gd15-xx178-4.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "1c9a8046a40077afcb8de845cf581d53e20b2878b711f8e7ca7b0658a48e0b3e",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a47-ad3-g225-gd15-xx178-4.circ.txt --objective cost,gd --cap-a 47 --cap-ad 3 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a47-ad3-g225-gd15-xx178-4",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 4 round 0",
+   "wall_s": 33.9,
+   "metrics": {
+    "G": 190,
+    "A": 47,
+    "GD": 15,
+    "AD": 3,
+    "cost": 190.0,
+    "counts": {
+     "AND": 47,
+     "XNOR": 59,
+     "XOR": 84
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a47-ad3-g190-gd15-xx143-59.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad4-a28-g153-a28-gd15-ad4.circ.txt",
+   "sha256": "f8f03835a1040be47b3abebf1c1abfac246293d738b2e121e81960cb7bbe12db",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 15,
+    "AD": 4,
+    "A": 28
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g154-gd15-xx126-28.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "4ddc9b2a12a33e67c5c323e25c9889eef5c9d9a080c284cec2e7e0cdb43e88e2",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g154-gd15-xx126-28.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a28-ad4-g154-gd15-xx126-28",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 42.0,
+   "metrics": {
+    "G": 153,
+    "A": 28,
+    "GD": 15,
+    "AD": 4,
+    "cost": 153.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 64,
+     "XOR": 61
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a28-ad4-g153-gd15-xx125-64.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad4-a30-g181-a30-gd15-ad4.circ.txt",
+   "sha256": "48243b8203d6522368ac1235a450e710e01319ce5150ce8ab8269da559b224ba",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 15,
+    "AD": 4,
+    "A": 30
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a30-ad4-g205-gd15-xx175-54.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "3e8a5ecf8cee4fff7315fcaae72cb872784703bbe3fe55f59257486f0e75c6f9",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a30-ad4-g205-gd15-xx175-54.circ.txt --objective cost,gd --cap-a 30 --cap-ad 4 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a30-ad4-g205-gd15-xx175-54",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 6 round 0",
+   "wall_s": 28.7,
+   "metrics": {
+    "G": 181,
+    "A": 30,
+    "GD": 15,
+    "AD": 4,
+    "cost": 181.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 70,
+     "XOR": 80
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a30-ad4-g181-gd15-xxn151-70-1.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad4-a34-g122-a34-gd15-ad4.circ.txt",
+   "sha256": "dead9e845ea8088f5efed19518e9f50f4c8df2bc0513aa61ff039ff0c2e6b1fd",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 15,
+    "AD": 4,
+    "A": 34
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a34-ad4-g128-gd15-xx94-4.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "66472db45c9c627e45a8b86a4303e5105ccc47fc1c562bbebac9fb362c769fc2",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a34-ad4-g128-gd15-xx94-4.circ.txt --objective cost,gd --cap-a 34 --cap-ad 4 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a34-ad4-g128-gd15-xx94-4",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 2 round 0",
+   "wall_s": 32.7,
+   "metrics": {
+    "G": 122,
+    "A": 34,
+    "GD": 15,
+    "AD": 4,
+    "cost": 122.0,
+    "counts": {
+     "AND": 34,
+     "XNOR": 39,
+     "XOR": 49
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a34-ad4-g122-gd15-xx88-39.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad5-a32-g129-a32-gd15-ad5.circ.txt",
+   "sha256": "c367c6ef290ea6e97516b08b2993e1a19fd500e4185a9cbb5f8c71a7400ef2ca",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 15,
+    "AD": 5,
+    "A": 32
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g133-gd15-xx101-19.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "f7f715318abf3009ae91e89192eaa20cce39591d8935cc5852b889bbafaa311f",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g133-gd15-xx101-19.circ.txt --objective cost,gd --cap-a 32 --cap-ad 5 --cap-gd 15 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a32-ad5-g133-gd15-xx101-19",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 40.2,
+   "metrics": {
+    "G": 129,
+    "A": 32,
+    "GD": 15,
+    "AD": 5,
+    "cost": 129.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 40,
+     "XOR": 57
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a32-ad5-g129-gd15-xx97-40.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd16-ad5-a29-g174-a29-gd16-ad5.circ.txt",
+   "sha256": "f78d78868e8d72249ddd3b37057aa22118d40e3860ba668ba17dcc09e2a92a2e",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 16,
+    "AD": 5,
+    "A": 29
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a29-ad5-g184-gd16-xx155-26.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "5fb7426765ab7d26077a89243aab23c1c62441a14c31b5a4a8b2d1b48d478f5f",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a29-ad5-g184-gd16-xx155-26.circ.txt --objective cost,gd --cap-a 29 --cap-ad 5 --cap-gd 16 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a29-ad5-g184-gd16-xx155-26",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 8 round 0",
+   "wall_s": 29.6,
+   "metrics": {
+    "G": 174,
+    "A": 29,
+    "GD": 16,
+    "AD": 5,
+    "cost": 174.0,
+    "counts": {
+     "AND": 29,
+     "XNOR": 61,
+     "XOR": 84
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a29-ad5-g174-gd16-xx145-61.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd20-ad4-a33-g108-a33-gd19-ad4.circ.txt",
+   "sha256": "cd4d0a532eb30da0a52720c800400cd4406023b91d339bff5c059e96c16f55e3",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 20,
+    "AD": 4,
+    "A": 33
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "8dc19ab4f961cee0011ea129286c3040e681ae675ad27b6e0ff0f5999c595b35",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt --objective cost,gd --cap-a 33 --cap-ad 4 --cap-gd 20 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a33-ad4-g108-gd20-xx75-5",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 7 round 0",
+   "wall_s": 36.9,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 19,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 22,
+     "XOR": 53
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd20-ad4-a33-g110-a33-gd18-ad4.circ.txt",
+   "sha256": "23967896cea9d1ce23c0a6666808ef570b50163a9d394d53979bdf8a20ef2015",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 20,
+    "AD": 4,
+    "A": 33
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g110-gd20-xx77-4.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "a3010d46df1bd5abbcd99f87302be0d3e7d5c8f621008d5b625ea68494f40d6f",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g110-gd20-xx77-4.circ.txt --objective cost,gd --cap-a 33 --cap-ad 4 --cap-gd 20 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a33-ad4-g110-gd20-xx77-4",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 6 round 0",
+   "wall_s": 37.4,
+   "metrics": {
+    "G": 110,
+    "A": 33,
+    "GD": 18,
+    "AD": 4,
+    "cost": 110.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 26,
+     "XOR": 51
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a33-ad4-g110-gd18-xx77-26.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd20-ad5-a32-g108-a32-gd20-ad5.circ.txt",
+   "sha256": "ab1a559ae9034d36e5d3a21d6ccb378897510c8017dbae0f8ce26ea0daab7b30",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 20,
+    "AD": 5,
+    "A": 32
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "0926107d662f4897f2103bc97bbb16fe9e92a77322eec7975e36be8e759274cf",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt --objective cost,gd --cap-a 32 --cap-ad 5 --cap-gd 20 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a32-ad5-g109-gd20-xx77-4",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 7 round 0",
+   "wall_s": 36.4,
+   "metrics": {
+    "G": 108,
+    "A": 32,
+    "GD": 20,
+    "AD": 5,
+    "cost": 108.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 35,
+     "XOR": 41
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd22-ad3-a47-g167-a47-gd22-ad3.circ.txt",
+   "sha256": "4190b327142c73ebf24ec3da275e51631905c01d701a76e0dea277cf133906f4",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 22,
+    "AD": 3,
+    "A": 47
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a47-ad3-g186-gd22-xx139-7.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "e5296abe7974dfeeaf89c531009e7a0d9b1dd9ff5c9488f0ff4a38c41ca47ea7",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a47-ad3-g186-gd22-xx139-7.circ.txt --objective cost,gd --cap-a 47 --cap-ad 3 --cap-gd 22 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a47-ad3-g186-gd22-xx139-7",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 3 round 0",
+   "wall_s": 33.3,
+   "metrics": {
+    "G": 167,
+    "A": 47,
+    "GD": 22,
+    "AD": 3,
+    "cost": 167.0,
+    "counts": {
+     "AND": 47,
+     "XNOR": 50,
+     "XOR": 70
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a47-ad3-g167-gd22-xx120-50.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd22-ad4-a34-g110-a34-gd20-ad4.circ.txt",
+   "sha256": "c2d3391d58beea3eabf54bb4c1df82933cadf741337237d04a694a735f9d4a50",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 22,
+    "AD": 4,
+    "A": 34
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a34-ad4-g110-gd22-xx76-3.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "f4bb54511cba5f0bfe6fb42b87b27a4cedea0d3f33c8c468e6f8094b94d64613",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a34-ad4-g110-gd22-xx76-3.circ.txt --objective cost,gd --cap-a 34 --cap-ad 4 --cap-gd 22 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a34-ad4-g110-gd22-xx76-3",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 2 round 0",
+   "wall_s": 38.1,
+   "metrics": {
+    "G": 110,
+    "A": 34,
+    "GD": 20,
+    "AD": 4,
+    "cost": 110.0,
+    "counts": {
+     "AND": 34,
+     "XNOR": 22,
+     "XOR": 54
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a34-ad4-g110-gd20-xx76-22.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd23-ad4-a28-g132-a28-gd22-ad4.circ.txt",
+   "sha256": "2d5bbe3377beaf4828d97a00a6a35816151c73c111735e6459a09987669da010",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 23,
+    "AD": 4,
+    "A": 28
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g132-gd23-xx104-27.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "5eff7e4e244558febb35b140b0cda1dbd05c5eb8224f41d0958d09da94bd64f2",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g132-gd23-xx104-27.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 23 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a28-ad4-g132-gd23-xx104-27",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 54.0,
+   "metrics": {
+    "G": 132,
+    "A": 28,
+    "GD": 22,
+    "AD": 4,
+    "cost": 132.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 50,
+     "XOR": 54
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a28-ad4-g132-gd22-xx104-50.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd23-ad5-a32-g110-a32-gd22-ad5.circ.txt",
+   "sha256": "55da55bc9913ec6373f5c9c3f2da5ef8ee00eeffd55e2e3d4797ab3212b2e07a",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 23,
+    "AD": 5,
+    "A": 32
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g110-gd23-xx78-3.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "f660b910a2f464882334849c5807b4f27345978139ac7894484ab419393167c9",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g110-gd23-xx78-3.circ.txt --objective cost,gd --cap-a 32 --cap-ad 5 --cap-gd 23 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a32-ad5-g110-gd23-xx78-3",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 41.1,
+   "metrics": {
+    "G": 110,
+    "A": 32,
+    "GD": 22,
+    "AD": 5,
+    "cost": 110.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 25,
+     "XOR": 53
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a32-ad5-g110-gd22-xx78-25.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd27-ad6-g108-a33-gd23-ad5.circ.txt",
+   "sha256": "9efdecae5b4993adc3a262e3599b8040ef465cd043690c05887d859442e78371",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 27,
+    "AD": 6,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "6ba4f63b832a1f4520a76cab5680e673fdd744ad2651918882eeecff7957698a",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --objective cost,gd --iters 300000 --seeds 1-8 --jobs 8 --rounds 2 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/aes-starts/bp113-caps --start nonlinear/nist/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp --cap-ad 6 --cap-gd 27",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 2,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 3 round 1",
+   "wall_s": 223.4,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 23,
+    "AD": 5,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 30,
+     "XOR": 45
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a33-ad5-g108-gd23-xx75-30.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd31-ad3-a35-g139-a35-gd27-ad3.circ.txt",
+   "sha256": "4ee34586989492443f1b2b7c951072940a17dc8e0362445b840af7ecf99952c8",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 31,
+    "AD": 3,
+    "A": 35
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a35-ad3-g139-gd31-xx104-25.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "af6e3693caa819ec4e4131ac8614ef1ccbfec757d9fc3cda1f1acfebecdadd4a",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a35-ad3-g139-gd31-xx104-25.circ.txt --objective cost,gd --cap-a 35 --cap-ad 3 --cap-gd 31 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a35-ad3-g139-gd31-xx104-25",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 8 round 0",
+   "wall_s": 50.9,
+   "metrics": {
+    "G": 139,
+    "A": 35,
+    "GD": 27,
+    "AD": 3,
+    "cost": 139.0,
+    "counts": {
+     "AND": 35,
+     "XNOR": 31,
+     "XOR": 73
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a35-ad3-g139-gd27-xx104-31.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd32-ad4-a28-g131-a28-gd26-ad4.circ.txt",
+   "sha256": "84e49083311de3eaf758ef7a3085647812e43e0bd5a14038a12dc5cb29a63db7",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 32,
+    "AD": 4,
+    "A": 28
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g131-gd32-xx103-47.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "9e6c8dbed90aab60b19587c9a281f7962813b8557aac6c3a7498bc454a8c48bb",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g131-gd32-xx103-47.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 32 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a28-ad4-g131-gd32-xx103-47",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 68.1,
+   "metrics": {
+    "G": 131,
+    "A": 28,
+    "GD": 26,
+    "AD": 4,
+    "cost": 131.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 50,
+     "XOR": 53
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a28-ad4-g131-gd26-xx103-50.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd32-ad5-a29-g135-a29-gd28-ad5.circ.txt",
+   "sha256": "5abd801532e1374b91856902a25f9c975cb1b41bee0621c84861898536cea4d0",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 32,
+    "AD": 5,
+    "A": 29
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a29-ad5-g137-gd32-xx108-22.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "76b18ad86c324a5a32eb7155cf8fc3df0b3cfa3387081a96b76cf8b51feb7e91",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a29-ad5-g137-gd32-xx108-22.circ.txt --objective cost,gd --cap-a 29 --cap-ad 5 --cap-gd 32 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a29-ad5-g137-gd32-xx108-22",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 3 round 0",
+   "wall_s": 37.1,
+   "metrics": {
+    "G": 135,
+    "A": 29,
+    "GD": 28,
+    "AD": 5,
+    "cost": 135.0,
+    "counts": {
+     "AND": 29,
+     "XNOR": 50,
+     "XOR": 56
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a29-ad5-g135-gd28-xx106-50.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd35-ad5-a29-g136-a29-gd30-ad5.circ.txt",
+   "sha256": "52cd915fca48f302f58399f0d3e75935af65e2baa29a98ff917c4729206096eb",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 35,
+    "AD": 5,
+    "A": 29
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a29-ad5-g139-gd35-xx110-20.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "b27a250267df733800f8771069e815c55c8fa9e4a06c2fd7196af0a5ea3b0de7",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a29-ad5-g139-gd35-xx110-20.circ.txt --objective cost,gd --cap-a 29 --cap-ad 5 --cap-gd 35 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a29-ad5-g139-gd35-xx110-20",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 8 round 0",
+   "wall_s": 37.7,
+   "metrics": {
+    "G": 136,
+    "A": 29,
+    "GD": 30,
+    "AD": 5,
+    "cost": 136.0,
+    "counts": {
+     "AND": 29,
+     "XNOR": 56,
+     "XOR": 51
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a29-ad5-g136-gd30-xx107-56.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd36-ad4-a28-g131-a28-gd26-ad4.circ.txt",
+   "sha256": "4821046d22fe4dae5b6378085db7188bca1360d7163d494d05eb42d007dfe748",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 36,
+    "AD": 4,
+    "A": 28
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g131-gd36-xx103-28.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "00081b94e742619ab513b69fc5acc2f8a4b7856cd6996373a5694870d0101186",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g131-gd36-xx103-28.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 36 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a28-ad4-g131-gd36-xx103-28",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 5 round 0",
+   "wall_s": 65.0,
+   "metrics": {
+    "G": 131,
+    "A": 28,
+    "GD": 26,
+    "AD": 4,
+    "cost": 131.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 46,
+     "XOR": 57
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a28-ad4-g131-gd26-xx103-46.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd36-ad4-a30-g140-a30-gd32-ad4.circ.txt",
+   "sha256": "dd57dae92abc393d2bf6e00235549d0ad3cefd83e44d441cdc66961ee9fe7b7e",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 36,
+    "AD": 4,
+    "A": 30
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a30-ad4-g147-gd36-xx117-13.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "9ec38b0d304369573294458784824133bca5936ec29a1ec5a3fb72f04a4782b9",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a30-ad4-g147-gd36-xx117-13.circ.txt --objective cost,gd --cap-a 30 --cap-ad 4 --cap-gd 36 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a30-ad4-g147-gd36-xx117-13",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 4 round 0",
+   "wall_s": 39.1,
+   "metrics": {
+    "G": 140,
+    "A": 30,
+    "GD": 32,
+    "AD": 4,
+    "cost": 140.0,
+    "counts": {
+     "AND": 30,
+     "NOT": 1,
+     "XNOR": 66,
+     "XOR": 43
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a30-ad4-g140-gd32-xxn110-66-1.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-nocap-g108-a33-gd26-ad5.circ.txt",
+   "sha256": "27790331c3b58535119470b8cbefb810b171fffef352f6aaf0f3936fa928855c",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "6ba4f63b832a1f4520a76cab5680e673fdd744ad2651918882eeecff7957698a",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --objective cost,gd --iters 300000 --seeds 1-8 --jobs 8 --rounds 2 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/aes-starts/bp113 --start nonlinear/nist/old-2020/aes-sbox-fwd-g113-a32-d27-ad6.slp",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 2,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 1",
+   "wall_s": 246.2,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 26,
+    "AD": 5,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 21,
+     "XOR": 54
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a33-ad5-g108-gd26-xx75-21.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-nocap-g717-a264-gd50-ad19.circ.txt",
+   "sha256": "7cf11ac2cc6f156056f0383b0ba06b82dc520631339a7c8133d389e51c97a54d",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --objective cost,gd --iters 300000 --seeds 1-8 --jobs 8 --rounds 2 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/aes-starts/anf --start anf",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 300000,
+   "rounds": 2,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 1",
+   "wall_s": 510.0,
+   "metrics": {
+    "G": 717,
+    "A": 264,
+    "GD": 50,
+    "AD": 19,
+    "cost": 717.0,
+    "counts": {
+     "AND": 264,
+     "NOT": 1,
+     "XNOR": 194,
+     "XOR": 258
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a264-ad19-g717-gd50-xxn453-194-1.circ.txt"
+  },
+  {
+   "file": "nonlinear/boolflux/results/ascon/ascon-bgc-cost-nocap-g16-a5-gd7-ad2.circ.txt",
+   "sha256": "1754d45b86a06238a32ee860db588082f3e0181e124940ba8bc3dddb481f552e",
+   "target": "ascon",
+   "target_definition": "NIST SP 800-232 (Aug 2025), Sect. 3.3, Table 6 and Eq. (7) (https://doi.org/10.6028/NIST.SP.800-232); Ascon v1.2 round-2 spec Table 5 (https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/ascon-spec-round2.pdf)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target ascon --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/ascon-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 21.3,
+   "metrics": {
+    "G": 16,
+    "A": 5,
+    "GD": 7,
+    "AD": 2,
+    "cost": 16.0,
+    "counts": {
+     "AND": 2,
+     "NOT": 1,
+     "OR": 3,
+     "XOR": 10
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/ascon/ascon-gc6-cost-nocap-g15-a5-gd4-ad1.circ.txt",
+   "sha256": "8531660c149808cc053763e501c35fdf2ddc9df5212ba9d0a3c12a25fc0105b9",
+   "target": "ascon",
+   "target_definition": "NIST SP 800-232 (Aug 2025), Sect. 3.3, Table 6 and Eq. (7) (https://doi.org/10.6028/NIST.SP.800-232); Ascon v1.2 round-2 spec Table 5 (https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/ascon-spec-round2.pdf)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target ascon --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/ascon-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 27.5,
+   "metrics": {
+    "G": 15,
+    "A": 5,
+    "GD": 4,
+    "AD": 1,
+    "cost": 15.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 1,
+     "OR": 3,
+     "XNOR": 2,
+     "XOR": 8
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/chi3/chi3-bgc-cost-nocap-g7-a3-gd3-ad1.circ.txt",
+   "sha256": "da373a0659304986b7c0c39689ddbad3ed72a6959460aa2e55fcc29db5c06732",
+   "target": "chi3",
+   "target_definition": "chi on 3 bits: b_i = a_i ^ (~a_{i+1} & a_{i+2})",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target chi3 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/chi3-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 15.7,
+   "metrics": {
+    "G": 7,
+    "A": 3,
+    "GD": 3,
+    "AD": 1,
+    "cost": 7.0,
+    "counts": {
+     "AND": 2,
+     "OR": 1,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/chi3/chi3-gc6-cost-nocap-g7-a3-gd3-ad1.circ.txt",
+   "sha256": "1d8b61178cadfd5d436183f6ad8fbd763a9761a1c54647bc48ee15075716acb6",
+   "target": "chi3",
+   "target_definition": "chi on 3 bits: b_i = a_i ^ (~a_{i+1} & a_{i+2})",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target chi3 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/chi3-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 18.4,
+   "metrics": {
+    "G": 7,
+    "A": 3,
+    "GD": 3,
+    "AD": 1,
+    "cost": 7.0,
+    "counts": {
+     "AND": 2,
+     "OR": 1,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/fulladd/fulladd-xag-a_cost-nocap-g5-a1-gd3-ad1.circ.txt",
+   "sha256": "9413ca45fdd0d7f840d8555eb11cc94e900f18bf6df57d32cbd624d6779a00fb",
+   "target": "fulladd",
+   "target_definition": "full adder: output = (carry, sum) = popcount of 3 bits",
+   "model": "xag",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "a,cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target fulladd --model xag --objective a,cost --iters 20000 --seeds 1-4 --jobs 4 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/fulladd-xag-acost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "iters": 20000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 0.3,
+   "metrics": {
+    "G": 5,
+    "A": 1,
+    "GD": 3,
+    "AD": 1,
+    "cost": 5.0,
+    "counts": {
+     "AND": 1,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/gf16-inv/gf16-inv-xag-a_cost-nocap-g17-a5-gd12-ad4.circ.txt",
+   "sha256": "4755aa2652917804f121b96d3ce154526358b4532fb9ae16c3f0935e08fe9bc0",
+   "target": "gf16-inv",
+   "target_definition": "GF(2^4) inversion mod x^4+x+1 (0 -> 0)",
+   "model": "xag",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "a,cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target gf16-inv --model xag --objective a,cost --iters 50000 --skel-iters 2000 --seeds 1-4 --jobs 4 --rounds 3 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16inv-xag-a_cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "iters": 50000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s3",
+   "wall_s": 15.0,
+   "metrics": {
+    "G": 17,
+    "A": 5,
+    "GD": 12,
+    "AD": 4,
+    "cost": 17.0,
+    "counts": {
+     "AND": 5,
+     "XOR": 12
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/gf16-inv/gf16-inv-xag-cost-nocap-g15-a6-gd12-ad5.circ.txt",
+   "sha256": "c544fb8683d86eac8f7088e644e9b6470b01181f12eee9508df75ea3c7dbd2e2",
+   "target": "gf16-inv",
+   "target_definition": "GF(2^4) inversion mod x^4+x+1 (0 -> 0)",
+   "model": "xag",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target gf16-inv --model xag --objective cost --iters 50000 --skel-iters 2000 --seeds 1-4 --jobs 4 --rounds 3 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16inv-xag-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "iters": 50000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s3",
+   "wall_s": 14.0,
+   "metrics": {
+    "G": 15,
+    "A": 6,
+    "GD": 12,
+    "AD": 5,
+    "cost": 15.0,
+    "counts": {
+     "AND": 6,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/gf16-mul/gf16-mul-xag-a_cost-nocap-g30-a14-gd6-ad1.circ.txt",
+   "sha256": "8daa57760ed7335273b43bd0cda215ee10df67e50902b37927d69f4eee33a514",
+   "target": "gf16-mul",
+   "target_definition": "GF(2^4) multiplication mod x^4+x+1, input = a<<4 | b",
+   "model": "xag",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "a,cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target gf16-mul --model xag --objective a,cost --iters 30000 --seeds 1-8 --jobs 4 --rounds 3 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16mul-xag-acost-gateonly",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 30000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 5 round 2",
+   "wall_s": 16.9,
+   "metrics": {
+    "G": 30,
+    "A": 14,
+    "GD": 6,
+    "AD": 1,
+    "cost": 30.0,
+    "counts": {
+     "AND": 14,
+     "XOR": 16
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/gf16-mul/gf16-mul-xag-a_cost-nocap-g32-a9-gd9-ad1.circ.txt",
+   "sha256": "ff6f1c784874e0c2cff128f0bbcf59d06cc3b0f2284f89ec4297fddda64b19e6",
+   "target": "gf16-mul",
+   "target_definition": "GF(2^4) multiplication mod x^4+x+1, input = a<<4 | b",
+   "model": "xag",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "a,cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target gf16-mul --model xag --objective a,cost --iters 30000 --skel-iters 3000 --seeds 1-8 --jobs 4 --rounds 3 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/gf16mul-xag-acost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 30000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s5",
+   "wall_s": 81.5,
+   "metrics": {
+    "G": 32,
+    "A": 9,
+    "GD": 9,
+    "AD": 1,
+    "cost": 32.0,
+    "counts": {
+     "AND": 9,
+     "XOR": 23
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/gift/gift-bgc-cost-nocap-g11-a4-gd6-ad3.circ.txt",
+   "sha256": "09c7b7d8f73e67cf2a61036e6ae391aff4239187ae71cb878994ec7d5d07a1aa",
+   "target": "gift",
+   "target_definition": "Banik et al., GIFT: A Small Present, CHES 2017 (https://eprint.iacr.org/2017/622); GIFT-COFB NIST LWC round-2 spec Sect. 2 (https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/gift-cofb-spec-round2.pdf)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target gift --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/gift-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 15.9,
+   "metrics": {
+    "G": 11,
+    "A": 4,
+    "GD": 6,
+    "AD": 3,
+    "cost": 11.0,
+    "counts": {
+     "AND": 3,
+     "NOT": 1,
+     "OR": 1,
+     "XOR": 6
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/gift/gift-gc6-cost-nocap-g10-a4-gd10-ad4.circ.txt",
+   "sha256": "67cef4526b70a81472247288c509c2bbbde4dba61e39989adf59259f656331ba",
+   "target": "gift",
+   "target_definition": "Banik et al., GIFT: A Small Present, CHES 2017 (https://eprint.iacr.org/2017/622); GIFT-COFB NIST LWC round-2 spec Sect. 2 (https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/gift-cofb-spec-round2.pdf)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target gift --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/gift-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.8,
+   "metrics": {
+    "G": 10,
+    "A": 4,
+    "GD": 10,
+    "AD": 4,
+    "cost": 10.0,
+    "counts": {
+     "AND": 3,
+     "OR": 1,
+     "XNOR": 2,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/keccak_chi5/keccak_chi5-bgc-cost-nocap-g13-a5-gd6-ad2.circ.txt",
+   "sha256": "ba6aca35afbb30ea40cd0f55a451f670493de5d090a7125f7847a090544a2edd",
+   "target": "keccak_chi5",
+   "target_definition": "Bertoni, Daemen, Peeters, Van Assche, The Keccak reference 3.0, chi step (https://keccak.team/files/Keccak-reference-3.0.pdf)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target keccak_chi5 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/keccak_chi5-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 20.3,
+   "metrics": {
+    "G": 13,
+    "A": 5,
+    "GD": 6,
+    "AD": 2,
+    "cost": 13.0,
+    "counts": {
+     "AND": 3,
+     "OR": 2,
+     "XOR": 8
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/keccak_chi5/keccak_chi5-gc6-cost-nocap-g13-a5-gd3-ad1.circ.txt",
+   "sha256": "714caa730e2254508eb46d5290d91f8439d1f0f66bd6281bbae91da5ec89f5a2",
+   "target": "keccak_chi5",
+   "target_definition": "Bertoni, Daemen, Peeters, Van Assche, The Keccak reference 3.0, chi step (https://keccak.team/files/Keccak-reference-3.0.pdf)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target keccak_chi5 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/keccak_chi5-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 26.0,
+   "metrics": {
+    "G": 13,
+    "A": 5,
+    "GD": 3,
+    "AD": 1,
+    "cost": 13.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 2,
+     "NOR": 1,
+     "OR": 1,
+     "XNOR": 5,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/klein/klein-bgc-cost-nocap-g17-a7-gd14-ad6.circ.txt",
+   "sha256": "e260d98e30437e14faadd298be921ed041179fd6888662b09bcf4e57a438a82a",
+   "target": "klein",
+   "target_definition": "Gong, Nikova, Law, KLEIN: A New Family of Lightweight Block Ciphers, RFIDSec 2011 (https://doi.org/10.1007/978-3-642-25286-0_1)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target klein --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/klein-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 22.3,
+   "metrics": {
+    "G": 17,
+    "A": 7,
+    "GD": 14,
+    "AD": 6,
+    "cost": 17.0,
+    "counts": {
+     "AND": 4,
+     "NOT": 1,
+     "OR": 3,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/klein/klein-gc6-cost-nocap-g15-a7-gd14-ad7.circ.txt",
+   "sha256": "8b35884eeb2236c5aa9e2bcd48d32147151724be170fb31f0b03dd05019f26a2",
+   "target": "klein",
+   "target_definition": "Gong, Nikova, Law, KLEIN: A New Family of Lightweight Block Ciphers, RFIDSec 2011 (https://doi.org/10.1007/978-3-642-25286-0_1)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target klein --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/klein-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s4",
+   "wall_s": 27.8,
+   "metrics": {
+    "G": 15,
+    "A": 7,
+    "GD": 14,
+    "AD": 7,
+    "cost": 15.0,
+    "counts": {
+     "AND": 4,
+     "NAND": 1,
+     "OR": 2,
+     "XNOR": 4,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/maj3/maj3-xag-a_cost-nocap-g4-a1-gd3-ad1.circ.txt",
+   "sha256": "0f176158a84f637d21a5aae10d0ee0a8c853cfec7a70d2fd641ab1c57169b50f",
+   "target": "maj3",
+   "target_definition": "majority of 3",
+   "model": "xag",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "a,cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py run --target maj3 --model xag --objective a,cost --iters 20000 --seeds 1-4 --jobs 4 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/sanity-2/maj3-xag-acost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "iters": 20000,
+   "rounds": 1,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "seed 1 round 0",
+   "wall_s": 0.2,
+   "metrics": {
+    "G": 4,
+    "A": 1,
+    "GD": 3,
+    "AD": 1,
+    "cost": 4.0,
+    "counts": {
+     "AND": 1,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/midori_sb0/midori_sb0-bgc-cost-nocap-g13-a4-gd11-ad4.circ.txt",
+   "sha256": "99ef2e7979e11237566b2677ff51f7c6aa83a4a74dfae1379c537ef8f264768a",
+   "target": "midori_sb0",
+   "target_definition": "Banik et al., Midori: A Block Cipher for Low Energy, ASIACRYPT 2015 (https://eprint.iacr.org/2015/1142), Sb0",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target midori_sb0 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/midori_sb0-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 17.8,
+   "metrics": {
+    "G": 13,
+    "A": 4,
+    "GD": 11,
+    "AD": 4,
+    "cost": 13.0,
+    "counts": {
+     "AND": 2,
+     "NOT": 1,
+     "OR": 2,
+     "XOR": 8
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/midori_sb0/midori_sb0-gc6-cost-nocap-g12-a4-gd9-ad4.circ.txt",
+   "sha256": "aa944fc3dd7a87f6add7fe3ec3df15c53892b993a6b8f2d78d22693bc7994b76",
+   "target": "midori_sb0",
+   "target_definition": "Banik et al., Midori: A Block Cipher for Low Energy, ASIACRYPT 2015 (https://eprint.iacr.org/2015/1142), Sb0",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target midori_sb0 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/midori_sb0-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 20.3,
+   "metrics": {
+    "G": 12,
+    "A": 4,
+    "GD": 9,
+    "AD": 4,
+    "cost": 12.0,
+    "counts": {
+     "AND": 2,
+     "NAND": 2,
+     "XNOR": 2,
+     "XOR": 6
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/midori_sb1/midori_sb1-bgc-cost-nocap-g16-a8-gd8-ad5.circ.txt",
+   "sha256": "3a50a064bd93539afb21c88c9666f61c7ed742bc971a2300540a4406710c2a5d",
+   "target": "midori_sb1",
+   "target_definition": "Banik et al., Midori, ASIACRYPT 2015 (https://eprint.iacr.org/2015/1142), Sb1",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target midori_sb1 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/midori_sb1-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s2",
+   "wall_s": 23.9,
+   "metrics": {
+    "G": 16,
+    "A": 8,
+    "GD": 8,
+    "AD": 5,
+    "cost": 16.0,
+    "counts": {
+     "AND": 4,
+     "NOT": 1,
+     "OR": 4,
+     "XOR": 7
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/midori_sb1/midori_sb1-gc6-cost-nocap-g15-a11-gd6-ad5.circ.txt",
+   "sha256": "a6d264345d0ba5d0e1a20d24bcdadf8d903a484809706e6cfd39ce24eda29af6",
+   "target": "midori_sb1",
+   "target_definition": "Banik et al., Midori, ASIACRYPT 2015 (https://eprint.iacr.org/2015/1142), Sb1",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target midori_sb1 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/midori_sb1-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 31.6,
+   "metrics": {
+    "G": 15,
+    "A": 11,
+    "GD": 6,
+    "AD": 5,
+    "cost": 15.0,
+    "counts": {
+     "AND": 2,
+     "NAND": 1,
+     "NOR": 6,
+     "OR": 2,
+     "XNOR": 1,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/noekeon/noekeon-bgc-cost-nocap-g12-a5-gd7-ad3.circ.txt",
+   "sha256": "8127cc68f5ccd12d8816289266b48d310fc05a671d9da1a1d6318007da8ff7b8",
+   "target": "noekeon",
+   "target_definition": "Daemen, Peeters, Van Assche, Rijmen, Nessie Proposal: NOEKEON, 2000 (https://gro.noekeon.org/), Gamma",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target noekeon --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/noekeon-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.2,
+   "metrics": {
+    "G": 12,
+    "A": 5,
+    "GD": 7,
+    "AD": 3,
+    "cost": 12.0,
+    "counts": {
+     "AND": 3,
+     "NOT": 1,
+     "OR": 2,
+     "XOR": 6
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/noekeon/noekeon-gc6-cost-nocap-g10-a4-gd7-ad3.circ.txt",
+   "sha256": "f82f981fc2ee6ab6c0a5949f5c6e411383db7f38f0daef0f397952c6c65771e9",
+   "target": "noekeon",
+   "target_definition": "Daemen, Peeters, Van Assche, Rijmen, Nessie Proposal: NOEKEON, 2000 (https://gro.noekeon.org/), Gamma",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target noekeon --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/noekeon-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.5,
+   "metrics": {
+    "G": 10,
+    "A": 4,
+    "GD": 7,
+    "AD": 3,
+    "cost": 10.0,
+    "counts": {
+     "AND": 3,
+     "NAND": 1,
+     "XNOR": 1,
+     "XOR": 5
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/piccolo/piccolo-bgc-cost-nocap-g10-a4-gd5-ad2.circ.txt",
+   "sha256": "25be4f2597d0dd8c8d54dd25279a0c117398cc8917310db46d2cb40975d9986b",
+   "target": "piccolo",
+   "target_definition": "Shibutani et al., Piccolo: An Ultra-Lightweight Blockcipher, CHES 2011 (https://doi.org/10.1007/978-3-642-23951-9_23)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target piccolo --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/piccolo-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 15.8,
+   "metrics": {
+    "G": 10,
+    "A": 4,
+    "GD": 5,
+    "AD": 2,
+    "cost": 10.0,
+    "counts": {
+     "AND": 1,
+     "NOT": 2,
+     "OR": 3,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/piccolo/piccolo-gc6-cost-nocap-g8-a4-gd4-ad2.circ.txt",
+   "sha256": "7b83bdfbcc1c835c1fc103d919dfe61cbc92c5ba25c9da0f43a44b4d023b8b46",
+   "target": "piccolo",
+   "target_definition": "Shibutani et al., Piccolo: An Ultra-Lightweight Blockcipher, CHES 2011 (https://doi.org/10.1007/978-3-642-23951-9_23)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target piccolo --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/piccolo-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.7,
+   "metrics": {
+    "G": 8,
+    "A": 4,
+    "GD": 4,
+    "AD": 2,
+    "cost": 8.0,
+    "counts": {
+     "NOR": 3,
+     "OR": 1,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/present/present-bgc-cost-nocap-g14-a4-gd12-ad4.circ.txt",
+   "sha256": "2b0feeb01282325e9ad27bb5b43000b0e13df1e4d7918dc34ffbe5851c9cb60c",
+   "target": "present",
+   "target_definition": "Bogdanov et al., PRESENT: An Ultra-Lightweight Block Cipher, CHES 2007, Sect. 3 (https://doi.org/10.1007/978-3-540-74735-2_31)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target present --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/present-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 18.3,
+   "metrics": {
+    "G": 14,
+    "A": 4,
+    "GD": 12,
+    "AD": 4,
+    "cost": 14.0,
+    "counts": {
+     "AND": 3,
+     "NOT": 1,
+     "OR": 1,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/present/present-gc6-cost-nocap-g13-a4-gd10-ad4.circ.txt",
+   "sha256": "92383047fc83d66c3d8d06cb60e8976a073c092b0785a439f23d294d7c58e607",
+   "target": "present",
+   "target_definition": "Bogdanov et al., PRESENT: An Ultra-Lightweight Block Cipher, CHES 2007, Sect. 3 (https://doi.org/10.1007/978-3-540-74735-2_31)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target present --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/present-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 20.8,
+   "metrics": {
+    "G": 13,
+    "A": 4,
+    "GD": 10,
+    "AD": 4,
+    "cost": 13.0,
+    "counts": {
+     "NAND": 2,
+     "NOR": 2,
+     "XNOR": 4,
+     "XOR": 5
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/pride/pride-bgc-cost-nocap-g8-a4-gd6-ad3.circ.txt",
+   "sha256": "d8fdb991cec46e17b791f53b2696f102f6ab6df30eae33b6e066031eb0a88542",
+   "target": "pride",
+   "target_definition": "Albrecht et al., Block Ciphers - Focus on the Linear Layer (feat. PRIDE), CRYPTO 2014 (https://eprint.iacr.org/2014/453)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target pride --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/pride-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 13.1,
+   "metrics": {
+    "G": 8,
+    "A": 4,
+    "GD": 6,
+    "AD": 3,
+    "cost": 8.0,
+    "counts": {
+     "AND": 4,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/pride/pride-gc6-cost-nocap-g8-a4-gd6-ad3.circ.txt",
+   "sha256": "5b70eaab754ab19a606fea082c541618ff50d8d26a1ac1066636e1dc7d19079b",
+   "target": "pride",
+   "target_definition": "Albrecht et al., Block Ciphers - Focus on the Linear Layer (feat. PRIDE), CRYPTO 2014 (https://eprint.iacr.org/2014/453)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target pride --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/pride-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 15.1,
+   "metrics": {
+    "G": 8,
+    "A": 4,
+    "GD": 6,
+    "AD": 3,
+    "cost": 8.0,
+    "counts": {
+     "AND": 3,
+     "NAND": 1,
+     "XNOR": 1,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/prince/prince-bgc-cost-nocap-g16-a7-gd10-ad5.circ.txt",
+   "sha256": "406fdfda45b78bcfca30405d5d52981b1a8549267c329ecb50a9b96a3bc44eae",
+   "target": "prince",
+   "target_definition": "Borghoff et al., PRINCE, ASIACRYPT 2012 (https://eprint.iacr.org/2012/529), S-layer",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target prince --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/prince-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s7",
+   "wall_s": 23.9,
+   "metrics": {
+    "G": 16,
+    "A": 7,
+    "GD": 10,
+    "AD": 5,
+    "cost": 16.0,
+    "counts": {
+     "AND": 2,
+     "NOT": 1,
+     "OR": 5,
+     "XOR": 8
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/prince/prince-gc6-cost-nocap-g15-a9-gd9-ad6.circ.txt",
+   "sha256": "c35792fbb49a004282c29439ee183becc18c8fc6b95c5c8d821c7bc657abc25f",
+   "target": "prince",
+   "target_definition": "Borghoff et al., PRINCE, ASIACRYPT 2012 (https://eprint.iacr.org/2012/529), S-layer",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target prince --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/prince-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s4",
+   "wall_s": 28.3,
+   "metrics": {
+    "G": 15,
+    "A": 9,
+    "GD": 9,
+    "AD": 6,
+    "cost": 15.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 2,
+     "NOR": 3,
+     "OR": 3,
+     "XNOR": 4,
+     "XOR": 2
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/printcipher/printcipher-bgc-cost-nocap-g6-a3-gd6-ad3.circ.txt",
+   "sha256": "3d1f8e32b91e97982c3fbcf28f8c41cbc798f26dc5b8dd5577e819f05ce5519d",
+   "target": "printcipher",
+   "target_definition": "Knudsen, Leander, Poschmann, Robshaw, PRINTcipher, CHES 2010 (https://doi.org/10.1007/978-3-642-15031-9_2)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target printcipher --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/printcipher-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 15.2,
+   "metrics": {
+    "G": 6,
+    "A": 3,
+    "GD": 6,
+    "AD": 3,
+    "cost": 6.0,
+    "counts": {
+     "AND": 2,
+     "OR": 1,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/printcipher/printcipher-gc6-cost-nocap-g6-a3-gd6-ad3.circ.txt",
+   "sha256": "8752a1925469601fda90f8d2d20acb9b742ee2358919871d9bd60b1d51fb2146",
+   "target": "printcipher",
+   "target_definition": "Knudsen, Leander, Poschmann, Robshaw, PRINTcipher, CHES 2010 (https://doi.org/10.1007/978-3-642-15031-9_2)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target printcipher --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/printcipher-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.8,
+   "metrics": {
+    "G": 6,
+    "A": 3,
+    "GD": 6,
+    "AD": 3,
+    "cost": 6.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 1,
+     "OR": 1,
+     "XNOR": 1,
+     "XOR": 2
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/rectangle/rectangle-bgc-cost-nocap-g12-a4-gd7-ad3.circ.txt",
+   "sha256": "0df9501009a82c96c06273045b7d1eb75d36c4e2032e7d523f7c0f997e4cadc6",
+   "target": "rectangle",
+   "target_definition": "Zhang et al., RECTANGLE: a bit-slice lightweight block cipher, Sci. China Inf. Sci. 2015 (https://eprint.iacr.org/2014/084)",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target rectangle --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/rectangle-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 17.0,
+   "metrics": {
+    "G": 12,
+    "A": 4,
+    "GD": 7,
+    "AD": 3,
+    "cost": 12.0,
+    "counts": {
+     "AND": 2,
+     "NOT": 1,
+     "OR": 2,
+     "XOR": 7
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/rectangle/rectangle-gc6-cost-nocap-g11-a4-gd8-ad4.circ.txt",
+   "sha256": "1e3b4852a5d1429cf7ab169d5bff224a296267ddc1473ddfafe8d442824ababd",
+   "target": "rectangle",
+   "target_definition": "Zhang et al., RECTANGLE: a bit-slice lightweight block cipher, Sci. China Inf. Sci. 2015 (https://eprint.iacr.org/2014/084)",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target rectangle --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/rectangle-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 20.5,
+   "metrics": {
+    "G": 11,
+    "A": 4,
+    "GD": 8,
+    "AD": 4,
+    "cost": 11.0,
+    "counts": {
+     "AND": 2,
+     "NOR": 1,
+     "OR": 1,
+     "XNOR": 5,
+     "XOR": 2
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s0/serpent_s0-bgc-cost-nocap-g14-a4-gd10-ad3.circ.txt",
+   "sha256": "2a449f0b08a89d184bc30ff724be764e0369bd0d694e46a909712ac4b99a3003",
+   "target": "serpent_s0",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S0",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s0 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s0-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 17.2,
+   "metrics": {
+    "G": 14,
+    "A": 4,
+    "GD": 10,
+    "AD": 3,
+    "cost": 14.0,
+    "counts": {
+     "AND": 4,
+     "NOT": 1,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s0/serpent_s0-gc6-cost-nocap-g13-a5-gd8-ad4.circ.txt",
+   "sha256": "8e6dd856906470bc3ccc5ee05484df8451a463785724ec6984da61759651b7dd",
+   "target": "serpent_s0",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S0",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s0 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s0-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 21.4,
+   "metrics": {
+    "G": 13,
+    "A": 5,
+    "GD": 8,
+    "AD": 4,
+    "cost": 13.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 2,
+     "NOR": 1,
+     "OR": 1,
+     "XNOR": 3,
+     "XOR": 5
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s1/serpent_s1-bgc-cost-nocap-g14-a4-gd10-ad3.circ.txt",
+   "sha256": "834f6dd8479fb7d28e1b99630d3cc6fa58fdb726f23aba062811e22e4feba0f9",
+   "target": "serpent_s1",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S1",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s1 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s1-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 17.7,
+   "metrics": {
+    "G": 14,
+    "A": 4,
+    "GD": 10,
+    "AD": 3,
+    "cost": 14.0,
+    "counts": {
+     "NOT": 1,
+     "OR": 4,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s1/serpent_s1-gc6-cost-nocap-g13-a4-gd12-ad4.circ.txt",
+   "sha256": "623ec889e6f0ce0cfeeb37346acd31899b5b07a5e09cab11535d7824a19e567b",
+   "target": "serpent_s1",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S1",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s1 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s1-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 20.6,
+   "metrics": {
+    "G": 13,
+    "A": 4,
+    "GD": 12,
+    "AD": 4,
+    "cost": 13.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 2,
+     "NOR": 1,
+     "XNOR": 3,
+     "XOR": 6
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s2/serpent_s2-bgc-cost-nocap-g13-a4-gd10-ad4.circ.txt",
+   "sha256": "8216ae4e8235908acc339096872b55f158538c7622c63c4a24d4ca285fd7f886",
+   "target": "serpent_s2",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S2",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s2 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s2-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 17.1,
+   "metrics": {
+    "G": 13,
+    "A": 4,
+    "GD": 10,
+    "AD": 4,
+    "cost": 13.0,
+    "counts": {
+     "AND": 2,
+     "NOT": 1,
+     "OR": 2,
+     "XOR": 8
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s2/serpent_s2-gc6-cost-nocap-g12-a4-gd9-ad4.circ.txt",
+   "sha256": "67fd9bea8ac4881c42accdd3a4ba8724e91691e431e5ee6481de7a38cf6589d8",
+   "target": "serpent_s2",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S2",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s2 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s2-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 18.9,
+   "metrics": {
+    "G": 12,
+    "A": 4,
+    "GD": 9,
+    "AD": 4,
+    "cost": 12.0,
+    "counts": {
+     "NAND": 1,
+     "NOR": 2,
+     "OR": 1,
+     "XNOR": 5,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s3/serpent_s3-bgc-cost-nocap-g15-a7-gd9-ad4.circ.txt",
+   "sha256": "ffa1bbbfba55918ea09d4e31ce088e20b4030f22ea0de34ba7826afe1d7d104a",
+   "target": "serpent_s3",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S3",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s3 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s3-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 21.8,
+   "metrics": {
+    "G": 15,
+    "A": 7,
+    "GD": 9,
+    "AD": 4,
+    "cost": 15.0,
+    "counts": {
+     "AND": 4,
+     "OR": 3,
+     "XOR": 8
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s3/serpent_s3-gc6-cost-nocap-g15-a6-gd13-ad5.circ.txt",
+   "sha256": "e1ede5fc17d4682388665cbfabf5ca172b82ddf135e39e0de7fd4bf4dfd13178",
+   "target": "serpent_s3",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S3",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s3 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s3-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 26.9,
+   "metrics": {
+    "G": 15,
+    "A": 6,
+    "GD": 13,
+    "AD": 5,
+    "cost": 15.0,
+    "counts": {
+     "AND": 3,
+     "NOR": 2,
+     "OR": 1,
+     "XNOR": 5,
+     "XOR": 4
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s4/serpent_s4-bgc-cost-nocap-g15-a5-gd9-ad3.circ.txt",
+   "sha256": "1365535709e5a848d87bd24e2eff3d002e4cdc72713acd5b7e6b337ed89bcfce",
+   "target": "serpent_s4",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S4",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s4 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s4-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 20.4,
+   "metrics": {
+    "G": 15,
+    "A": 5,
+    "GD": 9,
+    "AD": 3,
+    "cost": 15.0,
+    "counts": {
+     "AND": 3,
+     "NOT": 1,
+     "OR": 2,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s4/serpent_s4-gc6-cost-nocap-g13-a6-gd11-ad5.circ.txt",
+   "sha256": "be731e905da0f0516655c159c080676b00cfbf98f427a81cad02d292c8bf2b26",
+   "target": "serpent_s4",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S4",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s4 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s4-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s4",
+   "wall_s": 25.0,
+   "metrics": {
+    "G": 13,
+    "A": 6,
+    "GD": 11,
+    "AD": 5,
+    "cost": 13.0,
+    "counts": {
+     "AND": 2,
+     "NAND": 1,
+     "NOR": 3,
+     "XNOR": 2,
+     "XOR": 5
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s5/serpent_s5-bgc-cost-nocap-g15-a5-gd9-ad3.circ.txt",
+   "sha256": "0ffcac16ebf2dc1d82f7cf6539a8ecd3e18d347d55e776080b17484f1b98c467",
+   "target": "serpent_s5",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S5",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s5 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s5-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 21.6,
+   "metrics": {
+    "G": 15,
+    "A": 5,
+    "GD": 9,
+    "AD": 3,
+    "cost": 15.0,
+    "counts": {
+     "AND": 3,
+     "NOT": 1,
+     "OR": 2,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s5/serpent_s5-gc6-cost-nocap-g14-a5-gd12-ad5.circ.txt",
+   "sha256": "12b1b58b7498b8998fe26c7158ea81f32c10176d80b1cada4a03a2bb03e19a19",
+   "target": "serpent_s5",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S5",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s5 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s5-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 25.6,
+   "metrics": {
+    "G": 14,
+    "A": 5,
+    "GD": 12,
+    "AD": 5,
+    "cost": 14.0,
+    "counts": {
+     "AND": 1,
+     "NAND": 2,
+     "NOR": 2,
+     "XNOR": 3,
+     "XOR": 6
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s6/serpent_s6-bgc-cost-nocap-g14-a4-gd11-ad4.circ.txt",
+   "sha256": "21441598b0d4ce1247d449d90cdffa46b6a52d8b0effddaf2337b311247f9a81",
+   "target": "serpent_s6",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S6",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s6 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s6-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.9,
+   "metrics": {
+    "G": 14,
+    "A": 4,
+    "GD": 11,
+    "AD": 4,
+    "cost": 14.0,
+    "counts": {
+     "NOT": 1,
+     "OR": 4,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s6/serpent_s6-gc6-cost-nocap-g13-a4-gd12-ad4.circ.txt",
+   "sha256": "53e20c47466d1770cc3bf71283f906558436f575a95db384f5dbe338c813464c",
+   "target": "serpent_s6",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S6",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s6 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s6-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 21.3,
+   "metrics": {
+    "G": 13,
+    "A": 4,
+    "GD": 12,
+    "AD": 4,
+    "cost": 13.0,
+    "counts": {
+     "AND": 2,
+     "NAND": 1,
+     "NOR": 1,
+     "XNOR": 4,
+     "XOR": 5
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s7/serpent_s7-bgc-cost-nocap-g16-a6-gd10-ad4.circ.txt",
+   "sha256": "20f7e8ae97c1f75ec2f88fd290fde35223e7e94f99e131de43cd246f5e6a2675",
+   "target": "serpent_s7",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S7",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s7 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s7-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 21.3,
+   "metrics": {
+    "G": 16,
+    "A": 6,
+    "GD": 10,
+    "AD": 4,
+    "cost": 16.0,
+    "counts": {
+     "AND": 1,
+     "NOT": 1,
+     "OR": 5,
+     "XOR": 9
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/serpent_s7/serpent_s7-gc6-cost-nocap-g14-a5-gd12-ad4.circ.txt",
+   "sha256": "466ef8a06073646ffbb9b2d551f8346287c7c12947582d4b261886c50c057746",
+   "target": "serpent_s7",
+   "target_definition": "Anderson, Biham, Knudsen, Serpent: A Proposal for the AES, 1998 (https://www.cl.cam.ac.uk/~rja14/serpent.html), S7",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target serpent_s7 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/serpent_s7-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 26.8,
+   "metrics": {
+    "G": 14,
+    "A": 5,
+    "GD": 12,
+    "AD": 4,
+    "cost": 14.0,
+    "counts": {
+     "AND": 3,
+     "NOR": 1,
+     "OR": 1,
+     "XNOR": 6,
+     "XOR": 3
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/skinny64/skinny64-bgc-cost-nocap-g11-a4-gd5-ad2.circ.txt",
+   "sha256": "27f8c7ac1a1397683c172485b241ccce6851df2ab94b5c3aed8eb0afca9cce7e",
+   "target": "skinny64",
+   "target_definition": "Beierle et al., The SKINNY Family of Block Ciphers, CRYPTO 2016 (https://eprint.iacr.org/2016/660), S4",
+   "model": "bgc",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target skinny64 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/skinny64-bgc-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 16.5,
+   "metrics": {
+    "G": 11,
+    "A": 4,
+    "GD": 5,
+    "AD": 2,
+    "cost": 11.0,
+    "counts": {
+     "AND": 1,
+     "NOT": 2,
+     "OR": 3,
+     "XOR": 5
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  },
+  {
+   "file": "nonlinear/boolflux/results/skinny64/skinny64-gc6-cost-nocap-g8-a4-gd4-ad2.circ.txt",
+   "sha256": "60b5d0a07135d9ad315e0673c83d42aafee7ec2af078336f486e411ee1f7ca84",
+   "target": "skinny64",
+   "target_definition": "Beierle et al., The SKINNY Family of Block Ciphers, CRYPTO 2016 (https://eprint.iacr.org/2016/660), S4",
+   "model": "gc6",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "OR": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NAND": 1,
+    "NOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost",
+   "caps": {
+    "GD": null,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "kind": "naive ANF circuit built by starts.anf from the target table"
+   },
+   "command": "python3 nonlinear/boolflux/cli.py pipe --target skinny64 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/skinny64-gc6-cost",
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "iters": 100000,
+   "rounds": 3,
+   "code_sha256_12": "b0e56ecb18fe",
+   "job": "r0-s1",
+   "wall_s": 15.5,
+   "metrics": {
+    "G": 8,
+    "A": 4,
+    "GD": 4,
+    "AD": 2,
+    "cost": 8.0,
+    "counts": {
+     "NOR": 1,
+     "OR": 3,
+     "XNOR": 3,
+     "XOR": 1
+    }
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   }
+  }
+ ],
+ "nist_format_check": "36 circuit file(s), 0 failing"
+}

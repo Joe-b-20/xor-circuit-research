@@ -1,0 +1,125 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit aes-sbox-a32-ad5-g110-gd22-xx78-25
+
+  % BoolFlux result, NIST accounting (NOT counted as a gate)
+  % Tally: G=110 A=32 GD=22 AD=5 AND=32 XNOR=25 XOR=53
+
+Inputs: x0 x1 x2 x3 x4 x5 x6 x7
+Outputs: y0 y1 y2 y3 y4 y5 y6 y7
+Internal: t1:t102
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XNOR t1 x0 x2
+XNOR t2 x1 x7
+XOR t3 t1 t2
+XOR t4 x3 x5
+XNOR t5 t1 t4
+XOR t6 x4 x6
+XOR t7 x0 x3
+XOR t8 t6 t7
+XOR t9 t5 t8
+XNOR t10 x2 t2
+XOR t11 t9 t10
+AND t12 t3 t11
+XOR t13 x0 x6
+AND t14 t9 t13
+XOR t15 t11 t14
+XOR t16 x7 t8
+XOR t17 t10 t16
+XOR t18 t5 t17
+AND t19 t7 t18
+XOR t20 t15 t19
+XNOR t21 t12 t20
+XOR t22 t4 t7
+AND t23 t17 t22
+XOR t24 t1 t23
+XNOR t25 t2 t24
+XOR t26 t21 t25
+AND t27 x6 t10
+AND t28 t1 t5
+XOR t29 t27 t28
+XNOR t30 t13 t29
+XNOR t31 t20 t30
+XOR t32 t26 t31
+XOR t33 x3 t10
+AND t34 x7 t33
+XOR t35 t4 t13
+XOR t36 t33 t35
+AND t37 t16 t36
+XNOR t38 t28 t37
+XOR t39 t24 t38
+XOR t40 t34 t39
+AND t41 t8 t35
+XNOR t42 t7 t41
+XNOR t43 t18 t42
+XNOR t44 t19 t43
+XOR t45 t38 t44
+XOR t46 t40 t45
+AND t47 t31 t45
+XOR t48 t46 t47
+AND t49 t32 t48
+XOR t50 t26 t47
+XNOR t51 t49 t50
+AND t52 t26 t51
+XOR t53 t31 t52
+AND t54 t40 t50
+XNOR t55 t48 t54
+AND t56 t46 t55
+XOR t57 t45 t56
+XOR t58 t53 t57
+AND t59 t4 t58
+XOR t60 t51 t55
+AND t61 t7 t60
+XOR t62 t59 t61
+XOR t63 t26 t49
+XOR t64 t53 t63
+AND t65 t36 t64
+XOR t66 t62 t65
+AND t67 t35 t53
+XOR t68 t66 t67
+AND t69 t5 t58
+AND t70 t9 t57
+XOR t71 t46 t54
+XOR t72 t57 t71
+AND t73 t10 t72
+XOR t74 t70 t73
+XOR t75 t69 t74
+AND t76 t18 t60
+XNOR t77 t75 t76
+XNOR y0 t68 t77
+AND t78 t16 t64
+XNOR t79 t68 t78
+AND t80 t8 t53
+XOR t81 t74 t80
+XNOR y3 t79 t81
+XOR y1 t77 y3
+AND t82 t3 t71
+AND t83 t13 t57
+XOR t84 t82 t83
+AND t85 x7 t63
+XNOR t86 t81 t85
+XOR t87 t58 t60
+AND t88 t17 t87
+XOR t89 t69 t88
+XNOR t90 t86 t89
+XNOR t91 t84 t90
+AND t92 t22 t87
+XOR t93 t61 t77
+XOR t94 t92 t93
+XNOR y2 t91 t94
+AND t95 t11 t71
+XNOR t96 t86 t95
+XOR t97 t73 t96
+XOR y4 y3 t97
+AND t98 t33 t63
+XOR t99 t66 t98
+XNOR y5 t91 t99
+AND t100 x6 t72
+XOR t101 t83 t100
+XNOR t102 t62 t101
+XOR y7 t96 t102
+XOR y6 t90 y7
+end SLP
+end circuit
