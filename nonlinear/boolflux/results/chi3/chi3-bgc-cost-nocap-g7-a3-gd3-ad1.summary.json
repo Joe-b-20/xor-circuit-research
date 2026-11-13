@@ -1,7 +1,7 @@
 {
- "command": "python3 nonlinear/boolflux/cli.py pipe --target chi3 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/chi3-bgc-cost",
+ "command": "python3 nonlinear/boolflux/cli.py pipe --target chi3 --model bgc --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 4 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-3/chi3-bgc-cost",
  "target": "chi3",
- "target_description": "chi on 3 bits: b_i = a_i ^ (~a_{i+1} & a_{i+2})",
+ "target_description": "Definition: chi map (as in Keccak) on 3 bits",
  "model": "bgc",
  "model_gates": {
   "AND": 1,
@@ -41,8 +41,8 @@
  "skel_iters": 2000,
  "rounds": 3,
  "skel_share": 0.5,
- "code_sha256_12": "b0e56ecb18fe",
- "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/chi3-bgc-cost/src",
+ "code_sha256_12": "8336425daeeb",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-3/chi3-bgc-cost/src",
  "settings": {
   "T0": 0.6,
   "Tperiod_it": 20000,
@@ -68,9 +68,9 @@
   "skel.pairs": 60000,
   "skel.fext": 400
  },
- "wall_s": 15.7,
+ "wall_s": 38.3,
  "best": {
-  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-2/chi3-bgc-cost/best.circ.txt",
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-3/chi3-bgc-cost/best.circ.txt",
   "job": "r0-s1",
   "metrics": {
    "G": 7,
@@ -123,7 +123,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 4.87,
+   "wall_s": 6.86,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -134,7 +134,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 0.97
+    "seconds": 1.89
    },
    "skel": true
   },
@@ -145,8 +145,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 5,
-    "AD": 2,
+    "GD": 3,
+    "AD": 1,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -154,18 +154,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.51,
+   "wall_s": 1.73,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 5.0,
-    "AD": 2.0,
+    "GD": 3.0,
+    "AD": 1.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.5
+    "seconds": 1.72
    },
    "skel": false
   },
@@ -185,7 +185,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 4.79,
+   "wall_s": 8.1,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -196,7 +196,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 0.96
+    "seconds": 2.02
    },
    "skel": true
   },
@@ -204,37 +204,6 @@
    "tag": "r0-s4",
    "seed": 4,
    "kernel_seed": 4,
-   "metrics": {
-    "G": 7,
-    "A": 3,
-    "GD": 6,
-    "AD": 3,
-    "cost": 7.0,
-    "counts": {
-     "AND": 2,
-     "OR": 1,
-     "XOR": 4
-    }
-   },
-   "wall_s": 1.51,
-   "final": {
-    "cost": 7.0,
-    "G": 7.0,
-    "A": 3.0,
-    "GD": 6.0,
-    "AD": 3.0,
-    "obj": 7.0,
-    "feas": 1.0,
-    "iters": 100000.0,
-    "restarts": 1.0,
-    "seconds": 1.5
-   },
-   "skel": false
-  },
-  {
-   "tag": "r0-s5",
-   "seed": 5,
-   "kernel_seed": 5,
    "metrics": {
     "G": 7,
     "A": 3,
@@ -247,7 +216,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 4.99,
+   "wall_s": 1.64,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -258,14 +227,14 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 0.87
+    "seconds": 1.64
    },
-   "skel": true
+   "skel": false
   },
   {
-   "tag": "r0-s6",
-   "seed": 6,
-   "kernel_seed": 6,
+   "tag": "r0-s5",
+   "seed": 5,
+   "kernel_seed": 5,
    "metrics": {
     "G": 7,
     "A": 3,
@@ -278,7 +247,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 4.86,
+   "wall_s": 5.97,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -289,7 +258,38 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 0.97
+    "seconds": 1.64
+   },
+   "skel": true
+  },
+  {
+   "tag": "r0-s6",
+   "seed": 6,
+   "kernel_seed": 6,
+   "metrics": {
+    "G": 7,
+    "A": 3,
+    "GD": 5,
+    "AD": 2,
+    "cost": 7.0,
+    "counts": {
+     "AND": 2,
+     "OR": 1,
+     "XOR": 4
+    }
+   },
+   "wall_s": 6.42,
+   "final": {
+    "cost": 7.0,
+    "G": 7.0,
+    "A": 3.0,
+    "GD": 5.0,
+    "AD": 2.0,
+    "obj": 7.0,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 1.78
    },
    "skel": true
   },
@@ -309,7 +309,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.41,
+   "wall_s": 1.73,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -320,7 +320,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.4
+    "seconds": 1.73
    },
    "skel": false
   },
@@ -340,7 +340,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.04,
+   "wall_s": 6.2,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -351,7 +351,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 0.91
+    "seconds": 1.76
    },
    "skel": true
   },
@@ -371,7 +371,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.02,
+   "wall_s": 8.11,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -382,7 +382,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.4
+    "seconds": 1.77
    },
    "skel": true
   },
@@ -393,8 +393,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 5,
-    "AD": 2,
+    "GD": 3,
+    "AD": 1,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -402,18 +402,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.12,
+   "wall_s": 1.95,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 5.0,
-    "AD": 2.0,
+    "GD": 3.0,
+    "AD": 1.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.11
+    "seconds": 1.95
    },
    "skel": false
   },
@@ -433,7 +433,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.11,
+   "wall_s": 6.36,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -444,7 +444,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.39
+    "seconds": 1.76
    },
    "skel": true
   },
@@ -455,7 +455,38 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 6,
+    "GD": 3,
+    "AD": 1,
+    "cost": 7.0,
+    "counts": {
+     "AND": 2,
+     "OR": 1,
+     "XOR": 4
+    }
+   },
+   "wall_s": 1.61,
+   "final": {
+    "cost": 7.0,
+    "G": 7.0,
+    "A": 3.0,
+    "GD": 3.0,
+    "AD": 1.0,
+    "obj": 7.0,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 1.61
+   },
+   "skel": false
+  },
+  {
+   "tag": "r1-s5",
+   "seed": 5,
+   "kernel_seed": 1005,
+   "metrics": {
+    "G": 7,
+    "A": 3,
+    "GD": 7,
     "AD": 3,
     "cost": 7.0,
     "counts": {
@@ -464,25 +495,25 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.12,
+   "wall_s": 6.46,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 6.0,
+    "GD": 7.0,
     "AD": 3.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.11
+    "seconds": 1.76
    },
-   "skel": false
+   "skel": true
   },
   {
-   "tag": "r1-s5",
-   "seed": 5,
-   "kernel_seed": 1005,
+   "tag": "r1-s6",
+   "seed": 6,
+   "kernel_seed": 1006,
    "metrics": {
     "G": 7,
     "A": 3,
@@ -495,7 +526,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.16,
+   "wall_s": 7.09,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -506,38 +537,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.46
-   },
-   "skel": true
-  },
-  {
-   "tag": "r1-s6",
-   "seed": 6,
-   "kernel_seed": 1006,
-   "metrics": {
-    "G": 7,
-    "A": 3,
-    "GD": 3,
-    "AD": 1,
-    "cost": 7.0,
-    "counts": {
-     "AND": 2,
-     "OR": 1,
-     "XOR": 4
-    }
-   },
-   "wall_s": 5.03,
-   "final": {
-    "cost": 7.0,
-    "G": 7.0,
-    "A": 3.0,
-    "GD": 3.0,
-    "AD": 1.0,
-    "obj": 7.0,
-    "feas": 1.0,
-    "iters": 100000.0,
-    "restarts": 1.0,
-    "seconds": 1.43
+    "seconds": 1.76
    },
    "skel": true
   },
@@ -548,8 +548,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 3,
-    "AD": 1,
+    "GD": 5,
+    "AD": 2,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -557,18 +557,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.07,
+   "wall_s": 1.9,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 3.0,
-    "AD": 1.0,
+    "GD": 5.0,
+    "AD": 2.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.06
+    "seconds": 1.9
    },
    "skel": false
   },
@@ -588,7 +588,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.17,
+   "wall_s": 5.83,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -599,7 +599,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.38
+    "seconds": 1.42
    },
    "skel": true
   },
@@ -619,7 +619,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.44,
+   "wall_s": 5.57,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -630,7 +630,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.38
+    "seconds": 1.5
    },
    "skel": true
   },
@@ -641,8 +641,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 5,
-    "AD": 2,
+    "GD": 3,
+    "AD": 1,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -650,18 +650,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.46,
+   "wall_s": 1.53,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 5.0,
-    "AD": 2.0,
+    "GD": 3.0,
+    "AD": 1.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.45
+    "seconds": 1.52
    },
    "skel": false
   },
@@ -692,7 +692,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.41
+    "seconds": 1.42
    },
    "skel": true
   },
@@ -703,8 +703,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 6,
-    "AD": 3,
+    "GD": 3,
+    "AD": 1,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -712,18 +712,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.46,
+   "wall_s": 1.68,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 6.0,
-    "AD": 3.0,
+    "GD": 3.0,
+    "AD": 1.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.44
+    "seconds": 1.67
    },
    "skel": false
   },
@@ -754,7 +754,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.4
+    "seconds": 1.46
    },
    "skel": true
   },
@@ -765,8 +765,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 5,
-    "AD": 2,
+    "GD": 6,
+    "AD": 3,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -774,18 +774,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.42,
+   "wall_s": 5.5,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 5.0,
-    "AD": 2.0,
+    "GD": 6.0,
+    "AD": 3.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.39
+    "seconds": 1.46
    },
    "skel": true
   },
@@ -805,7 +805,7 @@
      "XOR": 4
     }
    },
-   "wall_s": 1.49,
+   "wall_s": 1.38,
    "final": {
     "cost": 7.0,
     "G": 7.0,
@@ -816,7 +816,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.48
+    "seconds": 1.38
    },
    "skel": false
   },
@@ -827,8 +827,8 @@
    "metrics": {
     "G": 7,
     "A": 3,
-    "GD": 3,
-    "AD": 1,
+    "GD": 5,
+    "AD": 2,
     "cost": 7.0,
     "counts": {
      "AND": 2,
@@ -836,18 +836,18 @@
      "XOR": 4
     }
    },
-   "wall_s": 5.44,
+   "wall_s": 4.98,
    "final": {
     "cost": 7.0,
     "G": 7.0,
     "A": 3.0,
-    "GD": 3.0,
-    "AD": 1.0,
+    "GD": 5.0,
+    "AD": 2.0,
     "obj": 7.0,
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 1.45
+    "seconds": 1.23
    },
    "skel": true
   }

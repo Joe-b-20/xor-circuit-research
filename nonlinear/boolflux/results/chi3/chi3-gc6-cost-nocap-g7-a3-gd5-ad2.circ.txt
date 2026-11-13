@@ -1,0 +1,26 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit chi3-gc6-best
+
+  % BoolFlux result for chi3 (Definition: chi map (as in Keccak) on 3 bits)
+  % model gc6, objective cost, caps {'GD': None, 'AD': None, 'A': None}
+  % command: python3 nonlinear/boolflux/cli.py pipe --target chi3 --model gc6 --objective cost --iters 100000 --skel-iters 2000 --seeds 1-8 --rounds 3 --jobs 4 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/small-3/chi3-gc6-cost
+  % kernel sha256 8336425daeeb
+  % from job r0-s1
+  % Tally: G=7 A=3 GD=5 AD=2 AND=2 OR=1 XOR=4; cost 7.0 under model gc6
+
+Inputs: x0 x1 x2
+Outputs: y0 y1 y2
+Internal: t1:t4
+GateSyntax: GateName Output Inputs
+
+begin SLP
+AND t1 x1 x2
+XOR t2 x0 x2
+XOR y0 t1 t2
+AND t3 x0 t2
+XOR y1 x1 t3
+OR t4 x0 y1
+XOR y2 t2 t4
+end SLP
+end circuit

@@ -274,9 +274,13 @@ def write_ncff(c: Circuit, model: Model | None = None, comments=()) -> str:
     head = ['%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux', '',
             'begin circuit %s' % c.name, '']
     for cm in comments: head.append('  %% %s' % cm)
+    counts = dict(m['counts'])
+    if model is not None and model.not_as == 'XNOR0' and 'NOT' in counts:
+        counts['XNOR'] = counts.get('XNOR', 0) + counts.pop('NOT')
+        counts = dict(sorted(counts.items()))
     head.append('  %% Tally: G=%d A=%d GD=%d AD=%d %s%s' % (
         m['G'], m['A'], m['GD'], m['AD'],
-        ' '.join('%s=%d' % kv for kv in m['counts'].items()),
+        ' '.join('%s=%d' % kv for kv in counts.items()),
         ('; cost %s under model %s' % (m['cost'], model.name)) if model else ''))
     head += ['', 'Inputs: ' + ' '.join(c.in_names), 'Outputs: ' + ' '.join(c.out_names)]
     if internal: head.append('Internal: t1:t%d' % k)

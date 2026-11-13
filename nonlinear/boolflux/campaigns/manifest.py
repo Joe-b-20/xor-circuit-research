@@ -90,6 +90,7 @@ def main():
              'code_sha256_12': s.get('code_sha256_12') or s.get('kernel_sha256_12'),
              'job': s['best'].get('job') or 'seed %s round %s' % (s['best'].get('seed'), s['best'].get('round')),
              'wall_s': s.get('wall_s'), 'metrics': v['metrics'],
+             'counts_as_written': (v['independent'].get('metrics') or {}).get('counts'),
              'verified': {'core': v['core_ok'], 'independent': v['independent_ok'], 'library': v['library_ok'],
                           'metrics_agree': v['metrics_agree']}}
         if s['target'] == 'aes':

@@ -7,7 +7,7 @@ begin circuit aes-nist-best
   % command: python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a51-ad4-g157-gd11-xx106-28.circ.txt --objective cost,gd --cap-gd 11 --iters 300000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/depth-3/gd11-from-aes-sbox-a51-ad4-g157-gd11-xx106-28 --rounds 3
   % kernel bfx.c sha256 b0e56ecb18fe
   % seed 1 round 2
-  % Tally: G=152 A=51 GD=11 AD=4 AND=51 NOT=1 XNOR=45 XOR=55; cost 152.0 under model nist
+  % Tally: G=152 A=51 GD=11 AD=4 AND=51 XNOR=46 XOR=55; cost 152.0 under model nist
 
 Inputs: x0 x1 x2 x3 x4 x5 x6 x7
 Outputs: y0 y1 y2 y3 y4 y5 y6 y7

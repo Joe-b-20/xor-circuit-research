@@ -1,5 +1,9 @@
 # S-box circuit literature: best published sizes (compiled 2026-11-13)
 
+Proof sources and the exact wording for every "optimal" claim: [CITATIONS.md](CITATIONS.md).
+The AES numbers in Sect. 5 are from NIST commit 0876577; the pinned baseline is now e6ac0d0
+(nonlinear/nist/MANIFEST.json), which has more circuits, e.g. 148@GD11, 141@12, 133@13, 127@14.
+
 Tables are in `sboxes.json`. This file collects published circuit sizes and states the
 cost model for each one. Evidence tags:
 
@@ -16,9 +20,9 @@ Reyhani-Masoleh et al. TCHES 2018 paper was read from the DNB archive copy.
 | Model | Gates counted (each costs 1) | NOT | Source |
 |---|---|---|---|
 | MC (multiplicative complexity) | number of nonlinear 2-input gates; XOR/XNOR/NOT are free | free | Stoffelen FSE'16 Sect. 2 [read]; CHM'11 Def. 2 [read] |
-| BGC (bitslice gate complexity) | AND, OR, XOR, NOT (2-input, plus unary NOT); NAND/NOR/XNOR **excluded** | counted | Stoffelen FSE'16 Sect. 2 and Table 2 [read]; CHM'11 Def. 1 calls this "GC" |
-| GC (gate complexity) | all 2-input gates AND, OR, XOR, NAND, NOR, XNOR (and constants); fan-in <= 2 | no NOT gate in the encoding (a NOT would have to be a gate) | Stoffelen FSE'16 Sect. 2 and Table 4 [read] |
-| Depth (Stoffelen) | longest input-output path in a GC-type circuit with layer width <= w | - | Stoffelen FSE'16 Sect. 3.5 [read] |
+| BGC (bitslice gate complexity) | AND, OR, XOR, NOT (2-input, plus unary NOT); NAND/NOR/XNOR **excluded** | counted | Stoffelen FSE'16 start of Sect. 3 and Table 2 [read]; CHM'11 Def. 1 calls this "GC" |
+| GC (gate complexity) | all 2-input gates AND, OR, XOR, NAND, NOR, XNOR; the constants 0/1 are gate types of cost 1 (Sto16 Table 4, ZH23 Table 2) | NOT = NAND(x,x) or XNOR(x,0), costs 1 (ZH23 Sect. 4.3, Remark 2); our gc6 model | Stoffelen FSE'16 Sect. 3 and Table 4 [read] |
+| Depth (Stoffelen) | longest input-output path in a GC-type circuit with layer width <= w; results are (k, w) statements, an UNSAT at (k, w) does not exclude depth k with wider layers | - | Stoffelen FSE'16 Sect. 3.5 [read]; ZH23 Table 12 |
 | NIST circuit-complexity | basis {AND, XOR, XNOR} (+NOT); size = #gates; MC = #AND; AND-depth; gate depth | AES entries: G = #AND + #XOR + #XNOR, no NOT column; SHA-256 entries do count NOT | csrc.nist.gov list-of-circuits [read] |
 | GE (area) | sum of cell areas normalised to NAND2 = 1; library-specific; multi-input cells allowed | 0.5-0.75 GE | LIGHTER/PEIGEN/Wei et al./Jia et al. |
 
@@ -71,7 +75,7 @@ Lu21.
 
 | S-box | Model | Best published | Optimal? | Source |
 |---|---|---|---|---|
-| PRESENT (=LED) | MC | 4 | yes, UNSAT for 3 | CHM11 Thm 1 [read] |
+| PRESENT (=LED) | MC | 4 | yes, UNSAT for 3 (PRESENT was not among the S-boxes ZH23 re-checked after their Remark 1 fix of the MC encoding; consistent with Zajac-Jokay 2014 [secondary]) | CHM11 Thm 1 [read] |
 | PRESENT | BGC | 14 (2 AND, 2 OR, 9 XOR, 1 NOT) | upper bound; no optimality proof found | CHM11 Fig. 1 [read]; Sov23 and L/P also 14 [read] |
 | PRESENT | GE | 21.32 GE UMC180 (L/P); 22.25 SMIC65; 24.00 TSMC65 (LIGHTER) | heuristic | Wei24 Tables 3, 10 [read] |
 | GIFT | BGC | 11 (designers' bitsliced code: 3 AND, 1 OR, 6 XOR, 1 NOT) | upper bound | GIFT-COFB spec SubCells [read]; Sov23 = 11 [read] |
@@ -93,7 +97,7 @@ Lu21.
 | Piccolo | GE | 12.99 UMC180 | optimal per Lu21 | Wei24 Table 10 [read]; Lu21 |
 | RECTANGLE | MC | 4 | yes | Sto16 Table 1 [read] |
 | RECTANGLE | BGC | in {10, 11, 12}; 12-gate circuit (4 OR, 7 XOR, 1 NOT) | open in Sto16 | Sto16 Table 3 [read] |
-| RECTANGLE | GC | in {10, 11}; 11-gate circuit | open in Sto16 | Sto16 Table 5 [read]. Zhang-Huang 2023 (https://eprint.iacr.org/2023/1721) says it determines GC of RECTANGLE and its inverse; value not readable here [unverified] |
+| RECTANGLE | GC | 11 | yes, ZH23 Table 11 (Sto16 had {10, 11}) | ZH23 [read] |
 | RECTANGLE | depth | 3 (w = 6) | UNSAT at k=3,w=4 | Sto16 Table 6 [read] |
 | RECTANGLE | GE | 18.00 GE (library not given in the abstract) | SAT-minimal in Lu21 model | Lu21 abstract [read]; L/P 18.33 UMC180 (Wei24) |
 | PRIDE (=Prost) | MC / BGC / GC | 4 / 8 (4 AND, 4 XOR) / 8 | all proven | Sto16 Tables 1, 3, 5 [read] |
@@ -103,7 +107,7 @@ Lu21.
 
 Other Sto16 4-bit results [read]:
 - LAC: MC 4, BGC 11, GC 10.
-- Minalpher: MC 5, BGC >= 11.
+- Minalpher: MC 5; BGC in [12, 17], GC in [11, 14] (ZH23 Tables 10, 11).
 
 Lowest possible area of any optimal 4-bit S-box (Jia et al., ToSC 2025(1), ePrint 2025/386,
 UMC 180 nm) [read: abstract]:
@@ -122,7 +126,8 @@ UMC 180 nm) [read: abstract]:
 | PRINTcipher (3-bit) | GE | 9.00 UMC180 (PEIGEN = Wei); 8.99 Nangate45 (Wei) | Wei's 3-bit search is systematic | Wei24 Tables 10, 11 [read] |
 | chi3 | - | no dedicated result found | - | compute it yourself |
 | Ascon | MC | 5 | yes | Sto16 Table 1 [read] |
-| Ascon | BGC | <= 22 (designers' code: 11 XOR, 5 AND, 6 NOT); 17 if ANDN counts as 1 | upper bound | Ascon v1.2 spec Fig. 5 [read] |
+| Ascon | BGC | 16, optimum in [12, 16] (ZH23 Table 10); the designers' code has 22 (11 XOR, 5 AND, 6 NOT), 17 if ANDN counts as 1 | upper bound | ZH23 [read]; Ascon v1.2 spec Fig. 5 [read] |
+| Ascon | GC | 15, optimum in [12, 15] | upper bound | ZH23 Table 11 [read] |
 | Ascon | other | Feng et al. (IEEE TCAS-I 2024) report 1 fewer instruction than the best known (their software model); Lu21 gives Ascon GE results (values not read) | - | [secondary] |
 | Keccak chi5 | MC | 5 | yes | Sto16 Table 1 [read] |
 | Keccak chi5 | BGC | <= 13 (3 AND, 2 OR, 5 XOR, 3 NOT); naive 15 (5 NOT + 5 AND + 5 XOR) | upper bound | Sto16 Table 3 [read] |
@@ -228,7 +233,9 @@ Notes on this list:
 
 ### GF(2^4) multiplication
 - 9 AND suffice (Karatsuba-type; used 3x in the 32-AND AES circuit, NIST page [read]).
-- 9 is the bilinear rank over GF(2).
+- 9 is the bilinear complexity mu_2(4) over GF(2) (Chudnovsky-Chudnovsky 1988, Ex. 3.2; Ballet et
+  al. 2021, Table 1 and Remark 9.3). The unrestricted multiplicative complexity is not established
+  (Boyar-Find 2018, Sect. 4).
 - arXiv 2608.30238 (2026) claims 9 is also the unrestricted MC of 4-term binary polynomial
   multiplication [secondary; not independently reviewed].
 - XOR count of an optimal GF(2^4) multiplier: no reliable source found.

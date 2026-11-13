@@ -1,0 +1,351 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 18,
+  "AD": 4,
+  "A": 32
+ },
+ "start": "nonlinear/nist/aes-sbox/aes-sbox-a32-ad4-g137-gd18-xx105-7.circ.txt",
+ "start_metrics": {
+  "G": 137,
+  "A": 32,
+  "GD": 18,
+  "AD": 4,
+  "cost": 137.0,
+  "counts": {
+   "AND": 32,
+   "XNOR": 7,
+   "XOR": 98
+  }
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "iters": 100000,
+ "seconds_cap": 3600,
+ "rounds": 1,
+ "code_sha256_12": "b0e56ecb18fe",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-3/aes-sbox-a32-ad4-g137-gd18-xx105-7/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a32-ad4-g137-gd18-xx105-7.circ.txt --objective cost,gd --cap-a 32 --cap-ad 4 --cap-gd 18 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-3/aes-sbox-a32-ad4-g137-gd18-xx105-7",
+ "wall_s": 44.8,
+ "best": {
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-3/aes-sbox-a32-ad4-g137-gd18-xx105-7/best.circ.txt",
+  "seed": 6,
+  "round": 0,
+  "feasible": true,
+  "metrics": {
+   "G": 122,
+   "A": 32,
+   "GD": 18,
+   "AD": 4,
+   "cost": 122.0,
+   "counts": {
+    "AND": 32,
+    "XNOR": 39,
+    "XOR": 51
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "independent_metrics": {
+   "G": 122,
+   "counts": {
+    "AND": 32,
+    "XNOR": 39,
+    "XOR": 51
+   },
+   "A": 32,
+   "XX": 90,
+   "GD": 18,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 122.0
+  }
+ },
+ "jobs": [
+  {
+   "tag": "r0-s6",
+   "seed": 6,
+   "kernel_seed": 6,
+   "metrics": {
+    "G": 122,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 122.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 39,
+     "XOR": 51
+    }
+   },
+   "wall_s": 44.38,
+   "final": {
+    "cost": 122.0,
+    "G": 122.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 122.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 44.33
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s8",
+   "seed": 8,
+   "kernel_seed": 8,
+   "metrics": {
+    "G": 122,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 122.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 39,
+     "XOR": 51
+    }
+   },
+   "wall_s": 43.67,
+   "final": {
+    "cost": 122.0,
+    "G": 122.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 122.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 43.62
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s5",
+   "seed": 5,
+   "kernel_seed": 5,
+   "metrics": {
+    "G": 123,
+    "A": 32,
+    "GD": 17,
+    "AD": 4,
+    "cost": 123.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 34,
+     "XOR": 57
+    }
+   },
+   "wall_s": 43.97,
+   "final": {
+    "cost": 123.0,
+    "G": 123.0,
+    "A": 32.0,
+    "GD": 17.0,
+    "AD": 4.0,
+    "obj": 123.0017,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 43.94
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s1",
+   "seed": 1,
+   "kernel_seed": 1,
+   "metrics": {
+    "G": 123,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 123.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 35,
+     "XOR": 56
+    }
+   },
+   "wall_s": 44.48,
+   "final": {
+    "cost": 123.0,
+    "G": 123.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 123.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 44.45
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s3",
+   "seed": 3,
+   "kernel_seed": 3,
+   "metrics": {
+    "G": 123,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 123.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 39,
+     "XOR": 52
+    }
+   },
+   "wall_s": 42.01,
+   "final": {
+    "cost": 123.0,
+    "G": 123.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 123.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 41.95
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s2",
+   "seed": 2,
+   "kernel_seed": 2,
+   "metrics": {
+    "G": 124,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 124.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 34,
+     "XOR": 58
+    }
+   },
+   "wall_s": 44.83,
+   "final": {
+    "cost": 124.0,
+    "G": 124.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 124.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 44.79
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s4",
+   "seed": 4,
+   "kernel_seed": 4,
+   "metrics": {
+    "G": 124,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 124.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 45,
+     "XOR": 47
+    }
+   },
+   "wall_s": 43.87,
+   "final": {
+    "cost": 124.0,
+    "G": 124.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 124.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 43.84
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s7",
+   "seed": 7,
+   "kernel_seed": 7,
+   "metrics": {
+    "G": 124,
+    "A": 32,
+    "GD": 18,
+    "AD": 4,
+    "cost": 124.0,
+    "counts": {
+     "AND": 32,
+     "XNOR": 29,
+     "XOR": 63
+    }
+   },
+   "wall_s": 41.95,
+   "final": {
+    "cost": 124.0,
+    "G": 124.0,
+    "A": 32.0,
+    "GD": 18.0,
+    "AD": 4.0,
+    "obj": 124.0018,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 0.0,
+    "seconds": 41.9
+   },
+   "skel": null
+  }
+ ]
+}

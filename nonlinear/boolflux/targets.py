@@ -69,8 +69,6 @@ def gf16_inv():
 BUILTIN = {
     'aes': (8, 8, aes_sbox, 'AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)'),
     'aes-inv': (8, 8, aes_inv_sbox, 'AES inverse S-box, FIPS-197'),
-    'chi3': (3, 3, lambda: chi(3), 'chi on 3 bits: b_i = a_i ^ (~a_{i+1} & a_{i+2})'),
-    'chi5': (5, 5, lambda: chi(5), 'Keccak chi on 5 bits'),
     'maj3': (3, 1, lambda: [1 if bin(x).count('1') >= 2 else 0 for x in range(8)], 'majority of 3'),
     'fulladd': (3, 2, lambda: [bin(x).count('1') for x in range(8)],
                 'full adder: output = (carry, sum) = popcount of 3 bits'),

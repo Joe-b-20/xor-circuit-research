@@ -23,6 +23,8 @@ jobs:
         run: python3 circuits/check.py
       - name: Check every S-box circuit against FIPS-197 by truth table (standard library only)
         run: python3 nonlinear/check.py
+      - name: Check every BoolFlux AES result in NIST format by truth table
+        run: python3 nonlinear/check.py nonlinear/boolflux/results/nist-format
 
   tests:
     name: XORFlux tests (Python ${{ matrix.python }})
@@ -41,3 +43,7 @@ jobs:
         run: python3 -m unittest discover -s search/xorflux/tests -t search
       - name: boolcirc tests (nonlinear/)
         run: python3 -m unittest discover -s nonlinear/boolcirc/tests -t nonlinear
+      - name: BoolFlux independent verifier tests (nonlinear/boolflux/independent)
+        run: python3 -m unittest discover -s nonlinear/boolflux/independent
+      - name: BoolFlux tests (builds the C kernels with gcc)
+        run: python3 -m unittest discover -s nonlinear/boolflux/tests -t nonlinear

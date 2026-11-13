@@ -76,11 +76,7 @@ def main():
         print('| %s | %s | %s | %s | %s | %s | **%s** | %s | %s | %s | %s | %s x %s x %s |' % (
             r['target'], r['model'], r['objective'], r['caps'], r['start'], r['start_metrics'], r['result'],
             r['counts'], ('both' if r['verified'] else 'NO (function, library, metrics or caps)') + ('' if r['improved'] else ', no gain'), r['wall_s'], r['cpu_s'], r['seeds'], r['iters'], r['rounds']))
-    js = Path(PKG / 'results' / 'ledger-rows.jsonl')
-    if copy:
-        js.parent.mkdir(parents=True, exist_ok=True)
-        with open(js, 'a', encoding='utf-8') as f:
-            for r in rows: f.write(json.dumps(r) + '\n')
+
 
 
 if __name__ == '__main__':

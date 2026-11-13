@@ -14,17 +14,17 @@
   "AD": 4,
   "A": 45
  },
- "start": "nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g151-gd12-xx106-26.circ.txt",
+ "start": "nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g147-gd12-xx102-29.circ.txt",
  "start_metrics": {
-  "G": 151,
+  "G": 147,
   "A": 45,
   "GD": 12,
   "AD": 4,
-  "cost": 151.0,
+  "cost": 147.0,
   "counts": {
    "AND": 45,
-   "XNOR": 26,
-   "XOR": 80
+   "XNOR": 29,
+   "XOR": 73
   }
  },
  "seeds": [
@@ -41,7 +41,7 @@
  "seconds_cap": 3600,
  "rounds": 1,
  "code_sha256_12": "b0e56ecb18fe",
- "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a45-ad4-g151-gd12-xx106-26/src",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-3/aes-sbox-a45-ad4-g147-gd12-xx102-29/src",
  "settings": {
   "T0": 0.6,
   "Tperiod_it": 20000,
@@ -57,11 +57,11 @@
   "cand_cap": 40,
   "fraig": 1
  },
- "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g151-gd12-xx106-26.circ.txt --objective cost,gd --cap-a 45 --cap-ad 4 --cap-gd 12 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a45-ad4-g151-gd12-xx106-26",
- "wall_s": 40.9,
+ "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g147-gd12-xx102-29.circ.txt --objective cost,gd --cap-a 45 --cap-ad 4 --cap-gd 12 --iters 100000 --seeds 1-8 --jobs 8 --out /home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-3/aes-sbox-a45-ad4-g147-gd12-xx102-29",
+ "wall_s": 46.5,
  "best": {
-  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a45-ad4-g151-gd12-xx106-26/best.circ.txt",
-  "seed": 3,
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-boolflux/frontier-fwd-3/aes-sbox-a45-ad4-g147-gd12-xx102-29/best.circ.txt",
+  "seed": 1,
   "round": 0,
   "feasible": true,
   "metrics": {
@@ -72,8 +72,8 @@
    "cost": 146.0,
    "counts": {
     "AND": 45,
-    "XNOR": 37,
-    "XOR": 64
+    "XNOR": 42,
+    "XOR": 59
    }
   },
   "core_ok": true,
@@ -83,8 +83,8 @@
    "G": 146,
    "counts": {
     "AND": 45,
-    "XNOR": 37,
-    "XOR": 64
+    "XNOR": 42,
+    "XOR": 59
    },
    "A": 45,
    "XX": 101,
@@ -100,6 +100,37 @@
  },
  "jobs": [
   {
+   "tag": "r0-s1",
+   "seed": 1,
+   "kernel_seed": 1,
+   "metrics": {
+    "G": 146,
+    "A": 45,
+    "GD": 12,
+    "AD": 4,
+    "cost": 146.0,
+    "counts": {
+     "AND": 45,
+     "XNOR": 42,
+     "XOR": 59
+    }
+   },
+   "wall_s": 46.46,
+   "final": {
+    "cost": 146.0,
+    "G": 146.0,
+    "A": 45.0,
+    "GD": 12.0,
+    "AD": 4.0,
+    "obj": 146.0012,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 46.43
+   },
+   "skel": null
+  },
+  {
    "tag": "r0-s3",
    "seed": 3,
    "kernel_seed": 3,
@@ -111,11 +142,11 @@
     "cost": 146.0,
     "counts": {
      "AND": 45,
-     "XNOR": 37,
-     "XOR": 64
+     "XNOR": 40,
+     "XOR": 61
     }
    },
-   "wall_s": 40.42,
+   "wall_s": 46.35,
    "final": {
     "cost": 146.0,
     "G": 146.0,
@@ -126,38 +157,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 0.0,
-    "seconds": 40.4
-   },
-   "skel": null
-  },
-  {
-   "tag": "r0-s4",
-   "seed": 4,
-   "kernel_seed": 4,
-   "metrics": {
-    "G": 146,
-    "A": 45,
-    "GD": 12,
-    "AD": 4,
-    "cost": 146.0,
-    "counts": {
-     "AND": 45,
-     "XNOR": 37,
-     "XOR": 64
-    }
-   },
-   "wall_s": 40.47,
-   "final": {
-    "cost": 146.0,
-    "G": 146.0,
-    "A": 45.0,
-    "GD": 12.0,
-    "AD": 4.0,
-    "obj": 146.0012,
-    "feas": 1.0,
-    "iters": 100000.0,
-    "restarts": 1.0,
-    "seconds": 40.44
+    "seconds": 46.33
    },
    "skel": null
   },
@@ -173,11 +173,11 @@
     "cost": 146.0,
     "counts": {
      "AND": 45,
-     "XNOR": 40,
-     "XOR": 61
+     "XNOR": 42,
+     "XOR": 59
     }
    },
-   "wall_s": 40.63,
+   "wall_s": 45.34,
    "final": {
     "cost": 146.0,
     "G": 146.0,
@@ -188,7 +188,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 40.6
+    "seconds": 45.31
    },
    "skel": null
   },
@@ -204,11 +204,11 @@
     "cost": 146.0,
     "counts": {
      "AND": 45,
-     "XNOR": 31,
-     "XOR": 70
+     "XNOR": 38,
+     "XOR": 63
     }
    },
-   "wall_s": 40.58,
+   "wall_s": 44.69,
    "final": {
     "cost": 146.0,
     "G": 146.0,
@@ -219,7 +219,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 40.54
+    "seconds": 44.66
    },
    "skel": null
   },
@@ -235,11 +235,11 @@
     "cost": 147.0,
     "counts": {
      "AND": 45,
-     "XNOR": 37,
-     "XOR": 65
+     "XNOR": 29,
+     "XOR": 73
     }
    },
-   "wall_s": 40.22,
+   "wall_s": 45.75,
    "final": {
     "cost": 147.0,
     "G": 147.0,
@@ -250,7 +250,38 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 40.21
+    "seconds": 45.72
+   },
+   "skel": null
+  },
+  {
+   "tag": "r0-s4",
+   "seed": 4,
+   "kernel_seed": 4,
+   "metrics": {
+    "G": 147,
+    "A": 45,
+    "GD": 12,
+    "AD": 4,
+    "cost": 147.0,
+    "counts": {
+     "AND": 45,
+     "XNOR": 29,
+     "XOR": 73
+    }
+   },
+   "wall_s": 46.05,
+   "final": {
+    "cost": 147.0,
+    "G": 147.0,
+    "A": 45.0,
+    "GD": 12.0,
+    "AD": 4.0,
+    "obj": 147.0012,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 46.04
    },
    "skel": null
   },
@@ -266,11 +297,11 @@
     "cost": 147.0,
     "counts": {
      "AND": 45,
-     "XNOR": 40,
-     "XOR": 62
+     "XNOR": 29,
+     "XOR": 73
     }
    },
-   "wall_s": 40.93,
+   "wall_s": 45.85,
    "final": {
     "cost": 147.0,
     "G": 147.0,
@@ -281,7 +312,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 40.89
+    "seconds": 45.83
    },
    "skel": null
   },
@@ -297,12 +328,11 @@
     "cost": 147.0,
     "counts": {
      "AND": 45,
-     "NOT": 1,
-     "XNOR": 48,
-     "XOR": 53
+     "XNOR": 29,
+     "XOR": 73
     }
    },
-   "wall_s": 40.52,
+   "wall_s": 44.48,
    "final": {
     "cost": 147.0,
     "G": 147.0,
@@ -313,39 +343,7 @@
     "feas": 1.0,
     "iters": 100000.0,
     "restarts": 1.0,
-    "seconds": 40.51
-   },
-   "skel": null
-  },
-  {
-   "tag": "r0-s1",
-   "seed": 1,
-   "kernel_seed": 1,
-   "metrics": {
-    "G": 148,
-    "A": 45,
-    "GD": 12,
-    "AD": 4,
-    "cost": 148.0,
-    "counts": {
-     "AND": 45,
-     "NOT": 1,
-     "XNOR": 41,
-     "XOR": 61
-    }
-   },
-   "wall_s": 40.58,
-   "final": {
-    "cost": 148.0,
-    "G": 148.0,
-    "A": 45.0,
-    "GD": 12.0,
-    "AD": 4.0,
-    "obj": 148.0012,
-    "feas": 1.0,
-    "iters": 100000.0,
-    "restarts": 1.0,
-    "seconds": 40.55
+    "seconds": 44.47
    },
    "skel": null
   }

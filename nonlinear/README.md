@@ -21,9 +21,9 @@ python3 -m unittest discover -s nonlinear/boolcirc/tests -t nonlinear
 
 ## NIST's circuits
 
-`nist/` holds the 124 circuit files of `data/slp/aes/{aes-sbox, aes-invsbox, sbox, old-2020}`
+`nist/` holds the 191 circuit files of `data/slp/aes/{aes-sbox, aes-invsbox, sbox, old-2020}`
 of NIST's [circuit repository](https://github.com/usnistgov/Circuits) at commit
-`0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f` (2026-10-29), byte for byte, with each folder's
+`e6ac0d03f4816927f1b0e676996e4d075ab8d1c0` (2026-11-13; first imported at 0876577, 2026-10-29), byte for byte, with each folder's
 NIST `README.md` kept as `NIST-README.md`. `nist/MANIFEST.json` records for every file its NIST
 path and URL at that commit, SHA-256 and size, and what the checker established: its metrics,
 whether its file name and NIST's header tallies agree with them (they all do), and the bit
@@ -58,7 +58,7 @@ two extra numbers are:
 NIST's pages do not say how a NOT counts; its files avoid the question by writing a NOT as
 `XNOR t U 0`, a two-input gate with the literal constant `0`, and that is how `boolcirc` reads
 it (nothing is rewritten on input). The conventions above reproduce NIST's own numbers in all
-124 files: the file names and the per-level tallies NIST writes in every 2026 header.
+191 files: the file names (including the -xxnX-Y-Z names, X = XOR+XNOR+NOT, used from e6ac0d0 on) and the per-level tallies NIST writes in every 2026 header.
 
 ## Verification
 

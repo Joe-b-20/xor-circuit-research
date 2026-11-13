@@ -17,7 +17,9 @@ only the XOR layers around a fixed AND skeleton.
 | S-box tables with sources, published results | [benchmarks/](benchmarks/) |
 | independent verifier (no shared code) | [independent/](independent/) |
 | independent correctness review, fuzzers | [review/REVIEW.md](review/REVIEW.md) |
-| verified result circuits (NCFF) | [results/](results/) |
+| verified result circuits (NCFF), their provenance and NIST-format copies | [results/](results/), [results/MANIFEST.json](results/MANIFEST.json), [results/nist-format/](results/nist-format/) |
+| proof sources for optimality claims | [benchmarks/CITATIONS.md](benchmarks/CITATIONS.md) |
+| independent audit of all claims | [audit/AUDIT.md](audit/AUDIT.md) |
 | campaign scripts and reports | [campaigns/](campaigns/) |
 
 Python 3.11+ (standard library only) and a C compiler (gcc). Run from the repository root.
@@ -44,8 +46,9 @@ python3 -m unittest discover -s nonlinear/boolflux/independent
   klein, noekeon, pride, serpent_s0..s7, printcipher, chi3, ascon, keccak_chi5, skinny128,
   sm4, camellia_s1), and `maj3`, `fulladd`, `gf16-mul`, `gf16-inv`.
 - **Models**: `nist` (AND, XOR, XNOR, NOT; NOT written as `XNOR t a 0`, each 1: NIST's
-  accounting), `bgc` (AND, OR, XOR, NOT: bitslice gate complexity), `gc` (every two-input gate
-  and NOT), `xag` (AND, XOR, NOT). A model is a JSON file of allowed gates and their costs
+  accounting), `bgc` (AND, OR, XOR, NOT: bitslice gate complexity), `gc6` (AND, OR, XOR, XNOR,
+  NAND, NOR, NOT: the gate complexity of Stoffelen 2016 and Zhang-Huang 2023), `gc` (every
+  two-input gate including ANDN/ORN, and NOT; wider than the literature GC), `xag` (AND, XOR, NOT). A model is a JSON file of allowed gates and their costs
   (fractional costs such as GE areas work).
 - **Objective** keys: `cost`, `g` (gate count), `a` (nonlinear gates), `gd` (gate depth), `ad`
   (AND depth), up to three, lexicographic. **Caps**: `--cap-gd`, `--cap-ad`, `--cap-a`; a start
