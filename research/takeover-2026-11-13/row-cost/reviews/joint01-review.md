@@ -1,0 +1,25 @@
+# Review of the joint 0/1 interface theorem
+
+2026-11-13. Independent machine proof review of [JOINT01](../JOINT01.md). The two displayed gate lists were checked by direct algebra. No circuit family was searched.
+
+## Formal entries and trace count
+
+After retaining only the designated target cones, every counted signal is live. The hypothesis that counted gates have nonzero own part excludes a gate with two free operands. A free use therefore becomes one formal input for each entry, even if the same free label is read by several entries. Formal inputs are independent during transposition and specialize to the original labels under \(\Phi\). The four own inputs have nonzero columns, and every newly formalized input is read exactly once. Reverse adjoint accumulation with operand occurrences counted gives \(K-\tau\) gates. Zero or repeated adjoints are allowed in the literal transpose. The mandatory triple-sum values are nevertheless four distinct odd non-input values.
+
+The dimension of the formal target span \(L\) is the rank of the trace matrix. The labels span a space containing \(D=\Phi(L)\), and the restriction of \(\Phi\) to \(L\) maps onto \(D\). At three entries their labels cannot all avoid \(D\). At four entries, the presence of an outside label forces the label span to have dimension four, so \(\Phi\) is injective and \(L\) has dimension three. The relation on the four target free parts lifts to \(L\), giving even traces. The functional killing \(D\) has value one on each label, so the sum of the four traces is zero. This is the only nonzero trace relation by rank three. In particular none is zero and no two are equal, because either would give a relation of weight one or two. The transpose would require those four even gate values as well as the four triple sums. This excludes four entries at \(K\le11\).
+
+## The tight five-entry case
+
+With five entries and \(K\le11\), the six-gate triple-sum bound gives \(K=11\) and a six-gate transpose. If \(L\) had dimension three then \(\Phi|_L\) would be injective and give even traces of rank three. This would require at least three distinct nonzero even gate values in addition to the triple sums, exceeding the six available gates. Thus \(L\) has dimension four. The image of \(L\) has dimension three, so \(\Phi\) has a nonzero kernel. Its five labels span at least four dimensions, hence the kernel has dimension exactly one, lies in \(L\), and the label span \(U\) has dimension four.
+
+The functional on \(U\) killing \(D\) again sends each label to one. It follows that \(L\) is the four-dimensional even subspace of \(\mathbb F_2^5\). The traces have rank four and their only nonzero relation is the total sum. This rules out a zero trace and repeated traces without assuming the raw transpose is reduced. Its inputs are odd, and at most two gate slots remain after the four triple sums. The five distinct traces can therefore contain at most two even vectors. Their total sum is zero, so the number of odd traces must be even. This leaves exactly four odd traces and one even trace.
+
+The sum of the four formal target masks has ones exactly in the positions of the odd traces. Its image under \(\Phi\) is zero, so it is the unique nonzero relation on the five labels. The even-trace label \(h\) is outside the span of the other four. Every label is in the nonzero coset of \(D\) in \(U\). For a subset \(I\) of the four odd labels, a zero sum of their differences \(\phi_i+h\) would give a relation on the original labels with coefficient \(|I|\bmod 2\) at \(h\). The unique relation is the sum of all four odd labels, so only the empty and full subsets work. This proves the claimed rank-three circuit of differences.
+
+## Explicit circuits and limits
+
+For the ten-gate first-sheet circuit, \(d=u+v\) has own and free masks both equal to the coordinate pair \(\{1,3\}\). The output own masks are \(b_1+b_2+b_3\), \(b_0+b_2+b_3\), \(b_0+b_1+b_3\), and \(b_0+b_1+b_2\). The respective free masks are \(s_0,s_1,s_2,s_3\). For the first output use \(s_1+s_2+s_3=s_0\). The non-output gates have distinct full masks, including \(w\) whose own mask matches an input but whose free mask is nonzero. Every gate serves a target. This refutes the proposed exclusion of every clean diagonal from a ten-gate first sheet.
+
+In the eleven-gate construction, each of \(g_5,g_7,g_9,g_3\) has free part \(h\) and the required own triple for \(O_0,O_1,O_2,O_3\), respectively. Adding \(q_c=h+d_c\) gives the desired free part. The only entries are the gate adding \(h\) and the four final gates adding \(q_c\). All their labels avoid \(D\), so the lower bound is attained when the free space contains an \(h\notin D\). If the free space equals \(D\), no circuit can meet the avoidance hypothesis.
+
+The theorem supplies an exact condition for a second sheet that avoids all diagonal entries. It does not eliminate the mixed-label case or prove that the five nonclean labels cannot be supplied by the ten-gate first sheet. The other 21-gate possibility still involves the eleven-gate augmented first-sheet problem. The 21-to-22 gap remains open.

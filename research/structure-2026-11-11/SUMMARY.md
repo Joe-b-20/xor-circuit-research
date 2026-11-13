@@ -1,8 +1,9 @@
 # What was learned (structural study, started 2026-11-11)
 
 **2026-11-13 continuation:** [takeover summary](../takeover-2026-11-13/SUMMARY.md).
-New work supplies a componentwise lower bound on hidden operands and strengthens joint
-repair. The historical phase summaries below describe their original scope.
+New work supplies hidden-operand bounds, exact local row costs, and source-interface
+saturation, alongside sharp counterexamples. The historical phase summaries below
+describe their original scope.
 
 A reader's guide to `RECORD.md`. Nothing here changes the published statement 75 <= L(MixColumns) <= 88.
 Everything was produced with language-model assistance; reviews are machine reviews by a second model

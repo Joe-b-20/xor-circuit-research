@@ -1,0 +1,25 @@
+# Review of four-row source saturation
+
+2026-11-13. Independent machine proof review of [FOUR_ROWS](../FOUR_ROWS.md). No search or circuit-family check was run.
+
+## Charged sets and equality
+
+In an event-free circuit every operand block persists in its gate's output. Hence an ancestor of an untagged row with support \(\{X_j,Z_i\}\) is confined to those blocks. A gate carrying \(Z_i\) cannot feed a row for another own block. A gate carrying both \(Z_i,X_j\) can serve only the \(j\)-variant of the \(i\)-sheet. Thus the mixed sets \(u_{ij}\) are disjoint across both indices. The pure-\(Z_i\) count \(n_i\) can include gates outside the cone of a particular variant. Taking that larger pure count only weakens each local inequality \(n_i+u_{ij}\ge10\), so these inequalities are valid.
+
+For \(k\ge2\), the expression \(n_i+k\max(4,10-n_i)\) has its unique minimum at \(n_i=6\). Below six it decreases with slope \(1-k\), and above six it increases with slope one. Equality forces each \(u_{ij}=4\). Those four mixed gates are precisely the four distinct output values. Two distinct same-side rows differ on both source and own blocks, so a prior mixed gate plus a pure operand cannot produce another required row. Two prior mixed rows have even own-block sum, whereas a required row has an odd own-block component. Thus all required gates at equality use a pure own triple and the appropriate pure source pair. Different variants cannot enter this operand analysis, since block support would put their source in the output window.
+
+Each of the \(4k\) source pairs is a distinct non-input physical value, and pure source gates lie outside all charged sets. If any pair is absent, the integral charged count must exceed the local minimum in every sheet. This gives the bound \((6+4k)r+\min(r,4k)\). The displayed clean construction matches it in the range \(r\ge4k\). The proof uses only the ten-gate local lemma and support growth. The equality argument has no counterpart at \(k=1\) from this numerical bound because the expression is constant on the lower branch.
+
+## Restricting the packed tags
+
+Each affected output continues to depend on the next private coordinate to be removed, and after every partial projection it still contains its own triple and source pair. It cannot be an input wire. An ancestor path from that coordinate therefore begins with a live gate reading the coordinate directly. Setting the coordinate to zero turns that gate into an alias of its other projected operand, or into zero. Simplifying zero and equal-value wires and pruning dead gates removes at least that gate without adding any. This counts one physical deletion in each successive circuit and requires no disjointness claim about the first readers in the original circuit.
+
+The relevant invariant is that every surviving physical gate reads the current projections of its original two operand masks. Further projections preserve mask equality, and normalization only redirects to an equal current mask. All designated output masks stay nonzero, so a zero generator need not be kept. The invariant establishes final event-freeness: after deleting the complete private blocks, every agreement on a remaining nonzero block would be the same agreement at the original physical gate. No event-free hypothesis is needed during the intermediate coordinate restrictions. The \(8r\)-gate deletion and untagged lower bound therefore combine as stated.
+
+## Construction, boundary, and scope
+
+The displayed translation circuit uses eight pure source pairs and four translations. Each group uses six own-block gates, four untagged \(Y\)-rows, four \(X\)-target events, and eight private attachments. The translations and the four pure \(X\) pairs are exactly the eight hidden gates. The other gates have paths without later events to the tagged \(Y\)-rows. Reducedness follows from the distinct coordinate masks. The event-free construction replaces the four shared translations and their cancellations by direct attachments to the pure \(X\) pairs, yielding the four-gate difference in the stated range.
+
+For a boundary relation with only target rows, the own-block contribution of \(q\) rows in one group has weight \(3,2,1,4\) for \(q=1,2,3,4\). This follows by XORing the \(q\) omitted coordinate units with the parity of \(q\) copies of the all-ones mask. Adding the number of selected rows gives at least four per nonempty group. A single group of size below four adds a nonzero even source label. For relations with tagged rows, the private units and, when there is just one tagged row, its \(Y\)-pair give the stated six bound. A weight-five target with its input units attains six.
+
+The comparison concerns the explicit shared-translation circuit and the exact event-free optimum for this family. It leaves open better cancellation architectures and the unrestricted optimum. The multiple-source theorem concerns alternative four-row sets; it gives no direct charge for a row containing several source terms simultaneously.

@@ -1,5 +1,9 @@
 # Continuation: what cross-window sharing actually permits
 
+**Later continuation:** [complete-row cost and interface summary](../row-cost/README.md).
+The account below preserves the results at `eb9191a`; its proposed next direction is now
+partly developed by exact local costs, source saturation, and sharp completion controls.
+
 2026-11-13, continuing commit `14b89e6`. Hand proofs with independent machine reviews;
 not formal verification or human certification. No SAT, circuit search, exhaustive
 enumeration, exact least-gate search, or computer-driven case elimination was used.

@@ -1509,3 +1509,59 @@ The next useful question is the cost of producing compatible local completions w
 four structured rows of each implicated MixColumns sheet are required. Coarse support,
 sparsity, boundary distance, and hidden-work counts alone are insufficient. No universal
 MixColumns compatibility lemma has been proved; `75 <= L(MixColumns) <= 88` remains unchanged.
+
+## 30. Complete row demands and paid interfaces (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/row-cost/README.md`](../takeover-2026-11-13/row-cost/README.md).
+This continues reviewed commit `eb9191a` on the same isolated branch. The new universal
+claims have hand proofs and independent machine reviews, not formal verification or
+human certification. No search or computer-driven case elimination was used.
+
+**Exact local cost (proved).** A four-row sheet has own triples E_c and the same adjacent
+pair s_c on each neighboring block, with all terms present in each output. If p neighbors
+have ordinary coordinate inputs and f are separately free, the exact paid cost is 6 when
+p=f=0, `3f+7` when p=0,f>=1, and `4p+3f+8` when p>=1. Lower bounds allow unrestricted
+cancellation; explicit event-free constructions attain them. Transposition exposes the
+reason: each free block needs three even traces; one extra mirrored gate can expose them
+for all free blocks. An ordinary neighbor already forces four adjacent-pair traces.
+Local costs cannot be added globally without proving physical gate disjointness.
+
+**Source-interface saturation (proved).** For r disjoint own blocks each producing k>=2
+alternative four-row source variants, event-free cost is at least
+`(6+4k)r+min(r,4k)`, exactly `(6+4k)r+4k` for r>=4k. Equality in the local `6+4k`
+charged count forces every source pair to be present as a physical gate. If any source
+pair is absent, every sheet incurs an extra charge; if all exist, their gates sit outside
+the sheet charges. The tagged two-source family has event-free optimum `22r+8` for r>=8,
+whereas the natural shared-translation circuit costs `22r+12` with eight hidden gates.
+This direct four-row lift loses the sparse example's advantage. Other cancellation
+architectures are not ruled out, and the Q_3 counterexample to generic additivity stands.
+
+**Sharp completion geometry (proved and directly checked).** For one maximal MixColumns
+sheet, the only possible nonzero local-completion difference space is its own-parity line.
+Four output events using three nonlocal operands force a path, with local partners at its
+endpoints differing by that parity. A reduced 145-gate actual MixColumns circuit realizes
+exactly four sheet-5 events and three hidden gates. Its parity-shifted partner is retained
+and charged to sheet 6, so forcing this value does not force an additional hidden gate.
+Two-sheet window intersections are given symbolically using R=I+P, with R^4=0; the omitted
+own-block equations can introduce a two-dimensional R^2 kernel. One sheets-2/3 profile
+forces six hidden operands but only gives 74 after repair, not a new numerical bound.
+
+**Exact avoidance interface and a failed shortcut (proved).** For a four-triple sheet,
+suppose required free labels span a rank-three D with the sole all-four relation, and all
+actual entry labels avoid D. At least eleven gates are needed. Equality forces five labels
+in a four-dimensional span, all in one nonzero coset modulo D, and five influence traces
+of rank four with exactly four odd and one even. The four labels on odd traces have the
+unique label relation. An explicit eleven-gate circuit attains this when an outside-D
+label is available. A separate explicit ten-gate first-sheet circuit contains a clean
+diagonal, refuting the shortcut that every clean diagonal costs an eleventh gate.
+Neither result closes the joint 21-to-22 problem: augmented first-sheet cost 11 versus 12
+and second-sheet interfaces mixing clean and nonclean labels remain unresolved.
+
+**Verification and judgment.** Direct mask checks cover eight specified port constructions,
+the tagged r=8 translation and event-free circuits (188 versus 184 gates), all 32 outputs
+and the exact visibility partition of the 145-gate MixColumns witness, and both interface
+circuits. Reviews prompted explicit re-trimming in the transposition proof and qualification
+of attainment by existence of an outside-D label. The next useful target is a compatibility
+theorem forcing a paid interface at local equality in the fixed MixColumns windows.
+Geometrically forced partners may already be retained and charged; no automatic extra
+hidden credit follows. The unrestricted interval remains `75 <= L(MixColumns) <= 88`.

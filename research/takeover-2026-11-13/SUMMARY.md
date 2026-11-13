@@ -1,10 +1,11 @@
 # What changed in the takeover
 
-**Continuation after `14b89e6`:** [current summary](continuation/README.md). The later pass
-proves a global affine-completion bound and an internal-event extension, but also a sharp
-counterexample to controlling savings by hidden-gate count, even with sparse odd outputs,
-boundary distance six, and bounded windows and blocks. The first-pass account below remains
-the history and foundation; its next-direction assessment is superseded by the continuation.
+**Current continuation after `eb9191a`:** [complete-row cost summary](row-cost/README.md).
+It proves exact local costs, a source-interface saturation theorem, sharp one-sheet
+completion geometry, and an eleven-gate interface rigidity theorem. The [previous pass](continuation/README.md)
+proved affine-completion bounds and a sparse counterexample to controlling savings by
+hidden-gate count. The first-pass account below remains the history and foundation;
+its next-direction assessment is superseded by the current summary.
 
 The most useful advance is a way to force hidden work jointly. The previous repair theorem
 could show that a cancellation needs a hidden operand, but many cancellations might use the

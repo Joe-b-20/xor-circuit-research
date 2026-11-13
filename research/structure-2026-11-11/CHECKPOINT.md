@@ -3,7 +3,8 @@
 **Continuation, 2026-11-13:** the current takeover checkpoint is
 [`../takeover-2026-11-13/CHECKPOINT.md`](../takeover-2026-11-13/CHECKPOINT.md), on
 `research-2026-11-13-structural` based on verified `e89b8a2`. It records independent
-foundational review, joint repair, and new hidden-operand and projection-rank theorems.
+foundational review, joint repair, hidden-operand bounds, exact local row costs, and
+source-interface saturation, with counterexamples delimiting every proposed global charge.
 The phase-12 state below remains the historical starting point.
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
