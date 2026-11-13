@@ -35,22 +35,30 @@ def main():
     rows = []
     for d in args:
         for sj in sorted(Path(d).rglob('summary.json')):
+            if 'results' in sj.parts: continue
             s = json.loads(sj.read_text())
             b = s['best']
-            v = cli.verify_file(b['file'], s['target'], s['model'])
-            ok = v['core_ok'] and v['independent_ok'] and v['library_ok']
+            caps = {k: v for k, v in s['caps'].items()}
+            v = cli.verify_file(b['file'], s['target'], s['model'], caps)
             m = v['metrics']; sm = s['start_metrics']
+            feas = all(c is None or m[k] <= c for k, c in caps.items())
+            ok = v['core_ok'] and v['independent_ok'] and v['library_ok'] and feas
+            w = cli.objective_weights(s['objective'])
+            ob = lambda x: sum(w['w.' + k] * x[{'cost': 'cost', 'g': 'G', 'a': 'A', 'gd': 'GD', 'ad': 'AD'}[k]]
+                               for k in ('cost', 'g', 'a', 'gd', 'ad'))
+            start_feas = all(c is None or sm[k] <= c for k, c in caps.items())
+            improved = ok and (not start_feas or ob(m) < ob(sm) - 1e-12)
             cpu = sum(r.get('wall_s', 0) for r in s['runs'])
             start = Path(s['start']).name.replace('.circ.txt', '') if s['start'] != 'anf' else 'ANF (naive)'
             row = {'target': s['target'], 'model': s['model'], 'objective': s['objective'],
                    'caps': caps_str(s['caps']), 'start': start,
                    'start_metrics': '%g (A%d GD%d AD%d)' % (sm['cost'], sm['A'], sm['GD'], sm['AD']),
                    'result': '%g (A%d GD%d AD%d)' % (m['cost'], m['A'], m['GD'], m['AD']),
-                   'G': m['G'], 'counts': counts_str(m['counts']), 'verified': ok,
+                   'G': m['G'], 'counts': counts_str(m['counts']), 'verified': ok, 'improved': improved,
                    'wall_s': s.get('wall_s'), 'cpu_s': round(cpu, 1), 'seeds': '%d-%d' % (min(s['seeds']), max(s['seeds'])),
                    'iters': s['iters'], 'rounds': s.get('rounds', 1), 'command': s['command'], 'dir': str(sj.parent)}
             rows.append(row)
-            if copy and ok:
+            if copy and improved:
                 dest = PKG / 'results' / s['target']
                 dest.mkdir(parents=True, exist_ok=True)
                 cp = ('-'.join(('%s%s' % (k.lower(), v)) for k, v in s['caps'].items() if v is not None) or 'nocap')
@@ -67,7 +75,7 @@ def main():
     for r in rows:
         print('| %s | %s | %s | %s | %s | %s | **%s** | %s | %s | %s | %s | %s x %s x %s |' % (
             r['target'], r['model'], r['objective'], r['caps'], r['start'], r['start_metrics'], r['result'],
-            r['counts'], 'both' if r['verified'] else 'NO', r['wall_s'], r['cpu_s'], r['seeds'], r['iters'], r['rounds']))
+            r['counts'], ('both' if r['verified'] else 'NO (function, library, metrics or caps)') + ('' if r['improved'] else ', no gain'), r['wall_s'], r['cpu_s'], r['seeds'], r['iters'], r['rounds']))
     js = Path(PKG / 'results' / 'ledger-rows.jsonl')
     if copy:
         js.parent.mkdir(parents=True, exist_ok=True)
