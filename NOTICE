@@ -33,6 +33,13 @@ Files derived from it, and how they were changed (2026-10-30 unless noted):
   into the map's affine constants and input wires permuted.
 - The NIST columns of circuits/README.md: gate counts and depths read from NIST's files and
   its list of circuits.
+- nonlinear/nist/{aes-sbox,aes-invsbox,sbox,old-2020}/: byte-for-byte copies of the 124 AES
+  S-box and inverse S-box circuit files of data/slp/aes/ at commit
+  0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f (2026-10-29), each folder's NIST README.md kept as
+  NIST-README.md; nonlinear/nist/MANIFEST.json lists every file with its NIST path, URL and
+  SHA-256. Several of those files are external contributions NIST credits in their headers
+  (28-AND and 35-AND circuits by Milad Nasr, 2026-09; circuits derived from the 29-AND circuit
+  of github.com/umizame/S-box_29-AND); they keep their authors' rights and terms.
 - search/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
   repository files (targets/nist/), as those versions used them (2026-10-24 to 10-28), and a
   saved copy of NIST's list-of-circuits web page (v4, targets/nist/invmixcolumns/).
