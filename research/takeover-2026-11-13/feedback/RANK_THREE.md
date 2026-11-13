@@ -2,6 +2,8 @@
 
 2026-11-13. Causal hand construction and linear algebra only; no circuit search, enumeration, or computer-driven case elimination. The [general rank theorem](GENERAL_REPAIR.md) extends this construction to arbitrary entry rank. This note gives its sharp rank-three form and a necessary condition for the unrestricted joint problem. It does not prove an unrestricted joint lower bound of twenty-two.
 
+**Subsequent result:** [five physical diagonals](FIVE_DIAGONALS.md) close the exceptional joint case: exactly ten consumer-bearing gates require at least 22 total gates, even with feedback. The replay theorem below is unchanged.
+
 ## General causal setting
 
 Assume zero is freely available; equivalently, only nonzero source values need to be reproduced and zero uses can be bypassed. This holds in the joint model because the free block includes zero.
@@ -71,3 +73,5 @@ There are three consumer-bearing gates and one exit. All actual entry labels lie
 A bounded attempt considered a ten-gate consumer with four entries, including the possible pattern of three independent label values with one repeated. Its six-gate ordinary transpose has four independent entry traces; the two repeated-label occurrences have odd traces and the other two have the transpose's two even helper values as traces. The tentative route was to use properties of the ordinary adjoints of these two even helpers to place the two unrepeated entry labels in different own-mask fibres, thereby limiting a same-own exit to a one-XOR source expression.
 
 The missing step is an identification between the **original** consumer's internal own-mask fibres and the adjoint signals obtained by transposing its mirror again. Transposition preserves the output linear map, but that does not establish preservation of internal nodes, equal-own operand pairs, or the entry-label paths relevant to an original exit. No such identification has been proved. The route supplies no four-entry feedback exclusion and is not used in any theorem above. Eventual availability of four distinct labels would also be insufficient by itself: a difficult exit could occur before the fourth label is physically supplied.
+
+The later [marked-wire lemma](WIRE_DUALITY.md) resolves the identification for the repeated-label case by retaining explicit XOR/copy nodes. The broader joint consequence is now proved through five physical diagonals, without requiring a consumer classification.

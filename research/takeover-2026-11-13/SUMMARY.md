@@ -1,14 +1,16 @@
 # What changed in the takeover
 
-**Current continuation after `edbe77f`:** [feedback savings are bounded by entry rank](feedback/README.md).
-A chronological two-group construction removes feedback for at most
-`2^ceil(d/2)+2^floor(d/2)-d-2` extra gates in total, with sharp allowances one and two
-at ranks three and four. Returned directions outside the consumer target span have
-an entry-cost lower bound. For a ten-gate consumer, a possible joint total 21 now
-requires a specific ternary return; this does not close the unrestricted joint problem.
-The [preceding augmented pass](augmented/README.md) proved minimum twelve, joint cost
-22 under no feedback, and block-monotone MixColumns lower bound 85. The unrestricted
-75-to-88 interval is unchanged. Earlier work includes [supplier closure](crossing/README.md),
+**Current continuation after `242ee0a`:** [five physical diagonals close the ten-gate consumer case](feedback/README.md).
+The unrestricted joint minimum with exactly ten consumer-bearing gates is 22, including
+feedback. The source-only minimum for four first-sheet rows and five distinct diagonal
+values is at least thirteen; rank-three repair would violate it at joint total 21.
+A local ten-gate ternary return is explicitly possible, so consumer optimality alone
+was not the obstruction. A separate helper-value theorem and a binary Sidon family
+force exponential overhead for source-value-preserving repair, even offline; they do
+not prove an exponential separation between full circuit optima. The unrestricted
+MixColumns range remains 75 to 88, and the block-monotone lower bound remains 85.
+Earlier work includes [general rank-based repair](feedback/GENERAL_REPAIR.md),
+[augmented minimum twelve](augmented/README.md), [supplier closure](crossing/README.md),
 [rank-one exclusion and even confinement](frontier/README.md),
 [relation rank and causal span](tradeoff/README.md), and
 [coset caps and entry deletion](compatibility/README.md).

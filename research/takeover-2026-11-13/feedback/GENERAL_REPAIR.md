@@ -194,3 +194,9 @@ then gives at least eleven zero-consumer gates and characterizes the possible te
 exit at total 21. A larger consumer may use a larger entry space. The bound here does
 not prove an unrestricted joint minimum of 22 or increase the unrestricted MixColumns
 lower bound.
+
+The subsequent [five-diagonal theorem](FIVE_DIAGONALS.md) strengthens this application:
+if rank-three replay costs one extra gate, it retains five distinct diagonal values.
+They and the first-sheet rows need thirteen source gates. Hence every joint circuit
+with exactly ten consumer-bearing gates needs at least 22 total gates, even with
+feedback. The unrestricted joint problem at larger consumer budgets remains open.

@@ -1983,3 +1983,95 @@ bounds are hand proofs. The unrestricted joint problem remains open; block-monot
 MixColumns remains at least 85 and unrestricted MixColumns remains `75<=L<=88`.
 The next mathematical target is compatibility of the exceptional ternary return
 with an optimal consumer's four specified rows, using actual values and reader relations.
+
+## 37. Five physical diagonals close the ten-consumer case (2026-11-13)
+
+Current account: [feedback continuation](../takeover-2026-11-13/feedback/README.md),
+following reviewed commit `242ee0a`. Structural hand proofs received independent
+machine review. No SAT, circuit search, enumeration, or computer-driven case elimination
+was used. The unrestricted MixColumns interval remains `75<=L<=88`.
+
+**Five diagonals force thirteen source gates (proved).** Four first-sheet rows together
+with five distinct nonzero diagonal values need at least thirteen gates, allowing
+arbitrary cancellation. At twelve, their nine distinct non-input ordinary masks plus
+at least three entries force exactly twelve gates and exactly three entries. The
+entry labels form a basis of the even free space. With O the physical odd nodes,
+H the physical even nodes, V their span, and residue rank r, five diagonal values
+span the clean three-space, so `dim V=3+r`. Independent non-entry equations and graph
+incidence give `9<=|O|-c+|H|-dim V=13-c-r`. The eight named odd residues require
+`c>=2^(3-r)`, so r is at least two. There must be two nonclean even values besides
+five clean ones, leaving at most one odd helper. With no helper, at most three named
+pairs and three independent even-only relations are available. With one helper, the
+clean values have at most one pair collectively, the two nonclean values have at
+most two pairs each, and even-only relations add at most two. Both are below nine.
+This proves the lower bound; thirteen-gate attainment is not claimed.
+
+**Joint minimum 22 with ten consumer gates (proved and attained).** Exactly ten
+consumer-bearing gates force all actual entry labels into the clean rank-three
+space. If the total were at most 21, rank-three replay would preserve all source
+values in at most twelve gates. With no extra gate it would contradict the augmented
+minimum twelve. At the exceptional step, three independent clean values are already
+physical, and replay creates a new pair sum and their three-term sum. These five
+physical diagonal values persist along with all first-sheet rows. The new thirteen-gate
+lemma excludes the twelve-gate replay. Thus the total is at least 22, attained by the
+specified no-feedback construction. This proof permits arbitrary consumer feedback
+into the first-sheet cones. It leaves circuits with eleven or more consumer-bearing
+gates unresolved, and does not strengthen the unrestricted MixColumns lower bound.
+
+**The local ternary-return exclusion is false (specified counterexample).** Given three
+source values a,b,c, compute `q=z0+z1`, `r=q+z2`, `t=r+z3`, `u=t+a`, `v=u+c`, `w=v+b`,
+then the four outputs `w+z0`, `v+z1`, `u+z2`, `r+(a+b)`. These are ten consumer-bearing
+gates with the required own triples and source labels `a+b+c,a+c,a,a+b`, a rank-three
+four-element circuit. Before a+b is supplied, `t+w` returns the three-label sum.
+Its four entry traces are `012,01,0,3`, so three are odd: a three-term relation among
+four distinct entry labels is a real case, missed by a proposed two-way case division.
+For MixColumns choose `a=d2`, `b=d2+d3`, `c=d1+d2`; the return is d0. This is not a
+joint 21 construction. Computing a+b during repair permits its later supplier to be
+bypassed, so a locally expensive exit need not increase total replay cost. That credit
+works generally for this four-label three-term-relation interface. The main joint
+proof uses the five-value obstruction instead of classifying exits.
+
+**Secondary physical-wiring tools (proved).** In a three-entry consumer, flexible
+adjoint accumulation forbids entries sharing a nonfree parent or reading one another;
+their edges form a matching. In a four-entry consumer, expanding fanout into explicit
+binary copy nodes makes transposition literally involutive. Deleting the four trace
+ports and suppressing their unary copies returns the exact ordinary projection with
+entries bypassed. A marked trace wire's ordinary derivative is the original entry's
+own mask. In a six-gate triple circuit the two even helpers have disjoint reader sets,
+and target adjoints are independent, so their nonzero marked derivatives differ.
+This closes the repeated-label exit case as a secondary result. Abstract equality of
+transposed output maps still does not justify arbitrary internal-node identification.
+
+**Short-relation-free targets force auxiliary values (proved).** Let N distinct
+nonzero non-input targets have no relation among three or four distinct members.
+For a reduced source circuit with d coordinate inputs and A non-target gate values,
+put `R=d+A`. A fixed non-target value connects at most one target pair; chronology
+allows at most one orientation. Targets made from two non-target values form a simple
+graph on R nodes with no four-cycle. Common-neighbour counting and Cauchy's inequality
+give `N<=R+R(1+sqrt(4R-3))/4`, and thus `A>=(4N/7)^(2/3)-d`.
+The result counts physical helper values and allows earlier targets to be reused.
+
+**Exponential offline source-preservation overhead (proved).** In dimension d=2k,
+the binary values `(x,x^3)` for nonzero x in `GF(2^k)` give N=`2^k-1` non-input targets
+with no three- or four-term relation. The identities `x^3+y^3+(x+y)^3=xy(x+y)` and
+`x^3+(x+h)^3+z^3+(z+h)^3=h(x+z)(h+x+z)` prove this symbolically. The helper bound
+forces `Omega(2^(d/3))` auxiliary gates. A fixed feedback circuit with a one-bit
+consumer can build each masked target and return it in one source exit, using
+exactly G0=N source gates and entry span d. Every source-only realization preserving
+these outputs therefore needs `G0+Omega(2^(d/3))`, even with advance knowledge.
+This is not an exponential separation between optimal full circuits: the original
+consumer work can be large. The general repair upper exponent d/2 remains above
+this fixed-family lower exponent d/3.
+
+**Separate online and prefix statements (proved).** Against an adaptive adversary,
+a repair strategy with fewer than M available source values, where M is the least
+integer with `M(M+1)/2>=2^d-1`, can be asked for a value not one XOR away. Each such
+request costs at least one extra gate; at the stopping threshold total overhead is
+at least `ceil((M-d)/2)`. This matches the general upper asymptotic order only in the
+stated online model. The fixed prefix family separately has exact full-circuit
+minima d+1 and 2d-1, hence saving d-2. These metrics are kept distinct.
+
+The next joint question is whether an eleven-gate consumer's single allowed nonclean
+return direction can reduce source cost enough to beat 22. Direct evaluation of the
+one specified ternary consumer confirms its target masks, chronology, entry traces,
+and MixColumns substitution. All universal arguments above are symbolic hand proofs.
