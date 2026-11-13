@@ -25,6 +25,8 @@ from dataclasses import dataclass, field
 from .ncff import CONSTANTS, NONLINEAR
 
 _NAME_2026 = re.compile(r'-a(\d+)-ad(\d+)-g(\d+)-gd(\d+)-xx(\d+)-(\d+)(?:[.-]|$)')
+# names from November 2026 on (NIST commit e6ac0d0): -xxnX-Y-Z, X = XOR + XNOR + NOT, Y = XNOR, Z = NOT
+_NAME_2026N = re.compile(r'-a(\d+)-ad(\d+)-g(\d+)-gd(\d+)-xxn(\d+)-(\d+)-(\d+)(?:[.-]|$)')
 _NAME_2020 = re.compile(r'-g(\d+)-a(\d+)-d(\d+)-ad(\d+)(?:[.-]|$)', re.IGNORECASE)
 
 
@@ -125,6 +127,10 @@ def name_metrics(name):
 
     Keys: ``A``, ``AD``, ``G``, ``GD`` always; ``XX`` and ``XNOR`` for 2026 names.
     """
+    m = _NAME_2026N.search(name)
+    if m:
+        a, ad, g, gd, xxn, y, z = map(int, m.groups())
+        return {'A': a, 'AD': ad, 'G': g, 'GD': gd, 'XX': xxn - z, 'XNOR': y, 'NOT': z, 'style': '2026n'}
     m = _NAME_2026.search(name)
     if m:
         a, ad, g, gd, xx, y = map(int, m.groups())
@@ -145,9 +151,9 @@ def check_name(name, m):
     if want is None:
         return ['no metrics in name']
     have = {'A': m.and_count, 'AD': m.and_depth, 'G': m.gates, 'GD': m.gate_depth,
-            'XX': m.xx, 'XNOR': m.xnor}
+            'XX': m.xx, 'XNOR': m.xnor, 'NOT': m.not_count}
     return ['%s: name says %d, circuit has %d' % (k, want[k], have[k])
-            for k in ('A', 'AD', 'G', 'GD', 'XX', 'XNOR') if k in want and want[k] != have[k]]
+            for k in ('A', 'AD', 'G', 'GD', 'XX', 'XNOR', 'NOT') if k in want and want[k] != have[k]]
 
 
 _TALLY_GATES = re.compile(r'Tally of gates \((\d+)\):\s*(.*)')

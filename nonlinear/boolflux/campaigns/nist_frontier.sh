@@ -8,11 +8,12 @@ OUT=$1; DIR=$2; ITERS=$3; SEEDS=$4; JOBS=$5; shift 5
 cd "$(dirname "$0")/../../.."
 TARGET=aes; [ "$DIR" = aes-invsbox ] && TARGET=aes-inv
 mkdir -p "$OUT"
-for f in nonlinear/nist/$DIR/*.circ.txt; do
+FILES=$(ls nonlinear/nist/$DIR/*.circ.txt); [ -n "${REVERSE:-}" ] && FILES=$(echo "$FILES" | tac)
+for f in $FILES; do
   b=$(basename "$f" .circ.txt)
   A=$(echo "$b" | sed -E 's/.*-a([0-9]+)-ad.*/\1/'); AD=$(echo "$b" | sed -E 's/.*-ad([0-9]+)-g.*/\1/')
   GD=$(echo "$b" | sed -E 's/.*-gd([0-9]+)-xx.*/\1/')
-  [ -f "$OUT/$b/summary.json" ] && continue
+  [ -e "$OUT/$b" ] && continue   # done or started by another instance
   python3 nonlinear/boolflux/cli.py run --target $TARGET --model nist --start "$f" --objective cost,gd \
     --cap-a "$A" --cap-ad "$AD" --cap-gd "$GD" --iters "$ITERS" --seeds "$SEEDS" --jobs "$JOBS" \
     --out "$OUT/$b" "$@" > "$OUT/$b.out" 2>&1 || echo "FAILED $b" >> "$OUT/FAILED"

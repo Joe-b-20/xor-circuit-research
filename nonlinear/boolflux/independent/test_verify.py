@@ -23,7 +23,9 @@ REPO = HERE.parents[2]
 NIST = REPO / "nonlinear" / "nist"
 SCRIPT = HERE / "verify.py"
 
-NCFF_NAME = re.compile(r"^aes-(sbox|invsbox)-a(\d+)-ad(\d+)-g(\d+)-gd(\d+)-xx(\d+)-(\d+)\.circ\.txt$")
+NCFF_NAME = re.compile(r"^aes-(sbox|invsbox)-a(\d+)-ad(\d+)-g(\d+)-gd(\d+)-xx(n?)(\d+)-(\d+)(?:-(\d+))?(?:-\d+)?\.circ\.txt$")
+# 2026 names: -xxX-Y (X = XOR+XNOR, Y = XNOR); from NIST commit e6ac0d0 also -xxnX-Y-Z
+# (X = XOR+XNOR+NOT, Y = XNOR, Z = NOT), sometimes with a trailing -k variant number
 OLD_NAME = re.compile(r"^aes-sbox-(fwd|rev)-g(\d+)-a(\d+)-d(\d+)-ad(\d+)\.slp$")
 
 AES = (8, 8, V.aes_sbox())
@@ -93,7 +95,10 @@ class TestNIST(unittest.TestCase):
     @staticmethod
     def ncff_metrics(name):
         m = NCFF_NAME.match(name)
-        a, ad, g, gd, xx, xn = map(int, m.groups()[1:])
+        a, ad, g, gd = map(int, m.groups()[1:5])
+        n_flag, xx, xn, nots = m.group(6), int(m.group(7)), int(m.group(8)), m.group(9)
+        if n_flag:
+            return {"A": a, "AD": ad, "G": g, "GD": gd, "XX": xx - int(nots), "XNOR": xn}
         return {"A": a, "AD": ad, "G": g, "GD": gd, "XX": xx, "XNOR": xn}
 
     @staticmethod
