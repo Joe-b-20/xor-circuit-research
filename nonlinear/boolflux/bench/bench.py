@@ -100,7 +100,7 @@ def run_boolflux(run, cpu, wd):
     overhead = {'start_s': round(t_start, 4), 'extract_s': 0, 'skel_s': 0, 'synth_s': 0, 'kernel_startup_s': 0}
     rss = []; budget = run['seconds']; T0 = time.time()
     best_c = start; best_m = sm
-    cur = start; rnd = 0
+    cur = start; rnd = 0; skel_share = 0.2
     while True:
         el = time.time() - T0
         if el >= budget - 0.05: break
@@ -108,8 +108,11 @@ def run_boolflux(run, cpu, wd):
             stages = [('gate', budget - el)]
         else:
             R = run.get('round_s', 10.0)
-            g_s = min(R * 0.8, budget - el)
-            stages = [('skel', min(R * 0.2, budget - el)), ('gate', None)]
+            # adaptive (v3): the skeleton slice halves after every round in which the skeleton-derived
+            # candidate did not end the round better than the incoming best (minimum 0.5 s)
+            share = skel_share if run.get('adaptive') else 0.2
+            stages = [('skel', min(R * share, budget - el)), ('gate', None)]
+            synth_gain = False
         cand = cur
         for kind, secs in stages:
             el = time.time() - T0
@@ -134,7 +137,9 @@ def run_boolflux(run, cpu, wd):
                 if run.get('seeded', True): vs.append(skeleton.synthesize(sk2, model.ops(), parent=cand))
                 if run.get('unseeded', True):
                     vs += [skeleton.synthesize(sk2, model.ops(), use_paar=a, paar_outputs=b) for a, b in ((0, 0), (1, 0), (1, 1))]
+                cin = obj(dict(cand.metrics(model)))
                 cand = min(vs, key=lambda c: c.metrics(model)['cost'])
+                synth_gain = obj(dict(cand.metrics(model))) < cin - 1e-12
                 overhead['synth_s'] += time.time() - ts
                 assert cand.value_table() == list(table)
             else:
@@ -155,6 +160,11 @@ def run_boolflux(run, cpu, wd):
                 cm = cand.metrics(model)
                 if feas(cm) and (not feas(best_m) or obj(cm) <= obj(best_m) + 1e-12):
                     best_c = cand; best_m = {k: cm[k] for k in ('cost', 'G', 'A', 'GD', 'AD')}
+        if run['config'] != 'gate' and run.get('adaptive'):
+            # the skeleton stage earns its slice only if its rebuilt candidate was already cheaper
+            # than the circuit that went in
+            gained = synth_gain
+            skel_share = 0.2 if gained else max(0.5 / run.get('round_s', 10.0), skel_share / 2)
         cur = best_c; rnd += 1
         if run['config'] == 'gate': break
     search_s = time.time() - T0

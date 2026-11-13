@@ -78,10 +78,9 @@ def linear(runs):
     for r in runs:
         lab = r['run']['label']
         if not lab.startswith('L-'): continue
-        parts = lab.split('-s')[0][2:]          # map-c..-start
-        mp, rest = parts.rsplit('-c', 1)
-        cap, start = rest.split('-')
-        tool = 'xorflux' if lab.endswith('xorflux') else 'boolflux' + lab.rsplit('boolflux', 1)[1]
+        import re
+        mm = re.match(r'^L-(.+)-c(4|none)-(naive|nist)-s(\d+)-(xorflux|boolflux-v\d+)$', lab)
+        mp, cap, start, tool = mm.group(1), mm.group(2), mm.group(3), mm.group(5)
         groups[(mp, cap, start, tool)].append(r)
     for (mp, cap, start, tool), rs in sorted(groups.items()):
         tgt = LIN_BEST[(mp, cap)]
@@ -106,12 +105,13 @@ def nonlinear(runs, prefix, title):
     for r in runs:
         lab = r['run']['label']
         if not lab.startswith(prefix + '-'): continue
-        body = lab[len(prefix) + 1:].rsplit('-s', 1)[0]
-        tgt, cfg = body.split('-', 1) if prefix != 'A' else (body.rsplit('-', 1)[0], body.rsplit('-', 1)[1])
-        if prefix in ('X', 'F'):
-            for t in ('gf16-mul', 'present', 'rectangle', 'aes'):
-                if body.startswith(t + '-'): tgt, cfg = t, body[len(t) + 1:]
+        import re
+        body = re.sub(r'-s\d+-v\d+$', '', lab[len(prefix) + 1:])
+        names = sorted(list(NL) + ['aes'], key=len, reverse=True)
+        tgt = next(t for t in names if body.startswith(t + '-')); cfg = body[len(tgt) + 1:]
         groups[(tgt, cfg, lab.rsplit('-', 1)[1])].append(r)
+    if prefix == 'A':
+        print('(an unverified run = no circuit within the caps by the end of the budget)\n')
     for (tgt, cfg, ver), rs in sorted(groups.items()):
         key = tgt if tgt in NL else ('aes-a36g142' if tgt == 'aes' else tgt)
         desc, pred = NL[key]

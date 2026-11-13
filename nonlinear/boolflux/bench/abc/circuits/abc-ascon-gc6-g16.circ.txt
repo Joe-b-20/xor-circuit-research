@@ -1,0 +1,24 @@
+%NCFF-0.1-2026
+% converted from ABC mapped BLIF step5_m4.blif
+begin circuit abc
+Inputs: x0 x1 x2 x3 x4
+Outputs: y0 y1 y2 y3 y4
+begin SLP
+XOR new_n13 x3 x4
+OR new_n14 x1 x2
+XNOR new_n15 x0 x4
+XNOR new_n16 new_n14 new_n15
+NOR new_n17 x1 new_n16
+XNOR y0 new_n13 new_n17
+NOT new_n11 x3
+XOR new_n19 x1 x2
+OR new_n20 new_n11 new_n19
+XNOR y1 new_n16 new_n20
+AND new_n12 new_n11 x4
+XNOR y2 new_n12 new_n19
+NOR new_n23 x0 new_n13
+XNOR y3 new_n19 new_n23
+NAND new_n25 x1 new_n15
+XNOR y4 new_n13 new_n25
+end SLP
+end circuit

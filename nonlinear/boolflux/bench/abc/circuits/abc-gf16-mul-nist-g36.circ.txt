@@ -1,0 +1,44 @@
+%NCFF-0.1-2026
+% converted from ABC mapped BLIF step3_m1.blif
+begin circuit abc
+Inputs: x0 x1 x2 x3 x4 x5 x6 x7
+Outputs: y0 y1 y2 y3
+begin SLP
+AND new_n17 x5 x2
+XOR new_n15 x7 x4
+AND new_n16 new_n15 x0
+XOR new_n18 new_n17 new_n16
+AND new_n14 x4 x3
+XOR new_n19 new_n18 new_n14
+AND new_n13 x6 x1
+XOR y0 new_n19 new_n13
+AND new_n25 x5 x3
+XOR new_n23 x5 x4
+AND new_n24 new_n23 x0
+XOR new_n26 new_n25 new_n24
+AND new_n22 x6 x2
+XOR new_n27 new_n26 new_n22
+AND new_n21 new_n15 x1
+XOR y1 new_n27 new_n21
+AND new_n37 x5 x0
+NOT new_n38 new_n37
+NOT new_n34 x0
+AND new_n35 x6 new_n34
+NOT new_n36 new_n35
+AND new_n39 new_n38 new_n36
+NOT new_n31 x3
+AND new_n32 x6 new_n31
+AND new_n30 new_n23 x1
+XOR new_n33 new_n32 new_n30
+XNOR new_n40 new_n39 new_n33
+AND new_n29 new_n15 x2
+XOR y2 new_n40 new_n29
+AND new_n45 x4 x2
+AND new_n44 x7 x3
+XOR new_n46 new_n45 new_n44
+AND new_n43 x5 x1
+XOR new_n47 new_n46 new_n43
+AND new_n42 x6 x0
+XOR y3 new_n47 new_n42
+end SLP
+end circuit

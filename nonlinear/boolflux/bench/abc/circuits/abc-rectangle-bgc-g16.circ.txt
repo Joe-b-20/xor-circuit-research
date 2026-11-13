@@ -1,0 +1,24 @@
+%NCFF-0.1-2026
+% converted from ABC mapped BLIF step3_m3.blif
+begin circuit abc
+Inputs: x0 x1 x2 x3
+Outputs: y0 y1 y2 y3
+begin SLP
+NOT new_n10 x2
+OR new_n11 x0 new_n10
+XOR new_n13 x3 new_n11
+OR new_n15 x1 new_n13
+NOT new_n14 new_n13
+OR new_n17 x0 new_n14
+AND new_n18 new_n15 new_n17
+XOR y0 x2 new_n18
+XOR y2 x1 new_n13
+OR new_n12 new_n10 x3
+NOT new_n9 x0
+OR new_n16 new_n9 x2
+AND new_n21 new_n12 new_n16
+XOR y3 y2 new_n21
+OR new_n23 y0 y3
+XOR y1 new_n13 new_n23
+end SLP
+end circuit

@@ -79,6 +79,9 @@ def main():
                                         'label': 'F-%s-%s-s%d-%s' % (t, a, s, tag)}, **extra)])
     # kernel version: v1 = as committed in 3a71f0f (no-op candidates allowed), v2 = no-op filter
     noop = {'v1': 0}.get(tag, 1)
+    if tag == 'v3':   # adaptive skeleton share: only the full-config runs are affected
+        tasks = [[dict(r, adaptive=True) for r in t if r.get('config') == 'full'] for t in tasks]
+        tasks = [t for t in tasks if t]
     for t in tasks:
         for r in t:
             if r['tool'] == 'boolflux':
