@@ -1,0 +1,67 @@
+{
+  "method": "Direct evaluation of one producer and one partial auxiliary control; no search.",
+  "construction": {
+    "name": "two_clean_diagonals",
+    "gates": 10,
+    "targets": 4,
+    "entries": 4,
+    "label_rank": 3,
+    "trace_rank_for_four_rows": 4,
+    "trace_masks": [
+      1,
+      4,
+      2,
+      8
+    ],
+    "entry_labels": [
+      48,
+      192,
+      96,
+      144
+    ],
+    "all_gates_live_distinct": true
+  },
+  "clean_diagonal_rank": 2,
+  "physical_even_rank": 4,
+  "even_entry_labels": [
+    3,
+    12
+  ],
+  "odd_entry_labels": [
+    6,
+    9
+  ],
+  "nonentry_forest": {
+    "vertices": 10,
+    "edges": 6,
+    "components": 4,
+    "incidence_rank": 6,
+    "forest": true
+  },
+  "lifted_class_trees": [
+    {
+      "own_class": 0,
+      "named_residue_sum": 5,
+      "vertices": 5,
+      "edges": 4,
+      "components": 1,
+      "incidence_rank": 4,
+      "forest": true
+    },
+    {
+      "own_class": 1,
+      "named_residue_sum": 5,
+      "vertices": 5,
+      "edges": 4,
+      "components": 1,
+      "incidence_rank": 4,
+      "forest": true
+    }
+  ],
+  "partial_auxiliary_control": {
+    "gates": 6,
+    "event_free": true,
+    "noncycle_diagonal_feeds_row": true,
+    "scope": "Partial circuit only; not an augmented solution."
+  }
+}

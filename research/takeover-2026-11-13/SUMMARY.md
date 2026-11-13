@@ -1,11 +1,12 @@
 # What changed in the takeover
 
-**Current continuation after `1fffbd0`:** [rank-one exclusion and even-direction confinement](frontier/README.md).
-It closes the rank-one supplier branch, confines every even intermediate of a rank-two
-supplier to its clean own span, and proves a restricted diagonal interface costs twelve.
-The [preceding tradeoff pass](tradeoff/README.md) coupled clean supply with coset occupancy
-and established physical-relation rank and causal-span constraints. The [preceding
-supplier pass](compatibility/README.md) proved a coset cap and entry deletion.
+**Current continuation after `a7ff345`:** [the ten-gate producer branch is closed](crossing/README.md).
+Every ten-gate first-sheet cone needs at least 22 joint gates under the stated no-feedback
+hypothesis. The remaining 21-gate route is an eleven-gate row cone already containing
+three independent clean diagonals. The [preceding frontier pass](frontier/README.md)
+excluded rank-one supply and confined even intermediates at rank two; the
+[tradeoff pass](tradeoff/README.md) established relation rank and causal span.
+The [compatibility pass](compatibility/README.md) proved a coset cap and entry deletion.
 The [row-cost pass](row-cost/README.md)
 proved exact local costs, source saturation, and completion geometry. The [earlier pass](continuation/README.md)
 proved affine-completion bounds and a sparse counterexample to controlling savings by

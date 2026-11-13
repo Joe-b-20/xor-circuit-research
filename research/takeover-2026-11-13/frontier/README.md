@@ -5,6 +5,8 @@ reviews, not formal verification or human certification. The general joint 0/1 i
 under its stated hypothesis remains **21 to 22**; unrestricted MixColumns remains
 **75 to 88**. No optimality claim about 88 is made.
 
+**Subsequent progress:** [the crossing pass](../crossing/README.md) excludes the remaining odd-coset route and proves the joint cost is at least 22 whenever the first-sheet cone has ten gates. Its augmented restricted bound also covers arbitrary independent even diagonal bases. The frontier below records this earlier pass.
+
 ## One clean direction cannot support a cheap consumer
 
 [Theorem R1](RANK_ONE.md) closes the entire rank-zero/rank-one supplier branch. A fixed

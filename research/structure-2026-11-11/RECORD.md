@@ -1756,3 +1756,75 @@ a coset must cross the two own classes modulo W_b while preserving residue; that
 remains open. The other split remains the eleven-gate source-only augmented supplier,
 whose minimum is 11 or 12. General joint 21-to-22 and unrestricted MixColumns 75-to-88
 intervals are unchanged.
+
+## 34. The ten-gate producer branch is closed (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/crossing/README.md`](../takeover-2026-11-13/crossing/README.md).
+This continues reviewed commit `a7ff345`. The proofs received independent machine review;
+they are not formal verification or human certification.
+
+**Universal rank-two normal form (proved).** For every ten-gate first-sheet producer of
+actual clean rank two, the two own classes each contain four named values whose residues
+sum to `w+Pw`, nonzero for a nonconstant functional w annihilating the clean own plane.
+Writing V for the physical even span and R for its residue image, E2 gives `ker(rho|V)=W`
+and `dim V=2+dim R`. The odd relation graph preserves own class and residue modulo R.
+The named class sums rule out residue ranks zero and one. Rank two forces at least four
+components and exactly four entries. Combined with the physical even count, this leaves
+at most two odd helpers. One helper gives at most five independent non-entry relations:
+all doubled nonclean representations share the same three-term named expansion, so each
+pair of their equations sums to the same formal vector. At least six are needed.
+Thus there are exactly two helpers, four independent physical even values, and four
+entries. Two even own masks and the four triples are the six first occurrences.
+
+The six physical non-entry edges form a forest with four components, one for each
+own-class/residue-coset combination. Its free-block projection has two four-node class
+trees. Restoring the two odd-entry edges gives one five-node tree per own class, hence
+one helper and one odd entry in each class. The two even-entry labels form a basis of R;
+the odd-entry labels lie outside R. When the clean own plane omits full parity, both
+even directions must first be generated in the class with three ordinary inputs; the
+class rooted at the single remaining input cannot originate an even direction.
+
+**Odd-coset closure (proved).** Suppose two available odd nodes of one diagonal coset
+crossed the two own classes. With only two helpers, the two physical clean values could
+then have at most one pair representation in total. To supply six non-entry equations,
+the two nonclean even values would need three and two representations. The two-helper
+saturation lemma forces an alternating four-cycle, reducing rank to at most five.
+There are no even-only equations because the physical even values are independent.
+This contradiction excludes the crossing. Together with E2, every within-one-coset
+difference belongs to the clean span W. No single appended XOR can enlarge that span.
+
+**Joint cost for a ten-gate first cone (proved and attained).** At clean rank two, the
+full supplier profile is deficient for an eleven-gate consumer. The previous rank-one
+proof covers the other possible clean ranks. Hence every fixed ten-gate producer needs
+at least twelve consumer-bearing gates. Under no feedback into first-sheet target
+ancestors, a ten-gate first-sheet cone therefore forces joint cost at least 22. At the
+only possible exception, one extra zero-consumer gate leaves ten consumer-bearing gates
+whose entries must all be clean. A source-side new clean sum stays in W; a consumer-block
+exit also stays in W by chronological span. At rank at most one, one extra value cannot
+reach the required rank three. Thus that exception is impossible as well. The existing
+22-gate completion has exactly a ten-gate first-sheet cone and attains the bound.
+
+**Remaining joint route.** A general joint 21 must have eleven gates inside its first
+row cone, ten consumer-bearing gates, and three independent clean diagonals already
+within that cone. Any eleven-gate augmented supplier likewise uses all eleven gates
+in the row ancestor union: a ten-gate row cone cannot acquire the third direction from
+its one remaining gate. This excludes a separate export route, not the eleven-gate
+augmented core itself.
+
+**Restricted augmented improvements (proved).** The no-extra-mixed, event-free lower
+bound twelve now covers every independent even diagonal basis. With at most one cycle
+mask, at least three pure triples are forced. With three cycle masks the prior incidence
+argument applies. With two cycle masks, two unpaired triples and the noncycle precursor
+leave one pure gate, insufficient to meet both paired incidence demands. Attainment is
+still shown for one basis, not for every prescribed basis. A separate causal argument
+shows that when two diagonals are noncycle and all diagonals feed rows, one additional
+mixed gate is insufficient: independence of the seven required values limits its
+required-node service, and their component masks prevent a sole such value from carrying
+both noncycle diagonals to a row. This remains an event-free, one-auxiliary obstruction.
+
+**Verification and limits.** The direct check evaluates one prescribed ten-gate producer
+and its actual entry labels, four-component forest, and two lifted class trees. A small
+partial circuit illustrates the limit of the auxiliary argument; it is not an augmented
+solution. No circuit search or computer-driven elimination was used. The unrestricted
+augmented interval remains 11 to 12, the general no-feedback joint interval remains
+21 to 22, and unrestricted MixColumns remains `75<=L<=88`.
