@@ -73,6 +73,12 @@ def main():
                                         'caps': caps, 'start': st, 'seconds': secs, 'seed': s,
                                         'round_s': 10 if secs <= 60 else 30,
                                         'label': 'F-%s-%s-s%d-%s' % (t, a, s, tag)}, **extra)])
+    # kernel version: v1 = as committed in 3a71f0f (no-op candidates allowed), v2 = no-op filter
+    noop = {'v1': 0}.get(tag, 1)
+    for t in tasks:
+        for r in t:
+            if r['tool'] == 'boolflux':
+                r['set'] = dict(r.get('set', {}), skip_noop=noop)
     out.write_text(json.dumps({'tasks': tasks}, indent=0) + '\n')
     print(len(tasks), 'tasks,', sum(len(t) for t in tasks), 'runs,',
           round(sum(r['seconds'] for t in tasks for r in t) / 3600, 2), 'CPU-hours of search budget')
