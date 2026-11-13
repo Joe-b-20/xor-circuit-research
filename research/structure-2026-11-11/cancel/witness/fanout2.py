@@ -1,8 +1,8 @@
-"""CHECK (phase 9, main agent): double transposition gives a circuit of the same size with fan-out <= 2.
+"""CHECK (phase 9, main agent): double transposition (C^T)^T, same size, for MixColumns circuits.
 
-For a circuit C (fully live, every input used) of a 32 x 32 map: C^T has G(C^T) = G(C) and every node of C^T is
-read at most twice (each transposed gate value T(v) is a term of the two chains of v's operands; chain
-intermediates are read once). Applying it twice gives a circuit for the original map with fan-out <= 2.
+A hypothesis tested here and REFUTED by its output: that double transposition yields fan-out <= 2. It does not
+(the witnesses keep fan-out 22; the 88s keep 5), because a transposed node is read by the chains of all of its
+operands' readers' structure, not only twice. Kept as the record of that negative check.
 This script builds (C^T)^T for given circuits of MixColumns, verifies it, and reports max fan-out, G and the
 charged families. Direct construction and evaluation only; no search.
 usage: python3 fanout2.py SPEC [SPEC ...]
