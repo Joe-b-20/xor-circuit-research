@@ -1,0 +1,78 @@
+== windows ==
+W: {0: [0, 7], 1: [0, 1, 7], 2: [1, 2], 3: [2, 3, 7], 4: [3, 4, 7], 5: [4, 5], 6: [5, 6], 7: [6, 7]}
+row weights: 3 on own block, 2 on each other window block: ok
+pairwise intersections with 2 blocks: {(0, 1): [0, 7], (3, 4): [3, 7]} max 2
+nonempty triple intersections: [[7]]
+own-block violations (j in W_k and k in W_j): []
+co-occurrence edges: [(0, 1), (0, 7), (1, 2), (1, 7), (2, 3), (2, 7), (3, 4), (3, 7), (4, 5), (4, 7), (5, 6), (6, 7)]
+listed cliques are cliques, maximal, cover all edges: ok
+  W_0 extends by [1]
+  W_1 extends by []
+  W_2 extends by [7]
+  W_3 extends by []
+  W_4 extends by []
+  W_5 extends by []
+  W_6 extends by []
+  W_7 extends by []
+
+== sole event at an output: kappa, credit, x from the row values ==
+sheet 0: w 5 kappa 2 x 0 | with credit: 83-form 82 84-form 83 best 83 | C inside [1] (no forced credit): 83-form 81 84-form 82 best 82
+sheet 1: w 7 kappa 2 x 2 | with credit: 83-form 82 84-form 81 best 82
+sheet 2: w 5 kappa 2 x 0 | with credit: 83-form 82 84-form 83 best 83 | C inside [7] (no forced credit): 83-form 81 84-form 82 best 82
+sheet 3: w 7 kappa 3 x 0 | with credit: 83-form 81 84-form 82 best 82
+sheet 4: w 7 kappa 2 x 0 | with credit: 83-form 82 84-form 83 best 83
+sheet 5: w 5 kappa 2 x 0 | with credit: 83-form 82 84-form 83 best 83
+sheet 6: w 5 kappa 2 x 0 | with credit: 83-form 82 84-form 83 best 83
+sheet 7: w 5 kappa 2 x 0 | with credit: 83-form 82 84-form 83 best 83
+
+tail n=3: G 5, single event T (w 4), u private (no window); event-free circuit 6 gates; Theorem W bound 2n-(w-3) = 5 = G
+tail n=5: G 7, single event T (w 6), u private (no window); event-free circuit 10 gates; Theorem W bound 2n-(w-3) = 7 = G
+tail n=8: G 10, single event T (w 9), u private (no window); event-free circuit 16 gates; Theorem W bound 2n-(w-3) = 10 = G
+
+r88: G 88 reduced True | F 0, hidden events 0, R 88, Q 0 | credit operands (no window, in Eh u Q) 0 | W1 non-adjacent pairs 0
+   C': 88 gates (K 0), event-free, outputs ok; families [11, 11, 10, 15, 10, 10, 10, 10] sum 87; U 1 (chain gates in no family 0); |L01| 22, |X| 0
+   bounds: direct(84-sum(w-2)) 84 | Theorem V (83) 83 | 84 form 84 | this circuit 83+U+|E|+|Q|-K 84
+r89: G 89 reduced True | F 0, hidden events 0, R 89, Q 0 | credit operands (no window, in Eh u Q) 0 | W1 non-adjacent pairs 0
+   C': 89 gates (K 0), event-free, outputs ok; families [10, 12, 10, 13, 11, 10, 10, 10] sum 86; U 3 (chain gates in no family 0); |L01| 22, |X| 0
+   bounds: direct(84-sum(w-2)) 84 | Theorem V (83) 83 | 84 form 84 | this circuit 83+U+|E|+|Q|-K 86
+circuits_2.txt:783: G 88 reduced True | F 1, hidden events 0, R 86, Q 1 | credit operands (no window, in Eh u Q) 1 | W1 non-adjacent pairs 1
+   f=78 out w=7 B=[0, 1, 7] C=[2] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=R/Q
+   C': 92 gates (K 6), event-free, outputs ok; families [11, 10, 11, 13, 11, 10, 10, 10] sum 86; U 6 (chain gates in no family 3); |L01| 23, |X| 2
+   bounds: direct(84-sum(w-2)) 80 | Theorem V (83) 82 | 84 form 81 | this circuit 83+U+|E|+|Q|-K 85
+circuits_3.txt:7451: G 88 reduced True | F 1, hidden events 0, R 86, Q 1 | credit operands (no window, in Eh u Q) 1 | W1 non-adjacent pairs 1
+   f=106 out w=7 B=[0, 1, 7] C=[2] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=R/Q
+   C': 92 gates (K 6), event-free, outputs ok; families [11, 10, 11, 14, 11, 10, 10, 10] sum 87; U 5 (chain gates in no family 3); |L01| 23, |X| 2
+   bounds: direct(84-sum(w-2)) 80 | Theorem V (83) 82 | 84 form 81 | this circuit 83+U+|E|+|Q|-K 84
+circuits_3.txt:7651: G 88 reduced True | F 1, hidden events 0, R 86, Q 1 | credit operands (no window, in Eh u Q) 1 | W1 non-adjacent pairs 1
+   f=71 out w=7 B=[0, 1, 7] C=[2] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=R/Q
+   C': 92 gates (K 6), event-free, outputs ok; families [11, 10, 11, 13, 10, 10, 10, 10] sum 85; U 7 (chain gates in no family 3); |L01| 23, |X| 2
+   bounds: direct(84-sum(w-2)) 80 | Theorem V (83) 82 | 84 form 81 | this circuit 83+U+|E|+|Q|-K 86
+circuits_3.txt:1451: G 88 reduced True | F 2, hidden events 0, R 85, Q 1 | credit operands (no window, in Eh u Q) 1 | W1 non-adjacent pairs 1
+   f=96 out w=7 B=[0, 1, 7] C=[2] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=R/Q
+   f=104 int w=6 B=[0, 1] C=[7] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=R/F
+   C': 96 gates (K 11), event-free, outputs ok; families [10, 13, 11, 14, 11, 10, 10, 11] sum 90; U 6 (chain gates in no family 5); |L01| 27, |X| 4
+   bounds: direct(84-sum(w-2)) 76 | Theorem V (83) 80 | 84 form 77 | this circuit 83+U+|E|+|Q|-K 81
+circuits_3.txt:3001: G 88 reduced True | F 2, hidden events 0, R 86, Q 0 | credit operands (no window, in Eh u Q) 0 | W1 non-adjacent pairs 0
+   f=100 int w=5 B=[1, 7] C=[2] J=[1] A=1 t=0 in=3 kappa=2 x=0 ops=R/R
+   f=108 int w=6 B=[0, 1] C=[7] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=R/R
+   C': 95 gates (K 9), event-free, outputs ok; families [10, 14, 11, 15, 11, 10, 10, 11] sum 92; U 3 (chain gates in no family 3); |L01| 26, |X| 2
+   bounds: direct(84-sum(w-2)) 77 | Theorem V (83) 79 | 84 form 78 | this circuit 83+U+|E|+|Q|-K 79
+witness_mc_block: G 521 reduced True | F 32, hidden events 0, R 0, Q 489 | credit operands (no window, in Eh u Q) 36 | W1 non-adjacent pairs 268
+   f=86 out w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] A=0 t=0 in=3 kappa=2 x=0 ops=Q/Q
+   f=107 out w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] A=0 t=0 in=3 kappa=2 x=0 ops=Q/Q
+   f=128 out w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] A=0 t=0 in=3 kappa=2 x=0 ops=Q/Q
+   f=148 out w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] A=0 t=0 in=3 kappa=2 x=0 ops=Q/Q
+   f=169 out w=7 B=[0, 1, 7] C=[2, 3, 4, 5, 6] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=Q/Q
+   f=190 out w=7 B=[0, 1, 7] C=[2, 3, 4, 5, 6] J=[1] A=1 t=0 in=3 kappa=2 x=2 ops=Q/Q
+   ... kappa multiset: {2: 28, 3: 4} sum in 100 x total 8
+   C': 152 gates (K 152), event-free, outputs ok; families [12, 12, 12, 16, 12, 12, 12, 12] sum 100; U 52 (chain gates in no family 52); |L01| 32, |X| 8
+   bounds: direct(84-sum(w-2)) 453 | Theorem V (83) 504 | 84 form 497 | this circuit 83+U+|E|+|Q|-K 504
+   witness: distinct operands of visible events 36, of them in Q 36; outputs all events: True
+
+converse: r88 with output gate 74 rewritten through an event: events [75] (cancel [[7]]), block-monotone True, reduced False
+kappa counterexample circuit: G 97 (r88 + 10 - 1), reduced True
+r88+{2,7}-event: G 97 reduced True | F 1, hidden events 1, R 89, Q 6 | credit operands (no window, in Eh u Q) 0 | W1 non-adjacent pairs 0
+   f=119 int w=4 B=[2, 7] C=[3] J=[3] A=None t=1 in=1 kappa=0 x=0 ops=Q/Q
+   C': 92 gates (K 3), event-free, outputs ok; families [11, 11, 10, 17, 10, 10, 10, 10] sum 89; U 3 (chain gates in no family 2); |L01| 22, |X| 0
+   bounds: direct(84-sum(w-2)) 89 | Theorem V (83) 90 | 84 form 91 | this circuit 83+U+|E|+|Q|-K 91
+   the event f=119: B=[2, 7], J=[3], own blocks of J in B: [] -> support avoids own blocks; t=1, kappa=0 (VISIBLE 5.3 says -1)

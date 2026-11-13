@@ -1351,15 +1351,55 @@ one event; event-free minimum exactly 2n - 1; saving n - 2 = w(T) - 2. No event-
 (Lemma Z). For the first event e of a reduced, fully live circuit, the gadget P(a) + P(b) (P zeroes the
 cancelled blocks) has overhead at most s_e + delta_e - 1, where s_e counts shared gate ancestors carrying the
 cancelled blocks whose nonzero projections are not values of nodes other than e. Only shared cancelled content
-costs; private content is free to remove. The formula equals the explicit overhead on every tested circuit
-(prefix family n - 2, triangle circuits 2, Q_3 2, 2, 2, 3); per circuit only, no class bound beyond Theorem 2.
+costs; private content is free to remove. The formula equals the explicit overhead on the prefix family (n - 2),
+the single-event triangle circuits (2) and per step on Q_3 (2, 2, 2, 3); elsewhere it is only an upper bound (the
+witness's overhead -322 lies far below its sum of terms, each >= -1; phase-12 correction). Per circuit only.
 **Lemma L (reviewer; proved).** Shared carriers of a sole event at a sheet-j output lie inside
 (W_j u C) n W_j' for the sheet j' they feed; for the triangle, on {1, 2}, {2, 7} or block 2.
 **Correction (phase 10).** Zeroing a cancelled block can make the event removable (a = x + y, b = a + z,
 e = b + x duplicates b; embedded in MixColumns, 148 gates). Wording fixes: C4 kept; circuit dependence is not
 circular; Theorem F limits unconstrained term counting only; Proposition R's 76 is a proof obligation of that
 route.
-**Next.** A trade-off form: show that each shared carrier counted by s_e is paid for elsewhere (first local
-question via Lemma L inside F_2 or J_01); then the two-event regime.
+**Next (superseded by section 27).** Phase 11 proposed a trade-off for shared carriers and then the two-event
+regime; phase 12 replaced both by the visible-event accounting.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88, and nothing excludes an 87.
+
+## 27. Visible cancellations (phase 12; `visible/VISIBLE.md`; review `visible/review/`)
+
+Phase 12 (2026-11-13). The global repair, the output-support consequences and the sole-event window credit
+are the user's, verified independently here and by machine review (own code; not human review); Theorem V,
+its 84 form, the tail family and Proposition M are new. No search of any kind.
+**Theorem G (proved).** Trace back from the outputs, stopping at the first event on each branch: the events
+reached are the visible ones F, the non-events reached are retained (R); the rest (hidden events E \ F and Q)
+is separated from the outputs by F. Rebuilding only F event-free (K gates) and keeping R gives an event-free
+circuit, so G >= B + |E| + |Q| - K (no reducedness needed for the inequality; depth and internal values not
+preserved). For MixColumns B = 84 via event-free => block-monotone (one way only).
+**Lemma S and windows (proved; checked).** A visible event or retained gate lies inside the window of every
+sheet it reaches along an event-free path: at most 3 blocks, at most 2 for two sheets ({0,7} or {3,7}),
+block 7 for three or more. A gate outside every window is never retained or visible.
+**Window credit (proved).** If a cancelled block and a block of a visible event never share an output, the
+operand carrying both is hidden. Sole event: G >= 84 - (w - 3), giving 80 at weight-7 outputs. Three-block
+visible events always have a hidden operand. Sharp for general maps (tail family: saving w - 3 exactly).
+**Theorem V (new; proved given Theorem 9.2).** Theorem 9.2's proof gives G' >= 83 + U for event-free
+circuits (U = gates in no charge family; designated outputs, no reducedness). A visible event has at most one
+own block of the sheets it reaches (own-block property), and the rest of it can be rebuilt with gates in no
+family. Hence G >= 83 + |E \ F| + |Q| - sum kappa(f), -1 <= kappa <= 4 whatever the weight; per-sheet form:
+each visible event supplies at most 5 charged gates, all of its own block's sheet.
+**84 form (proved given Theorem 17.3 bounding the whole local circuit L_01; reviewed).** G' >= 84 + |U \ X|,
+X = block-0 gates feeding sheet 1 only. Consequences: one visible event => G >= 80 (81 except one shape);
+sole event at an output => 83 (sheets 0, 2, 4, 5, 6, 7), 82 (sheets 1, 3; sheets 0 and 2 when C = {1} resp.
+{7}); G <= 79 needs two visible events, G <= 76 three. Hidden events cost nothing.
+**Limits.** Up to 4 lost per visible event (nothing above 75 with three or more); the content is a lower bound
+on the retained part, |R| + sum in(f) >= 83, never on the hidden part; when every output is a visible event
+(superposition witness, R empty) it says nothing about G. Proposition M: in a minimum circuit with fewest
+events every event has weight >= 3 + |dead_e| (local only).
+**Phase-11 corrections applied in `repair/REPAIR.md`:** Theorem P's formula is exact only on the prefix
+family, the single-event triangle circuits and per step on Q_3 (witness overhead -322/-324 vs terms >= -1:
+extra pruning); 146 is the direct repair (projection 199/197); "only s_e can improve" limited to that
+estimate; carriers need not be paid one by one, and "paid elsewhere" means genuine slack beyond the baseline;
+the "any number of shared carriers" claim withdrawn (no bound established is not no bound possible); the prefix
+family has windows but no separation; event-free => block-monotone is one-way; Lemma L applies to two-event
+circuits only along paths avoiding the other event.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88, and nothing excludes an 87.

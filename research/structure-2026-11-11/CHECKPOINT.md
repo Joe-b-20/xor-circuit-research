@@ -1,11 +1,11 @@
-# Structural study: checkpoint for resuming (phases 3-11, 2026-11-12/13)
+# Structural study: checkpoint for resuming (phases 3-12, 2026-11-12/13)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`repair/REPAIR.md` (phase 11), `copies/COPIES.md` (phase 10), `cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`visible/VISIBLE.md` (phase 12), `repair/REPAIR.md` (phase 11), `copies/COPIES.md` (phase 10), `cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
 `compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
 ## Established (statements with their hypotheses)
@@ -98,19 +98,31 @@ reviews are machine reviews by separate model instances, not human reviews.
 - Theorem P (new): saving <= s_e + delta_e - 1 (shared ancestors carrying the cancelled blocks without clean
   projections, counted as in review: gates, nonzero, not values of nodes other than e; circuit reduced and live,
   first event); private cancelled content is free; Lemma Z (zeroing keeps circuits event-free). Formula exact on
-  all tested circuits: triangle circuits 2 (G >= 82 for them), Q_3 2,2,2,3; no class bound beyond the direct one.
+  the prefix family, triangle circuits (2; G >= 82 for them) and per step on Q_3; an upper bound elsewhere.
 - Lemma L (reviewer): shared carriers of a sole output event lie in (W_j u C) n W_j'.
 - Phase-10 corrections (restriction remark, C5, Corollary Z, Proposition R wording).
 
+## Phase 12 results (RECORD 27; `visible/VISIBLE.md` is the coherent account)
+- Theorem G (user's; verified): only visible events (reached from outputs before any further event) need
+  rebuilding; G >= B + |E| + |Q| - K. Lemma S: visible events lie in windows (<= 3 blocks, <= 2 for two
+  sheets, {7} for three). Window credit (user's): sole event >= 84 - (w - 3); tail family shows it sharp in
+  general.
+- Theorem V (new): rebuild visible events off the charge families of Theorem 9.2 (G' >= 83 + U):
+  G >= 83 + |E \ F| + |Q| - sum kappa, kappa <= 4 any weight; per-sheet form. 84 form via Theorem 17.3
+  (G' >= 84 + |U \ X|). One visible event => >= 80; sole output event => 82-83; G <= 79 => two visible
+  events, G <= 76 => three. Machine-reviewed (one false sentence fixed: kappa = 0 not -1 when t = 1).
+- Limits: up to 4 per visible event; lower bound on the retained part only; vacuous when all outputs are
+  visible events (witness). Phase-11 overstatements corrected in REPAIR.md.
+
 ## Next steps (the evidence suggests)
-1. Trade-off for shared cancelled content: show that each carrier counted by s_e is paid for elsewhere in the
-   block-monotone accounting (s_e alone is unbounded over wasteful circuits), aiming at "sole event at a sheet-j
-   output => G >= 84 - t_j" with t_j < w - 2. First local question via Lemma L: does an absent clean part of a
-   {1,2} or {2,7} carrier cost a gate in F_2 or J_01? The prefix family must be where the argument fails.
-2. The two-event regime, forced for G <= 78 unless a heavy internal event exists.
-3. Not recommended: copy or rank-of-copy measures (phase 10), relative complexity for the byte parities as an
-   easier first case (it contains an improvement of 75), further distinct-charge statements (capped at 66),
-   fixed-rule transposes (refuted), restriction sums with all-circuit waste bounds (phase 7).
+1. A lower bound on hidden work in terms of visible events: Theorem V reduces "below 80" to circuits with
+   several visible events and little hidden work; the per-sheet form says each visible event replaces at most
+   five charged gates of one sheet. What must the gates behind a sheet's visible events contain?
+2. Sheet-1 borrowers: their rebuilt block-0 gates are where 83 and 84 differ.
+3. Not recommended: per-event carrier lemmas, "one event then two" sequences, bounds on s_e alone, copy or
+   rank-of-copy measures (phase 10), relative complexity for the byte parities as an easier first case,
+   further distinct-charge statements (capped at 66), fixed-rule transposes, restriction sums with
+   all-circuit waste bounds (phase 7).
 Method restriction (applies to every agent): no SAT, no exhaustive enumeration or finite-family checks, no exact
 least-gate searches (including BFS or Dijkstra over value sets), no exhaustive subset minimisation. It was not
 observed on 2026-11-12 in the runs listed in `joint/FINITE_AUDIT.md`; nothing was rerun.

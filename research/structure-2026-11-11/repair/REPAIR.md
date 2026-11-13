@@ -12,6 +12,13 @@ agent or by the reviewer. Machine review is in `review/REVIEW.md` (not human rev
 
 Nothing here changes 75 <= L(MixColumns) <= 88, and nothing excludes an 87.
 
+**Phase-12 note (2026-11-13).**
+- `visible/VISIBLE.md` refines this account:
+  - only visible events need rebuilding;
+  - the class bounds below are improved: a sole event at a weight-7 output gives 81-82, not 79.
+- Statements of this file that were overstated are corrected in place: sections 0, 3, 4 (table and the
+  paragraph after it), 5, 6 and 7.
+
 ## 0. Summary
 
 - **Repair inequality.** A circuit with whole-block cancellations can be turned into one without them by
@@ -24,10 +31,17 @@ Nothing here changes 75 <= L(MixColumns) <= 88, and nothing excludes an 87.
 - **Projection repair** (new). The saving of a cancellation is limited by the cancelled content that sits in
   *shared* ancestors whose clean versions are absent. Cancelled content that is private to the event costs
   nothing to remove.
-- **Exactness on the tests.** With the definition fixed in review, Theorem P's formula equals the explicit
-  repair overhead on every tested circuit: the prefix family, the triangle circuits (2) and Q_3.
-- **What is not achieved.** No class bound better than the direct one is proved for any event profile of
-  MixColumns.
+- **Where the formula is exact (corrected in phase 12).** Theorem P's formula equals the explicit projection
+  overhead in the following cases:
+  - the prefix family;
+  - the three single-event triangle circuits (2);
+  - each step of Q_3's sequential repair (2, 2, 2, 3).
+
+  It is only an upper bound elsewhere. Each term s_e + delta_e - 1 is at least -1, while the 32-event
+  superposition witness has projection overhead -322 (-324 in the reviewer's order). Pruning there removes
+  dominated work that the formula does not count.
+- **What is not achieved here.** No class bound better than the direct one is proved in this file for any
+  event profile of MixColumns. Phase 12 proves some (`visible/VISIBLE.md`).
 
 ## 1. The repair lemma (user's; verified)
 
@@ -58,6 +72,8 @@ input, after a partial cancellation inside one block; that is a duplicate, remov
 **Compatibility with the recorded 84.** In an event-free circuit, block supports grow along every edge. So every
 ancestor's support lies inside each descendant's, and the circuit is block-monotone in RECORD 7's sense. There
 Corollary 17.4 gives at least 84 gates for MixColumns.
+The implication goes one way only. Block-monotone circuits may have events, for example a cancelled block that a
+later gate restores. The repair needs only the implication into the class that the 84 covers.
 - The repaired circuit may in any case be taken reduced and fully live, since normalisation preserves
   event-freeness; so whatever reducedness the local proofs use is available.
 - Its status is "proved given Theorem 17.3 and the decomposition of RECORD 9", with hand proofs that have had
@@ -136,7 +152,11 @@ So the saving is exactly n - 2 = w(T) - 2, and Theorem 2 is sharp for general ma
 - No penalty that depends only on the number of events, and not on the dimension, is possible for general maps.
 - The saving is large because the cancelled component x sits in every shared partial sum, and no x-free partial
   sum exists.
-- Any proposed improvement must reproduce exactly this saving here. Both repairs below do.
+- Any proposed general bound must be compatible with this saving. It need not be exact on the family unless
+  exactness is claimed. Both repairs below are exact here.
+- The family does have output windows: p_i on {x, y_1..y_i}, T on {y_1..y_n}. What it lacks as a control is
+  separation: T's support together with the cancelled x lies in the single window of p_n. So x co-occurs with
+  every block of T, and no operand is forced outside the windows (phase 12, section 4).
 - It does not rule out a stronger MixColumns-specific theorem.
 
 ## 4. Projection repair: only shared cancelled content costs (new)
@@ -207,15 +227,23 @@ event's quantities are taken in the current circuit, and the overheads add.
 | circuits_2.txt line 783, circuits_3.txt lines 7451, 7651 (triangle event only) | 88 | 1 | 5 | 4 / 2 | G >= 82 |
 | circuits_3.txt lines 1451, 3001 (triangle event plus a {0,7} exit) | 88 | 2 | 9, 7 | 8, 7 / 5, 5 | G >= 79 |
 | r88, r89 | 88, 89 | 0 | 0 | 0 / 0 | G >= 84 |
-| superposition witness (block order) | 521 | 32 | 120 | -375 / -322 (-324 with the reviewer's order of processing) | the event-free repair has 146 gates |
+| superposition witness (block order) | 521 | 32 | 120 | -375 / -322 (-324 with the reviewer's order of processing) | the direct repair has 146 gates; the projection repair has 199 (197 in the reviewer's order) |
 | Q_3 (q3_28; event-free baseline 30) | 28 | 4 | 13 | 11 / 9 | G >= 21 (weak; Q_3 lies at least 2 below the bound 30) |
 
-With the definition above, the formula s_e + delta_e - 1 equals the explicit overhead on every tested circuit
-(review, own code; `repair.py` also checks it):
-- the three single-event triangle circuits give 2 (line 783: the shared carriers with absent projections are
-  two {1,2} gates, and delta_e = 1), against w - 2 = 5;
-- Q_3's four events give 2, 2, 2, 3;
-- the prefix family gives n - 2.
+With the definition above, the formula s_e + delta_e - 1 equals the explicit projection overhead in these
+cases (review, own code; `repair.py` also checks it):
+- the three single-event triangle circuits give 2, against w - 2 = 5. In line 783 the shared carriers with
+  absent projections are two {1,2} gates, and delta_e = 1.
+- Q_3's four events give 2, 2, 2, 3, per step of the sequential repair.
+- The prefix family gives n - 2.
+
+Elsewhere it is only an upper bound (corrected in phase 12):
+- **Two-event lines 1451 and 3001.** The formula was evaluated for the first event only (2), against a
+  total overhead of 5.
+- **Superposition witness.** Every term is at least -1, so the formulas sum to at least -32, while the
+  measured overhead is -322 (-324). The difference is extra pruning: after an event is replaced, its
+  dominated ancestors without content on the cancelled blocks die as well. The proof counts only the deaths
+  (i)-(iii).
 (The first version of `repair.py` counted cancelled inputs and zero projections too, and reported 5 for the
 triangle circuits.) These are statements about those circuits, which have 88 gates anyway, not class bounds.
 
@@ -235,25 +263,36 @@ triangle circuits.) These are statements about those circuits, which have 88 gat
   output at 3 or 5. For events at internal gates no MixColumns feature enters these arguments. The prefix
   mechanism needs a heavy event whose cancelled block runs through many shared nodes with no clean versions; in
   MixColumns that can only be an internal, non-output value.
-- **Beyond the direct bound.** Theorem P is a per-circuit improvement whose formula is exact on every tested
-  circuit (82 for the three single-event triangle circuits) and an explanation (only shared cancelled content
-  costs). It is not a better class bound: no event profile of MixColumns gets a proved bound above Theorem 2's.
+- **Beyond the direct bound.** Theorem P is a per-circuit improvement, with an explanation: only shared
+  cancelled content costs.
+  - Its formula is exact in the cases listed in section 4, which give 82 for the three single-event triangle
+    circuits.
+  - It is not a class bound. Class bounds above Theorem 2 come only in phase 12, by a different mechanism.
 
 ## 6. Open for unrestricted MixColumns
 
 - 75 <= L <= 88 stands. A circuit with 76-83 gates must have events with sum (w(e) - 2) >= 84 - G. Nothing
   here excludes such circuits.
-- A class bound above 79 for a sole event at a weight-7 output needs control of s_e in every circuit with that
-  profile, not only in the sampled ones.
+- (Phase 12: a sole event at a weight-7 output gives 82 for sheets 1 and 4, and 81 for sheet 3. This is
+  proved without any control of s_e; see `visible/VISIBLE.md`.)
 - Many events and heavy internal events are not controlled by any argument here.
 
 ## 7. Next direction (justified by Theorem P and the sharpness family)
 
-**Main target: a trade-off, not a bound on s_e alone.** The only quantity that can lower the saving below w - 2
-is the shared cancelled content s_e. But s_e alone cannot be bounded for a class: wasteful circuits with the
-same event profile can have any number of shared carriers (review). A class statement "every circuit whose sole
-event is at a sheet-j output has at least 84 - t_j gates, t_j < w - 2" must show that each counted carrier is
-paid for elsewhere in the block-monotone accounting.
+**Main target as stated in phase 11, corrected in phase 12.**
+- *Scope of s_e.* Within the estimate min(w(e) - 2, s_e + delta_e - 1), the only term that can fall below
+  w(e) - 2 is s_e + delta_e - 1. Other estimates can improve the direct penalty differently, and phase 12
+  does so by a different mechanism.
+- *No bound on s_e, but none disproved.* No useful small bound on s_e has been established for any class.
+  The review's statement that wasteful circuits with the same profile "can have any number of shared
+  carriers" was not supported by a construction for a fixed reduced MixColumns class, and is withdrawn.
+  Not having a bound is different from proving that none exists.
+- *What a class statement would need.* For "every circuit whose sole event is at a sheet-j output has at
+  least 84 - t_j gates, t_j < w - 2", the shared cancelled content would have to be matched by genuine
+  additional slack beyond the applicable baseline. Membership in gates that the baseline already counts does
+  not qualify.
+- *Carriers need not be paid one by one.* Joint reconstruction, repeated clean projections and deleted
+  original work must be allowed.
 
 **A first step (Lemma L, carrier location; reviewer; proved).** Let e be the only event of a reduced circuit,
 with val(e) a sheet-j row and cancelled blocks C, and let u be an ancestor of e with a path to an output o' of
@@ -265,11 +304,15 @@ For the triangle (j = 1, C = {2}) every shared carrier lies on blocks {1, 2} (se
 pure-block-1 or pure-block-7 parts are not computed. The concrete local question is whether such an absent
 clean part costs a gate in sheet 2's family F_2 or in the joint problem J_01 (RECORD 17).
 
-**Control.** The prefix family has no window structure and must be exactly where such an argument fails.
+**Control.** The prefix family has output windows but no separation (section 3). A MixColumns argument
+must fail on it through a property MixColumns has and the family lacks.
 
-**Second target.** The two-event regime. G <= 78 forces it, unless there is a heavy internal event. In the
-tested two-event circuits (lines 1451, 3001: a triangle event plus a {0,7} exit, bounds 2 and 3) the exit is a
-second instance of Lemma L with C = {7}.
+**Second target (as stated in phase 11; superseded).** The two-event regime.
+- G <= 78 forces it, unless there is a heavy internal event. Phase 12 shows instead that G <= 79 forces
+  two *visible* events, whatever their weights.
+- In the tested two-event circuits (lines 1451 and 3001: a triangle event plus a second event cancelling
+  block 7) the second event resembles Lemma L with C = {7}. But Lemma L is proved for a sole event. In a
+  two-event circuit it applies only to paths that avoid the other event, which has to be checked.
 
 ## 8. Corrections to phase 10 (brief; applied in `copies/COPIES.md`, RECORD 25, SUMMARY, CHECKPOINT)
 

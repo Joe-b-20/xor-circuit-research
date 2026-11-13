@@ -262,7 +262,18 @@ proof replaces it):**
   or a heavy internal one.
 - Sharp for general maps: one cancellation can save weight - 2 (prefix family).
 - New: the saving is bounded by the cancelled content in shared values whose clean versions are absent;
-  private cancelled content is free to remove. No class bound beyond the direct one is proved.
+  private cancelled content is free to remove. No class bound beyond the direct one is proved in phase 11.
+
+## Phase 12 (2026-11-13): visible cancellations (RECORD 27, `visible/VISIBLE.md`)
+
+- Only the cancellations visible from the outputs (reached without passing a further cancellation) need
+  rebuilding; hidden cancellations and the work behind them are deleted and counted in the bound's favour.
+- Visible cancellations lie inside output windows; a three-block one always has a hidden operand.
+- New: a visible cancellation can be rebuilt mostly with gates that the 83-gate decomposition never counts, so
+  each costs at most 4 against 83 whatever its weight. Hence one visible cancellation gives at least 80 gates,
+  a sole cancellation at an output 82-83, and at most 79 gates need two visible cancellations, at most 76 three.
+- Limit: the bound decays by up to 4 per visible cancellation and says nothing about the hidden work; when every
+  output is itself a visible cancellation it carries no information about the size.
 
 ## The open questions that now carry the problem
 

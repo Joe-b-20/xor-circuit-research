@@ -1,0 +1,73 @@
+windows: {0: [0, 7], 1: [0, 1, 7], 2: [1, 2], 3: [2, 3, 7], 4: [3, 4, 7], 5: [4, 5], 6: [5, 6], 7: [6, 7]}
+row weights per block (block: weights over the four rows): {0: {0: [3, 3, 3, 3], 7: [2, 2, 2, 2]}, 1: {0: [2, 2, 2, 2], 1: [3, 3, 3, 3], 7: [2, 2, 2, 2]}, 2: {1: [2, 2, 2, 2], 2: [3, 3, 3, 3]}, 3: {2: [2, 2, 2, 2], 3: [3, 3, 3, 3], 7: [2, 2, 2, 2]}, 4: {3: [2, 2, 2, 2], 4: [3, 3, 3, 3], 7: [2, 2, 2, 2]}, 5: {4: [2, 2, 2, 2], 5: [3, 3, 3, 3]}, 6: {5: [2, 2, 2, 2], 6: [3, 3, 3, 3]}, 7: {6: [2, 2, 2, 2], 7: [3, 3, 3, 3]}}
+co-occurrence graph: [(0, 1), (0, 7), (1, 2), (1, 7), (2, 3), (2, 7), (3, 4), (3, 7), (4, 5), (4, 7), (5, 6), (6, 7)]
+  W_0 [0, 7]: extends to a clique by [1]
+  W_1 [0, 1, 7]: maximal clique
+  W_2 [1, 2]: extends to a clique by [7]
+  W_3 [2, 3, 7]: maximal clique
+  W_4 [3, 4, 7]: maximal clique
+  W_5 [4, 5]: maximal clique
+  W_6 [5, 6]: maximal clique
+  W_7 [6, 7]: maximal clique
+  hand-listed maximal cliques verified (cliques, maximal, covering every edge): [[0, 1, 7], [1, 2, 7], [2, 3, 7], [3, 4, 7], [4, 5], [5, 6], [6, 7]]
+pairwise window intersections: {(0, 1): [0, 7], (0, 3): [7], (0, 4): [7], (0, 7): [7], (1, 2): [1], (1, 3): [7], (1, 4): [7], (1, 7): [7], (2, 3): [2], (3, 4): [3, 7], (3, 7): [7], (4, 5): [4], (4, 7): [7], (5, 6): [5], (6, 7): [6]} | largest 2
+nonempty triple intersections are all {7}: 10 triples
+own-block property: no two sheets j != k with j in W_k and k in W_j (checked)
+tail family n=3: 5 gates, one event (T, w = 4), private operand u = p_n + z; explicit event-free circuit 6 gates; saving 1 = w - 3
+tail family n=5: 7 gates, one event (T, w = 6), private operand u = p_n + z; explicit event-free circuit 10 gates; saving 3 = w - 3
+tail family n=8: 10 gates, one event (T, w = 9), private operand u = p_n + z; explicit event-free circuit 16 gates; saving 6 = w - 3
+Q_3 windows: [(0, 1), (0, 2), (1, 2)] | every pair of the three blocks co-occurs: the graph is complete, so no event support plus cancelled block is ever separated (no window credit)
+r88: G 88, reduced True, fully live True | events 0: visible F 0, hidden 0 | R 88, Q 0 | window-credit operands 0
+    repaired: G' 88 = G - |E| - |Q| + K (K 0), event-free; families [11, 11, 10, 15, 10, 10, 10, 10] (sum 87), gates in no family U 1 (of them chain gates 0); chain gates with a row value but not designated: 0
+    84 form: |L_01| 22, X 0 (chain gates in X 0), G' >= 84 + |U \ X| = 85; class-form bound 84
+    class-form bounds: 84-form 84, 83-form 83 | this circuit: G >= 83 + U + |E| + |Q| - K = 84
+r89: G 89, reduced True, fully live True | events 0: visible F 0, hidden 0 | R 89, Q 0 | window-credit operands 0
+    repaired: G' 89 = G - |E| - |Q| + K (K 0), event-free; families [10, 12, 10, 13, 11, 10, 10, 10] (sum 86), gates in no family U 3 (of them chain gates 0); chain gates with a row value but not designated: 0
+    84 form: |L_01| 22, X 0 (chain gates in X 0), G' >= 84 + |U \ X| = 87; class-form bound 84
+    class-form bounds: 84-form 84, 83-form 83 | this circuit: G >= 83 + U + |E| + |Q| - K = 86
+circuits_2.txt:783: G 88, reduced True, fully live True | events 1: visible F 1, hidden 0 | R 86, Q 1 | window-credit operands 1
+    f=78 output w=7 B=[0, 1, 7] C=[2] J=[1] kappa=2 operands in ['R', 'Q']
+    repaired: G' 92 = G - |E| - |Q| + K (K 6), event-free; families [11, 10, 11, 13, 11, 10, 10, 10] (sum 86), gates in no family U 6 (of them chain gates 3); chain gates with a row value but not designated: 0
+    84 form: |L_01| 23, X 2 (chain gates in X 2), G' >= 84 + |U \ X| = 88; class-form bound 81
+    per family (retained gates, chain gates): [(11, 0), (7, 3), (11, 0), (13, 0), (11, 0), (10, 0), (10, 0), (10, 0)]
+    class-form bounds: 84-form 80, 83-form 82 | this circuit: G >= 83 + U + |E| + |Q| - K = 85
+circuits_3.txt:7451: G 88, reduced True, fully live True | events 1: visible F 1, hidden 0 | R 86, Q 1 | window-credit operands 1
+    f=106 output w=7 B=[0, 1, 7] C=[2] J=[1] kappa=2 operands in ['R', 'Q']
+    repaired: G' 92 = G - |E| - |Q| + K (K 6), event-free; families [11, 10, 11, 14, 11, 10, 10, 10] (sum 87), gates in no family U 5 (of them chain gates 3); chain gates with a row value but not designated: 0
+    84 form: |L_01| 23, X 2 (chain gates in X 2), G' >= 84 + |U \ X| = 87; class-form bound 81
+    per family (retained gates, chain gates): [(11, 0), (7, 3), (11, 0), (14, 0), (11, 0), (10, 0), (10, 0), (10, 0)]
+    class-form bounds: 84-form 80, 83-form 82 | this circuit: G >= 83 + U + |E| + |Q| - K = 84
+circuits_3.txt:7651: G 88, reduced True, fully live True | events 1: visible F 1, hidden 0 | R 86, Q 1 | window-credit operands 1
+    f=71 output w=7 B=[0, 1, 7] C=[2] J=[1] kappa=2 operands in ['R', 'Q']
+    repaired: G' 92 = G - |E| - |Q| + K (K 6), event-free; families [11, 10, 11, 13, 10, 10, 10, 10] (sum 85), gates in no family U 7 (of them chain gates 3); chain gates with a row value but not designated: 0
+    84 form: |L_01| 23, X 2 (chain gates in X 2), G' >= 84 + |U \ X| = 89; class-form bound 81
+    per family (retained gates, chain gates): [(11, 0), (7, 3), (11, 0), (13, 0), (10, 0), (10, 0), (10, 0), (10, 0)]
+    class-form bounds: 84-form 80, 83-form 82 | this circuit: G >= 83 + U + |E| + |Q| - K = 86
+circuits_3.txt:1451: G 88, reduced True, fully live True | events 2: visible F 2, hidden 0 | R 85, Q 1 | window-credit operands 1
+    f=96 output w=7 B=[0, 1, 7] C=[2] J=[1] kappa=2 operands in ['R', 'Q']
+    f=104 internal w=6 B=[0, 1] C=[7] J=[1] kappa=2 operands in ['R', 'F']
+    repaired: G' 96 = G - |E| - |Q| + K (K 11), event-free; families [10, 13, 11, 14, 11, 10, 10, 11] (sum 90), gates in no family U 6 (of them chain gates 5); chain gates with a row value but not designated: 0
+    84 form: |L_01| 27, X 4 (chain gates in X 4), G' >= 84 + |U \ X| = 86; class-form bound 77
+    per family (retained gates, chain gates): [(10, 0), (7, 6), (11, 0), (14, 0), (11, 0), (10, 0), (10, 0), (11, 0)]
+    class-form bounds: 84-form 76, 83-form 80 | this circuit: G >= 83 + U + |E| + |Q| - K = 81
+circuits_3.txt:3001: G 88, reduced True, fully live True | events 2: visible F 2, hidden 0 | R 86, Q 0 | window-credit operands 0
+    f=100 internal w=5 B=[1, 7] C=[2] J=[1] kappa=2 operands in ['R', 'R']
+    f=108 internal w=6 B=[0, 1] C=[7] J=[1] kappa=2 operands in ['R', 'R']
+    repaired: G' 95 = G - |E| - |Q| + K (K 9), event-free; families [10, 14, 11, 15, 11, 10, 10, 11] (sum 92), gates in no family U 3 (of them chain gates 3); chain gates with a row value but not designated: 0
+    84 form: |L_01| 26, X 2 (chain gates in X 2), G' >= 84 + |U \ X| = 85; class-form bound 78
+    per family (retained gates, chain gates): [(10, 0), (8, 6), (11, 0), (15, 0), (11, 0), (10, 0), (10, 0), (11, 0)]
+    class-form bounds: 84-form 77, 83-form 79 | this circuit: G >= 83 + U + |E| + |Q| - K = 79
+witness_mc_block.json: G 521, reduced True, fully live True | events 32: visible F 32, hidden 0 | R 0, Q 489 | window-credit operands 36
+    f=86 output w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] kappa=2 operands in ['Q', 'Q']
+    f=107 output w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] kappa=2 operands in ['Q', 'Q']
+    f=128 output w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] kappa=2 operands in ['Q', 'Q']
+    f=148 output w=5 B=[0, 7] C=[1, 2, 3, 4, 5, 6] J=[0] kappa=2 operands in ['Q', 'Q']
+    f=169 output w=7 B=[0, 1, 7] C=[2, 3, 4, 5, 6] J=[1] kappa=2 operands in ['Q', 'Q']
+    f=190 output w=7 B=[0, 1, 7] C=[2, 3, 4, 5, 6] J=[1] kappa=2 operands in ['Q', 'Q']
+    f=210 output w=7 B=[0, 1, 7] C=[2, 3, 4, 5, 6] J=[1] kappa=2 operands in ['Q', 'Q']
+    f=231 output w=7 B=[0, 1, 7] C=[2, 3, 4, 5, 6] J=[1] kappa=2 operands in ['Q', 'Q']
+    ... 32 visible events, kappa values [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3]
+    repaired: G' 152 = G - |E| - |Q| + K (K 152), event-free; families [12, 12, 12, 16, 12, 12, 12, 12] (sum 100), gates in no family U 52 (of them chain gates 52); chain gates with a row value but not designated: 0
+    84 form: |L_01| 32, X 8 (chain gates in X 8), G' >= 84 + |U \ X| = 128; class-form bound 497
+    per family (retained gates, chain gates): [(0, 12), (0, 12), (0, 12), (0, 16), (0, 12), (0, 12), (0, 12), (0, 12)]
+    class-form bounds: 84-form 453, 83-form 504 | this circuit: G >= 83 + U + |E| + |Q| - K = 504

@@ -36,6 +36,8 @@ central example, and obtain arguments that cover whole families of circuits by o
   between unrelated parts, literature), `causal/` (does the order of gates enter), `sharing/`
   (overlapping windows, the three-position circuit), `chain/` (chains of adjacent sheets), `joint01/`
   (MixColumns sheets 0 and 1 with block 7 free, a test case).
+- `visible/` (phase 12): visible cancellations, the global repair, window credit, Theorem V (rebuilding off
+  the charged families) and its limits (`VISIBLE.md`), checks (`visible.py`), review in `visible/review/`.
 - `repair/` (phase 11): the repair lemma, direct and projection repairs, sharpness family (`REPAIR.md`),
   constructions and checks (`repair.py`), review in `repair/review/`.
 - `copies/` (phase 10): the cancellation-copy candidate and why it does not measure gates, the first-exit
