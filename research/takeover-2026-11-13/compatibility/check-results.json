@@ -1,0 +1,137 @@
+{
+  "method": "Evaluate six specified constructions and stated projections; no circuit search.",
+  "cases": [
+    {
+      "name": "two_unused_label_dimensions",
+      "gates": 12,
+      "targets": 4,
+      "entries": 5,
+      "label_rank": 5,
+      "trace_rank_for_four_rows": 3,
+      "trace_masks": [
+        3,
+        3,
+        3,
+        6,
+        12
+      ],
+      "entry_labels": [
+        128,
+        256,
+        400,
+        48,
+        112
+      ],
+      "all_gates_live_distinct": true,
+      "after_projecting_unused_dimensions": 10
+    },
+    {
+      "name": "mixed_interface_with_repeated_clean_label",
+      "gates": 11,
+      "targets": 4,
+      "entries": 5,
+      "label_rank": 4,
+      "trace_rank_for_four_rows": 4,
+      "trace_masks": [
+        3,
+        3,
+        12,
+        1,
+        4
+      ],
+      "entry_labels": [
+        16,
+        112,
+        144,
+        80,
+        80
+      ],
+      "all_gates_live_distinct": true,
+      "after_killing_outside_label": 10
+    },
+    {
+      "name": "mixed_diagonal_supply",
+      "gates": 12,
+      "targets": 7,
+      "entries": 5,
+      "label_rank": 3,
+      "trace_rank_for_four_rows": 4,
+      "trace_masks": [
+        2,
+        4,
+        8,
+        1,
+        0
+      ],
+      "entry_labels": [
+        96,
+        192,
+        144,
+        48,
+        192
+      ],
+      "all_gates_live_distinct": true,
+      "event_free": true,
+      "diagonal_rank": 3
+    },
+    {
+      "name": "all_clean_triples_and_diagonals",
+      "gates": 13,
+      "targets": 7,
+      "entries": 6,
+      "label_rank": 3,
+      "trace_rank_for_four_rows": 4,
+      "trace_masks": [
+        2,
+        4,
+        8,
+        0,
+        0,
+        1
+      ],
+      "entry_labels": [
+        96,
+        192,
+        144,
+        48,
+        192,
+        48
+      ],
+      "all_gates_live_distinct": true,
+      "event_free": true,
+      "diagonal_rank": 3
+    },
+    {
+      "name": "overlapping_even_helpers",
+      "gates": 6,
+      "targets": 4,
+      "entries": 0,
+      "label_rank": 0,
+      "trace_rank_for_four_rows": 0,
+      "trace_masks": [],
+      "entry_labels": [],
+      "all_gates_live_distinct": true,
+      "all_ones_outside_even_helper_span": true
+    },
+    {
+      "name": "three_pure_even_suppliers",
+      "gates": 10,
+      "targets": 4,
+      "entries": 3,
+      "label_rank": 3,
+      "trace_rank_for_four_rows": 3,
+      "trace_masks": [
+        15,
+        5,
+        9
+      ],
+      "entry_labels": [
+        96,
+        160,
+        240
+      ],
+      "all_gates_live_distinct": true,
+      "pure_even_supplier_rank": 3
+    }
+  ]
+}

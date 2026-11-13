@@ -1,8 +1,9 @@
 # What changed in the takeover
 
-**Current continuation after `eb9191a`:** [complete-row cost summary](row-cost/README.md).
-It proves exact local costs, a source-interface saturation theorem, sharp one-sheet
-completion geometry, and an eleven-gate interface rigidity theorem. The [previous pass](continuation/README.md)
+**Current continuation after `098e5d4`:** [actual supplier compatibility](compatibility/README.md).
+It proves a coset cap for ten-gate suppliers, excludes the wholly nonclean eleven-gate
+consumer, and gives a general entry-deletion bound. The [preceding pass](row-cost/README.md)
+proved exact local costs, source saturation, and completion geometry. The [earlier pass](continuation/README.md)
 proved affine-completion bounds and a sparse counterexample to controlling savings by
 hidden-gate count. The first-pass account below remains the history and foundation;
 its next-direction assessment is superseded by the current summary.

@@ -1565,3 +1565,65 @@ of attainment by existence of an outside-D label. The next useful target is a co
 theorem forcing a paid interface at local equality in the fixed MixColumns windows.
 Geometrically forced partners may already be retained and charged; no automatic extra
 hidden credit follows. The unrestricted interval remains `75 <= L(MixColumns) <= 88`.
+
+## 31. Actual supplier compatibility and entry deletion (2026-11-13)
+
+Current account: [`../takeover-2026-11-13/compatibility/README.md`](../takeover-2026-11-13/compatibility/README.md).
+This continues reviewed commit `098e5d4` on the isolated research branch. All universal
+claims below have hand proofs and independent machine review. No SAT, circuit search,
+exhaustive enumeration, exact least-gate search, or computer-driven case elimination was run.
+
+**Producer coset cap (proved).** Any ten-gate first sheet `U_c=E_c(b)+s_c(a)`, with a free,
+has at most four distinct available values in each coset of the clean even diagonal
+`D={v(b)+v(a): v even}`. Available values include its gates, ordinary inputs, and all free
+vectors. Actual free labels in the ten-gate circuit are even by the tight transpose count.
+A five-value even-own coset would force eight new own masks plus at least three entries.
+A five-value odd-own coset would force eight odd gates and just two even gates. The named
+four inputs and four outputs form an eight-element circuit of rank seven, so each even
+gate has at most two odd-pair decompositions in the resulting value set. Every non-entry
+gate uses a distinct such three-value relation. Capacity four contradicts at least six
+non-entry gates. The proof includes even gates that are entries and permits free values.
+
+**Actual compatibility (proved).** The prior eleven-gate avoidance theorem requires five
+distinct labels in one nonzero diagonal coset. The new cap excludes that wholly nonclean
+consumer after any ten-gate first sheet, closing that entire branch of the (10,11) joint
+profile. If the available clean-diagonal span has rank at most one, the only remaining
+eleven-gate possibility uses four nonclean values in one coset and one nonzero clean value.
+The particular ten-gate diagonal supplier displayed in section 30 has clean rank one and
+largest coset size three, so it cannot extend to a joint 21 under no-feedback. This is
+producer-specific; other ten-gate producers and mixed interfaces are not excluded.
+
+**General entry-deletion certificate (proved).** With ordinary inputs and one entirely
+free space F, let D span the target free parts. Any selected set I of entry occurrences
+whose label span C has `C intersect D={0}` can be killed by a free-side projection fixing D.
+Each selected gate becomes a wire, so `K>=L_D+|I|`. Repeated occurrences count individually.
+If actual labels have quotient rank c beyond D, this gives `K>=L_D+c`; for four-triple
+sheets it is the sharp explicit `K>=10+c`, attained by splitting entries. Eleven-gate
+mixed interfaces have quotient rank one and either four entries/seven mirrored gates or
+five entries/six mirrored gates. Nonclean label values cannot repeat; clean ones can.
+The indicator of the nonclean entries is the sole trace relation, while the parity of
+the traces determines the label relation in the five-entry case. These are algebraic
+conditions on actual supplies, not charges for virtual differences.
+
+**Joint parity restriction (proved, using the recorded joint lower bound).** A no-feedback
+joint circuit that actually reads an odd free-a label needs at least 22 gates: project
+that label to zero while fixing all even free parts, delete its entry, and preserve the
+ordinary parts and ancestor condition. Otherwise a circuit below the established 21 bound
+would remain. Thus a hypothetical joint 21 uses only even free-a operands.
+
+**Diagonal interface and controls (proved by constructions/hand bounds).** A compact
+event-free twelve-gate circuit supplies all four rows and three independent diagonals.
+Requiring all four pure-own triples raises the event-free minimum to exactly thirteen:
+six pure-own ancestor gates and seven distinct mixed required values, with matching
+construction. The augmented unrestricted minimum remains 11 or 12. Two failed shortcuts
+are saved explicitly: a six-gate triple-sum circuit can have overlapping even helpers
+whose span excludes all-ones; an already recorded ten-gate sheet supplies three independent
+pure even own-block values. Neither property forces an extra gate.
+
+**Verification and judgment.** Six specified constructions and their stated projections
+were checked directly, including the repeated-clean-label interface and both controls.
+Independent reviewers checked the coset proof, its rank-one appendix, entry deletion,
+mixed trace classification, and the diagonal-interface bound. Next useful target: joint
+clean-diagonal supply and coset occupancy, or relation capacity across several populated
+cosets. Both remaining joint splits still need work. The joint interval remains 21 to 22
+under no-feedback; the unrestricted MixColumns interval remains `75 <= L <= 88`.

@@ -1,5 +1,9 @@
 # What complete row sets force
 
+**Later continuation:** [actual supplier compatibility](../compatibility/README.md).
+The new coset-cap theorem excludes the wholly nonclean eleven-gate interface after any
+ten-gate first sheet. The general joint 21-to-22 gap remains open.
+
 2026-11-13, continuing reviewed commit `eb9191a`. The new results have hand proofs and independent machine reviews. They are not formally verified or human-certified. The unrestricted interval remains **75 <= L(MixColumns) <= 88**; no optimality of 88 is assumed.
 
 ## Exact local costs distinguish supplying values from using them
