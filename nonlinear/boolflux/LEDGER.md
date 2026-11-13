@@ -64,7 +64,7 @@ the skeleton level's merge move does. Commands: `results/reports/sanity-2.md`.
 Every BGC and GC result equals the best published value except Midori Sb1 BGC (one gate more).
 No small S-box result beats a published one. (Our wider `gc` model, which also allows ANDN and
 ORN, reaches e.g. Keccak chi with 10 gates; that is a different gate library and is not
-compared with GC.) Per-run details: `results/reports/small-2.md`.
+compared with GC.) Longer runs on the two open cases (20 seeds x 5 rounds x 400000 iterations, about 1.5 h each on 10 CPUs) did not change them: RECTANGLE BGC 12, Midori Sb1 BGC 16. Per-run details: `results/reports/small-2.md`.
 
 ## 3. AES S-box (FIPS-197), NIST model
 
@@ -140,7 +140,7 @@ NIST's open target "G <= 110 with GD <= 14" is not reached (126). The global rec
 
 Runs that end on their iteration budget are deterministic. Checked: the 3b run for
 a32-ad5-g109-gd20 (`cli.py run ... --cap-a 32 --cap-ad 5 --cap-gd 20 --iters 100000 --seeds 1-8`)
-re-run from scratch gives a byte-identical gate list. Each run directory keeps the sources it
+re-run from scratch gives a byte-identical gate list, and so does the GD <= 14 command above (126 G, 3 rounds). Each run directory keeps the sources it
 ran (`src/`) and the binaries built from them (`bin/`); `summary.json` has the hash, the exact
 command, every job's kernel seed (`seed + 1000 * round`), and the iteration of each improvement.
 The commands in `results/*/*.summary.json` write to the campaign folder
