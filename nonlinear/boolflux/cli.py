@@ -107,7 +107,10 @@ def verify_file(path, target, model_name, caps=None):
     ind = verify_independent(path, target, mpath, caps)
     mt = c.metrics(model) if lib_ok else c.metrics()
     im = ind.get('metrics') or {}
-    agree = all(im.get(k) == mt[k] for k in ('G', 'A', 'GD', 'AD')) and im.get('counts') == mt['counts']
+    counts = dict(mt['counts'])
+    if model.not_as == 'XNOR0' and 'NOT' in counts:     # written as XNOR t a 0 in the file
+        counts['XNOR'] = counts.get('XNOR', 0) + counts.pop('NOT')
+    agree = all(im.get(k) == mt[k] for k in ('G', 'A', 'GD', 'AD')) and im.get('counts') == dict(sorted(counts.items()))
     if lib_ok and ind.get('ok'):
         agree = agree and abs(float(im.get('cost', -1)) - mt['cost']) < 1e-6
     return {'file': str(path), 'core_ok': ok1, 'library_ok': lib_ok,
