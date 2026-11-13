@@ -1,5 +1,8 @@
 # The augmented gap closes; the block-monotone bound becomes 85
 
+**Next continuation:** [feedback savings and entry rank](../feedback/README.md).
+The bounds in this phase remain in force.
+
 2026-11-13, continuing reviewed commit `a04558e`. Hand proofs with independent machine
 review, not formal verification or human certification. No circuit search was used.
 

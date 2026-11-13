@@ -1906,3 +1906,80 @@ construction checks, not searches or computer-driven elimination.
 The next direction is structural control of consumer-block feedback into first-sheet
 ancestors, now the only way to escape the exact local no-feedback cost. Unrestricted
 MixColumns remains `75<=L<=88`; no optimality claim about 88 is made.
+
+## 36. Feedback savings, entry rank, and sharp small-rank separations (2026-11-13)
+
+Current account: [feedback](../takeover-2026-11-13/feedback/README.md), continuing
+reviewed commit `edbe77f`. Hand proofs with independent machine review, not formal
+verification or human certification. No circuit search or case enumeration was used.
+
+**General feedback repair (proved).** Split inputs into source and consumer coordinates;
+all free values are on the source side, with zero freely available. Suppose all actual
+source operands entering consumer-bearing gates lie in a space of dimension at most
+`d`. All original source-side values can be replayed without consumer coordinates
+using at most `G_0+h(d)` gates, where
+`h(d)=2^ceil(d/2)+2^floor(d/2)-d-2`. The whole circuit then has a source-first realization
+with at most `G+h(d)` gates and the same entry values. This is a total allowance,
+not one allowance for each exit.
+
+Every return is in the span of earlier actual entry labels, by chronological induction.
+Maintain a basis of currently supplied values in the fixed entry space and assign new
+independent basis elements alternately to two permanent groups. Physically complete
+each group's span when it grows. A group of final size `k` needs at most `2^k-1-k`
+extra gates. Every return is a sum of two physically available group values, so costs
+at most its original gate. This proves the bound while respecting chronology and
+without granting virtual combinations free. A secondary density/potential proof gives
+`2^(d-1)-d` for positive `d`; it agrees through rank three but is weaker above it.
+
+**Sharp through rank four (proved and attained).** The allowances at ranks zero through
+four are `0,0,0,1,2`. A rank-three map has unrestricted minimum four and no-feedback
+minimum five. A rank-four map has unrestricted minimum five and no-feedback minimum
+seven. Require three masked prefixes on three source inputs, a masked fourth source
+input, and their clean four-input sum. The five distinct output values give the
+unrestricted lower bound; without feedback the clean sum needs three source gates
+and the four consumer-bearing outputs need four additional gates. The displayed
+circuits attain both counts. No sharpness assertion is made for ranks at least five.
+
+**Returned directions cost consumer work (proved).** Let `D` span the source parts of
+the required consumer outputs and `F` span all exits. Chronology puts `F` inside the
+actual entry span `U`, and targets put `D` inside `U`. Entry deletion gives
+`K>=L_D+dim(U/D)>=L_D+dim((F+D)/D)`. In the joint problem `L_D=10`. The four first-sheet
+rows are independent modulo `D`, as their residues are the four independent triple
+masks. Returning `k` first-sheet rows directly therefore needs at least `10+k`
+consumer-bearing gates. The result does not count rows with more remote exit ancestors.
+
+**Necessary ternary return at consumer cost ten.** Ten consumer-bearing gates force
+all entry values into the rank-three diagonal. Repair with at most one extra gate,
+together with augmented minimum twelve, forces at least eleven source-side gates.
+At joint total 21, an exit must encounter exactly three independent available diagonal
+values and require their three-term sum. No one-gate decomposition through earlier
+source values, nor a compensating saving elsewhere in replay, can eliminate that
+premium. This remains a necessary condition, not an existence or impossibility theorem.
+An attempted mirror shortcut has not identified the corresponding physical pairs
+in the original circuit; double transposition alone is insufficient. The missing step
+and the danger of using eventual entry availability are recorded explicitly.
+
+**Mirror restrictions (proved).** If no exit feeds a second-group target in a mirror,
+literal reverse accumulation yields a no-feedback primal with the same budget, which
+is at least 22. The proof preserves physical ancestry. With exactly three exports
+and budget at most 21, the nonzero-first-part region has at least thirteen gates and
+the zero-first-part region has four or five. Four forces every second-group target
+to be a direct exit. With five and none directly an exit, the only extra value is
+the all-ones mask, itself an exit, followed by adding each coordinate. Compatibility
+with the remaining mirror region is not established.
+
+**One-exit separation (proved and attained).** A decorated prefix construction gives
+eight independent weight-five outputs, four on each side, boundary relation distance
+six, block size at most three, and window width at most three. Its unrestricted
+minimum is 21 and its no-feedback minimum 22. The saving uses one exit from a one-bit
+consumer block. Private-coordinate restriction proves both lower bounds while
+preserving the relevant ancestor condition. The construction is rectangular and
+lacks the four MixColumns own-triple rows; it refutes only a general normalization
+based on the listed coarse features. Its prefix mechanism is attributed to the earlier
+recorded construction.
+
+Direct evaluation checks six fixed witnesses (4/5, 5/7, and 21/22 gates). The universal
+bounds are hand proofs. The unrestricted joint problem remains open; block-monotone
+MixColumns remains at least 85 and unrestricted MixColumns remains `75<=L<=88`.
+The next mathematical target is compatibility of the exceptional ternary return
+with an optimal consumer's four specified rows, using actual values and reader relations.

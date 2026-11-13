@@ -1,10 +1,15 @@
 # What changed in the takeover
 
-**Current continuation after `a04558e`:** [the augmented minimum is twelve](augmented/README.md).
-The exact joint 0/1 cost under no feedback is now 22; disjoint physical charging raises
-the block-monotone MixColumns lower bound to 85. The unrestricted 75-to-88 interval
-is unchanged. The [preceding crossing pass](crossing/README.md) closed the ten-gate
-producer branch, following [rank-one exclusion and even confinement](frontier/README.md),
+**Current continuation after `edbe77f`:** [feedback savings are bounded by entry rank](feedback/README.md).
+A chronological two-group construction removes feedback for at most
+`2^ceil(d/2)+2^floor(d/2)-d-2` extra gates in total, with sharp allowances one and two
+at ranks three and four. Returned directions outside the consumer target span have
+an entry-cost lower bound. For a ten-gate consumer, a possible joint total 21 now
+requires a specific ternary return; this does not close the unrestricted joint problem.
+The [preceding augmented pass](augmented/README.md) proved minimum twelve, joint cost
+22 under no feedback, and block-monotone MixColumns lower bound 85. The unrestricted
+75-to-88 interval is unchanged. Earlier work includes [supplier closure](crossing/README.md),
+[rank-one exclusion and even confinement](frontier/README.md),
 [relation rank and causal span](tradeoff/README.md), and
 [coset caps and entry deletion](compatibility/README.md).
 The [row-cost pass](row-cost/README.md)
