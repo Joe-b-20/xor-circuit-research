@@ -15,16 +15,18 @@ from .core import Circuit, OPS, tables_from_values
 
 
 def anf_coeffs(t, n):
-    """Moebius transform of a truth table int: bit u of the result = ANF coefficient of the
-    monomial with variable set u (pattern-index bits)."""
+    """Moebius transform of a truth table int: bit u of the result (an int) = ANF coefficient of
+    the monomial with variable set u (pattern-index bits)."""
     N = 1 << n
-    a = [(t >> x) & 1 for x in range(N)]
-    step = 1
-    while step < N:
-        for x in range(N):
-            if x & step: a[x] ^= a[x ^ step]
-        step <<= 1
-    return a
+    # bitset Moebius transform: for each variable bit, XOR the half without it into the half
+    # with it (n big-integer operations instead of n * 2^n list operations)
+    for i in range(n):
+        step = 1 << i
+        low = 0
+        for x in range(0, N, 2 * step):          # positions with bit i clear
+            low |= ((1 << step) - 1) << x
+        t ^= (t & low) << step
+    return t                                     # bit u = coefficient of monomial u
 
 
 def anf(n, m, table, model_ops=None, name='anf'):
@@ -62,8 +64,10 @@ def anf(n, m, table, model_ops=None, name='anf'):
     out_sigs = []
     for t in outs:
         co = anf_coeffs(t, n)
-        terms = [monomial(u) for u in range(1, 1 << n) if co[u]]
-        out_sigs.append(xor_tree(terms, bool(co[0])))
+        terms = []; rest = co & ~1
+        while rest:                              # set bits only, in increasing order
+            low = rest & -rest; terms.append(monomial(low.bit_length() - 1)); rest ^= low
+        out_sigs.append(xor_tree(terms, bool(co & 1)))
     c = Circuit(n, m, gates, out_sigs, name)
     if model_ops is not None and not {g[0] for g in c.gates} <= set(model_ops):
         c = translate(c, model_ops)

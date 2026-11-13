@@ -75,9 +75,9 @@ class Circuit:
 
     def value_table(self):
         """table[x] = output integer at input x (msb/msb)."""
-        outs = self.output_tables(); m = self.m
-        return [sum(((t >> x) & 1) << (m - 1 - j) for j, t in enumerate(outs))
-                for x in range(1 << self.n)]
+        outs = self.output_tables(); m = self.m; N = 1 << self.n
+        cols = [format(t, 'b').zfill(N)[::-1] for t in outs]
+        return [int(''.join(c[x] for c in cols), 2) for x in range(N)]
 
     # ---- metrics ---------------------------------------------------------------------------
     def metrics(self, model=None):
@@ -130,10 +130,9 @@ def tables_from_values(n, m, table):
     """Output truth tables (msb/msb) from a value table."""
     outs = []
     for j in range(m):
-        sh = m - 1 - j; t = 0
-        for x, v in enumerate(table):
-            if (v >> sh) & 1: t |= 1 << x
-        outs.append(t)
+        sh = m - 1 - j
+        bits = ''.join('1' if (v >> sh) & 1 else '0' for v in reversed(table))
+        outs.append(int(bits, 2))
     return outs
 
 

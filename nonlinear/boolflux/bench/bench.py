@@ -22,7 +22,6 @@ import subprocess
 import sys
 import tempfile
 import time
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -32,9 +31,12 @@ sys.path.insert(0, str(PKG.parent)); sys.path.insert(0, str(PKG))
 import cli                                         # noqa: E402
 from boolflux import core, skeleton, starts, targets   # noqa: E402
 
-BIN = Path(tempfile.mkdtemp(prefix='bfxbench-'))
-for b in ('bfx', 'skel'):
-    subprocess.run(['gcc', '-O2', '-o', str(BIN / b), str(PKG / 'kernel' / (b + '.c')), '-lm'], check=True)
+if os.environ.get('BFXBENCH_BIN'):                     # worker: binaries built by the parent
+    BIN = Path(os.environ['BFXBENCH_BIN'])
+else:
+    BIN = Path(tempfile.mkdtemp(prefix='bfxbench-'))
+    for b in ('bfx', 'skel'):
+        subprocess.run(['gcc', '-O2', '-o', str(BIN / b), str(PKG / 'kernel' / (b + '.c')), '-lm'], check=True)
 
 
 def timed(cmd, cpu):
@@ -213,25 +215,37 @@ def execute(run, cpu, outdir):
     return res
 
 
-def main():
-    plan = json.loads(Path(sys.argv[1]).read_text()); outdir = Path(sys.argv[2]); outdir.mkdir(parents=True, exist_ok=True)
-    cpus = [int(x) for x in sys.argv[sys.argv.index('--cpus') + 1].split(',')] if '--cpus' in sys.argv else [0, 2, 4, 6, 8, 10, 12, 14]
-    tasks = [t for t in plan['tasks'] if not all((outdir / (r['label'] + '.json')).exists() for r in t)]
-    free = list(cpus)
-    import threading
-    lock = threading.Lock()
+def worker(plan_path, outdir, cpu, idx):
+    """One pinned process: run the given tasks sequentially on one CPU (Python work included)."""
+    os.sched_setaffinity(0, {cpu})
+    plan = json.loads(Path(plan_path).read_text())
+    for i in idx:
+        for r in plan['tasks'][i]:
+            if (outdir / (r['label'] + '.json')).exists(): continue
+            res = execute(r, cpu, outdir)
+            print('%s cpu%d %s %s %s' % (time.strftime('%H:%M:%S'), cpu, r['label'], res.get('final'),
+                                         res.get('error') or ''), flush=True)
 
-    def do(task):
-        with lock: cpu = free.pop()
-        try:
-            for r in task:
-                if (outdir / (r['label'] + '.json')).exists(): continue
-                res = execute(r, cpu, outdir)
-                print('%s cpu%d %s %s %s' % (time.strftime('%H:%M:%S'), cpu, r['label'], res.get('final'), res.get('error') or ''), flush=True)
-        finally:
-            with lock: free.append(cpu)
-    with ThreadPoolExecutor(max_workers=len(cpus)) as ex:
-        list(ex.map(do, tasks))
+
+def main():
+    plan_path = sys.argv[1]; outdir = Path(sys.argv[2]); outdir.mkdir(parents=True, exist_ok=True)
+    cpus = [int(x) for x in sys.argv[sys.argv.index('--cpus') + 1].split(',')] if '--cpus' in sys.argv else [0, 2, 4, 6, 8, 10, 12, 14]
+    if '--worker' in sys.argv:
+        cpu = int(sys.argv[sys.argv.index('--worker') + 1])
+        idx = [int(x) for x in sys.argv[sys.argv.index('--tasks') + 1].split(',') if x]
+        worker(plan_path, outdir, cpu, idx); return
+    plan = json.loads(Path(plan_path).read_text())
+    todo = [i for i, t in enumerate(plan['tasks']) if not all((outdir / (r['label'] + '.json')).exists() for r in t)]
+    # balance by budget: longest tasks first onto the least loaded CPU
+    load = {c: 0.0 for c in cpus}; assign = {c: [] for c in cpus}
+    for i in sorted(todo, key=lambda i: -sum(r['seconds'] for r in plan['tasks'][i])):
+        c = min(cpus, key=lambda c: load[c]); assign[c].append(i)
+        load[c] += sum(r['seconds'] for r in plan['tasks'][i])
+    env = dict(os.environ, BFXBENCH_BIN=str(BIN))
+    procs = [subprocess.Popen([sys.executable, __file__, plan_path, str(outdir), '--worker', str(c),
+                               '--tasks', ','.join(map(str, assign[c]))], env=env) for c in cpus if assign[c]]
+    print('workers:', {c: len(assign[c]) for c in cpus}, 'max budget per CPU %.0f s' % max(load.values()), flush=True)
+    for p in procs: p.wait()
 
 
 if __name__ == '__main__':

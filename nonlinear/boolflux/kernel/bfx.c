@@ -241,6 +241,8 @@ static double mv_w[NMOVES] = {1, 1, 1};
 static const char *MVNAME[NMOVES] = {"resub1", "resub2", "resub3"};
 static int dmax = 200, pdiv = 90, nl_samples = 12, cand_cap = 40, use_fraig = 1;
 static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches; linear: see main */
+static int skip_noop = 1;    /* v2: a candidate whose rebuilt circuit equals the current one is no move */
+static long st_noop;
 static char cfg_tracemoves[1024];
 static long max_iters = -1;
 
@@ -282,6 +284,7 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "cand_cap")) cand_cap = atoi(v);
         else if (!strcmp(k, "fraig")) use_fraig = atoi(v);
         else if (!strcmp(k, "neutral")) use_neutral = atoi(v);
+        else if (!strcmp(k, "skip_noop")) skip_noop = atoi(v);
         else if (!strcmp(k, "odc")) use_odc = atoi(v);
         else if (!strcmp(k, "linear")) linear_mode = atoi(v);
         else if (!strcmp(k, "tracemoves")) strcpy(cfg_tracemoves, v);
@@ -728,6 +731,8 @@ int main(int argc, char **argv) {
         for (int q = 0; q < no; q++) {
             int i = order[q];
             if (!eval_cand(s, &CAND[i], &m)) continue;
+            if (skip_noop && cand_c.ng == cur.ng && !memcmp(cand_c.g, cur.g, sizeof(Gate) * cur.ng)
+                && !memcmp(cand_c.out, cur.out, sizeof(int) * M)) { st_noop++; continue; }
             double d = m.obj - mcur.obj;
             if ((m.feas || !mcur.feas) && m.obj < bobj) { bobj = m.obj; bi = i; bfeas = m.feas; }
             if (fabs(d) <= 1e-9 && m.feas >= mcur.feas) neu[nneu++] = i;
@@ -784,5 +789,6 @@ int main(int argc, char **argv) {
            mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj, mbest.feas, it, restarts, now_s() - t0);
     for (int i = 0; i < NMOVES; i++)
         printf("move %s prop %ld acc %ld imp %ld cands %ld time %.2f\n", MVNAME[i], st_prop[i], st_acc[i], st_imp[i], st_cands[i], st_time[i]);
+    printf("noop_candidates_skipped %ld\n", st_noop);
     return 0;
 }

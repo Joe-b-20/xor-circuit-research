@@ -94,13 +94,12 @@ def load(name):
     if name.startswith('map:'):
         n, m, rows = linear_map(name[4:])
         if n > 16: raise ValueError('BoolFlux keeps complete truth tables: at most 16 inputs')
-        table = []
-        for x in range(1 << n):
-            xs = [(x >> (n - 1 - i)) & 1 for i in range(n)]
-            v = 0
-            for j in range(m):
-                v = (v << 1) | (sum(r & b for r, b in zip(rows[j], xs)) & 1)
-            table.append(v)
+        # column i (input i = bit n-1-i of x) as an output integer; table[x] by one XOR per entry
+        col = [sum(rows[j][i] << (m - 1 - j) for j in range(m)) for i in range(n)]
+        table = [0] * (1 << n)
+        for x in range(1, 1 << n):
+            low = x & -x
+            table[x] = table[x ^ low] ^ col[n - low.bit_length()]
         return n, m, table, 'linear map %s (circuits/%s)' % (name[4:], name[4:])
     if name in BUILTIN:
         n, m, f, d = BUILTIN[name]
