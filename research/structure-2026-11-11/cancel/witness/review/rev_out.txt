@@ -1,0 +1,50 @@
+MC windows {0: [0, 7], 1: [0, 1, 7], 2: [1, 2], 3: [2, 3, 7], 4: [3, 4, 7], 5: [4, 5], 6: [5, 6], 7: [6, 7]}
+== task 1: witness files
+witness_mc_wire.json {'G': 616, 'distinct': True, 'nonzero': True, 'not_input': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'charged_outputs': 32, 'E': 140, 'R': 154, 'U': 550, 'Fj': [38, 38, 34, 30, 26, 22, 18, 14], 'output_fanout_max': 0, 'dup_values': 0, 'zero_values': 0}
+witness_mc_block.json {'G': 521, 'distinct': True, 'nonzero': True, 'not_input': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'charged_outputs': 32, 'E': 140, 'R': 154, 'U': 455, 'Fj': [38, 38, 34, 30, 26, 22, 18, 14], 'output_fanout_max': 0, 'dup_values': 0, 'zero_values': 0}
+== task 1: own rebuild, several remainder orders
+wire globals 34 target-hits 0 {'G': 616, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 550}
+block globals 34 target-hits 0 {'G': 521, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 455}
+rev-wire globals 34 target-hits 0 {'G': 616, 'distinct': True, 'fully_live': False, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 550}
+rand0-per-row globals 34 target-hits 0 {'G': 705, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 639}
+rand0-global globals 34 target-hits 0 {'G': 624, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 558}
+rand1-per-row globals 34 target-hits 0 {'G': 705, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 639}
+rand1-global globals 34 target-hits 0 {'G': 629, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 563}
+rand2-per-row globals 34 target-hits 0 {'G': 705, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 639}
+rand2-global globals 34 target-hits 0 {'G': 627, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 561}
+rand3-per-row globals 34 target-hits 0 {'G': 704, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 638}
+rand3-global globals 34 target-hits 0 {'G': 645, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 579}
+rand4-per-row globals 34 target-hits 0 {'G': 705, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 639}
+rand4-global globals 34 target-hits 0 {'G': 641, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 575}
+pairs (row y', remainder r) with supp(y') inside supp(r): 36 [((0, 0), (1, 7)), ((0, 1), (1, 7)), ((0, 2), (1, 1)), ((0, 3), (1, 2))]
+remainder weights [21]
+B(r) sizes [7]
+== task 3: Q_m
+Q_4 8m+2= 34 hits 0 {'G': 141, 'distinct': True, 'nonzero': True, 'not_input': True, 'fully_live': True, 'union': 34, 'charged_nonoutputs': 18, 'E': 36, 'R': 42, 'U': 107, 'Fj': [22, 22, 18, 14]}
+Q_5 8m+2= 42 hits 0 {'G': 218, 'distinct': True, 'nonzero': True, 'not_input': True, 'fully_live': True, 'union': 42, 'charged_nonoutputs': 22, 'E': 56, 'R': 64, 'U': 176, 'Fj': [26, 26, 22, 18, 14]}
+Q_6 8m+2= 50 hits 0 {'G': 307, 'distinct': True, 'nonzero': True, 'not_input': True, 'fully_live': True, 'union': 50, 'charged_nonoutputs': 26, 'E': 80, 'R': 90, 'U': 257, 'Fj': [30, 30, 26, 22, 18, 14]}
+Q_8 8m+2= 66 hits 0 {'G': 521, 'distinct': True, 'nonzero': True, 'not_input': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'E': 140, 'R': 154, 'U': 455, 'Fj': [38, 38, 34, 30, 26, 22, 18, 14]}
+== task 4: transposes (M^T sheets: rows x_(k,b), sheet b, own block b)
+M^T windows {0: [0, 1], 1: [1, 2], 2: [2, 3], 3: [3, 4], 4: [4, 5], 5: [5, 6], 6: [6, 7], 7: [0, 1, 3, 4, 7]}
+witness_mc_block.json transpose (policy, G, union, E, R, U, dup, zero, live):
+    ('reader', 521, 495, 569, 154, 26, 181, 0, True)
+    ('reverse', 521, 66, 140, 154, 455, 26, 0, True)
+    ('outfirst', 521, 495, 569, 154, 26, 181, 0, True)
+    ('rand0', 521, 323, 397, 154, 198, 4, 0, True)
+    ('rand1', 521, 231, 305, 154, 290, 2, 0, True)
+    ('rand2', 521, 287, 361, 154, 234, 0, 0, True)
+    ('rand3', 521, 339, 413, 154, 182, 1, 0, True)
+    ('rand4', 521, 302, 376, 154, 219, 1, 0, True)
+    ('rand5', 521, 264, 338, 154, 257, 0, 0, True)
+witness_mc_wire.json transpose (policy, G, union, E, R, U, dup, zero, live):
+    ('reader', 616, 608, 724, 196, 8, 138, 0, True)
+    ('reverse', 616, 72, 167, 175, 544, 142, 0, True)
+    ('outfirst', 616, 608, 724, 196, 8, 138, 0, True)
+    ('rand0', 616, 389, 493, 184, 227, 1, 0, True)
+    ('rand1', 616, 343, 449, 186, 273, 0, 0, True)
+    ('rand2', 616, 303, 403, 180, 313, 2, 0, True)
+    ('rand3', 616, 383, 497, 194, 233, 2, 0, True)
+    ('rand4', 616, 362, 473, 191, 254, 4, 0, True)
+    ('rand5', 616, 320, 433, 193, 296, 1, 0, True)
+witness_mc_wire.json sum(d-1) = 616 G = 616 min d = 1 max input fanout = 22
+witness_mc_block.json sum(d-1) = 521 G = 521 min d = 1 max input fanout = 22

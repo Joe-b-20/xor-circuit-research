@@ -1,0 +1,17 @@
+(a) reverse-wire order, before/after pruning dead gates
+  raw    {'G': 616, 'distinct': True, 'fully_live': False, 'union': 66, 'charged_nonoutputs': 34, 'charged_outputs': 32, 'E': 140, 'R': 154, 'U': 550}
+  pruned {'G': 612, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'charged_outputs': 32, 'E': 140, 'R': 154, 'U': 546}
+(b) orders in which a remainder prefix equals an output value
+   (0, 0) (1, 7) not included
+  y'=(1, 7) inside r(0, 0) (rows built in sorted order): hits ['rem'] {'G': 515, 'distinct': True, 'fully_live': True, 'union': 69, 'charged_nonoutputs': 37, 'charged_outputs': 32, 'E': 142, 'R': 153, 'U': 446}
+(c) dual test: construction for M^T (wire order), pruned, transposed to M
+  S (wire) raw G 598 live True; pruned: {'G': 598, 'distinct': True, 'fully_live': True, 'union': 66, 'charged_nonoutputs': 34, 'charged_outputs': 32, 'E': 140, 'R': 154, 'U': 532} hits 0
+    S^T for M, reader {'G': 598, 'fully_live': True, 'union': 590, 'E': 706, 'R': 196, 'U': 8, 'dup_values': 57}
+    S^T for M, outfirst {'G': 598, 'fully_live': True, 'union': 590, 'E': 706, 'R': 196, 'U': 8, 'dup_values': 57}
+    S^T for M, reverse {'G': 598, 'fully_live': True, 'union': 72, 'E': 167, 'R': 175, 'U': 526, 'dup_values': 28}
+    S^T for M, rand {'G': 598, 'fully_live': True, 'union': 354, 'E': 460, 'R': 186, 'U': 244, 'dup_values': 0}
+  S (block) raw G 520 live False; pruned: {'G': 517, 'distinct': True, 'fully_live': True, 'union': 86, 'charged_nonoutputs': 54, 'charged_outputs': 32, 'E': 160, 'R': 154, 'U': 431} hits 0
+    S^T for M, reader {'G': 517, 'fully_live': True, 'union': 492, 'E': 567, 'R': 155, 'U': 25, 'dup_values': 56}
+    S^T for M, outfirst {'G': 517, 'fully_live': True, 'union': 492, 'E': 567, 'R': 155, 'U': 25, 'dup_values': 56}
+    S^T for M, reverse {'G': 517, 'fully_live': True, 'union': 73, 'E': 149, 'R': 156, 'U': 444, 'dup_values': 41}
+    S^T for M, rand {'G': 517, 'fully_live': True, 'union': 295, 'E': 374, 'R': 159, 'U': 222, 'dup_values': 2}

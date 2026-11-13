@@ -206,7 +206,7 @@ proof replaces it):**
 - Sharing: in block-monotone circuits two sheets can share only pure values and, because of the reduction term,
   gates on {0,7} (sheets 0, 1) and {3,7} (sheets 3, 4); otherwise sharing passes through an exit. In the sampled
   cheap circuits the dominant exit-mediated sharing is the triangle (one variant in the main sample).
-- Conjecture: at least 80 distinct charged gates in every circuit (would give 80); its compensation is not local
+- (Refuted in phase 9.) Conjecture: at least 80 distinct charged gates in every circuit (would give 80); its compensation is not local
   to pairs (F-form pairs reach 19 in 20 % of the sample).
 - Finite-check disclosure corrected (some small exhaustive checks were run after the instruction; listed in
   `joint/FINITE_AUDIT.md`).
@@ -222,8 +222,20 @@ proof replaces it):**
   charged closure, and the triangle (one cancellation) must and does use an uncharged partner; in Q_3 one
   cancellation closed by the third sheet's charged work suffices, as observed.
 - No cost is proved. Refuted: "every cancellation costs a gate", "each uncharged partner pays for the double
-  charges it closes". Conjecture G: with shortest cycle >= 4 the distinct charges are at least 10 per sheet
+  charges it closes". Conjecture G (refuted in phase 9): with shortest cycle >= 4 the distinct charges are at least 10 per sheet
   (would give 80 for MixColumns; least sampled value 81).
+
+## Phase 9 (2026-11-12): superposition refutes distinct-charge counting (RECORD 24, `cancel/SUPERPOSITION.md`)
+
+- A reduced, fully live MixColumns circuit (byte parities shared by all sheets, then remainders) has only 66
+  distinct charged gates (8m + 2 for the m-position ring): the 80-distinct-charge conjecture and Conjecture G are
+  false. It has 521-616 gates, so it says nothing against 80 total gates.
+- Consequence: no bound on distinct charged gates valid for all circuits can exceed 66; charging must be combined
+  with a bound on the uncharged separation work, or with a structural hypothesis.
+- Theorem K survives as a classification of partner shapes; it constrains no cost.
+- Removing a shared value's unwanted part needs a second copy of it; Q_3 gets the copy free from another sheet,
+  the triangle reuses one uncharged copy three times, the witness pays with hundreds of uncharged gates.
+  Charging the transposed circuit instead does not help (both sides can have 66).
 
 ## The open questions that now carry the problem
 

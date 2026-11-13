@@ -1195,7 +1195,7 @@ the triangle (three {1,2} gates serving sheets 1, 2; one {2,7} gate serving 1, 3
 serving sheet 1); the rest none, one variant in the main sample (the review sample is a different selection from
 the same corpus); the triangle dominates the sample but is not a proved normal form. Removal is local up to 0-6 coincidences per circuit; dead 0-1.
 
-**Conjecture (holds on all sampled circuits, least value 81 at circuits_3.txt line 7651 (the 82 first
+**REFUTED in phase 9 (cancel/SUPERPOSITION.md: a reduced, fully live MixColumns circuit with 66 distinct charged gates).** **Conjecture (holds on all sampled circuits, least value 81 at circuits_3.txt line 7651 (the 82 first
 given here was wrong; phase-8 review); no proof mechanism).** |F_0 u ... u F_7| >= 80 for
 every MixColumns circuit (would give L >= 80). Double service needs an exit (J8, J9), but no cost of exits is
 known, and the compensation is not pair-local: in the F-form |F_1 u F_2| = 19 in 166 of 826 sampled circuits
@@ -1236,7 +1236,7 @@ all three). Refuted: "every exit costs a gate" (Q_3), "each uncharged partner pa
 (U = 1 < R = 3 occurs). Observation: after zeroing blocks 4, 5, 6 the charged union of sheets 1, 2, 3 is >= 30 in
 every sampled circuit.
 
-**Conjecture G.** For sheet systems with gamma >= 4, |union F_j| >= 10 s; it would give L(MixColumns) >= 80,
+**REFUTED in phase 9 (cancel/SUPERPOSITION.md: a reduced, fully live MixColumns circuit with 66 distinct charged gates).** **Conjecture G.** For sheet systems with gamma >= 4, |union F_j| >= 10 s; it would give L(MixColumns) >= 80,
 L(Q_m) = 10 m (m >= 4) and M_l = 10 l. Q_2 and Q_3 lie outside its hypothesis. Missing: a cost for closures by
 uncharged partners, for escapes, and for closures with >= gamma - 2 chase exits. Least sampled |union F_j| is
 81 (circuits_3.txt line 7651; RECORD 22's 82 corrected).
@@ -1250,5 +1250,36 @@ among its terms. The full label set is a sufficient exact interface; its necessi
 checks: several exhaustive checks and exact least-gate searches were run despite the instruction;
 joint/FINITE_AUDIT.md section 5 separates statements now supported by hand arguments from those resting only
 on those runs.
+
+Nothing in this section changes 75 <= L(MixColumns) <= 88.
+
+## 24. Superposition: the distinct-charge conjecture refuted; what removal costs (phase 9; `cancel/SUPERPOSITION.md`; review `cancel/witness/review/`)
+
+Phase 9 (2026-11-12). The user supplied an explicit construction (the attachment itself was not available in the
+session; the circuit was rebuilt from the description and verified here and by an independent machine review).
+**Counterexample (proved; verified).** z_c = parity of byte c (28 gates), H_c = parity of the other three bytes
+(6 gates; on every block j its part is E_c(j)); every output is y_(c,j) = H_c + r_(c,j) with the remainder r
+built from inputs outside block j by disjoint-support chains. Under hypothesis H (no step-3 value equals an
+output) the circuit is reduced, fully live, and its distinct charged gates are the 34 globals and the 32 outputs:
+66 (E 140, R 154; G 521-616 depending on the order of the remainder sums). For Q_m, 8m + 2. **Refuted:** the
+phase-7 distinct-charge conjecture and Conjecture G (phase 8) for MixColumns and for Q_m, m >= 4 (Q_4: 34 < 40).
+**Not refuted:** G >= 80, L(Q_4) = 40, size- or U-restricted charge statements, the bounds 75 <= L <= 88.
+Consequence: no unconditional lower bound on the distinct charged gates can exceed 66, below 75.
+**Theorem K survives** (the only exit on the witness's paths is the output gate; its off-path operands r and
+H_c are confined to no window); it classifies partner shapes and gives no constraint on cost or reuse.
+Interpretation fixed: confinement is a support condition, not membership in F_l; a one-chase-exit closure in
+MixColumns needs a non-confined or escaping partner, not necessarily an uncharged one; chase exits are counted
+per pair of paths, not as distinct expenses. Sheet-system repair: windows need a non-own block, and Lemma W
+projects onto an actual non-own block.
+**Removal (proved).** Lemma S1: cancelling a block of a shared value forces a second copy of that part in the
+partner. Q_3 takes the copy from another sheet's required work (total saving 2); the MixColumns triangle from one
+uncharged partner serving three double charges; the superposition witness from 32 uncharged remainders (deficit
+R - E = 14, paid by U >= 446 in the orders tried). Dual identity: G = sum_v (fan-out(v) - 1), the size of the
+transpose. **Two-sided charging refuted (check):** the transpose's charged count depends on the chain order; the
+block-order witness and its reverse-order transpose both have 66, so charging C or C^T does not repair the
+framework, and the "some transposition" variant is essentially the total bound restated.
+**Next:** a copy-rank principle (count the rank of the copies that cancellation forces and that are not values
+needed for other outputs), which combines reuse globally and separates the three mechanisms; first test whether
+"needed for other outputs" can be defined so that it is a lower bound rather than a restatement.
 
 Nothing in this section changes 75 <= L(MixColumns) <= 88.

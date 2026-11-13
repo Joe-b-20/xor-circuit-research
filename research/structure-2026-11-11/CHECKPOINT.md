@@ -1,11 +1,11 @@
-# Structural study: checkpoint for resuming (phases 3-8, 2026-11-12)
+# Structural study: checkpoint for resuming (phases 3-9, 2026-11-12)
 
 Branch `phase-2026-11-09`. Published statement unchanged: 75 <= L(MixColumns) <= 88. Main agent from
 2026-11-12: Opus 5.5 (previous main agent Fable; conserve Fable, do not use it for delegated work). All
 reviews are machine reviews by separate model instances, not human reviews.
 
 ## Read first
-`cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
+`cancel/SUPERPOSITION.md` (phase 9), `cancel/CANCEL.md` (phase 8), `joint/ACCOUNT.md` (phase 7), `SUMMARY.md` (phase sections 3-7), `SHARING.md` (sections 1, 8, 9), `RECORD.md` sections 16-19,
 `compose/TWOSIDED.md` (definitions), `compose/sb/REPORT.md`, `compose/sb2/REPORT.md` and their reviews.
 
 ## Established (statements with their hypotheses)
@@ -50,7 +50,7 @@ reviews are machine reviews by separate model instances, not human reviews.
   (four blocks); at three blocks {4,5,6} is not capped by known circuits.
 - Reader identity and group-rank bound (J6-J7); sharing classification for block-monotone circuits and the exit
   lemma (J8-J9); census: the triangle dominates exit-mediated sharing in the sample (one variant).
-- Conjecture |F_0 u ... u F_7| >= 80 (least sampled 81), compensation not pair-local (circuits_2.txt line 783).
+- Conjecture |F_0 u ... u F_7| >= 80 (REFUTED in phase 9; least sampled 81), compensation not pair-local (circuits_2.txt line 783).
 - Finite-check disclosure corrected (`joint/FINITE_AUDIT.md`): some small exhaustive checks were run on
   2026-11-12 after the instruction; record wording fixed; nothing rerun.
 
@@ -61,18 +61,27 @@ reviews are machine reviews by separate model instances, not human reviews.
   cancellations for a charged closure; observed triangle closures use one cancellation and an uncharged partner;
   Q_3 closes with the third sheet's charged work. No cost proved.
 - Refuted: "every cancellation costs a gate", "each uncharged partner pays for its double charges".
-- Conjecture G (girth >= 4 => |union F_j| >= 10 per sheet); least sampled |union F_j| is 81.
+- Conjecture G (girth >= 4 => |union F_j| >= 10 per sheet): REFUTED in phase 9.
 - Scope corrections listed in RECORD 23.
 
+## Phase 9 results (RECORD 24; `cancel/SUPERPOSITION.md` is the coherent account)
+- Counterexample (user's construction, rebuilt and verified; machine-reviewed): byte parities H_c shared by all
+  sheets, outputs y = H_c + remainder; 66 distinct charged gates (8m + 2 for Q_m), G 521-616. Refutes the
+  distinct-charge conjecture and Conjecture G; not G >= 80. No unconditional distinct-charge bound exceeds 66.
+- Theorem K kept as a classification (no cost or reuse constraint); interpretation and sheet-system repairs.
+- Lemma S1 (cancellation needs a second copy of the cancelled part); dual identity G = sum (fan-out - 1).
+- Two-sided charging (C and C^T) refuted: the witness and its reverse-order transpose both have 66.
+
 ## Next steps (the evidence suggests)
-1. The cost of a closure that Theorem K leaves open, case (i): one cancellation closed by an uncharged partner in a
-   system of girth >= 4. Target statement: such a closure forces an over-charge on a sheet of the chase walk or an
-   uncharged gate per closing exit, in a form that sums without double counting. Test cases: the MixColumns
-   triangle (walk through sheet 3; circuits_2.txt lines 20 and 783) and the smallest girth-4 ring Q_4, where
-   Conjecture G is L(Q_4) = 40.
-2. Case (iii): what two-exit charged closures can do in MixColumns (cycle 7, 4, 5, 6): whether they can exist at
-   all in a circuit of at most 87 gates (no instance in the sample).
-3. Not recommended: further restriction sums with all-circuit waste bounds (phase 7, J4, J5).
+1. Copy-rank: count the rank of the copies that cancellations force (Lemma S1) and that are not values needed for
+   other outputs; it combines reuse globally and separates Q_3 (copies are other sheets' required values), the
+   triangle (one copy, three double charges) and the superposition witness (high-rank copies, uncharged). First
+   task: a definition of "needed for other outputs" under which the count is a lower bound on gates and not a
+   restatement of G >= 80; test it on the three examples.
+2. Only if 1 gives a usable inequality: its restriction to cheap circuits, with the structural role of the
+   hypothesis stated.
+3. Not recommended: further distinct-charge statements (capped at 66), charging of transposes (refuted), and
+   restriction sums with all-circuit waste bounds (phase 7).
 Method restriction (applies to every agent): no SAT, no exhaustive enumeration or finite-family checks, no exact
 least-gate searches (including BFS or Dijkstra over value sets), no exhaustive subset minimisation. It was not
 observed on 2026-11-12 in the runs listed in `joint/FINITE_AUDIT.md`; nothing was rerun.

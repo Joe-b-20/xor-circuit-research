@@ -198,7 +198,7 @@ gates in block-monotone circuits; cancellation needed otherwise). Limitation: J4
 an average of single blocks; block-zeroing forms with waste bounds valid for all circuits are capped at 83 for
 one block, 85 for two and 87 for four by explicit circuits; at three blocks the set {4,5,6} is not capped).
 
-**Conjecture (charge form; holds on every sampled circuit; no proof mechanism yet).** In every MixColumns
+**REFUTED in phase 9 (cancel/SUPERPOSITION.md: a reduced, fully live MixColumns circuit with 66 distinct charged gates).** **Conjecture (charge form; holds on every sampled circuit; no proof mechanism yet).** In every MixColumns
 circuit the distinct charged gates number at least 80: |F_0 u ... u F_7| >= 80, equivalently
 sum_j (|F_j| - 10) >= sum_g (m(g) - 1)^+, with F_j = ancestors of sheet j nonzero on block j and m(g) = number of
 sheets charging g. This would give L >= 80. On the reviewer's 826 sampled circuits the least value found was 82; the phase-8 review found 81 (circuits_3.txt

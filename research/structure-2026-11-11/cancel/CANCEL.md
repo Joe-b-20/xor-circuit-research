@@ -6,12 +6,20 @@ circuits (recorded circuits, kste corpus lines, rotation/circuits/*.txt); script
 search, no exhaustive enumeration, no least-gate computation (by the main agent or the reviewer). Nothing here
 changes 75 <= L(MixColumns) <= 88. Review fixes (section 6) are already applied in the text.
 
+**Phase-9 update (`SUPERPOSITION.md`).** Conjecture G is REFUTED for MixColumns and for Q_m (m >= 4): a reduced,
+fully live circuit (global parity, then remainders) has 66 distinct charged gates (8m + 2 for Q_m). Theorem K
+and Lemma W stand. Read K as a classification of partner shapes: confinement is a support condition (not
+membership in F_l, which needs ancestry); a one-chase-exit closure in MixColumns needs a non-confined or
+escaping partner, not necessarily an uncharged one; the chase-exit count is per selected pair of paths from
+one shared gate, not a count of distinct expenses. K gives no constraint on cost or reuse.
+
 ## 0. Setting and the fixed counted families
 
 A *sheet system* (exact form used here): inputs in blocks of four; a set of sheets, each sheet j with an own
 block (distinct sheets have distinct own blocks; other blocks may be unowned, such as a chain's free block) and
-four rows that all have the same block support W_j, the *window*, containing j; each row is E_c on the own block
-plus s_c on every other window block, so that the ten-gate lemma (RECORD 7, 10) gives |F_j| >= 10. Examples:
+four rows that all have the same block support W_j, the *window*, containing j and at least one non-own block;
+each row is E_c on the own block plus s_c on every other window block, so that the ten-gate lemma (RECORD 7, 10)
+gives |F_j| >= 10 (a sheet with W_j = {j} would be a bare E-sheet, cheaper than 10; phase-9 repair). Examples:
 MixColumns (W_0 = {7, 0}, W_j = {j-1, j} plus 7 for j in {1, 3, 4}), the rotation model Q_m (W_j = {j-1, j} mod
 m), chains of adjacent sheets with a free first block. For a circuit C: A_j = ancestors of sheet j's rows, the
 rows included; F_j = gates of A_j nonzero on block j; m(g) = number of j with g in F_j; E = sum_j (|F_j| - 10),
@@ -26,10 +34,11 @@ in both operands with equal nonzero parts. Along a path a block disappears only 
 
 ## 1. Lemma W (window over-charge; proved)
 
-Let rho_j keep the blocks {j-1, j} and zero all others (block 7 too for sheets 1, 3, 4). Then
+Let rho_j keep the own block j and one actual non-own block n_j of W_j (for MixColumns and Q_m, n_j = j - 1),
+zeroing all others (block 7 too for sheets 1, 3, 4 of MixColumns). Then
 |F_j| - 10 >= c_j := |F_j| - #(distinct values of rho_j(F_j) that are not a unit of block j).
-*Proof.* rho_j maps sheet j's rows to E_c(j) + s_c(j-1). Gates of A_j outside F_j project to vectors on block
-j-1 alone (free for the lemma); gates of F_j stay nonzero on block j. Keeping the first occurrence of each
+*Proof.* rho_j maps sheet j's rows to E_c(j) + s_c(n_j). Gates of A_j outside F_j project to vectors on block
+n_j alone (free for the lemma); gates of F_j stay nonzero on block j. Keeping the first occurrence of each
 distinct projected value gives a circuit for the projected rows whose gates nonzero on block j are the distinct
 values of rho_j(F_j) other than block-j units; the ten-gate lemma gives at least 10 of them. QED (This is the
 charge theorem with its slack kept.)
@@ -126,7 +135,9 @@ while in Q_3 they use the third sheet's charged work. That a charged closure sav
 ## 5. Conjecture, scope, and what is missing
 
 **Conjecture G (sheet systems as defined in section 0).** If gamma >= 4, then |union_j F_j| >= 10 s in every
-circuit. Status: conjecture. Since G >= |union F_j| it would give L(MixColumns) >= 80 (published 75),
+circuit. Status: REFUTED in phase 9 (`SUPERPOSITION.md`): MixColumns has a circuit with 66 distinct charged
+gates and Q_m (m >= 4) one with 8m + 2. The total-cost statements below remain open; they no longer follow from a
+distinct-charge bound. Original text, kept for the record: Since G >= |union F_j| it would give L(MixColumns) >= 80 (published 75),
 L(Q_m) >= 10 m for m >= 4 (hence = 10 m with the known upper bound; 9m - 7 is known) and M_l >= 10 l for chains
 (hence = 10 l with the known construction; 9l + 2 known; M_3 is 29 or 30). Q_2 and Q_3 lie outside its
 hypothesis (gamma = 2, 3; they save 4 and 2), so they do not test it; what Theorem K shows is that the girth is a
