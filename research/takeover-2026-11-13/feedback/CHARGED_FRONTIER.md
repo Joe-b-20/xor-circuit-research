@@ -1,5 +1,9 @@
 # Global forest charges and local repeated-trace directions
 
+**Research direction superseded:** the [general unrestricted program](../general/README.md)
+is now active at the user's request. The results and open cases below remain
+recorded; the local case breakdown is not the current task list.
+
 2026-11-14, continuing reviewed commit `ed374d1`. Structural hand arguments with independent machine reviews, not formal verification or human certification. No circuit search, trace enumeration, or computer-driven elimination was used. No literature-novelty claim is made.
 
 The main result is an exact structural decomposition of the remaining six-entry interface. Some source directions are carried by aggregate charges across the mirror forest; all others are confined to the copy tree of a repeated trace. The decomposition locates the latter directions on explicit paths or subtrees. It does not itself assign them a source computation cost.

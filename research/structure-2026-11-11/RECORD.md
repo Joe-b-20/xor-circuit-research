@@ -2677,3 +2677,59 @@ The attempted all-odd repeated-trace closure is withdrawn. Simultaneous exposure
 at distinct vertices remain valid; the other phase results use fixed marked even
 traces or zero accumulators and are unaffected. See
 [the counterexample](../takeover-2026-11-13/feedback/TRACE_EXPOSURE_LIMIT.md) and its review.
+
+
+## 45. General unrestricted arguments replace the fixed-budget frontier (2026-11-14)
+
+Continuing reviewed commit `0cb775c`, the user directs the research toward general
+structural arguments and away from incremental numerical improvements or
+restricted bounds without a specified unrestricted use. The twelve-consumer
+case breakdown is deferred. Its proofs and open cases are preserved. The current
+program is [general unrestricted accounting](../takeover-2026-11-13/general/README.md).
+
+**Parity and exact defect.** For any parity functional, let s count odd coordinate
+inputs, c the components of the odd-occurrence multigraph, E the even gates,
+mu its cycle rank, and d the even-plus-even gates. The effective even span has
+rank r=s-c, and E-r=mu+d exactly. The partition-span statement was already in
+causal/REPORT Lemma 2.2 and the cyclic account; it is reconstructed and attributed,
+not promoted as new. Occurrence-level chronology identifies every unit of the
+defect with a paid cycle-closing or even-plus-even gate.
+
+For marked ports and literal transposition, let H0 be the source boundary space
+plus the aggregates on ODD occurrences, and Q the ordinary gate-adjoint source
+span. Then dim((H0+Q)/H0)<=E-r, and H0+Q is the span of the boundary and all
+occurrence aggregates. The matrix proof is a kernel-rank inequality; the graph
+proof shows the physical defect generators. Quotienting by all aggregates from
+the start would be vacuous. Partial copy-tree values remain local subset sums,
+not separately supplied source operands. Both the cycle term and the even-only
+term have specified rank-one witnesses, extending by disjoint copies.
+
+**An exact population result and its obstruction.** For all-odd required targets,
+the minimum number of even gates equals s-c_max over compatible input partitions.
+A star-pair basis realizes it, followed only by odd accumulations. Thus every such
+target set admits defect zero, although its odd work may be large. For m required
+odd non-input values and H other odd gates, the exact total is
+G=m+H+(s-c)+(mu+d). The missing general result must couple these costs; targets
+alone cannot force positive even redundancy in every circuit. Costs for different
+parities or different marked interfaces cannot simply be summed.
+
+See [the theorem and scope](../takeover-2026-11-13/general/ODD_COMPONENT_DEFECT.md)
+and [independent review](../takeover-2026-11-13/general/reviews/odd-component-defect-review.md).
+
+**A rejected unrestricted relaxation.** The coordinate quadratic lift satisfies
+q(a+b)=q(a)+q(b)+a wedge b. Telescoping gives the target tensor as the sum over
+physical gates of influence(g) tensor (parent1 wedge parent2), counting every
+gate once. Nevertheless, allowing these atoms independently has an explicit
+sixty-term MixColumns realization: prescribed three-coordinate terms are shared
+within sixteen row pairs, reducing the rowwise count 76 by 16. A direct checker
+verifies the displayed sixty atoms against all 32 matrix rows. No optimization,
+configuration enumeration, or circuit search is used. This ceiling rules out
+recovering 75 from the unconstrained tensor rank. It is not a sixty-gate circuit;
+parent supply and a common realization of influences were omitted by the model.
+See [the identity and limit](../takeover-2026-11-13/general/QUADRATIC_LIFT_LIMIT.md)
+and [independent review](../takeover-2026-11-13/general/reviews/quadratic-lift-review.md).
+
+These are structural hand arguments with machine review, not formal verification
+or human certification. The unrestricted 75–88 range is unchanged. The next task
+is a whole-circuit tradeoff theorem or a stronger invariant for actual sharing,
+not another local fixed-budget exclusion.

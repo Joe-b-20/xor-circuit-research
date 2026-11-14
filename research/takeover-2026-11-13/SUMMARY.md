@@ -1,5 +1,29 @@
 # What changed in the takeover
 
+**Current continuation after `0cb775c`, 2026-11-14: research direction changed at
+the user's request.** The [general unrestricted program](general/README.md)
+replaces the fixed-budget case breakdown as the active task. Restricted lemmas
+need an explicit role in an unrestricted argument; numerical +1 improvements
+are not the organizing goal.
+
+[Parity components and dependent even work](general/ODD_COMPONENT_DEFECT.md)
+reconstruct the historical partition-span theorem and give exact physical
+accounting E-r=mu+d for arbitrary circuits and any parity. Even occurrence aggregates modulo the boundary and odd occurrence aggregates
+have rank at most this defect.
+The minimum even-gate population for all-odd targets is attained by a zero-defect
+star-pair construction, potentially with many odd gates. Consequently the missing
+unrestricted theorem must control the joint cost, not force even redundancy alone.
+
+An independently explored [quadratic tensor method](general/QUADRATIC_LIFT_LIMIT.md)
+has an exact one-contribution-per-gate identity but a specified sixty-term
+MixColumns relaxation. It cannot recover 75 and is not being pursued without a
+substantive compatibility constraint. The fixed decomposition passed direct
+verification. Proofs, limitations, and independent reviews are saved. No new
+unrestricted numerical bound is claimed; MixColumns remains 75 to 88.
+
+The earlier continuation accounts below are retained as history. Their local
+next-step suggestions are superseded by this general research direction.
+
 **Current continuation after `ed374d1`, 2026-11-14:**
 [charged forests separate global and local source directions](feedback/CHARGED_FRONTIER.md).
 For t distinct traces in the remaining six-entry interface, forest charges have
