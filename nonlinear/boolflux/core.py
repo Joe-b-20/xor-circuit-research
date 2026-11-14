@@ -156,10 +156,21 @@ class Model:
 
     @classmethod
     def load(cls, name_or_path):
-        p = Path(name_or_path)
-        if not p.exists(): p = MODELS / ('%s.json' % name_or_path)
-        d = json.loads(p.read_text(encoding='utf-8'))
+        d = json.loads(model_path(name_or_path).read_text(encoding='utf-8'))
         return cls(d['name'], d['gates'], d.get('not_as', 'NOT'), d.get('description', ''))
+
+
+def model_path(name_or_path):
+    """A stock model name (models/<name>.json) first; otherwise a path to a .json file.  A file or
+    directory in the current directory that happens to have a model's name is not a model."""
+    stock = MODELS / ('%s.json' % name_or_path)
+    if stock.exists() and '/' not in str(name_or_path) and not str(name_or_path).endswith('.json'):
+        return stock
+    p = Path(name_or_path)
+    if p.is_file() and p.suffix == '.json':
+        return p
+    raise SystemExit('unknown model %r (stock models: %s; or a path to a .json model file)'
+                     % (name_or_path, ', '.join(sorted(f.stem for f in MODELS.glob('*.json')))))
 
 
 # ---- kernel format ---------------------------------------------------------------------------

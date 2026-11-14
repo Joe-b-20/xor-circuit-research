@@ -6,7 +6,8 @@ PLAN.json: {"tasks": [task, ...]}; a task is a list of runs executed back to bac
 CPU (so the runs of a comparison pair share hardware).  A run is a dict:
   tool      'boolflux' | 'xorflux'
   config    boolflux: 'gate' (gate kernel only) or 'full' (skeleton + seeded rebuild + gate,
-            alternating), plus kernel settings in 'set' (ablations) and 'skel_set'
+            alternating), plus kernel settings in 'set' (ablations) and 'skel_set'; the loop is
+            workflow.search (the same code as `cli.py flow`)
   target, model, objective, caps {GD, AD, A}, start ('anf' | NCFF path | XORFlux JSON path),
   seconds (wall budget for the search, rebuild included), seed, label
 Each run writes OUTDIR/<label>.json: trajectory [[t, cost, G, A, GD, AD], ...] (t = wall seconds
@@ -29,7 +30,7 @@ PKG = HERE.parent
 REPO = PKG.parents[1]
 sys.path.insert(0, str(PKG.parent)); sys.path.insert(0, str(PKG))
 import cli                                         # noqa: E402
-from boolflux import core, skeleton, starts, targets   # noqa: E402
+from boolflux import core, workflow   # noqa: E402
 
 if os.environ.get('BFXBENCH_BIN'):                     # worker: binaries built by the parent
     BIN = Path(os.environ['BFXBENCH_BIN'])
@@ -39,25 +40,8 @@ else:
         subprocess.run(['gcc', '-O2', '-o', str(BIN / b), str(PKG / 'kernel' / (b + '.c')), '-lm'], check=True)
 
 
-def timed(cmd, cpu):
-    """Run pinned under /usr/bin/time -v; return (stdout+stderr, peak RSS kB, wall s)."""
-    t0 = time.time()
-    r = subprocess.run(['taskset', '-c', str(cpu), '/usr/bin/time', '-v'] + cmd, capture_output=True, text=True)
-    m = re.search(r'Maximum resident set size \(kbytes\): (\d+)', r.stderr)
-    return r.stdout, r.stderr, int(m.group(1)) if m else None, time.time() - t0, r.returncode
-
-
-def load_start(run, model):
-    n, m, table, _ = targets.load(run['target'])
-    st = run['start']
-    if st == 'anf':
-        return starts.anf(n, m, table, model.ops())
-    if st.endswith('.json'):                        # XORFlux seed circuit
-        d = json.loads(Path(st).read_text())
-        nn = d['inputCount']
-        return core.Circuit(nn, len(d['outputSignals']), [(6, a, b) for a, b in d['gates']],
-                            list(d['outputSignals'])).live()
-    return core.read_ncff(st)
+timed = workflow.timed
+load_start = workflow.load_start
 
 
 def to_xorflux_json(c, name, path):
@@ -66,121 +50,10 @@ def to_xorflux_json(c, name, path):
                                 'outputSignals': c.outputs}) + '\n')
 
 
-def kernel_cfg(path, start_path, out_path, model, run, seconds, seed, extra):
-    cfg = dict(cli.DEFAULTS); cfg.update(cli.objective_weights(run.get('objective', 'cost')))
-    for op, c in model.cost.items(): cfg['cost.%d' % op] = c
-    caps = run.get('caps') or {}
-    for k, key in (('GD', 'cap.gd'), ('AD', 'cap.ad'), ('A', 'cap.a')):
-        if caps.get(k) is not None: cfg[key] = caps[k]
-    if all(not (op in core.NONLINEAR_OPS) for op in model.ops()): cfg['linear'] = run.get('linear', 1)
-    cfg.update(extra)
-    cfg.update({'in': start_path, 'out': out_path, 'seed': seed, 'seconds': seconds, 'iters': 10 ** 15})
-    path.write_text(''.join('%s %s\n' % kv for kv in cfg.items()))
-
-
-def parse_bests(log, t_offset):
-    out = []
-    for ln in log.splitlines():
-        t = ln.split()
-        if t and t[0] == 'best':
-            d = {t[i]: t[i + 1] for i in range(1, len(t) - 1, 2)}
-            out.append([round(float(d['t']) + t_offset, 3), float(d['cost']), int(d['G']), int(d['A']), int(d['GD']), int(d['AD'])])
-    return out
-
-
 def run_boolflux(run, cpu, wd):
-    model = core.Model.load(run['model'])
-    n, m, table, _ = targets.load(run['target'])
-    t0 = time.time(); start = load_start(run, model); t_start = time.time() - t0
-    sm = start.metrics(model)
-    traj = [[0.0, sm['cost'], sm['G'], sm['A'], sm['GD'], sm['AD']]]
-    feas = lambda x: all(c is None or x[k] <= c for k, c in (run.get('caps') or {}).items())
-    obj_w = cli.objective_weights(run.get('objective', 'cost'))
-    obj = lambda x: obj_w['w.cost'] * x['cost'] + obj_w['w.g'] * x['G'] + obj_w['w.a'] * x['A'] + obj_w['w.gd'] * x['GD'] + obj_w['w.ad'] * x['AD']
-    overhead = {'start_s': round(t_start, 4), 'extract_s': 0, 'skel_s': 0, 'synth_s': 0, 'kernel_startup_s': 0}
-    rss = []; budget = run['seconds']; T0 = time.time()
-    best_c = start; best_m = sm
-    cur = start; rnd = 0; skel_share = 0.2
-    while True:
-        el = time.time() - T0
-        if el >= budget - 0.05: break
-        if run['config'] == 'gate':
-            stages = [('gate', budget - el)]
-        else:
-            R = run.get('round_s', 10.0)
-            # adaptive (v3): the skeleton slice halves after every round in which the rebuilt circuit
-            # (straight after synthesis) was not better, feasibility first, than the circuit that went
-            # in (minimum 0.5 s); in v3 the gate stage gets the rest of the round (R - skeleton time)
-            share = skel_share if run.get('adaptive') else 0.2
-            stages = [('skel', min(R * share, budget - el)), ('gate', None)]
-            synth_gain = False; round_t0 = time.time()
-        cand = cur
-        for kind, secs in stages:
-            el = time.time() - T0
-            if el >= budget - 0.05: break
-            if kind == 'skel':
-                ts = time.time(); sk = skeleton.extract(cand); overhead['extract_s'] += time.time() - ts
-                outs = core.tables_from_values(n, m, table)
-                (wd / 'sk.in').write_text(skeleton.write_skel(sk, outs))
-                scfg = dict(cli.SKEL_DEFAULTS); scfg.update(run.get('skel_set', {}))
-                if (run.get('caps') or {}).get('AD') is not None: scfg['cap.ad'] = run['caps']['AD']
-                scfg.update({'in': wd / 'sk.in', 'out': wd / 'sk.out', 'seed': run['seed'] * 1000 + rnd,
-                             'iters': 10 ** 15, 'seconds': secs})
-                if 'iters' in run.get('skel_set', {}): scfg['iters'] = run['skel_set']['iters']   # 0: rebuild only
-                (wd / 'sk.cfg').write_text(''.join('%s %s\n' % kv for kv in scfg.items()))
-                ts = time.time()
-                so, se, r_, wall, rc = timed([str(BIN / 'skel'), str(wd / 'sk.cfg')], cpu)
-                overhead['skel_s'] += time.time() - ts; rss.append(r_)
-                if rc != 0: raise RuntimeError('skel failed: ' + se[-500:])
-                sk2 = skeleton.read_skel((wd / 'sk.out').read_text())
-                ts = time.time()
-                vs = []
-                if run.get('seeded', True): vs.append(skeleton.synthesize(sk2, model.ops(), parent=cand))
-                if run.get('unseeded', True):
-                    vs += [skeleton.synthesize(sk2, model.ops(), use_paar=a, paar_outputs=b) for a, b in ((0, 0), (1, 0), (1, 1))]
-                rank = lambda c: (0 if feas(c.metrics(model)) else 1, obj(c.metrics(model)))
-                if run.get('adaptive'):            # v3: by (feasible, objective); keep the input if better
-                    best_v = min(vs, key=rank)
-                    synth_gain = rank(best_v) < rank(cand)
-                    cand = best_v if synth_gain else cand
-                else:                              # v1/v2: cheapest by cost
-                    cin = obj(dict(cand.metrics(model)))
-                    cand = min(vs, key=lambda c: c.metrics(model)['cost'])
-                    synth_gain = obj(dict(cand.metrics(model))) < cin - 1e-12
-                overhead['synth_s'] += time.time() - ts
-                if cand.value_table() != list(table):
-                    raise RuntimeError('rebuilt circuit does not compute the target')
-            else:
-                if secs is None:
-                    rem = budget - (time.time() - T0)
-                    if run.get('adaptive'): secs = min(max(0.5, run.get('round_s', 10.0) - (time.time() - round_t0)), rem)
-                    else: secs = min(run.get('round_s', 10.0) * 0.8, rem)
-                (wd / 'g.in').write_text(core.to_kernel(cand))
-                kernel_cfg(wd / 'g.cfg', wd / 'g.in', wd / 'g.out', model, run, secs, run['seed'] * 1000 + rnd, run.get('set', {}))
-                t_launch = time.time() - T0
-                so, se, r_, wall, rc = timed([str(BIN / 'bfx'), str(wd / 'g.cfg')], cpu)
-                rss.append(r_)
-                if rc != 0: raise RuntimeError('bfx failed: ' + (so + se)[-800:])
-                ks = re.search(r'seconds ([\d.]+)', so.split('final')[-1])
-                overhead['kernel_startup_s'] += max(0.0, wall - (float(ks.group(1)) if ks else wall))
-                for row in parse_bests(so, t_launch):
-                    mt = {'cost': row[1], 'G': row[2], 'A': row[3], 'GD': row[4], 'AD': row[5]}
-                    if feas(mt) and (not feas(best_m) or obj(mt) < obj(best_m) - 1e-12):
-                        best_m = mt; traj.append(row)
-                cand = core.from_kernel((wd / 'g.out').read_text())
-                cm = cand.metrics(model)
-                if feas(cm) and (not feas(best_m) or obj(cm) <= obj(best_m) + 1e-12):
-                    best_c = cand; best_m = {k: cm[k] for k in ('cost', 'G', 'A', 'GD', 'AD')}
-        if run['config'] != 'gate' and run.get('adaptive'):
-            # the skeleton stage earns its slice only if its rebuilt candidate was already cheaper
-            # than the circuit that went in
-            gained = synth_gain
-            skel_share = 0.2 if gained else max(0.5 / run.get('round_s', 10.0), skel_share / 2)
-        cur = best_c if (feas(best_m) or not run.get('adaptive')) else cand   # v3: keep repair progress
-        rnd += 1
-        if run['config'] == 'gate': break
-    search_s = time.time() - T0
-    return best_c, traj, rss, overhead, search_s
+    """The search loop lives in workflow.py (also behind `cli.py flow`)."""
+    r = workflow.search(run, BIN, wd, cpu)
+    return r['circuit'], r['trajectory'], r['rss'], r['overhead'], r['search_s']
 
 
 def run_xorflux(run, cpu, wd):
@@ -245,6 +118,7 @@ def execute(run, cpu, outdir):
         res['final'] = {k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}
         res['final_counts'] = v['metrics']['counts']
         res['verified'] = bool(v['core_ok'] and v['independent_ok'] and v['library_ok'])
+        res['feasible'] = all(c is None or v['metrics'][k] <= c for k, c in (run.get('caps') or {}).items())
         res['final_file'] = str(f)
     (outdir / (run['label'] + '.json')).write_text(json.dumps(res) + '\n')
     return res

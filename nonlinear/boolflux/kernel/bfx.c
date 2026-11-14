@@ -105,10 +105,15 @@ static int outputs_ok(const Circ *c, const u64 *V) {
     return 1;
 }
 
-typedef struct { double cost, obj; int g, a, gd, ad, feas, viol; } Metrics;
+typedef struct { double cost, obj, vsum; int g, a, gd, ad, feas, viol; } Metrics;
 #define VIOL_PENALTY 1e6
 static double w_cost = 1, w_g = 0, w_a = 0, w_gd = 0, w_ad = 0;
 static int cap_gd = -1, cap_ad = -1, cap_a = -1;
+/* Lexicographic objective (config `lex cost,gd`): keys compared in order after feasibility
+ * (largest cap excess, then summed path excess).  The weighted obj is used only for the size
+ * of an uphill step (Metropolis) and for printing.  0 cost 1 g 2 a 3 gd 4 ad. */
+static int lex_n = 0, lex_k[5];
+
 
 static void levels(const Circ *c, int *lg, int *la) {
     for (int i = 0; i < N; i++) lg[i] = la[i] = 0;
@@ -153,9 +158,27 @@ static void metrics(const Circ *c, Metrics *m) {
             if (cap_ad >= 0 && LA_tmp[v] + HA_tmp[v] > cap_ad) vsum += LA_tmp[v] + HA_tmp[v] - cap_ad;
         }
     }
+    m->vsum = vsum;
     m->obj = w_cost * m->cost + w_g * m->g + w_a * m->a + w_gd * m->gd + w_ad * m->ad
              + VIOL_PENALTY * m->viol + 1e4 * vsum;
 }
+static double keyval(const Metrics *m, int k) {
+    switch (k) { case 0: return m->cost; case 1: return m->g; case 2: return m->a; case 3: return m->gd; default: return m->ad; }
+}
+static int dcmp(double x, double y) {
+    double tol = 1e-9 * (1 + fabs(x) + fabs(y));
+    return x < y - tol ? -1 : x > y + tol ? 1 : 0;
+}
+/* -1: a better than b, 0: equal, 1: worse.  Feasibility first (viol, then vsum), then the
+ * lexicographic keys; without `lex` the weighted objective (old behaviour). */
+static int mcmp(const Metrics *a, const Metrics *b) {
+    if (a->viol != b->viol) return a->viol < b->viol ? -1 : 1;
+    int c = dcmp(a->vsum, b->vsum); if (c) return c;
+    if (!lex_n) return dcmp(a->obj - VIOL_PENALTY * a->viol - 1e4 * a->vsum, b->obj - VIOL_PENALTY * b->viol - 1e4 * b->vsum);
+    for (int i = 0; i < lex_n; i++) { c = dcmp(keyval(a, lex_k[i]), keyval(b, lex_k[i])); if (c) return c; }
+    return 0;
+}
+
 
 /* Rebuild: apply remap (signal -> signal, may chain) to every operand and output of c plus the
  * appended gates `add` (signals N+c->ng+t), keep only gates reachable from the outputs, order
@@ -267,6 +290,15 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "w.a")) w_a = atof(v);
         else if (!strcmp(k, "w.gd")) w_gd = atof(v);
         else if (!strcmp(k, "w.ad")) w_ad = atof(v);
+        else if (!strcmp(k, "lex")) {
+            static const char *KN[5] = {"cost", "g", "a", "gd", "ad"};
+            lex_n = 0;
+            for (char *t = strtok(v, ","); t; t = strtok(0, ",")) {
+                int f = -1; for (int q = 0; q < 5; q++) if (!strcmp(t, KN[q])) f = q;
+                if (f < 0 || lex_n >= 5) die("lex: unknown key");
+                lex_k[lex_n++] = f;
+            }
+        }
         else if (!strcmp(k, "cap.gd")) cap_gd = atoi(v);
         else if (!strcmp(k, "cap.ad")) cap_ad = atoi(v);
         else if (!strcmp(k, "cap.a")) cap_a = atoi(v);
@@ -604,6 +636,43 @@ static int fraig(Circ *c, u64 *V) {
     return 1;
 }
 
+/* Is circuit x the same as y up to the numbering of gates?  Each gate gets a structural hash
+ * (op, operand hashes; operands sorted for symmetric ops).  After strash no two gates of one
+ * circuit are structurally equal, so gates are paired by sorting on the hash, and the pairing
+ * is then checked exactly (op and mapped operands), so a hash collision cannot give a false
+ * 'same'.  rebuild() renumbers gates (DFS post-order), so a raw memcmp misses most no-ops. */
+static u64 *SH_x, *SH_y; static int *SH_ix, *SH_iy, *SH_map; static const u64 *SH_key;
+static u64 shash_mix(u64 h) { h ^= h >> 33; h *= 0xff51afd7ed558ccdULL; h ^= h >> 33; h *= 0xc4ceb9fe1a85ec53ULL; return h ^ (h >> 33); }
+static void shash(const Circ *c, u64 *h) {
+    for (int i = 0; i < N; i++) h[i] = shash_mix(0x1234567ULL + i);
+    for (int j = 0; j < c->ng; j++) {
+        const Gate *g = &c->g[j]; u64 x = h[g->a], y = op_unary(g->op) ? 0 : h[g->b];
+        if (!op_unary(g->op) && op_sym(g->op) && x > y) { u64 t = x; x = y; y = t; }
+        h[N + j] = shash_mix(shash_mix(x * 31 + g->op) ^ (y + 0x9E3779B97F4A7C15ULL));
+    }
+}
+static int sh_cmp(const void *p, const void *q) { u64 a = SH_key[*(const int *)p], b = SH_key[*(const int *)q]; return a < b ? -1 : a > b; }
+static int same_structure(const Circ *x, const Circ *y) {
+    if (x->ng != y->ng) return 0;
+    shash(x, SH_x); shash(y, SH_y);
+    for (int k = 0; k < M; k++) if (SH_x[x->out[k]] != SH_y[y->out[k]]) return 0;
+    for (int j = 0; j < x->ng; j++) { SH_ix[j] = N + j; SH_iy[j] = N + j; }
+    SH_key = SH_x; qsort(SH_ix, x->ng, sizeof(int), sh_cmp);
+    SH_key = SH_y; qsort(SH_iy, y->ng, sizeof(int), sh_cmp);
+    for (int i = 0; i < N; i++) SH_map[i] = i;
+    for (int j = 0; j < x->ng; j++) { if (SH_x[SH_ix[j]] != SH_y[SH_iy[j]]) return 0; SH_map[SH_ix[j]] = SH_iy[j]; }
+    for (int j = 0; j < x->ng; j++) {
+        const Gate *g = &x->g[j], *h = &y->g[SH_map[N + j] - N];
+        if (g->op != h->op) return 0;
+        int a = SH_map[g->a], b = op_unary(g->op) ? h->b : SH_map[g->b];
+        if (a == h->a && b == h->b) continue;
+        if (!op_unary(g->op) && op_sym(g->op) && a == h->b && b == h->a) continue;
+        return 0;
+    }
+    for (int k = 0; k < M; k++) if (SH_map[x->out[k]] != y->out[k]) return 0;
+    return 1;
+}
+
 /* evaluate candidate: build into cand_c, return obj (or +inf if invalid) */
 static int eval_cand(int s, const Cand *k, Metrics *m) {
     if (rebuild(&cur, s, k->root, k->g, k->k, 0, &cand_c, 1) < 0) return 0;
@@ -617,7 +686,7 @@ static int eval_cand(int s, const Cand *k, Metrics *m) {
 }
 
 /* ------------------------------------------------------------------ move trace */
-static FILE *tmv; static Circ tmp_before; static Metrics mprev_dummy;
+static FILE *tmv; static Circ tmp_before; static Metrics mprev;
 static const char *OPNAME[16] = {"C0", "NOR", "BANDN", "NOT", "ANDN", "NOTB", "XOR", "NAND",
                                  "AND", "XNOR", "BUFB", "BORN", "BUF", "ORN", "OR", "C1"};
 static int popc_care(void) { int c = 0; for (int w = 0; w < W; w++) c += __builtin_popcountll(CARE[w] & wmask(w)); return c; }
@@ -640,6 +709,8 @@ int main(int argc, char **argv) {
     LGc = malloc(sizeof(int) * S); LAc = malloc(sizeof(int) * S); RGc = malloc(sizeof(int) * S);
     RAc = malloc(sizeof(int) * S); REF = malloc(sizeof(int) * S); TFO = malloc(S); DIV = malloc(sizeof(int) * S);
     FR_map = malloc(sizeof(int) * S); FR_hts = 1 << 16; FR_ht = malloc(sizeof(int) * FR_hts);
+    SH_x = malloc(sizeof(u64) * S); SH_y = malloc(sizeof(u64) * S);
+    SH_ix = malloc(sizeof(int) * S); SH_iy = malloc(sizeof(int) * S); SH_map = malloc(sizeof(int) * S);
 
     int stats_only = !strcmp(argv[1], "--stats");
     if (stats_only) {
@@ -670,8 +741,11 @@ int main(int argc, char **argv) {
     for (int k = 0; k < M; k++) memcpy(TGT + (size_t)k * W, Vcur + (size_t)cur.out[k] * W, 8 * W);
     for (int j = 0; j < cur.ng; j++)
         if (!stats_only && !op_ok[cur.g[j].op]) { fprintf(stderr, "bfx: start circuit uses op %d outside the library\n", cur.g[j].op); exit(2); }
+    Metrics mraw; metrics(&cur, &mraw);
     if (rebuild(&cur, -1, -1, 0, 0, 0, &tmp_c, 1) < 0) die("start circuit cannot be cleaned");
     circ_copy(&cur, &tmp_c);
+    if (!stats_only && tmp_c.ng != mraw.g)   /* strash / dead-gate removal of the start, before the clock */
+        printf("start_cleanup raw cost %.4f G %d A %d GD %d AD %d\n", mraw.cost, mraw.g, mraw.a, mraw.gd, mraw.ad);
     state_refresh();
     if (stats_only) {
         printf("cost %.4f G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad); return 0;
@@ -690,7 +764,7 @@ int main(int argc, char **argv) {
     if (tmv) circ_alloc(&tmp_before);
     double t0 = now_s(), last_best = 0, mvsum = 0;
     for (int i = 0; i < NMOVES; i++) mvsum += mv_w[i];
-    printf("start cost %.4f G %d A %d GD %d AD %d feas %d obj %.6f\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad, mcur.feas, mcur.obj);
+    printf("start cost %.4f G %d A %d GD %d AD %d feas %d obj %.17g\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad, mcur.feas, mcur.obj);
     if (!mcur.feas) printf("note: start circuit violates a cap; the search first repairs it (penalised objective)\n");
     write_circuit(cfg_out, &best, &mbest, "start");
     long it = 0, restarts = 0, last_best_it = 0;
@@ -701,7 +775,7 @@ int main(int argc, char **argv) {
         double ph = Tperiod_it > 0 ? fmod((double)it, Tperiod_it) / Tperiod_it : fmod(t, Tperiod) / Tperiod;
         double T = T0 > 0 ? T0 * (1.0 - ph) : 0;
         int stalled = stall_it > 0 ? (it - last_best_it > stall_it) : (t - last_best > stall);
-        if (stalled && mcur.obj > mbest.obj + 1e-9) {
+        if (stalled && mcmp(&mcur, &mbest) > 0) {
             circ_copy(&cur, &best); state_refresh(); last_best = t; last_best_it = it; restarts++;
         }
         if (cur.ng == 0) break;
@@ -723,7 +797,7 @@ int main(int argc, char **argv) {
         find_cands(mv + 1);
         st_cands[mv] += ncand;
         /* evaluate all candidates; take the best improvement, else a random one under Metropolis */
-        int bi = -1, bfeas = 0; double bobj = 1e300; Metrics m;
+        int bi = -1, bfeas = 0; Metrics m, bm;
         static int order[1024], neu[1024], up[1024]; static double upd[1024];
         int no = ncand < 1024 ? ncand : 1024, nneu = 0, nup = 0;
         for (int i = 0; i < no; i++) order[i] = i;
@@ -731,16 +805,15 @@ int main(int argc, char **argv) {
         for (int q = 0; q < no; q++) {
             int i = order[q];
             if (!eval_cand(s, &CAND[i], &m)) continue;
-            if (skip_noop && cand_c.ng == cur.ng && !memcmp(cand_c.g, cur.g, sizeof(Gate) * cur.ng)
-                && !memcmp(cand_c.out, cur.out, sizeof(int) * M)) { st_noop++; continue; }
-            double d = m.obj - mcur.obj;
-            if ((m.feas || !mcur.feas) && m.obj < bobj) { bobj = m.obj; bi = i; bfeas = m.feas; }
-            if (fabs(d) <= 1e-9 && m.feas >= mcur.feas) neu[nneu++] = i;
-            else if (d > 0 && m.obj <= mbest.obj + max_excess && m.feas >= mcur.feas) { upd[nup] = d; up[nup++] = i; }
+            if (skip_noop && same_structure(&cand_c, &cur)) { st_noop++; continue; }
+            double d = m.obj - mcur.obj; int cc = mcmp(&m, &mcur);
+            if ((m.feas || !mcur.feas) && (bi < 0 || mcmp(&m, &bm) < 0)) { bm = m; bi = i; bfeas = m.feas; }
+            if (cc == 0 && m.feas >= mcur.feas) neu[nneu++] = i;
+            else if (cc > 0 && m.obj <= mbest.obj + max_excess && m.feas >= mcur.feas) { upd[nup] = d > 1e-12 ? d : 1e-12; up[nup++] = i; }
         }
         int accept = -1;
         /* feasibility first: a feasible state is never left for an infeasible one */
-        if (bi >= 0 && bobj < mcur.obj - 1e-9 && (bfeas || !mcur.feas)) accept = bi;
+        if (bi >= 0 && mcmp(&bm, &mcur) < 0 && (bfeas || !mcur.feas)) accept = bi;
         else if (use_neutral && nneu && (nup == 0 || T <= 0 || rnd01() < 0.75)) accept = neu[rndint(nneu)];
         else if (nup && T > 0) { int q = rndint(nup); if (rnd01() < exp(-upd[q] / T)) accept = up[q]; }
         if (accept >= 0) {
@@ -755,24 +828,25 @@ int main(int argc, char **argv) {
                         k->root >= N + cur.ng ? k->root - N - cur.ng : k->root, mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
             }
             Circ *before = tmv ? &tmp_before : 0;
-            if (before) circ_copy(before, &cur);
+            if (before) { circ_copy(before, &cur); mprev = mcur; }
             eval_cand(s, &CAND[accept], &m);
             circ_copy(&cur, &cand_c); state_refresh();
+            int newbest = (mcur.feas || !mbest.feas) && (mcmp(&mcur, &mbest) < 0 || (mcur.feas && !mbest.feas));
             if (tmv) {
                 fprintf(tmv, " -> after cost %.2f G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
-                if (mcur.obj < mbest.obj - 1e-9) {
+                if (newbest) {
                     char fn[1200];
-                    snprintf(fn, sizeof fn, "%s.it%ld.before", cfg_tracemoves, it); write_circuit(fn, before, &mprev_dummy, "before");
+                    snprintf(fn, sizeof fn, "%s.it%ld.before", cfg_tracemoves, it); write_circuit(fn, before, &mprev, "before");
                     snprintf(fn, sizeof fn, "%s.it%ld.after", cfg_tracemoves, it); write_circuit(fn, &cur, &mcur, "after");
                 }
                 fflush(tmv);
             }
             st_acc[mv]++;
-            if ((mcur.feas || !mbest.feas) && (mcur.obj < mbest.obj - 1e-9 || (mcur.feas && !mbest.feas))) {
+            if (newbest) {
                 st_imp[mv]++;
                 circ_copy(&best, &cur); mbest = mcur; last_best = t; last_best_it = it;
                 write_circuit(cfg_out, &best, &mbest, "best");
-                printf("best t %.3f it %ld mv %s cost %.4f G %d A %d GD %d AD %d obj %.6f\n", t, it, MVNAME[mv],
+                printf("best t %.3f it %ld mv %s cost %.4f G %d A %d GD %d AD %d obj %.17g\n", t, it, MVNAME[mv],
                        mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj);
                 fflush(stdout);
             }
@@ -785,7 +859,7 @@ int main(int argc, char **argv) {
     sim(&best, Vcur);
     if (!outputs_ok(&best, Vcur)) die("INTERNAL: best circuit does not match target");
     write_circuit(cfg_out, &best, &mbest, "final");
-    printf("final cost %.4f G %d A %d GD %d AD %d obj %.6f feas %d iters %ld restarts %ld seconds %.2f\n",
+    printf("final cost %.4f G %d A %d GD %d AD %d obj %.17g feas %d iters %ld restarts %ld seconds %.2f\n",
            mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj, mbest.feas, it, restarts, now_s() - t0);
     for (int i = 0; i < NMOVES; i++)
         printf("move %s prop %ld acc %ld imp %ld cands %ld time %.2f\n", MVNAME[i], st_prop[i], st_acc[i], st_imp[i], st_cands[i], st_time[i]);

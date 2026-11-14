@@ -1,0 +1,634 @@
+{
+ "tasks": [
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 1,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s1-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 1,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s1-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 2,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s2-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 2,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s2-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 3,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s3-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 3,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s3-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 4,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s4-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 4,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s4-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 5,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s5-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 5,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s5-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 6,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s6-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 6,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s6-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 7,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s7-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 7,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s7-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 8,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s8-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 8,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s8-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 9,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s9-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 9,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s9-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 10,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s10-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 10,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s10-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 11,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s11-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 11,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s11-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 12,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s12-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 12,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s12-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 13,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s13-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 13,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s13-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 14,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s14-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 14,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s14-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ],
+  [
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 15,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop0-s15-v5",
+    "set": {
+     "skip_noop": 0
+    }
+   },
+   {
+    "tool": "boolflux",
+    "target": "aes",
+    "model": "nist",
+    "objective": "cost,gd",
+    "caps": {
+     "A": 36,
+     "AD": 4,
+     "GD": 13
+    },
+    "start": "nonlinear/nist/aes-sbox/aes-sbox-a36-ad4-g142-gd13-xx106-19.circ.txt",
+    "seconds": 120,
+    "seed": 15,
+    "round_s": 30,
+    "config": "gate",
+    "label": "A-aes-a36g142-gate-noop1-s15-v5",
+    "set": {
+     "skip_noop": 1
+    }
+   }
+  ]
+ ]
+}

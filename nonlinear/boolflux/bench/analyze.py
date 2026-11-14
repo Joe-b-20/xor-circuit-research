@@ -3,11 +3,16 @@
     python3 nonlinear/boolflux/bench/analyze.py RUNDIR [RUNDIR ...] > tables.md
 
 Targets were fixed before the runs (TARGETS below).  Success = the final verified circuit meets the
-target; time to target = first trajectory point that meets it (wall seconds since the search
-started; overhead for start construction is reported separately).
+target (review3 M3: earlier tables counted trajectory points, which missed gains made by the
+rebuild stage); time to target = first trajectory point that meets it (wall seconds since the
+search started; overhead for start construction is reported separately).  Runs whose final meets
+the target but whose trajectory has no such point (rebuild-stage gains in data from before the
+workflow.py fix) are counted, and listed as "(k: no time)".  Best-so-far values and the "best"
+column are the best under the run's own objective (review3 m10), shown by their cost.
 """
 import json
 import statistics as st
+sys_path_done = False
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -48,15 +53,32 @@ def first_time(r, pred):
     return None
 
 
+def rank_key(r):
+    from boolflux import objective
+    return lambda m: objective.rank(m, r['run'].get('caps') or {}, r['run'].get('objective', 'cost'))
+
+
 def best_at(r, t, key='cost'):
+    """value of `key` of the best feasible trajectory point (by the run's objective) up to time t"""
     caps = r['run'].get('caps') or {}
-    best = None
+    R = rank_key(r); best = None
     for row in r['trajectory']:
         if row[0] > t: break
         m = traj_metrics(row)
-        if all(c is None or m[k] <= c for k, c in caps.items()):
-            best = m[key] if best is None else min(best, m[key])
-    return best
+        if all(c is None or m[k] <= c for k, c in caps.items()) and (best is None or R(m) < R(best)):
+            best = m
+    return None if best is None else best[key]
+
+
+def reach(rs, pred):
+    """(runs whose verified final meets pred, their times from the trajectory, count without a time)"""
+    times, notime = [], 0
+    for r in rs:
+        ok = r.get('verified') and r.get('final') and pred(r['final'])
+        t = first_time(r, pred)
+        if ok and t is None: notime += 1
+        times.append(t if ok else None)
+    return times, notime
 
 
 def med(xs):
@@ -67,9 +89,10 @@ def med(xs):
     return v if len(xs) == n else '%s (%d/%d)' % (v, len(xs), n)
 
 
-def fmt_t(xs, n):
+def fmt_t(xs, n, notime=0):
     ok = [x for x in xs if x is not None]
-    return '%d/%d, median %s s' % (len(ok), n, round(st.median(ok), 1) if ok else '-')
+    return '%d/%d, median %s s%s' % (len(ok) + notime, n, round(st.median(ok), 1) if ok else '-',
+                                     ' (%d: no time)' % notime if notime else '')
 
 
 def linear(runs):
@@ -91,13 +114,13 @@ def linear(runs):
         tgt = LIN_BEST[(mp, cap)]
         fin = [r['final']['G'] for r in rs if r.get('final') and r.get('verified')]
         bad = [r for r in rs if not r.get('verified')]
-        t1 = [first_time(r, lambda m: m['G'] <= tgt) for r in rs]
-        t2 = [first_time(r, lambda m: m['G'] <= tgt + 2) for r in rs]
+        t1, n1 = reach(rs, lambda m: m['G'] <= tgt)
+        t2, n2 = reach(rs, lambda m: m['G'] <= tgt + 2)
         curve = '/'.join(str(med([best_at(r, t, 'G') for r in rs])) for t in (5, 15, 60, 120))
         ov = [r['overhead'].get('xorflux_startup_s', r['overhead'].get('kernel_startup_s', 0)) + r['overhead'].get('start_s', 0) for r in rs]
         print('| %s | %s | %s | %s | %s, %s, %s%s | %s | %s | %s | %s | %s |' % (
             mp, cap, start, tool, med(fin), min(fin) if fin else '-', max(fin) if fin else '-',
-            (' (%d unverified/failed)' % len(bad)) if bad else '', fmt_t(t1, len(rs)), fmt_t(t2, len(rs)), curve,
+            (' (%d unverified/failed)' % len(bad)) if bad else '', fmt_t(t1, len(rs), n1), fmt_t(t2, len(rs), n2), curve,
             med([r['peak_rss_kb'] / 1024 for r in rs]), med(ov)))
     print()
 
@@ -124,19 +147,23 @@ def nonlinear(runs, prefix, title):
         secs = rs[0]['run']['seconds']
         cps = [t for t in CHECKPOINTS if t <= secs]
         curve = ' / '.join('%ss:%s' % (t, med([best_at(r, t) for r in rs])) for t in cps)
-        tt = [first_time(r, pred) for r in rs]
+        tt, nt = reach(rs, pred)
+        R = rank_key(rs[0])
+        bestf = min(fin, key=R) if fin else None
         ov = '%s, %s, %s' % (med([r['overhead'].get('start_s') for r in rs]), med([r['overhead'].get('skel_s') for r in rs]),
                              med([r['overhead'].get('synth_s') for r in rs]))
         errs = [r for r in rs if r.get('error') or not r.get('verified')]
         print('| %s | %s %s | %d%s | %s | %s, %s | %s | %s | %s | %s | %s |' % (
             tgt, cfg, ver, len(rs), (' (%d failed)' % len(errs)) if errs else '', desc,
-            med([m['cost'] for m in fin]), min([m['cost'] for m in fin]) if fin else '-', med([m['A'] for m in fin]),
-            fmt_t(tt, len(rs)), curve, ov, '%s / %s' % (med([r['peak_rss_kb'] / 1024 for r in rs]),
+            med([m['cost'] for m in fin]), bestf['cost'] if bestf else '-', med([m['A'] for m in fin]),
+            fmt_t(tt, len(rs), nt), curve, ov, '%s / %s' % (med([r['peak_rss_kb'] / 1024 for r in rs]),
                                                           med([(r.get('driver_rss_kb') or 0) / 1024 or None for r in rs]))))
     print()
 
 
 def main():
+    from pathlib import Path as _P
+    sys.path.insert(0, str(_P(__file__).resolve().parents[2]))
     runs = load(sys.argv[1:])
     errs = [r for r in runs if r.get('error')]
     print('%d runs, %d with errors, %d verified\n' % (len(runs), len(errs), sum(1 for r in runs if r.get('verified'))))

@@ -40,7 +40,7 @@ Memory: XORFlux = its whole Python process; BoolFlux = C kernel / Python driver 
 | ascon | full v2 | 5 | BGC <= 16 (best published) | 16.0, 16.0 | 5 | 5/5, median 2.0 s | 1s:35.0 / 5s:16.0 / 15s:16.0 / 30s:16.0 / 60s:16.0 | 0.0, 12.0, 0.0 | 2.5 / - (0/5) |
 | ascon | gate v2 | 5 | BGC <= 16 (best published) | 16.0, 16.0 | 5 | 5/5, median 0.0 s | 1s:16.0 / 5s:16.0 / 15s:16.0 / 30s:16.0 / 60s:16.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
 | ascon | rebuild v2 | 5 | BGC <= 16 (best published) | 16.0, 16.0 | 5 | 5/5, median 0.1 s | 1s:16.0 / 5s:16.0 / 15s:16.0 / 30s:16.0 / 60s:16.0 | 0.0, 0.0, 0.0 | 2.5 / - (0/5) |
-| gf16-mul | full v2 | 5 | A <= 9 (bilinear complexity) | 31.0, 30.0 | 10 | 2/5, median 7.0 s | 1s:34.0 / 5s:32.0 / 15s:31.0 / 30s:31.0 / 60s:31.0 | 0.0, 12.0, 0.0 | 2.7 / - (0/5) |
+| gf16-mul | full v2 | 5 | A <= 9 (bilinear complexity) | 31.0, 31.0 | 10 | 2/5, median 7.0 s | 1s:34.0 / 5s:32.0 / 15s:31.0 / 30s:31.0 / 60s:31.0 | 0.0, 12.0, 0.0 | 2.7 / - (0/5) |
 | gf16-mul | gate v2 | 5 | A <= 9 (bilinear complexity) | 29.0, 29.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:30.0 / 30s:30.0 / 60s:29.0 | 0.0, 0, 0 | 2.3 / - (0/5) |
 | gf16-mul | rebuild v2 | 5 | A <= 9 (bilinear complexity) | 30.0, 29.0 | 15 | 0/5, median - s | 1s:34.0 / 5s:34.0 / 15s:34.0 / 30s:34.0 / 60s:30.0 | 0.0, 0.0, 0.0 | 2.5 / - (0/5) |
 | present | full v2 | 5 | BGC <= 14 (best published) | 14.0, 14.0 | 4 | 5/5, median 2.1 s | 1s:32.0 / 5s:14.0 / 15s:14.0 / 30s:14.0 / 60s:14.0 | 0.0, 12.0, 0.0 | 2.5 / - (0/5) |
@@ -84,9 +84,9 @@ Memory: XORFlux = its whole Python process; BoolFlux = C kernel / Python driver 
 | aes | no-resub2+3 v2 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 141.0, 141.0 | 36 | 0/5, median - s | 1s:141.0 / 5s:141.0 / 15s:141.0 / 30s:141.0 / 60s:141.0 / 120s:141.0 | 0.0, 0, 0 | 2.8 / - (0/5) |
 | aes | no-resub3 v2 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 137.0, 134.0 | 36 | 0/5, median - s | 1s:140.0 / 5s:137.0 / 15s:137.0 / 30s:137.0 / 60s:137.0 / 120s:137.0 | 0.0, 0, 0 | 3.0 / - (0/5) |
 | gf16-mul | no-anneal v2 | 5 | A <= 9 (bilinear complexity) | 30.0, 30.0 | 15 | 0/5, median - s | 1s:31.0 / 5s:30.0 / 15s:30.0 / 30s:30.0 / 60s:30.0 | 0.0, 0, 0 | 2.2 / - (0/5) |
-| gf16-mul | no-fraig v2 | 5 | A <= 9 (bilinear complexity) | 29.0, 29.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:30.0 / 15s:30.0 / 30s:29.0 / 60s:29.0 | 0.0, 0, 0 | 2.7 / - (0/5) |
-| gf16-mul | no-neutral v2 | 5 | A <= 9 (bilinear complexity) | 30.0, 29.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:31.0 / 30s:30.0 / 60s:30.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
-| gf16-mul | no-odc v2 | 5 | A <= 9 (bilinear complexity) | 29.0, 29.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:30.0 / 30s:30.0 / 60s:29.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
+| gf16-mul | no-fraig v2 | 5 | A <= 9 (bilinear complexity) | 29.0, 30.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:30.0 / 15s:30.0 / 30s:30.0 / 60s:29.0 | 0.0, 0, 0 | 2.7 / - (0/5) |
+| gf16-mul | no-neutral v2 | 5 | A <= 9 (bilinear complexity) | 30.0, 31.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:31.0 / 30s:30.0 / 60s:30.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
+| gf16-mul | no-odc v2 | 5 | A <= 9 (bilinear complexity) | 29.0, 30.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:30.0 / 30s:30.0 / 60s:29.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
 | gf16-mul | no-restart v2 | 5 | A <= 9 (bilinear complexity) | 30.0, 30.0 | 15 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:31.0 / 30s:30.0 / 60s:30.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
 | gf16-mul | no-resub2+3 v2 | 5 | A <= 9 (bilinear complexity) | 34.0, 34.0 | 16 | 0/5, median - s | 1s:34.0 / 5s:34.0 / 15s:34.0 / 30s:34.0 / 60s:34.0 | 0.0, 0, 0 | 2.2 / - (0/5) |
 | gf16-mul | no-resub3 v2 | 5 | A <= 9 (bilinear complexity) | 29.0, 29.0 | 12 | 0/5, median - s | 1s:31.0 / 5s:31.0 / 15s:30.0 / 30s:29.0 / 60s:29.0 | 0.0, 0, 0 | 2.5 / - (0/5) |
@@ -112,9 +112,9 @@ Memory: XORFlux = its whole Python process; BoolFlux = C kernel / Python driver 
 | aes | no-merge v2 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 134.0, 133.0 | 36 | 0/5, median - s | 1s:142.0 / 5s:142.0 / 15s:135.0 / 30s:134.0 / 60s:134.0 / 120s:134.0 | 0.0, 24.0, 0.2 | 3.1 / - (0/5) |
 | aes | seeded-only v2 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 134.0, 133.0 | 36 | 0/5, median - s | 1s:142.0 / 5s:142.0 / 15s:135.0 / 30s:134.0 / 60s:134.0 / 120s:134.0 | 0.0, 24.0, 0.0 | 3.1 / - (0/5) |
 | aes | unseeded v2 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 134.0, 132.0 | 36 | 1/5, median 20.2 s | 1s:142.0 / 5s:142.0 / 15s:142.0 / 30s:136.0 / 60s:134.0 / 120s:134.0 | 0.0, 24.0, 0.1 | 3.1 / - (0/5) |
-| gf16-mul | no-merge v2 | 5 | A <= 9 (bilinear complexity) | 33.0, 31.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:31.0 / 15s:31.0 / 30s:31.0 / 60s:31.0 | 0.0, 12.0, 0.0 | 2.7 / - (0/5) |
-| gf16-mul | seeded-only v2 | 5 | A <= 9 (bilinear complexity) | 31.0, 30.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:32.0 / 15s:31.0 / 30s:30.0 / 60s:30.0 | 0.0, 12.0, 0.0 | 2.7 / - (0/5) |
-| gf16-mul | unseeded v2 | 5 | A <= 9 (bilinear complexity) | 32.0, 31.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:32.0 / 15s:31.0 / 30s:30.0 / 60s:30.0 | 0.0, 12.4, 0.0 | 2.7 / - (0/5) |
+| gf16-mul | no-merge v2 | 5 | A <= 9 (bilinear complexity) | 33.0, 32.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:31.0 / 15s:32.0 / 30s:33.0 / 60s:33.0 | 0.0, 12.0, 0.0 | 2.7 / - (0/5) |
+| gf16-mul | seeded-only v2 | 5 | A <= 9 (bilinear complexity) | 31.0, 31.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:32.0 / 15s:31.0 / 30s:31.0 / 60s:31.0 | 0.0, 12.0, 0.0 | 2.7 / - (0/5) |
+| gf16-mul | unseeded v2 | 5 | A <= 9 (bilinear complexity) | 32.0, 31.0 | 9 | 4/5, median 12.0 s (1: no time) | 1s:34.0 / 5s:32.0 / 15s:31.0 / 30s:31.0 / 60s:31.0 | 0.0, 12.4, 0.0 | 2.7 / - (0/5) |
 | rectangle | no-merge v2 | 5 | BGC <= 12 (best published) | 12.0, 12.0 | 4 | 5/5, median 2.0 s | 1s:27.0 / 5s:12.0 / 15s:12.0 / 30s:12.0 / 60s:12.0 | 0.0, 12.0, 0.0 | 2.5 / - (0/5) |
 | rectangle | seeded-only v2 | 5 | BGC <= 12 (best published) | 12.0, 12.0 | 4 | 5/5, median 2.0 s | 1s:27.0 / 5s:12.0 / 15s:12.0 / 30s:12.0 / 60s:12.0 | 0.0, 12.0, 0.0 | 2.5 / - (0/5) |
 | rectangle | unseeded v2 | 5 | BGC <= 12 (best published) | 12.0, 12.0 | 4 | 5/5, median 2.0 s | 1s:27.0 / 5s:12.0 / 15s:12.0 / 30s:12.0 / 60s:12.0 | 0.0, 12.4, 0.0 | 2.5 / - (0/5) |

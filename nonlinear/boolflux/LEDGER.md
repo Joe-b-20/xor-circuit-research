@@ -154,13 +154,14 @@ Published best = smallest G among the 102 baseline circuits with GD <= cap.
 | 15-17 / 20-21 / 22-24 / 25-29 / 30-31 / 32-40 | 116 / 108 / 106 / 105 / 104 / 103 | not better (108 at 20 ties) | |
 
 The 14-level circuit shows the search changing nonlinear structure: from NIST's 33-AND depth-15
-circuit it trades depth for ANDs (41) while cutting gates. NIST's open targets (A <= 27, G <= 100,
+circuit it trades depth for ANDs (38) while cutting gates. NIST's open targets (A <= 27, G <= 100,
 G <= 110 at GD <= 14) and the overall record (103 at GD 32, 104 at GD 30) are not reached.
 
 GD <= 14: the 124-gate circuit (A38) came from a time-budgeted run of the method-and-performance
 benchmark (`bench/bench.py`, plan v3, run `A-aes-gd14repair-rebuild-s4-v3`: NIST a33-ad4-g116-gd15,
 cap GD <= 14, rebuild-only full configuration, 120 s, seed 4); it is verified but not
-bit-reproducible, and only 1 of 35 such 120 s runs succeeded (`bench/REPORT.md`, 4.3). It dominates
+bit-reproducible; 2 of the 35 such 120 s runs reached GD 14 and only this one went below 127
+(`bench/REPORT.md`, 4.3). It dominates
 the earlier reproducible 126-gate circuit (A41), which this command gives
 (300000 iterations, 8 seeds, 3 rounds; 460 s wall, 3558 CPU s):
 

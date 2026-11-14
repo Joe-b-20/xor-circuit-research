@@ -51,9 +51,9 @@ Memory: XORFlux = its whole Python process; BoolFlux = C kernel / Python driver 
 | aes | no-merge v3 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 134.0, 133.0 | 36 | 0/5, median - s | 1s:142.0 / 5s:142.0 / 15s:135.0 / 30s:134.0 / 60s:134.0 / 120s:134.0 | 0.0, 11.8, 0.2 | 3.1 / 45.4 |
 | aes | seeded-only v3 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 134.0, 133.0 | 36 | 0/5, median - s | 1s:142.0 / 5s:142.0 / 15s:135.0 / 30s:134.0 / 60s:134.0 / 120s:134.0 | 0.0, 11.8, 0.1 | 3.1 / 44.5 |
 | aes | unseeded v3 | 5 | G <= 132 (below every published circuit within A36 AD4 GD13) | 134.0, 133.0 | 36 | 0/5, median - s | 1s:142.0 / 5s:142.0 / 15s:135.0 / 30s:134.0 / 60s:134.0 / 120s:134.0 | 0.0, 11.8, 0.1 | 3.1 / 21.9 |
-| gf16-mul | no-merge v3 | 5 | A <= 9 (bilinear complexity) | 33.0, 31.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:34.0 / 15s:33.0 / 30s:33.0 / 60s:32.0 | 0.0, 7.6, 0.0 | 2.7 / 22.1 |
-| gf16-mul | seeded-only v3 | 5 | A <= 9 (bilinear complexity) | 31.0, 30.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:32.0 / 15s:32.0 / 30s:31.0 / 60s:30.0 | 0.0, 6.0, 0.0 | 2.7 / 22.0 |
-| gf16-mul | unseeded v3 | 5 | A <= 9 (bilinear complexity) | 31.0, 30.0 | 9 | 2/5, median 7.9 s | 1s:34.0 / 5s:32.0 / 15s:32.0 / 30s:31.0 / 60s:30.0 | 0.0, 7.1, 0.0 | 2.7 / 43.7 |
+| gf16-mul | no-merge v3 | 5 | A <= 9 (bilinear complexity) | 33.0, 32.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:34.0 / 15s:33.0 / 30s:33.0 / 60s:33.0 | 0.0, 7.6, 0.0 | 2.7 / 22.1 |
+| gf16-mul | seeded-only v3 | 5 | A <= 9 (bilinear complexity) | 31.0, 31.0 | 9 | 3/5, median 12.0 s | 1s:34.0 / 5s:32.0 / 15s:32.0 / 30s:31.0 / 60s:31.0 | 0.0, 6.0, 0.0 | 2.7 / 22.0 |
+| gf16-mul | unseeded v3 | 5 | A <= 9 (bilinear complexity) | 31.0, 31.0 | 9 | 3/5, median 7.9 s (1: no time) | 1s:34.0 / 5s:32.0 / 15s:32.0 / 30s:31.0 / 60s:31.0 | 0.0, 7.1, 0.0 | 2.7 / 43.7 |
 | rectangle | no-merge v3 | 5 | BGC <= 12 (best published) | 12.0, 12.0 | 4 | 5/5, median 2.0 s | 1s:27.0 / 5s:12.0 / 15s:12.0 / 30s:12.0 / 60s:12.0 | 0.0, 7.0, 0.0 | 2.5 / 22.0 |
 | rectangle | seeded-only v3 | 5 | BGC <= 12 (best published) | 12.0, 12.0 | 4 | 5/5, median 2.0 s | 1s:27.0 / 5s:12.0 / 15s:12.0 / 30s:12.0 / 60s:12.0 | 0.0, 7.0, 0.0 | 2.5 / 22.0 |
 | rectangle | unseeded v3 | 5 | BGC <= 12 (best published) | 12.0, 12.0 | 4 | 5/5, median 2.0 s | 1s:27.0 / 5s:12.0 / 15s:12.0 / 30s:12.0 / 60s:12.0 | 0.0, 7.0, 0.0 | 2.5 / 43.7 |

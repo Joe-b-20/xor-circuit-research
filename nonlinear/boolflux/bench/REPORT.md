@@ -13,7 +13,7 @@ repair, restarts, coordination, with file and line references); reproduction in
   removed (majority: 3 -> 1), AND operands rewired and AND functions replaced on a real AES
   improvement, with every intermediate circuit exactly equivalent.
 - Small S-boxes from a naive ANF start reach the best published bitslice/gate counts in about
-  0-2 s per seed (PRESENT 14, RECTANGLE 12, ASCON 16; PRINCE 16 in 2-4 of 5 seeds in 60 s).
+  0-2 s per seed (PRESENT 14, RECTANGLE 12, ASCON 16; PRINCE 16 in 1-4 of 5 seeds in 60 s).
 - On AES from a naive start, global XOR-layer resynthesis (rebuild from the AND skeleton with
   Paar's heuristic) is the mechanism that pays: median 633 gates in 300 s vs 749 for local search
   only and 739 when skeleton moves are added.
@@ -23,7 +23,8 @@ repair, restarts, coordination, with file and line references); reproduction in
 - Against Berkeley ABC (unit-area genlibs, matched budgets) BoolFlux is clearly better in these
   gate-count models on every target (section 4.4).
 - Fixed in this round, with before/after measurements: the 31-72-gate AES rebuild penalty (an
-  unchanged skeleton now rebuilds to exactly the parent), no-op neutral moves (no measurable effect), exact linear mode
+  unchanged skeleton now rebuilds to exactly the parent), no-op neutral moves (the first filter
+  missed most of them; see section 7), exact linear mode
   (107x faster on 16-input linear maps), start construction (3.3 s -> 0.6 s), Paar speed, and
   four benchmark-driver faults found by the reviewer.
 
@@ -31,8 +32,9 @@ repair, restarts, coordination, with file and line references); reproduction in
 - On good AES circuits the gate search gives 1-3 gates in 120 s and the skeleton stage contributes
   nothing (its output is the input skeleton in 11 of 12 AES cases). One benchmark run produced a
   new published-set point (124 gates at GD 14, A38, section 4.3).
-- Depth repair is slow: 116@GD15 -> GD 14 succeeded in 1 of 35 runs of 120 s (that run gave a new
-  point, 124@GD14; the earlier success needed 3 rounds x 300,000 iterations x 8 seeds).
+- Depth repair is slow: 116@GD15 -> GD 14 reached GD 14 in 2 of 35 runs of 120 s (129 gates in v1,
+  124 gates in v3; only the 124 is below the published 127); the earlier success needed 3 rounds x
+  300,000 iterations x 8 seeds.
 - Complete truth tables limit BoolFlux to 16 inputs (linear mode is exact only for XOR-only
   libraries); per-candidate re-simulation makes it slow on 1,000+ gate circuits (1,150 it/s).
 - Five seeds per cell (fifteen where expanded): differences of one gate are often within seed noise.
@@ -67,8 +69,11 @@ recombined by a cheaper XOR cone. A deterministic replay reproduces the move exa
 **AES, NIST a36-ad4-g142-gd13 -> 131 (10 improving moves, seed 3).** 8 moves are XOR-cone
 recombinations; it 6014 rewires an AND (`s65 = AND(s52, s64)` matters on 136/256 inputs and becomes
 `AND(s59, s52)`, freeing one XOR); it 57644 replaces a 3-gate cone that contained an AND by
-`AND(XOR(s6, s89), s73)`, a new AND function. Across the 43,958 accepted moves (mostly neutral)
-10,850 targeted an AND gate and 15,710 inserted one; the AND count stays at its cap (36).
+`AND(XOR(s6, s89), s73)`, a new AND function. Of the 43,958 accepted moves, 38,099 left the circuit
+unchanged up to gate renumbering (no-ops the first `skip_noop` filter missed; review 3 M4). Of the
+10,850 that targeted an AND gate 10,521 were such no-ops, and of the 15,710 that inserted an AND
+15,131 re-created the same AND: 579 accepted moves actually changed AND structure. The AND count
+stays at its cap (36).
 
 ## 3. Rebuild penalty (skeleton -> gates)
 
@@ -154,7 +159,7 @@ v2 numbers (v3 full/rebuild in brackets where different).
 - On 4-bit S-boxes the gate kernel alone reaches the published bests almost immediately; the
   skeleton stage only delays (it runs first).
 - GF(2^4) multiplication needs the skeleton moves to reduce ANDs (rebuild only: 0/5; with moves:
-  2-3/5 in 60 s); gate-only finds fewer total gates (29) but with 12 ANDs.
+  2-4/5 in 60 s, counted from the final circuits; review 3 M3); gate-only finds fewer total gates (29) but with 12 ANDs.
 - PRINCE: 1-4 of 5 seeds reach 16 in 60 s depending on round and configuration; no configuration
   is reliably better at n = 5.
 
@@ -163,13 +168,13 @@ v2 numbers (v3 full/rebuild in brackets where different).
 | start (budget) | target | gate | full | rebuild |
 |---|---|---|---|---|
 | naive ANF, 1247 G (300 s, 3 seeds) | - | median 749 (v1 768), A 288 | 739 (v1 729, v3 758), A 214 | **633** (v3 637, best 615), A 223 |
-| NIST a36-ad4-g142-gd13 under its caps (120 s) | <= 132 (below every published circuit within A36 AD4 GD13) | 133-134; 2/5 (v1), 0/5 (v2); 15 more seeds: 2/15 (skip_noop 0), 1/15 (skip_noop 1) | 134; 0-1/5 | 134; 0/5 |
+| NIST a36-ad4-g142-gd13 under its caps (120 s) | <= 132 (below every published circuit within A36 AD4 GD13) | 133-134; 2/5 (v1), 0/5 (v2); 10 more seeds (15 in all: v1/v2 s1-5 + v4 s6-15, mixing code 19480fc and 154ded8): 2/15 (skip_noop 0), 1/15 (skip_noop 1) | 134; 0-1/5 | 134; 0/5 |
 | NIST a33-ad4-g116-gd15, cap GD <= 14 (120 s) | GD <= 14 and G <= 126 | 0/5 (v1: 1/5 feasible, at 129 gates; v2: none feasible) | 0/5 (none feasible) | v3: **1/5, 124 gates** at 119 s |
 | NIST a32-ad5-g104-gd30, no cap (120 s) | <= 103 | v1: 1/5 reached 103 (A33 AD7 GD33; dominated by NIST's 103@GD32) | 0/5 | 0/5 |
 
 - From the naive start the decisive mechanism is the XOR-layer resynthesis: rebuilding the
-  unchanged skeleton with Paar's heuristic takes the 1247-gate ANF circuit to ~683 gates in about
-  2 s, more than 300 s of local search achieves (749); skeleton moves on top make it worse
+  unchanged skeleton with Paar's heuristic takes the 1247-gate ANF circuit (1128 after the kernel's
+  start clean-up, review 3 m3) to ~683 gates in 5-10 s (first rebuild; 8-13 s of rebuild per run), more than 300 s of local search achieves (749); skeleton moves on top make it worse
   (739-758), because each move changes AND functions and the rebuild cost of that dominates.
 - On good AES circuits the gains in 120 s are 1-3 gates and come from the gate kernel; the
   skeleton stage returns its input (11/12 cases) and only costs time (24 s per 120 s run with the
@@ -199,7 +204,7 @@ ABC optimises AIG nodes and then maps to the library, so it does not optimise ou
 directly; the comparison shows that a standard logic-synthesis flow is not a substitute here, not
 that BoolFlux is a better general synthesiser.
 
-### 4.5 Ablations (gate kernel, one mechanism off; v1 and v2 agree)
+### 4.5 Ablations (gate kernel, one mechanism off; v1 and v2 agree within one gate)
 
 | mechanism off | PRESENT (14) | RECTANGLE (12) | GF(2^4) mult (A, G) | AES a36 (median G, 120 s) |
 |---|---|---|---|---|

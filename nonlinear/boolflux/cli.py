@@ -4,6 +4,13 @@
         --objective cost,gd --iters 200000 --seeds 1-8 --out nonlinear/boolflux/runs/present-bgc
     python3 nonlinear/boolflux/cli.py verify FILE.circ.txt --target present --model bgc
     python3 nonlinear/boolflux/cli.py start --target aes --start anf --model nist --out start.circ.txt
+    python3 nonlinear/boolflux/cli.py flow --target aes --model nist --start FILE --cap-gd 14 \\
+        --objective cost,gd --config full --skel-set iters=0 --adaptive --seconds 120 --seeds 1-4 --out DIR
+
+`run` = gate kernel in rounds of a fixed iteration count; `pipe` = skeleton search, rebuild and gate
+search in rounds; `flow` = the time-sliced workflows of the benchmark driver (workflow.py).
+Ranking everywhere: feasible first, then total cap excess, then the objective keys in order
+(objective.py); the kernel compares the same way (`lex`).
 
 Every saved circuit is verified twice before it is reported: by core.Circuit evaluation
 (bitsliced, against targets.py) and by the independent verifier
@@ -23,7 +30,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from boolflux import core, starts, targets, skeleton   # noqa: E402
+from boolflux import core, objective, starts, targets, skeleton, workflow   # noqa: E402
 from concurrent.futures import ThreadPoolExecutor   # noqa: E402
 
 KDIR = HERE / 'kernel'
@@ -47,7 +54,7 @@ def snapshot(out):
     src = Path(out) / 'src'; bindir = Path(out) / 'bin'
     if not (bindir / 'bfx').exists():
         src.mkdir(parents=True, exist_ok=True); bindir.mkdir(parents=True, exist_ok=True)
-        for f in ('kernel/bfx.c', 'kernel/skel.c', 'cli.py', 'core.py', 'skeleton.py', 'starts.py', 'targets.py'):
+        for f in ('kernel/bfx.c', 'kernel/skel.c', 'cli.py', 'core.py', 'skeleton.py', 'starts.py', 'targets.py', 'objective.py', 'workflow.py'):
             shutil.copy(HERE / f, src / Path(f).name)
         for b in ('bfx', 'skel'):
             subprocess.run(['gcc', '-O2', '-o', str(bindir / b), str(src / (b + '.c')), '-lm'], check=True)
@@ -62,7 +69,7 @@ def snapshot(out):
 def kernel_hash():
     """Hash of every source file that can change a result (kernels and the Python side)."""
     h = hashlib.sha256()
-    for f in ('kernel/bfx.c', 'kernel/skel.c', 'cli.py', 'core.py', 'skeleton.py', 'starts.py', 'targets.py'):
+    for f in ('kernel/bfx.c', 'kernel/skel.c', 'cli.py', 'core.py', 'skeleton.py', 'starts.py', 'targets.py', 'objective.py', 'workflow.py'):
         h.update((HERE / f).read_bytes())
     return h.hexdigest()[:12]
 
@@ -103,17 +110,22 @@ def verify_file(path, target, model_name, caps=None):
     c = core.read_ncff(str(path))
     lib_ok = {g[0] for g in c.gates} <= model.ops()
     ok1 = verify_core(c, table)
-    mpath = Path(model_name) if Path(model_name).exists() else core.MODELS / ('%s.json' % model.name)
+    mpath = core.model_path(model_name)
     ind = verify_independent(path, target, mpath, caps)
     mt = c.metrics(model) if lib_ok else c.metrics()
-    im = ind.get('metrics') or {}
+    im = dict(ind.get('metrics') or {})
+    # write_ncff emits `BUF y x` for an output that is an input or repeats an earlier output; the
+    # independent verifier lists BUF in its counts (not in G), core has no such gate
+    nbuf = (im.get('counts') or {}).get('BUF', 0)
+    if nbuf:
+        im['counts'] = {k: v for k, v in im['counts'].items() if k != 'BUF'}
     counts = dict(mt['counts'])
     if model.not_as == 'XNOR0' and 'NOT' in counts:     # written as XNOR t a 0 in the file
         counts['XNOR'] = counts.get('XNOR', 0) + counts.pop('NOT')
     agree = all(im.get(k) == mt[k] for k in ('G', 'A', 'GD', 'AD')) and im.get('counts') == dict(sorted(counts.items()))
     if lib_ok and ind.get('ok'):
         agree = agree and abs(float(im.get('cost', -1)) - mt['cost']) < 1e-6
-    return {'file': str(path), 'core_ok': ok1, 'library_ok': lib_ok,
+    return {'file': str(path), 'core_ok': ok1, 'library_ok': lib_ok, 'buf_lines': nbuf,
             'independent_ok': bool(ind.get('ok')) and agree, 'metrics_agree': agree,
             'metrics': mt, 'independent': ind}
 
@@ -136,22 +148,12 @@ def make_start(target, start, model):
     return c
 
 
-OBJ_KEYS = {'cost': 'w.cost', 'g': 'w.g', 'a': 'w.a', 'gd': 'w.gd', 'ad': 'w.ad'}
-
-
 def objective_weights(spec):
-    """'a,cost,gd' -> lexicographic weights 1, 1e-4, 1e-8."""
-    w = {v: 0.0 for v in OBJ_KEYS.values()}
-    if len(spec.split(',')) > 3:
-        raise SystemExit('at most three objective keys')
-    for i, k in enumerate(spec.split(',')):
-        w[OBJ_KEYS[k.strip()]] += 10.0 ** (-4 * i)
-    return w
+    """Kernel weights for the Metropolis step size plus the exact lexicographic order (`lex`)."""
+    return objective.weights(spec)
 
 
-DEFAULTS = {'T0': 0.6, 'Tperiod_it': 20000, 'stall_it': 60000, 'uphill': 1.0, 'max_excess': 8,
-            'mv.resub1': 1, 'mv.resub2': 2, 'mv.resub3': 1, 'dmax': 220, 'pdiv': 90,
-            'nl_samples': 12, 'cand_cap': 40, 'fraig': 1}
+DEFAULTS = workflow.DEFAULTS
 
 
 def kernel_config(path, start_path, out_path, model, args, seed, extra):
@@ -161,6 +163,7 @@ def kernel_config(path, start_path, out_path, model, args, seed, extra):
     if args.cap_gd is not None: cfg['cap.gd'] = args.cap_gd
     if args.cap_ad is not None: cfg['cap.ad'] = args.cap_ad
     if args.cap_a is not None: cfg['cap.a'] = args.cap_a
+    if workflow.is_linear(model): cfg['linear'] = 1      # exact n+1-pattern mode for XOR-only models
     cfg.update(extra)
     cfg.update({'in': start_path, 'out': out_path, 'seed': seed, 'seconds': args.seconds,
                 'iters': args.iters})
@@ -201,6 +204,46 @@ def parse_kernel_log(text):
     return final, bests, moves
 
 
+def caps_of(args):
+    return {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a}
+
+
+def write_best(out, bc, model, args, desc, summary, origin):
+    """Write OUT/best.circ.txt (and summary.json) for the current incumbent; called after every
+    round, so a later failure cannot lose it.  An incumbent outside the caps is marked."""
+    n, m = bc.n, bc.m
+    bc.name = '%s-%s-best' % (args.target, model.name)
+    bc.in_names = ['x%d' % k for k in range(n)]; bc.out_names = ['y%d' % k for k in range(m)]
+    caps = caps_of(args)
+    mt = bc.metrics(model)
+    feas = objective.feasible(mt, caps)
+    bpath = out / 'best.circ.txt'
+    bpath.write_text(core.write_ncff(bc, model, comments=[
+        'BoolFlux result for %s (%s)' % (args.target, desc),
+        'model %s, objective %s, caps %s' % (model.name, args.objective, caps),
+        'command: %s' % summary['command'], 'code sha256 %s' % summary['code_sha256_12'], origin]
+        + ([] if feas else ['CAPS NOT MET: this circuit violates the caps (best repair so far)'])), encoding='utf-8')
+    v = verify_file(bpath, args.target, args.model, caps)
+    summary['best'] = {'file': str(bpath), 'origin': origin, 'feasible': feas, 'metrics': v['metrics'],
+                       'core_ok': v['core_ok'], 'library_ok': v['library_ok'],
+                       'independent_ok': v['independent_ok'], 'buf_lines': v['buf_lines'],
+                       'independent_metrics': v['independent'].get('metrics')}
+    (out / 'summary.json').write_text(json.dumps(summary, indent=1, default=str) + '\n', encoding='utf-8')
+    return v, feas, bpath
+
+
+def finish(v, feas, bpath, failures):
+    print('best: %s  core_ok=%s independent_ok=%s library_ok=%s  -> %s' % (
+        json.dumps({k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}), v['core_ok'],
+        v['independent_ok'], v['library_ok'], bpath))
+    if not (v['core_ok'] and v['library_ok'] and (v['independent_ok'] or not feas)):
+        raise SystemExit('VERIFICATION FAILED for %s' % bpath)
+    if not feas:
+        raise SystemExit('CAPS NOT MET by the best circuit %s (no feasible circuit found)' % bpath)
+    if failures:
+        raise SystemExit('%d job(s) failed (%s); the best of the others is saved' % (len(failures), ', '.join(failures)))
+
+
 def cmd_run(args):
     model = core.Model.load(args.model)
     n, m, table, desc = targets.load(args.target)
@@ -209,16 +252,17 @@ def cmd_run(args):
     start = make_start(args.target, args.start, model)
     extra = parse_sets(args.set)
     seeds = parse_seeds(args.seeds)
+    caps = caps_of(args)
+    R = lambda mt: objective.rank(mt, caps, args.objective)
     pool = [start]
     summary = {'target': args.target, 'target_description': desc, 'model': model.name,
-               'model_gates': model.gates, 'objective': args.objective, 'caps':
-               {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a},
+               'model_gates': model.gates, 'objective': args.objective, 'caps': caps,
                'start': args.start, 'start_metrics': start.metrics(model), 'seeds': seeds,
                'iters': args.iters, 'seconds_cap': args.seconds, 'rounds': args.rounds,
                'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'), 'settings': {**DEFAULTS, **extra},
                'command': ' '.join(['python3', 'nonlinear/boolflux/cli.py'] + sys.argv[1:]),
                'runs': []}
-    t_all = time.time()
+    t_all = time.time(); best = None; failures = []
     for rnd in range(args.rounds):
         procs = []
         for i, seed in enumerate(seeds):
@@ -244,65 +288,48 @@ def cmd_run(args):
                     lf.close(); running.remove(r)
                     log = (out / ('%s.log' % tag)).read_text()
                     final, bests, moves = parse_kernel_log(log)
-                    c = core.from_kernel(bp.read_text(), '%s-%s' % (args.target, tag))
-                    c.in_names = ['x%d' % i for i in range(n)]; c.out_names = ['y%d' % j for j in range(m)]
-                    ok = verify_core(c, table)
-                    results.append({'time_capped': final.get('iters', 0) < args.iters,
-                                    'round': rnd, 'seed': seed, 'kernel_seed': seed + 1000 * rnd, 'tag': tag,
-                                    'returncode': p.returncode, 'core_ok': ok,
-                                    'metrics': c.metrics(model), 'wall_s': round(time.time() - t0, 2),
-                                    'final': final, 'improvements': bests, 'moves': moves,
-                                    'circuit': c})
-        key = lambda r: (r['final'].get('obj', 1e18), r['seed'])
-        results.sort(key=key)
-        for r in results:
-            if r['returncode'] != 0 or not r['core_ok']:
-                raise SystemExit('run %s failed (rc %s, core_ok %s); see its log'
-                                 % (r['tag'], r['returncode'], r['core_ok']))
-        # next round's pool: distinct best circuits
-        seen = set(); pool = []
-        for r in results:
+                    rec = {'round': rnd, 'seed': seed, 'kernel_seed': seed + 1000 * rnd, 'tag': tag,
+                           'returncode': p.returncode, 'wall_s': round(time.time() - t0, 2),
+                           'final': final, 'improvements': bests, 'moves': moves,
+                           'time_capped': final.get('iters', 0) < args.iters}
+                    try:
+                        c = core.from_kernel(bp.read_text(), '%s-%s' % (args.target, tag))
+                        rec['core_ok'] = p.returncode == 0 and verify_core(c, table)
+                    except Exception as e:
+                        c = None; rec['core_ok'] = False; rec['error'] = repr(e)
+                    if rec['core_ok']:
+                        rec['metrics'] = objective.measure(c, model, caps); rec['circuit'] = c
+                    else:
+                        failures.append(tag)
+                    results.append(rec)
+        ok = [r for r in results if r['core_ok']]
+        ok.sort(key=lambda r: (R(r['metrics']), r['seed']))      # lexicographic, exact (M1)
+        seen = set(); newpool = []
+        for r in ok:
             h = core.to_kernel(r['circuit'])
             if h in seen: continue
-            seen.add(h); pool.append(r['circuit'])
-            if len(pool) >= max(1, args.pool): break
+            seen.add(h); newpool.append(r['circuit'])
+            if len(newpool) >= max(1, args.pool): break
+        if newpool: pool = newpool
         for r in results:
-            rr = dict(r); rr.pop('circuit'); summary['runs'].append(rr)
-        best = results[0]
-        print('round %d: best %s %s (seed %d)' % (rnd, json.dumps({k: best['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}),
-                                                   json.dumps(best['metrics']['counts']), best['seed']), flush=True)
-    summary['wall_s'] = round(time.time() - t_all, 1)
-    # write and verify the best circuit
-    bc = best['circuit']
-    bc.name = '%s-%s-best' % (args.target, model.name)
-    bpath = out / 'best.circ.txt'
-    bpath.write_text(core.write_ncff(bc, model, comments=[
-        'BoolFlux result for %s (%s)' % (args.target, desc),
-        'model %s, objective %s, caps %s' % (model.name, args.objective, summary['caps']),
-        'command: %s' % summary['command'], 'kernel bfx.c sha256 %s' % summary['code_sha256_12'],
-        'seed %d round %d' % (best['seed'], best['round'])]), encoding='utf-8')
-    caps = {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a}
-    v = verify_file(bpath, args.target, args.model, caps)
-    mt = v['metrics']
-    feas = ((args.cap_gd is None or mt['GD'] <= args.cap_gd) and (args.cap_ad is None or mt['AD'] <= args.cap_ad)
-            and (args.cap_a is None or mt['A'] <= args.cap_a))
-    summary['best'] = {'file': str(bpath), 'seed': best['seed'], 'round': best['round'], 'feasible': feas,
-                       'metrics': v['metrics'], 'core_ok': v['core_ok'], 'library_ok': v['library_ok'],
-                       'independent_ok': v['independent_ok'],
-                       'independent_metrics': v['independent'].get('metrics')}
-    (out / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n', encoding='utf-8')
-    print('best: %s  core_ok=%s independent_ok=%s library_ok=%s  -> %s' % (
-        json.dumps({k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}), v['core_ok'],
-        v['independent_ok'], v['library_ok'], bpath))
-    if not feas:
-        raise SystemExit('CAPS NOT MET by the best circuit %s (no feasible circuit found)' % bpath)
-    if not (v['core_ok'] and v['independent_ok'] and v['library_ok']):
-        raise SystemExit('VERIFICATION FAILED for %s' % bpath)
+            rr = dict(r); rr.pop('circuit', None); summary['runs'].append(rr)
+        if ok and (best is None or R(ok[0]['metrics']) < R(best['metrics'])):
+            best = ok[0]
+        if best is None:
+            continue
+        summary['wall_s'] = round(time.time() - t_all, 1)
+        v, feas, bpath = write_best(out, best['circuit'], model, args, desc, summary,
+                                    'seed %d round %d' % (best['seed'], best['round']))
+        print('round %d: best %s %s (seed %d)%s' % (rnd, json.dumps({k: best['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}),
+                                                     json.dumps(best['metrics']['counts']), best['seed'],
+                                                     '' if feas else ' CAPS NOT MET'), flush=True)
+    if best is None:
+        raise SystemExit('every job failed (%s)' % ', '.join(failures))
+    finish(v, feas, bpath, failures)
 
 
 # ---- pipeline: skeleton search -> synthesis -> gate search ---------------------------------
-SKEL_DEFAULTS = {'w.a': 1, 'w.lin': 0.02, 'T0': 0.3, 'Tperiod_it': 4000, 'mv.swap': 4, 'mv.merge': 3,
-                 'mv.split': 1, 'mv.perturb': 1, 'pairs': 60000, 'fext': 400}
+SKEL_DEFAULTS = workflow.SKEL_DEFAULTS
 
 
 def run_skel(c, table, out, tag, seed, args, extra):
@@ -311,9 +338,10 @@ def run_skel(c, table, out, tag, seed, args, extra):
     outs = core.tables_from_values(c.n, c.m, table)
     sp = out / ('%s.skin' % tag); sp.write_text(skeleton.write_skel(sk, outs), encoding='utf-8')
     so = out / ('%s.skout' % tag); cp = out / ('%s.skcfg' % tag)
-    cfg = dict(SKEL_DEFAULTS); cfg.update({k[5:]: v for k, v in extra.items() if k.startswith('skel.')})
+    cfg = dict(SKEL_DEFAULTS)
     if args.cap_ad is not None: cfg['cap.ad'] = args.cap_ad
     cfg.update({'in': sp, 'out': so, 'seed': seed, 'iters': args.skel_iters, 'seconds': args.seconds})
+    cfg.update({k[5:]: v for k, v in extra.items() if k.startswith('skel.')})   # --set skel.X wins (m12)
     cp.write_text(''.join('%s %s\n' % kv for kv in cfg.items()), encoding='utf-8')
     r = subprocess.run([str(SBIN), str(cp)], capture_output=True, text=True)
     (out / ('%s.sklog' % tag)).write_text(r.stdout + r.stderr, encoding='utf-8')
@@ -324,13 +352,22 @@ def run_skel(c, table, out, tag, seed, args, extra):
     # three synthesis variants (greedy; Paar per AND level; Paar also for the outputs): keep the smallest
     # synthesis variants (seeded + three from forms): seeded with the parent circuit (reuses every parent gate whose function
     # survives), and from forms only (greedy; Paar per AND level; Paar also for the outputs)
-    variants = [skeleton.synthesize(sk2, model.ops(), name=tag, parent=c)]
+    variants = []
+    if extra.get('synth.seeded', '1') != '0':
+        variants.append(skeleton.synthesize(sk2, model.ops(), name=tag, parent=c))
     if extra.get('synth.unseeded', '1') != '0':
         variants += [skeleton.synthesize(sk2, model.ops(), name=tag, use_paar=up, paar_outputs=po)
                      for up, po in ((False, False), (True, False), (True, True))]
-    c2 = min(variants, key=lambda c: c.metrics(model)['cost'])
+    if not variants:
+        raise SystemExit('synth.seeded=0 and synth.unseeded=0: no rebuild variant')
+    # by (feasible, cap excess, objective); the input is kept unless a variant is better (m1)
+    caps = {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a}
+    R = lambda x: objective.rank(objective.measure(x, model, caps), caps, args.objective)
+    c2 = min(variants, key=R)
     if c2.value_table() != list(table):
         raise RuntimeError('synthesized circuit wrong (%s)' % tag)
+    if not R(c2) < R(c):
+        c2 = c
     return c2, r.stdout
 
 
@@ -357,16 +394,8 @@ def cmd_pipe(args):
     start = make_start(args.target, args.start, model)
     extra = parse_sets(args.set)
     seeds = parse_seeds(args.seeds)
-    obj_w = objective_weights(args.objective)
-
-    def objective(mt):
-        return (obj_w['w.cost'] * mt['cost'] + obj_w['w.g'] * mt['G'] + obj_w['w.a'] * mt['A']
-                + obj_w['w.gd'] * mt['GD'] + obj_w['w.ad'] * mt['AD'])
-
-    def feasible(mt):
-        return ((args.cap_gd is None or mt['GD'] <= args.cap_gd)
-                and (args.cap_ad is None or mt['AD'] <= args.cap_ad)
-                and (args.cap_a is None or mt['A'] <= args.cap_a))
+    caps = caps_of(args)
+    R = lambda mt: objective.rank(mt, caps, args.objective)
 
     summary = {'command': ' '.join(['python3', 'nonlinear/boolflux/cli.py'] + sys.argv[1:]),
                'target': args.target, 'target_description': desc, 'model': model.name,
@@ -377,7 +406,7 @@ def cmd_pipe(args):
                'skel_share': args.skel_share, 'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'),
                'settings': {**DEFAULTS, **{'skel.' + k: v for k, v in SKEL_DEFAULTS.items()}, **extra},
                'runs': []}
-    pool = [start]; t_all = time.time(); best = None
+    pool = [start]; t_all = time.time(); best = None; failures = []
     for rnd in range(args.rounds):
         def job(i_seed):
             i, seed = i_seed
@@ -387,32 +416,35 @@ def cmd_pipe(args):
             use_skel = args.skel_share > 0 and ((i * 0.618034) % 1.0) < args.skel_share
             t0 = time.time()
             rec = {'round': rnd, 'seed': seed, 'kernel_seed': ks, 'tag': tag, 'skel': use_skel,
-                   'from': c0.metrics(model)}
-            if use_skel:
-                c1, sklog = run_skel(c0, table, out, tag, ks, args, extra)
-                rec['synth'] = c1.metrics(model)
-            else:
-                c1 = c0
-            c2, final, bests, moves = run_gate(c1, out, tag, ks, model, args, extra)
+                   'from': objective.measure(c0, model, caps)}
+            try:
+                if use_skel:
+                    c1, sklog = run_skel(c0, table, out, tag, ks, args, extra)
+                    rec['synth'] = objective.measure(c1, model, caps)
+                else:
+                    c1 = c0
+                c2, final, bests, moves = run_gate(c1, out, tag, ks, model, args, extra)
+            except Exception as e:                 # recorded; the other jobs and earlier rounds survive (m7)
+                rec.update({'core_ok': False, 'error': repr(e), 'wall_s': round(time.time() - t0, 2)})
+                return rec, None
             c2.in_names = ['x%d' % k for k in range(n)]; c2.out_names = ['y%d' % k for k in range(m)]
             ok = verify_core(c2, table)
-            mt = c2.metrics(model)
+            mt = objective.measure(c2, model, caps)
             rec.update({'time_capped': final.get('iters', 0) < args.iters,
-                        'core_ok': ok, 'metrics': mt, 'obj': objective(mt), 'feasible': feasible(mt),
+                        'core_ok': ok, 'metrics': mt, 'rank': R(mt), 'feasible': objective.feasible(mt, caps),
                         'final': final, 'improvements': bests, 'moves': moves,
                         'wall_s': round(time.time() - t0, 2)})
             return rec, c2
         order = list(enumerate(seeds))
         with ThreadPoolExecutor(max_workers=args.jobs or os.cpu_count()) as ex:
             res = list(ex.map(job, order))
-        for rec, c2 in res:
-            if not rec['core_ok']:
-                raise SystemExit('verification failed in %s' % rec['tag'])
-        cands = [(rec['obj'], rec['seed'], rec, c2) for rec, c2 in res if rec['feasible']]
+        failures += [rec['tag'] for rec, c2 in res if not rec['core_ok']]
+        # every verified job is a candidate, feasible or not: ranked by (feasible, excess, keys),
+        # so a repair that has not met the caps yet carries its progress to the next round (M2)
+        cands = [(rec['rank'], rec['seed'], rec, c2) for rec, c2 in res if rec['core_ok']]
         for pc in pool:     # the pool's circuits stay candidates (a job may not improve)
-            mt = pc.metrics(model)
-            if feasible(mt):
-                cands.append((objective(mt), 10 ** 9, {'tag': 'pool', 'metrics': mt}, pc))
+            mt = objective.measure(pc, model, caps)
+            cands.append((R(mt), 10 ** 9, {'tag': 'pool', 'metrics': mt}, pc))
         cands.sort(key=lambda t: (t[0], t[1]))
         seen = set(); newpool = []
         for o, sd, rec, c2 in cands:
@@ -423,33 +455,78 @@ def cmd_pipe(args):
         if newpool: pool = newpool
         if cands and (best is None or cands[0][0] < best[0]): best = cands[0]
         for rec, _ in res: summary['runs'].append(rec)
-        bm = best[2]['metrics'] if best else None
-        print('round %d: best %s %s  (jobs: %s)' % (
+        if best is None:
+            continue
+        summary['wall_s'] = round(time.time() - t_all, 1)
+        v, feas, bpath = write_best(out, best[3], model, args, desc, summary, 'from job %s' % best[2].get('tag'))
+        bm = best[2]['metrics']
+        print('round %d: best %s %s%s  (jobs: %s)' % (
             rnd, json.dumps({k: bm[k] for k in ('cost', 'G', 'A', 'GD', 'AD')}), json.dumps(bm['counts']),
-            ' '.join('%s:%g/%d' % ('S' if r['skel'] else 'G', r['metrics']['cost'], r['metrics']['A'])
+            '' if feas else ' CAPS NOT MET',
+            ' '.join('%s:%s' % ('S' if r['skel'] else 'G', ('%g/%d' % (r['metrics']['cost'], r['metrics']['A'])) if r.get('metrics') else 'FAILED')
                      for r, _ in res)), flush=True)
-    summary['wall_s'] = round(time.time() - t_all, 1)
     if best is None:
-        raise SystemExit('no feasible circuit found')
-    bc = best[3]; bc.name = '%s-%s-best' % (args.target, model.name)
-    bc.in_names = ['x%d' % k for k in range(n)]; bc.out_names = ['y%d' % k for k in range(m)]
-    bpath = out / 'best.circ.txt'
-    bpath.write_text(core.write_ncff(bc, model, comments=[
-        'BoolFlux result for %s (%s)' % (args.target, desc),
-        'model %s, objective %s, caps %s' % (model.name, args.objective, summary['caps']),
-        'command: %s' % summary['command'], 'kernel sha256 %s' % summary['code_sha256_12'],
-        'from job %s' % best[2].get('tag')]), encoding='utf-8')
-    v = verify_file(bpath, args.target, args.model, {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a})
-    summary['best'] = {'file': str(bpath), 'job': best[2].get('tag'), 'metrics': v['metrics'],
-                       'core_ok': v['core_ok'], 'library_ok': v['library_ok'],
-                       'independent_ok': v['independent_ok'],
-                       'independent_metrics': v['independent'].get('metrics')}
-    (out / 'summary.json').write_text(json.dumps(summary, indent=1, default=str) + '\n', encoding='utf-8')
-    print('best: %s  core_ok=%s independent_ok=%s library_ok=%s  -> %s' % (
-        json.dumps({k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}), v['core_ok'],
-        v['independent_ok'], v['library_ok'], bpath))
-    if not (v['core_ok'] and v['independent_ok'] and v['library_ok']):
-        raise SystemExit('VERIFICATION FAILED for %s' % bpath)
+        raise SystemExit('every job failed (%s)' % ', '.join(failures))
+    finish(v, feas, bpath, failures)
+
+
+def _flow_job(job):
+    run, bindir, wd, cpu = job
+    if cpu is not None:
+        os.sched_setaffinity(0, {cpu})
+    try:
+        r = workflow.search(run, bindir, wd, cpu)
+    except Exception as e:
+        return {'seed': run['seed'], 'error': repr(e)}
+    c = r.pop('circuit')
+    (Path(wd) / 'incumbent.bfx').write_text(core.to_kernel(c))
+    r['seed'] = run['seed']
+    return r
+
+
+def cmd_flow(args):
+    """The benchmark driver's time-sliced workflows (workflow.search), one process per seed."""
+    import multiprocessing as mp
+    model = core.Model.load(args.model)
+    n, m, table, desc = targets.load(args.target)
+    out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    code_hash = snapshot(out)
+    start = make_start(args.target, args.start, model)
+    caps = caps_of(args); seeds = parse_seeds(args.seeds)
+    sp = out / 'start.bfx'; sp.write_text(core.to_kernel(start))
+    base = {'target': args.target, 'model': args.model, 'objective': args.objective, 'caps': caps,
+            'start': args.start if args.start != 'anf' else 'anf', 'seconds': args.seconds,
+            'config': args.config, 'round_s': args.round_s, 'adaptive': args.adaptive,
+            'seeded': not args.no_seeded, 'unseeded': not args.no_unseeded,
+            'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set)}
+    cpus = [int(x) for x in args.cpus.split(',')] if args.cpus else None
+    jobs = [(dict(base, seed=sd), str(KBIN.parent), str(out / ('s%d' % sd)),
+             cpus[i % len(cpus)] if cpus else None) for i, sd in enumerate(seeds)]
+    summary = {'command': ' '.join(['python3', 'nonlinear/boolflux/cli.py'] + sys.argv[1:]),
+               'target': args.target, 'target_description': desc, 'model': model.name,
+               'objective': args.objective, 'caps': caps, 'start': args.start,
+               'start_metrics': start.metrics(model), 'workflow': base, 'seeds': seeds,
+               'code_sha256_12': code_hash, 'code_snapshot': str(out / 'src'), 'runs': []}
+    t_all = time.time()
+    width = args.jobs or (len(cpus) if cpus else os.cpu_count())
+    with mp.get_context('fork').Pool(min(width, len(jobs))) as pool:
+        res = pool.map(_flow_job, jobs, chunksize=1)
+    failures = ['s%d' % r['seed'] for r in res if r.get('error')]
+    ok = [r for r in res if not r.get('error')]
+    for r in res:
+        summary['runs'].append({k: v for k, v in r.items()})
+    if not ok:
+        raise SystemExit('every job failed: %s' % [r['error'] for r in res])
+    R = lambda mt: objective.rank(mt, caps, args.objective)
+    best = min(ok, key=lambda r: (R(r['metrics']), r['seed']))
+    bc = core.from_kernel((out / ('s%d' % best['seed']) / 'incumbent.bfx').read_text())
+    summary['wall_s'] = round(time.time() - t_all, 1)
+    summary['success'] = '%d/%d feasible' % (sum(r['feasible'] for r in ok), len(seeds))
+    v, feas, bpath = write_best(out, bc, model, args, desc, summary, 'seed %d' % best['seed'])
+    for r in ok:
+        print('seed %d: %s%s  (%d trajectory points, %.1f s)' % (
+            r['seed'], json.dumps(r['metrics']), '' if r['feasible'] else ' CAPS NOT MET', len(r['trajectory']), r['search_s']))
+    finish(v, feas, bpath, failures)
 
 
 def cmd_verify(args):
@@ -500,6 +577,22 @@ def main(argv=None):
     p.add_argument('--jobs', type=int, default=0); p.add_argument('--out', required=True)
     p.add_argument('--set', action='append')
     p.set_defaults(func=cmd_pipe)
+    f = sub.add_parser('flow', help='time-sliced workflows of the benchmark driver (gate / full / rebuild-only / adaptive)')
+    f.add_argument('--target', required=True); f.add_argument('--model', required=True)
+    f.add_argument('--start', default='anf'); f.add_argument('--objective', default='cost')
+    f.add_argument('--cap-gd', type=int); f.add_argument('--cap-ad', type=int); f.add_argument('--cap-a', type=int)
+    f.add_argument('--config', choices=['gate', 'full'], default='gate')
+    f.add_argument('--seconds', type=float, required=True, help='wall budget per seed, rebuild included')
+    f.add_argument('--round-s', type=float, default=10.0, help='full: seconds per round')
+    f.add_argument('--adaptive', action='store_true', help='full: adaptive skeleton share (bench v3)')
+    f.add_argument('--no-seeded', action='store_true', help='full: no rebuild seeded with the parent')
+    f.add_argument('--no-unseeded', action='store_true', help='full: no rebuilds from forms only')
+    f.add_argument('--skel-set', action='append', help='skeleton kernel setting key=value (iters=0: rebuild only)')
+    f.add_argument('--set', action='append', help='gate kernel setting key=value')
+    f.add_argument('--seeds', default='1-4'); f.add_argument('--jobs', type=int, default=0)
+    f.add_argument('--cpus', default='', help='pin seed i to CPU cpus[i %% len], like bench.py')
+    f.add_argument('--out', required=True)
+    f.set_defaults(func=cmd_flow)
     v = sub.add_parser('verify')
     v.add_argument('files', nargs='+'); v.add_argument('--target', required=True); v.add_argument('--model', required=True)
     v.set_defaults(func=cmd_verify)
