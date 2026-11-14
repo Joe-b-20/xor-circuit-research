@@ -1,0 +1,59 @@
+{
+  "common_offset": {
+    "parameter_r": 3,
+    "targets": 3,
+    "coordinate_inputs": 27,
+    "prefix_gates": 36,
+    "initial_continuation": {
+      "gates": 18,
+      "odd_pair_gates": 9,
+      "other_gates": 9
+    },
+    "supplied_continuation": {
+      "gates": 8,
+      "odd_pair_gates": 3,
+      "other_gates": 5
+    },
+    "individual_frontier_certificate": [
+      3,
+      3
+    ],
+    "quotient_lower_certificates_verified": true,
+    "initial_lift": {
+      "used_members": 21,
+      "distinct_patterns": 3,
+      "disjoint_group_preparation": 18
+    },
+    "supplied_lift": {
+      "used_members": 9,
+      "distinct_patterns": 4,
+      "disjoint_group_preparation": 5
+    },
+    "two_target_independent_cost": 12,
+    "two_target_shared_cost": 7,
+    "square_map_rank": 27,
+    "involution_verified": true,
+    "prefix_is_charged_separately": true
+  },
+  "coset_saturation": {
+    "inputs": 5,
+    "partition_sizes": [
+      2,
+      2,
+      1
+    ],
+    "targets_verified": 12,
+    "complete_cosets_by_cardinality": true,
+    "gates": 9,
+    "odd": 7,
+    "pairs": 2,
+    "even_plus_even": 0,
+    "effective_even_rank": 2,
+    "odd_graph_cycles": 0,
+    "extra_odd": 0,
+    "ternary_resource": 7
+  },
+  "circuit_search": false,
+  "representation_search": false,
+  "target_set_enumeration": false
+}

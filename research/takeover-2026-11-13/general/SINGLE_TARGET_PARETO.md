@@ -180,3 +180,10 @@ q=2 dictionary formulas with resource pairs (2,2) and (0,4), as well as the
 one-dimensional dictionary relation space. The
 [saved result](checks/joint-supply-result.json) does not enumerate representations
 or assert that this dictionary is a full coordinate-input prefix.
+
+Subsequent [joint normal forms](JOINT_DICTIONARY_NORMAL_FORM.md) keep one formal
+lift for all targets and give an exact shared-value formula for two outputs.
+The [common-offset example](COMMON_OFFSET_PREPARATION.md) proves that even the
+complete individual frontier of every target can stay unchanged while their
+joint remaining complexity changes by an unbounded factor at two actual
+chronological states. The paid prefix is retained and charged separately.

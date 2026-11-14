@@ -1,5 +1,27 @@
 # What changed in the takeover
 
+**Current continuation after `44fa588`, 2026-11-14:**
+[Joint dictionary computation](general/JOINT_DICTIONARY_NORMAL_FORM.md) gives
+an exact all-output lift and disjoint-pattern preparation normal form, retaining
+the residual distinct-pattern circuit cost. For two targets, an exact formula
+shows that one paid shared value suffices in some unrestricted optimum.
+
+[Common-offset preparation](general/COMMON_OFFSET_PREPARATION.md) proves that
+all individual target price profiles can remain unchanged while joint remaining
+cost changes by an unbounded factor. This uses actual coordinate-prefix states
+and retains every intermediate. The prefix costs 4rm and is charged separately;
+no faster end-to-end circuit is claimed. Exact joint frontiers are (rm,rm) and
+(r,m+r-1), while every individual frontier remains (r,r).
+
+[Coset saturation](general/COSET_SATURATION.md) gives a positive endpoint: for
+all values odd in exactly one part of a c-part coordinate partition, exact cost
+is c(2^(n-c)-1). One physical even basis supports one gate per missing output,
+and every optimum has no extra odd work, EE work, or odd-graph cycles. The
+all-odd special case has exact cost 2^(n-1)-2. Proofs have independent reviews
+and specified checks; no search or formal-verification claim. MixColumns stays
+75-88. Next: force joint affine preparation or residual computation cost without
+fixing a supply basis or losing sharing in separate target statistics.
+
 **Current continuation after `656980c`, 2026-11-14:**
 [Physical branch identities](general/BRANCH_INTERSECTION_REPAIR.md) give a general
 positive extension of forest rigidity: the nonzero intersection of two values

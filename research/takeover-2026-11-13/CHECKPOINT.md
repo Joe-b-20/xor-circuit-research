@@ -1,7 +1,7 @@
 # XOR structural research: checkpoint, 2026-11-14
 
 Branch: `research-2026-11-13-structural`. This phase continues reviewed commit
-`656980c`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
+`44fa588`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
 on `phase-2026-11-09`. Isolated worktree: this chat's `work/xor-structural`.
 Other worktrees and `search/proposals/` are preserved.
 
@@ -13,82 +13,82 @@ fixed-budget queue remains deferred. No SAT, circuit enumeration, exact search,
 or computer-driven elimination. Supporting linear algebra and checks of specified
 constructions are allowed. Read [the synthesis](general/README.md) first.
 
-## Current positive theorem: physical intersection repair
+## A joint state barrier stronger than separate word lengths
 
-[Branch identity](general/BRANCH_INTERSECTION_REPAIR.md): for k marked outputs,
-reverse path-parity vectors eta_v and actual reader/terminal degree d_v satisfy
-sum(d_v-1)=g-a+k=beta+k-c. For any phi with phi(0)=0, the sum of ordinary values
-times their local phi reader-defects telescopes to the transformed input column
-patterns plus terminal correction. Only d_v>=2 occurrences contribute. All such
-boundaries share ONE physical branch dictionary of size at most beta+k-c.
+[Common-offset preparation](general/COMMON_OFFSET_PREPARATION.md): two actual
+coordinate-prefix states S0,S1 have every target's complete individual (K,P)
+frontier equal to (r,r), but exact joint frontiers (rm,rm) and (r,m+r-1).
+K counts OO gates; P=O+d_EE counts all others. Remaining costs 2rm and m+2r-1
+have unbounded ratio when m=r grows. ALL intermediate values remain in S1.
+The prefix costs 4rm and is explicitly charged separately; this is not a faster
+end-to-end circuit. The target map also admits a square all-odd involution.
 
-For two outputs choose phi(s,t)=st: their nonzero support intersection has an
-actual-dictionary representation of length at most beta+1, and needs at most
-beta appended XORs. Here beta is the FULL ancestor cycle rank; it is not mu of
-the odd-occurrence graph. Zero-intersection repair is excluded unless a separate
-zero convention is supplied. Distinct marked occurrences permit all selected
-branch values before the later marked result.
+Construction: anchors a_j, local x_(i,j),z_i, j=1..2r; t_i=sum_j x_(i,j)+z_i.
+Prefix e_(i,j)=a_j+x_(i,j), their successive even sums, then u_i=h+t_i,
+h=sum_j a_j. Quotient a_j,x_(i,j)->A_j, z_i->Z_i sends every supplied even to zero
+and every odd to a unit, forcing o>=2r+1 in every target representation. Thus
+individual frontier stays (r,r). Supplying h once gives the joint optimum.
+Pair-difference lengths change; full dictionary metrics are NOT claimed equal.
 
-The bound is sharp at every beta=t-1. The block quotient maps each of c_i,a_i,b_i
-to one unit and all computed values to zero, forcing t terms for sum c_i.
-Private attachments give sharp specified optimal all-odd involutions on 7t inputs
-with 8t-2 gates. This proves appended cost from that dictionary, not a lower
-bound after freely rewiring an enlarged target set.
+General law: if t_i+h are supplied, ell(h)=q and ell(t_i)=q+1 for all distinct
+targets, then exact L_S(T)=m+q-1. First target lower bound plus output count
+matches actual common-offset preparation. Competing circuits are unrestricted.
 
-## Causal forest quotient and exact simultaneous-repair obstruction
+## Exact joint representations and two-target formula
 
-[Forest quotient](general/CAUSAL_FOREST_QUOTIENT.md): cut beta nonforest operand
-edges, replacing their reads by formal shadow inputs. The same gates form a
-forest. Projection back has kernel dimension beta, with triangular causal basis
-s_l+U_l, where U_l is the formal value at the earlier cut source. These are paid
-prior computations, not arbitrary free boundary forms.
+[Joint normal form](general/JOINT_DICTIONARY_NORMAL_FORM.md): dictionary row
+matrix B and targets T satisfy
 
-For m>=2 take r,z,a_i,b_i. Compute e_i=a_i+b_i, prefixes p_j=r+sum_(i<=j)e_i,
-e_0=r+z, q=p_m+e_0. Targets p_j,q plus free r,b_i identities form an invertible
-all-odd map. Exact L_2=2m+2, beta=1, while d=mu=0. The m-1 independent missing
-intersections c_2,...,c_m each cost one XOR p_j+r. Requiring all of them changes
-exact complexity to 3m, an unbounded m-2 penalty despite full rewiring. The map
-is not asserted to be an involution. Raw count/rank of missing intersections and
-constant total repair cost per cycle are therefore invalid lower-bound premises.
+    L_S(T)=min_(RB=T)L_2(R)
+          =min_(RB=T)[n(R)-t(R)+L_2(R_red)].
 
-## Exact column reduction and the rank-only limitation
+The lift is joint, preserving shared gates. n is used dictionary members, t
+is distinct nonzero output patterns. Some optimum computes disjoint groups
+of members with equal patterns once, then a residual distinct-pattern circuit.
+Groups need not have disjoint ordinary supports; sums may be dependent. No
+free span values. The residual can contain the entire original problem when
+B=I; neither minimization is claimed efficient or solved by enumeration.
 
-[Column cloning](general/COLUMN_CLONING.md): with n active columns in t identical
-nonzero classes, L_2(M)=n-t+L_2(M_red). Sequential projections delete one distinct
-gate per clone; class sums attain it. General retained-coordinate projection is
-L_2(M)>=n-|X|-kappa_0+L_2(M|X), with kappa_0 the input co-occurrence components
-missed by X. Binary-size statements only; zero target rows are omitted by the
-stated convention, and no parity-resource preservation is asserted.
+For distinct nonzero u,v, some optimum needs at most one shared value:
+L_S(u,v)=min{ell(u)+ell(v)-2, min_(h!=0)[ell(h)+ell(u+h)+ell(v+h)-1]}.
+The helper is paid for; zero arms are omitted. Pairwise bounds cannot simply
+be added across targets. Do not turn this into a small-output casework queue.
 
-For all normalized Boolean functions in the branch identity, the boundary span
-is exactly the span of p distinct nonunit column-pattern indicators. Rank alone
-gives G>=n+p-k, the ordinary transposition count. For 32 inputs its maximum over
-all selected-row subsets is at most 58, from p<=min(32,2^k-k-1). Higher degrees
-cannot improve THAT rank certificate. This is not a circuit bound or a limitation
-on all nonlinear methods. The earlier 57/60 ceilings also have their named scopes.
+## Exact saturation by target closure
+
+[Coset saturation](general/COSET_SATURATION.md): partition n inputs into c>=2
+nonempty parts, r=n-c, require ALL values odd on exactly one part. There are
+c*2^r targets, including inputs. Exact L_2=c*(2^r-1). Supply r actual pair-basis
+values, then traverse the required cosets, one gate per missing odd output.
+Compatible partitions force even rank r. Every optimum has r even gates and
+c*2^r-n odd gates, with H=d_EE=mu=0; for c>=3 its parity partition equals the
+specified one. This does not assert a full-ancestor forest. With c=2 this is
+all odd forms and L_2=2^(n-1)-2. Sparse target sets are not claimed to saturate.
 
 ## Evidence and next task
 
-All three notes have independent machine reviews linked within them, and the
-primary agent checked the arguments. No formal verification, human certification,
-or literature-novelty claim. A
-[final scope review](general/reviews/intersection-progress-review.md) checks the
-synthesis and specified evidence. [Specified checks](general/checks/check_intersection_repair.py)
-and [saved results](general/checks/intersection-repair-result.json) verify m=4
-(original10/repaired12 gates, missing rank3, full beta1/odd mu0), t=3 sharp
-optimal involution (21 inputs/22 gates, pair beta2, representation3), branch
-identities, causal shadow projections, and kernel ranks. No search.
+All three notes have independent machine reviews and primary-agent proof checks;
+no formal verification, human certification, or literature-novelty claim. A
+[final scope review](general/reviews/joint-dictionary-progress-review.md) checks
+the synthesis and specified evidence.
+[Specified checks](general/checks/check_joint_dictionary.py) and
+[saved results](general/checks/joint-dictionary-result.json) verify r=m=3:
+prefix 36, remaining 18 versus 8, joint resource frontiers (9,9)/(3,5), individual (3,3),
+fixed lifts (21 members/3 patterns and 9 members/4 patterns), square involution,
+and the two-target shared budget 7. Also a five-input coset construction has
+twelve targets, nine gates, even rank 2, H=d_EE=mu=0. No optimization or search.
 
-Next: a joint cost for several combinations from the SAME physically supplied
-branch dictionary. Cheap individual repair and a small linear kernel do not
-control simultaneous preparation. Raw missing rank and unconstrained boundary
-rank are exhausted. Preserve actual supply, shared coefficients, and chronology,
-or introduce a different invariant. Unrestricted MixColumns remains 75<=L<=88.
+Next: joint affine sharing patterns and the residual distinct-pattern map.
+Target closure explains when intermediate odd costs vanish; a useful converse
+must allow all competing supply bases, extra rank, EE work, and cancellation.
+Do not fix a basis as a restriction or grant it free. Other frameworks allowed.
+Unrestricted MixColumns remains 75<=L<=88. The previous 57/58/60 certificate
+ceilings retain their named limits, not circuit upper bounds.
 
-Prior [joint supply](general/PRIVATE_TAGGING_TRADEOFF.md),
-[forced EE](general/TREE_INTERSECTION_RIGIDITY.md), and
-[ternary](general/AVAILABLE_SUPPLY.md) results remain. Minimum rank and minimum
-ternary cost may coexist while mu pays a gap; do not confuse rank with physical
-pair count. History: [summary](SUMMARY.md), [record](../structure-2026-11-11/RECORD.md).
-Use Git with `-c core.filemode=false`; shared configuration is unchanged.
-Stage only intended research files.
+Retained [branch repair](general/BRANCH_INTERSECTION_REPAIR.md),
+[simultaneous repair gap](general/CAUSAL_FOREST_QUOTIENT.md), and
+[pair-supply tradeoffs](general/PRIVATE_TAGGING_TRADEOFF.md). Keep full beta distinct
+from odd mu, physical pair count distinct from rank, and remaining cost distinct
+from end-to-end cost. History: [summary](SUMMARY.md),
+[record](../structure-2026-11-11/RECORD.md). Use Git with `-c core.filemode=false`;
+shared configuration is unchanged. Stage only intended research files.

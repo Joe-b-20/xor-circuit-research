@@ -3061,3 +3061,80 @@ causal shadow relations, and projection kernels. No literature-novelty claim.
 MixColumns remains 75-88. Next: the joint cost of forming several combinations
 from the SAME physically supplied branch dictionary. Individual repair is now
 understood; raw missing rank and unconstrained boundary rank are inadequate.
+
+
+## 50. Joint dictionary normal form, invisible preparation, and saturation (2026-11-14)
+
+Continuing reviewed commit `44fa588`, this phase studies joint preparation from
+actual dictionaries. No SAT, circuit search, representation enumeration, or
+computer-driven case elimination is used.
+
+**Exact joint lifting and pattern preparation.** For dictionary row matrix B
+and actual targets T, L_S(T)=min_(RB=T)L_2(R). Replacing every supplied value by
+its own formal coordinate lifts an arbitrary continuation with all shared gates
+intact; projection supplies the converse. Exact column compression gives
+min_R[n(R)-t(R)+L_2(R_red)]. Some optimum computes disjoint groups of dictionary
+members with the same output representation pattern, then a residual circuit.
+Groups can overlap in ordinary coordinate support and their sums can be dependent;
+neither those sums nor their combinations are free. The residual is essential:
+with B=I and distinct target columns, it is the original circuit problem itself.
+
+For distinct nonzero u,v, fixed representation subsets A,B have exact formal
+cost |A union B|-kappa, where kappa is 1 for overlap and 2 otherwise. Equivalently,
+L_S(u,v)=min{ell(u)+ell(v)-2,min_(h!=0)[ell(h)+ell(u+h)+ell(v+h)-1]}.
+An optimal common group cannot XOR to zero: deleting it would strictly improve
+the cost. The shared h is paid for and zero residual arms are omitted, not
+supplied. This proves a two-output normal form, without imposing it on competing
+circuits or permitting independent pair bounds to be summed. See
+[joint dictionary](../takeover-2026-11-13/general/JOINT_DICTIONARY_NORMAL_FORM.md).
+
+**Exact common-offset law.** If actual S supplies t_i+h for m distinct targets,
+with ell(h)=q and ell(t_i)=q+1, then L_S(T)=m+q-1. The first target forces q gates,
+each later target one more; computing h once attains the result. This law gives
+a strong example of preparation invisible to separate target profiles.
+
+Use anchors a_1..a_(2r) and disjoint local blocks x_(i,1)..x_(i,2r),z_i. Require
+t_i=sum_j x_(i,j)+z_i. S0 contains coordinates. Execute an actual 4rm-gate prefix:
+e_(i,j)=a_j+x_(i,j), successive even sums of those e values, then u_i=h+t_i,
+h=sum_j a_j. S1 retains every input and intermediate. The quotient
+ a_j,x_(i,j)->A_j, z_i->Z_i sends all supplied even values to zero and all supplied
+odd values to units. Any representation of t_i therefore has at least 2r+1 odd
+members. Its complete individual (K,P) frontier stays (r,r) at both states,
+including every nonnegative price combination.
+
+The exact joint frontiers are S0:(rm,rm), S1:(r,m+r-1). For S0, compatible
+partitions force K>=rm and the full multi-output union bound forces P>=rm.
+For S1, any one target forces K>=r; before the first target P>=r, and the m-1
+remaining odd targets need later gates. Pair the anchors, combine evenly to h,
+and attach all u_i to attain both bounds. Thus remaining binary costs 2rm and
+m+2r-1 have unbounded ratio as m=r grows. The prefix cost 4rm is real and charged
+separately; this is NOT an end-to-end algorithm improvement. The full metrics
+differ: t_i+t_j=u_i+u_j has length 2 after the prefix rather than 4r+2. Free
+identity outputs make the target map an all-odd square involution. See
+[common offset](../takeover-2026-11-13/general/COMMON_OFFSET_PREPARATION.md).
+
+**Exact target-closure saturation.** Partition n coordinates into c>=2 parts.
+The subspace W of even-on-each-part values has dimension r=n-c. Require all c
+cosets with one unit part parity, totaling c*2^r values including all inputs.
+Then L_2=c*(2^r-1)=r+(c*2^r-n). Any compatible partition Q with at least three
+parts cannot split an original part: two inputs in that part but different
+Q-parts, plus a third input in a third Q-part, give a required triple violating
+Q. Thus Q has at most c parts and even rank is at least r. Supply r actual root
+pairs spanning W. Each required coset is connected by these differences; a forest
+rooted at its already available coordinate inputs reaches each new target in one
+odd gate. No vector in W is granted free. Every optimum has actual rank r,
+H=d_EE=mu=0, E=r, and O=c*2^r-n. Its input partition equals P for c>=3; no
+uniqueness is claimed for c=2. For c=2 all odd forms are required and
+L_2=2^(n-1)-2. This is closure, not a full ancestor forest claim. See
+[coset saturation](../takeover-2026-11-13/general/COSET_SATURATION.md).
+
+All three notes have independent machine reviews and primary-agent proof checks,
+not formal verification or human certification. Specified checks verify r=m=3:
+27 inputs, prefix 36 gates, remaining 18 versus 8, joint frontiers (9,9)/(3,5),
+individual (3,3), fixed lift counts 21 members/3 patterns and 9 members/4 patterns,
+and the square involution. A fixed five-input partition 2,2,1 example verifies
+12 target values and 9 gates, E=2,O=7,H=d=mu=0. No literature-novelty claim.
+MixColumns remains 75-88. Next: an unrestricted joint obstruction on affine
+preparation and residual distinct-pattern computation, retaining competing
+bases, extra rank, even aggregation and cancellation. Fixed-basis restrictions
+and separate target profiles are insufficient.
