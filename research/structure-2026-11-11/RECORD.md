@@ -2075,3 +2075,84 @@ The next joint question is whether an eleven-gate consumer's single allowed nonc
 return direction can reduce source cost enough to beat 22. Direct evaluation of the
 one specified ternary consumer confirms its target masks, chronology, entry traces,
 and MixColumns substitution. All universal arguments above are symbolic hand proofs.
+
+## 38. Collision cost and the eleven-consumer mixed frontier (2026-11-13)
+
+Current account: [eleven-consumer continuation](../takeover-2026-11-13/feedback/ELEVEN_FRONTIER.md),
+following reviewed commit `6801e98`. Structural hand proofs received independent
+machine review. The unrestricted eleven-consumer case remains open; no circuit
+search, SAT, enumeration, or computer-driven elimination was used.
+
+**Physical collision defect (proved, general).** Let D span required consumer source
+parts, U span actual entry labels, and L_D be consumer minimum with D free. For any
+source subspace C inside U with C intersect D zero, group physical consumer-bearing
+gates and ordinary inputs by their full values modulo C. Count physical multiplicities,
+including duplicate gate nodes, and let delta_C be the sum of class sizes minus one.
+Then `K>=L_D+delta_C`. Extend C to a complement of D, project onto D, and retain the
+earliest representative of each projected value. No two ordinary inputs are in one
+class, so at least delta_C paid gates disappear. The targets remain fixed. Larger
+projection classes only add deletions. Exit-only ancestors need not be trimmed,
+and no source-first hypothesis is used.
+
+**Causal and unique-pair consequences (proved).** If an exit returns nonzero f and a
+set I of strictly later entries has label span C disjoint from D with f in C, then
+`K>=L_D+|I|+1`: the exit's earlier operand collision contributes one deletion before
+the later entries contribute theirs. At one gate above L_D, every nonclean difference
+has at most one physical pair. An actual nonclean entry already uses that pair, so
+any exit returning that label merely repeats a source value supplied earlier. In
+particular a nonclean return cannot be read verbatim as a later entry. This leaves
+indirect feedback through subsequent source arithmetic possible.
+
+For the all-nonclean five-entry eleven-gate interface, four labels form an affine
+plane q+W and the fifth h is outside their span. The nonclean coset is the union of
+q+W and h+W. All five actual labels are excluded as nonredundant returns, confining
+nonclean exits to the three values h+w for nonzero w in W. This does not confine
+clean returns or itself give a new total joint lower bound.
+
+**Diagonal confinement at arbitrary consumer cost (proved).** If every actual consumer
+entry lies in clean D, then `G0>=12` independently of K. At G0 at most eleven, rank-three
+replay either supplies a diagonal basis and all four source rows in at most eleven
+gates, violating A12, or creates five distinct physical diagonals in at most twelve,
+violating the five-diagonal bound. The existing 22-gate construction attains source
+cost twelve. Thus eleven consumer gates with all-clean entries require at least 23
+total gates.
+
+A target-preserving retraction handles one additional class. If entries lie in D+<h>
+with h=(beta,alpha), beta even and alpha odd, then sigma=alpha+beta is odd. On the
+free a block set `P(x)=x+parity(x)*sigma`. It fixes even target labels and sends alpha
+to beta, so all consumer entry labels become diagonal. It fixes ordinary b,z inputs,
+preserves the z part of every gate, and does not increase source cost. Therefore the
+original source also needs twelve gates, giving total at least 23 at K=11. Other
+nonclean parity classes are not eliminated by this argument.
+
+**Four-entry mixed source restriction (proved).** For an eleven-gate consumer with
+four entries and rank-four entry space, the actual labels are a basis c,d,n,m with
+c,d clean and n,m nonclean. Set e=n+m and p=c+d; c,d,e is a diagonal basis. Chronological
+replay uses at most the two additional values e,p: every return splits into one sum
+from each two-element basis group, and its nonzero coefficients use only earlier
+actual entry labels. Append e after replay if needed. A12 forces G0 at least ten.
+
+At a hypothetical total of at most 21, G0 is exactly ten. Neither e nor p can be an
+original source value: either its pair gate is unnecessary or its later original
+supplier is bypassed, producing an impossible augmented supplier in eleven gates.
+No other original clean value outside c,d,e,p can exist, because replay would retain
+five distinct diagonals in twelve gates. Thus original nonzero diagonal values are
+exactly c,d. A clean exit cannot newly produce either independent basis label before
+that label has been read, so every nonredundant exit is nonclean. If no exit uses both
+c,d along with one of n,m, all exits replay in one gate and appending only e again
+violates A12. Some return n+c+d or m+c+d is therefore necessary.
+
+Projecting out the other nonclean label deletes one entry and produces a reduced
+10-gate, three-entry consumer, in which the return is e+c+d. Entry matching excludes
+it in a one-root own-mask fibre. Seven non-entry gates, the four triples and at least
+two even own masks leave exactly one repeated non-entry own occurrence. The projected
+return's operands must lie in that unique two-root fibre. This is a necessary condition,
+not an exclusion or a construction of a joint 21.
+
+**Remaining obligation.** A useful source question is whether twelve gates can supply
+the four first-sheet rows plus c,d,c+d,e for independent diagonals c,d,e. A lower bound
+of thirteen would close the four-entry mixed profile, but it is not proved by the
+current five-diagonal argument. The five-entry mixed consumer and larger consumer
+budgets remain separate. The unrestricted MixColumns interval stays `75<=L<=88`,
+and the block-monotone bound stays 85. New results in this phase have hand proofs
+and independent reviews; previous specified construction checks are unchanged.

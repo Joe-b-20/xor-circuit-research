@@ -1,4 +1,11 @@
-# Physical diagonal values close the ten-gate consumer case
+# Current feedback research
+
+The latest continuation after `6801e98` is [eleven consumer gates: collisions and the remaining return](ELEVEN_FRONTIER.md).
+It proves a general physical-collision bound, extends all-clean source cost twelve
+to arbitrary consumer budgets, and narrows the four-entry mixed interface. The
+unrestricted eleven-gate consumer case remains open. The previous phase follows.
+
+## Previous phase: physical diagonal values close the ten-gate consumer case
 
 2026-11-13, continuing reviewed commit `242ee0a`. Hand proofs and independent machine
 reviews, not formal verification or human certification. No circuit search was used.

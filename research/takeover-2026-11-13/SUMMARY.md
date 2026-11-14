@@ -1,19 +1,20 @@
 # What changed in the takeover
 
-**Current continuation after `242ee0a`:** [five physical diagonals close the ten-gate consumer case](feedback/README.md).
-The unrestricted joint minimum with exactly ten consumer-bearing gates is 22, including
-feedback. The source-only minimum for four first-sheet rows and five distinct diagonal
-values is at least thirteen; rank-three repair would violate it at joint total 21.
-A local ten-gate ternary return is explicitly possible, so consumer optimality alone
-was not the obstruction. A separate helper-value theorem and a binary Sidon family
-force exponential overhead for source-value-preserving repair, even offline; they do
-not prove an exponential separation between full circuit optima. The unrestricted
-MixColumns range remains 75 to 88, and the block-monotone lower bound remains 85.
-Earlier work includes [general rank-based repair](feedback/GENERAL_REPAIR.md),
-[augmented minimum twelve](augmented/README.md), [supplier closure](crossing/README.md),
-[rank-one exclusion and even confinement](frontier/README.md),
-[relation rank and causal span](tradeoff/README.md), and
-[coset caps and entry deletion](compatibility/README.md).
+**Current continuation after `6801e98`:** [eleven consumer gates: collision bounds and a specific return](feedback/ELEVEN_FRONTIER.md).
+Projecting source cosets gives a general cost bound counting every merged physical
+consumer value. At eleven gates, a nonclean entry label already occupies its unique
+allowed pair, so it cannot be newly returned and fed directly back. Clean entries
+force twelve source gates at any consumer budget. A four-entry mixed consumer at
+total 21 must have ten source gates, exactly two original clean diagonals, and a
+specific nonclean ternary return. This is a restriction, not an exclusion.
+The preceding [five-diagonal result](feedback/FIVE_DIAGONALS.md) closed the ten-consumer
+case at 22 even with feedback. Other established results include
+[general rank-based repair](feedback/GENERAL_REPAIR.md),
+[helper-value and source-repair lower bounds](feedback/SIDON_REPAIR.md),
+[augmented minimum twelve and block-monotone 85](augmented/README.md),
+[supplier closure](crossing/README.md), [rank-one exclusion](frontier/README.md),
+[relation rank](tradeoff/README.md), and [entry deletion](compatibility/README.md).
+The unrestricted MixColumns interval remains 75 to 88.
 The [row-cost pass](row-cost/README.md)
 proved exact local costs, source saturation, and completion geometry. The [earlier pass](continuation/README.md)
 proved affine-completion bounds and a sparse counterexample to controlling savings by
