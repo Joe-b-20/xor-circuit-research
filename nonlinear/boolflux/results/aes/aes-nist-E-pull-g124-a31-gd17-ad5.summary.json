@@ -1,0 +1,127 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "E",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/E/low1/run/admitted/d20ee139e5eb68d9.bfx",
+  "sha256": "0205f51a9233c7354cbd9e12f45abc4ebfacf5b726a38dffa05db4e95bc50283"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/E/low1/run/admitted/d20ee139e5eb68d9.bfx",
+  "seed": 5,
+  "metrics": {
+   "cost": 124.0,
+   "G": 124,
+   "A": 31,
+   "GD": 17,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "command": "strategies/E/low.sh low1 8.8 120 (memetic.py --arm splice --amax 31 --gd-pull 0.5 --polish 120; stopped 17:28 UTC)",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/E/low1/run (log.jsonl, admitted/, frontier.json; run log ~/xs-campaigns/2026-11-13-aes/E/low1/run.log)",
+ "parents": [
+  {
+   "hash": "d20ee139e5eb68d9",
+   "metrics_A_AD_G_GD": [
+    31,
+    5,
+    124,
+    17
+   ],
+   "kind": "polish",
+   "seed": 5,
+   "seconds": 120.0,
+   "caps": {
+    "A": 31,
+    "GD": 17,
+    "tag": "gd17"
+   },
+   "time_to_result_s": 96.442,
+   "parent": {
+    "hash": "67ddf01dc0753d1a",
+    "metrics_A_AD_G_GD": [
+     31,
+     5,
+     118,
+     19
+    ],
+    "kind": "splice",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 1,
+    "front": {
+     "hash": "17fda3cd95b39c9f",
+     "metrics_A_AD_G_GD": [
+      32,
+      5,
+      108,
+      20
+     ],
+     "kind": "input",
+     "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd20-ad5-a32-g108-a32-gd20-ad5.circ.txt"
+    },
+    "back": {
+     "hash": "34ab7ebacc5b6edd",
+     "metrics_A_AD_G_GD": [
+      31,
+      5,
+      119,
+      19
+     ],
+     "kind": "polish",
+     "seed": 4,
+     "seconds": 120.0,
+     "caps": {
+      "A": 31,
+      "GD": 19,
+      "tag": "gd19"
+     },
+     "time_to_result_s": 28.433,
+     "parent": {
+      "hash": "83d2f0d6da5830b8",
+      "metrics_A_AD_G_GD": [
+       31,
+       5,
+       117,
+       20
+      ],
+      "kind": "input",
+      "file": "~/xs-campaigns/2026-11-13-aes/E/long1/splice/admitted/83d2f0d6da5830b8.bfx"
+     }
+    }
+   }
+  }
+ ],
+ "seeds": [
+  5
+ ],
+ "iters": null,
+ "rounds": null,
+ "code_version": {
+  "kernel": "kernel/bfx.c at git 0659eb9 (copy strategies/E/bfx_new), lex cost,gd",
+  "strategies/E (uncommitted, sha256 now)": {
+   "memetic.py": "a0c27705d829",
+   "splice2.py": "7475fae565c0",
+   "erun.py": "7ef8e8a82ee5",
+   "common.py": "1ff0b38595c4"
+  }
+ },
+ "mechanism": "depth pull: gate kernel with the gate-depth cap lowered below the parent's (A cap = parent's, AD free), 120 s, arm low1/run",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 17,
+  "AD": null,
+  "A": 31
+ },
+ "time_to_result_s": {
+  "within_job_s": 96.442,
+  "since_run_start_s": 5368.3
+ },
+ "reproduction": "one-off: 120 s time-budgeted kernel job (not bit-reproducible); not re-run",
+ "start": "pool hash 67ddf01dc0753d1a (splice)",
+ "campaign_sidecar": "aes-nist-E-pull-g124-a31-gd17-ad5.campaign.json"
+}

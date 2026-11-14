@@ -1,5 +1,12 @@
 # BoolFlux benchmark ledger
 
+> **2026-11-14:** this ledger is the 2026-11-13 study, against NIST pin e6ac0d0. Sections 1 and 2
+> still hold. For AES, the current status against pin 3d80774 (41 Pareto tuples, including the
+> AES-push results) is in [results/MANIFEST.json](results/MANIFEST.json) (`aes_pareto`,
+> `pinned_set`), [README.md](README.md) and [HISTORY.md](HISTORY.md). Of the 12 tuples in
+> section 3b, 34/4/139/13 now equals a published circuit, and five are dominated by later
+> results of ours.
+
 Corrected 2026-11-13 against NIST's repository usnistgov/Circuits at commit
 **e6ac0d03f4816927f1b0e676996e4d075ab8d1c0** (imported verbatim into `nonlinear/nist/`, 191
 files, all verified; `nonlinear/nist/MANIFEST.json`). An earlier version of this ledger compared

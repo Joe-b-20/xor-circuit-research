@@ -1,0 +1,104 @@
+{
+ "tag": "A32gd19-splice-s2",
+ "arm": "control",
+ "start": "/home/joebachir20/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad5-g113-gd19.circ.txt",
+ "start_metrics": [
+  32,
+  5,
+  113,
+  19
+ ],
+ "seed": 2,
+ "seconds": 240.0,
+ "caps": {
+  "A": 32,
+  "AD": null,
+  "GD": 19
+ },
+ "objective": "cost,gd",
+ "config": {
+  "T0": "0.6",
+  "Tperiod_it": "20000",
+  "stall_it": "60000",
+  "uphill": "1.0",
+  "max_excess": "8",
+  "mv.resub1": "1",
+  "mv.resub2": "2",
+  "mv.resub3": "1",
+  "dmax": "220",
+  "pdiv": "90",
+  "nl_samples": "12",
+  "cand_cap": "40",
+  "fraig": "1",
+  "w.cost": "1.0",
+  "w.g": "0.0",
+  "w.a": "0.0",
+  "w.gd": "0.0001",
+  "w.ad": "0.0",
+  "lex": "cost,gd",
+  "cost.8": "1",
+  "cost.6": "1",
+  "cost.9": "1",
+  "cost.3": "1",
+  "cap.a": "32",
+  "cap.gd": "19",
+  "in": "/home/joebachir20/xs-campaigns/2026-11-13-aes/E/polish1/A32gd19-splice-s2.start.bfx",
+  "out": "/home/joebachir20/xs-campaigns/2026-11-13-aes/E/polish1/A32gd19-splice-s2.best.bfx",
+  "seed": "2",
+  "seconds": "240.0"
+ },
+ "command": "/home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/E/erun.py --start /home/joebachir20/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad5-g113-gd19.circ.txt --out /home/joebachir20/xs-campaigns/2026-11-13-aes/E/polish1 --tag A32gd19-splice-s2 --seed 2 --seconds 240.0 --objective cost,gd --arm control --cap-a 32 --cap-gd 19",
+ "improvements": [
+  {
+   "t": 194.542,
+   "it": 419228,
+   "mv": "resub2",
+   "G": 112,
+   "A": 32,
+   "GD": 19,
+   "AD": 5,
+   "cost": 112.0
+  },
+  {
+   "t": 194.771,
+   "it": 419634,
+   "mv": "resub3",
+   "G": 111,
+   "A": 32,
+   "GD": 19,
+   "AD": 5,
+   "cost": 111.0
+  }
+ ],
+ "stats": {
+  "move_resub1": {
+   "prop": 128759.0,
+   "acc": 12803.0,
+   "imp": 0.0,
+   "cands": 121156.0,
+   "time": 31.14
+  },
+  "move_resub2": {
+   "prop": 258611.0,
+   "acc": 63447.0,
+   "imp": 1.0,
+   "cands": 2069053.0,
+   "time": 115.16
+  },
+  "move_resub3": {
+   "prop": 129254.0,
+   "acc": 31145.0,
+   "imp": 1.0,
+   "cands": 1512202.0,
+   "time": 93.62
+  }
+ },
+ "source_dir": "/home/joebachir20/xs-campaigns/2026-11-13-aes/E/polish1",
+ "metrics": [
+  32,
+  5,
+  111,
+  19
+ ],
+ "time_to_result_s": 194.771
+}

@@ -1,0 +1,59 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "E",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a33-ad4-g107-gd21.circ.txt",
+  "sha256": "af0908076dcd43afdfddea3b8bc9ec97a5e0506c1b8f8dbbf0a580115e0228e7"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a33-ad4-g107-gd21.circ.txt",
+  "seed": null,
+  "metrics": {
+   "cost": 107.0,
+   "G": 107,
+   "A": 33,
+   "GD": 21,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "join: stage transplant at an interface (splice2.py, sp1 sweep over all ordered pairs and cut levels of 150 circuits), front aes-sbox-a32-ad5-g107-gd22-xx75-4.circ.txt (LX 1), back aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt (LY 1), 0 interface gates",
+ "command": "python3 strategies/E/splice2.py /home/joebachir20/xs-campaigns/2026-11-13-aes/E/sp1 --shard i/4 files.list",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/E/sp1",
+ "parents": [
+  {
+   "role": "front",
+   "file": "aes-sbox-a32-ad5-g107-gd22-xx75-4.circ.txt",
+   "LX": 1
+  },
+  {
+   "role": "back",
+   "file": "aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt",
+   "LY": 1
+  }
+ ],
+ "start": "aes-sbox-a32-ad5-g107-gd22-xx75-4.circ.txt",
+ "objective": "construction",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": "enumeration of all pairs: ~50 s per shard (4 shards)",
+ "code_version": {
+  "strategies/E (uncommitted, sha256 now)": {
+   "splice2.py": "7475fae565c0",
+   "export_splices.py": "9b8a4b903da3",
+   "common.py": "1ff0b38595c4"
+  }
+ },
+ "reproduction": "deterministic construction from its two parents; not re-run",
+ "campaign_sidecar": "aes-nist-E-join-g107-a33-gd21-ad4.campaign.json"
+}

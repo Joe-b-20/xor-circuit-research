@@ -47,7 +47,8 @@ def load(path):
     p = Path(path)
     if p.suffix == '.bfx':
         c = core.from_kernel(p.read_text(), name=p.stem)
-        tmp = p.with_suffix('.check.circ.txt')
+        import tempfile        # never write next to the input (campaign folders stay untouched)
+        tmp = Path(tempfile.mkdtemp(prefix='aes_check-')) / (p.stem + '.circ.txt')
         tmp.write_text(core.write_ncff(c, core.Model.load('nist')))
         return c, tmp
     return core.read_ncff(str(p)), p

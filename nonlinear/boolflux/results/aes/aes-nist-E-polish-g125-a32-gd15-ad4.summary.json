@@ -1,0 +1,81 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "E",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/E/long1/control/admitted/ff380d1d4e66f3bc.bfx",
+  "sha256": "29dc0fa672699c6c9af16b81e2660e0b2e388bab6a6ae30f0bf62f3234fc46f5"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/E/long1/control/admitted/ff380d1d4e66f3bc.bfx",
+  "seed": 2,
+  "metrics": {
+   "cost": 125.0,
+   "G": 125,
+   "A": 32,
+   "GD": 15,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "command": "strategies/E/long.sh long1 9.3 120 (memetic.py --arm control --hours 9.3 --polish 120; stopped 17:28 UTC)",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/E/long1/control (log.jsonl, admitted/, frontier.json; run log ~/xs-campaigns/2026-11-13-aes/E/long1/control.log)",
+ "parents": [
+  {
+   "hash": "ff380d1d4e66f3bc",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    125,
+    15
+   ],
+   "kind": "polish",
+   "seed": 2,
+   "seconds": 120.0,
+   "caps": null,
+   "time_to_result_s": null,
+   "parent": {
+    "hash": "8b6861b9b2331c86",
+    "metrics_A_AD_G_GD": [
+     32,
+     4,
+     126,
+     15
+    ],
+    "kind": "input",
+    "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad4-a32-g126-a32-gd15-ad4.circ.txt"
+   }
+  }
+ ],
+ "seeds": [
+  2
+ ],
+ "iters": null,
+ "rounds": null,
+ "code_version": {
+  "kernel": "kernel/bfx.c at git 0659eb9 (copy strategies/E/bfx_new), lex cost,gd",
+  "strategies/E (uncommitted, sha256 now)": {
+   "memetic.py": "a0c27705d829",
+   "splice2.py": "7475fae565c0",
+   "erun.py": "7ef8e8a82ee5",
+   "common.py": "1ff0b38595c4"
+  }
+ },
+ "mechanism": "polish: gate kernel under the parent's own caps, 120 s, arm long1/control",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 15,
+  "AD": 4,
+  "A": 32
+ },
+ "time_to_result_s": {
+  "within_job_s": null,
+  "since_run_start_s": 3776.7
+ },
+ "reproduction": "one-off: 120 s time-budgeted kernel job (not bit-reproducible); not re-run",
+ "start": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd15-ad4-a32-g126-a32-gd15-ad4.circ.txt",
+ "campaign_sidecar": "aes-nist-E-polish-g125-a32-gd15-ad4.campaign.json"
+}

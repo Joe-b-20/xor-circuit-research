@@ -1,0 +1,88 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "E",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/E/low1/run/admitted/48e97b8cb70daa6b.bfx",
+  "sha256": "8d3f751f89354eae2acc2b37cd1b247c29b08732e5fb735e0bbbbe5354f0e609"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/E/low1/run/admitted/48e97b8cb70daa6b.bfx",
+  "seed": null,
+  "metrics": {
+   "cost": 115.0,
+   "G": 115,
+   "A": 32,
+   "GD": 24,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "command": "strategies/E/low.sh low1 8.8 120 (memetic.py --arm splice --amax 31 --gd-pull 0.5 --polish 120; stopped 17:28 UTC)",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/E/low1/run (log.jsonl, admitted/, frontier.json; run log ~/xs-campaigns/2026-11-13-aes/E/low1/run.log)",
+ "parents": [
+  {
+   "hash": "48e97b8cb70daa6b",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    115,
+    24
+   ],
+   "kind": "splice",
+   "LX": 1,
+   "LY": 1,
+   "interface_gates": 0,
+   "front": {
+    "hash": "87e6dd3d8b251fe7",
+    "metrics_A_AD_G_GD": [
+     31,
+     5,
+     116,
+     22
+    ],
+    "kind": "input",
+    "file": "~/xs-campaigns/2026-11-13-aes/E/long1/splice/admitted/87e6dd3d8b251fe7.bfx"
+   },
+   "back": {
+    "hash": "96aca0e491e5f6e4",
+    "metrics_A_AD_G_GD": [
+     32,
+     4,
+     115,
+     29
+    ],
+    "kind": "input",
+    "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-a32-ad4-g115-gd29-A31-parent2-s1.circ.txt"
+   }
+  }
+ ],
+ "seeds": [],
+ "iters": null,
+ "rounds": null,
+ "code_version": {
+  "kernel": "kernel/bfx.c at git 0659eb9 (copy strategies/E/bfx_new), lex cost,gd",
+  "strategies/E (uncommitted, sha256 now)": {
+   "memetic.py": "a0c27705d829",
+   "splice2.py": "7475fae565c0",
+   "erun.py": "7ef8e8a82ee5",
+   "common.py": "1ff0b38595c4"
+  }
+ },
+ "mechanism": "join: stage transplant at an interface (splice2.py; front of one pool circuit, back of another, interface rebuilt as affine combinations of the front signals), arm low1/run",
+ "objective": "construction (admitted if Pareto-new vs pool + pinned set)",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "time_to_result_s": {
+  "since_run_start_s": 53.5
+ },
+ "reproduction": "deterministic construction from its two parents (re-running splice2 on the same pair and cut levels gives the same circuit); not re-run",
+ "start": "~/xs-campaigns/2026-11-13-aes/E/long1/splice/admitted/87e6dd3d8b251fe7.bfx",
+ "campaign_sidecar": "aes-nist-E-join-g115-a32-gd24-ad4.campaign.json"
+}

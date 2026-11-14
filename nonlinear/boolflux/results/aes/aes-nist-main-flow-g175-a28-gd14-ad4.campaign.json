@@ -1,0 +1,283 @@
+{
+ "command": "python3 nonlinear/boolflux/cli.py flow --target aes --model nist --start /home/joebachir20/xcr-boolflux/nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g176-gd14-xx148-25.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 14 --config gate --seconds 900.0 --seeds 1-4 --cpus 0,17,18,19 --out /home/joebachir20/xs-campaigns/2026-11-13-aes/main/conv/a28-ad4-g176-gd14",
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 14,
+  "AD": 4,
+  "A": 28
+ },
+ "start": "/home/joebachir20/xcr-boolflux/nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g176-gd14-xx148-25.circ.txt",
+ "start_metrics": {
+  "G": 176,
+  "A": 28,
+  "GD": 14,
+  "AD": 4,
+  "cost": 176.0,
+  "counts": {
+   "AND": 28,
+   "XNOR": 25,
+   "XOR": 123
+  }
+ },
+ "workflow": {
+  "target": "aes",
+  "model": "nist",
+  "objective": "cost,gd",
+  "caps": {
+   "GD": 14,
+   "AD": 4,
+   "A": 28
+  },
+  "start": "/home/joebachir20/xcr-boolflux/nonlinear/nist/aes-sbox/aes-sbox-a28-ad4-g176-gd14-xx148-25.circ.txt",
+  "seconds": 900.0,
+  "config": "gate",
+  "round_s": 10.0,
+  "adaptive": false,
+  "seeded": true,
+  "unseeded": true,
+  "set": {},
+  "skel_set": {}
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "code_sha256_12": "7b3ff8a72682",
+ "code_snapshot": "/home/joebachir20/xs-campaigns/2026-11-13-aes/main/conv/a28-ad4-g176-gd14/src",
+ "runs": [
+  {
+   "metrics": {
+    "cost": 176.0,
+    "G": 176,
+    "A": 28,
+    "GD": 14,
+    "AD": 4
+   },
+   "feasible": true,
+   "trajectory": [
+    [
+     0.0,
+     176.0,
+     176,
+     28,
+     14,
+     4
+    ]
+   ],
+   "rss": [
+    3200
+   ],
+   "overhead": {
+    "start_s": 0.0463,
+    "extract_s": 0,
+    "skel_s": 0,
+    "synth_s": 0,
+    "kernel_startup_s": 90.85220766067505
+   },
+   "search_s": 990.8541977405548,
+   "rounds": [
+    {
+     "round": 0,
+     "gate": {
+      "cost": 176.0,
+      "G": 176,
+      "A": 28,
+      "GD": 14,
+      "AD": 4
+     },
+     "synth_gain": false
+    }
+   ],
+   "seed": 1
+  },
+  {
+   "metrics": {
+    "cost": 176.0,
+    "G": 176,
+    "A": 28,
+    "GD": 14,
+    "AD": 4
+   },
+   "feasible": true,
+   "trajectory": [
+    [
+     0.0,
+     176.0,
+     176,
+     28,
+     14,
+     4
+    ]
+   ],
+   "rss": [
+    3200
+   ],
+   "overhead": {
+    "start_s": 0.0491,
+    "extract_s": 0,
+    "skel_s": 0,
+    "synth_s": 0,
+    "kernel_startup_s": 90.85333561897278
+   },
+   "search_s": 990.8569161891937,
+   "rounds": [
+    {
+     "round": 0,
+     "gate": {
+      "cost": 176.0,
+      "G": 176,
+      "A": 28,
+      "GD": 14,
+      "AD": 4
+     },
+     "synth_gain": false
+    }
+   ],
+   "seed": 2
+  },
+  {
+   "metrics": {
+    "cost": 176.0,
+    "G": 176,
+    "A": 28,
+    "GD": 14,
+    "AD": 4
+   },
+   "feasible": true,
+   "trajectory": [
+    [
+     0.0,
+     176.0,
+     176,
+     28,
+     14,
+     4
+    ]
+   ],
+   "rss": [
+    3360
+   ],
+   "overhead": {
+    "start_s": 0.0389,
+    "extract_s": 0,
+    "skel_s": 0,
+    "synth_s": 0,
+    "kernel_startup_s": 90.85069131851196
+   },
+   "search_s": 990.8526237010956,
+   "rounds": [
+    {
+     "round": 0,
+     "gate": {
+      "cost": 176.0,
+      "G": 176,
+      "A": 28,
+      "GD": 14,
+      "AD": 4
+     },
+     "synth_gain": false
+    }
+   ],
+   "seed": 3
+  },
+  {
+   "metrics": {
+    "cost": 175.0,
+    "G": 175,
+    "A": 28,
+    "GD": 14,
+    "AD": 4
+   },
+   "feasible": true,
+   "trajectory": [
+    [
+     0.0,
+     176.0,
+     176,
+     28,
+     14,
+     4
+    ],
+    [
+     960.243,
+     175.0,
+     175,
+     28,
+     14,
+     4
+    ]
+   ],
+   "rss": [
+    3360
+   ],
+   "overhead": {
+    "start_s": 0.0403,
+    "extract_s": 0,
+    "skel_s": 0,
+    "synth_s": 0,
+    "kernel_startup_s": 90.85349798202515
+   },
+   "search_s": 990.8553667068481,
+   "rounds": [
+    {
+     "round": 0,
+     "gate": {
+      "cost": 175.0,
+      "G": 175,
+      "A": 28,
+      "GD": 14,
+      "AD": 4
+     },
+     "synth_gain": false
+    }
+   ],
+   "seed": 4
+  }
+ ],
+ "wall_s": 991.0,
+ "success": "4/4 feasible",
+ "best": {
+  "file": "/home/joebachir20/xs-campaigns/2026-11-13-aes/main/conv/a28-ad4-g176-gd14/best.circ.txt",
+  "origin": "seed 4",
+  "feasible": true,
+  "metrics": {
+   "G": 175,
+   "A": 28,
+   "GD": 14,
+   "AD": 4,
+   "cost": 175.0,
+   "counts": {
+    "AND": 28,
+    "XNOR": 68,
+    "XOR": 79
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "buf_lines": 0,
+  "independent_metrics": {
+   "G": 175,
+   "counts": {
+    "AND": 28,
+    "XNOR": 68,
+    "XOR": 79
+   },
+   "A": 28,
+   "XX": 147,
+   "GD": 14,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 175.0
+  }
+ }
+}

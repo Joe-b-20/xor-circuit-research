@@ -82,7 +82,7 @@ static inline double rnd01(void) { return (rnd() >> 11) * (1.0 / 900719925474099
 typedef struct { unsigned char op; int a, b; } Gate;
 typedef struct { int ng; Gate *g; int out[MAXM]; } Circ;
 
-static void circ_alloc(Circ *c) { c->ng = 0; c->g = calloc(GCAP, sizeof(Gate)); }   /* zeroed padding: skip_noop memcmp */
+static void circ_alloc(Circ *c) { c->ng = 0; c->g = calloc(GCAP, sizeof(Gate)); }   /* zeroed padding (deterministic memory contents) */
 static void circ_copy(Circ *d, const Circ *s) {
     d->ng = s->ng; memcpy(d->g, s->g, sizeof(Gate) * s->ng); memcpy(d->out, s->out, sizeof(int) * M);
 }

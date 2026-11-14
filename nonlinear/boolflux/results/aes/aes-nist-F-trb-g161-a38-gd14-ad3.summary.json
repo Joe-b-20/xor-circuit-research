@@ -1,0 +1,56 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "F",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/F/found/ad3-t14-g161-a38-gd14-ad3.circ.txt",
+  "sha256": "e56b2b2721b7fb90cedf6a44a276d171361f1ae656b2ecedb8081bc8260c7f19"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/F/found/ad3-t14-g161-a38-gd14-ad3.circ.txt",
+  "seed": "see cmd",
+  "metrics": {
+   "cost": 161.0,
+   "G": 161,
+   "A": 38,
+   "GD": 14,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "fdrive trb (timing-driven regional rebuild + gate kernel) under AD<=3; fdrive trb, cap GD and AD3, old kernel 7c53f2e4",
+ "command": "taskset -c 1 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/strategies/F/fdrive.py --start ~/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g163-gd14-xx128-58.circ.txt --cap 14 --mode trb --seconds 3300 --seed 701 --out ~/xs-campaigns/2026-11-13-aes/F/ad3/t14 --stage-iters 200000 --cap-ad 3",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/F/ad3/t14-aborted-1731",
+ "parents": [
+  {
+   "file": "~/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g163-gd14-xx128-58.circ.txt"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g163-gd14-xx128-58.circ.txt",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 14,
+  "AD": 3,
+  "A": null
+ },
+ "seeds": [
+  "see cmd"
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": "{\"t\": 109.45, \"kind\": \"best\", \"stage\": 2, \"G\": 161, \"A\": 38, (1 CPU, alone)",
+ "code_version": {
+  "kernel": "F snapshot kernel (bfx.c sha256 7c53f2e4..., ~/xs-campaigns/2026-11-13-aes/F/snap)",
+  "strategies/F (uncommitted, sha256 now)": {
+   "fdrive.py": "12d1f1a3b4bb",
+   "trb.py": "c80cee738bb0",
+   "campaign.py": "53d30823db06"
+  }
+ },
+ "reproduction": "one-off: time-budgeted job (not bit-reproducible); not re-run",
+ "recorded_utc": "2026-11-14T17:34:15Z",
+ "campaign_sidecar": "aes-nist-F-trb-g161-a38-gd14-ad3.campaign.json"
+}

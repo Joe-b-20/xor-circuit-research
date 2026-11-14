@@ -1,0 +1,103 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "E",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-low1-a28-ad5-g137-gd17.circ.txt",
+  "sha256": "027f8663085d058c323cdd342d77090d8cbdedb0c5be2bcc5c5646a7fb09fb71"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/E/found/E-low1-a28-ad5-g137-gd17.circ.txt",
+  "seed": 1,
+  "metrics": {
+   "cost": 137.0,
+   "G": 137,
+   "A": 28,
+   "GD": 17,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "command": "strategies/E/low.sh low1 8.8 120 (memetic.py --arm splice --amax 31 --gd-pull 0.5 --polish 120; stopped 17:28 UTC)",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/E/low1/run (log.jsonl, admitted/, frontier.json; run log ~/xs-campaigns/2026-11-13-aes/E/low1/run.log)",
+ "parents": [
+  {
+   "hash": "7bb7e13f3d598b9a",
+   "metrics_A_AD_G_GD": [
+    28,
+    5,
+    137,
+    17
+   ],
+   "kind": "polish",
+   "seed": 1,
+   "seconds": 120.0,
+   "caps": {
+    "A": 28,
+    "AD": 5,
+    "GD": 17
+   },
+   "time_to_result_s": 29.77,
+   "parent": {
+    "hash": "317653b1b4613d24",
+    "metrics_A_AD_G_GD": [
+     28,
+     5,
+     138,
+     17
+    ],
+    "kind": "polish",
+    "seed": 1,
+    "seconds": 120.0,
+    "caps": {
+     "A": 28,
+     "GD": 17,
+     "tag": "gd17"
+    },
+    "time_to_result_s": 94.973,
+    "parent": {
+     "hash": "688e861dabceaeab",
+     "metrics_A_AD_G_GD": [
+      28,
+      5,
+      128,
+      20
+     ],
+     "kind": "input",
+     "file": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt"
+    }
+   }
+  }
+ ],
+ "seeds": [
+  1
+ ],
+ "iters": null,
+ "rounds": null,
+ "code_version": {
+  "kernel": "kernel/bfx.c at git 0659eb9 (copy strategies/E/bfx_new), lex cost,gd",
+  "strategies/E (uncommitted, sha256 now)": {
+   "memetic.py": "a0c27705d829",
+   "splice2.py": "7475fae565c0",
+   "erun.py": "7ef8e8a82ee5",
+   "common.py": "1ff0b38595c4"
+  }
+ },
+ "mechanism": "polish: gate kernel under the parent's own caps, 120 s, arm low1/run",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 17,
+  "AD": 5,
+  "A": 28
+ },
+ "time_to_result_s": {
+  "within_job_s": 29.77,
+  "since_run_start_s": 828.1
+ },
+ "reproduction": "one-off: 120 s time-budgeted kernel job (not bit-reproducible); not re-run",
+ "start": "pool hash 317653b1b4613d24 (polish)",
+ "campaign_sidecar": "aes-nist-E-polish-g137-a28-gd17-ad5.campaign.json"
+}

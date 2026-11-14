@@ -1,0 +1,19 @@
+{
+ "file": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/found/ad3-t13-g174-a40-gd13-ad3.circ.txt",
+ "metrics": {
+  "G": 174,
+  "A": 40,
+  "GD": 13,
+  "AD": 3
+ },
+ "source": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/ad3/t13-aborted-1731/best.circ.txt",
+ "start": "--start /home/joebachir20/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g180-gd13-xx145-75.circ.txt",
+ "command": "taskset -c 2 /usr/bin/python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/F/fdrive.py --start /home/joebachir20/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g180-gd13-xx145-75.circ.txt --cap 13 --mode trb --seconds 3300 --seed 702 --out /home/joebachir20/xs-campaigns/2026-11-13-aes/F/ad3/t13 --stage-iters 200000 --cap-ad 3",
+ "seed": "see cmd",
+ "config": "fdrive trb, cap GD and AD3, old kernel 7c53f2e4",
+ "time_to_result_s": "{\"t\": 107.52, \"kind\": \"best\", \"stage\": 2, \"G\": 174, \"A\": 40, (1 CPU, alone)",
+ "mechanism": "fdrive trb (timing-driven regional rebuild + gate kernel) under AD<=3",
+ "note": "",
+ "recorded_utc": "2026-11-14T17:34:08Z",
+ "check_exit": 0
+}

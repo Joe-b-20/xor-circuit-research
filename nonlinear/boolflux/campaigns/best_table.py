@@ -68,7 +68,7 @@ def main():
         if not r['ok']:
             print('VERIFICATION FAILED', f, r.get('errors')); continue
         rows.append((t, xor, xnor + nt, name, str(f).replace(str(Path.home()), '~'), r))
-    cats = [('Fewer ANDs than any published circuit except A = 28 (29 <= A <= 31)', lambda t: 29 <= t[0] <= 31),
+    cats = [('S-box with 29 <= #AND <= 31 (published circuits here have G >= 124)', lambda t: 29 <= t[0] <= 31),
             ('S-box with #AND = 28', lambda t: t[0] == 28),
             ('S-box with #AND = 32..36 / AD >= 4', lambda t: 32 <= t[0] <= 36 and t[1] >= 4),
             ('S-box with #AND <= 36 / AD3', lambda t: t[0] <= 36 and t[1] == 3),

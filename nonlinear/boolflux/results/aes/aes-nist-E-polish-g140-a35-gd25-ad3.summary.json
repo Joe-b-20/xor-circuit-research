@@ -1,0 +1,105 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "E",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/E/long1/splice/admitted/6ca48240265ce766.bfx",
+  "sha256": "5507b2d7155d325524acd142e8f8b2a04f2c978723652e270a74597e48a5e49f"
+ },
+ "curated_utc": "2026-11-14T17:54:30Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/E/long1/splice/admitted/6ca48240265ce766.bfx",
+  "seed": 2,
+  "metrics": {
+   "cost": 140.0,
+   "G": 140,
+   "A": 35,
+   "GD": 25,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "command": "strategies/E/long.sh long1 9.3 120 (memetic.py --arm splice --hours 9.3 --polish 120; stopped 17:28 UTC)",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/E/long1/splice (log.jsonl, admitted/, frontier.json; run log ~/xs-campaigns/2026-11-13-aes/E/long1/splice.log)",
+ "parents": [
+  {
+   "hash": "6ca48240265ce766",
+   "metrics_A_AD_G_GD": [
+    35,
+    3,
+    140,
+    25
+   ],
+   "kind": "polish",
+   "seed": 2,
+   "seconds": 120.0,
+   "caps": null,
+   "time_to_result_s": null,
+   "parent": {
+    "hash": "53e1552b5c04e376",
+    "metrics_A_AD_G_GD": [
+     35,
+     3,
+     140,
+     26
+    ],
+    "kind": "splice",
+    "LX": 2,
+    "LY": 2,
+    "interface_gates": 0,
+    "front": {
+     "hash": "8b164ed15b03c6cb",
+     "metrics_A_AD_G_GD": [
+      35,
+      3,
+      139,
+      27
+     ],
+     "kind": "input",
+     "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd31-ad3-a35-g139-a35-gd27-ad3.circ.txt"
+    },
+    "back": {
+     "hash": "a1011f3fd3117253",
+     "metrics_A_AD_G_GD": [
+      35,
+      3,
+      147,
+      20
+     ],
+     "kind": "input",
+     "file": "nonlinear/nist/aes-sbox/aes-sbox-a35-ad3-g147-gd20-xx112-36.circ.txt"
+    }
+   }
+  }
+ ],
+ "seeds": [
+  2
+ ],
+ "iters": null,
+ "rounds": null,
+ "code_version": {
+  "kernel": "kernel/bfx.c at git 0659eb9 (copy strategies/E/bfx_new), lex cost,gd",
+  "strategies/E (uncommitted, sha256 now)": {
+   "memetic.py": "a0c27705d829",
+   "splice2.py": "7475fae565c0",
+   "erun.py": "7ef8e8a82ee5",
+   "common.py": "1ff0b38595c4"
+  }
+ },
+ "mechanism": "polish: gate kernel under the parent's own caps, 120 s, arm long1/splice",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 26,
+  "AD": 3,
+  "A": 35
+ },
+ "time_to_result_s": {
+  "within_job_s": null,
+  "since_run_start_s": 5411.4
+ },
+ "reproduction": "one-off: 120 s time-budgeted kernel job (not bit-reproducible); not re-run",
+ "start": "pool hash 53e1552b5c04e376 (splice)",
+ "campaign_sidecar": "aes-nist-E-polish-g140-a35-gd25-ad3.campaign.json"
+}

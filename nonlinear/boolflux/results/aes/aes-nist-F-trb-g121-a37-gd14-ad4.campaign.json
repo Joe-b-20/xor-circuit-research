@@ -1,0 +1,19 @@
+{
+ "file": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/found/ab-r2-trb-g121-a37-gd14-ad4.circ.txt",
+ "metrics": {
+  "G": 121,
+  "A": 37,
+  "GD": 14,
+  "AD": 4
+ },
+ "source": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/ab/r2-trb-best-121-snapshot.circ.txt",
+ "start": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/found/e1-gate-from124-g122-a37-gd14-ad4.circ.txt",
+ "command": "taskset -c 4 /usr/bin/python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/F/fdrive.py --start /home/joebachir20/xs-campaigns/2026-11-13-aes/F/found/e1-gate-from124-g122-a37-gd14-ad4.circ.txt --cap 14 --mode trb --seconds 3600.0 --seed 2 --out /home/joebachir20/xs-campaigns/2026-11-13-aes/F/ab/r2-trb --stage-iters 200000",
+ "seed": "2",
+ "config": "fdrive mode trb, cap GD14 AD4, stage 200k iterations, old kernel 7c53f2e4",
+ "time_to_result_s": "1407 s of a 3600 s job (1 CPU)",
+ "mechanism": "timing-driven regional rebuild (trb.py) kick + gate kernel",
+ "note": "",
+ "recorded_utc": "2026-11-14T16:01:32Z",
+ "check_exit": 0
+}
