@@ -1,13 +1,16 @@
 # What changed in the takeover
 
-**Current continuation after `4adbf01`:** [four diagonals and the remaining five-entry frontier](feedback/FOUR_DIAGONAL_FRONTIER.md).
-Four first-sheet rows plus a clean triangle and an independent fourth diagonal require
-thirteen source gates, attained for one choice. Chronological replay closes the
-four-entry mixed eleven-consumer class at 22, also attained. Every eleven-consumer
-candidate below 22 must have five mixed entries, all eleven consumer gates in relaxed
-target cones, and original physical clean rank at most two. A target-cone scope gap
-in the preceding reduction is explicitly corrected and its omitted case resolved.
-The five-entry class and larger consumer budgets remain open.
+**Current continuation after `577d8bc`:** [source credits and the five-entry frontier](feedback/FIVE_ENTRY_PROGRESS.md).
+A general replay theorem charges only missing physical group values when the split
+respects every entry prefix; early production of an original value is paid by its
+later bypass. This closes the five-entry eleven-consumer cases with two or three
+nonclean labels at total at least 22. Only four or five nonclean labels remain. The
+four-nonclean three-term-relation branch further requires exactly ten source gates
+and physical clean rank one. A specified example shows why five eventual rank-four
+labels do not alone reduce replay overhead to one. The remaining profiles include
+an all-five-label relation; no realization of that algebraic possibility is asserted.
+The [preceding continuation](feedback/FOUR_DIAGONAL_FRONTIER.md) proved the sharp
+four-diagonal source bound and closed the four-entry mixed class at 22.
 The [previous continuation](feedback/ELEVEN_FRONTIER.md) established physical-collision
 accounting, direct-return restrictions, and source cost twelve under clean confinement.
 The preceding [five-diagonal result](feedback/FIVE_DIAGONALS.md) closed the ten-consumer

@@ -4,6 +4,10 @@
 case elimination. This is a general interface theorem; no claim of literature novelty
 is made. The sharper MixColumns-specific question remains open.
 
+The later [credited replay theorem](CREDITED_REPLAY.md) retains this rank-only bound
+and sharpens it using original physical group values, including values whose production
+is advanced during replay and paid by bypassing their later original gates.
+
 ## Statement
 
 Partition ordinary inputs into source coordinates and consumer coordinates `z`; all

@@ -2225,3 +2225,88 @@ two. Its five-entry trace/label and physical-collision restrictions remain in fo
 This is not an exclusion of the five-entry case and does not settle larger consumer
 budgets or the unrestricted joint minimum. The unrestricted MixColumns interval
 remains `75<=L<=88`; the block-monotone lower bound remains 85.
+
+
+## 40. Credited source replay and two five-entry closures (2026-11-13)
+
+Current account: [source credits and the five-entry frontier](../takeover-2026-11-13/feedback/FIVE_ENTRY_PROGRESS.md),
+following reviewed commit `577d8bc`. New arguments and the fixed symbolic example
+received independent machine reviews. No circuit search or computer-driven case
+elimination was used; the unrestricted MixColumns interval remains 75 to 88.
+
+**Replay charged only for missing physical group values (proved, general).** Let U
+be the span of actual consumer entry labels in chronological order, and split it as
+`U=P direct-sum Q`. Require every entry-prefix span to split under this same direct
+sum. Equivalently, each next entry has at least one component in the preceding span
+of components on that side. Let A contain the original source inputs, permitted free
+values, and all original source gate values. Set B to the number of nonzero values
+in P or Q absent from A. Then all original source values and all group values have
+a source-only realization with at most `G0+B` gates, preserving causal availability.
+Maintain each currently generated group in full; an entry is split using its already
+available component, and every exit is one XOR of two available group values. Each
+synthetic value in A advances a distinct later original source gate and receives
+credit when that gate is bypassed. Only synthetic values outside A add net cost.
+A chronological greedy basis recovers the rank-only balanced-basis allowance h(d).
+Final-span splitting without the prefix hypothesis is not sufficient for this proof.
+
+**At most two nonclean label values (proved).** With rank-four entry space containing
+D, clean entry rank three invokes the physical-supply theorem. If clean entry rank
+is two, choose a chronological clean basis c,d and both nonclean values n,m. Their
+pair groups cost at most two extras and retain c,d,c+d,n+m, a clean triangle plus an
+independent fourth value. Thirteen source gates are required after replay, so G0 is
+at least eleven. This permits repeated labels and arbitrary consumer budget. If the
+original source already physically supplies the full clean triangle in span(c,d),
+its later bypass saves one replay gate and G0 is at least twelve.
+
+**Three nonclean entries at K=11 (proved).** Five-entry trace geometry gives clean
+independent c,d, a nonclean related pair n1,n2 with n1+n2 in {c,d,c+d}, and a third
+nonclean k outside span(c,d,n1). Rename n1 as the earlier member of the pair. The
+planes span(c,d) and span(n1,k) split every chronological entry prefix, including
+n2 because its n1 component is already read. Only c+d and n1+k can be missing group
+values. Clean components needed early are computed from supplied operands and their
+later original gates bypassed. Replay therefore retains the four-diagonal pattern
+within G0+2 gates, proving G0 at least eleven. Combined with prior four-entry and
+cone reductions, a below-22 candidate at exactly eleven consumer-bearing gates has
+five distinct entry labels, four or five nonclean, rank-four entry span, and physical
+clean rank at most two. All eleven gates lie in the relaxed consumer target cones.
+
+**Four-nonclean three-term relation restriction (proved).** If c=n1+n2 is the clean
+label, the four nonclean labels form a basis. Groups {n1,n2,c} and {n3,n4,p=n3+n4}
+replay with premium at most one: every value of the first group is original. Appending
+a cross-pair sum f=n1+n3 supplies a clean basis in G0+2 gates, so G0 is at least ten.
+If an independent original clean v exists, then: when v is outside span(c,p), append
+c+p; when v=c+p, append f; when v=p, the second group also has zero premium, so append
+both c+p and f. Each supplies a clean triangle plus an independent fourth value
+within G0+2 gates, ruling out G0 at most ten. Thus any below-22 candidate in this
+profile has exactly ten source gates and physical clean rank exactly one.
+
+**Remaining label geometries (necessary conditions only).** Besides that three-term
+relation, four nonclean entries can have their all-four relation (affine plane with
+the clean label outside its span), or the all-five-label relation (clean label equals
+the sum of a nonclean basis). The latter all-five-odd-trace possibility must not be
+omitted: the trace relation has nonclean support, while the label relation has odd
+trace support. This is algebraic admissibility, not a circuit realization. With five
+nonclean labels, four form an affine plane and the fifth lies outside its span.
+In either affine-plane profile, all exits before the outside label is first read
+are cost-preserving: clean values are pair sums of previously read plane labels,
+and nonclean values in that span are actual entry labels, which cannot be newly
+returned by the eleven-gate collision theorem.
+
+**Five-label availability versus timing (proved with counterexample).** Five distinct
+nonzero rank-four values, once physically available, need at most one extra XOR for
+one-XOR access to every value of their span. In a basis the fifth value has weight
+two, three, or four; respectively complete the complementary basis pair, a suitable
+pair crossing the omitted coordinate, or nothing. This alone does not bound earlier
+repair. A fixed circuit on four source units ai and four consumer units zi computes
+pi=zi+ai, returns the three source triple sums on index sets 123,124,134 by cancelling
+matching consumer sums, then reads t134 as its fifth entry. It has three source
+exit gates but any source-only realization of those triples needs five gates. With
+only four gates, three required odd triple results leave only one even pair helper,
+which reaches at most two triples from the coordinate inputs. Five gates attain the
+bound, so replay overhead is exactly two even offline. This is not a full-optimum
+gap or a K=11 four-row witness; its nonclean return/re-entry violates the latter's
+collision restriction. Timing and consumer constraints must be used together.
+
+Four- and five-nonclean profiles, larger consumer budgets, and the unrestricted joint
+minimum remain open. The block-monotone MixColumns lower bound remains 85, with no
+claim that the unrestricted upper bound 88 is optimal.

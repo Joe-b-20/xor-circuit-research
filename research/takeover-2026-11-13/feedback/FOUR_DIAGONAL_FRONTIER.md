@@ -1,5 +1,10 @@
 # Four diagonals close the four-entry feedback case
 
+**Later continuation:** [source credits and five entries](FIVE_ENTRY_PROGRESS.md) closes
+the two- and three-nonclean portions of the five-entry frontier and proves a general
+credited source-replay theorem. The source bounds and four-entry closure below remain
+valid; its open five-entry description records the preceding phase.
+
 2026-11-13, continuing reviewed commit `4adbf01`. These are structural hand proofs
 with independent machine reviews, not formal verification or human certification.
 No circuit search, enumeration, or computer-driven case elimination was used.

@@ -1,12 +1,13 @@
 # Current feedback research
 
-The latest continuation after `4adbf01` is [four diagonals close the four-entry case](FOUR_DIAGONAL_FRONTIER.md).
-The thirteen-gate source bound is sharp for one choice. It closes the four-entry mixed
-eleven-consumer class at 22, attained with eleven gates on each side. A candidate
-below 22 with eleven consumer gates must have five mixed entries and original physical
-clean rank at most two. The five-entry case and larger consumer budgets remain open.
-The [preceding phase](ELEVEN_FRONTIER.md) supplies the collision and confinement bounds;
-its four-diagonal open question is now resolved. The earlier ten-consumer phase follows.
+The latest continuation after `577d8bc` is [source credits narrow the five-entry frontier](FIVE_ENTRY_PROGRESS.md).
+It proves a general chronological replay bound using later original-gate credits,
+and closes the five-entry eleven-consumer cases with two or three nonclean labels
+at total at least 22. Only four or five nonclean labels remain, with additional
+restrictions and a timing counterexample recorded. These remaining classes and
+larger consumer budgets are open. The [preceding phase](FOUR_DIAGONAL_FRONTIER.md)
+proved four-diagonal source cost thirteen and closed the four-entry mixed case.
+The earlier ten-consumer phase follows.
 
 ## Previous phase: physical diagonal values close the ten-gate consumer case
 

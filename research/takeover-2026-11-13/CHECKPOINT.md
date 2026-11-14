@@ -1,92 +1,97 @@
 # XOR structural research: checkpoint, 2026-11-13
 
-Branch: `research-2026-11-13-structural`. Current [four-diagonal continuation](feedback/FOUR_DIAGONAL_FRONTIER.md)
-follows reviewed commit `4adbf01`. Original verified base:
+Branch: `research-2026-11-13-structural`. Current [five-entry continuation](feedback/FIVE_ENTRY_PROGRESS.md)
+follows reviewed commit `577d8bc`. Original verified base:
 `e89b8a25f69195266f1e24e815cb96c7526a3511` on `phase-2026-11-09`.
 Other worktrees and `search/proposals/` are preserved. Our worktree is this chat's
 `work/xor-structural`.
 
-**New:** four first-sheet rows plus diagonals `c,d,c+d,e` need thirteen source gates,
-for independent `c,d,e`. This closes the four-entry mixed eleven-consumer case at 22.
-Any eleven-consumer candidate below 22 has five mixed entries, all eleven gates in
-relaxed consumer target cones, and original physical clean rank at most two.
-**Still open:** that five-entry class, larger consumer budgets, and the full joint minimum.
-**Retained:** ten-consumer joint minimum 22 with feedback, no-feedback joint minimum 22,
-block-monotone MixColumns lower bound 85, unrestricted `75<=L<=88`.
-No assumption that 88 is optimal. Hand proofs and independent machine reviews are
-not formal verification or human certification.
+**New:** general source replay charges only group values absent from the original
+physical source set, provided every chronological entry prefix splits between the
+two groups. Five-entry eleven-consumer cases with two or three nonclean labels
+require total at least 22. In the four-nonclean three-term-relation branch, a candidate
+below 22 has exactly ten source gates and physical clean rank one.
+**Still open:** four- and five-nonclean profiles, larger consumer budgets, full joint minimum.
+**Retained:** ten-consumer and no-feedback joint minima 22; four-entry mixed
+eleven-consumer minimum 22; block-monotone MixColumns lower bound 85;
+unrestricted `75<=L<=88`. No assumption that 88 is optimal.
+All proofs have independent machine reviews, not formal verification or human certification.
 
 ## Read next
 
-1. [Current results, judgment, and frontier](feedback/FOUR_DIAGONAL_FRONTIER.md).
-2. [Four-diagonal proof](feedback/FOUR_DIAGONALS.md),
-   [four-entry closure and target-cone correction](feedback/FOUR_ENTRY_CLOSURE.md),
+1. [Current results and judgment](feedback/FIVE_ENTRY_PROGRESS.md),
+   [general credited replay](feedback/CREDITED_REPLAY.md).
+2. [Two-nonclean closure](feedback/TWO_NONCLEAN.md),
+   [three-nonclean closure](feedback/THREE_NONCLEAN.md),
+   [remaining four/five profiles](feedback/FOUR_FIVE_FRONTIER.md),
+   [timing theorem and counterexample](feedback/FIVE_LABEL_TIMING.md).
+3. [Four-diagonal bound](feedback/FOUR_DIAGONALS.md),
+   [four-entry closure and cone correction](feedback/FOUR_ENTRY_CLOSURE.md),
    [rank-four physical supply](feedback/RANK_FOUR_SUPPLY.md).
-3. [Collision and causal-return theorem](feedback/ENTRY_RETURN_RIGIDITY.md),
-   [diagonal confinement](feedback/DIAGONAL_CONFINEMENT.md),
-   [entry/trace geometry](compatibility/QUOTIENT.md).
-4. [Five diagonals and ten-consumer bound](feedback/FIVE_DIAGONALS.md),
-   [rank-three replay](feedback/RANK_THREE.md), [augmented minimum twelve](augmented/PROOF.md),
-   [joint and block-monotone consequences](augmented/CONSEQUENCES.md).
-5. [General repair](feedback/GENERAL_REPAIR.md), [helper-value obstruction](feedback/SIDON_REPAIR.md),
-   [takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
-   [checkpoint](../structure-2026-11-11/CHECKPOINT.md), and
+4. [Entry/trace geometry](compatibility/QUOTIENT.md),
+   [collision and causal-return theorem](feedback/ENTRY_RETURN_RIGIDITY.md),
+   [diagonal confinement](feedback/DIAGONAL_CONFINEMENT.md).
+5. [Augmented source minimum twelve](augmented/PROOF.md),
+   [five diagonals and ten-consumer bound](feedback/FIVE_DIAGONALS.md),
+   [general repair](feedback/GENERAL_REPAIR.md),
+   [helper-value obstruction](feedback/SIDON_REPAIR.md).
+6. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
+   [checkpoint](../structure-2026-11-11/CHECKPOINT.md),
    [visible account](../structure-2026-11-11/visible/VISIBLE.md).
 
-## Current proved results
+## Precise remaining eleven-consumer frontier
 
-- Four diagonals containing a triangle plus an independent value require thirteen
-  source gates together with the four first rows. The bound allows arbitrary
-  cancellation and is attained for one prescribed choice, not asserted for every basis.
-- Two clean and two nonclean actual entry labels forming a rank-four basis force
-  at least eleven source gates. With eleven consumer gates the minimum for this
-  subclass is 22, attained by a specified event-free `(11,11)` construction.
-- At eleven consumer gates, a joint total below 22 forces five mixed entries and all
-  eleven gates in the relaxed target cones. An exit-only extra gate is handled
-  separately; the previous automatic use of target-trimmed geometry was too broad.
-- For any rank-four actual entry span containing `D`, three independent original
-  physical clean values force at least eleven source gates. Thus the remaining
-  below-22 eleven-consumer class has physical clean rank at most two.
-- Every projected physical collision counts: `K>=L_D+delta_C` for `C` disjoint from
-  required source space `D`. At eleven gates a nonclean difference has at most one
-  physical pair. Direct return/re-entry of a new nonclean label is impossible;
-  indirect feedback that changes the label is still allowed.
-- All actual entries in `D` force source cost twelve at any consumer budget. A
-  target-preserving free-block projection gives the same bound for entries in
-  `D+<h>` with ordinary source part even and free part odd. At eleven consumer
-  gates these classes require total at least 23.
+Every candidate of total at most 21 with exactly eleven consumer-bearing gates has
+five distinct entry labels spanning rank four, four or five nonclean labels, and all
+eleven gates in the relaxed target cones (cut zero-consumer operand ports). Original
+physical clean rank is at most two. The unique label relation can be:
 
-## Next mathematical direction
+- Four nonclean: two nonclean labels plus the clean label. Here source cost is exactly
+  ten and physical clean rank exactly one.
+- Four nonclean: all four nonclean labels, forming an affine plane, with the clean
+  label outside its linear span.
+- Four nonclean: all five labels. The nonclean labels form a basis; the all-five-odd
+  trace possibility is not excluded and must not be dropped.
+- Five nonclean: four labels form an affine plane, with the fifth outside its span.
 
-Study the five-entry interface's unique label relation and unique trace relation
-alongside chronological replay. A source replay that creates a pair sum may recover
-its cost by bypassing that value's later original production. Seek a forced credit
-or a forced additional physical diagonal; do not assume a clean virtual difference
-is already supplied. Collision accounting offers a separate way to charge a missing
-clean direction returned by the consumer. Larger consumer budgets remain separate.
+In either affine-plane case, exits before the outside label is first read can be
+replayed without extra gates. A nonclean actual entry label has a unique physical
+consumer pair and cannot be newly returned; direct return/re-entry is forbidden,
+while indirect feedback changing the value remains possible.
 
-## Earlier results and limits
+## Mechanism and limitations
 
-Three independent diagonals plus the first rows require twelve source gates; five
-nonzero distinct diagonals require thirteen. The latter closes every ten-consumer
-joint circuit at 22 via rank-three replay. A specified ten-gate consumer nevertheless
-permits a local ternary return; a later-label credit illustrates why one expensive
-exit need not increase total replay cost.
+For `U=P direct-sum Q`, if every earlier-entry span splits between `P,Q`, source
+replay costs at most `G0+B`, where `B` counts their nonzero values absent from the
+original physical source set. A synthetic original value receives credit from
+bypassing its later original gate. A virtual span member receives no credit.
+A chronological greedy basis recovers the earlier rank-only bound.
 
-General replay costs at most `h(d)=2^ceil(d/2)+2^floor(d/2)-d-2`, sharp through rank
-four. A fixed Sidon family forces `Omega(2^(d/3))` extra source gates even offline;
-this is a source-value-preservation bound, not an exponential full-circuit gap.
-Adaptive online repair matches the upper asymptotic order; fixed prefixes have exact
-full-circuit saving `d-2`. Keep these metrics distinct.
+Once five distinct rank-four labels are available, one extra XOR ensures one-XOR
+access to their whole span. A fixed example nevertheless needs two extra source
+replay gates when its fifth label arrives after the hard exits. This concerns
+source-value preservation, not full circuit optima, and is not a K=11 witness.
 
-Generic event-free repairs may use baseline 85, but historical charged-slack formulas
-retain their own hypotheses. HR/affine completion require sharing control, and the
-sparse family refutes savings bounds from hidden-gate count alone.
+Three independent diagonals plus four first rows require twelve source gates. A
+clean triangle plus an independent fourth diagonal requires thirteen, attained for
+one choice; five distinct nonzero diagonals also require thirteen. These bounds
+permit arbitrary cancellation. All-clean actual entries force source cost twelve
+at any consumer budget, as does the recorded even-own/odd-free nonclean parity class.
 
-## Verification and repository discipline
+General rank-only replay has allowance `h(d)=2^ceil(d/2)+2^floor(d/2)-d-2`, sharp
+through rank four. A fixed Sidon family forces `Omega(2^(d/3))` source-preservation
+overhead offline; adaptive online repair and full-circuit prefix savings are separate
+metrics. Historical repair/HR claims retain their sharing and charging hypotheses.
 
-The current summary links independent reviews and checks of two specified attaining
-constructions. Universal arguments are hand proofs; no SAT, circuit enumeration,
-exact search, or computer-driven case elimination was used. Use Git with
-`-c core.filemode=false`; shared config is unchanged. Stage only intended research
+## Next direction and verification
+
+Study the affine-plane interface after its outside label is read, combining causal
+supply with collision constraints. For the five-term relation, determine what actual
+entry positions in a six-gate transpose permit; algebraic label feasibility is not
+circuit feasibility. The unrestricted joint problem also requires larger consumer
+budgets, independently of these reductions.
+
+Current independent reviews are linked from the summary. This pass used hand proofs
+and symbolic verification of one specified counterexample, with no search. Use Git
+with `-c core.filemode=false`; shared config is unchanged. Stage only intended research
 files and preserve other worktrees.
