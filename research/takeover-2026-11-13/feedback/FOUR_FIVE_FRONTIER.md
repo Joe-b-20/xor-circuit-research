@@ -1,5 +1,9 @@
 # The four- and five-nonclean label profiles
 
+**Later result:** [the eleven-consumer closure](ELEVEN_CONSUMER_CLOSED.md) excludes
+all four remaining profiles below total 22. The reductions below remain valid;
+statements that these profiles are open record the preceding phase.
+
 2026-11-13. Hand deductions about actual label values and their chronological availability. No circuit search or finite-family checks. The profiles below remain open at total cost at most 21.
 
 ## Label geometries allowed by the trace constraints

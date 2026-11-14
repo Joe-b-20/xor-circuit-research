@@ -1,0 +1,25 @@
+# Independent review of the six-value coset bound
+
+2026-11-13. Machine proof review of [SIX_COSET_VALUES](../SIX_COSET_VALUES.md), including its use of [TIGHT_FIBRE_WIRES](../TIGHT_FIBRE_WIRES.md) and [AFFINE_FIBRE_CLOSURE](../AFFINE_FIBRE_CLOSURE.md). No circuit search or family checks were run.
+
+## Source bound
+
+Normalization can preserve all six selected values along with the four rows. A free value remains available as a base, and an equal-valued bypass retains the selected mask. The source proof imposes no cone-support condition. The three required free directions need at least three entries, each repeating its nonfree operand's own mask. The four own triples need at least two distinct nonzero even own masks. With just one, its first occurrence is a pair of units, and later odd masks remain units or units plus that pair. Only two triples appear in that union.
+
+A coset with even own parity has at most one free value. Its five other distinct own projections and the four triple projections force at least nine first gates, disjoint from the three entries. An odd-own coset with odd free parity has no named value or base value. Six paid odd nodes there, four row gates, and two even gates require at least twelve. No parity confinement hypothesis is needed.
+
+In the odd-own, even-free case there is one named value in the coset. The five additional odd nodes and four rows leave exactly two physical even gates at budget eleven, and all odd nodes have even free part. The two distinct even own masks and four triples give six non-entry first occurrences. No even-only equation is available, because only two even physical values exist.
+
+The named set has only its full eight-node relation, so a fixed nonzero sum has at most one wholly named pair. A clean even value can match only within the six-node crowded coset and therefore has at most three pairs. A nonclean even value with even free part has nonzero residue, permitting at most one crossing pair from the crowded coset to its unique opposite named residue and at most one wholly named pair. An even value with odd free part has no odd-pair representation. If any physical even value is nonclean, at most five OOE equations are available.
+
+If both even values are clean, every OOE equation lies on the six crowded odd nodes and those two even nodes. The projection of their formal relation span onto the odd coordinates is injective, since its kernel would be a relation on the two independent nonzero even values. The odd incidence rank is at most five. The six physical non-entry equations have independent latest-result pivots, so this case is impossible too. This proves the stated cap of five available values at source cost eleven, whether or not the selected values feed the rows.
+
+## Wire inputs and joint consequence
+
+The tight-fibre result preserves physical wires. After deleting the five entries the ordinary projection is a minimum six-gate triple circuit, so it has one input or non-entry root per own fibre. The literal transpose has six copies in the original direction, as \(9+6-11=4\), and hence six XORs in the mirror. The trace ports can be dropped without changing the ordinary derivative of a retained marked wire. Flexible accumulation exposes two adjacent-entry traces' sum on a single occurrence feeding the remainder of that node's adjoint, so its derivative is the original own mask. Distinct even helper values cannot have equal nonzero derivatives, because their disjoint reader subsets give different sums of the independent odd-output adjoints.
+
+In the affine-plane profiles the sum of two distinct plane traces is nonzero even and differs from the outside label's even trace. For a clean outside label its trace is independent of the plane-trace span. For a nonclean outside label its trace is the sum of four independent plane traces, so it is not a sum of two. Thus there cannot be adjacent plane edges in the outside entry's own fibre. A path containing that entry can use at most one plane edge on each side. There is at most one path containing a straddling pair, giving the only possible extra repair \(f=h+w\).
+
+In the all-nonclean case, if there is no such physical return, the cost-preserving replay contradicts J22. The actual \(f\) differs from \(h\) by nonzero \(w\), and lies outside the four-label plane because \(h\) lies outside its linear span and \(w\) inside. It is therefore a sixth distinct value of the nonzero diagonal coset containing the five actual nonclean labels. The at-most-one-extra replay preserves all six with the source rows in at most eleven gates, contradicting the cap just proved.
+
+Combined with the other five-entry exclusions and the cone reduction, this closes total cost below 22 in the class with exactly eleven consumer-bearing gates. The recorded eleven-source/eleven-consumer witness attains 22 in that class. This does not exclude larger consumer-bearing budgets below 22 and does not change the unrestricted MixColumns interval or block-monotone bound.

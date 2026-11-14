@@ -2310,3 +2310,87 @@ collision restriction. Timing and consumer constraints must be used together.
 Four- and five-nonclean profiles, larger consumer budgets, and the unrestricted joint
 minimum remain open. The block-monotone MixColumns lower bound remains 85, with no
 claim that the unrestricted upper bound 88 is optimal.
+
+
+## 41. Tight fibre wires and the exact eleven-consumer minimum (2026-11-13)
+
+Current account: [eleven-consumer closure](../takeover-2026-11-13/feedback/ELEVEN_CONSUMER_CLOSED.md),
+following reviewed commit `d8bfd65`. Structural hand proofs with independent machine
+reviews; no circuit search, enumeration, or computer-driven case elimination.
+
+**Exact result.** Every joint 0/1-sheet circuit with exactly eleven consumer-bearing
+gates has total cost at least 22, even with arbitrary feedback and cancellation.
+The specified eleven-source/eleven-consumer circuit already checked in section 39
+attains 22. The ten-consumer minimum was already 22. A joint circuit below 22 must
+therefore have at least twelve consumer-bearing gates and at most nine source gates.
+The unrestricted joint minimum remains open. MixColumns stays 75 to 88, with the
+block-monotone lower bound 85 unchanged.
+
+**Entry paths and physical wire derivatives (proved).** Five entries in an eleven-gate
+consumer leave six ordinary non-entry gates, the minimum for four triples. No projected
+non-entry gate can repeat a prior value, be zero, or be an input. Each own-mask fibre
+has one root and its entry edges form a tree. An exit returns the XOR of labels along
+a fibre path, all read before that exit. Explicit fanout expansion gives nine inputs,
+four outputs, eleven XORs and six copies; literal transposition has six XORs. Deleting
+the five trace ports and suppressing their unary copies returns exactly the ordinary
+projection under reversal. Marked-wire derivatives are the original own masks.
+
+The two even helper values in a six-gate triple circuit have disjoint sets of odd
+triple readers. The latter's full adjoints are independent by terminal-output
+triangularity, so wires carrying the two different even values cannot have the same
+nonzero ordinary derivative. For two adjacent entry edges, flexible local accumulation
+exposes their trace sum on a wire with their common own derivative. This works for
+siblings and for a parent/child pair by summing all other contributions. Exposures at
+different original vertices can be chosen simultaneously. Three consecutive distinct
+odd traces would expose two distinct even sums with the same derivative, impossible.
+Thus an all-five-odd interface has fibre paths of length at most two, all exits cost
+at most one original XOR, and source replay has zero overhead. No-feedback J22 closes
+the previously retained five-term four-nonclean label relation.
+
+**Three-term four-nonclean relation (closed).** For labels n1,n2,n3,n4,c with c=n1+n2,
+the n3,n4 traces are the mirror's distinct even helpers. Their own derivatives differ,
+so their entries lie in different fibres. An exit path uses at most one of them.
+Complete only {n1,n2,c}; all three values are original, so every early computation
+is credited to bypassing its later source producer. Each exit is one available
+triangle value plus at most one of n3,n4. Replay costs no extra gates and J22 applies.
+
+**Affine-plane return restriction (proved).** Let four nonclean labels form q+W and
+let h be the outside fifth label, clean or nonclean. The four plane traces are odd,
+the h trace even, and h's trace differs from every plane-trace pair sum. Two adjacent
+plane-entry edges in h's fibre would expose a distinct even value with h's derivative,
+contradicting separation. Thus no two plane edges meet anywhere in that fibre. There
+is at most one plane edge at either endpoint of h and one possible straddling path,
+returning f=h+w with w=qi+qj nonzero in W. Paths avoiding h return a plane pair sum,
+zero, or an actual nonclean label; the latter cannot be newly returned by collision
+accounting. All other exits therefore cost at most one gate. Only w may cost one extra.
+
+If h is clean, positive repair produces the clean triangle h,w,f. One appended plane
+difference independent of w gives a fourth independent-of-triangle diagonal in G0+2
+gates, contradicting the thirteen-gate supplier bound at G0 at most ten. Zero overhead
+instead contradicts J22. This closes the four-nonclean affine-plane profile.
+
+**Six values in one diagonal coset require twelve source gates (proved).** The theorem
+includes source exports, inputs and free values, and permits arbitrary cancellation.
+An even-own coset with six points requires five distinct nonzero even own firsts,
+four row-triple firsts, and three source entries: at least twelve gates. An odd-own,
+odd-free coset needs six paid non-row odd gates, the four rows, and two even helpers.
+For odd-own/even-free parity, the eight named inputs/rows have distinct residues, so
+six coset points force five odd helpers in one crowded six-node coset. At eleven gates
+only two even values remain. Four triples and two distinct even own masks require at
+least six non-entry gates, with no target-cone trimming assumption. Every non-entry
+equation is an odd-pair relation for one of the two even values. A nonclean even value
+has at most one crowded-to-named pair and one wholly named pair; a clean value has
+at most three pairs in the crowded six-node set. If either even value is nonclean,
+at most five relations are available. If both are clean, they are independent and
+all equations project injectively onto a six-node incidence space of rank at most
+five. Six actual gate equations are independent by latest-result pivots, contradiction.
+
+**All-nonclean profile (closed).** Its necessary straddling return f=h+w is nonclean,
+differs from h, and lies outside the four-label plane because h does. It is a sixth
+original physical value in the same D-coset as the five entry labels. One-extra-gate
+source replay would retain all six and the four rows in G0+1 at most eleven source
+gates, contrary to the new supplier theorem. If no extra gate is needed, J22 already
+excludes the circuit. All four profiles retained in section 40 are now closed. Earlier
+cone, four-entry, clean-entry and two/three-nonclean reductions supply the remaining
+coverage. If normalization drops the consumer count to ten, its established bound
+applies instead. No extension to a consumer with twelve or more gates is asserted.

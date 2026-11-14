@@ -1,13 +1,12 @@
 # Current feedback research
 
-The latest continuation after `577d8bc` is [source credits narrow the five-entry frontier](FIVE_ENTRY_PROGRESS.md).
-It proves a general chronological replay bound using later original-gate credits,
-and closes the five-entry eleven-consumer cases with two or three nonclean labels
-at total at least 22. Only four or five nonclean labels remain, with additional
-restrictions and a timing counterexample recorded. These remaining classes and
-larger consumer budgets are open. The [preceding phase](FOUR_DIAGONAL_FRONTIER.md)
-proved four-diagonal source cost thirteen and closed the four-entry mixed case.
-The earlier ten-consumer phase follows.
+The latest continuation after `d8bfd65` is [eleven consumer gates have joint minimum 22](ELEVEN_CONSUMER_CLOSED.md).
+Tight ordinary fibres and marked-wire derivatives constrain exit paths. A six-value
+source-coset bound closes the final all-nonclean case. The specified `(11,11)` circuit
+attains 22. Any joint circuit below 22 must now have at least twelve consumer gates
+and at most nine source gates; those budgets remain open. The [preceding source-credit
+phase](FIVE_ENTRY_PROGRESS.md) and [four-diagonal phase](FOUR_DIAGONAL_FRONTIER.md)
+remain the supporting history. Unrestricted MixColumns remains 75 to 88.
 
 ## Previous phase: physical diagonal values close the ten-gate consumer case
 

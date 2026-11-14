@@ -1,97 +1,91 @@
 # XOR structural research: checkpoint, 2026-11-13
 
-Branch: `research-2026-11-13-structural`. Current [five-entry continuation](feedback/FIVE_ENTRY_PROGRESS.md)
-follows reviewed commit `577d8bc`. Original verified base:
+Branch: `research-2026-11-13-structural`. Current [eleven-consumer closure](feedback/ELEVEN_CONSUMER_CLOSED.md)
+follows reviewed commit `d8bfd65`. Original verified base:
 `e89b8a25f69195266f1e24e815cb96c7526a3511` on `phase-2026-11-09`.
 Other worktrees and `search/proposals/` are preserved. Our worktree is this chat's
 `work/xor-structural`.
 
-**New:** general source replay charges only group values absent from the original
-physical source set, provided every chronological entry prefix splits between the
-two groups. Five-entry eleven-consumer cases with two or three nonclean labels
-require total at least 22. In the four-nonclean three-term-relation branch, a candidate
-below 22 has exactly ten source gates and physical clean rank one.
-**Still open:** four- and five-nonclean profiles, larger consumer budgets, full joint minimum.
-**Retained:** ten-consumer and no-feedback joint minima 22; four-entry mixed
-eleven-consumer minimum 22; block-monotone MixColumns lower bound 85;
+**New:** joint minimum 22 for exactly eleven consumer-bearing gates, allowing arbitrary
+feedback and cancellation. A specified `(11,11)` circuit attains it. The ten-consumer
+minimum was already 22. Any joint circuit below 22 must therefore use at least twelve
+consumer-bearing gates and at most nine source-side gates.
+**Still open:** larger consumer budgets and the unrestricted joint minimum.
+**Retained:** no-feedback joint minimum 22; block-monotone MixColumns lower bound 85;
 unrestricted `75<=L<=88`. No assumption that 88 is optimal.
-All proofs have independent machine reviews, not formal verification or human certification.
+Hand proofs have independent machine reviews, not formal verification or human certification.
 
 ## Read next
 
-1. [Current results and judgment](feedback/FIVE_ENTRY_PROGRESS.md),
-   [general credited replay](feedback/CREDITED_REPLAY.md).
-2. [Two-nonclean closure](feedback/TWO_NONCLEAN.md),
-   [three-nonclean closure](feedback/THREE_NONCLEAN.md),
-   [remaining four/five profiles](feedback/FOUR_FIVE_FRONTIER.md),
-   [timing theorem and counterexample](feedback/FIVE_LABEL_TIMING.md).
-3. [Four-diagonal bound](feedback/FOUR_DIAGONALS.md),
-   [four-entry closure and cone correction](feedback/FOUR_ENTRY_CLOSURE.md),
-   [rank-four physical supply](feedback/RANK_FOUR_SUPPLY.md).
-4. [Entry/trace geometry](compatibility/QUOTIENT.md),
-   [collision and causal-return theorem](feedback/ENTRY_RETURN_RIGIDITY.md),
-   [diagonal confinement](feedback/DIAGONAL_CONFINEMENT.md).
-5. [Augmented source minimum twelve](augmented/PROOF.md),
-   [five diagonals and ten-consumer bound](feedback/FIVE_DIAGONALS.md),
-   [general repair](feedback/GENERAL_REPAIR.md),
-   [helper-value obstruction](feedback/SIDON_REPAIR.md).
-6. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
+1. [Current result, complete case coverage, and judgment](feedback/ELEVEN_CONSUMER_CLOSED.md).
+2. [Tight-fibre wire theorem](feedback/TIGHT_FIBRE_WIRES.md),
+   [four-nonclean three-term closure](feedback/FOUR_NONCLEAN_PAIR_CLOSED.md),
+   [affine-fibre restriction](feedback/AFFINE_FIBRE_CLOSURE.md),
+   [six-value coset bound and final closure](feedback/SIX_COSET_VALUES.md).
+3. [Prior two/three-nonclean closure](feedback/FIVE_ENTRY_PROGRESS.md),
+   [four-entry and relaxed-cone reduction](feedback/FOUR_ENTRY_CLOSURE.md),
+   [entry/trace geometry](compatibility/QUOTIENT.md),
+   [collision and causal-return theorem](feedback/ENTRY_RETURN_RIGIDITY.md).
+4. [Credited replay](feedback/CREDITED_REPLAY.md),
+   [four-diagonal source bound](feedback/FOUR_DIAGONALS.md),
+   [five-diagonal and ten-consumer bound](feedback/FIVE_DIAGONALS.md),
+   [augmented minimum twelve](augmented/PROOF.md),
+   [no-feedback joint and block-monotone consequences](augmented/CONSEQUENCES.md).
+5. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
    [checkpoint](../structure-2026-11-11/CHECKPOINT.md),
    [visible account](../structure-2026-11-11/visible/VISIBLE.md).
 
-## Precise remaining eleven-consumer frontier
+## Current mechanisms
 
-Every candidate of total at most 21 with exactly eleven consumer-bearing gates has
-five distinct entry labels spanning rank four, four or five nonclean labels, and all
-eleven gates in the relaxed target cones (cut zero-consumer operand ports). Original
-physical clean rank is at most two. The unique label relation can be:
+- Bypassing five entries of an eleven-gate consumer leaves the minimum six-gate
+  ordinary triple circuit. Every ordinary-mask fibre has one root and entry edges
+  form a tree. An exit is the label sum along its fibre path, using earlier labels.
+- Literal marked-wire transposition preserves ordinary derivatives. At an adjacent
+  pair of entry edges, a local accumulation exposes their trace sum with the common
+  ordinary derivative. Two different even helpers cannot have equal nonzero wire
+  derivatives. A path therefore cannot contain three consecutive distinct odd traces.
+- All-five-odd traces give zero-overhead replay. In the three-term label-relation
+  profile, the two even-trace entries lie in different fibres; completing the original
+  three-value triangle gives zero-overhead replay as well.
+- In either affine-plane profile, no two plane entries meet in the outside entry's
+  fibre. There is at most one difficult return `h+qi+qj`, repaired with one extra
+  `w=qi+qj`. Clean h yields the forbidden four-diagonal supplier. Nonclean h yields
+  a sixth original value in the same diagonal coset as the five entries.
+- A source supplying the four first rows and six distinct values in any diagonal
+  coset needs at least twelve gates. At eleven, first-occurrence counts or odd-pair
+  relation rank are insufficient. This applies to exports and arbitrary cancellation;
+  attainment of five coset values at eleven gates is not claimed.
 
-- Four nonclean: two nonclean labels plus the clean label. Here source cost is exactly
-  ten and physical clean rank exactly one.
-- Four nonclean: all four nonclean labels, forming an affine plane, with the clean
-  label outside its linear span.
-- Four nonclean: all five labels. The nonclean labels form a basis; the all-five-odd
-  trace possibility is not excluded and must not be dropped.
-- Five nonclean: four labels form an affine plane, with the fifth outside its span.
+All four profiles retained in the preceding checkpoint are now excluded below 22.
+The existing direct witness with eleven gates on each side gives equality. This
+settles that consumer budget, not the unrestricted joint problem.
 
-In either affine-plane case, exits before the outside label is first read can be
-replayed without extra gates. A nonclean actual entry label has a unique physical
-consumer pair and cannot be newly returned; direct return/re-entry is forbidden,
-while indirect feedback changing the value remains possible.
+## General results and distinctions retained
 
-## Mechanism and limitations
+For `U=P direct-sum Q`, if every entry-prefix span splits, source replay costs at most
+`G0+B`, where B counts nonzero group values absent from the original physical source
+set. An original value computed early receives credit by bypassing its later gate.
+The rank-only allowance is `h(d)=2^ceil(d/2)+2^floor(d/2)-d-2`, sharp through rank four.
 
-For `U=P direct-sum Q`, if every earlier-entry span splits between `P,Q`, source
-replay costs at most `G0+B`, where `B` counts their nonzero values absent from the
-original physical source set. A synthetic original value receives credit from
-bypassing its later original gate. A virtual span member receives no credit.
-A chronological greedy basis recovers the earlier rank-only bound.
+Five distinct rank-four labels, once available, need at most one extra XOR for one-XOR
+access to the span. The fixed late-fifth-label example still needs two extra replay
+gates; it is not a K=11 witness or a full-optimum separation. The fixed Sidon family
+forces exponential offline source-preservation overhead; online and full-circuit
+prefix results are separate metrics.
 
-Once five distinct rank-four labels are available, one extra XOR ensures one-XOR
-access to their whole span. A fixed example nevertheless needs two extra source
-replay gates when its fifth label arrives after the hard exits. This concerns
-source-value preservation, not full circuit optima, and is not a K=11 witness.
-
-Three independent diagonals plus four first rows require twelve source gates. A
-clean triangle plus an independent fourth diagonal requires thirteen, attained for
-one choice; five distinct nonzero diagonals also require thirteen. These bounds
-permit arbitrary cancellation. All-clean actual entries force source cost twelve
-at any consumer budget, as does the recorded even-own/odd-free nonclean parity class.
-
-General rank-only replay has allowance `h(d)=2^ceil(d/2)+2^floor(d/2)-d-2`, sharp
-through rank four. A fixed Sidon family forces `Omega(2^(d/3))` source-preservation
-overhead offline; adaptive online repair and full-circuit prefix savings are separate
-metrics. Historical repair/HR claims retain their sharing and charging hypotheses.
+Three independent diagonals with the four rows need twelve source gates; a clean
+triangle plus an independent fourth value needs thirteen (attained for one choice),
+as do five distinct nonzero diagonals. Historical repair/HR statements retain their
+sharing, charging, and output-window hypotheses.
 
 ## Next direction and verification
 
-Study the affine-plane interface after its outside label is read, combining causal
-supply with collision constraints. For the five-term relation, determine what actual
-entry positions in a six-gate transpose permit; algebraic label feasibility is not
-circuit feasibility. The unrestricted joint problem also requires larger consumer
-budgets, independently of these reductions.
+Analyze consumers with at least twelve gates and at most nine source-side gates.
+The six-gate mirror is no longer automatic; identify what an extra ordinary gate
+allows in root multiplicity, wire derivatives, and returned source directions.
+Do not extrapolate the tight-fibre lemma to a larger mirror without proof.
 
-Current independent reviews are linked from the summary. This pass used hand proofs
-and symbolic verification of one specified counterexample, with no search. Use Git
-with `-c core.filemode=false`; shared config is unchanged. Stage only intended research
-files and preserve other worktrees.
+Current independent reviews and the existing attaining witness checks are linked from
+the summary. This pass used structural hand proofs, with no circuit search or new
+numerical verification campaign. Use Git with `-c core.filemode=false`; shared config
+is unchanged. Stage only intended research files and preserve other worktrees.

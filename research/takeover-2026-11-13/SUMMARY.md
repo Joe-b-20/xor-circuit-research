@@ -1,14 +1,14 @@
 # What changed in the takeover
 
-**Current continuation after `577d8bc`:** [source credits and the five-entry frontier](feedback/FIVE_ENTRY_PROGRESS.md).
-A general replay theorem charges only missing physical group values when the split
-respects every entry prefix; early production of an original value is paid by its
-later bypass. This closes the five-entry eleven-consumer cases with two or three
-nonclean labels at total at least 22. Only four or five nonclean labels remain. The
-four-nonclean three-term-relation branch further requires exactly ten source gates
-and physical clean rank one. A specified example shows why five eventual rank-four
-labels do not alone reduce replay overhead to one. The remaining profiles include
-an all-five-label relation; no realization of that algebraic possibility is asserted.
+**Current continuation after `d8bfd65`:** [the eleven-consumer joint minimum is 22](feedback/ELEVEN_CONSUMER_CLOSED.md).
+The physical fibre trees and marked-wire derivatives of a tight six-gate mirror close
+all remaining eleven-consumer profiles. A new supplier theorem forbids six physical
+values in one diagonal coset within eleven source gates, closing the last nonclean
+return. The existing `(11,11)` construction attains 22. Together with the ten-consumer
+case, any joint circuit below 22 now needs at least twelve consumer gates and at most
+nine source gates; those larger budgets remain open.
+The [preceding source-credit phase](feedback/FIVE_ENTRY_PROGRESS.md) supplied the general
+credited replay theorem and closed the two- and three-nonclean five-entry cases.
 The [preceding continuation](feedback/FOUR_DIAGONAL_FRONTIER.md) proved the sharp
 four-diagonal source bound and closed the four-entry mixed class at 22.
 The [previous continuation](feedback/ELEVEN_FRONTIER.md) established physical-collision

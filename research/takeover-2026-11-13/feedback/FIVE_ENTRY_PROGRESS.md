@@ -1,5 +1,9 @@
 # Source credits narrow the five-entry frontier
 
+**Later result:** [the eleven-consumer closure](ELEVEN_CONSUMER_CLOSED.md) excludes
+all four remaining profiles below total 22. The reductions below remain valid;
+statements that these profiles are open record the preceding phase.
+
 2026-11-13, continuing reviewed commit `577d8bc`. Structural hand proofs and independent
 machine reviews, not formal verification or human certification. No circuit search,
 enumeration, or computer-driven case elimination was used.
