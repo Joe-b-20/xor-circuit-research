@@ -38,7 +38,8 @@ repair, restarts, coordination, with file and line references); reproduction in
 - Complete truth tables limit BoolFlux to 16 inputs (linear mode is exact only for XOR-only
   libraries); per-candidate re-simulation makes it slow on 1,000+ gate circuits (1,150 it/s).
 - Five seeds per cell (fifteen where expanded): differences of one gate are often within seed noise.
-- The no-op filter, which the traces motivated, has no measurable quality effect.
+- The no-op filter, which the traces motivated, has no measurable quality effect, also after it was
+  repaired (section 7: the first version missed most no-ops).
 
 **Hypotheses (not established)**
 - An in-place skeleton move (swap one AND and repair its XOR fan-out locally) would make
@@ -245,7 +246,7 @@ Python driver ~22 MB (up to ~55 MB on AES ANF rebuilds).
 | rebuild from forms loses the parent's XOR sharing: +31 to +72 gates with no skeleton change | seeded rebuild (`synthesize(parent=)`) | unchanged skeleton rebuilds exactly (+0); after 1 move +0 to +19 |
 | skeleton kernel returns the input on AES, its 20 % share is wasted | adaptive share (v3) | skeleton time 24 s -> 12 s per 120 s run; AES results unchanged (134) |
 | repair progress discarded between rounds (review2 M1) | keep the last circuit while nothing is feasible (v3) | GD<=14 repair: 0/5 -> 1/5 in the rebuild configuration (124 gates) |
-| neutral moves that rebuild the identical circuit (trace) | `skip_noop` | 1,146 no-op candidates skipped in 20,000 AES iterations; no measurable quality effect (AES a36, 15 seeds each: median 133 both) |
+| neutral moves that rebuild the identical circuit (trace) | `skip_noop` (structural test from review 3) | first version missed 81-87 % of no-ops (review 3 M4); repaired filter: no measurable quality effect (section 7) |
 | full truth tables make XOR-only searches slow (190 it/s at 16 inputs) | exact linear mode | 107x faster; competitive with XORFlux |
 | start construction 3.3 s and verification ~20 s at 16 inputs | bitset Moebius, Gray-code tables, string-based conversions | 0.3 s and ~2 s |
 | Paar recount per substitution | incremental pair counts (identical output, review2: 5,082 cases) | 1.2-2.6x on rebuilds |
@@ -259,3 +260,34 @@ it), built by `bench/make_bundle.sh`: `src/` (the package at the bundle's commit
 models, kernel defaults), `traces/` (rendered traces, move logs, before/after circuits), `data/`
 (every run's JSON and final circuit, tables v1-v3, pooled comparison, rebuild-penalty data),
 `abc/` (comparator scripts, genlibs, circuits, results), this report, MECHANICS.md, REPRODUCE.md.
+
+## 7. Review 3 corrections (2026-11-14)
+
+An independent audit of objectives, incumbents, worker selection, clean-up costs, BUF accounting,
+timing, logging and these numbers (`review3/REVIEW3.md`, with reproductions and a resolution
+table; regression tests in `tests/test_review3.py`) found six major and twelve minor problems.
+None made a saved circuit wrong. Effects on this report:
+
+- Tables v1-v4 regenerated from the same run data: success now counts the final verified
+  circuit (rebuild-stage gains were missing from trajectories), and "best" columns use each run's
+  objective. Changed cells: GF(2^4) mult unseeded 3/5 -> 4/5 (v2) and 2/5 -> 3/5 (v3); `a,cost`
+  rows now show the best circuit by (A, cost).
+- Section 2's trace statistics: 38,099 of 43,958 accepted moves were renumbered no-ops; 579 changed
+  AND structure.
+- Depth repair 116@GD15 -> GD 14: 2 of 35 runs reached GD 14 (129 and 124 gates), not 1.
+- The no-op filter compared raw gate lists, but `rebuild` renumbers gates, so most no-ops passed.
+  The structural test now rejects them all (0 renumbered no-ops accepted on maj3, PRESENT, AES).
+  Repeated A/B with the repaired kernel (plan `bench/plans/plan-v5-noop-ab.json`; NIST a36-ad4-g142-gd13
+  under its caps, 120 s, seeds 1-15, the two arms of a seed on the same CPU):
+
+  | skip_noop | median G | best | G <= 132 | paired vs the other arm |
+  |---|---|---|---|---|
+  | 0 | 133 | 131 | 2/15 (at 36 s, 76 s) | |
+  | 1 | 133 | 133 | 0/15 | 4 better, 5 worse, 6 equal (sign test p = 1) |
+
+  Still no measurable effect; the default stays 1 (it removes wasted evaluations), and the
+  difference in G <= 132 counts (2/15 vs 0/15) is within noise (Fisher p ~ 0.48).
+- Ranking is now exactly lexicographic and feasibility-first everywhere (kernel `lex`, cli,
+  workflow, analyze), so `pipe` and `flow` keep repair progress; `cli.py flow` reproduces the
+  benchmark workflows (REPRODUCE.md).
+
