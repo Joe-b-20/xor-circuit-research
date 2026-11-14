@@ -2971,3 +2971,93 @@ and minimum P. Thus this family proves that the rank-plus-ternary sum can be
 insufficient even with simultaneous attainment, not that minimum rank and
 minimum P must conflict. The current synthesis and the available-supply note
 explicitly distinguish these statements.
+
+
+## 49. Branch-value repair, causal forests, and an unbounded joint repair gap (2026-11-14)
+
+Continuing reviewed commit `656980c`, this pass extends the forest support theorem
+to arbitrary circuits and identifies the limit of the resulting repair argument.
+No SAT, circuit search, representation enumeration, or case elimination is used.
+
+**Common physical branch identity.** In the full ancestor union of k marked
+ports, with a actual input ancestors, g gates, c components and full cycle rank
+beta=g-a+c, let d_v count all reader and terminal ports at occurrence v. Every
+retained occurrence has d_v>=1, and sum(d_v-1)=beta+k-c. Reverse path-parity
+vectors eta_v obey the reader recursion. For any phi:F_2^k->F_2 with phi(0)=0,
+put Delta_v=phi(eta_v)+sum_readers phi(eta_reader)+sum_terminals phi(unit).
+Then sum_v value(v)*Delta_v equals the transformed input-column pattern vector
+plus sum_j phi(unit_j)*target_j. Gate terms cancel by their original XOR equation.
+Only d_v>=2 occurrences can contribute, giving a common ACTUAL branch dictionary
+of size at most beta+k-c for all such corrected boundary vectors.
+
+**One intersection costs at most beta extra gates.** With two ports and
+phi(s,t)=st the boundary is their coordinatewise support intersection. A connected
+cone union supplies a representation of at most beta+1 existing values; disconnected
+cones have zero intersection. Nonzero intersections therefore need at most beta
+appended XORs, by the actual dictionary word-length theorem. Distinct marked
+occurrences permit the branch values before the later result. Zero intersections
+are not claimed to be free physical zero outputs. This beta is the full graph's
+cycle rank, not the parity-specific mu.
+
+**Sharpness.** For t blocks c_i,a_i,b_i, compute pairs c_i+a_i,c_i+b_i, sum each
+family, and add independent anchors x,y to produce two odd targets U,V. The
+circuit has 4t gates, 3t+2 inputs, beta=t-1; their intersection is sum c_i. The
+quotient sending every coordinate in block i to unit i and x,y to zero sends
+all computed values to zero, so the intersection needs at least t dictionary
+terms, attained by c_i. To obtain an optimal all-odd square example, privately
+tag each of the 4t-2 even gate values and retain all 3t core identities. The
+result is an involution on 7t inputs with 8t-2 gates, still beta=t-1. Projecting
+the private tags leaves 4t distinct non-input targets and proves optimality.
+The quotient still forces t terms. This is sharp appended cost from that
+specified dictionary, not a lower bound for a freely rewired enlarged problem.
+See [branch repair](../takeover-2026-11-13/general/BRANCH_INTERSECTION_REPAIR.md).
+
+**Causal forest normal form.** Cut beta nonforest operand edges and replace each
+read by a fresh formal input. The graph is now a literal forest with the same
+gates and components. Projection of each shadow to its actual cut-source value
+recovers every original gate. The kernel has dimension beta and triangular basis
+s_l+U_l: order cuts by reader time; U_l, computed at the earlier source, uses only
+earlier shadows. This preserves chronology rather than granting arbitrary forms
+as free inputs. A small kernel need not preserve physical support intersections.
+
+**One cycle and arbitrarily expensive simultaneous repair.** On inputs
+r,z,a_i,b_i, set e_i=a_i+b_i, p_j=r+sum_(i<=j)e_i, e_0=r+z, q=p_m+e_0. For m>=2,
+its exact binary cost is 2m+2, full beta=1, but odd-graph mu=0 and d=0. Free
+identity outputs r,b_i make an invertible all-odd map. The m-1 independent
+intersection values c_j=sum_(i<=j)e_i, j=2,...,m, are missing; each equals p_j+r
+and costs one appended XOR. Requiring all c_j changes exact complexity to 3m,
+so even after arbitrary rewiring the extra cost m-2 is unbounded. The square
+map is not asserted to be self-inverse. Neither raw count nor raw rank of missing
+intersections, nor a constant total repair price, can be charged per cycle.
+See [forest quotient](../takeover-2026-11-13/general/CAUSAL_FOREST_QUOTIENT.md).
+
+**Exact projection without private inputs.** For n active input columns in t
+identical nonzero classes, L_2(M)=n-t+L_2(M_red). Project each nonrepresentative
+coordinate away while its representative remains beside it in a required row:
+each projection deletes a distinct first coefficient-one gate. Computing the
+class sums attains the result. This gives the exact costs of the cloned one-cycle
+family above. More generally L_2(M)>=n-|X|-kappa_0+L_2(M|X), with kappa_0 the input
+co-occurrence components missed by X; delete along forests rooted at X and one
+temporary root per missed component. These statements preserve binary cost only,
+not parity resources. Zero target rows are omitted by the stated convention.
+See [column cloning](../takeover-2026-11-13/general/COLUMN_CLONING.md).
+
+**All-functions rank-only ceiling.** For k selected rows, normalized phi functions
+span exactly the indicator masks of p distinct nonzero nonunit column patterns.
+The common branch identity therefore gives G>=n+p-k, precisely the ordinary
+transposition/output-count lower bound. Non-normalized functions with their
+terminal correction span the same space. Higher degrees cannot improve THAT
+rank-only certificate. With at most 32 supported coordinates,
+n+p-k<=32+min(32,2^k-k-1)-k<=58 for every k, so even selecting arbitrary MixColumns
+row subsets cannot reach 75 this way. This is a certificate ceiling, not a circuit
+bound or a limitation on all nonlinear/constraint-aware methods. No subsets are
+searched to prove it.
+
+All three notes have independent machine reviews and primary-agent proof checks,
+not formal verification or human certification. Direct checks verify m=4
+(original 10/repaired 12, missing rank 3, full beta 1/odd mu 0), t=3 sharp optimum
+(21 inputs/22 gates, pair beta 2, dictionary length 3), branch certificates, inverses,
+causal shadow relations, and projection kernels. No literature-novelty claim.
+MixColumns remains 75-88. Next: the joint cost of forming several combinations
+from the SAME physically supplied branch dictionary. Individual repair is now
+understood; raw missing rank and unconstrained boundary rank are inadequate.

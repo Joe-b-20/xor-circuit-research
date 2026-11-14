@@ -1,0 +1,53 @@
+{
+  "one_cycle": {
+    "parameter": 4,
+    "inputs": 10,
+    "original_gates": 10,
+    "repaired_gates": 12,
+    "proved_repair_penalty": 2,
+    "missing_intersection_rank": 3,
+    "square_map_rank": 10,
+    "parity_odd_graph_cycles": 0,
+    "pair_certificate": {
+      "ancestor_inputs": 10,
+      "ancestor_gates": 10,
+      "components": 1,
+      "full_cycle_rank": 1,
+      "branch_count": 2,
+      "certificate_terms": 2,
+      "intersection": 126
+    },
+    "forest_quotient": {
+      "shadows": 1,
+      "kernel_rank": 1,
+      "all_gate_projections_verified": true,
+      "causal_relations_verified": true
+    }
+  },
+  "sharp_optimal": {
+    "parameter": 3,
+    "inputs": 21,
+    "gates": 22,
+    "proved_dictionary_length": 3,
+    "square_map_rank": 21,
+    "involution_verified": true,
+    "quotient_lower_certificate_verified": true,
+    "pair_certificate": {
+      "ancestor_inputs": 11,
+      "ancestor_gates": 12,
+      "components": 1,
+      "full_cycle_rank": 2,
+      "branch_count": 3,
+      "certificate_terms": 3,
+      "intersection": 7
+    },
+    "forest_quotient": {
+      "shadows": 2,
+      "kernel_rank": 2,
+      "all_gate_projections_verified": true,
+      "causal_relations_verified": true
+    }
+  },
+  "circuit_search": false,
+  "representation_search": false
+}

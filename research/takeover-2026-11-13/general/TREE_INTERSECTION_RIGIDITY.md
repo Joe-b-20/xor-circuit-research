@@ -302,3 +302,10 @@ three-leaf hierarchy with 16 inputs, 15 gates, and two EE gates. All target mask
 and the displayed parity counts are checked directly. The
 [saved result](checks/joint-supply-result.json) is construction verification,
 not a search or a proof of optimality by computation.
+
+Subsequent general results answer the final question in two different senses.
+[One intersection](BRANCH_INTERSECTION_REPAIR.md) can always be represented using
+at most beta+1 actual values from its two-cone union. But
+[one full cycle](CAUSAL_FOREST_QUOTIENT.md) can evade arbitrarily many independent
+intersections and an unbounded simultaneous repair cost, even in optimal
+all-odd invertible circuits. Counting those requirements independently is invalid.

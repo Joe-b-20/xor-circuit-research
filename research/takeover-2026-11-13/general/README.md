@@ -1,133 +1,138 @@
 # General arguments for unrestricted XOR circuits
 
-2026-11-14, continuing reviewed commit `bd1b808`. The active task is general
-structural understanding. Fixed-budget casework remains deferred. This phase
-uses hand proofs and checks of specified constructions, with no SAT, circuit
-search, representation enumeration, or computer-driven case elimination.
+2026-11-14, continuing reviewed commit `656980c`. General structural understanding
+remains the priority. Fixed-budget casework is deferred. This phase uses hand
+proofs and verification of specified constructions, without SAT, circuit search,
+representation enumeration, or computer-driven case elimination.
 
-## Joint computation and supply have an unavoidable cost
+## A general law for recovering one shared overlap
 
-[Private inputs and joint tradeoffs](PRIVATE_TAGGING_TRADEOFF.md) resolve a
-previous open point: the minimum ternary resource P and minimum physical
-odd-plus-odd supply count k can be incompatible by an unbounded amount, even
-for invertible all-odd maps.
+[Physical branch values](BRANCH_INTERSECTION_REPAIR.md) extend the forest
+intersection theorem to arbitrary circuits. Select two physical values and take
+the complete union of their ancestor cones. If its full undirected cycle rank
+is beta, their nonempty support intersection can be expressed using at most
+beta+1 values already physically available. Therefore at most beta additional
+XOR gates suffice to produce that one intersection. The bound is sharp at every
+beta, including in specified optimal all-odd invertible circuits.
 
-The general extension theorem is exact. If nonzero core targets f_i receive
-pairwise disjoint blocks of private coordinate inputs, with B private inputs
-in total, then
+The proof is an exact identity, not a restricted circuit classification. Mark
+k output ports. For each occurrence v let eta_v record its reverse path-parity
+vector to the ports, and let d_v count its reader and terminal ports. With g
+gates, a actual input ancestors, and c components,
 
-    L_2(f_i + private_block_i : all i) = L_2(f_i : all i) + B.
+    sum_v(d_v-1)=g-a+k=beta+k-c.
 
-Sequential projection removes one distinct gate per private coordinate. It
-allows arbitrary mixing and cancellation in the original circuit. Taking one
-private coordinate for an even row and two for an odd row embeds any nonzero-row
-linear computation into an all-odd invertible involution, with known additive
-overhead between m and 2m. The all-odd class remains fully expressive.
+For any Boolean function phi with phi(0)=0, form its local defect across those
+reader ports. Multiplying the defect by the ordinary physical value at v and
+summing cancels all internal XOR contributions. Only the transformed input
+column patterns and the prescribed terminal correction remain. Degree-one
+nodes have zero defect. Thus ONE common dictionary of at most beta+k-c physical
+branch values represents every such corrected boundary vector.
 
-For a simple graph with v vertices, m edges and c connected components, give
-edge {u,w} its own input z_e and require x_u+x_w+z_e. Retaining core identity
-outputs makes this map square and self-inverse. Its exact complexities are
+For two outputs, phi(s,t)=st gives their support intersection and the beta+1
+bound. Repeated reads, duplicate ports, cancellation, zero intermediate values,
+and ancestors among the selected outputs are allowed. This beta is the cycle
+rank of the FULL ancestor graph, not the parity-specific odd-graph cycle rank mu.
+An empty intersection is the zero vector; the additional-gate statement is
+explicitly for nonzero intersections, without assuming a free physical zero.
 
-    L_2=2m,             L_3=m,             r_min=v-c.
+## Cheap individual repair does not mean cheap simultaneous repair
 
-The separated-minima bound misses exactly beta=m-v+c, the target graph's
-cycle-space dimension. For every unrestricted implementation,
+[The causal forest quotient](CAUSAL_FOREST_QUOTIENT.md) gives an exact structural
+normal form. Cut beta nonforest operand edges and replace their reads by fresh
+formal inputs. The resulting graph is a forest with the same gates. Its projection
+back to the original circuit has a beta-dimensional kernel with a causal
+triangular basis: each shadow input equals an actual earlier source value.
+Those relations retain availability; they do not grant arbitrary free suppliers.
 
-    (r-r_min) + H+d+mu >= beta.
+A one-cycle family shows how strongly one relation can be reused. On inputs
+r,z,a_i,b_i, i=1,...,m, compute e_i=a_i+b_i, successive p_j=r+sum_(i<=j)e_i,
+e_0=r+z, and q=p_m+e_0. Retaining r and the b_i as identity outputs makes the
+map square and invertible; all outputs are odd. For m>=2,
 
-Here H counts extra odd gates, d even-plus-even gates, and mu cycle-closing
-odd-plus-odd gates; r is actual even rank. These quantities concern the physical
-implementation, while beta belongs to the specified target graph.
+    original exact L_2 = 2m+2,       full cycle rank beta=1.
 
-For the complete graph K_q, a star-pair construction at r=q-1 attains every
-nonnegative integer split H+d+mu=beta. A nonstar edge can be paid for through
-an odd helper, an even combination, or a directly supplied redundant pair.
-Every option costs the same two gates including its private output. The exact
-(k,P) frontier, with k odd-plus-odd gates and P=O+d, is
+The m-1 independent intersections c_j=sum_(i<=j)e_i, j=2,...,m, are absent.
+Each is just p_j+r, so individually needs one XOR. Requiring all these values
+simultaneously has exact unrestricted complexity
 
-    (k,P)=(K,2m-K),              q-1<=K<=m.
+    repaired L_2=3m,                extra cost=m-2.
 
-The true binary cost divided by r_min+L_3 tends to two in this explicit family.
-This is not a universal ratio theorem. Minimum rank r and minimum P actually
-can coexist here, with mu=beta; their sum still misses redundant physical supply.
-It is the separate minima of k=r+mu and P that cannot coexist. This distinction
-is essential when interpreting the cost gap.
+The lower bound allows complete rewiring. Thus neither missing-intersection
+count nor its raw vector rank can be charged at a constant rate per cycle;
+even simultaneous repair cost can grow without bound at beta=1. The example
+also has d=mu=0 in the parity account. A parity forest and a full ancestor forest
+are different objects. The square map is invertible, not claimed self-inverse.
 
-## Even aggregation cannot be eliminated cheaply
+## Exact projection beyond private coordinates
 
-[Tree intersections and rigidity](TREE_INTERSECTION_RIGIDITY.md) start with a
-general equality theorem. If targets use n coordinates and their support-overlap
-graph has kappa components, every circuit has G>=n-kappa. At equality its complete
-ancestor graph is a forest. Every gate then combines disjoint supports, and
-every nonempty intersection of physical value supports is itself a physical
-value. Canceled extra input ancestors are counted in the proof, not ignored.
+[Column cloning](COLUMN_CLONING.md) supplies the exact cost used in that example
+and applies to arbitrary target matrices. If n active coordinate columns fall
+into t identical nonzero column classes, with one representative per class in
+M_red, then
 
-Duplicated private attachments can therefore force actual even suppliers.
-The simple pattern has suppliers e=a+b, f=c+d, h=e+f, and at least two private
-odd outputs using each supplier. Its optimum requires h=e+f: removing that
-even-plus-even operation forces one extra gate after arbitrary rewiring.
+    L_2(M)=n-t+L_2(M_red).
 
-For b disjoint instances on N total inputs, every unrestricted implementation
-satisfies
+Project all other class members away: each deleted coordinate still shares a
+target with its retained representative, forcing a distinct gate deletion.
+Computing each class sum supplies the matching upper bound. No competitor is
+assumed to group the inputs first. These are binary-size statements, not
+preservation of parity resources.
 
-    G>=N-b,                     G+d>=N.
+More generally, for retained active coordinates X, let kappa_0 count components
+of the input co-occurrence graph disjoint from X. Root a spanning forest at X
+and one temporary root in each remaining component. Projection from leaves
+inward gives L_2(M)>=n-|X|-kappa_0+L_2(M|X). This does not assume separate circuits
+for different components. The note explicitly treats the nonzero target problem.
 
-The exact optimum with at most D even-plus-even gates is N-min(D,b), for integer
-D>=0. In particular removing all such gates costs exactly b. The proof allows
-cross-instance sharing and cancellation; mixed physical components and their
-cycles are charged rather than excluded. No general direct-sum theorem is used.
-A connected hierarchy also forces arbitrarily many even aggregations in every
-optimum, though no additive removal-gap formula is claimed for that hierarchy.
+## A broad rank-only ceiling
 
-## What a single output can and cannot explain
+The branch identity retains actual values and their coefficients. If only the
+rank of its boundary vectors is kept, all Boolean functions together yield
+exactly the span of the indicator masks of distinct nonunit column patterns.
+If p such patterns occur in k selected rows, that span has dimension p, giving
 
-[The single-target Pareto theorem](SINGLE_TARGET_PARETO.md) handles any actual
-supplied dictionary S, even a dependent one. For each subset R representing a
-nonzero target z, let o,e count odd/even members and I be z's parity. Its formula
-resource point is
+    G>=n+p-k.
 
-    K_R=(o-I)/2,                 P_R=(o+I)/2+e-1.
+This is the ordinary transposition/distinct-output bound with a physical
+interpretation. Higher-degree functions cannot enlarge this boundary span.
+For any selected rows on at most 32 supported coordinates,
 
-Every unrestricted continuation is dominated in both resources by ONE such
-representation point. Conversely every point is attainable. The exact discrete
-frontier consists of their nondominated points. A formal lift chooses the same
-R before any prices are assigned; the argument is stronger than separate minima
-or a convex-price bound. Ordinary single-target cost is the minimum actual
-representation size minus one.
+    n+p-k <= 32+min(32,2^k-k-1)-k <= 58.
 
-This identifies where the joint problem begins: separate single-output formulas
-can duplicate shared work, so they cannot be added across outputs. The note's
-supplied-dictionary separation example is explicitly not claimed to describe a
-full coordinate-input prefix, where earlier intermediate values remain available.
+Thus maximizing this rank-only certificate over MixColumns row subsets cannot
+reach 75. This limits that certificate, not constrained branch decompositions,
+all possible nonlinear methods, or circuit complexity. No subsets were searched.
+The earlier support-profile ceiling 57 and quadratic relaxation ceiling 60 are
+also limitations of their named certificates, not circuit upper bounds.
 
-## Retained results, checks, and next direction
+## Evidence, retained results, and next direction
 
-The [available-supply metric and ternary normal form](AVAILABLE_SUPPLY.md),
-[shared multi-output preparation bound](MULTI_OUTPUT_STARTUP.md),
-[parity component accounting](ODD_COMPONENT_DEFECT.md),
-[complement tradeoffs](COMPLEMENT_TRADEOFF.md),
-[shared-helper amplification](SHARED_HELPER_AMPLIFICATION.md), and
-[causal gaps](CAUSAL_BOOTSTRAP_GAP.md) remain available foundations.
-The support-only total-parity MixColumns profile is exhausted: it is exactly
-one, and that standalone rank-plus-profile certificate cannot exceed 57. The
-unconstrained [quadratic relaxation](QUADRATIC_LIFT_LIMIT.md) likewise has its
-proved ceiling. Neither is a circuit upper bound or a new MixColumns bound.
+The [specified checks](checks/check_intersection_repair.py) verify the m=4
+one-cycle example and its 12-gate repaired construction, and a t=3 sharp optimal
+involution on 21 inputs with 22 gates. They directly evaluate the branch
+certificates, masks, ranks, displayed inverses, causal shadow projections, and
+kernel bases. The [saved result](checks/intersection-repair-result.json) contains
+no optimization or representation search. Each note has independent machine
+review; this is not formal verification, human certification, or a novelty claim.
 
-[Direct checks](checks/check_joint_supply.py) verify one mixed K_5 construction
-with H=d=mu=2 and 20 gates, its invertibility and involution, three specified
-supplier-copy constructions, one connected hierarchy, and the two displayed
-single-target dictionary formulas. The [saved result](checks/joint-supply-result.json)
-contains no optimization. Each mathematical note has independent machine review;
-these are not formal verification, human certification, or claims of novelty.
+Retained results include [exact joint supply tradeoffs](PRIVATE_TAGGING_TRADEOFF.md),
+[forced even aggregation](TREE_INTERSECTION_RIGIDITY.md),
+[the single-target frontier](SINGLE_TARGET_PARETO.md),
+[the ternary reformulation](AVAILABLE_SUPPLY.md), and
+[parity component accounting](ODD_COMPONENT_DEFECT.md). In the earlier graph
+family, minimum rank and minimum ternary work can coexist while redundant
+physical pairs carry the gap; minimum physical pair count and minimum ternary
+work are the incompatible minima. Keep that distinction intact.
 
-Next: generalize the joint obstruction beyond private coordinates. The forest
-intersection theorem forces suppliers exactly; a useful extension must control
-how reconvergence and cancellation let circuits evade several such requirements
-at once. A separate charge per missing intersection is not justified. Another
-invariant is welcome if it captures the same joint physical cost more directly.
-Do not return to fixed-budget classification or optimize the exhausted support
-profile. Unrestricted MixColumns remains 75<=L<=88; 88 is not assumed optimal.
+Next: control the JOINT cost of forming several combinations from the common
+physical branch dictionary. Individual repair is understood, raw missing rank
+fails, and rank-only boundary functions collapse to transposition. A useful new
+argument must retain physical dictionary complexity, shared coefficients, or
+causal constraints that those relaxations discard. A different framework is
+welcome; do not resume small-budget classification or an exhausted certificate.
+Unrestricted MixColumns remains 75<=L<=88, with no assumption that 88 is optimal.
 
-[Final scope review](reviews/joint-supply-progress-review.md) checks this synthesis,
-the checkpoint, and the specified constructions, including the distinction
-between minimum rank and minimum physical pair supply.
+[Final scope review](reviews/intersection-progress-review.md) checks the synthesis,
+checkpoint, specified evidence, and the separate meanings of physical cycle rank,
+local appended repair, and unrestricted simultaneous repair.

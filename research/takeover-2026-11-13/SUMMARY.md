@@ -1,5 +1,30 @@
 # What changed in the takeover
 
+**Current continuation after `656980c`, 2026-11-14:**
+[Physical branch identities](general/BRANCH_INTERSECTION_REPAIR.md) give a general
+positive extension of forest rigidity: the nonzero intersection of two values
+has an actual-dictionary representation using at most beta+1 terms, where beta
+is the cycle rank of their full ancestor union. At most beta additional gates
+supply it. The bound is sharp at every beta, including in specified optimal
+all-odd invertible circuits. One common branch dictionary handles all corrected
+Boolean functions of output-column patterns.
+
+[The forest quotient](general/CAUSAL_FOREST_QUOTIENT.md) expresses every circuit
+as a forest with beta causal shadow-input relations. A sharp obstruction shows
+why those relations cannot each receive a fixed global repair price: an optimal
+all-odd invertible family with beta=1 omits m-1 independent intersections, and
+requiring all of them changes exact cost from 2m+2 to 3m after unrestricted
+rewiring. Each missing value individually costs one XOR. The full cycle rank
+is distinguished from the example's odd-graph cycle rank mu=0.
+
+[Column cloning](general/COLUMN_CLONING.md) proves exact identical-column
+compression and a general co-occurrence projection bound. The branch identity's
+rank-only consequence, even allowing every Boolean function, collapses to the
+transposition count and cannot exceed 58 for any selected rows on 32 inputs.
+This is a certificate ceiling, not a MixColumns bound. Proof reviews and direct
+checks are saved; unrestricted MixColumns remains 75-88. Next: joint formation
+cost from the common actual branch dictionary, beyond individual repair or rank.
+
 **Current continuation after `bd1b808`, 2026-11-14:**
 [Private tagging and joint cost](general/PRIVATE_TAGGING_TRADEOFF.md) prove an
 exact projection theorem and give invertible all-odd graph maps with L_2=2m,
