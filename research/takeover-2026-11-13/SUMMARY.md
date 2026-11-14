@@ -1,5 +1,29 @@
 # What changed in the takeover
 
+**Current continuation after `095f142`, 2026-11-14:** the
+[unrestricted combined-cost program](general/README.md) now has a general
+[first-odd-target theorem](general/FIRST_ODD_TARGET_TRADEOFF.md). For any nonzero
+parity with a required non-input odd target, extra odd gates H and even-plus-even
+gates d satisfy
+H+d>=min(w_o+2w_e-3)/2. Physical operand-port counting gives an exact ancestor
+identity and a target-only bound when combined with the parity partition rank.
+
+[Complement sums](general/COMPLEMENT_TRADEOFF.md) have exact unrestricted cost
+2n-2 for n>=4; for even n the general theorem proves this directly and every
+odd-helper/even-combination split is attained. A different
+[shared-helper family](general/SHARED_HELPER_AMPLIFICATION.md) has optimum 2m+2
+but costs 3m+1 without odd helpers, so removing one shared odd value can incur an
+unbounded penalty. Both statements concern whole unrestricted target families.
+
+The [causal bootstrap construction](general/CAUSAL_BOOTSTRAP_GAP.md) gives
+invertible rk-dimensional maps for odd r>=3,k>=2 with exact costs
+L=(2r-1)k-2 and L_cyc=L(inverse)=rk+r-2. Their ratios approach two: an independent
+system of XOR equations can omit a linear amount of actual execution cost.
+A fixed 15-dimensional construction is directly verified; universal arguments
+and all four notes have independent machine reviews. No search is used, and no
+new numerical MixColumns bound is asserted. The next task is shared supply across
+multiple groups or stages, without counting a shared helper more than once.
+
 **Current continuation after `0cb775c`, 2026-11-14: research direction changed at
 the user's request.** The [general unrestricted program](general/README.md)
 replaces the fixed-budget case breakdown as the active task. Restricted lemmas

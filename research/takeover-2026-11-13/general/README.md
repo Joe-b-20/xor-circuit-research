@@ -1,79 +1,109 @@
 # General arguments for unrestricted XOR circuits
 
-2026-11-14, continuing `0cb775c`. The user's direction is to prioritize general
-structural understanding and unrestricted arguments, rather than successive local
-case exclusions or one-gate numerical improvements.
+2026-11-14, continuing `095f142`. The research priority is general structural
+understanding and unrestricted arguments. Restricted lemmas need a specified
+role in such an argument. The fixed-budget twelve-consumer case breakdown is
+not the active task. Its reviewed results remain saved as supporting history.
 
-The twelve-consumer case program is no longer the active research target. Its
-reviewed results remain available. Restricted lemmas are pursued only when their
-role in a specified unrestricted argument is explicit. A numerical improvement
-is welcome, but is not the organizing objective.
+## A combined cost forced by the first odd target
 
-## What a useful next theorem must do
+[The first-odd-target theorem](FIRST_ODD_TARGET_TRADEOFF.md) gives an unrestricted
+tradeoff determined by the target map. Choose a nonzero parity functional with
+at least one required non-input odd target. Let H count odd gates beyond the
+required odd non-input targets, and let d count gates whose two operands are even. For a required odd target z, let w_o and w_e count its
+supported initially odd and initially even coordinate inputs. Then
 
-It must apply to arbitrary sharing and cancellation, or give a proved reduction
-that covers them. The cost must concern actual computed values and respect their
-availability. If several parts of the computation use the same gate, the final
-account must charge it only once. A conservation or rank identity is useful only
-with a clear account of what additional fact turns it into unavoidable work.
+    H+d >= min_z (w_o(z)+2*w_e(z)-3)/2.                   (1)
 
-## First unrestricted continuation
+Under total input parity this becomes H+d>=(w_min-3)/2. An implementation cannot
+avoid the combined cost by moving the work between odd accumulations and even
+combinations. The proof counts the actual operand ports in the ancestor cone of
+the first odd target. It permits arbitrary sharing, cancellation, repeated reads,
+even helper dependencies, and earlier even outputs.
 
-[Parity components and their physical defect](ODD_COMPONENT_DEFECT.md) removes
-the independent-even-helper assumption from the earlier forest argument. For any
-chosen parity functional, let s be the number of odd coordinate inputs, c the
-number of components in the odd-occurrence graph, E the number of even gates,
-mu its cycle rank, and d the number of even-plus-even gates. Then
+The exact cone identity also identifies the cost of canceled input ancestors
+and repeated use within that cone. With r the effective even rank and mu the
+odd-graph cycle rank, the whole circuit has
 
-    E = s-c + mu+d.
+    G=t_o+r+H+d+mu >= t_o+r+b_min+mu.
 
-The partition description of the even span was already in the saved foundational
-work. The note reconstructs that foundation and connects the excess even gates
-to cycles, even-only computations, and marked source transport. Even occurrence
-aggregates, modulo boundary values and odd occurrence aggregates, have rank at
-most mu+d. This is an unrestricted statement about one actual circuit, not a classification
-of small consumer budgets. It does not charge partial copy-tree values as
-separately available source operands.
+Here t_o counts required odd non-input values and b_min is the right side of (1).
+Using the target-compatible partition bound on r gives a target-only lower bound.
+The result is not a promise of a strong numerical bound for every matrix.
 
-For m distinct odd non-input targets and H other odd gate occurrences, the exact
-whole-circuit account is
+## Exact unrestricted families explain the tradeoffs
 
-    G = m + H + s-c + mu+d.
+[Complement sums](COMPLEMENT_TRADEOFF.md) require all n values J+x_i, where J is
+the full input XOR. Their optimum is 2n-2 for every n>=4. For even n=2k, (1)
+and the even-rank bound prove this directly. Every optimum has minimum even rank,
+no odd-graph cycles, and H+d=k-2. Explicit optimal circuits realize every split
+between these two types of work. This is a scalable, exact exchange law.
 
-This also identifies a limitation: every all-odd target set admits a circuit with
-mu+d=0, by computing star-pair bases inside compatible components and accumulating
-outputs through odd gates. That construction can use many extra odd gates.
-Therefore targets alone cannot force positive even redundancy in all circuits.
-The meaningful goal is a joint lower bound on extra odd work, the component
-partition, and even redundancy. Optimizing one of these separately is insufficient.
+[Shared-helper amplification](SHARED_HELPER_AMPLIFICATION.md) shows that a
+one-for-one exchange is not universal. The m targets
 
-## A general relaxation rejected before further investment
+    y_i=x+a+b+c_i+d_i
 
-[The quadratic lift](QUADRATIC_LIFT_LIMIT.md) gives an exact target-dependent
-tensor identity with one contribution per physical gate, allowing arbitrary
-cancellation and sharing. Nevertheless its unconstrained decomposition model has
-an explicit sixty-term realization for MixColumns. It cannot recover 75.
-Those sixty terms are not a circuit: they grant parent values and output
-influences without a common executable realization. The specified decomposition
-and the proof are saved so this loss of information is not rediscovered later.
+have unrestricted optimum 2m+2. One shared odd intermediate achieves it. Removing
+all extra odd values raises the optimum to 3m+1, even when the entire circuit may
+be reorganized with arbitrary cancellation. The m-1 penalty is unbounded.
+For m>=2 every optimum has exactly one odd helper and zero even redundancy.
+The comparison refutes a constant-overhead helper-removal rule; it is not a
+separate restricted-bound research program.
 
-## Research judgment and unresolved task
+## Algebraic explanation can omit almost half the execution cost
 
-The next main question is a general tradeoff theorem: when can reusing computed
-values reduce one part of the work only by increasing another? The parity account
-is one concrete framework; it is not a commitment to remain within parity methods.
-A different invariant is preferable if it controls actual shared work more directly.
+[The causal bootstrap family](CAUSAL_BOOTSTRAP_GAP.md) gives explicit square
+invertible maps M_(r,k), for every odd r>=3 and k>=2, with
 
-For the parity route, the missing theorem must constrain H+(s-c)+(mu+d) jointly
-from the target map, with no fixed gate budget, no prohibition on feedback, and no
-assumption of independent even helpers. The marked transport bound can support
-such a theorem only where its required rank is itself justified. If the boundary
-space already spans all aggregate labels, that rank is zero. Adding separate
-interface inequalities without controlling shared gates is not a global proof.
+    L(M_(r,k)) = (2r-1)k-2,
+    L_cyc(M_(r,k)) = L(M_(r,k)^(-1)) = rk+r-2.
 
-The unrestricted MixColumns range remains 75 to 88. No conclusion about optimality
-of 88 follows. The new notes have independent machine reviews, not formal
-verification or human certification; no circuit search or enumeration was used.
+L_cyc counts independent three-term XOR equations that determine all values,
+without requiring an executable ordering. The ratio of forward circuit cost to
+cyclic cost approaches two. Thus an order-free explanation can omit a linear
+amount of actual work, even for square invertible maps. This establishes no
+universal upper comparison factor.
 
-Reviews: [parity and defect](reviews/odd-component-defect-review.md),
-[quadratic lift and its limitation](reviews/quadratic-lift-review.md).
+The obstruction is the first required value: it has many input coordinates and
+must be prepared before the inexpensive relations among targets can be used.
+A separate freezing-and-projection argument proves the exact cyclic and inverse
+costs. A fixed r=5,k=3 construction verifies the displayed 15-dimensional map,
+its 25-gate forward circuit and 18-gate inverse/cyclic realizations. Universal
+bounds are proved by hand; no search or enumeration supplies them.
+
+## Foundations and rejected shortcuts
+
+[Parity components](ODD_COMPONENT_DEFECT.md) retain the historical partition-span
+theorem and the exact physical accounting E-r=mu+d. For marked networks, even
+occurrence aggregates outside the boundary and odd aggregates have rank at most
+that defect. These are occurrence statements, not free access to computed spans.
+Every all-odd target set has some zero-defect realization, potentially with many
+odd helpers; forcing defect alone therefore cannot be a general strategy.
+
+[The quadratic lift](QUADRATIC_LIFT_LIMIT.md) counts each gate once in an exact
+tensor identity, but its unconstrained atom model has a sixty-term MixColumns
+decomposition. It cannot recover 75. It loses the cost of supplying parents and
+the requirement that all influences belong to one executable network.
+
+## Judgment and next task
+
+We now have a genuine unrestricted combined-cost inequality and two exact kinds
+of sharing behavior. The causal separation shows why preserving the order in
+which values become available matters. None of these facts justifies summing
+first-target bounds over overlapping output groups: the shared-helper family
+shows how severely that can overcount.
+
+The next task is a general accounting of shared supply across multiple groups or
+stages. It must charge each actual helper once, retain what has already been
+computed, and measure how that supply reduces the work for later outputs. A new
+invariant is welcome if it captures this more directly than parity. Another
+fixed-budget classification or a sharper estimate inside the unconstrained
+quadratic relaxation is not the objective.
+
+Unrestricted MixColumns remains 75 to 88, with no assumption that 88 is optimal.
+All claims above have hand proofs and independent machine reviews, not formal
+verification or human certification. Reviews are linked from each note.
+
+[Final scope review](reviews/unrestricted-progress-review.md) checks this synthesis
+and the checkpoint against the four independently reviewed proofs.

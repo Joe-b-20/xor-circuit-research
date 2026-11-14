@@ -2733,3 +2733,76 @@ These are structural hand arguments with machine review, not formal verification
 or human certification. The unrestricted 75–88 range is unchanged. The next task
 is a whole-circuit tradeoff theorem or a stronger invariant for actual sharing,
 not another local fixed-budget exclusion.
+
+
+## 46. General combined cost, shared-helper amplification, and causal gaps (2026-11-14)
+
+Continuing reviewed commit `095f142`, this pass pursues general unrestricted
+arguments. It does not resume the fixed-budget consumer classification.
+
+**First-odd-target theorem.** For any nonzero chosen parity with at least one required non-input odd target,
+let H count odd gates beyond
+required non-input odd targets and d count even-plus-even gates. For an odd target
+z let w_o,w_e count its supported initially odd/even coordinates. Every circuit
+satisfies H+d>=min_z(w_o+2w_e-3)/2. In the first odd target's ancestor cone,
+let h count other odd gates, E_C even gates, a,f input ancestors of the two
+parities, beta the undirected cycle rank, and B_e excess even-node fanout.
+The exact physical identities E_C+f+B_e=h+1+2d_C and
+g=h+1+E_C=a+f-1+beta give
+2(h+d_C)=a+2f-3+beta+B_e. Supported coordinates are ancestors, h<=H and d_C<=d.
+This allows arbitrary cancellation, repeated reads, and earlier even outputs.
+It grants no free combinations of initially even inputs.
+
+With r=s-c, delta=d+mu, and t_o required odd targets, the whole-circuit account
+gives G>=t_o+r+b_min+mu. If c_max is the maximum target-compatible input-partition
+count, then G>=t_o+max(t_e,s-c_max+b_min). Different parity or output-group bounds
+cannot simply be summed. See [the proof](../takeover-2026-11-13/general/FIRST_ODD_TARGET_TRADEOFF.md)
+and its linked independent review.
+
+**An exact exchange law.** All complement sums J+x_i on n inputs have unrestricted
+minimum 2n-2 for every n>=4. A first-target cone has exact size
+(w-1)+(number of canceled input ancestors)+(undirected cycle rank). A minimum
+cone is a laminar formula tree; that supply cannot finish all complement outputs
+at total 2n-3. For even n=2k there is now a direct general proof: r>=k and H+d>=k-2.
+The exact excess is (k-c)+(H+d-(k-2))+mu, so every optimum has minimum even rank
+and no odd-graph cycles. Specified optimal circuits attain H=k-2-j,d=j for every
+0<=j<=k-2. This is a scalable unrestricted tradeoff, not a circuit-class restriction.
+See [complement tradeoff](../takeover-2026-11-13/general/COMPLEMENT_TRADEOFF.md).
+
+**One shared helper can have unbounded benefit.** For m targets
+x+a+b+c_i+d_i, compatible parity partitions force even rank at least m+1. The
+first-odd-target theorem forces H+d>=1, giving unrestricted optimum 2m+2, attained
+with the shared odd triple x+a+b. Named inputs and targets have unique unordered
+pair sums. With no odd helpers, chronological pair-equation counting forces d>=m,
+so the optimum becomes 3m+1. For m>=2 every optimum has one odd helper, minimum
+even rank, and zero defect. Therefore deleting one odd helper cannot have a
+universal constant allowance, even if the entire circuit is reorganized. The
+restricted comparison serves this unrestricted obstruction. See
+[shared-helper amplification](../takeover-2026-11-13/general/SHARED_HELPER_AMPLIFICATION.md).
+
+**A scalable causal/cyclic separation.** For each odd r>=3 and k>=2, use r arms
+of k coordinate inputs. Targets are the full sum p and its successive prefix
+removals along each arm, omitting one full endpoint to give an invertible square
+map M_(r,k) of dimension rk. Every target has weight at least (r-1)k. The first
+produced target requires that many input ancestors, giving a forward lower bound
+attained by preparing one endpoint then traversing the target tree:
+L(M)=(2r-1)k-2. The r endpoint relation and arm edges provide a cyclic system.
+In the inverse, all but one required outputs are tree-edge differences; the
+exceptional output is supported on r pairwise nonadjacent input vertices.
+Freeze the ordinary edge outputs and project to those r vertices. A basis of
+remaining equations still has invertible formal unknown columns. If s selected
+ternary equations isolate the exceptional output and use u unknown columns,
+row independence gives u>=s and incidence counting gives 3s>=2u-1+r. Thus at
+least r-1 equations remain necessary. This proves exact
+L_cyc(M)=L(M^(-1))=rk+r-2. The forward/cyclic and forward/inverse ratios approach
+two. No universal upper comparison factor is claimed.
+
+The fixed r=5,k=3 map and its forward 25/inverse 18/cyclic 18 constructions are
+verified directly, including rank and the displayed projection; no search or
+configuration enumeration is used. See
+[causal bootstrap gap](../takeover-2026-11-13/general/CAUSAL_BOOTSTRAP_GAP.md).
+
+All four results have written hand proofs and independent machine reviews, not
+formal verification or human certification. No literature-novelty claim is made.
+Unrestricted MixColumns stays 75–88. The next structural problem is how already
+computed shared values reduce later startup costs without being charged repeatedly.
