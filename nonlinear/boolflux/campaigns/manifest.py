@@ -27,7 +27,7 @@ sys.path.insert(0, str(PKG.parent)); sys.path.insert(0, str(PKG))
 import cli                                  # noqa: E402
 from boolflux import core, targets          # noqa: E402
 
-NEW_PIN = 'e6ac0d03f4816927f1b0e676996e4d075ab8d1c0'
+NEW_PIN = '3d807741f937d29d3bef4f32f142ccda0cda9070'
 OLD_PIN = '0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f'
 OLD_PIN_REPO_COMMIT = '920fc4a'             # this branch's commit that still held the old import
 

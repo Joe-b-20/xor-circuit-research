@@ -33,8 +33,31 @@ def main():
     clone = Path(sys.argv[1])
     import_sel = '--import-sel' in sys.argv
     man = json.loads((HERE / 'MANIFEST.json').read_text())
+    if '--repin' in sys.argv:            # re-import every S-box folder at a new commit
+        new = sys.argv[sys.argv.index('--repin') + 1]
+        old = man['commit']; files = []
+        for line in git(clone, 'ls-tree', '-r', new, BASE).decode().splitlines():
+            meta, path = line.split('\t')
+            folder = path[len(BASE) + 1:].split('/')[0]
+            name = path.rsplit('/', 1)[1]
+            if folder not in FOLDERS or (folder == 'old-2020' and not name.startswith('aes-sbox')):
+                continue
+            data = git(clone, 'show', f'{new}:{path}')
+            local = 'NIST-README.md' if name == 'README.md' else name
+            (HERE / folder).mkdir(exist_ok=True)
+            (HERE / folder / local).write_bytes(data)
+            files.append({'folder': folder, 'file': local, 'nist_path': path,
+                          'url': f'https://github.com/usnistgov/Circuits/blob/{new}/{path}',
+                          'sha256': hashlib.sha256(data).hexdigest()})
+        have = {(f['folder'], f['file']) for f in files}
+        for f in man['files']:                 # files gone upstream: keep nothing stale
+            if (f['folder'], f['file']) not in have:
+                (HERE / f['folder'] / f['file']).unlink(missing_ok=True)
+        man.update({'commit': new, 'previous_commit': old, 'files': files})
+        (HERE / 'MANIFEST.json').write_text(json.dumps(man, indent=1) + '\n')
+        print(f'repinned {old[:7]} -> {new[:7]}: {len(files)} files')
     pin = man['commit']
-    head = git(clone, 'rev-parse', 'HEAD').decode().strip()
+    head = git(clone, 'rev-parse', 'origin/HEAD').decode().strip()
     upstream = {}
     for line in git(clone, 'ls-tree', '-r', pin, BASE).decode().splitlines():
         meta, path = line.split('\t')
