@@ -84,7 +84,8 @@ class TestObjectives(unittest.TestCase):
         n, m, tab, _ = targets.load('maj3')
         d = Path(tempfile.mkdtemp())
         (d / 'in.bfx').write_text(core.to_kernel(starts.anf(n, m, tab, model.ops())))
-        workflow.kernel_cfg(d / 'k.cfg', d / 'in.bfx', d / 'o.bfx', model, {'objective': 'cost'}, 1, 1, {'lex': 'cost,depth'}, iters=1)
+        workflow.kernel_cfg(d / 'k.cfg', d / 'in.bfx', d / 'o.bfx', model, {'objective': 'cost'}, 1, 1, {}, iters=1)
+        with open(d / 'k.cfg', 'a') as f: f.write('lex cost,depth\n')   # not settable through --set (review4 M2)
         r = subprocess.run([str(BIN / 'bfx'), str(d / 'k.cfg')], capture_output=True, text=True)
         self.assertNotEqual(r.returncode, 0)
 

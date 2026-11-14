@@ -113,6 +113,10 @@ static int cap_gd = -1, cap_ad = -1, cap_a = -1;
  * (largest cap excess, then summed path excess).  The weighted obj is used only for the size
  * of an uphill step (Metropolis) and for printing.  0 cost 1 g 2 a 3 gd 4 ad. */
 static int lex_n = 0, lex_k[5];
+/* review4 M1: T0, uphill and max_excess are given in units of one gate of the first objective key
+ * (`scale_abs 1` keeps them absolute, the pre-review-4 behaviour).  unit = cheapest allowed gate cost
+ * when the first key is cost, else 1; applied once after the config is read. */
+static double cost_unit_v = 1; static int scale_abs = 0;
 
 
 static void levels(const Circ *c, int *lg, int *la) {
@@ -171,11 +175,26 @@ static int dcmp(double x, double y) {
 }
 /* -1: a better than b, 0: equal, 1: worse.  Feasibility first (viol, then vsum), then the
  * lexicographic keys; without `lex` the weighted objective (old behaviour). */
+/* review4 m1: size of the difference a - b for Metropolis and max_excess, measured on the first
+ * key in which they differ (in cost units for cost, x cost_unit_v for the count keys), so a cost-only
+ * uphill step is judged on its own scale even when A or GD is the first key.  Feasibility terms keep
+ * the penalised weighted difference (repair mode). */
+static double ldelta(const Metrics *a, const Metrics *b);
 static int mcmp(const Metrics *a, const Metrics *b) {
     if (a->viol != b->viol) return a->viol < b->viol ? -1 : 1;
     int c = dcmp(a->vsum, b->vsum); if (c) return c;
     if (!lex_n) return dcmp(a->obj - VIOL_PENALTY * a->viol - 1e4 * a->vsum, b->obj - VIOL_PENALTY * b->viol - 1e4 * b->vsum);
     for (int i = 0; i < lex_n; i++) { c = dcmp(keyval(a, lex_k[i]), keyval(b, lex_k[i])); if (c) return c; }
+    return 0;
+}
+static double ldelta(const Metrics *a, const Metrics *b) {
+    /* cost-first objectives keep the weighted difference (measured behaviour of every campaign so far:
+     * secondary keys such as GD drift almost freely, which helps plateau walks) */
+    if (!lex_n || lex_k[0] == 0 || a->viol != b->viol || dcmp(a->vsum, b->vsum)) return a->obj - b->obj;
+    for (int i = 0; i < lex_n; i++) {
+        double x = keyval(a, lex_k[i]), y = keyval(b, lex_k[i]);
+        if (dcmp(x, y)) return (x - y) * (lex_k[i] == 0 ? 1.0 : cost_unit_v);
+    }
     return 0;
 }
 
@@ -290,6 +309,7 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "w.a")) w_a = atof(v);
         else if (!strcmp(k, "w.gd")) w_gd = atof(v);
         else if (!strcmp(k, "w.ad")) w_ad = atof(v);
+        else if (!strcmp(k, "scale_abs")) scale_abs = atoi(v);
         else if (!strcmp(k, "lex")) {
             static const char *KN[5] = {"cost", "g", "a", "gd", "ad"};
             lex_n = 0;
@@ -350,7 +370,7 @@ static void write_circuit(const char *path, const Circ *c, const Metrics *m, con
     fprintf(f, "n %d\nm %d\ng %d\n", N, M, c->ng);
     for (int j = 0; j < c->ng; j++) fprintf(f, "%d %d %d\n", c->g[j].op, c->g[j].a, c->g[j].b);
     fprintf(f, "o"); for (int k = 0; k < M; k++) fprintf(f, " %d", c->out[k]); fprintf(f, "\n");
-    fprintf(f, "# cost %.4f G %d A %d GD %d AD %d %s\n", m->cost, m->g, m->a, m->gd, m->ad, note);
+    fprintf(f, "# cost %.10g G %d A %d GD %d AD %d %s\n", m->cost, m->g, m->a, m->gd, m->ad, note);
     fclose(f); rename(tmp, path);
 }
 
@@ -718,6 +738,14 @@ int main(int argc, char **argv) {
         strcpy(cfg_in, argv[2]);
     } else parse_config(argv[1]);
     seed_rng(cfg_seed);
+    if (!stats_only) {
+        int cost_first = lex_n ? lex_k[0] == 0 : (w_cost >= w_g && w_cost >= w_a && w_cost >= w_gd && w_cost >= w_ad);
+        double u = 0;
+        for (int op = 0; op < 16; op++) if (op_ok[op] && op_cost[op] > 0 && (u == 0 || op_cost[op] < u)) u = op_cost[op];
+        cost_unit_v = cost_first && u > 0 ? u : 1;
+        if (!scale_abs) { T0 *= cost_unit_v; uphill *= cost_unit_v; if (max_excess < 1e17) max_excess *= cost_unit_v; }
+        if (cost_unit_v != 1) printf("scale unit %.10g (T0, uphill, max_excess in units of the cheapest gate)\n", cost_unit_v);
+    }
     read_circuit(cfg_in, &cur);
     if (linear_mode) {
         /* Every gate of an XOR/XNOR/NOT library is affine, and an affine function of n inputs is
@@ -745,10 +773,10 @@ int main(int argc, char **argv) {
     if (rebuild(&cur, -1, -1, 0, 0, 0, &tmp_c, 1) < 0) die("start circuit cannot be cleaned");
     circ_copy(&cur, &tmp_c);
     if (!stats_only && tmp_c.ng != mraw.g)   /* strash / dead-gate removal of the start, before the clock */
-        printf("start_cleanup raw cost %.4f G %d A %d GD %d AD %d\n", mraw.cost, mraw.g, mraw.a, mraw.gd, mraw.ad);
+        printf("start_cleanup raw cost %.10g G %d A %d GD %d AD %d\n", mraw.cost, mraw.g, mraw.a, mraw.gd, mraw.ad);
     state_refresh();
     if (stats_only) {
-        printf("cost %.4f G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad); return 0;
+        printf("cost %.10g G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad); return 0;
     }
     nlib2 = 0;
     int canon[] = {8, 14, 6, 9, 7, 1, 4, 13};
@@ -764,7 +792,7 @@ int main(int argc, char **argv) {
     if (tmv) circ_alloc(&tmp_before);
     double t0 = now_s(), last_best = 0, mvsum = 0;
     for (int i = 0; i < NMOVES; i++) mvsum += mv_w[i];
-    printf("start cost %.4f G %d A %d GD %d AD %d feas %d obj %.17g\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad, mcur.feas, mcur.obj);
+    printf("start cost %.10g G %d A %d GD %d AD %d feas %d obj %.17g\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad, mcur.feas, mcur.obj);
     if (!mcur.feas) printf("note: start circuit violates a cap; the search first repairs it (penalised objective)\n");
     write_circuit(cfg_out, &best, &mbest, "start");
     long it = 0, restarts = 0, last_best_it = 0;
@@ -806,10 +834,10 @@ int main(int argc, char **argv) {
             int i = order[q];
             if (!eval_cand(s, &CAND[i], &m)) continue;
             if (skip_noop && same_structure(&cand_c, &cur)) { st_noop++; continue; }
-            double d = m.obj - mcur.obj; int cc = mcmp(&m, &mcur);
+            double d = ldelta(&m, &mcur); int cc = mcmp(&m, &mcur);
             if ((m.feas || !mcur.feas) && (bi < 0 || mcmp(&m, &bm) < 0)) { bm = m; bi = i; bfeas = m.feas; }
             if (cc == 0 && m.feas >= mcur.feas) neu[nneu++] = i;
-            else if (cc > 0 && m.obj <= mbest.obj + max_excess && m.feas >= mcur.feas) { upd[nup] = d > 1e-12 ? d : 1e-12; up[nup++] = i; }
+            else if (cc > 0 && ldelta(&m, &mbest) <= max_excess && m.feas >= mcur.feas) { upd[nup] = d > 1e-12 ? d : 1e-12; up[nup++] = i; }
         }
         int accept = -1;
         /* feasibility first: a feasible state is never left for an infeasible one */
@@ -846,7 +874,7 @@ int main(int argc, char **argv) {
                 st_imp[mv]++;
                 circ_copy(&best, &cur); mbest = mcur; last_best = t; last_best_it = it;
                 write_circuit(cfg_out, &best, &mbest, "best");
-                printf("best t %.3f it %ld mv %s cost %.4f G %d A %d GD %d AD %d obj %.17g\n", t, it, MVNAME[mv],
+                printf("best t %.3f it %ld mv %s cost %.10g G %d A %d GD %d AD %d obj %.17g\n", t, it, MVNAME[mv],
                        mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj);
                 fflush(stdout);
             }
@@ -859,7 +887,7 @@ int main(int argc, char **argv) {
     sim(&best, Vcur);
     if (!outputs_ok(&best, Vcur)) die("INTERNAL: best circuit does not match target");
     write_circuit(cfg_out, &best, &mbest, "final");
-    printf("final cost %.4f G %d A %d GD %d AD %d obj %.17g feas %d iters %ld restarts %ld seconds %.2f\n",
+    printf("final cost %.10g G %d A %d GD %d AD %d obj %.17g feas %d iters %ld restarts %ld seconds %.2f\n",
            mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj, mbest.feas, it, restarts, now_s() - t0);
     for (int i = 0; i < NMOVES; i++)
         printf("move %s prop %ld acc %ld imp %ld cands %ld time %.2f\n", MVNAME[i], st_prop[i], st_acc[i], st_imp[i], st_cands[i], st_time[i]);

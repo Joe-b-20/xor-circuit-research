@@ -157,6 +157,15 @@ class Model:
     @classmethod
     def load(cls, name_or_path):
         d = json.loads(model_path(name_or_path).read_text(encoding='utf-8'))
+        # review4 m2: the checks independent/verify.py makes, plus a consistent NOT convention
+        import math
+        for nm, c in d['gates'].items():
+            if nm not in OPS or nm == 'BUF':
+                raise SystemExit('model %s: unknown or unsupported gate %r' % (d.get('name'), nm))
+            if not isinstance(c, (int, float)) or not math.isfinite(c) or c < 0:
+                raise SystemExit('model %s: gate %s has cost %r (must be finite and >= 0)' % (d.get('name'), nm, c))
+        if d.get('not_as') == 'XNOR0' and 'NOT' in d['gates'] and d['gates'].get('XNOR') != d['gates']['NOT']:
+            raise SystemExit('model %s: NOT is written as XNOR(x, 0), so NOT and XNOR must cost the same' % d.get('name'))
         return cls(d['name'], d['gates'], d.get('not_as', 'NOT'), d.get('description', ''))
 
 

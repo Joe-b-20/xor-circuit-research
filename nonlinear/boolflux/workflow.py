@@ -58,6 +58,20 @@ def load_start(run, model):
     return core.read_ncff(st)
 
 
+# review4 M2: settings that would make the kernel rank or count differently from the Python side
+# (costs, depth weights, caps, objective order, weights) must come from --model / --cap-* /
+# --objective, never from --set.
+FORBIDDEN_SET = ('cost.', 'gdw.', 'cap.', 'w.', 'lex', 'in', 'out', 'seed', 'iters', 'seconds')
+
+
+def check_sets(extra):
+    bad = sorted(k for k in extra if k.startswith(FORBIDDEN_SET[:4]) or k in FORBIDDEN_SET[4:])
+    if bad:
+        raise SystemExit('--set %s not allowed: costs come from --model, caps from --cap-*, the objective '
+                         'from --objective, run controls from their own options' % ', '.join(bad))
+    return extra
+
+
 def is_linear(model):
     return all(op not in core.NONLINEAR_OPS for op in model.ops())
 
@@ -69,7 +83,7 @@ def kernel_cfg(path, start_path, out_path, model, run, seconds, seed, extra, ite
     for k, key in (('GD', 'cap.gd'), ('AD', 'cap.ad'), ('A', 'cap.a')):
         if caps.get(k) is not None: cfg[key] = caps[k]
     if is_linear(model): cfg['linear'] = run.get('linear', 1)
-    cfg.update(extra)
+    cfg.update(check_sets(dict(extra)))
     cfg.update({'in': start_path, 'out': out_path, 'seed': seed, 'seconds': seconds,
                 'iters': iters if iters is not None else 10 ** 15})
     Path(path).write_text(''.join('%s %s\n' % kv for kv in cfg.items()))

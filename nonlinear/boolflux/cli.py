@@ -181,10 +181,12 @@ def parse_seeds(s):
     return out
 
 
-def parse_sets(items):
+def parse_sets(items, kernel=True):
     d = {}
     for it in items or []:
         k, v = it.split('=', 1); d[k] = v
+    if kernel:      # gate-kernel settings (skel.* and synth.* go to the skeleton stage and are not checked here)
+        workflow.check_sets({k: v for k, v in d.items() if not k.startswith(('skel.', 'synth.'))})
     return d
 
 
@@ -262,7 +264,8 @@ def cmd_run(args):
                'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'), 'settings': {**DEFAULTS, **extra},
                'command': ' '.join(['python3', 'nonlinear/boolflux/cli.py'] + sys.argv[1:]),
                'runs': []}
-    t_all = time.time(); best = None; failures = []
+    t_all = time.time(); failures = []
+    best = {'circuit': start, 'metrics': objective.measure(start, model, caps), 'seed': -1, 'round': -1}
     for rnd in range(args.rounds):
         procs = []
         for i, seed in enumerate(seeds):
@@ -315,16 +318,12 @@ def cmd_run(args):
             rr = dict(r); rr.pop('circuit', None); summary['runs'].append(rr)
         if ok and (best is None or R(ok[0]['metrics']) < R(best['metrics'])):
             best = ok[0]
-        if best is None:
-            continue
         summary['wall_s'] = round(time.time() - t_all, 1)
         v, feas, bpath = write_best(out, best['circuit'], model, args, desc, summary,
-                                    'seed %d round %d' % (best['seed'], best['round']))
+                                    'seed %d round %d' % (best['seed'], best['round']) if best['round'] >= 0 else 'the start (no job was better)')
         print('round %d: best %s %s (seed %d)%s' % (rnd, json.dumps({k: best['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}),
                                                      json.dumps(best['metrics']['counts']), best['seed'],
                                                      '' if feas else ' CAPS NOT MET'), flush=True)
-    if best is None:
-        raise SystemExit('every job failed (%s)' % ', '.join(failures))
     finish(v, feas, bpath, failures)
 
 
@@ -498,7 +497,7 @@ def cmd_flow(args):
             'start': args.start if args.start != 'anf' else 'anf', 'seconds': args.seconds,
             'config': args.config, 'round_s': args.round_s, 'adaptive': args.adaptive,
             'seeded': not args.no_seeded, 'unseeded': not args.no_unseeded,
-            'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set)}
+            'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set, kernel=False)}
     cpus = [int(x) for x in args.cpus.split(',')] if args.cpus else None
     jobs = [(dict(base, seed=sd), str(KBIN.parent), str(out / ('s%d' % sd)),
              cpus[i % len(cpus)] if cpus else None) for i, sd in enumerate(seeds)]
