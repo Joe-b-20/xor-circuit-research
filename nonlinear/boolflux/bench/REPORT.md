@@ -23,7 +23,7 @@ repair, restarts, coordination, with file and line references); reproduction in
 - Against Berkeley ABC (unit-area genlibs, matched budgets) BoolFlux is clearly better in these
   gate-count models on every target (section 4.4).
 - Fixed in this round, with before/after measurements: the 31-72-gate AES rebuild penalty (an
-  unchanged skeleton now rebuilds to exactly the parent), no-op neutral moves, exact linear mode
+  unchanged skeleton now rebuilds to exactly the parent), no-op neutral moves (no measurable effect), exact linear mode
   (107x faster on 16-input linear maps), start construction (3.3 s -> 0.6 s), Paar speed, and
   four benchmark-driver faults found by the reviewer.
 
