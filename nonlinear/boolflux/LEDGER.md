@@ -122,7 +122,7 @@ same gates at a lower depth. Of the 49 AES result files (46 distinct tuples), **
 |---|---|---|---|---|
 | 36 4 **131** 13 | a36-ad4-g142-gd13 | A36 AD4 GD13 | a35-ad4-g133-gd13 (G 133) | aes-sbox-a36-ad4-g131-gd13-xx95-42 |
 | 34 4 **139** 13 | a34-ad4-g140-gd13 | A34 AD4 GD13 | a35-ad4-g133-gd13 (A 35), a34-ad4-g140-gd13 (G 140) | aes-sbox-a34-ad4-g139-gd13-xx105-42 |
-| 41 4 **126** 14 | a33-ad4-g116-gd15, repaired to GD 14 | GD14 | a33-ad4-g127-gd14 (G 127) | aes-sbox-a41-ad4-g126-gd14-xx85-40 |
+| 38 4 **124** 14 | a33-ad4-g116-gd15, repaired to GD 14 (benchmark run, see below) | GD14 | a33-ad4-g127-gd14 (G 127) | aes-sbox-a38-ad4-g124-gd14-xx86-37 |
 | 35 3 **167** 14 | a35-ad3-g172-gd14 | A35 AD3 GD14 | a35-ad3-g172-gd14 (G 172) | aes-sbox-a35-ad3-g167-gd14-xx132-58 |
 | 32 4 **126** 15 | a32-ad4-g127-gd15 | A32 AD4 GD15 | a32-ad4-g127-gd15 (G 127), a33-ad4-g116-gd15 (A 33) | aes-sbox-a32-ad4-g126-gd15-xx94-32 |
 | 33 4 **110** 18 | a33-ad4-g110-gd20 | A33 AD4 GD20 | a33-ad4-g116-gd15 (G 116), a33-ad4-g110-gd20 (GD 20) | aes-sbox-a33-ad4-g110-gd18-xx77-26 |
@@ -147,7 +147,7 @@ Published best = smallest G among the 102 baseline circuits with GD <= cap.
 | GD <= | published best (A AD G GD) | **ours** (A AD G GD) | margin |
 |---|---|---|---|
 | 13 | 35 4 133 13 | **36 4 131 13** | -2 gates |
-| 14 | 33 4 127 14 | **41 4 126 14** | -1 gate (8 more ANDs) |
+| 14 | 33 4 127 14 | **38 4 124 14** | -3 gates (5 more ANDs) |
 | 18 | 33 4 116 15 | **33 4 110 18** | -6 gates |
 | 19 | 33 4 116 15 | **33 4 108 19** | -8 gates |
 | 10 / 11 / 12 | 159 / 148 / 141 | not better (best: none at 10, 150, 146) | |
@@ -157,7 +157,12 @@ The 14-level circuit shows the search changing nonlinear structure: from NIST's 
 circuit it trades depth for ANDs (41) while cutting gates. NIST's open targets (A <= 27, G <= 100,
 G <= 110 at GD <= 14) and the overall record (103 at GD 32, 104 at GD 30) are not reached.
 
-GD <= 14 (300000 iterations, 8 seeds, 3 rounds; 460 s wall, 3558 CPU s):
+GD <= 14: the 124-gate circuit (A38) came from a time-budgeted run of the method-and-performance
+benchmark (`bench/bench.py`, plan v3, run `A-aes-gd14repair-rebuild-s4-v3`: NIST a33-ad4-g116-gd15,
+cap GD <= 14, rebuild-only full configuration, 120 s, seed 4); it is verified but not
+bit-reproducible, and only 1 of 35 such 120 s runs succeeded (`bench/REPORT.md`, 4.3). It dominates
+the earlier reproducible 126-gate circuit (A41), which this command gives
+(300000 iterations, 8 seeds, 3 rounds; 460 s wall, 3558 CPU s):
 
 ```bash
 python3 nonlinear/boolflux/cli.py run --target aes --model nist \

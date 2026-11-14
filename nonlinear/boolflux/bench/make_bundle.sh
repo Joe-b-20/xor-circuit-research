@@ -24,7 +24,7 @@ for x in aes109 aes142; do
   gzip -c $C/traces/$x/moves.txt > "$D/traces/$x-moves.txt.gz"
   for f in $C/traces/$x/moves.txt.it*; do cp "$f" "$D/traces/$x-$(basename "$f" | sed 's/moves.txt.//')"; done
 done
-for v in v1 v2; do
+for v in v1 v2 v3 v4; do
   [ -d $C/bench/$v ] || continue
   mkdir -p "$D/data/$v"; cp $C/bench/$v/*.json "$D/data/$v/"
   cp $C/bench/tables-$v.md "$D/data/" 2>/dev/null || true
@@ -39,7 +39,7 @@ for f in Path(sys.argv[1]).glob('*.json'):
         shutil.copy(r['final_file'], Path(sys.argv[2]) / (r['run']['label'] + '.circ.txt'))
 EOF
 done
-cp $C/bench/rebuild_penalty.json "$D/data/"
+cp $C/bench/rebuild_penalty.json $C/bench/pooled.md $C/speed/speed.json "$D/data/"; cp $C/bench/plan-v3.json $C/bench/plan-v4.json "$D/configs/"
 cp -r nonlinear/boolflux/bench/abc/* "$D/abc/"
 (cd "$OUT" && tar -czf boolflux-review-bundle.tar.gz boolflux-review-bundle)
 du -sh "$D" "$OUT/boolflux-review-bundle.tar.gz"

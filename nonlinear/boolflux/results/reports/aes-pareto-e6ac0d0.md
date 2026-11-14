@@ -1,4 +1,4 @@
-Published forward AES circuits: 102; result files: 49; distinct result tuples: 46
+Published forward AES circuits: 102; result files: 50; distinct result tuples: 47
 
 | A AD G GD | files | survives | published circuits with all four <= | our tuples that dominate |
 |---|---|---|---|---|
@@ -15,7 +15,8 @@ Published forward AES circuits: 102; result files: 49; distinct result tuples: 4
 | 34 4 139 13 | 1 | **yes** |  |  |
 | 38 4 139 13 | 1 | no | aes-sbox-a35-ad4-g133-gd13-xx98-21, aes-sbox-a35-ad4-g135-gd13-xx100-21, aes-sbox-a36-ad4-g134-gd13-xx98-20 | (34, 4, 139, 13), (36, 4, 131, 13), (36, 4, 133, 13) |
 | 34 4 141 13 | 1 | no | aes-sbox-a34-ad4-g140-gd13-xx106-27 | (34, 4, 139, 13) |
-| 41 4 126 14 | 1 | **yes** |  |  |
+| 38 4 124 14 | 1 | **yes** |  |  |
+| 41 4 126 14 | 1 | no |  | (38, 4, 124, 14) |
 | 36 4 134 14 | 1 | no | aes-sbox-a33-ad4-g127-gd14-xx94-23, aes-sbox-a33-ad4-g128-gd14-xx95-20, aes-sbox-a35-ad4-g133-gd13-xx98-21 (+1) | (36, 4, 131, 13), (36, 4, 133, 13), (36, 4, 134, 13) |
 | 36 4 135 14 | 1 | no | aes-sbox-a33-ad4-g127-gd14-xx94-23, aes-sbox-a33-ad4-g128-gd14-xx95-20, aes-sbox-a35-ad4-g133-gd13-xx98-21 (+2) | (36, 4, 131, 13), (36, 4, 133, 13), (36, 4, 134, 13) |
 | 35 3 167 14 | 1 | **yes** |  |  |
@@ -47,14 +48,14 @@ Published forward AES circuits: 102; result files: 49; distinct result tuples: 4
 | 28 4 131 29 | 1 | no |  | (28, 4, 131, 26) |
 | 29 5 136 30 | 1 | no | aes-sbox-a28-ad4-g132-gd22-xx104-40, aes-sbox-a28-ad4-g132-gd23-xx104-27, aes-sbox-a28-ad4-g134-gd20-xx106-41 (+2) | (28, 4, 133, 20), (28, 4, 132, 22), (28, 4, 131, 29) |
 | 30 4 140 32 | 1 | no | aes-sbox-a28-ad4-g131-gd31-xx103-43, aes-sbox-a28-ad4-g131-gd32-xx103-47, aes-sbox-a28-ad4-g132-gd22-xx104-40 (+2) | (28, 4, 133, 20), (28, 4, 132, 22), (28, 4, 131, 29) |
-| 264 19 717 50 | 1 | no | aes-sbox-a28-ad4-g131-gd31-xx103-43, aes-sbox-a28-ad4-g131-gd32-xx103-47, aes-sbox-a28-ad4-g131-gd36-xx103-28 (+99) | (49, 4, 148, 11), (49, 4, 150, 11), (51, 4, 152, 11) |
+| 264 19 717 50 | 1 | no | aes-sbox-a28-ad4-g131-gd31-xx103-43, aes-sbox-a28-ad4-g131-gd32-xx103-47, aes-sbox-a28-ad4-g131-gd36-xx103-28 (+99) | (38, 4, 124, 14), (49, 4, 148, 11), (49, 4, 150, 11) |
 
 12 surviving tuples
 
 | GD <= | published best G (A AD G GD) | ours best G (A AD G GD) |
 |---|---|---|
 | 13 | 35 4 133 13 | **36 4 131 13** |
-| 14 | 33 4 127 14 | **41 4 126 14** |
+| 14 | 33 4 127 14 | **38 4 124 14** |
 | 18 | 33 4 116 15 | **33 4 110 18** |
 | 19 | 33 4 116 15 | **33 4 108 19** |
 

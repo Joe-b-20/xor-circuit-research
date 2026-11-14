@@ -18,16 +18,25 @@ the repository); claimed circuits are in `results/` with `results/MANIFEST.json`
     Sb1 BGC (+1); optimal where the published value is SAT-proved (Piccolo, PRIDE, RECTANGLE GC);
     none beaten. Ascon 16 (BGC) / 15 (GC) equal ZH23's upper bounds.
   - AES: Boyar-Peralta 113 -> 108 (improves its start only). 12 (A, AD, G, GD) tuples new on the
-    e6ac0d0 set; fewest gates at GD <= 13, 14, 18, 19: 131, 126, 110, 108 (published 133, 127,
+    e6ac0d0 set; fewest gates at GD <= 13, 14, 18, 19: 131, 124, 110, 108 (published 133, 127,
     116, 116). The earlier claims at GD 11 and 12 and 13 of the 18 "new" points are withdrawn.
 - **Errors found and fixed in this pass**: chi3 target bit order (re-run, old files in
   `results/_superseded/`), header tallies that called `XNOR t a 0` a NOT, stale ledger rows,
   the boolcirc name parser for NIST's `-xxn` names.
 
+## Method-and-performance study (2026-11-13, later)
+
+bench/REPORT.md: mechanics, traces, rebuild-penalty investigation and fix, four benchmark rounds
+(v1-v4, 1,056 runs, matched pinned CPUs), ablations, Berkeley ABC comparison, profile, fixes;
+review2/REVIEW2.md (independent review of this round). Bundle: ~/xs-campaigns/2026-11-13-boolflux/
+review-bundle/. Main findings: Paar XOR-layer resynthesis is the effective mechanism on naive AES
+(633 vs 749); skeleton moves help only for AND reduction (GF(2^4): 9 ANDs); XORFlux stays ahead on
+uncapped linear maps; the no-op filter has no measurable effect.
+
 ## Open
 
 - NIST targets (A <= 27, G <= 100, G <= 110 at GD <= 14) and the record (103 / 104) untouched.
-- In-place AND-skeleton moves for good AES circuits (resynthesis loses 40-50 gates).
+- In-place AND-skeleton moves for good AES circuits (the seeded rebuild removed the systematic 31-72-gate loss; changing one AND still costs 0-19 gates of rebuilt XOR logic).
 - Inverse AES S-box frontier, GE models, other 8-bit S-boxes: not run.
 - Papers not read (CITATIONS.md, "papers to request"): Maximov-Ekdahl 2019, Chudnovsky 1988,
   Barbulescu et al. 2012, Knuth TAOCP 7.1.2, Zajac-Jokay 2014, Mirwald-Schnorr 1992.

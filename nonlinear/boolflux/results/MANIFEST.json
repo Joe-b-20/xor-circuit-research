@@ -2,6 +2,65 @@
  "nist_baseline_commit": "e6ac0d03f4816927f1b0e676996e4d075ab8d1c0",
  "entries": [
   {
+   "file": "nonlinear/boolflux/results/aes/aes-nist-bench-rebuild-gd14-g124-a38-gd14-ad4.circ.txt",
+   "sha256": "b694d76957f638b5816d865ad3a36ac0cba51a0b9fac302457bbc43b02ea66c4",
+   "target": "aes",
+   "target_definition": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+   "model": "nist",
+   "permitted_gates_and_costs": {
+    "AND": 1,
+    "XOR": 1,
+    "XNOR": 1,
+    "NOT": 1
+   },
+   "objective": "cost,gd",
+   "caps": {
+    "GD": 14,
+    "AD": null,
+    "A": null
+   },
+   "start": {
+    "path": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt",
+    "kind": "NIST circuit",
+    "taken_from_nist_commit": "0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f",
+    "sha256": "83e5aceec382652fe7bba0aa4f8d556271f9ed146578d79f65c5af55b8773df4",
+    "identical_at_e6ac0d0": true
+   },
+   "command": "python3 nonlinear/boolflux/bench/bench.py PLAN OUT  (PLAN = one task: {\"tool\": \"boolflux\", \"target\": \"aes\", \"model\": \"nist\", \"objective\": \"cost,gd\", \"caps\": {\"GD\": 14}, \"start\": \"nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt\", \"seconds\": 120, \"seed\": 4, \"round_s\": 30, \"config\": \"full\", \"skel_set\": {\"iters\": 0}, \"label\": \"A-aes-gd14repair-rebuild-s4-v3\", \"adaptive\": true, \"set\": {\"skip_noop\": 1}})",
+   "seeds": [
+    4
+   ],
+   "iters": null,
+   "rounds": null,
+   "code_sha256_12": "git:154ded8",
+   "job": "A-aes-gd14repair-rebuild-s4-v3",
+   "wall_s": 120.0039644241333,
+   "metrics": {
+    "G": 124,
+    "A": 38,
+    "GD": 14,
+    "AD": 4,
+    "cost": 124.0,
+    "counts": {
+     "AND": 38,
+     "XNOR": 37,
+     "XOR": 49
+    }
+   },
+   "counts_as_written": {
+    "AND": 38,
+    "XNOR": 37,
+    "XOR": 49
+   },
+   "verified": {
+    "core": true,
+    "independent": true,
+    "library": true,
+    "metrics_agree": true
+   },
+   "nist_format_file": "nonlinear/boolflux/results/nist-format/aes-sbox-a38-ad4-g124-gd14-xx86-37.circ.txt"
+  },
+  {
    "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd11-ad4-a49-g148-a49-gd11-ad4.circ.txt",
    "sha256": "0034315adaec948d10b150e3db4eae829217da74b9d782ead76d9e58336b05ce",
    "target": "aes",
@@ -6553,5 +6612,5 @@
    }
   }
  ],
- "nist_format_check": "49 circuit file(s), 0 failing"
+ "nist_format_check": "50 circuit file(s), 0 failing"
 }
