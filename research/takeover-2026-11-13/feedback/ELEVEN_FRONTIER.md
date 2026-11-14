@@ -1,5 +1,11 @@
 # Eleven consumer gates: collisions and the remaining return
 
+**Superseded frontier:** the [next continuation](FOUR_DIAGONAL_FRONTIER.md) proves the
+four-diagonal lower bound and closes the four-entry mixed case at 22. It also resolves
+the distinction between all counted consumer gates and the relaxed target cones.
+The results below remain the preceding phase's record; its final open question and
+four-entry non-exclusion are historical.
+
 2026-11-13, continuing reviewed commit `6801e98`. Structural hand proofs with independent
 machine review, not formal verification or human certification. No circuit search or
 computer-driven case elimination was used.

@@ -1,12 +1,12 @@
 # Necessary source-side conditions for a four-entry mixed consumer
 
-2026-11-13. Hand proof by chronological replay and paid-value counting. No circuit search or family checks. The result constrains the four-entry mixed profile and does not exclude it.
+2026-11-13. Hand proof by chronological replay and paid-value counting. No circuit search or family checks. This records the replay constraints for the two-clean/two-nonclean four-entry profile. The subsequent [four-entry closure](FOUR_ENTRY_CLOSURE.md) excludes total cost at most 21 for this profile and handles the separate target-cone trimming issue.
 
 Consider the unrestricted joint 0/1-sheet problem, with source own block \(b\), free block \(a\), and consumer own block \(z\). The source targets are the four first-sheet rows \(U_c=E_c(b)+s_c(a)\). The consumer targets have own triples on \(z\) and source parts spanning the three-dimensional diagonal
 \[
 D=\{(v,v):v\text{ even}\}
 \]
-on \(b,a\). Count eleven gates with nonzero \(z\) part and suppose their actual entry labels span a four-dimensional space. Suppose there are four entries. The [four-entry interface theorem](../compatibility/QUOTIENT.md#four-entries-and-seven-mirrored-gates) says that their labels form a basis \(c,d,n,m\), where \(c,d\in D\) and \(n,m\notin D\). Put
+on \(b,a\). Count eleven gates with nonzero \(z\) part. Assume their four actual entry labels form a basis \(c,d,n,m\), where \(c,d\in D\) and \(n,m\notin D\), and that their span contains \(D\). The [four-entry interface theorem](../compatibility/QUOTIENT.md#four-entries-and-seven-mirrored-gates) gives this pattern when all eleven counted gates belong to the consumer target cones after cutting at zero-\(z\) operand ports and their entry span has dimension four. It does not by itself apply to an extra gate used only by source exits; that case is handled separately in [the closure note](FOUR_ENTRY_CLOSURE.md). Put
 \[
 e=n+m,\qquad p=c+d.
 \]
@@ -38,4 +38,4 @@ For a return \(n+c+d\), project the consumer's source labels onto \(D\) along \(
 
 By [the entry-matching lemma](ENTRY_MATCHING.md), a ten-gate three-entry consumer with one non-entry root per own-mask fibre cannot have such a pair of equal-own signals. The projected consumer must therefore have a fibre with multiple roots. It has at least two distinct nonzero even own masks: with only one, its first occurrence would be a pair \(q\) of own units and every odd own mask would lie among the units and those units plus \(q\), yielding at most two of the four triples. The four triples and two even masks require six non-entry first occurrences. Seven non-entry gates are available. Hence there are exactly two distinct even own masks and exactly one repeated non-entry own occurrence. There is one two-root fibre, which must contain the projected operands of the required return.
 
-These conditions do not settle whether the required nonclean exit and the tight source budget can coexist. They also do not cover the five-entry mixed consumer.
+The subsequent [four-entry closure](FOUR_ENTRY_CLOSURE.md) shows that the two-pair replay already contradicts the new four-diagonal supplier bound at total cost at most 21. The five-entry mixed consumer remains outside this argument.

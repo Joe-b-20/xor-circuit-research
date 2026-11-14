@@ -1,12 +1,15 @@
 # What changed in the takeover
 
-**Current continuation after `6801e98`:** [eleven consumer gates: collision bounds and a specific return](feedback/ELEVEN_FRONTIER.md).
-Projecting source cosets gives a general cost bound counting every merged physical
-consumer value. At eleven gates, a nonclean entry label already occupies its unique
-allowed pair, so it cannot be newly returned and fed directly back. Clean entries
-force twelve source gates at any consumer budget. A four-entry mixed consumer at
-total 21 must have ten source gates, exactly two original clean diagonals, and a
-specific nonclean ternary return. This is a restriction, not an exclusion.
+**Current continuation after `4adbf01`:** [four diagonals and the remaining five-entry frontier](feedback/FOUR_DIAGONAL_FRONTIER.md).
+Four first-sheet rows plus a clean triangle and an independent fourth diagonal require
+thirteen source gates, attained for one choice. Chronological replay closes the
+four-entry mixed eleven-consumer class at 22, also attained. Every eleven-consumer
+candidate below 22 must have five mixed entries, all eleven consumer gates in relaxed
+target cones, and original physical clean rank at most two. A target-cone scope gap
+in the preceding reduction is explicitly corrected and its omitted case resolved.
+The five-entry class and larger consumer budgets remain open.
+The [previous continuation](feedback/ELEVEN_FRONTIER.md) established physical-collision
+accounting, direct-return restrictions, and source cost twelve under clean confinement.
 The preceding [five-diagonal result](feedback/FIVE_DIAGONALS.md) closed the ten-consumer
 case at 22 even with feedback. Other established results include
 [general rank-based repair](feedback/GENERAL_REPAIR.md),

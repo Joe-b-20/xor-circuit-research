@@ -1,9 +1,12 @@
 # Current feedback research
 
-The latest continuation after `6801e98` is [eleven consumer gates: collisions and the remaining return](ELEVEN_FRONTIER.md).
-It proves a general physical-collision bound, extends all-clean source cost twelve
-to arbitrary consumer budgets, and narrows the four-entry mixed interface. The
-unrestricted eleven-gate consumer case remains open. The previous phase follows.
+The latest continuation after `4adbf01` is [four diagonals close the four-entry case](FOUR_DIAGONAL_FRONTIER.md).
+The thirteen-gate source bound is sharp for one choice. It closes the four-entry mixed
+eleven-consumer class at 22, attained with eleven gates on each side. A candidate
+below 22 with eleven consumer gates must have five mixed entries and original physical
+clean rank at most two. The five-entry case and larger consumer budgets remain open.
+The [preceding phase](ELEVEN_FRONTIER.md) supplies the collision and confinement bounds;
+its four-diagonal open question is now resolved. The earlier ten-consumer phase follows.
 
 ## Previous phase: physical diagonal values close the ten-gate consumer case
 

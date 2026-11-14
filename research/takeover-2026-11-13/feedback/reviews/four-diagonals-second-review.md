@@ -1,0 +1,19 @@
+# Second review of the four-diagonal completion
+
+2026-11-13. Independent machine proof review of the final three-helper branch and attained example in [FOUR_DIAGONALS](../FOUR_DIAGONALS.md). The proof and construction were checked symbolically. No circuit search or family checks were run.
+
+For four entries in twelve gates, the eight distinct required non-input own masks exhaust the non-entry gates. With three odd helpers there are five physical even values, precisely the four clean values and one nonclean \(k\). The even residue span has rank one. The formal rank bound forces at most four odd-pair components, and the four residue pairs each contain two named nodes and cannot connect to one another. Thus each pair class is connected.
+
+The translation by \(k\) is a matching, and every residue-pair class needs a crossing edge. At most one edge joins two named nodes, and at most three further edges can use helpers. Four edges require one named pair \(P_0,Q_0\) and three helper-to-named pairs \(X_i,Q_i\), one in each other class. A helper-to-helper edge would exhaust two helpers while contributing only one edge. In each three-node class the remaining named node \(P_i\) can connect only by a clean pair with \(X_i\). If its clean sum is \(h_i\), the named pair sums are \(k\) and \(k+h_i\). They are all distinct, so the \(h_i\) are distinct. Their sum is zero by the all-eight named relation. Thus they are exactly the three values in the prescribed clean triangle.
+
+There are precisely seven odd-pair equations and just the one even-only equation, the clean triangle. The independent fourth diagonal \(e\) appears in none of them. Its gate must be an entry, with the only possible same-own even operand \(k\). This is the only even entry because five physical even gates have four own first occurrences. Thus \(e\) has no gate reader: an odd entry cannot read its even own mask, the sole even entry produces it, and non-entry equations omit it.
+
+The helpers have pairwise distinct own masks, since \(X_i=Q_i+k\) and the named own masks are distinct. Each has one unique same-own named value \(R_i\), and the two physical nodes in that fibre are joined by an entry in whichever chronological orientation is permitted. Its free label is
+\[
+\lambda_i=X_i+R_i=Q_i+k+R_i.
+\]
+Translation by the nonzero own mask of \(k\) matches the eight named nodes on their own masks. The pair \(P_0,Q_0\) is matched, so the remaining six are closed under the matching. If two of the three chosen \(Q_i\)'s are matched, their two \(\lambda_i\)'s are equal. Otherwise the \(Q_i\)'s meet each pair once and the \(R_i\)'s are the complementary \(P_i\)'s. Then the three \(\lambda_i\)'s sum to \(k\) plus the sum of the six named nodes, namely zero. This argument does not require helpers to be entry results rather than earlier own first occurrences.
+
+The three odd labels have rank at most two. The only other entry is the terminal \(e\) node, which cannot contribute to the four source rows. Their required free-part rank is three, a contradiction. Together with the earlier entry-count and helper-count exclusions, this eliminates twelve gates for every prescribed clean triangle and independent fourth diagonal. The twelve-gate construction with \(D(01),D(23),D(12)\) can append \(D(13)=D(23)+D(12)\), establishing thirteen gates for one such choice. This proves no universal attainment for every specified choice.
+
+The chronological replay in [FOUR_ENTRY_FEEDBACK](../FOUR_ENTRY_FEEDBACK.md) supplies the four diagonals \(c,d,c+d,n+m\), where \(c,d,n+m\) are independent, in at most twelve source-only gates if the full joint circuit has at most 21 gates and eleven consumer-bearing gates with four mixed entries. The new supplier lower bound excludes that profile. It does not address the five-entry mixed profile.

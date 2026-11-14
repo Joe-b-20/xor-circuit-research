@@ -1,0 +1,28 @@
+{
+  "method": "Direct evaluation of two specified circuits; no search.",
+  "four_diagonal_source": {
+    "gates": 13,
+    "diagonal_masks": [
+      12,
+      6,
+      10,
+      3
+    ],
+    "clean_triangle_and_independent_fourth": true,
+    "all_required_values_checked": true,
+    "event_free": true,
+    "all_gates_live_distinct": true
+  },
+  "mixed_joint": {
+    "gates": 22,
+    "source_gates": 11,
+    "consumer_gates": 11,
+    "entry_count": 4,
+    "entry_rank": 4,
+    "two_clean_two_nonclean_entries": true,
+    "all_eight_output_values_checked": true,
+    "event_free": true,
+    "no_feedback_to_first_sheet": true,
+    "all_gates_live_distinct": true
+  }
+}

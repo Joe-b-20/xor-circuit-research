@@ -2156,3 +2156,72 @@ current five-diagonal argument. The five-entry mixed consumer and larger consume
 budgets remain separate. The unrestricted MixColumns interval stays `75<=L<=88`,
 and the block-monotone bound stays 85. New results in this phase have hand proofs
 and independent reviews; previous specified construction checks are unchanged.
+
+
+## 39. Four-diagonal supply and closure of the four-entry interface (2026-11-13)
+
+Current account: [four-diagonal continuation](../takeover-2026-11-13/feedback/FOUR_DIAGONAL_FRONTIER.md),
+following reviewed commit `4adbf01`. Structural hand proofs received independent
+machine reviews. Direct computation checked two specified constructions; no circuit
+search, enumeration, or computer-driven case elimination was used.
+
+**Four diagonals with a clean triangle cost thirteen (proved).** Require four first
+rows and `c,d,c+d,e`, with c,d,e independent in clean D. A12 forces a hypothetical
+at-most-twelve supplier to have twelve gates. Odd free labels can be projected away,
+so all entries are even. Eight own first occurrences leave three or four entries.
+Formal relation rank and named-pair uniqueness exclude the three-entry case and the
+four-entry cases with at most two odd helpers. With three helpers, four residue classes
+force one wholly named nonclean pair and three helper-to-named nonclean pairs. Their
+three clean connectors are exactly c,d,c+d. The remaining diagonal e occurs in no
+non-entry relation and must use the sole even entry from the only nonclean even value.
+The three odd entry edges pair helpers with their equal-own named representatives.
+Translation of own masks either repeats two of their labels or makes the three sum
+to zero. Their rank is at most two; the e entry is a terminal export, so it cannot
+supply the third free direction needed by the rows. Contradiction. Appending
+`D13=D23+D12` to the specified twelve-gate source attains thirteen for one choice.
+The lower bound holds for every prescribed triangle plus independent fourth value;
+attainment for every choice is not asserted.
+
+**Four-entry feedback subclass has minimum 22 (proved and attained).** For clean
+c,d and nonclean n,m forming a basis containing D, n+m completes a clean basis.
+Chronological replay in fixed groups {c,d},{n,m} preserves every source value while
+retaining c+d,n+m for at most two extra gates. The four-diagonal theorem gives
+`G0+2>=13`, hence source cost at least eleven. At eleven consumer gates total is at
+least 22. For attainment, omit `D12=U1+E2` from the twelve-gate source, and split the
+ten-gate consumer entry `z0+D12` into `z0+U1` then `+E2`. The source and consumer
+costs are eleven each, and its entries are D01,U1,E2,D23. The circuit is event-free.
+
+**Correction to the preceding interface scope (resolved).** Section 38's automatic
+four-entry basis-pattern inference requires all eleven gates to lie in relaxed
+consumer target cones. An extra consumer-bearing gate might be used only for a source
+exit. Define cones by cutting at zero-consumer-part operand ports. If only ten bearing
+gates remain in the cones, entry deletion makes their labels clean. The sole outside
+gate can introduce at most one distinct nonclean label h. All other actual clean
+labels then span D. A chronological clean basis a,b,c, paired as {a,b},{c,h}, replays
+with at most two extra gates and retains a,b,a+b,c; the new theorem again forces
+source cost eleven. Thus this omitted case cannot have total at most 21. If all
+eleven bearing gates remain, the target-trimmed interface theorem applies. The prior
+four-entry proof now states its basis-pattern hypothesis explicitly.
+
+**Rank-four entries with physical clean rank three cost eleven (proved).** Suppose
+actual entry labels span rank-four U containing D and original source values include
+three independent clean diagonals. Choose an entry basis greedily in chronological
+order and partition into two pairs. Source replay preserves all original values and
+retains both pair sums for at most two extra gates. If either sum is an original value,
+its earlier availability or later bypass saves one gate; at source budget ten this
+contradicts A12. Otherwise, one nonclean basis element gives a clean triangle plus
+an independent fourth value. Two or four nonclean elements can be paired by quotient
+class to give two new clean values, hence five distinct physical diagonals. With
+three nonclean elements their pair sums form a clean plane W; original clean values
+avoid its nonzero points and lie in the complementary coset. An independent original
+triple has a pair sum in W; select that pair sum in replay to obtain the forbidden
+triangle plus fourth value. The four- or five-diagonal bound contradicts twelve
+replay gates in each case.
+
+**Remaining frontier.** A joint total at most 21 with exactly eleven consumer-bearing
+gates must have five actual entry occurrences spanning a rank-four mixed space, all
+eleven gates in the relaxed target cones, and original physical clean rank at most
+two. Its five-entry trace/label and physical-collision restrictions remain in force.
+This is not an exclusion of the five-entry case and does not settle larger consumer
+budgets or the unrestricted joint minimum. The unrestricted MixColumns interval
+remains `75<=L<=88`; the block-monotone lower bound remains 85.
