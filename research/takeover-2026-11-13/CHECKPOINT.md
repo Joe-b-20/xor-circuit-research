@@ -1,79 +1,87 @@
 # XOR structural research: checkpoint, 2026-11-14
 
 Branch: `research-2026-11-13-structural`. This phase continues reviewed commit
-`cfab8f6`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
+`8ab0b3e`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
 on `phase-2026-11-09`. Other worktrees and `search/proposals/` are preserved.
 Our worktree is this chat's `work/xor-structural`.
 
-**New:** equality in quotient cost identifies every projected physical collision
-with a selected entry-tree path. Nonclean actual labels have unique physical pairs
-and cannot be newly returned. Gates outside the relaxed output cones must belong to
-every quotient basis. A greedy chronological complement gives a general replay bound
-that credits original physical values.
+**New reduction:** any joint circuit below 22 with exactly twelve consumer-bearing
+gates must have all twelve in the relaxed target cones and exactly six entries.
+Every outside-entry case and the target-live five-entry case are now excluded.
+The twelve-consumer minimum itself remains open.
 
-**New source bounds:** entry rank at most four forces at least ten source gates,
-at any consumer budget. Four source rows plus all seven nonzero clean diagonal values
-require at least fifteen gates; attainment is not claimed.
+**New general mechanisms:** affine-tree transfer charges shared returns only for
+missing translated intermediate values. Independent even mirror helpers force an
+odd-value forest; cut equations make odd-wire source parts clean when extra source
+ports are confined to even wires. With at most two ordinary readers per helper,
+this yields entry chains with clean endpoints. Free-section replay completes an
+ordinary-projection section without a separate prefix-splitting hypothesis.
 
-**Twelve-consumer frontier:** below total 22, the entry span must have rank five,
-with two nonclean quotient directions and at most two original physical clean values.
-There is at most one consumer-bearing gate outside the output cones, and it must
-support at least two distinct useful returns. If every gate lies in those cones,
-only five or six entries remain, with the restrictions below. This case is open.
+**New source restriction:** all-even-own entries force at least ten source gates,
+at any consumer budget. A rank-five candidate with at most nine source gates has
+one even wholly free direction q and an odd-own entry h, with
+`U=D direct-sum span{q,h}`. These statements constrain the entry span, not every
+original physical source value.
 
 **Retained:** joint minimum 22 for exactly ten or eleven consumer gates; no-feedback
-joint minimum 22; block-monotone MixColumns lower bound 85; unrestricted `75<=L<=88`.
-No assumption that 88 is optimal. All new universal results are hand arguments with
-independent machine reviews, not formal verification or human certification.
+minimum 22; full-diagonal supplier lower bound 15 (attainment not claimed);
+block-monotone MixColumns lower bound 85; unrestricted `75<=L<=88`.
+No assumption that 88 is optimal. Hand proofs have independent machine reviews,
+not formal verification or human certification.
 
 ## Read next
 
-1. [Current results, exact scope, and research judgment](feedback/TWELVE_CONSUMER_FRONTIER.md).
-2. [Saturated quotient collisions](feedback/SATURATED_QUOTIENT.md) and
-   [outside-cone coloop theorem](feedback/SATURATED_TAILS.md).
-3. [Rank-four source floor](feedback/RANK_FOUR_SOURCE_FLOOR.md), its
-   [physical-clean supply lemma](feedback/RANK_FOUR_TWO_CLEAN.md), and
-   [full-diagonal supply with chronological complement replay](feedback/FULL_DIAGONAL_SUPPLY.md).
-4. [Twelve-consumer wire restrictions and seven-gate counterexample](feedback/TWELVE_ENTRY_WIRES.md).
-5. [Previous eleven-consumer closure](feedback/ELEVEN_CONSUMER_CLOSED.md),
-   [credited replay](feedback/CREDITED_REPLAY.md),
-   [entry deletion](compatibility/QUOTIENT.md),
-   [augmented minimum twelve](augmented/PROOF.md), and
-   [no-feedback/block-monotone consequences](augmented/CONSEQUENCES.md).
-6. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
+1. [Current reduction, complete coverage, and judgment](feedback/SIX_ENTRY_FRONTIER.md).
+2. [Affine-tree transfer](feedback/AFFINE_TREE_TRANSFER.md) and
+   [general odd-forest / chain geometry](feedback/CHAIN_FIBRES.md).
+3. [Five target-live entries are excluded](feedback/FIVE_ENTRY_TWELVE_CLOSED.md).
+4. Outside-entry closure: [four-entry core](feedback/FOUR_ENTRY_TAIL_CLOSED.md),
+   [core wire and triangle reductions](feedback/TAIL_CORE_REDUCTIONS.md),
+   [two nonclean entries](feedback/TWO_NONCLEAN_TAIL_CLOSED.md), and
+   [three-nonclean four-term relation](feedback/THREE_NONCLEAN_FOUR_TERM_TAIL_CLOSED.md).
+5. [Even-entry source floor and residue-plane normal form](feedback/EVEN_ENTRY_SOURCE_FLOOR.md),
+   [parity rank retraction](feedback/PARITY_RANK_RETRACTION.md), and
+   [free-section replay](feedback/FREE_SECTION_REPLAY.md).
+6. Supporting results: [six-entry identities](feedback/TWELVE_ENTRY_WIRES.md),
+   [saturated collisions](feedback/SATURATED_QUOTIENT.md),
+   [saturated tails](feedback/SATURATED_TAILS.md),
+   [four-diagonal supplier](feedback/FOUR_DIAGONALS.md),
+   [previous frontier](feedback/TWELVE_CONSUMER_FRONTIER.md).
+7. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
    [checkpoint](../structure-2026-11-11/CHECKPOINT.md), and
    [visible account](../structure-2026-11-11/visible/VISIBLE.md).
 
-## Current mechanisms and unresolved cases
+## Why the new exclusions work
 
-- For `K=L_D+c`, any actual quotient basis supplies a `c`-edge forest. Its components
-  exactly equal the full-value cosets modulo the selected label span. This holds for
-  all physical consumer nodes, including gates used only for exits.
-- For any `D subset U`, greedy actual quotient representatives span `C` so every
-  entry-prefix splits under `U=D direct-sum C`. Replay completes both groups for
-  `G0+(2^dim(D)-1-m_D)+(2^dim(C)-1-m_C)`, counting original physical group values.
-  At entry rank five the new supplier bound gives `G0>=5+m_D+m_C>=7+m_D`.
-- A global twelve-consumer candidate below 22 has at most one outside-cone entry.
-  A single useful return through it can be reassociated into the source; multiple
-  returns may share it, and their cost is unresolved.
-- With all twelve gates in the output cones, six entries leave a six-gate mirror.
-  Trace rank is four; the unique actual-label relation is the odd-trace indicator.
-  Odd, pairwise distinct traces are excluded, but repeated traces remain open.
-- With all twelve gates in the output cones, five independent entries give three
-  independent even trace classes, of sizes `(3,1,1)` or `(2,2,1)`. There is exactly
-  one ordinary fibre with two entry-tree roots, and some nonredundant exit must join
-  its two components. This crossing-return case remains open.
-- A specified seven-gate ordinary circuit has distinct even wires with the same
-  ordinary derivative. The previous six-gate separation theorem cannot be extended
-  without a new hypothesis. Do not apply target-live classifications to the tail case.
+- A tail `v=u+h` with partners in one entry tree can be removed at total overhead
+  at most `B-1`, where B counts missing physical translates on the connecting tree.
+  Original values are advanced and credited; other feedback stays in place.
+- The seven-gate mirror's three independent even helpers have reader counts
+  `(2,1,1)`. Its odd-value graph is a tree. Cut equations force clean endpoints
+  and a clean isolated root in a repeated fibre, limiting useful crossing returns.
+- The difficult cases admit source-only replay with at most three extra gates.
+  It retains a clean triangle and an independent clean direction: at source cost
+  at most nine, that gives a forbidden supplier within twelve gates, below thirteen.
+- The outside core has four or five entries. All clean/nonclean counts and allowed
+  label-relation profiles are covered; see the explicit table in the current frontier.
+- With all entries even-own, three even-rank increases and four first triple masks
+  force seven independent odd-pair equations. A source budget below ten cannot
+  provide them, unless all exits are redundant, which also contradicts local ten.
 
-## Next direction and verification
+## Remaining frontier and next direction
 
-Seek a structural charge for returns crossing distinct entry-tree components, or for
-multiple returns sharing the single outside entry. Both identify work absent from a
-single-tree replay. Avoid a campaign of trace-pattern case elimination. Larger consumer
-budgets and the unrestricted joint minimum remain open.
+A twelve-consumer candidate below 22 now has six entries, entry rank five, and trace
+rank four. Its sole actual-label relation is the odd-trace indicator. The trace
+relation space is the two-dimensional quotient-signature row space. At most two
+nonzero physical clean values exist. Every nonclean actual label has a unique
+physical difference pair. Repeated traces remain possible; all-odd, pairwise-distinct
+traces are already excluded.
 
-Reviews are linked from the current frontier. No search or new numerical campaign was
-used. Use Git with `-c core.filemode=false`; shared config is unchanged. Stage only
-intended research files and preserve other worktrees.
+Use the six-gate mirror's two-component odd forest together with the source parity
+restriction. Odd trace ports add terms to the cut equations, so the new clean-endpoint
+argument cannot simply be reused. Internal merges with more readers may matter.
+The six-entry case, larger consumer budgets, and the unrestricted joint minimum
+remain open. Avoid turning this into a trace-pattern enumeration campaign.
+
+Reviews are linked from the current frontier. No circuit search or numerical proof
+campaign was used. Use Git with `-c core.filemode=false`; shared config is unchanged.

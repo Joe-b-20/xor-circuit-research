@@ -1,5 +1,9 @@
 # Twelve consumer gates: structural restrictions and the remaining obstruction
 
+**Later continuation:** [six-entry frontier](SIX_ENTRY_FRONTIER.md) closes every
+outside-entry case and the target-live five-entry case. The open-case statements
+below record this earlier phase; its supporting theorems remain valid.
+
 2026-11-14, continuing reviewed commit `cfab8f6`. The arguments below have independent machine reviews, not formal verification or human certification. They use chronological linear algebra, gate relations, and specified constructions; no circuit search, enumeration, or computer-driven case elimination was used.
 
 The earlier phase proved joint minimum 22 for exactly ten or eleven consumer-bearing gates, even with feedback. This phase does **not** close the twelve-consumer case. It supplies general equality and replay theorems, a stronger source bound, and necessary conditions for that next case. The unrestricted MixColumns interval remains `75<=L<=88`; the block-monotone lower bound remains 85.

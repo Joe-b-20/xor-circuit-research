@@ -1,6 +1,20 @@
 # What changed in the takeover
 
-**Current continuation after `cfab8f6`, 2026-11-14:**
+**Current continuation after `8ab0b3e`, 2026-11-14:**
+[the twelve-consumer problem now reduces to six target-live entries](feedback/SIX_ENTRY_FRONTIER.md).
+Every outside-entry case and the target-live five-entry case are excluded below
+total 22. The general mechanisms are affine-tree transfer with physical credits,
+an odd-value forest forced by independent even mirror helpers, and chronological
+replay through a free-coordinate section. The forest gives clean endpoints in the
+seven-gate mirror and controls returns between separate roots. Difficult returns
+need at most three extra replay gates but force four clean diagonals, contradicting
+the thirteen-gate supplier bound. A separate source theorem excludes all-even-own
+entry spaces at source cost below ten, at any consumer budget. The remaining
+rank-five entry span has one even free direction and two odd nonclean cosets.
+The six-entry case and larger consumer budgets remain open; MixColumns stays 75–88.
+Proofs, coverage, independent reviews, and timing caveats are linked from the frontier.
+
+**Previous continuation after `cfab8f6`, 2026-11-14:**
 [the twelve-consumer structural frontier](feedback/TWELVE_CONSUMER_FRONTIER.md)
 adds a general equality theorem: when quotient cost is saturated, projected physical
 collisions are exactly selected entry-tree paths, and each actual nonclean label has

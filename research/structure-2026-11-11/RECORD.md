@@ -2481,3 +2481,95 @@ derivative 1111. Six-gate even-wire separation does not extend unconditionally.
 The next structural obstruction is shared work in returns crossing entry components
 or in multiple returns through the unique outside entry. No twelve-consumer or
 unrestricted joint minimum is claimed.
+
+
+## 43. Shared returns, mirror forests, and six-entry reduction (2026-11-14)
+
+Continuation after reviewed commit `8ab0b3e`. Full account and coverage:
+[six-entry frontier](../takeover-2026-11-13/feedback/SIX_ENTRY_FRONTIER.md).
+Structural hand proofs with independent machine reviews, not formal verification.
+No circuit search, enumeration, or computer-driven elimination.
+
+**Current reduction (proved).** A joint circuit below 22 with exactly twelve
+consumer-bearing gates has all twelve in its relaxed target cones and exactly six
+entry occurrences. Its entry span has rank five and trace rank four. Every outside
+entry case and the target-live five-entry case are excluded. The six-entry case,
+larger consumer budgets, and the unrestricted joint minimum remain open.
+MixColumns remains 75 to 88; the block-monotone lower bound remains 85.
+
+**Affine-tree transfer (proved, general).** Let an outside entry v=u+h be read only
+by source exits, with useful partners in one entry tree after v is removed.
+Translate the connecting subtree at u by t_x=h+u+x. Path labels were read before
+the return needing them. Retain translates, credit original physical values to
+their source producers, and charge only B missing translates. Removing v leaves
+at most G0+B source gates and K-1 consumer gates. At most one missing translate
+permits removal without increasing cost. A star, or a three-edge tree with two useful
+partners, has this property. Other feedback may remain in place. Triangle completion
+and cheap differences between requested returns can improve on the raw tree count.
+
+**Odd-value forest (proved, general).** In an ordinary XOR circuit with independent
+computed even values, put vertices at odd inputs/gate occurrences. An even gate
+joins its two odd parents; an odd gate joins its odd parent to its result, labelled
+by its even operand. Chronology and independence make this a forest with n-r
+components for n inputs and r even gates. In a literal transpose with extra source
+ports only on even-valued wires, forest-cut equations express edge fluxes in terms
+of target boundary values. If boundary source parts lie in D, all odd-wire source
+parts lie in D. This does not supply those parts as separate physical source values.
+
+**Clean-endpoint chains (proved specialization).** A seven-gate triple mirror has
+three independent even helpers serving four odd target gates. Their reader counts
+are (2,1,1); each nonzero derivative segment gives one entry chain with a clean
+endpoint. Different classes occupy different own fibres. A repeated fibre has
+one chain and an isolated clean root. The only potentially nonclean non-entry root
+is the merge for the two-reader helper. A later clean endpoint is used only as an
+algebraic identity; independent actual-label expansion supplies the timing.
+
+**Five-entry target-live closure (proved).** For class sizes (3,1,1), at most two
+nonclean crossing positions exist and differ by one actual label. For (2,2,1), at
+most one exists. In each case three specified additional source helpers suffice
+for a chronological source-only replay supplying a clean triangle and an independent
+direction. At G0 at most nine this gives a supplier within twelve gates, contrary
+to the thirteen-gate four-diagonal theorem. Thus target-live K12 with five entries
+has total at least 22. No attaining construction for this exact subclass is asserted.
+
+**All outside-entry cases (proved).** The previous coloop reduction leaves an
+eleven-gate target core of entry rank four, with four or five entries. The four-entry
+case uses the same seven-mirror chain theorem: complete two plane groups and add
+at most one tail helper, again contradicting the four-diagonal supplier bound.
+For five core entries, zero/one nonclean labels violate rank or the physical clean
+cap. Two nonclean labels force a repeated-clean interface c,c,d,n,m; any surviving
+four-edge fibre is c-n-m-c. Its endpoint difference repairs the two useful returns.
+Three nonclean labels have a three-term triangle or a four-term relation. Triangle
+completion costs no net extra for original values. In the four-term case, wire
+separation forces a two-edge a,b path joined by k to one clean edge. Partitioning its
+five vertices into those two paths gives a cheap pair among u and two partners,
+saving one XOR across their returns. Four nonclean profiles are the three-term,
+affine-plane, and all-five-odd relations; these reduce to a triangle, a three-edge
+tree, or a star. The all-nonclean affine-plane case has the same bound. Every
+profile is covered, with chronology preserved; no full joint theorem is applied
+directly to a relaxed core before its source is repaired.
+
+**Even-entry source floor (proved, arbitrary consumer budget).** If every actual
+entry has even ordinary source parity, then G0 is at least ten. At G0 at most nine,
+three even-projection rank increases and four first triple masks give seven
+independent odd-pair equations. With zero or one odd helper beyond the eight named
+inputs/rows, the available relation rank is at most five; all three-named expansions
+of one helper coincide because the only named relation uses all eight. With two
+odd helpers, the three even source values have independent own projections, so no
+exit first supplies any of them. All exits are redundant, contradicting local ten.
+
+**Retraction and free sections (proved).** An odd wholly free direction in U permits
+a free-coordinate retraction fixing all targets and lowering entry rank by one.
+Together with the rank-four source floor, it is excluded at rank five and G0 below
+ten. The remaining U has one even free direction q and an odd-own actual entry h,
+so U=D direct-sum span(q,h). A normalized even-free-part circuit has U equal to the
+inverse image of a two-dimensional residue plane containing odd vectors. Physical
+credits are recomputed after normalization. Separately, any linear section H of
+the ordinary entry projection gives source-only replay cost G0+2^r-1-m_H: the
+remainder is free, so no extra prefix-splitting hypothesis is required.
+
+**Next structural boundary.** The remaining six-entry mirror has a two-component
+odd forest, but odd trace ports add terms to its cut equations. The clean-endpoint
+conclusion cannot be imported unchanged. Internal helper-reader merges and the
+restricted source residue plane are the next promising objects. Repeated traces
+remain open; the all-odd pairwise-distinct subclass was already excluded.

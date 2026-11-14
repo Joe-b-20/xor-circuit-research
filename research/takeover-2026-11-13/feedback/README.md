@@ -1,6 +1,15 @@
 # Current feedback research
 
-The latest continuation after `cfab8f6` is the [twelve-consumer structural frontier](TWELVE_CONSUMER_FRONTIER.md).
+The latest continuation after `8ab0b3e` reduces the [twelve-consumer problem to six target-live entries](SIX_ENTRY_FRONTIER.md).
+Every outside-entry case and the target-live five-entry case are now excluded below
+22. [Affine-tree transfer](AFFINE_TREE_TRANSFER.md) accounts for shared returns;
+an [odd-value forest and clean chain endpoints](CHAIN_FIBRES.md) control repeated
+ordinary roots. [Even-own entry spaces require ten source gates](EVEN_ENTRY_SOURCE_FLOOR.md),
+and [free-section replay](FREE_SECTION_REPLAY.md) gives a general physical-value
+completion bound. The six-entry case remains open. All new results have hand proofs
+and independent machine reviews; unrestricted MixColumns remains 75 to 88.
+
+The preceding continuation after `cfab8f6` was the [twelve-consumer structural frontier](TWELVE_CONSUMER_FRONTIER.md).
 It proves a general [equality theorem for projected physical collisions](SATURATED_QUOTIENT.md),
 an [outside-cone coloop restriction](SATURATED_TAILS.md), and a
 [chronological complement replay bound with a fifteen-gate full-diagonal supplier bound](FULL_DIAGONAL_SUPPLY.md).

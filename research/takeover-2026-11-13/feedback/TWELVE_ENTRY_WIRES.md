@@ -1,5 +1,9 @@
 # Twelve consumer gates: what survives from the six-gate mirror
 
+**Later continuation:** [five-entry closure](FIVE_ENTRY_TWELVE_CLOSED.md) excludes
+the target-live five-entry case below 22. The six-entry restrictions and specified
+seven-gate counterexample below remain in force.
+
 2026-11-14. Structural deductions and one specified counterexample. No circuit search, enumeration, or computer-driven case elimination. These statements do not settle the twelve-consumer joint minimum.
 
 ## The wire theorem depends on the ordinary budget, not the entry count

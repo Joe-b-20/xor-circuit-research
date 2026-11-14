@@ -1,5 +1,9 @@
 # Saturated quotient cost restricts gates outside the output cones
 
+**Later continuation:** [six-entry frontier](SIX_ENTRY_FRONTIER.md) excludes the
+remaining one-tail twelve-consumer case below 22. The general coloop and core
+theorems proved here remain unchanged.
+
 2026-11-14. Structural hand proof. No circuit search, enumeration, or computer-driven elimination. This note distinguishes the full consumer from its relaxed target cones; it does not assume that gates used only for feedback can be discarded.
 
 ## A general coloop theorem
