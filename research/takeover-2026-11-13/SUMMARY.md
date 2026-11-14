@@ -1,6 +1,23 @@
 # What changed in the takeover
 
-**Current continuation after `8ab0b3e`, 2026-11-14:**
+**Current continuation after `ed374d1`, 2026-11-14:**
+[charged forests separate global and local source directions](feedback/CHARGED_FRONTIER.md).
+For t distinct traces in the remaining six-entry interface, forest charges have
+quotient rank t-4, and repeated-class residual sectors have total dimension 6-t.
+Their physical carriers are the subtrees joining each class's ports; repeated pairs
+give paths. No trace can occur three times. Two repeated-even pairs and a separated
+triangle/pair profile are also excluded. Source-own parity must be mixed, with 2–5
+odd-own entries. Free-seeded replay and strict equal-trace series give further
+physical-value restrictions. The twelve-consumer case remains open; the structural
+identities alone are not gate-cost bounds. Reviews and precise scope are linked
+from the current frontier.
+
+A [specified exposure counterexample](feedback/TRACE_EXPOSURE_LIMIT.md) invalidates
+an attempted global adjacency bound: local accumulator reorderings can change
+unmarked helper values. The attempted all-odd repeated-trace closure is withdrawn;
+that case remains open. The reviewed results above do not rely on this inference.
+
+**Previous continuation after `8ab0b3e`, 2026-11-14:**
 [the twelve-consumer problem now reduces to six target-live entries](feedback/SIX_ENTRY_FRONTIER.md).
 Every outside-entry case and the target-live five-entry case are excluded below
 total 22. The general mechanisms are affine-tree transfer with physical credits,

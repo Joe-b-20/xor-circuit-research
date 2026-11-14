@@ -1,87 +1,86 @@
 # XOR structural research: checkpoint, 2026-11-14
 
 Branch: `research-2026-11-13-structural`. This phase continues reviewed commit
-`8ab0b3e`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
+`ed374d1`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
 on `phase-2026-11-09`. Other worktrees and `search/proposals/` are preserved.
 Our worktree is this chat's `work/xor-structural`.
 
-**New reduction:** any joint circuit below 22 with exactly twelve consumer-bearing
-gates must have all twelve in the relaxed target cones and exactly six entries.
-Every outside-entry case and the target-live five-entry case are now excluded.
-The twelve-consumer minimum itself remains open.
+**New general structure:** odd trace ports are charges on the mirror's odd-value
+forest. Cut equations give an exact equality between charge rank and edge-flux
+rank modulo the clean target space. Directions invisible to class aggregates are
+confined to individual trace copy trees, on the subtrees connecting their ports.
 
-**New general mechanisms:** affine-tree transfer charges shared returns only for
-missing translated intermediate values. Independent even mirror helpers force an
-odd-value forest; cut equations make odd-wire source parts clean when extra source
-ports are confined to even wires. With at most two ordinary readers per helper,
-this yields entry chains with clean endpoints. Free-section replay completes an
-ordinary-projection section without a separate prefix-splitting hypothesis.
+**Exact six-entry decomposition:** if t is the number of distinct traces and H
+their aggregate source span, then `dim(H/D)=t-4` and `dim(U/H)=6-t`.
+The mirror forest consists of two four-vertex paths, each carrying the same
+nonzero clean aggregate. Global rank is 0,1,2 for t=4,5,6 respectively.
+Local residual sectors are independent; a repeated pair carries its direction
+on one port-connecting path. Different trace classes meet only at H-valued nodes.
 
-**New source restriction:** all-even-own entries force at least ten source gates,
-at any consumer budget. A rank-five candidate with at most nine source gates has
-one even wholly free direction q and an odd-own entry h, with
-`U=D direct-sum span{q,h}`. These statements constrain the entry span, not every
-original physical source value.
+**New exclusions and restrictions:** no trace occurs more than twice. The
+two-repeated-even-pair profile and the three-term triangle/pair profile are excluded.
+All-odd-own source entries are excluded, complementing the earlier all-even floor:
+there are 2–5 odd-own entry occurrences. Adjacent equal traces form strict series;
+a surviving intermediate must feed a useful exit, the pair sum must be physically
+absent from the original source, and the source budget must equal nine.
 
-**Retained:** joint minimum 22 for exactly ten or eleven consumer gates; no-feedback
-minimum 22; full-diagonal supplier lower bound 15 (attainment not claimed);
-block-monotone MixColumns lower bound 85; unrestricted `75<=L<=88`.
-No assumption that 88 is optimal. Hand proofs have independent machine reviews,
-not formal verification or human certification.
+**Still open:** the twelve-consumer minimum and larger consumer budgets.
+An attempted all-odd repeated-trace closure failed: alternative local exposures
+need not coexist in one mirror. Its specified counterexample is saved and reviewed.
+**Retained:** every candidate below 22 with twelve consumer gates has six entries,
+all target-live, actual-label rank five and trace rank four; at most two original
+physical clean values. Exact-ten and exact-eleven joint minima and the no-feedback
+minimum are 22. Block-monotone MixColumns remains at least 85; unrestricted
+`75<=L<=88`. No assumption that 88 is optimal.
+
+All universal statements have hand proofs and independent machine reviews, not
+formal verification or human certification. No circuit search or enumeration was used.
 
 ## Read next
 
-1. [Current reduction, complete coverage, and judgment](feedback/SIX_ENTRY_FRONTIER.md).
-2. [Affine-tree transfer](feedback/AFFINE_TREE_TRANSFER.md) and
-   [general odd-forest / chain geometry](feedback/CHAIN_FIBRES.md).
-3. [Five target-live entries are excluded](feedback/FIVE_ENTRY_TWELVE_CLOSED.md).
-4. Outside-entry closure: [four-entry core](feedback/FOUR_ENTRY_TAIL_CLOSED.md),
-   [core wire and triangle reductions](feedback/TAIL_CORE_REDUCTIONS.md),
-   [two nonclean entries](feedback/TWO_NONCLEAN_TAIL_CLOSED.md), and
-   [three-nonclean four-term relation](feedback/THREE_NONCLEAN_FOUR_TERM_TAIL_CLOSED.md).
-5. [Even-entry source floor and residue-plane normal form](feedback/EVEN_ENTRY_SOURCE_FLOOR.md),
-   [parity rank retraction](feedback/PARITY_RANK_RETRACTION.md), and
-   [free-section replay](feedback/FREE_SECTION_REPLAY.md).
-6. Supporting results: [six-entry identities](feedback/TWELVE_ENTRY_WIRES.md),
+1. [Current structure, restrictions, and judgment](feedback/CHARGED_FRONTIER.md).
+2. [Charged odd forests, exact rank split, and local carriers](feedback/CHARGED_ODD_FOREST.md).
+3. [Triple traces excluded](feedback/TRIPLE_TRACE_CLOSED.md),
+   [two repeated even pairs](feedback/DOUBLE_EVEN_PAIR_CLOSED.md), and
+   [triangle plus separated pair](feedback/TRIANGLE_SEPARATED_PAIR.md).
+4. [Odd-only source obstruction](feedback/ODD_ONLY_SIX_ENTRIES.md),
+   [free-seeded replay](feedback/FREE_SEEDED_REPLAY.md), and
+   [equal-trace series restrictions](feedback/EQUAL_TRACE_SERIES.md).
+   [Exposure limitation and counterexample](feedback/TRACE_EXPOSURE_LIMIT.md).
+5. Supporting results: [six-entry reduction and complete preceding coverage](feedback/SIX_ENTRY_FRONTIER.md),
    [saturated collisions](feedback/SATURATED_QUOTIENT.md),
-   [saturated tails](feedback/SATURATED_TAILS.md),
-   [four-diagonal supplier](feedback/FOUR_DIAGONALS.md),
-   [previous frontier](feedback/TWELVE_CONSUMER_FRONTIER.md).
-7. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
+   [source parity normal form](feedback/EVEN_ENTRY_SOURCE_FLOOR.md),
+   [six-entry trace identities](feedback/TWELVE_ENTRY_WIRES.md),
+   [A12](augmented/PROOF.md), and [four-diagonal supplier](feedback/FOUR_DIAGONALS.md).
+6. [Takeover history](SUMMARY.md), historical [record](../structure-2026-11-11/RECORD.md),
    [checkpoint](../structure-2026-11-11/CHECKPOINT.md), and
    [visible account](../structure-2026-11-11/visible/VISIBLE.md).
 
-## Why the new exclusions work
+## Distinctions that matter
 
-- A tail `v=u+h` with partners in one entry tree can be removed at total overhead
-  at most `B-1`, where B counts missing physical translates on the connecting tree.
-  Original values are advanced and credited; other feedback stays in place.
-- The seven-gate mirror's three independent even helpers have reader counts
-  `(2,1,1)`. Its odd-value graph is a tree. Cut equations force clean endpoints
-  and a clean isolated root in a repeated fibre, limiting useful crossing returns.
-- The difficult cases admit source-only replay with at most three extra gates.
-  It retains a clean triangle and an independent clean direction: at source cost
-  at most nine, that gives a forbidden supplier within twelve gates, below thirteen.
-- The outside core has four or five entries. All clean/nonclean counts and allowed
-  label-relation profiles are covered; see the explicit table in the current frontier.
-- With all entries even-own, three even-rank increases and four first triple masks
-  force seven independent odd-pair equations. A source budget below ten cannot
-  provide them, unless all exits are redundant, which also contradicts local ten.
+- H-valued consumer source parts and component clean sums need not be physical
+  source values. The charged identities alone imply no replay or gate lower bound.
+- Trace parity and source-own parity are different. The unique actual-label relation
+  uses odd trace positions; the new source obstruction concerns ordinary b masks.
+- The unique even free direction q is available before any consumer entry reads it.
+  Seeded replay allows prefixes augmented by that free line. For the first odd-own
+  entry h, `G0>=7+m_D+1_{h+q in A}`. At two physical clean values, h+q must be absent
+  from the entire original source set, even if it would be supplied later.
+- Free-coordinate normalization changes physical values outside U. Recompute
+  physical counts and credits in the normalized circuit.
+- Equal-trace series restrictions require adjacency. They do not merge all repeated
+  traces or treat their intermediate exit uses as dispensable.
+- Count only trace sums exposed simultaneously in one literal mirror. Reordering
+  an accumulator can change its unmarked even helpers; separate local exposures
+  cannot be counted together. The all-odd repeated-trace case is still open.
 
-## Remaining frontier and next direction
+## Next structural task
 
-A twelve-consumer candidate below 22 now has six entries, entry rank five, and trace
-rank four. Its sole actual-label relation is the odd-trace indicator. The trace
-relation space is the two-dimensional quotient-signature row space. At most two
-nonzero physical clean values exist. Every nonclean actual label has a unique
-physical difference pair. Repeated traces remain possible; all-odd, pairwise-distinct
-traces are already excluded.
+Relate the cost of useful returns to the exact global/local split. At four distinct
+traces, two local paths carry every nonclean direction while forest aggregates are
+clean. At five, one local path interacts with one global direction. At six, all
+quotient directions occur in forest charges. The physical carrier and entry-separator
+theorems are available; a general joint cost inequality remains to be proved.
 
-Use the six-gate mirror's two-component odd forest together with the source parity
-restriction. Odd trace ports add terms to the cut equations, so the new clean-endpoint
-argument cannot simply be reused. Internal merges with more readers may matter.
-The six-entry case, larger consumer budgets, and the unrestricted joint minimum
-remain open. Avoid turning this into a trace-pattern enumeration campaign.
-
-Reviews are linked from the current frontier. No circuit search or numerical proof
-campaign was used. Use Git with `-c core.filemode=false`; shared config is unchanged.
+Reviews are linked from the current frontier. Use Git with `-c core.filemode=false`;
+shared configuration is unchanged. Stage only intended research files.

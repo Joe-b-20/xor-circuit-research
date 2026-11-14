@@ -1,6 +1,17 @@
 # Current feedback research
 
-The latest continuation after `8ab0b3e` reduces the [twelve-consumer problem to six target-live entries](SIX_ENTRY_FRONTIER.md).
+The latest continuation after `ed374d1` gives the [charged six-entry frontier](CHARGED_FRONTIER.md).
+[Forest charges and local repeated-class carriers](CHARGED_ODD_FOREST.md) split the
+two quotient directions exactly according to the number of distinct traces.
+[Triple traces](TRIPLE_TRACE_CLOSED.md), [two repeated even pairs](DOUBLE_EVEN_PAIR_CLOSED.md),
+and [a triangle/pair profile](TRIANGLE_SEPARATED_PAIR.md) are excluded. Source entries
+must use [both own parities](ODD_ONLY_SIX_ENTRIES.md); [seeded replay](FREE_SEEDED_REPLAY.md)
+and [equal-trace series](EQUAL_TRACE_SERIES.md) constrain original physical supply.
+The twelve-consumer minimum remains open, and MixColumns remains 75 to 88.
+A [counterexample to combining alternative local exposures](TRACE_EXPOSURE_LIMIT.md)
+records why an attempted all-odd repeated-trace closure was withdrawn.
+
+The preceding continuation after `8ab0b3e` reduced the [twelve-consumer problem to six target-live entries](SIX_ENTRY_FRONTIER.md).
 Every outside-entry case and the target-live five-entry case are now excluded below
 22. [Affine-tree transfer](AFFINE_TREE_TRANSFER.md) accounts for shared returns;
 an [odd-value forest and clean chain endpoints](CHAIN_FIBRES.md) control repeated

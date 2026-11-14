@@ -1,5 +1,9 @@
 # The twelve-consumer problem reduces to six target-live entries
 
+**Later continuation:** [charged six-entry frontier](CHARGED_FRONTIER.md) identifies
+the global/local rank split, excludes trace multiplicity three, and adds source
+parity and physical-supply restrictions. The reduction proved here remains valid.
+
 2026-11-14, continuing reviewed commit `8ab0b3e`. Structural hand arguments with independent machine reviews, not formal verification or human certification. No circuit search, enumeration, or computer-driven elimination was used. No literature-novelty claim is made.
 
 **Current reduction.** Any joint two-sheet circuit of total at most 21 with exactly twelve consumer-bearing gates must have all twelve gates in the relaxed consumer-target cones and exactly six entry occurrences. Its actual entry span has rank five and two quotient directions over the clean diagonal. The consumer must read an odd-own source label. The five-entry target-live class and every outside-entry case are now excluded.

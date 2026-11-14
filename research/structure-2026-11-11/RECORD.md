@@ -2573,3 +2573,107 @@ odd forest, but odd trace ports add terms to its cut equations. The clean-endpoi
 conclusion cannot be imported unchanged. Internal helper-reader merges and the
 restricted source residue plane are the next promising objects. Repeated traces
 remain open; the all-odd pairwise-distinct subclass was already excluded.
+
+
+## 44. Charged mirror forests and local repeated-trace directions (2026-11-14)
+
+Continuation after reviewed commit `ed374d1`. Current account:
+[charged frontier](../takeover-2026-11-13/feedback/CHARGED_FRONTIER.md).
+Structural hand proofs with independent machine reviews; no circuit search,
+enumeration, or computer-driven elimination. The twelve-consumer minimum, larger
+budgets, and unrestricted joint minimum remain open. MixColumns remains 75 to 88.
+
+**Charged forest equations (proved, general).** In the odd-value forest forced by
+independent even mirror helpers, attach S_v equal to the actual labels at the trace
+ports of each physical odd occurrence. Full edge fluxes satisfy
+sum_incident X_e=B_v+S_v, with uncharged target/ordinary-input boundary B_v.
+A component has total charge equal to its boundary sum. Cutting an edge gives its
+flux as the boundary-plus-charge sum on one side. Modulo clean target space D, the
+edge-flux span equals the vertex-charge span exactly. Terminal ordinary outputs at
+even helpers contribute zero-source terms and are included in the full identities.
+
+**Global/local decomposition (proved for the six-entry interface).** Let t count
+distinct traces and H be the class-aggregate source span. Its only aggregate relation
+is the union of odd trace classes, so dim H=t-1 and D subset H. Even aggregates lie
+in D plus the odd aggregate span by the helper adjoint equation. Thus forest fluxes
+have quotient rank dim(H/D)=t-4, while dim(U/H)=6-t. The latter quotient is the direct
+sum of class sectors of dimensions m_tau-1. Every physical consumer wire's residual
+lies in its mirror-value class sector; different classes meet only at H-valued
+consumer nodes. No physical source availability is inferred from H membership.
+
+**Physical carriers (proved).** In a class copy tree, all ordinary reader boundaries
+and the root have zero residual modulo H. A port subset has nonzero residual exactly
+when it is nonempty and proper. The nonzero wires are therefore precisely the minimal
+subtree connecting that class's ports. Pairs give paths; a triple gives a three-arm
+tree before the later exclusion. No causal orientation or cost bound follows merely
+from this support identity. The six-gate mirror's odd forest consists of two
+four-vertex paths in odd cosets of the helper span. Each carries the same nonzero
+clean aggregate delta, so both contain odd trace ports.
+
+**Triple trace excluded (proved).** A triple consumes both trace relations and forces
+three nonclean labels a,b,k of the three quotient signatures plus clean labels c,c,d.
+The repeated trace is even, the c traces are odd, and d has the other even trace.
+Same-even-trace entries in a fixed own fibre form a connected chain, without needing
+clean endpoints. The c attachments cannot meet or be one NC edge apart. Only returns
+c plus two NC labels need extra work; at most two distinct such values exist, and
+both share the helper c plus the middle NC label. Source replay costs G0+1. Appending
+one XOR to a difficult returned value supplies a clean direction independent of c,d
+within G0+2<=11, contradicting A12. Hence all trace multiplicities are at most two.
+
+**Two-pair closures (proved).** If both even helpers are repeated twice, the other
+two labels are the same clean c, and the pair sums complete it to a clean basis.
+Even-wire separation isolates the pair chains. At most one difficult return can
+occur, because both possibilities are distinct physical clean values beyond c.
+One helper and one appended pair sum violate A12. For a three-term actual relation
+with two repeated pairs, one pair and singleton form an original triangle; the
+other pair and singleton are the two even traces and are separated in own fibres.
+Triangle advancement credits and one pair helper provide a clean basis in G0+1,
+also contradicting A12. Other pair relations require separate arguments.
+
+**All-odd-own source entries excluded (proved).** In the even-free-part normal form,
+only two named inputs/rows lie in U. Six distinct odd nonclean actual labels force
+at least four odd helpers. With no even source value, four first triple masks need
+new exits while at most one odd U value is available outside the actual labels.
+With one even value, equality forces four helpers and no useful odd exit. Its own
+mask is the all-four sum and it must first be returned. If i named inputs lie in U,
+forming that first return needs 4-i unit-own helpers; the 2+i rows outside U need
+at least 1+i distinct triple-own helpers, since only one can equal that even value
+plus a named input. Five helpers are required, exceeding four. Combined with the
+even-entry floor, both own parities occur. The odd-own indicator p satisfies Zp=0,
+and nonzero trace columns exclude weight one, leaving 2–5 odd-own occurrences.
+
+**Free-seeded replay (proved, general).** A free subspace S in one group can seed
+the credited replay invariant from time zero. It suffices that every E_i+S split,
+even when E_i alone does not. Greedy representatives modulo D+S produce a canonical
+complement. In rank five, seed the unique even free q and choose the first odd-own
+entry h. Full-diagonal replay gives G0>=7+m_D+1_(h+q in A). At m_D=2, G0=9 and h+q
+is absent from the whole original physical source set. This counts later values
+through producer credits, and does not require q to be an actual entry.
+
+**Equal-trace series (proved).** No nonempty subset of reader-adjoint contributions
+can sum to zero in a six-gate minimum mirror. Equal adjacent entry traces are thus
+strict series in the relaxed target graph. Replacing the second entry by the sum
+label exposes the first as an outside entry, retaining all source-exit uses.
+An original physical pair sum would pay for this redirection and contradict the
+closed outside case. Without a credit it costs one extra source gate. A surviving
+segment therefore has G0=9, an absent pair sum, and a useful intermediate exit.
+These conditions are not claims about arbitrary separated equal traces.
+
+The current next task is a joint cost argument connecting the global forest charges
+to the local repeated-class paths, with original chronology and physical source
+credits retained. The rank identities themselves are not lower bounds on gates.
+
+
+**Consequential failed inference and specified counterexample.** A proposed all-odd
+four-trace closure counted the union of possible adjacent trace-pair exposures as
+though all used the same two even helpers. This is false: local accumulator orders
+at one vertex can change the unmarked helpers. The saved six-gate mirror computes
+p=x0+x1, t=p+x2, j=t+x3, then E0=j+x0,E1=j+x1,E2=j+x2,E3=t. Its transpose has an
+all-four-own node with three branches. Alternative local orders expose x0+x1,
+x0+x2, or x1+x2 separately, giving a triangle of class adjacencies. A specified
+twelve-gate decoration has six entries, traces (x0,x0,x1,x1,x2,x3), rank-five labels,
+and the correct diagonal target parts. No nine-gate source supplier is claimed.
+The attempted all-odd repeated-trace closure is withdrawn. Simultaneous exposures
+at distinct vertices remain valid; the other phase results use fixed marked even
+traces or zero accumulators and are unaffected. See
+[the counterexample](../takeover-2026-11-13/feedback/TRACE_EXPOSURE_LIMIT.md) and its review.

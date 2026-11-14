@@ -1,0 +1,11 @@
+# Independent review of equal-trace series segments
+
+2026-11-14. The primary agent independently checked [EQUAL_TRACE_SERIES.md](../EQUAL_TRACE_SERIES.md). No material gap was found. This is machine review of a hand argument, not formal verification or human certification. No search was used.
+
+The zero-accumulator argument uses the exact mirror budget correctly. Every literal mirror after a permitted local accumulation reorder still has six XORs and computes the ordinary triples. A nonempty zero-sum subset of reader contributions either contains a zero wire already, or can be accumulated into a zero gate. Removing that computation after dropping trace ports would contradict the ordinary minimum six. Thus the reader/terminal contributions at each original consumer node are linearly independent.
+
+Equal outgoing entry traces would immediately give a zero-sum subset, so adjacent equal traces cannot be siblings. For a parent/child pair, equality of the incoming full adjoint and the child's contribution makes the remaining contributions sum to zero. They must be absent. This proves strict series only in the relaxed consumer graph; source-exit readers remain possible and are explicitly retained.
+
+The replacement of y=(u+a)+b by y=u+(a+b) is causal at the second entry: a and b are then physically available. If their sum was originally supplied later, computing it early advances a distinct source value and permits bypassing its later first producer. Earlier or free sums need no new gate. Retaining the first entry preserves any earlier or later exit uses, including uses involved in supplying b. Its only relaxed consumer reader is redirected, so it becomes an outside gate. The established outside-case closure applies to the resulting full circuit, rather than to an unrepaired core.
+
+Without an original pair-sum credit, the same construction costs at most one additional source gate. A candidate with G0 at most eight would still contradict the closed outside or smaller-consumer cases. Thus G0 is exactly nine under the stated candidate hypothesis. If the intermediate node has no useful exit reader, it can be removed and pays for the new source sum itself, again contradicting the smaller-consumer bound. All three consequences are correctly conditional on adjacent equal traces in the remaining twelve-consumer problem.
