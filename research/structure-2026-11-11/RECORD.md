@@ -2394,3 +2394,90 @@ excludes the circuit. All four profiles retained in section 40 are now closed. E
 cone, four-entry, clean-entry and two/three-nonclean reductions supply the remaining
 coverage. If normalization drops the consumer count to ten, its established bound
 applies instead. No extension to a consumer with twelve or more gates is asserted.
+
+
+## 42. Saturated quotient structure and the twelve-consumer frontier (2026-11-14)
+
+Continuation after reviewed commit `cfab8f6`. Full account:
+[the twelve-consumer frontier](../takeover-2026-11-13/feedback/TWELVE_CONSUMER_FRONTIER.md).
+Hand arguments with independent machine reviews; no circuit search, enumeration,
+or computer-driven case elimination. The twelve-consumer case remains open.
+The unrestricted interval remains 75 to 88, and the block-monotone bound remains 85.
+
+**Saturated quotient theorem (proved, general).** If actual entry labels span U,
+target source parts span D, and K=L_D+c for c=dim(U/D), choose any actual quotient
+basis and its full-label span C. The selected entry edges form a forest of defect c.
+Its components lie in full-value cosets modulo C. Any further coset merger would
+increase physical collision defect beyond c and contradict the collision lower
+bound. Hence these partitions coincide. Every return in C is a chronological path
+sum of selected labels. Any actual nonclean label can be included in a quotient
+basis, so its unique physical difference pair is its selected entry edge. It cannot
+repeat at an entry or be newly supplied by an exit. Indirect feedback through changed
+values is not excluded; returns need not all lie in one chosen complement.
+
+**Outside-cone coloop theorem (proved, general).** Under the same equality, an
+unselected gate outside the relaxed output cones would remain dead after projection
+and selected-entry bypassing. That would leave a circuit below L_D. Thus every
+outside gate is an entry selected in every quotient basis, equivalently a coloop
+occurrence. At most c outside gates exist. This argument includes gates used only
+for exits and does not assume they can be trimmed from the original joint circuit.
+
+**Chronological complement (proved, general).** Greedily select actual entry labels
+when their quotient images enlarge the span modulo any prescribed D subset U.
+Their span C complements D, and every entry-prefix splits: a selected label is pure
+C; a later label's C component is a combination of representatives already read.
+Credited replay therefore completes D and C, preserving original source values, for
+G0+(2^dim(D)-1-m_D)+(2^dim(C)-1-m_C). The counts refer to original physical values,
+including later original producers; virtual span membership receives no credit.
+
+**Rank-four source floor (proved).** For the two-sheet problem, dim U at most four
+forces G0 at least ten at any consumer budget. Rank-three clean confinement already
+forces twelve. At rank four, choose a clean plane containing the original clean
+span and a complementary plane from first actual nonclean representatives.
+Two physical clean directions give a replay with at most two extra gates and hence
+G0 at least eleven by the four-diagonal bound thirteen; one gives at least ten.
+If G0 at most nine and no physical clean value exists, generic two-extra replay and
+the six-value coset theorem limit the original nonclean coset to five values.
+A chronological greedy basis accounts for four; only the possible fifth can first
+be supplied by an exit. Its expansion is an odd-weight nonbasis combination, hence
+exactly three earlier basis terms. One-extra replay supplies five coset values
+within ten gates, violating the ten-gate coset cap.
+
+**Full-diagonal supplier bound (proved).** The four first-sheet rows and all seven
+nonzero clean diagonal values require at least fifteen source gates; attainment
+is not claimed. At fourteen, eleven distinct own-mask first occurrences plus three
+free entry directions exhaust the gates. All actual free labels are even.
+For physical even values H and residue rank r, the available odd-pair component
+bound gives g+r at most four and g at least 2^(3-r), so r at least two.
+Seven clean even values plus two nonclean even values leave at most one odd helper.
+Without a helper, at most three odd-pair relations and five independent even-only
+relations exist; with one, at most five and four respectively. Both fall below
+the eleven independent non-entry equations. For rank-five entry space, complement
+completion then gives G0 at least 5+m_D+m_C, hence at least 7+m_D.
+
+**Global twelve-consumer reduction (proved necessary conditions).** A total at most
+21 with K=12 has G0 at most nine, entry rank exactly five, and quotient rank two.
+There are at most two original physical clean nonzero values. Two outside-cone
+gates would leave a ten-gate target consumer needing three clean entry directions,
+contradiction. Thus at most one outside entry survives. With only one useful exit,
+reassociate v=u+h and f=v+w as g=u+w, f=g+h; this moves one gate to the source without
+increasing the total, contradicting the closed eleven-consumer case. Any surviving
+tail must consequently support at least two distinct nonredundant returns.
+
+**Target-live wire reduction (proved with stated hypothesis).** If all twelve
+consumer gates lie in the relaxed output cones, there are five or six entries.
+Six entries leave a six-gate ordinary mirror, so trace rank is four and the unique
+actual-label relation is the odd-trace indicator. The trace relation space is the
+quotient-signature row space. Repeated traces remain possible; all odd and pairwise
+distinct traces are excluded by zero-overhead replay. With five independent labels,
+the seven-gate mirror has three independent even trace classes of sizes (3,1,1)
+or (2,2,1). Different classes cannot meet in an entry tree. Internal-component
+returns alone give a replay contradicting the source bounds. Therefore exactly one
+ordinary fibre has two entry-tree roots, and a nonredundant exit joins its components.
+
+**Specified limitation.** The seven-gate ordinary circuit p=x0+x1, q=x2+x3,
+t=p+q, outputs t+xi has distinct even wires p-to-t and q-to-t with identical ordinary
+derivative 1111. Six-gate even-wire separation does not extend unconditionally.
+The next structural obstruction is shared work in returns crossing entry components
+or in multiple returns through the unique outside entry. No twelve-consumer or
+unrestricted joint minimum is claimed.

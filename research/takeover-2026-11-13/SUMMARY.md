@@ -1,6 +1,22 @@
 # What changed in the takeover
 
-**Current continuation after `d8bfd65`:** [the eleven-consumer joint minimum is 22](feedback/ELEVEN_CONSUMER_CLOSED.md).
+**Current continuation after `cfab8f6`, 2026-11-14:**
+[the twelve-consumer structural frontier](feedback/TWELVE_CONSUMER_FRONTIER.md)
+adds a general equality theorem: when quotient cost is saturated, projected physical
+collisions are exactly selected entry-tree paths, and each actual nonclean label has
+a unique physical pair. Gates outside the relaxed output cones must be quotient
+coloops. A greedy chronological complement gives a general physical-value replay
+bound. New source arguments force at least ten gates at entry rank at most four,
+and at least fifteen for the source rows plus all seven clean diagonals (attainment
+not asserted). A twelve-consumer candidate below 22 must have entry rank five,
+at most two physical clean values, and at most one outside-cone gate, supporting
+multiple useful returns. Target-live five-entry candidates require an exit crossing
+the two components of a unique two-root fibre; six-entry candidates satisfy explicit
+trace relations. A fixed seven-gate example refutes an unqualified extension of
+even-wire separation. The twelve-consumer case and larger budgets remain open.
+Reviews and exact hypotheses are linked from the new frontier.
+
+**Previous continuation after `d8bfd65`:** [the eleven-consumer joint minimum is 22](feedback/ELEVEN_CONSUMER_CLOSED.md).
 The physical fibre trees and marked-wire derivatives of a tight six-gate mirror close
 all remaining eleven-consumer profiles. A new supplier theorem forbids six physical
 values in one diagonal coset within eleven source gates, closing the last nonclean

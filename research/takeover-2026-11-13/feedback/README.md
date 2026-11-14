@@ -1,6 +1,17 @@
 # Current feedback research
 
-The latest continuation after `d8bfd65` is [eleven consumer gates have joint minimum 22](ELEVEN_CONSUMER_CLOSED.md).
+The latest continuation after `cfab8f6` is the [twelve-consumer structural frontier](TWELVE_CONSUMER_FRONTIER.md).
+It proves a general [equality theorem for projected physical collisions](SATURATED_QUOTIENT.md),
+an [outside-cone coloop restriction](SATURATED_TAILS.md), and a
+[chronological complement replay bound with a fifteen-gate full-diagonal supplier bound](FULL_DIAGONAL_SUPPLY.md).
+[Entry rank at most four forces source cost at least ten](RANK_FOUR_SOURCE_FLOOR.md).
+Consequently a twelve-consumer candidate below 22 needs entry rank five, at most two
+physical clean values, and at most one outside-cone gate supporting multiple useful
+returns. [Wire restrictions](TWELVE_ENTRY_WIRES.md) narrow the target-live cases and
+give a seven-gate counterexample to extending even-wire separation. The twelve-consumer
+case remains open. These hand proofs have independent machine reviews.
+
+The preceding continuation after `d8bfd65` proved [eleven consumer gates have joint minimum 22](ELEVEN_CONSUMER_CLOSED.md).
 Tight ordinary fibres and marked-wire derivatives constrain exit paths. A six-value
 source-coset bound closes the final all-nonclean case. The specified `(11,11)` circuit
 attains 22. Any joint circuit below 22 must now have at least twelve consumer gates
