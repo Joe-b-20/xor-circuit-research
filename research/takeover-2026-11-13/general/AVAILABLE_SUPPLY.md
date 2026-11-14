@@ -127,7 +127,12 @@ If r_min is a target-forced lower bound on even rank, then
 
     L_2(T) >= r_min+L_3(T).                                  (12)
 
-The separate minima need not be jointly attainable. The missing physical pair-supply cost and its sharing remain part of the binary problem.
+This inequality does not establish simultaneous attainment of the separate minima.
+Even simultaneous attainment of r_min and L_3 need not determine binary size,
+because mu can be positive. The later [graph-tagged family](PRIVATE_TAGGING_TRADEOFF.md)
+attains minimum rank and minimum O+d simultaneously while paying an unbounded mu;
+its minimum physical pair count k=r+mu and minimum O+d are incompatible. The
+missing physical pair-supply cost and its sharing remain part of the binary problem.
 
 For the even complement family, the preceding proofs give L_3=3k-2 and r_min=k, jointly attained by the displayed binary constructions. For the shared-triple family, L_3=m+1 and r_min=m+1 are also jointly attained. These are illustrations, not a universal separation principle.
 

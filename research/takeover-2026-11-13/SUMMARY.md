@@ -1,5 +1,28 @@
 # What changed in the takeover
 
+**Current continuation after `bd1b808`, 2026-11-14:**
+[Private tagging and joint cost](general/PRIVATE_TAGGING_TRADEOFF.md) prove an
+exact projection theorem and give invertible all-odd graph maps with L_2=2m,
+L_3=m, and r_min=v-c. The sum of separate minima misses exactly the target graph's
+cycle-space dimension. For complete graphs every split among extra odd work,
+even aggregation, and redundant pair supply is attained at the total optimum;
+the ratio of true cost to the separated bound approaches two.
+
+[Tree rigidity](general/TREE_INTERSECTION_RIGIDITY.md) proves that equality at
+the connected-support gate bound forces physical support intersections to be
+available. Specified supplier patterns then force EE gates in every optimum.
+For b disjoint patterns on N inputs every unrestricted circuit has G>=N-b and
+G+d>=N, including circuits mixing the patterns. Eliminating all EE gates costs
+exactly b. No direct-sum assumption or fixed-budget case classification is used.
+
+[The single-target frontier](general/SINGLE_TARGET_PARETO.md) characterizes the
+exact pair of resource costs from arbitrary supplied dictionaries, using one
+representation that dominates the given continuation in both costs. Its local
+formula does not preserve sharing across outputs. Proofs have independent
+machine reviews; specified constructions and the involution are directly checked.
+Unrestricted MixColumns stays 75-88. The next problem is a joint obstruction
+without private-coordinate separation, retaining physical reconvergence costs.
+
 **Current continuation after `d295965`, 2026-11-14:**
 [shared preparation for several outputs](general/MULTI_OUTPUT_STARTUP.md)
 extends the first-target argument to unions of chronological target cones. It

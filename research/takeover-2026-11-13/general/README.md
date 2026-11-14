@@ -1,119 +1,133 @@
 # General arguments for unrestricted XOR circuits
 
-2026-11-14, continuing `d295965`. The priority remains general structural
-understanding and unrestricted arguments. Restricted lemmas need a specified
-role in such an argument. The fixed-budget twelve-consumer case queue is deferred.
+2026-11-14, continuing reviewed commit `bd1b808`. The active task is general
+structural understanding. Fixed-budget casework remains deferred. This phase
+uses hand proofs and checks of specified constructions, with no SAT, circuit
+search, representation enumeration, or computer-driven case elimination.
 
-## Shared preparation for several outputs
+## Joint computation and supply have an unavoidable cost
 
-[The multi-output theorem](MULTI_OUTPUT_STARTUP.md) extends the first-target
-argument by taking one union of the first k odd-target ancestor cones. Every
-shared helper appears once. Earlier required odd values receive their exact
-credit, including required values that are ancestors of other selected outputs.
+[Private inputs and joint tradeoffs](PRIVATE_TAGGING_TRADEOFF.md) resolve a
+previous open point: the minimum ternary resource P and minimum physical
+odd-plus-odd supply count k can be incompatible by an unbounded amount, even
+for invertible all-odd maps.
 
-Choose a nonzero parity with at least one required non-input odd target. Let H
-count other odd gates, and d even-plus-even gates. For a target subset S, let
-U(S) be its input-support union, omega give odd input coordinates weight one and
-even coordinates weight two, and kappa count components of its support-overlap
-graph. Every unrestricted circuit satisfies
+The general extension theorem is exact. If nonzero core targets f_i receive
+pairwise disjoint blocks of private coordinate inputs, with B private inputs
+in total, then
 
-    H+d >= max_k min_(|S|=k)
-                ceil((omega(U(S))-kappa(S)-2k)/2).        (1)
+    L_2(f_i + private_block_i : all i) = L_2(f_i : all i) + B.
 
-The minima are over required non-input odd targets. This is a mathematical
-invariant, not a proposal to enumerate subsets. The proof uses actual first
-appearances; arbitrary non-prefix target groups need extra ancestor credits.
-Separate prefix inequalities are maximized, not summed.
+Sequential projection removes one distinct gate per private coordinate. It
+allows arbitrary mixing and cancellation in the original circuit. Taking one
+private coordinate for an even row and two for an odd row embeds any nonzero-row
+linear computation into an all-odd invertible involution, with known additive
+overhead between m and 2m. The all-odd class remains fully expressive.
 
-The bound is sharp for targets sharing a common odd core of 2a+1 inputs and
-having disjoint private groups of sizes 2b_i. Their exact minimum combined
-preparation is
+For a simple graph with v vertices, m edges and c connected components, give
+edge {u,w} its own input z_e and require x_u+x_w+z_e. Retaining core identity
+outputs makes this map square and self-inverse. Its exact complexities are
 
-    min(H+d)=a+sum_i(b_i-1).
+    L_2=2m,             L_3=m,             r_min=v-c.
 
-The common core is paid once and private work is paid per output. Their full
-binary minimum is n-1, attained by the displayed constructions. Complete-graph
-star targets also show that the multi-output resource bound can be quadratically
-larger than the first-target bound as a function of row weight.
+The separated-minima bound misses exactly beta=m-v+c, the target graph's
+cycle-space dimension. For every unrestricted implementation,
 
-## Actual available values and an exact resource model
+    (r-r_min) + H+d+mu >= beta.
 
-[Available supply](AVAILABLE_SUPPLY.md) treats a finite dictionary S of physically
-available values. Its span is not granted as free input. Give an odd dictionary
-value weight one and an even value weight two, and let Omega_S(z) be the minimum
-weighted XOR representation of z using that dictionary.
+Here H counts extra odd gates, d even-plus-even gates, and mu cycle-closing
+odd-plus-odd gates; r is actual even rank. These quantities concern the physical
+implementation, while beta belongs to the specified target graph.
 
-Adding an actual gate value v changes the metric exactly by
+For the complete graph K_q, a star-pair construction at r=q-1 attains every
+nonnegative integer split H+d+mu=beta. A nonstar edge can be paid for through
+an odd helper, an even combination, or a directly supplied redundant pair.
+Every option costs the same two gates including its private output. The exact
+(k,P) frontier, with k odd-plus-odd gates and P=O+d, is
 
-    Omega_(S+v)(z)=min(Omega_S(z), w(v)+Omega_S(z+v)).
+    (k,P)=(K,2m-K),              q-1<=K<=m.
 
-An odd-plus-odd gate leaves this metric unchanged. An odd gate or an even-plus-
-even gate shortens each target by zero or two, possibly helping many targets
-at once. The exact minimum number of these latter gates needed for one nonzero
-value z is (Omega_S(z)-w(z))/2. Actual chronological intervals can be summed
-when their actual successive dictionaries are retained. An exact progress ledger
-separates shared preparation from progress made by required output gates.
+The true binary cost divided by r_min+L_3 tends to two in this explicit family.
+This is not a universal ratio theorem. Minimum rank r and minimum P actually
+can coexist here, with mu=beta; their sum still misses redundant physical supply.
+It is the separate minima of k=r+mu and P that cannot coexist. This distinction
+is essential when interpreting the cost gap.
 
-Starting from ordinary coordinate inputs, under total parity and with all targets
-odd, there is a whole-map reformulation:
+## Even aggregation cannot be eliminated cheaply
 
-    min_binary(O+d)=L_3(T),       min_binary(H+d)=L_3(T)-m.
+[Tree intersections and rigidity](TREE_INTERSECTION_RIGIDITY.md) start with a
+general equality theorem. If targets use n coordinates and their support-overlap
+graph has kappa components, every circuit has G>=n-kappa. At equality its complete
+ancestor graph is a forest. Every gate then combines disjoint supports, and
+every nonempty intersection of physical value supports is itself a physical
+value. Canceled extra input ancestors are counted in the proof, not ignored.
 
-Here L_3 is the minimum number of three-input XOR gates on earlier odd values,
-O counts all odd binary gates, and m counts required non-input targets. The
-translation is chronological in both directions. It preserves the named
-resource, not total binary cost or even rank. Consequently
+Duplicated private attachments can therefore force actual even suppliers.
+The simple pattern has suppliers e=a+b, f=c+d, h=e+f, and at least two private
+odd outputs using each supplier. Its optimum requires h=e+f: removing that
+even-plus-even operation forces one extra gate after arbitrary rewiring.
 
-    L_2(T) >= r_min+L_3(T),
+For b disjoint instances on N total inputs, every unrestricted implementation
+satisfies
 
-but these separate minima need not be jointly attainable. Supplying the even
-pair values still costs real binary gates. Indeed S={a,b,c} and
-S+{a+b} have the same Omega everywhere but different binary cost for a+b+c.
-The metric alone therefore cannot price all physical availability.
+    G>=N-b,                     G+d>=N.
 
-## What the MixColumns check rules out
+The exact optimum with at most D even-plus-even gates is N-min(D,b), for integer
+D>=0. In particular removing all such gates costs exactly b. The proof allows
+cross-instance sharing and cancellation; mixed physical components and their
+cycles are charged rather than excluded. No general direct-sum theorem is used.
+A connected hierarchy also forces arbitrarily many even aggregations in every
+optimum, though no additive removal-gap formula is claimed for that hierarchy.
 
-Under total parity the support profile in (1) is exactly one. A specified nested
-output order proves the upper bound by hand, and the weight-five row minimum
-proves equality. The eight bit-position blocks are a compatible partition, so
-the standalone rank-plus-support-profile certificate cannot exceed 57. It cannot
-recover 75. This ceiling applies only to that specific certificate, not to other
-parities or arguments retaining actual supply, cycle, and fanout information.
+## What a single output can and cannot explain
 
-The [direct checks](checks/check_supply_certificates.py) verify that fixed order,
-one common-core construction, and the ternary translation of one recorded
-88-gate MixColumns circuit. Its counts O=48,d=16 produce a 64-gate ternary circuit;
-all 32 outputs are checked. This is an upper witness for L_3, not a new binary
-construction or an optimality claim. No circuit or subset search is used.
+[The single-target Pareto theorem](SINGLE_TARGET_PARETO.md) handles any actual
+supplied dictionary S, even a dependent one. For each subset R representing a
+nonzero target z, let o,e count odd/even members and I be z's parity. Its formula
+resource point is
 
-## Retained foundations and judgment
+    K_R=(o-I)/2,                 P_R=(o+I)/2+e-1.
 
-The [first-odd-target theorem](FIRST_ODD_TARGET_TRADEOFF.md),
-[exact complement tradeoff](COMPLEMENT_TRADEOFF.md),
-[unbounded shared-helper benefit](SHARED_HELPER_AMPLIFICATION.md), and
-[causal versus cyclic gaps](CAUSAL_BOOTSTRAP_GAP.md) remain established. In
-particular, one helper can benefit arbitrarily many targets, and executable
-circuits can cost almost twice their cheapest independent XOR equation systems.
-[Parity components](ODD_COMPONENT_DEFECT.md) give exact physical accounting;
-[the quadratic relaxation](QUADRATIC_LIFT_LIMIT.md) remains too weak for MixColumns.
+Every unrestricted continuation is dominated in both resources by ONE such
+representation point. Conversely every point is attainable. The exact discrete
+frontier consists of their nondominated points. A formal lift chooses the same
+R before any prices are assigned; the argument is stronger than separate minima
+or a convex-price bound. Ordinary single-target cost is the minimum actual
+representation size minus one.
 
-The multi-output theorem solves the overlap problem for its cone-union charge.
-It does not solve unrestricted complexity: support coverage can miss the cost
-of supplying the particular values that later gates require. The dictionary
-model and ternary normal form identify that remaining issue precisely.
+This identifies where the joint problem begins: separate single-output formulas
+can duplicate shared work, so they cannot be added across outputs. The note's
+supplied-dictionary separation example is explicitly not claimed to describe a
+full coordinate-input prefix, where earlier intermediate values remain available.
 
-The next task is to couple whole-map computation on actual odd values to the
-physical supply and reuse of even pair values. A useful result must price their
-joint realization rather than optimize two independent minima or assume a fixed
-benefit per helper. A different invariant remains welcome if it handles that
-coupling more directly. Sharpening the support-only total-parity MixColumns
-certificate is not a useful next step because its ceiling is proved.
+## Retained results, checks, and next direction
 
-Unrestricted MixColumns remains 75 to 88, with no assumption that 88 is optimal.
-Both new notes have hand proofs and independent machine reviews, linked within
-them. These are not formal verification, human certification, or claims of
-literature novelty. The [saved check result](checks/supply-certificates-result.json)
-records specified-construction verification only.
+The [available-supply metric and ternary normal form](AVAILABLE_SUPPLY.md),
+[shared multi-output preparation bound](MULTI_OUTPUT_STARTUP.md),
+[parity component accounting](ODD_COMPONENT_DEFECT.md),
+[complement tradeoffs](COMPLEMENT_TRADEOFF.md),
+[shared-helper amplification](SHARED_HELPER_AMPLIFICATION.md), and
+[causal gaps](CAUSAL_BOOTSTRAP_GAP.md) remain available foundations.
+The support-only total-parity MixColumns profile is exhausted: it is exactly
+one, and that standalone rank-plus-profile certificate cannot exceed 57. The
+unconstrained [quadratic relaxation](QUADRATIC_LIFT_LIMIT.md) likewise has its
+proved ceiling. Neither is a circuit upper bound or a new MixColumns bound.
 
-[Final scope review](reviews/shared-supply-progress-review.md) checks this synthesis,
-the checkpoint, and the specified-construction evidence against the reviewed proofs.
+[Direct checks](checks/check_joint_supply.py) verify one mixed K_5 construction
+with H=d=mu=2 and 20 gates, its invertibility and involution, three specified
+supplier-copy constructions, one connected hierarchy, and the two displayed
+single-target dictionary formulas. The [saved result](checks/joint-supply-result.json)
+contains no optimization. Each mathematical note has independent machine review;
+these are not formal verification, human certification, or claims of novelty.
+
+Next: generalize the joint obstruction beyond private coordinates. The forest
+intersection theorem forces suppliers exactly; a useful extension must control
+how reconvergence and cancellation let circuits evade several such requirements
+at once. A separate charge per missing intersection is not justified. Another
+invariant is welcome if it captures the same joint physical cost more directly.
+Do not return to fixed-budget classification or optimize the exhausted support
+profile. Unrestricted MixColumns remains 75<=L<=88; 88 is not assumed optimal.
+
+[Final scope review](reviews/joint-supply-progress-review.md) checks this synthesis,
+the checkpoint, and the specified constructions, including the distinction
+between minimum rank and minimum physical pair supply.

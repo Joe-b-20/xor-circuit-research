@@ -2886,3 +2886,88 @@ verification or human certification. No literature-novelty claim is made.
 Unrestricted MixColumns stays 75–88. The next task is a joint account of actual
 odd-value computation and even-pair supply, preserving physical availability
 and charging each shared supplier once.
+
+
+## 48. Exact joint supply tradeoffs and forced even aggregation (2026-11-14)
+
+Continuing reviewed commit `bd1b808`, this pass develops general unrestricted
+arguments rather than extending the fixed-budget queue. No SAT, circuit search,
+representation enumeration, or computer-driven case elimination is used.
+
+**Private-coordinate extension.** For arbitrary nonzero core targets f_i and
+pairwise disjoint private input blocks totaling B coordinates,
+L_2(f_i+private_block_i)=L_2(f_i)+B. Project private coordinates to zero sequentially.
+Before each projection its target still has a nonzero core part, so some gate
+first acquires coefficient one in that coordinate; it directly reads the input
+and a coefficient-zero value. Projection deletes that current gate. B distinct
+deletions leave the core map. This allows mixing, cancellation, repeated core
+rows, and arbitrary shared preparation. One/two tags per row make all rows odd;
+retaining the core and early tags while changing the final tag makes a square
+involution with exact overhead B between m and 2m. All-odd invertible maps still
+contain arbitrary linear-output computation with explicit known overhead.
+
+**Graph family and exact joint gap.** For any simple graph H with v vertices,
+m edges and c components, targets x_u+x_w+z_e have L_2=2m and L_3=m. Compatible
+partitions have minimum even rank v-c: each edge crossing core parts requires
+its distinct tag to join an endpoint part, giving r>=v-k+b>=v-c. Core connected
+components and singleton tags attain this. Thus the separated-minima bound
+misses exactly beta(H)=m-v+c. Identity core outputs make the map an invertible
+involution with the same costs. Every unrestricted implementation satisfies
+(r-(v-c))+H_o+d+mu>=beta(H). For K_q, all triples H_o+d+mu=beta occur at r=q-1
+and G=2m: supply each nonstar pair directly, combine two star pairs evenly, or
+add them successively to its private odd tag. This gives the exact discrete
+(k,P) frontier (K,2m-K), q-1<=K<=m. The family-specific ratio of true binary
+cost to r_min+L_3 tends to two. No universal ratio theorem is asserted.
+See [private tagging](../takeover-2026-11-13/general/PRIVATE_TAGGING_TRADEOFF.md).
+
+**Forest equality forces physical intersections.** A complete target ancestor
+union has g=a-c+beta, where a is the actual coordinate ancestor count, including
+canceled extra inputs. If n coordinates occur in target supports and kappa is
+their overlap-component count, a>=n and c<=kappa give G>=n-kappa. Equality forces
+a=n and forest components. Unique paths prohibit cancellation; common ancestor
+cones intersect in the cone of a unique physical branching node. Hence every
+nonempty support intersection is an actual value. A tree component's target
+supports also have connected overlap, even when other components have cycles.
+
+**Even aggregation is not cheaply removable.** Duplicate private odd outputs
+using e=a+b, f=c+d, and h=e+f force all three even suppliers at the tree bound.
+Every optimum contains h=e+f. Replacing it via the odd t=a+f and h=t+b costs
+one extra gate without EE. For b disjoint patterns on N inputs, a tree component
+contains precisely one pattern and forces one EE. If t counts tree components,
+t<=d, while every other component pays at least one undirected cycle. Therefore
+G>=N-t>=N-d, together with G>=N-b. Both are attained: the exact optimum with
+integer allowance d<=D is N-min(D,b). In particular EE removal costs exactly b.
+Arbitrary cross-pattern sharing/cancellation is retained in the proof; no
+linear-circuit direct-sum theorem is assumed. A connected supplier hierarchy
+also forces all optimal wiring and q-1 EE gates, with no removal-gap formula
+claimed for that connected family. See
+[tree rigidity](../takeover-2026-11-13/general/TREE_INTERSECTION_RIGIDITY.md).
+
+**Exact one-target Pareto theorem.** From any actual supplied dictionary S,
+let R represent a nonzero target z and have o odd/e even members; I is z's parity.
+Its formula point is (K_R,P_R)=((o-I)/2,(o+I)/2+e-1). Formal lifting of any
+continuation to independent dictionary labels chooses one R before prices.
+Odd/even weights (alpha+beta)/2 and beta show simultaneously K>=K_R,P>=P_R.
+Every point is attained, so this is the full discrete frontier, not only its
+convex hull. Unit prices give exact binary cost ell_S(z)-1. A two-point example
+separates the resource minima, but is explicitly a supplied-dictionary example,
+not a full coordinate-prefix assertion. Individual formulas cannot be added
+across outputs without preserving shared gates. See
+[single-target frontier](../takeover-2026-11-13/general/SINGLE_TARGET_PARETO.md).
+
+All three notes have independent machine reviews and primary-agent proof checks,
+not formal verification or human certification. The specified checker verifies
+one K_5 mixed construction (20 gates,H_o=d=mu=2), its square involution, three
+3-copy supplier constructions (27,29,30 gates), one connected hierarchy, and
+both single-target dictionary formulas. There is no optimization or search.
+No literature-novelty claim is made. MixColumns remains 75-88. Next: seek a joint
+obstruction beyond private-coordinate separation, particularly a rigorous account
+of how reconvergence evades several physical intersection requirements at once.
+
+Clarification of separate minima: the complete-graph family does attain minimum
+rank r and minimum P=O+d simultaneously in its direct-pair construction, with
+mu=beta. The two incompatible minima are minimum physical pair count k=r+mu
+and minimum P. Thus this family proves that the rank-plus-ternary sum can be
+insufficient even with simultaneous attainment, not that minimum rank and
+minimum P must conflict. The current synthesis and the available-supply note
+explicitly distinguish these statements.
