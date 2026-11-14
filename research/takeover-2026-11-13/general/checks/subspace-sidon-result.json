@@ -1,0 +1,72 @@
+{
+  "coordinate_examples": {
+    "distance_three": {
+      "gates": 6,
+      "target_span_dimension": 3,
+      "initial_collision_rank": 0,
+      "missing_directions": 3,
+      "outside_gates": 3,
+      "new_colors": 0,
+      "independent_collisions": 3,
+      "stagnant_repeats": 0,
+      "chronological_identity_verified": true
+    },
+    "distance_four": {
+      "gates": 7,
+      "target_span_dimension": 3,
+      "initial_collision_rank": 0,
+      "missing_directions": 3,
+      "outside_gates": 4,
+      "new_colors": 1,
+      "independent_collisions": 3,
+      "stagnant_repeats": 0,
+      "chronological_identity_verified": true
+    },
+    "single_parity_distance_seven": {
+      "gates": 6,
+      "target_span_dimension": 1,
+      "initial_collision_rank": 0,
+      "missing_directions": 1,
+      "outside_gates": 5,
+      "new_colors": 4,
+      "independent_collisions": 1,
+      "stagnant_repeats": 0,
+      "chronological_identity_verified": true
+    },
+    "distances_proved_symbolically_not_searched": true
+  },
+  "prepared_common_offset": {
+    "gates": 8,
+    "target_span_dimension": 3,
+    "initial_collision_rank": 2,
+    "missing_directions": 1,
+    "outside_gates": 5,
+    "new_colors": 4,
+    "independent_collisions": 1,
+    "stagnant_repeats": 0,
+    "chronological_identity_verified": true,
+    "prefix_gates_charged_separately": 36,
+    "escape_length_certificate": 7,
+    "all_quotient_input_weights_at_most_one": true
+  },
+  "affine_incidence": {
+    "prime": 3,
+    "inputs": 45,
+    "targets": 27,
+    "column_classes": 18,
+    "clone_overhead": 27,
+    "reduced_map_pair_outputs": 27,
+    "sidon_property_proved_symbolically_not_enumerated": true,
+    "gates": 54,
+    "odd": 36,
+    "pairs": 18,
+    "even_plus_even": 0,
+    "effective_even_rank": 18,
+    "odd_graph_cycles": 0,
+    "extra_odd": 9,
+    "ternary_resource": 36
+  },
+  "circuit_search": false,
+  "representation_search": false,
+  "codeword_enumeration": false
+}

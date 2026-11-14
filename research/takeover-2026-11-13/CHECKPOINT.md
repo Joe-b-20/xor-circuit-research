@@ -1,7 +1,7 @@
 # XOR structural research: checkpoint, 2026-11-14
 
 Branch: `research-2026-11-13-structural`. This phase continues reviewed commit
-`44fa588`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
+`f034b0d`. Original verified base: `e89b8a25f69195266f1e24e815cb96c7526a3511`
 on `phase-2026-11-09`. Isolated worktree: this chat's `work/xor-structural`.
 Other worktrees and `search/proposals/` are preserved.
 
@@ -13,82 +13,99 @@ fixed-budget queue remains deferred. No SAT, circuit enumeration, exact search,
 or computer-driven elimination. Supporting linear algebra and checks of specified
 constructions are allowed. Read [the synthesis](general/README.md) first.
 
-## A joint state barrier stronger than separate word lengths
+## New joint invariant: preparation of a target subspace
 
-[Common-offset preparation](general/COMMON_OFFSET_PREPARATION.md): two actual
-coordinate-prefix states S0,S1 have every target's complete individual (K,P)
-frontier equal to (r,r), but exact joint frontiers (rm,rm) and (r,m+r-1).
-K counts OO gates; P=O+d_EE counts all others. Remaining costs 2rm and m+2r-1
-have unbounded ratio when m=r grows. ALL intermediate values remain in S1.
-The prefix costs 4rm and is explicitly charged separately; this is not a faster
-end-to-end circuit. The target map also admits a square all-odd involution.
+[Subspace preparation](general/SUBSPACE_PREPARATION.md). For actual dictionary S
+and W spanned by required outputs, let R(S) span S intersect W and all u+v from
+supplied pairs equal modulo W. R consists exactly of W-values obtainable with
+no new outside-W gate, although their inside-W computation is not free.
 
-Construction: anchors a_j, local x_(i,j),z_i, j=1..2r; t_i=sum_j x_(i,j)+z_i.
-Prefix e_(i,j)=a_j+x_(i,j), their successive even sums, then u_i=h+t_i,
-h=sum_j a_j. Quotient a_j,x_(i,j)->A_j, z_i->Z_i sends every supplied even to zero
-and every odd to a unit, forcing o>=2r+1 in every target representation. Thus
-individual frontier stays (r,r). Supplying h once gives the joint optimum.
-Pair-difference lengths change; full dictionary metrics are NOT claimed equal.
+Inside-W gates cannot enlarge R. A gate at a new nonzero quotient value cannot
+enlarge R either. A gate at an existing nonzero quotient value enlarges it by
+zero or one dimension. With q=dim(W/R0), final/initial nonzero quotient-value
+counts t_f,t_0, and zeta the number of repeat-color gates not enlarging R,
 
-General law: if t_i+h are supplied, ell(h)=q and ell(t_i)=q+1 for all distinct
-targets, then exact L_S(T)=m+q-1. First target lower bound plus output count
-matches actual common-offset preparation. Competing circuits are unrestricted.
+    H_out = (t_f-t_0)+q+zeta.
 
-## Exact joint representations and two-target formula
+For q>0 put Delta=min_{w in W minus R0} ell_S(w), necessarily at least three.
+Every continuation producing a spanning set of W-values has
 
-[Joint normal form](general/JOINT_DICTIONARY_NORMAL_FORM.md): dictionary row
-matrix B and targets T satisfy
+    H_out >= q+Delta-3.
 
-    L_S(T)=min_(RB=T)L_2(R)
-          =min_(RB=T)[n(R)-t(R)+L_2(R_red)].
+Before the first successful collision, all inside-W values lie in R0. Grant R0
+only in a lower-bound relaxation; absorption preserves the minimum escape word
+length. The first collision needs Delta-2 outside gates; q-1 further collisions
+need one each. Add only distinct missing W-targets to this count, not all outputs
+of a larger map. Other required outside-W outputs are already counted in H_out.
 
-The lift is joint, preserving shared gates. n is used dictionary members, t
-is distinct nonzero output patterns. Some optimum computes disjoint groups
-of members with equal patterns once, then a residual distinct-pattern circuit.
-Groups need not have disjoint ordinary supports; sums may be dependent. No
-free span values. The residual can contain the entire original problem when
-B=I; neither minimization is claimed efficient or solved by enumeration.
+More generally, for proper U containing R0, H_out>=dim(W/U)+min_{W minus U}ell_S-3.
+For R_[k]=span{w in W:ell_S(w)<=k}, k>=2, R_[2]=R0; whenever R_[k] is proper,
+H_out>=dim(W/R_[k])+k-2. No efficient computation of this profile is claimed.
 
-For distinct nonzero u,v, some optimum needs at most one shared value:
-L_S(u,v)=min{ell(u)+ell(v)-2, min_(h!=0)[ell(h)+ell(u+h)+ell(v+h)-1]}.
-The helper is paid for; zero arms are omitted. Pairwise bounds cannot simply
-be added across targets. Do not turn this into a small-output casework queue.
+Coordinate specialization: target span dimension r, minimum nonzero weight D>=3
+imply H_out>=r+D-3. It is sharp for distance-three and distance-four families
+of arbitrary dimension, and dimension one at every D. Independent weight-three
+targets with no weight-one/two vector in their span have exact cost 2m; any saving
+requires such a low-weight combination. This is a necessary condition, not a
+sufficiency claim.
 
-## Exact saturation by target closure
+[Common-offset preparation](general/COMMON_OFFSET_PREPARATION.md) is recovered
+exactly: after its real 4rm-gate prefix, R0 is the even-combination subspace of
+the m independent targets, dimension m-1. Thus q=1, Delta=2r+1, forcing 2r-1
+outside gates and m target gates, attained by computing the common offset.
+All individual target frontiers remain (r,r); the joint invariant sees what
+those profiles missed. Prefix cost remains separate from remaining complexity.
 
-[Coset saturation](general/COSET_SATURATION.md): partition n inputs into c>=2
-nonempty parts, r=n-c, require ALL values odd on exactly one part. There are
-c*2^r targets, including inputs. Exact L_2=c*(2^r-1). Supply r actual pair-basis
-values, then traverse the required cosets, one gate per missing odd output.
-Compatible partitions force even rank r. Every optimum has r even gates and
-c*2^r-n odd gates, with H=d_EE=mu=0; for c>=3 its parity partition equals the
-specified one. This does not assert a full-ancestor forest. With c=2 this is
-all odd forms and L_2=2^(n-1)-2. Sparse target sets are not claimed to saturate.
+Scope: W=V gives R0=W and no bound on outside work. Proper subspaces still give
+unrestricted constraints, but their outside-gate counts overlap and cannot be
+added without a new argument.
+
+## Sharing capacity without a fixed supply basis
+
+[Supply tradeoff](general/SIDON_SUPPLY_TRADEOFF.md). On coordinate inputs with
+m distinct non-input odd targets, H extra odd gates and E even gates satisfy
+G=m+H+E. Let alpha be the maximum boundary-pair multiplicity of a nonzero XOR
+and nu the analogous target-pair multiplicity. Then
+
+    m <= alpha*E + (H+sqrt(H^2+4*nu*H*E*(E-1)))/2.
+
+First-target gates with a boundary odd parent contribute at most alpha*E;
+the others form a bipartite helper/even graph with common-neighbor capacity nu.
+All internal values, EE work, redundant supply and cancellation are allowed.
+This refines the existing Sidon argument; it is not a new graph technique.
+
+For Sidon inputs-plus-targets, alpha=nu=1 (single-target case handled separately).
+With s=H+E, 27*max(m-s,0)^2<=4*s^3 and G>=m+ceil((m/2)^(2/3)). An explicit
+prime-q affine-incidence map replaces each point by three private coordinates,
+each line by two, and requires their incident weight-five sums. It is a Sidon
+boundary and has exact unrestricted cost q^3+3q^2 by column cloning. Therefore
+the overhead exponent 2/3 is sharp. No claim about its minimum possible even
+rank, and no MixColumns-specific numerical improvement, is needed.
 
 ## Evidence and next task
 
-All three notes have independent machine reviews and primary-agent proof checks;
-no formal verification, human certification, or literature-novelty claim. A
-[final scope review](general/reviews/joint-dictionary-progress-review.md) checks
-the synthesis and specified evidence.
-[Specified checks](general/checks/check_joint_dictionary.py) and
-[saved results](general/checks/joint-dictionary-result.json) verify r=m=3:
-prefix 36, remaining 18 versus 8, joint resource frontiers (9,9)/(3,5), individual (3,3),
-fixed lifts (21 members/3 patterns and 9 members/4 patterns), square involution,
-and the two-target shared budget 7. Also a five-input coset construction has
-twelve targets, nine gates, even rank 2, H=d_EE=mu=0. No optimization or search.
+Both notes have independent machine reviews and primary-agent proof checks;
+no formal verification, human certification, or literature-novelty claim.
+[Specified checks](general/checks/check_subspace_and_sidon.py) and
+[saved results](general/checks/subspace-sidon-result.json) verify quotient-rank
+evolution for the sharp examples and the common-offset continuation (36 paid
+prefix gates, eight remaining), and q=3 incidence (27 targets, 54 gates,
+H=9,E=18, 18 column classes). No circuit, representation or codeword search.
+[Final scope review](general/reviews/subspace-sidon-progress-review.md).
 
-Next: joint affine sharing patterns and the residual distinct-pattern map.
-Target closure explains when intermediate odd costs vanish; a useful converse
-must allow all competing supply bases, extra rank, EE work, and cancellation.
-Do not fix a basis as a restriction or grant it free. Other frameworks allowed.
-Unrestricted MixColumns remains 75<=L<=88. The previous 57/58/60 certificate
-ceilings retain their named limits, not circuit upper bounds.
+Next: control shared credit across several proper target subspaces, or connect
+independent-relation growth to the difference-multiplicity tradeoff. Merely
+summing subspace counts is invalid. Seek a general joint argument, retaining
+actual supply and arbitrary competing bases; no fixed-budget casework.
+Unrestricted MixColumns remains 75<=L<=88, with no assumption that 88 is optimal.
 
-Retained [branch repair](general/BRANCH_INTERSECTION_REPAIR.md),
+Retain [joint normal form](general/JOINT_DICTIONARY_NORMAL_FORM.md),
+[coset saturation](general/COSET_SATURATION.md),
+[branch repair](general/BRANCH_INTERSECTION_REPAIR.md),
 [simultaneous repair gap](general/CAUSAL_FOREST_QUOTIENT.md), and
-[pair-supply tradeoffs](general/PRIVATE_TAGGING_TRADEOFF.md). Keep full beta distinct
-from odd mu, physical pair count distinct from rank, and remaining cost distinct
-from end-to-end cost. History: [summary](SUMMARY.md),
-[record](../structure-2026-11-11/RECORD.md). Use Git with `-c core.filemode=false`;
-shared configuration is unchanged. Stage only intended research files.
+[pair-supply tradeoffs](general/PRIVATE_TAGGING_TRADEOFF.md). Keep full beta
+separate from odd mu, rank from physical supply count, and remaining cost from
+end-to-end cost. The 57/58/60 certificate ceilings are not circuit bounds.
+History: [summary](SUMMARY.md), [record](../structure-2026-11-11/RECORD.md).
+Use Git with `-c core.filemode=false`; shared configuration is unchanged.
+Stage only intended research files.

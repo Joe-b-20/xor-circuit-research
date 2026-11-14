@@ -1,9 +1,77 @@
 # General arguments for unrestricted XOR circuits
 
-2026-11-14, continuing reviewed commit `44fa588`. General structural understanding
+2026-11-14, continuing reviewed commit `f034b0d`. General structural understanding
 remains the priority. Fixed-budget classifications are deferred. This phase uses
 hand proofs and checks of specified constructions, without SAT, circuit search,
 representation enumeration, or computer-driven case elimination.
+
+## Independent directions force preparation outside the target subspace
+
+[Subspace preparation](SUBSPACE_PREPARATION.md) gives a joint state invariant
+for ANY actual supplied dictionary S and target subspace W. Let R(S) be the
+span of supplied W-values and differences of supplied values equal modulo W.
+Exactly those W-values can be recovered without producing new outside-W values;
+their physical computation inside W can still cost gates.
+
+A gate producing a value in W cannot enlarge R. An outside gate can enlarge it
+by at most one dimension, and only when its quotient value repeats an available
+one. If the required W-values span W, put q=dim(W/R(S)). For q>0 let Delta be
+the shortest S-word representing any value in W outside R(S). Then every
+unrestricted continuation uses
+
+    outside-W gates >= q+Delta-3.
+
+The first independent relation forces Delta-2 outside gates; each remaining
+independent relation forces another. Dependent dictionaries, cancellation, and
+all intermediate choices are allowed. Granting an already known subspace is
+used only as a lower-bound relaxation, with an absorption lemma preserving the
+minimum escape distance. More generally, if R_[k] is the span of W-values with
+S-word length at most k>=2 and R_[k] is proper, then
+
+    outside-W gates >= dim(W/R_[k])+k-2.
+
+This is a rank profile of joint short representations, not separate output costs.
+For coordinate inputs and a target span of dimension r and minimum nonzero
+weight D>=3, it gives at least r+D-3 gates outside that span. With M required
+non-input outputs in the span, total cost is at least M+r+D-3. In particular,
+m independent weight-three targets whose span contains no weight-one or
+weight-two vector have exact unrestricted cost 2m. Any saving for independent
+triples therefore requires a low-weight combination of the whole target set;
+pairwise overlap alone does not settle the question.
+
+The common-offset example below now has a positive explanation. Its paid prefix
+raises dim R from zero to m-1 without shortening any target's individual
+frontier. One direction remains, at distance 2r+1. The theorem forces 2r-1 outside
+gates plus m target gates, exactly the remaining cost m+2r-1.
+
+For W equal to the whole input space, R(S)=W and this obstruction is vacuous.
+Proper subspaces still constrain arbitrary full circuits, but their outside
+counts overlap and cannot simply be added. This is a general preparation law,
+not a new MixColumns lower bound or an efficient algorithm for the rank profile.
+
+## Sparse target differences limit sharing, without fixing a supply basis
+
+[The supply tradeoff](SIDON_SUPPLY_TRADEOFF.md) refines the repository's existing
+Sidon counting argument by gate parity. Let m non-input odd targets be required,
+H count other odd gates, and E count all even gates. If inputs together with
+targets have no four distinct values summing to zero, then
+
+    m <= E + (H+sqrt(H^2+4*H*E*(E-1)))/2.
+
+First-target gates with an input or target odd parent use distinct even values.
+The others form a bipartite graph between extra odd values and supplied even
+values; a four-cycle would contradict the target relations. This charges both
+resources and permits arbitrary cancellation, EE gates, redundant supply, and
+choice of basis. A general version replaces uniqueness by the maximum number
+of boundary/target pairs with each difference, so it applies to all odd maps.
+
+Writing s=H+E, the Sidon case gives 27*max(m-s,0)^2<=4*s^3 and in particular
+G>=m+ceil((m/2)^(2/3)). An explicit affine-incidence family with m=q^3 weight-five
+targets has exact unrestricted complexity m+3*q^2 by column cloning. Thus the
+overhead exponent 2/3 is sharp for this target class. This is a refinement of
+an existing graph mechanism, not a literature-novelty claim or a numerical
+improvement for MixColumns. The hypothesis restricts the specified targets;
+it does not restrict how a competing circuit is allowed to compute them.
 
 ## Shared preparation can be invisible to every separate target profile
 
@@ -104,7 +172,7 @@ closure, or that an uncharged fixed basis may be imposed on an arbitrary circuit
 
 ## Evidence, retained limits, and next direction
 
-All three notes have independent machine reviews and primary-agent proof checks,
+The previous three notes have independent machine reviews and primary-agent proof checks,
 not formal verification, human certification, or claims of literature novelty.
 [Direct checks](checks/check_joint_dictionary.py) and
 [saved results](checks/joint-dictionary-result.json) verify r=m=3 (36 paid prefix
@@ -122,16 +190,19 @@ Keep full ancestor cycle rank separate from parity-specific mu, rank separate
 from physical pair count, and appended costs separate from optimal rewiring.
 The 57,58,60 ceilings limit their named certificates only, not MixColumns itself.
 
-Next: a target-forced joint obstruction on affine sharing patterns and the
-residual distinct-pattern computation. Separate target profiles, rank-only
-boundaries, and a free-span model discard necessary information. The saturation
-theorem identifies when all odd work can be required outputs; a useful converse
-must allow competing supply bases, extra rank, even aggregation, and cancellation.
-Do not obtain a restricted bound by fixing a basis without paying for it or
-justifying the restriction. A different invariant is welcome. Unrestricted
-MixColumns remains 75<=L<=88; 88 is not assumed optimal.
+The new [subspace review](reviews/subspace-preparation-review.md) and
+[sharing review](reviews/SIDON_SUPPLY_TRADEOFF_REVIEW.md) independently audit the
+hand proofs. [Specified checks](checks/check_subspace_and_sidon.py) and
+[saved results](checks/subspace-sidon-result.json) verify the actual quotient
+rank evolution, sharp coordinate examples, the prepared eight-gate continuation,
+and the q=3 incidence construction (27 targets, 54 gates, H=9,E=18). No circuit,
+representation, or codeword search is used. The
+[final scope review](reviews/subspace-sidon-progress-review.md) checks the synthesis.
 
-[Final scope review](reviews/joint-dictionary-progress-review.md) checks the
-synthesis, checkpoint, fixed constructions, and the distinctions between
-individual and joint costs, paid preparation and remaining work, and an exact
-normal form and an algorithm for finding its optimum.
+Next: identify a shared accounting for several proper target subspaces, or connect
+their independent-relation growth to the target-difference sharing tradeoff.
+Simply adding their outside counts is invalid: the same gate can serve many
+subspaces. The useful objective is a general mechanism controlling that shared
+credit, while retaining actual dictionaries and all competing circuit choices.
+Do not return to a fixed-basis or fixed-budget classification. Unrestricted
+MixColumns remains 75<=L<=88; 88 is not assumed optimal.

@@ -1,5 +1,32 @@
 # What changed in the takeover
 
+**Current continuation after `f034b0d`, 2026-11-14:**
+[Subspace preparation](general/SUBSPACE_PREPARATION.md) gives an unrestricted
+joint state invariant. R(S) spans supplied target-subspace values and differences
+of supplied values equal modulo that subspace. Gates inside W cannot enlarge R;
+each outside gate enlarges it by at most one dimension. If q=dim(W/R)>0 and
+Delta is the shortest supplied word in W outside R, every continuation spanning
+W needs at least q+Delta-3 outside-W gates. A whole short-word rank profile
+strengthens this statement. For coordinate inputs it gives r+D-3 outside gates
+for a dimension-r target span of minimum weight D>=3. Independent weight-three
+targets with no weight-one/two combination consequently have exact cost 2m.
+
+This invariant explains the previous common-offset barrier: the paid prefix
+raises dim R to m-1, leaving one direction at distance 2r+1, and the bound
+recovers the exact remaining cost m+2r-1. For W=V the obstruction is vacuous;
+proper target subspaces constrain full circuits, but their outside counts cannot
+be summed without controlling overlap.
+
+[The sharing tradeoff](general/SIDON_SUPPLY_TRADEOFF.md) refines existing Sidon
+counting by odd helpers H and actual even gates E. A general difference-multiplicity
+law applies to all odd target maps. For a Sidon input-and-target boundary,
+G>=m+ceil((m/2)^(2/3)); an affine-incidence weight-five family has exact cost
+m+3*m^(2/3), proving the overhead exponent sharp. Internal circuit values remain
+unrestricted. Both proofs have independent machine reviews and specified
+construction/linear-algebra checks, not formal verification or a novelty claim.
+MixColumns remains 75-88. Next: control how a gate can advance several subspaces
+or serve many sharing relations, without double counting or fixing its basis.
+
 **Current continuation after `44fa588`, 2026-11-14:**
 [Joint dictionary computation](general/JOINT_DICTIONARY_NORMAL_FORM.md) gives
 an exact all-output lift and disjoint-pattern preparation normal form, retaining
