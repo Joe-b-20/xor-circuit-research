@@ -2806,3 +2806,83 @@ All four results have written hand proofs and independent machine reviews, not
 formal verification or human certification. No literature-novelty claim is made.
 Unrestricted MixColumns stays 75–88. The next structural problem is how already
 computed shared values reduce later startup costs without being charged repeatedly.
+
+
+## 47. Shared preparation across outputs and actual available supply (2026-11-14)
+
+Continuing reviewed commit `d295965`, this pass develops general unrestricted
+arguments. No fixed-budget casework, circuit search, or target-subset enumeration
+is used.
+
+**One union counts shared work once.** For an arbitrary union C of selected odd
+target ancestor cones, let q_C count ALL distinguished required odd occurrences
+in C, including unselected ancestors. Exact even-port and connected-graph counts
+give 2(H_C+d_C)=a+2f-c-2q_C+beta+B_e. Taking the first k required odd values makes
+q_C=k. If S is their target set, a+2f>=omega(U(S)), and physical components satisfy
+c<=kappa(S), the target-support overlap component count. Therefore
+
+    H+d>=max_k min_(|S|=k) ceil((omega(U(S))-kappa(S)-2k)/2).
+
+The nonzero chosen parity must have at least one required non-input odd target.
+All prefix inequalities are maximized, not added. The minimum is an invariant,
+not an instruction to enumerate subsets. The weighted support quantity minus
+kappa is also a rank of formal pair-difference spaces; it is not physical supply.
+A union estimate from row weights and pairwise intersections gives general
+symbolic lower bounds. Complete-graph star targets show quadratic resource
+growth in their row weight where the first-target bound is only linear.
+
+**Sharp shared/private accounting.** A core of 2a+1 inputs shared by all targets,
+with a private group of 2b_i inputs for target i, has exact minimum combined
+resource H+d=a+sum_i(b_i-1). The core is paid once and private work per output.
+The total binary optimum is n-1 by connected input support and a matching
+construction. This includes the preceding one-helper amplification family.
+See [multi-output startup](../takeover-2026-11-13/general/MULTI_OUTPUT_STARTUP.md)
+and its independent review.
+
+**Available dictionaries.** For an actual dictionary S, weight odd values 1 and
+even values 2. Minimum weighted XOR representation Omega_S obeys
+Omega_(S+v)(z)=min(Omega_S(z),w(v)+Omega_S(z+v)) when v=a+b is computed.
+An odd-plus-odd gate changes no Omega; an odd or even-plus-even gate reduces each
+by zero or two. Exact single-target minimum counted cost is
+min(O+d)=(Omega_S(z)-w(z))/2, achieved by physically pairing odd terms and then
+combining. This is not total binary cost. S={a,b,c} and S+{a+b} have identical
+Omega everywhere but different binary cost for a+b+c.
+
+Disjoint chronological intervals can use their actual successive dictionaries.
+For absent required odd targets, C_S(z)=(Omega_S(z)-1)/2 yields an exact progress
+ledger: total initial C equals the sum of affected-target counts over odd and
+EE gates. Subtract one for each first output production to separate shared
+preparation from progress piggybacked on required outputs. A helper can affect
+arbitrarily many targets, so this is not a constant-capacity gate lower bound.
+
+**A whole-map normal form.** With coordinate inputs under total parity and all
+required targets odd, min_binary(O+d)=L_3(T), where each ternary gate XORs three
+earlier odd values. Chronologically represent each binary even value as a pair
+of available odd ternary values. OO needs only a pair representation, OE one
+ternary gate, and EE(a+b)+(c+d) one odd ternary intermediate a+b+c plus pair
+representation with d. Conversely each ternary gate expands into one OO and one
+odd binary gate. Hence min(H+d)=L_3-m and L_2>=r_min+L_3. Rank and pair supply
+are not preserved, and separate minima need not be jointly attainable. See
+[available supply](../takeover-2026-11-13/general/AVAILABLE_SUPPLY.md) and review.
+
+**The support certificate's exact MixColumns limit.** Under total parity, its
+profile is exactly 1. The nested output order sheet 0,...,7, with c=0,...,3 inside
+each sheet, has connected overlaps. Sheet0 prefix sizes are 5,7,8,8. For 1<=j<=6,
+after j full sheets inputs are blocks 0,...,j-1 plus 7; next p rows add at most
+min(4,p+2) new own-block bits. At k=4j+p the union has at most 2k+3 inputs. Sheet 7
+adds none. These specified subsets bound every minimum from above by 1; row
+minimum weight 5 gives equality. The eight bit-position blocks are compatible,
+so the standalone rank-plus-support bound cannot exceed 32+24+1=57. This ceiling
+concerns that certificate, not other parities or physical-supply coupling.
+
+A direct checker verifies this single nested order, an attaining common-core
+example with 17 inputs/16 gates/H+d=5, and the deterministic ternary translation of
+one recorded 88-gate circuit. That circuit has O=48,E=40,r=24,d=16,mu=0; its translation
+has 64 ternary gates and all 32 outputs check. This is only an L_3 upper witness,
+not a new binary circuit or an optimality claim. No optimization is performed.
+
+Both notes have hand proofs and independent machine reviews, not formal
+verification or human certification. No literature-novelty claim is made.
+Unrestricted MixColumns stays 75–88. The next task is a joint account of actual
+odd-value computation and even-pair supply, preserving physical availability
+and charging each shared supplier once.

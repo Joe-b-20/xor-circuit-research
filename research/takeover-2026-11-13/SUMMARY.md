@@ -1,5 +1,28 @@
 # What changed in the takeover
 
+**Current continuation after `d295965`, 2026-11-14:**
+[shared preparation for several outputs](general/MULTI_OUTPUT_STARTUP.md)
+extends the first-target argument to unions of chronological target cones. It
+counts shared gates once, credits all earlier required odd values, and yields
+a target-support profile bound for arbitrary circuits. The common-core/private-
+group family attains min(H+d)=a+sum(b_i-1): shared work once, private work per
+output. Complete-graph stars show a much stronger multi-output resource bound.
+
+[Available dictionaries](general/AVAILABLE_SUPPLY.md) have an exact weighted
+word-length update and an exact one-target resource cost. Disjoint intervals
+use actual supplied values; a progress ledger captures unbounded shared benefit.
+Under total parity with all-odd targets, min_binary(O+d)=L_3(T) exactly. The
+normal form preserves this resource while leaving physical even-pair supply
+in the binary cost.
+
+A specified order proves that the total-parity MixColumns support profile is
+exactly1; its standalone rank-plus-profile certificate cannot exceed57. This is
+a limitation of that certificate, not a new bound on MixColumns. Direct checks
+verify the order, one sharp common-core construction, and the64-gate ternary
+translation of one recorded88-gate binary circuit. Proofs and independent reviews
+are saved. No search or enumeration is used; unrestricted MixColumns stays75–88.
+The next task is the joint cost of actual odd computation and physical pair supply.
+
 **Current continuation after `095f142`, 2026-11-14:** the
 [unrestricted combined-cost program](general/README.md) now has a general
 [first-odd-target theorem](general/FIRST_ODD_TARGET_TRADEOFF.md). For any nonzero
