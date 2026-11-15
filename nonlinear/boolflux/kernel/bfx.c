@@ -290,6 +290,12 @@ static int xspan_tries = 3, xspan_any = 0;
  * a cap that is much harder to repair.  repair_keep 1: while the current circuit violates a cap,
  * no move may raise the excess of any single cap. */
 static int repair_keep = 0;
+/* review5 S3: root op of the sampled two-gate candidates s = op2(X, d3).  0 (old): op2 uniform over
+ * the binary library, although XOR/XNOR roots were already enumerated exactly just before (with
+ * the NIST library 2 of 3 samples repeat that work).  1: op2 only among the AND-like library ops.
+ * 2: no sampling, every divisor d3 with every AND-like op and orientation (most d3 fail the
+ * one-pass feasibility test before the pair table is scanned). */
+static int nl_root = 0;
 static int sweep = 0;     /* review5: 1 = target gates in index order instead of at random (exact scans) */
 static int dmax = 200, pdiv = 90, nl_samples = 12, cand_cap = 40, use_fraig = 1;
 static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches; linear: see main */
@@ -371,6 +377,7 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "odc")) use_odc = atoi(v);
         else if (!strcmp(k, "repair_keep")) repair_keep = atoi(v);
         else if (!strcmp(k, "sweep")) sweep = atoi(v);
+        else if (!strcmp(k, "nl_root")) nl_root = atoi(v);
         else if (!strcmp(k, "xspan_tries")) xspan_tries = atoi(v);
         else if (!strcmp(k, "xspan_any")) xspan_any = atoi(v);
         else if (!strcmp(k, "linear")) linear_mode = atoi(v);
@@ -509,7 +516,7 @@ static PSlot *PHT; static int phts, phmask; static unsigned pgen;
 static int *L1; static int nl1;      /* entries whose value equals GT (level-1 candidates) */
 static inline u64 ldig(const u64 *v) {
     u64 h = 0;      /* per-word linear maps, no dependency chain between words */
-    for (int w = 0; w < W; w++) { u64 x = v[w]; int r = (w * 21 + 1) & 63; h ^= ((x << r) | (x >> (64 - r))) ^ (x >> ((w % 29) + 3)); }
+    for (int w = 0; w < W; w++) { u64 x = v[w]; int r = (w * 21 + 1) & 63; h ^= ((x << r) | (x >> ((64 - r) & 63))) ^ (x >> ((w % 29) + 3)); }
     return h;
 }
 static inline unsigned dslot(u64 d) { return (unsigned)((d * 0x9E3779B97F4A7C15ULL) >> 40) & phmask; }
@@ -544,6 +551,7 @@ static void add_cand(const Cand *c) {
 }
 
 static int lib2[16], nlib2;   /* binary ops in library, canonical orientation */
+static int libnl[16], nlibnl; /* the AND-like ones among them */
 static double budget;          /* max new-gate cost for this move */
 static int req_g, req_a;       /* required levels at s */
 
@@ -640,10 +648,18 @@ static void find_cands(int lev) {
         }
     }
     /* level 2, any library root (sampled):  s = op2(X, d3) or op2(d3, X) */
-    for (int smp = 0; smp < nl_samples && nlib2 > 0; smp++) {
-        int d3 = DIV[rndint(ndiv)];
-        int op2 = lib2[rndint(nlib2)];
-        int xfirst = op_sym(op2) ? 1 : (int)(rnd() & 1);
+    long nsmp = nl_root == 2 ? (long)ndiv * nlibnl * 2 : nl_samples;
+    for (long smp = 0; smp < nsmp && (nl_root ? nlibnl : nlib2) > 0; smp++) {
+        int d3, op2, xfirst;
+        if (nl_root == 2) {
+            d3 = DIV[smp / (nlibnl * 2)]; op2 = libnl[(smp >> 1) % nlibnl]; xfirst = (int)(smp & 1);
+            if (!xfirst && op_sym(op2)) continue;
+            if (op_cost[op2] > budget || LGc[d3] + op_gdw[op2] > req_g || LAc[d3] + op_adw(op2) > req_a) continue;
+        } else {
+            d3 = DIV[rndint(ndiv)];
+            op2 = nl_root ? libnl[rndint(nlibnl)] : lib2[rndint(nlib2)];
+            xfirst = op_sym(op2) ? 1 : (int)(rnd() & 1);
+        }
         /* f(x,y) with x = X: bit index (x<<1)|y if X first, else (y<<1)|x */
         int f[2][2];
         for (int x = 0; x < 2; x++) for (int y = 0; y < 2; y++)
@@ -976,6 +992,8 @@ int main(int argc, char **argv) {
     nlib2 = 0;
     int canon[] = {8, 14, 6, 9, 7, 1, 4, 13};
     for (int i = 0; i < 8; i++) if (op_ok[canon[i]]) lib2[nlib2++] = canon[i];
+    nlibnl = 0;
+    for (int i = 0; i < nlib2; i++) if (op_nl(lib2[i])) libnl[nlibnl++] = lib2[i];
     PCAP = 200000; if ((size_t)PCAP * W > 16000000) PCAP = 16000000 / W;
     PE = malloc(sizeof(PEnt) * PCAP); PV = malloc(sizeof(u64) * (size_t)PCAP * W);
     PD = malloc(sizeof(u64) * PCAP); PV0 = malloc(sizeof(u64) * PCAP); L1 = malloc(sizeof(int) * PCAP);

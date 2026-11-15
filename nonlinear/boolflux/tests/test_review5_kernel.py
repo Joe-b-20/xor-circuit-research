@@ -221,6 +221,24 @@ class TestOptions(unittest.TestCase):
         self.assertEqual((f['A'], f['feas']), (0, 1)); self.assertLessEqual(f['GD'], 3)
         check_same_function(self, text, (d / 'out.bfx').read_text())
 
+    def test_nl_root_modes(self):
+        # S3: sampled two-gate candidates with AND-like roots only (1) or all divisors (2)
+        text = aes('aes-sbox-a29-ad5-g182-gd16-xx153-29.circ.txt')
+        for mode in (1, 2):
+            s = dict(BASE); s.update(NIST_LIB); s.update(LEX_A)
+            s.update({'cap.a': 29, 'cap.ad': 5, 'cap.gd': 20, 'iters': 300, 'nl_root': mode})
+            rc, out, err, d = run(text, s)
+            self.assertEqual(rc, 0, err)
+            f = final(out)
+            self.assertEqual(f['feas'], 1); self.assertLess(f['G'], 182)
+            check_same_function(self, text, (d / 'out.bfx').read_text())
+        # an XOR-only library has no AND-like root: the sampled block is skipped, the run still works
+        s = dict(BASE); s.update({'cost.6': 1, 'cost.9': 1, 'cost.3': 1, 'lex': 'cost,gd', 'w.cost': 1, 'linear': 1, 'iters': 300, 'nl_root': 2})
+        lin = '\n'.join(['n 4', 'm 2', 'g 5', '6 0 1', '6 4 2', '6 5 3', '6 2 3', '6 7 0', 'o 6 8']) + '\n'
+        rc, out, err, d = run(lin, s)
+        self.assertEqual(rc, 0, err)
+        check_same_function(self, lin, (d / 'out.bfx').read_text())
+
     def test_repair_keep_never_raises_a_cap_excess(self):
         text = aes('aes-sbox-a32-ad5-g104-gd30-xx72-5.circ.txt')
         worst = {}
