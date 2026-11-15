@@ -84,13 +84,14 @@ class Circuit:
         lg = [0] * self.n; la = [0] * self.n
         counts = {}
         cost = 0.0
+        cost_of = model.cost if model is not None else None      # built once (it was rebuilt for every gate)
         for op, a, b in self.gates:
             lg.append(1 + max(lg[a], lg[b]))
             la.append((1 if op in NONLINEAR_OPS else 0) + max(la[a], la[b]))
             nm = OPNAME.get(op, 'OP%d' % op)
             counts[nm] = counts.get(nm, 0) + 1
-            if model is not None:
-                cost += model.cost.get(op, float('nan'))
+            if cost_of is not None:
+                cost += cost_of.get(op, float('nan'))
         return {'G': len(self.gates), 'A': sum(1 for g in self.gates if g[0] in NONLINEAR_OPS),
                 'GD': max((lg[s] for s in self.outputs), default=0),
                 'AD': max((la[s] for s in self.outputs), default=0),
@@ -114,16 +115,24 @@ class Circuit:
                        self.in_names, self.out_names)
 
 
+_INPUT_TABLES = {}
+
+
 def input_tables(n):
-    N = 1 << n
-    tabs = []
-    for i in range(n):
-        bit = n - 1 - i
-        t = 0
-        for x in range(N):
-            if (x >> bit) & 1: t |= 1 << x
-        tabs.append(t)
-    return tabs
+    """Truth tables of the n inputs (a new list on every call; the tables are computed once per n:
+    the 2^n-step loop was most of the time of evaluating a small circuit)."""
+    tabs = _INPUT_TABLES.get(n)
+    if tabs is None:
+        N = 1 << n
+        tabs = []
+        for i in range(n):
+            bit = n - 1 - i
+            t = 0
+            for x in range(N):
+                if (x >> bit) & 1: t |= 1 << x
+            tabs.append(t)
+        tabs = _INPUT_TABLES[n] = tuple(tabs)
+    return list(tabs)
 
 
 def tables_from_values(n, m, table):
@@ -218,13 +227,17 @@ _RANGE = re.compile(r'^([A-Za-z_][A-Za-z_0-9]*?)(\d+):([A-Za-z_][A-Za-z_0-9]*?)(
 
 
 def _expand(spec):
+    """Names of a declaration line.  As independent/verify.py reads them (review5 P4): commas
+    separate too, and a range written with a leading zero keeps its digit width (x00:x07)."""
     out = []
-    for tok in spec.split():
+    for tok in spec.replace(',', ' ').split():
         mm = _RANGE.match(tok)
         if mm and mm.group(1) == mm.group(3):
-            lo, hi = int(mm.group(2)), int(mm.group(4))
+            s = mm.group(2)
+            width = len(s) if (len(s) > 1 and s.startswith('0')) else 0
+            lo, hi = int(s), int(mm.group(4))
             step = 1 if hi >= lo else -1
-            out += ['%s%d' % (mm.group(1), k) for k in range(lo, hi + step, step)]
+            out += ['%s%s' % (mm.group(1), str(k).zfill(width)) for k in range(lo, hi + step, step)]
         else:
             out.append(tok)
     return out
@@ -243,8 +256,8 @@ def read_ncff(path_or_text, name=None) -> Circuit:
             ncirc += 1
             if ncirc > 1: break                  # review5 P4: the first circuit only, as independent/verify.py
             cname = name or (ln.split(None, 2) + ['circuit'])[2]; continue
-        if low.startswith('inputs:'): inputs = _expand(ln.split(':', 1)[1]); continue
-        if low.startswith('outputs:'): outputs = _expand(ln.split(':', 1)[1]); continue
+        if low.startswith('inputs:'): inputs = (inputs or []) + _expand(ln.split(':', 1)[1]); continue
+        if low.startswith('outputs:'): outputs = (outputs or []) + _expand(ln.split(':', 1)[1]); continue
         if low == 'begin slp': body = True; continue
         if low == 'end slp': body = False; continue
         if body: ops.append(ln.split())
