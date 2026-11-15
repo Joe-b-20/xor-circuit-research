@@ -26,12 +26,19 @@ from pathlib import Path
 HUBDIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(HUBDIR.parents[1]))
 from boolflux.hub.common import load, code_version, metrics   # noqa: E402
-from boolflux.hub.archive import Archive   # noqa: E402
+from boolflux.hub.archive import Archive, GEN_SLACK   # noqa: E402
 from boolflux.hub.funcbank import FuncBank   # noqa: E402
 from boolflux.hub.ops import kernel_bin   # noqa: E402
 
-DEFAULT_SECONDS = {'polish': 90, 'pull': 90, 'join': 60, 'trb': 30}
+DEFAULT_SECONDS = {'polish': 90, 'pull': 90, 'join': 60, 'trb': 30, 'osc': 90, 'gen_inv3': 60,
+                   'gen_bottom': 60, 'gen_skel': 60, 'linres': 30, 'gen_joinplus': 90}
+# operator name -> script (common CLI); track F operators live in hub/ops/
+SCRIPTS = {'polish': HUBDIR / 'op_polish.py', 'pull': HUBDIR / 'op_pull.py', 'join': HUBDIR / 'op_join.py',
+           'trb': HUBDIR / 'op_trb.py', 'osc': HUBDIR / 'ops' / 'op_osc.py', 'gen_inv3': HUBDIR / 'ops' / 'gen_inv3.py',
+           'gen_bottom': HUBDIR / 'ops' / 'gen_bottom.py', 'gen_skel': HUBDIR / 'ops' / 'gen_skel.py',
+           'linres': HUBDIR / 'ops' / 'op_linres.py', 'gen_joinplus': HUBDIR / 'ops' / 'gen_joinplus.py'}
 WINDOW = 40
+GENERATORS = {'gen_skel', 'gen_joinplus', 'gen_inv3', 'gen_bottom'}   # admitted with the nursery slack
 
 
 def acls(A):
@@ -53,6 +60,64 @@ class Scheduler:
         self.version = code_version()
         self.nrun = len(list((self.dir / 'runs').glob('*.json')))
         kernel_bin(self.dir)
+        self.ctl_mtime = None; self.ad3_share = 0.0; self.ingest_globs = []; self.ingested = set(); self.last_ingest = 0
+
+    # ---- hot control: DIR/control.json  {"ops": [...], "seconds": {...}, "eps": x, "near": x, "ad3_share": x,
+    #      "ingest": [glob, ...], "scripts": {name: path}, "generators": [name, ...]}; every change is logged as an event ---------------------------------------
+    def control(self):
+        f = self.dir / 'control.json'
+        if f.exists() and f.stat().st_mtime != self.ctl_mtime:
+            self.ctl_mtime = f.stat().st_mtime
+            try:
+                c = json.loads(f.read_text())
+            except Exception as e:
+                self.log(ev='control-error', error=repr(e)); return
+            # new operators can join a running campaign: {"scripts": {"name": "/path/op.py"}, "generators": [...]}
+            for name, path in c.get('scripts', {}).items():
+                sp = Path(path).expanduser()
+                if sp.exists():
+                    SCRIPTS[name] = sp; self.secs.setdefault(name, 60.0)
+                else:
+                    self.log(ev='control-error', error='script missing %s' % sp)
+            for g in c.get('generators', []):
+                GENERATORS.add(g)
+            if 'ops' in c:
+                bad = [o for o in c['ops'] if o not in SCRIPTS]
+                if bad: self.log(ev='control-error', error='unknown ops %s' % bad); return
+                self.ops = list(c['ops'])
+                for o in self.ops: self.hist.setdefault(o, [])
+            self.secs.update({k: float(v) for k, v in c.get('seconds', {}).items()})
+            if 'eps' in c: self.args.eps = float(c['eps'])
+            if 'near' in c: self.args.near = float(c['near'])
+            if 'nursery' in c: self.args.nursery = float(c['nursery'])
+            self.ad3_share = float(c.get('ad3_share', self.ad3_share))
+            if 'cpus' in c and hasattr(self, 'free'):          # add CPUs (never removes running ones)
+                add = [int(x) for x in c['cpus'] if int(x) not in self.cpus]
+                self.cpus += add; self.free += add
+            self.ingest_globs = c.get('ingest', self.ingest_globs)
+            self.log(ev='control', control=c, ops=self.ops, secs=self.secs, eps=self.args.eps, near=self.args.near,
+                     ad3_share=self.ad3_share)
+            self.last_ingest = 0
+        if self.ingest_globs and time.time() - self.last_ingest > 1800:
+            self.last_ingest = time.time(); self.ingest()
+
+    def ingest(self):
+        import glob
+        n = 0; seen = 0
+        for g in self.ingest_globs:
+            for f in sorted(glob.glob(str(Path(g).expanduser()))):
+                key = (f, Path(f).stat().st_mtime)
+                if key in self.ingested: continue
+                self.ingested.add(key); seen += 1
+                try:
+                    c = load(f)
+                except Exception:
+                    continue
+                st, r, gn = self.ar.admit(c, operator='ingest', settings={'file': f}, code_version=self.version, force_keep=True)
+                if st == 'admitted':
+                    n += 1; self.fb.add_circuit(c, r['id'])
+                    self.log(ev='ingest', file=f, id=r['id'], m=metrics(c), gain=gn)
+        self.log(ev='ingested', files=seen, admitted=n)
 
     def log(self, **kw):
         kw['ts'] = round(time.time(), 2)
@@ -94,8 +159,24 @@ class Scheduler:
             if doms and m[2] - min(doms) <= self.args.near_gap: out.append(ids[0])
         return out
 
+    def nursery_ids(self, op):
+        """cell minima admitted by a generator, not on the front, polished < 3 times by op (newest first)"""
+        fr = set(self.ar.front_ids()); out = []
+        for k, ids in self.ar.cells.items():
+            if not ids: continue
+            r = self.ar.rec[ids[0]]
+            if (r['operator'] in GENERATORS or (r.get('operator_settings') or {}).get('nursery')) and ids[0] not in fr and self.attempts.get((op, ids[0]), 0) < 3:
+                out.append((r['t_admit'], ids[0]))
+        return [i for t, i in sorted(out, reverse=True)]
+
     def choose_target(self, op, busy):
         pool = self.ar.front_ids()
+        if op in ('polish', 'pull', 'trb') and self.args.nursery > 0 and self.rng.random() < self.args.nursery:
+            nu = [i for i in self.nursery_ids(op) if i not in busy]
+            if nu: return nu[0]
+        if self.ad3_share > 0 and self.rng.random() < self.ad3_share:
+            p3 = [i for i in pool if self.ar.rec[i]['AD'] <= 3]
+            if p3: pool = p3
         if op in ('polish', 'pull', 'trb') and self.args.near > 0 and self.rng.random() < self.args.near:
             pool = self.near_ids() or pool
         ids = [i for i in pool if i not in busy]
@@ -113,7 +194,7 @@ class Scheduler:
         run_id = 'r%05d-%s' % (self.nrun, op)
         jd = self.dir / 'jobs' / run_id
         seed = self.rng.randrange(1, 1 << 30)
-        cmd = ['taskset', '-c', str(cpu), sys.executable, str(HUBDIR / ('op_%s.py' % op)), '--archive', str(self.dir),
+        cmd = ['taskset', '-c', str(cpu), sys.executable, str(SCRIPTS[op]), '--archive', str(self.dir),
                '--in', tid, '--seed', str(seed), '--seconds', str(self.secs[op]), '--out', str(jd)]
         lf = open(self.dir / 'jobs' / (run_id + '.log'), 'w')
         p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
@@ -126,18 +207,19 @@ class Scheduler:
         rec = json.loads((jd / 'record.json').read_text()) if (jd / 'record.json').exists() else {}
         outcome = []; gain = 0.0
         joins = (rec.get('info') or {}).get('joins') or []
+        nurs = job['op'] in GENERATORS or tm['operator'] in GENERATORS or bool((tm.get('operator_settings') or {}).get('nursery'))
         for k, f in enumerate(sorted(jd.glob('cand-*.bfx'))):
             from boolflux import core
             c = core.from_kernel(f.read_text(), f.stem)
             parents = [job['target']]
-            settings = {'caps': rec.get('caps'), 'objective': rec.get('objective'), 'seconds': rec.get('seconds')}
-            if job['op'] == 'join' and k < len(joins):
+            settings = {'nursery': nurs, 'caps': rec.get('caps'), 'objective': rec.get('objective'), 'seconds': rec.get('seconds')}
+            if job['op'] in ('join', 'gen_joinplus') and k < len(joins):
                 parents = [joins[k]['front'], joins[k]['back']]; settings.update(joins[k])
             elif job['op'] in ('polish', 'pull'):
                 settings.update({k2: (rec.get('info') or {}).get(k2) for k2 in ('caps', 'lowered', 't_last_improvement')})
             st, r, g = self.ar.admit(c, parents=parents, operator=job['op'], settings=settings, seed=job['seed'],
                                      run_id=job['run_id'], code_version=rec.get('code_version'), cpu_s=rec.get('cpu_s'),
-                                     wall_s=rec.get('wall_s'))
+                                     wall_s=rec.get('wall_s'), slack=GEN_SLACK if nurs else None)
             outcome.append({'cand': f.name, 'metrics': metrics(c), 'status': st, 'id': r['id'] if r else None, 'gain': g})
             if st == 'admitted':
                 gain += g; self.fb.add_circuit(c, r['id'])
@@ -170,7 +252,7 @@ class Scheduler:
     def run(self):
         end = time.time() + self.args.hours * 3600
         cpus = [int(x) for x in self.args.cpus.split(',')]
-        free = list(cpus); running = []; last_front = 0
+        self.cpus = list(cpus); self.free = free = list(cpus); running = []; last_front = 0; last_ctl = 0
         self.log(ev='start', cpus=cpus, ops=self.ops, seconds=self.secs, eps=self.args.eps, version=self.version,
                  archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()))
         while running or time.time() < end:
@@ -185,6 +267,8 @@ class Scheduler:
                 j = self.launch(free[0], {x['target'] for x in running})
                 if j is None: break
                 free.pop(0); running.append(j)
+            if time.time() - last_ctl > 30:
+                self.control(); last_ctl = time.time()
             if time.time() - last_front > 300:
                 self.write_front(); last_front = time.time()
             time.sleep(0.5)
@@ -202,6 +286,7 @@ def main():
     ap.add_argument('--near', type=float, default=0.0,
                     help='probability that polish/pull/trb target a near-front cell minimum instead of a front circuit')
     ap.add_argument('--near-gap', type=int, default=3)
+    ap.add_argument('--nursery', type=float, default=0.0, help='probability that polish/pull/trb target a generator-made cell minimum')
     args = ap.parse_args()
     s = Scheduler(args)
     if args.seed_list:

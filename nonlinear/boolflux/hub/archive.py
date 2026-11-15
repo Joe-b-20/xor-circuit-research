@@ -17,6 +17,7 @@ K_PER_CELL = 4
 # gain weights: lexicographic research priorities (AND count, AND depth first; then G, GD)
 GAIN_W = {0: 8.0, 1: 4.0, 2: 2.0, 3: 1.0}
 CELL_ONLY_GAIN = 0.01          # a better circuit in its (A, AD, GD) cell that is dominated elsewhere
+GEN_SLACK = 40                 # nursery: new structures from generators may enter their cell this far above the front
 NEAR_SLACK = 6                 # a dominated circuit enters its cell only if G <= (G of a dominating front point) + slack
 
 
@@ -76,11 +77,13 @@ class Archive:
         f = set(self.front())
         return [i for k, ids in self.cells.items() for i in ids if (k[0], k[1], self.rec[i]['G'], k[2]) in f]
 
-    def would_place(self, m):
+    def would_place(self, m, slack=None):
+        """slack: allowed G excess over a dominating front point (NEAR_SLACK; generators use GEN_SLACK)"""
+        slack = NEAR_SLACK if slack is None else slack
         k = self.key(m); g = self.cell_min(k)
         if not (g is None or m[2] < g or (m[2] == g and len(self.cells[k]) < K_PER_CELL)): return False
         doms = [q[2] for q in self.front() if leq(q, m)]
-        return not doms or m[2] <= min(doms) + NEAR_SLACK
+        return not doms or m[2] <= min(doms) + slack
 
     def gain(self, m):
         """frontier gain of tuple m against the current cell minima (before admission)"""
@@ -103,13 +106,13 @@ class Archive:
 
     # ---- admission ----------------------------------------------------------------------------
     def admit(self, c, parents=(), operator='seed', settings=None, seed=None, run_id=None, code_version=None,
-              cpu_s=None, wall_s=None, force_keep=False):
+              cpu_s=None, wall_s=None, force_keep=False, slack=None):
         """Verify and admit c if it lowers (or ties, up to K) the G of its (A, AD, GD) cell.
         Returns (status, record_or_None, gain)."""
         i = cid(c)
         if i in self.rec: return 'duplicate', self.rec[i], 0.0
         m = metrics(c)
-        if not self.would_place(m) and not force_keep: return 'not-better', None, 0.0
+        if not self.would_place(m, slack) and not force_keep: return 'not-better', None, 0.0
         ok, info = verify(c)
         if not ok: return 'rejected: ' + info.get('error', '?'), None, 0.0
         g = self.gain(m)

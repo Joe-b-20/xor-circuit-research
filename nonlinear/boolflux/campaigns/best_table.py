@@ -22,6 +22,9 @@ C = Path.home() / 'xs-campaigns' / '2026-11-13-aes'
 SOURCES = [HERE.parent / 'results' / 'aes']
 GLOBS = ['D/found/*.circ.txt', 'E/found/*.circ.txt', 'F/found/*.circ.txt', 'main/**/best.circ.txt',
          'E/long1/*/admitted/*.bfx', 'E/low1/**/admitted/*.bfx', 'C/found/*.circ.txt']
+# 2026-11-14 hub phase: every hub campaign archive, track G found/
+EXTRA = [(Path.home() / 'xs-campaigns' / '2026-11-14-hub', '*/archive/*.bfx'),
+         (Path.home() / 'xs-campaigns' / '2026-11-14-G', 'found/*.circ.txt')]
 
 
 def candidates():
@@ -30,6 +33,8 @@ def candidates():
         files += sorted(d.glob('*.circ.txt'))
     for g in GLOBS:
         files += sorted(C.glob(g))
+    for base, g in EXTRA:
+        files += sorted(base.glob(g))
     return [f for f in files if '.check.' not in f.name]
 
 

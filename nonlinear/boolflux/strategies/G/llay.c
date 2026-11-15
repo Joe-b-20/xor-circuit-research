@@ -74,10 +74,22 @@ static void s1prod(int s) {
     }
     for (int w = 0; w < NW; w++) S1q[s][w] = a[w] & b[w];
 }
+/* optional junk slots: free vectors of span(Qt) (e.g. quadratic forms), part of E */
+static int nJ = 0, nQ = 0;
+static int use_full = 0;      /* feasibility mode: Qt (all of it) added to E */
+static int feas = 0, curfull = 0, jlist = 0, nF = 0;
+static u64 Ft[64][W];
+static u64 Qt[64][W], Jq[32][W], Jc[32];
+static void jprod(int s) {
+    for (int w = 0; w < NW; w++) Jq[s][w] = 0;
+    for (int i = 0; i < nQ; i++) if ((Jc[s] >> i) & 1) for (int w = 0; w < NW; w++) Jq[s][w] ^= Qt[i][w];
+}
 static inline void add_E(void *ev) {
     ech_t *e = (ech_t *)ev;
     for (int i = 0; i < nE; i++) ech_add(e, Et[i]);
     for (int s = 0; s < nS1; s++) ech_add(e, S1q[s]);
+    for (int s = 0; s < nJ; s++) ech_add(e, Jq[s]);
+    if (use_full) { if (nF) { for (int i = 0; i < nF; i++) ech_add(e, Ft[i]); } else for (int i = 0; i < nQ; i++) ech_add(e, Qt[i]); }
 }
 static ech_t EB, ET, EN;
 static int last_dN = 0, last_dT = 0;
@@ -96,6 +108,14 @@ static int deficit_all(void) {
     }
     last_dN = dn; last_dT = d;
     return d + dn;
+}
+
+static int score_now(void) {
+    int dj = deficit_all();
+    if (!feas) return dj;
+    use_full = 1; int df = deficit_all(); use_full = 0;
+    curfull = df;
+    return dj + 10 * df;
 }
 
 /* exact re-choice of stage-1 slot s over all 2-dim spaces of x-forms; uniform among the best */
@@ -135,18 +155,68 @@ static void load(const char *p) {
         if (fscanf(f, "%d", &nN) != 1 || nN > 8) exit(1);
         for (int i = 0; i < nN; i++) rd(f, Nt[i]);
     } else nS1 = 0;
+    if (fscanf(f, "%d", &nJ) == 1) {
+        if (nJ > 32 || fscanf(f, "%d", &nQ) != 1 || nQ > 64) exit(1);
+        for (int i = 0; i < nQ; i++) rd(f, Qt[i]);
+    } else { nJ = 0; nQ = 0; }
+    if (fscanf(f, "%d", &nF) == 1 && nF > 0) {
+        if (nF > 64) exit(1);
+        for (int i = 0; i < nF; i++) rd(f, Ft[i]);
+    } else nF = 0;
     fclose(f);
 }
 static void dump(const char *path, int d, const char *tag) {
     FILE *f = fopen(path, "w"); if (!f) return;
-    fprintf(f, "%s deficit %d K %d nO %d nS1 %d\n", tag, d, K, nO, nS1);
+    fprintf(f, "%s deficit %d K %d nO %d nS1 %d nJ %d\n", tag, d, K, nO, nS1, nJ);
     for (int k = 0; k < K; k++) fprintf(f, "%lx %lx\n", Lc[k], Mc[k]);
     for (int s = 0; s < nS1; s++) fprintf(f, "%lx %lx\n", S1a[s], S1b[s]);
+    for (int s = 0; s < nJ; s++) fprintf(f, "%lx\n", Jc[s]);
     fclose(f);
 }
 static u64 rand_coef(void) { u64 m; do { m = rnd() & ((1ULL << nO) - 1); } while (!m); return m; }
 
 static u64 R[MAXO][MAXO][W];
+
+static int score_now(void);
+/* list version: junk slot s takes the best single row of Qt (ties uniformly) */
+static int rechoose_junk_list(int s) {
+    int best = 1 << 30; long nb = 0; u64 bc = Jc[s];
+    for (int i = 0; i < nQ; i++) {
+        Jc[s] = 1ULL << i; jprod(s);
+        int v = score_now();
+        if (v < best) { best = v; nb = 1; bc = Jc[s]; }
+        else if (v == best) { nb++; if (rnd() % nb == 0) bc = Jc[s]; }
+    }
+    Jc[s] = bc; jprod(s);
+    return 1;
+}
+/* exact re-choice of junk slot s: a vector of span(Q) in (T + B) minus B, uniformly */
+static int rechoose_junk(int s) {
+    if (jlist) return rechoose_junk_list(s);
+    EB.n = 0;
+    for (int i = 0; i < nE; i++) ech_add(&EB, Et[i]);
+    for (int q = 0; q < nS1; q++) ech_add(&EB, S1q[q]);
+    for (int q = 0; q < nJ; q++) if (q != s) ech_add(&EB, Jq[q]);
+    for (int k = 0; k < K; k++) ech_add(&EB, Q[k]);
+    ET.n = 0;
+    for (int t = 0; t < nT; t++) { u64 v[W]; memcpy(v, Tt[t], sizeof v); ech_reduce(&EB, v); ech_add(&ET, v); }
+    if (ET.n == 0) return 0;
+    u64 rv[64][W]; u64 rt[64], rm[64]; int rp[64], nr = 0; u64 zt[64], zm[64]; int nzr = 0;
+    for (int i = 0; i < nQ; i++) {
+        u64 v[W]; memcpy(v, Qt[i], sizeof v); ech_reduce(&EB, v);
+        u64 tg = 0, mc = 1ULL << i;
+        for (int q = 0; q < ET.n; q++) { int p = ET.piv[q]; if ((v[p >> 6] >> (p & 63)) & 1) { for (int w = 0; w < NW; w++) v[w] ^= ET.v[q][w]; tg ^= 1ULL << q; } }
+        for (int q = 0; q < nr; q++) { int p = rp[q]; if ((v[p >> 6] >> (p & 63)) & 1) { for (int w = 0; w < NW; w++) v[w] ^= rv[q][w]; tg ^= rt[q]; mc ^= rm[q]; } }
+        if (nz(v)) { memcpy(rv[nr], v, sizeof v); rt[nr] = tg; rm[nr] = mc; rp[nr] = fbit(v); nr++; }
+        else { zt[nzr] = tg; zm[nzr] = mc; nzr++; }
+    }
+    int any = 0; for (int q = 0; q < nzr; q++) if (zt[q]) any = 1;
+    if (!any) return 0;
+    u64 mt, mm;
+    do { mt = 0; mm = 0; for (int q = 0; q < nzr; q++) if (rnd() & 1) { mt ^= zt[q]; mm ^= zm[q]; } } while (!mt);
+    Jc[s] = mm; jprod(s);
+    return 1;
+}
 
 /* exact re-choice of slot j; returns 1 if a deficit-reducing product was installed */
 static int rechoose(int j, int *d0out, long *nhit_out) {
@@ -218,6 +288,7 @@ int main(int argc, char **argv) {
     long seed = atol(argv[3]); double secs = atof(argv[4]);
     double pkick = 0.02, pjunk = 0.5, rr = 0.3, report = 10, ps1 = -1; long stall = 2000;
     const char *initf = NULL, *inits1 = NULL;
+    int multi = 0, maxsol = 1000, kickn = 3, kickj = 1, tgt = 0, dumpgap = 0, kickevery = 1; long lastdump = -1000000; double pjset = -1;
     for (int i = 5; i < argc; i++) {
         char k[64]; char vs[400];
         if (sscanf(argv[i], "%63[^=]=%399s", k, vs) != 2) continue;
@@ -226,6 +297,8 @@ int main(int argc, char **argv) {
         else if (!strcmp(k, "stall")) stall = (long)v; else if (!strcmp(k, "rr")) rr = v;
         else if (!strcmp(k, "report")) report = v; else if (!strcmp(k, "init")) initf = strdup(vs);
         else if (!strcmp(k, "inits1")) inits1 = strdup(vs); else if (!strcmp(k, "ps1")) ps1 = v;
+        else if (!strcmp(k, "multi")) multi = (int)v; else if (!strcmp(k, "maxsol")) maxsol = (int)v;
+        else if (!strcmp(k, "pj")) pjset = v; else if (!strcmp(k, "feas")) feas = (int)v; else if (!strcmp(k, "jlist")) jlist = (int)v; else if (!strcmp(k, "dumpgap")) dumpgap = (int)v; else if (!strcmp(k, "kickevery")) kickevery = (int)v; else if (!strcmp(k, "tgt")) tgt = (int)v; else if (!strcmp(k, "kickn")) kickn = (int)v; else if (!strcmp(k, "kickj")) kickj = (int)v;
     }
     rs ^= (u64)seed * 0x9E3779B97F4A7C15ULL; for (int i = 0; i < 20; i++) rnd();
     load(argv[1]);
@@ -252,18 +325,44 @@ int main(int argc, char **argv) {
             fclose(f);
         }
     }
-    int cur = deficit_all(), best = cur;
-    u64 bL[MAXK], bM[MAXK], bA[32], bB[32];
+    for (int s = 0; s < nJ; s++) { Jc[s] = rnd() & ((nQ >= 64) ? ~0ULL : ((1ULL << nQ) - 1)); jprod(s); }
+    double pj = nJ ? 0.3 : 0;
+    if (pjset >= 0) pj = pjset;
+    /* junk slots start at exact best responses to the initial layer */
+    for (int rep = 0; rep < 3; rep++) for (int s = 0; s < nJ; s++) rechoose_junk(s);
+    int cur = score_now(), best = cur;
+    u64 bL[MAXK], bM[MAXK], bA[32], bB[32], bJ[32];
+    memcpy(bJ, Jc, sizeof Jc);
+    int nsol = 0;
     memcpy(bL, Lc, sizeof Lc); memcpy(bM, Mc, sizeof Mc); memcpy(bA, S1a, sizeof S1a); memcpy(bB, S1b, sizeof S1b);
     fprintf(lg, "start seed %ld deficit %d (dT %d dN %d) K %d nS1 %d nE %d nO %d nT %d\n", seed, cur, last_dT, last_dN, K, nS1, nE, nO, nT); fflush(lg);
     double t0 = now(), tl = t0; long step = 0, lastimp = 0, nrest = 0;
     while (now() - t0 < secs) {
         step++;
-        if (nS1 && urand() < ps1) {
+        double ur = urand();
+        if (nJ && ur < pj) {
+            int s = rnd() % nJ;
+            u64 sv = Jc[s];
+            if (!rechoose_junk(s)) { if (urand() < pjunk) { Jc[s] = rnd() & ((1ULL << nQ) - 1); } else Jc[s] = sv; jprod(s); }
+            cur = score_now();
+        } else if (nS1 && urand() < ps1) {
             int s = rnd() % nS1;
             cur = rechoose_s1(s);
         } else {
             int j = rnd() % K;
+            if (feas) {
+                /* score = junk deficit (over E) + 10 * full deficit (over E + all of Qt) */
+                u64 sl = Lc[j], sm = Mc[j]; u64 sq[W]; memcpy(sq, Q[j], sizeof sq);
+                int old = cur, d0; long nh;
+                use_full = (curfull > 0) || (urand() < 0.3);
+                int ok = rechoose(j, &d0, &nh);
+                use_full = 0;
+                if (!ok && urand() < pkick) { Lc[j] = rand_coef(); Mc[j] = rand_coef(); prod(Lc[j], Mc[j], Q[j]); }
+                int dj = deficit_all(); use_full = 1; int df = deficit_all(); use_full = 0;
+                int sc = dj + 10 * df;
+                if (sc <= old || urand() < 0.02) { cur = sc; curfull = df; }
+                else { Lc[j] = sl; Mc[j] = sm; memcpy(Q[j], sq, sizeof sq); }
+            } else {
             if (urand() < pkick) {
                 Lc[j] = rand_coef(); Mc[j] = rand_coef(); prod(Lc[j], Mc[j], Q[j]);
             } else {
@@ -275,19 +374,37 @@ int main(int argc, char **argv) {
                 }
             }
             cur = deficit_all();
+            }
         }
         if (cur < best) {
             best = cur; lastimp = step;
-            memcpy(bL, Lc, sizeof Lc); memcpy(bM, Mc, sizeof Mc); memcpy(bA, S1a, sizeof S1a); memcpy(bB, S1b, sizeof S1b);
+            memcpy(bL, Lc, sizeof Lc); memcpy(bM, Mc, sizeof Mc); memcpy(bA, S1a, sizeof S1a); memcpy(bB, S1b, sizeof S1b); memcpy(bJ, Jc, sizeof Jc);
             fprintf(lg, "t %.1f step %ld best %d (dT %d dN %d)\n", now() - t0, step, best, last_dT, last_dN); fflush(lg);
             dump(bp, best, "best");
-            if (best == 0) { dump(sp, 0, "solution"); fprintf(lg, "SOLVED t %.1f step %ld\n", now() - t0, step); fclose(lg); return 0; }
+            if (best == 0) {
+                dump(sp, 0, "solution"); fprintf(lg, "SOLVED t %.1f step %ld\n", now() - t0, step); fflush(lg);
+                if (!multi) { fclose(lg); return 0; }
+            }
+        }
+        if (multi && cur <= tgt && step - lastdump >= dumpgap) {
+            lastdump = step;
+            char np[600]; snprintf(np, sizeof np, "%s.sol%d", argv[2], nsol++);
+            dump(np, 0, "solution");
+            fprintf(lg, "SOL %d t %.1f step %ld\n", nsol - 1, now() - t0, step); fflush(lg);
+            if (nsol >= maxsol) break;
+            /* kick (every kickevery-th dump): re-randomise kickn last-layer slots and kickj junk slots */
+            if (nsol % kickevery == 0) {
+            for (int q = 0; q < kickn; q++) { int k = rnd() % K; Lc[k] = rand_coef(); Mc[k] = rand_coef(); prod(Lc[k], Mc[k], Q[k]); }
+            for (int q = 0; q < kickj && nJ; q++) { int s2 = rnd() % nJ; Jc[s2] = rnd() & ((1ULL << nQ) - 1); jprod(s2); }
+            cur = score_now(); lastimp = step;
+            }
         }
         if (step - lastimp > stall) {
-            memcpy(Lc, bL, sizeof Lc); memcpy(Mc, bM, sizeof Mc); memcpy(S1a, bA, sizeof S1a); memcpy(S1b, bB, sizeof S1b);
+            memcpy(Lc, bL, sizeof Lc); memcpy(Mc, bM, sizeof Mc); memcpy(S1a, bA, sizeof S1a); memcpy(S1b, bB, sizeof S1b); memcpy(Jc, bJ, sizeof Jc);
             for (int s = 0; s < nS1; s++) s1prod(s);
+            for (int s = 0; s < nJ; s++) jprod(s);
             for (int k = 0; k < K; k++) { if (urand() < rr) { Lc[k] = rand_coef(); Mc[k] = rand_coef(); } prod(Lc[k], Mc[k], Q[k]); }
-            cur = deficit_all(); lastimp = step; nrest++;
+            cur = score_now(); lastimp = step; nrest++;
         }
         if (now() - tl > report) { tl = now(); fprintf(lg, "t %.0f step %ld cur %d (dT %d dN %d) best %d restarts %ld\n", tl - t0, step, cur, last_dT, last_dN, best, nrest); fflush(lg); }
     }

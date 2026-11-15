@@ -72,6 +72,71 @@ re-checked with aes_check (both verifiers) on the new pin: all OK and new.  File
   counts, interface positions); the kernel then lowers G and GD from them.  Control polishing of the
   already well-optimised pool is nearly exhausted (4 admissions in 4.7 CPU-h).
 
+## Hub vs memetic splice arm, 2026-11-14 17:38-18:40 UTC (equal CPUs: 4 each, 1 h; `hub/compare.py`, `2026-11-14-hub/ab_compare.txt`)
+Same seed pool (`2026-11-14-hub/seed.list`, 242 distinct verified circuits incl. all of long1/low1's
+admissions).  Hub = `nonlinear/boolflux/hub/scheduler.py` (polish 90 s / pull 90 s / join 60 s / trb 30 s,
+bandit eps 0.25, polish/pull objective `a,ad,cost,gd`; the repo kernel changed at 17:44-17:45 from
+417e449 to f8a26e3 (review 4), so later polish/pull jobs used the fixed AND-first Metropolis step; each
+job records its kernel binary `bfx-<sha1(bfx.c)>`).  Memetic = strategies/E/memetic.py --arm splice
+(bfx_new = 0659eb9 copy, objective cost,gd, polish 120 s).
+| arm | CPU-h | admissions | new frontier points (not dominated by pin 3d80774 or the seed pool) | per CPU-h | not dominated by the other arm |
+|---|---|---|---|---|---|
+| hub | 4.03 | 978 (join 918, trb 47, pull 9, polish 4) | 8 | 1.98 | 7 |
+| memetic splice arm | 4.13 | 4 | 2 (39/3/174/13, 48/4/151/11) | 0.48 | 2 |
+All 10 pass aes_check (OK + new).  Hub points with lineage (operators back to seeds):
+33/4/107/20 = pull(join) (best G at GD<=20: published 108); 32/4/115/22 = join(pull(join), pull(join(join(join))));
+32/4/119/18 = polish(join(pull, join(join))); 32/4/122/17 = pull; 32/5/116/17 = pull; 33/4/112/16 =
+polish(polish); 35/3/142/24 = trb; 39/3/179/13 = join.  Operator yield in the hub (gain per CPU-h):
+join 104, pull 12.5, trb 10.6, polish 8.8 - but the frontier points come from chains of operators.
+
+## Generators, linres: A/B 2 and 3 (1 CPU-h per arm, all from the 18:47 snapshot `2026-11-14-hub/snap1847`; `hub/compare2.py`, data `ab23_compare.json`)
+| arm | operators | new frontier points (aes_check OK + new) | lineage |
+|---|---|---|---|
+| base | polish, pull, join, trb (eps 0.25) | 1: 35/3/141/24 | pull |
+| osc | base + gen_skel, gen_inv3, gen_bottom, osc (eps 0.25; bandit spent 3192 s of 3600 on osc, the generators were never sampled) | 2: 29/5/134/17, 30/4/139/16 | osc, osc |
+| gen | base + gen_joinplus, gen_skel, gen_inv3, gen_bottom, osc (eps 0.5, nursery 0.4, generator slack 40) | 2: **30/4/130/20**, 32/5/115/17 | pull(pull(trb(pull(gen_skel)))), pull |
+| lin | base + linres | 2: 28/5/131/19, 35/3/141/24 | trb, trb |
+Per operator in the gen arm: gen_skel 5 jobs / 7 nursery admissions / 267 CPU-s, one of whose structures was
+turned into the A30 point by later pull/trb/pull jobs (19 min after start); gen_joinplus 5 jobs, 3 nursery
+admissions, 0 frontier; gen_inv3 6 jobs, 0 admissions (its 122@GD14-type outputs are already in the archive);
+gen_bottom 21 jobs, 31 CPU-s, 0 (no suitable AD4 donors pass).  linres: 10 jobs, 8 cell admissions, 0 frontier
+(both lin-arm points are trb) -> no measured advantage, not added (consistent with F's XORFlux layer result).
+Adopted into the long run: osc (hot-added 19:50:45), gen_skel + nursery 0.3 (restart as hub-long3 at 20:49).
+AD<=3 share: A/B 4 (20:52-21:52, snapshot `snap2051`, base = long3 configuration vs + ad3_share 0.3) with a
+pre-registered rule (`hub/after_ab.py`: adopt if test >= base and >= 1 new frontier point), applied
+automatically to `long/control.json`, which also gives CPUs 10-11 back to the long run.
+
+## long3 final (hub `2026-11-14-hub/long`, 20:47:57 - 00:19:31 UTC; `hub/compare2.py`, `long3_final.{txt,json}`)
+Configuration: polish, pull, join, trb, osc, gen_skel; nursery 0.3; ad3_share 0.3 from 21:52 (pre-registered
+A/B 4: base 1 vs AD3-share 2 new points); CPUs 4-9, +10-11 from 21:52, +0-3 and 17-19 from 23:40 (coordinator,
+user-approved); ingest of F/D/C/G found every 30 min.  Kernel bfx-593fa798f5 (repo kernel at the hub's
+compile time).  Baseline = the archive at long3's start (`snap_long3start`: 1481 records, 298 cells, front 73)
+plus the pinned NIST set 3d80774.  CPU-h = sum of the jobs' CPU seconds (30.1 CPU-h).
+
+16 new frontier points, **all aes_check OK + new**, 0.53 per CPU-h (14 made by the hub, 2 ingested from F):
+| A/AD/G/GD | min after start | lineage (operators back to the baseline) |
+|---|---|---|
+| **28/5/127/22** | 77 | gen_skel(polish) |
+| 28/5/133/18 | 199 | pull |
+| **29/4/131/20** | 210 | polish(gen_skel) |
+| 29/4/146/15 | 192 | pull(polish) |
+| **31/5/114/28** | 36 | join(base, join(base, gen_skel)) - best G at A <= 31 (was 115) |
+| 31/5/115/24 | 174 | polish(join(base, gen_skel)) |
+| 32/4/114/26 | 36 | join(base, gen_skel) |
+| 35/3/142/21 | 93 | polish(join(ingest, base)) |
+| 35/3/146/18 | 49 | polish(trb) |
+| 35/3/148/17 | 151 | polish(join(polish(join(pull(polish(trb)), join(polish(trb), base))), join(polish(trb), base))) |
+| 35/3/151/16 | 172 | polish(trb(polish(join(join(pull(polish), join(polish, base)), pull(polish(trb)))))) |
+| 35/3/177/13 | 95 | ingest (track F) |
+| 36/3/161/14 | 51 | osc |
+| 37/3/155/15 | 197 | pull(pull(pull(gen_skel(join(osc, join(trb, polish)))))) |
+| 37/3/160/14 | 182 | join(trb(osc), polish(pull(gen_skel(join(osc, join(trb, base)))))) |
+| 40/3/172/13 | 126 | ingest (track F) |
+gen_skel occurs in 8 of the 14 hub lineages (the A28 GD22, A29 AD4 GD20 and A31 G114 points among them).
+Per operator (gain per CPU-h, archive gain weights 8/4/2/1 for A/AD/G/GD): join 12.1 (2830 jobs, 3.6 CPU-h),
+polish 5.2 (8.4 CPU-h), gen_skel 5.0 (3.3 CPU-h), trb 5.0 (1.7 CPU-h), pull 4.7 (7.7 CPU-h), osc 1.5 (5.4 CPU-h).
+long4 (same archive, CPUs 0-11, until 04:30) continues from here.
+
 ## Pitfalls
 - 05:09 outage = WSL OOM (not ours as far as measured: splice.py on 4-6 circuits peaks at 18 MB).
 - `pkill -f` from a shell whose command line contains the pattern kills that shell (exit 15): use `stop.sh`
