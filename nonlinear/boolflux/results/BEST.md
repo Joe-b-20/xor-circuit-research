@@ -10,25 +10,21 @@ One row per (A, AD, G, GD); "other" = further distinct circuits with the same tu
 
 | File | #AND (A) | AND depth | #Gates (G) | Gate depth | XX (x+x') | #XOR | #XNOR | published best within the same caps | other |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---:|
-| aes-sbox-a30-ad4-g140-gd15-xx110-56.circ.txt | 30 | 4 | **140** | 15 | 110 | 54 | 56 | 153 (A28 AD4 GD15) | 0 |
-| aes-sbox-a29-ad4-g146-gd15-xx117-61.circ.txt | 29 | 4 | **146** | 15 | 117 | 56 | 61 | 153 (A28 AD4 GD15) | 0 |
-| aes-sbox-a29-ad4-g138-gd16-xx109-64.circ.txt | 29 | 4 | **138** | 16 | 109 | 45 | 64 | 141 (A28 AD4 GD16) | 0 |
+| aes-sbox-a30-ad4-g138-gd15-xx108-61.circ.txt | 30 | 4 | **138** | 15 | 108 | 47 | 61 | 153 (A28 AD4 GD15) | 3 |
+| aes-sbox-a29-ad4-g141-gd15-xx112-56.circ.txt | 29 | 4 | **141** | 15 | 112 | 56 | 56 | 153 (A28 AD4 GD15) | 3 |
+| aes-sbox-a29-ad4-g136-gd16-xx107-59.circ.txt | 29 | 4 | **136** | 16 | 107 | 48 | 59 | 141 (A28 AD4 GD16) | 3 |
 | aes-sbox-a31-ad5-g124-gd17-xx93-35.circ.txt | 31 | 5 | **124** | 17 | 93 | 58 | 35 | 141 (A28 AD4 GD16) | 3 |
-| aes-sbox-a29-ad5-g134-gd17-xx105-51.circ.txt | 29 | 5 | **134** | 17 | 105 | 54 | 51 | 141 (A28 AD4 GD16) | 2 |
-| aes-sbox-a29-ad4-g135-gd17-xx106-53.circ.txt | 29 | 4 | **135** | 17 | 106 | 53 | 53 | 141 (A28 AD4 GD16) | 3 |
+| aes-sbox-a29-ad4-g134-gd17-xx105-51.circ.txt | 29 | 4 | **134** | 17 | 105 | 54 | 51 | 141 (A28 AD4 GD16) | 3 |
 | aes-sbox-a31-ad5-g121-gd18-xx90-29.circ.txt | 31 | 5 | **121** | 18 | 90 | 61 | 29 | 141 (A28 AD4 GD16) | 3 |
-| aes-sbox-a29-ad5-g132-gd18-xx103-60.circ.txt | 29 | 5 | **132** | 18 | 103 | 43 | 60 | 141 (A28 AD4 GD16) | 1 |
-| aes-sbox-a29-ad4-g133-gd18-xx104-64.circ.txt | 29 | 4 | **133** | 18 | 104 | 40 | 64 | 141 (A28 AD4 GD16) | 0 |
+| aes-sbox-a29-ad5-g130-gd18-xx101-43.circ.txt | 29 | 5 | **130** | 18 | 101 | 58 | 43 | 141 (A28 AD4 GD16) | 3 |
+| aes-sbox-a29-ad4-g133-gd18-xx104-64.circ.txt | 29 | 4 | **133** | 18 | 104 | 40 | 64 | 141 (A28 AD4 GD16) | 3 |
 | aes-sbox-a31-ad5-g118-gd19-xx87-39.circ.txt | 31 | 5 | **118** | 19 | 87 | 48 | 39 | 141 (A28 AD4 GD16) | 3 |
-| aes-sbox-a29-ad4-g132-gd19-xx103-52.circ.txt | 29 | 4 | **132** | 19 | 103 | 51 | 52 | 141 (A28 AD4 GD16) | 0 |
+| aes-sbox-a29-ad4-g132-gd19-xx103-52.circ.txt | 29 | 4 | **132** | 19 | 103 | 51 | 52 | 141 (A28 AD4 GD16) | 3 |
 | aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt | 31 | 5 | **117** | 20 | 86 | 62 | 24 | 128 (A28 AD5 GD20) | 3 |
-| aes-sbox-a30-ad4-g130-gd20-xx100-60.circ.txt | 30 | 4 | **130** | 20 | 100 | 40 | 60 | 134 (A28 AD4 GD20) | 0 |
-| aes-sbox-a29-ad4-g131-gd20-xx102-58.circ.txt | 29 | 4 | **131** | 20 | 102 | 44 | 58 | 134 (A28 AD4 GD20) | 0 |
-| aes-sbox-a30-ad4-g129-gd21-xx99-46.circ.txt | 30 | 4 | **129** | 21 | 99 | 53 | 46 | 134 (A28 AD4 GD20) | 0 |
+| aes-sbox-a29-ad4-g129-gd20-xx100-52.circ.txt | 29 | 4 | **129** | 20 | 100 | 48 | 52 | 134 (A28 AD4 GD20) | 0 |
 | aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt | 31 | 5 | **116** | 22 | 85 | 79 | 6 | 128 (A28 AD5 GD20) | 3 |
-| aes-sbox-a29-ad4-g130-gd22-xx101-49.circ.txt | 29 | 4 | **130** | 22 | 101 | 52 | 49 | 132 (A28 AD4 GD22) | 3 |
 | aes-sbox-a29-ad4-g128-gd23-xx99-51.circ.txt | 29 | 4 | **128** | 23 | 99 | 48 | 51 | 132 (A28 AD4 GD22) | 0 |
-| aes-sbox-a31-ad5-g115-gd24-xx84-19.circ.txt | 31 | 5 | **115** | 24 | 84 | 65 | 19 | 128 (A28 AD5 GD20) | 3 |
+| aes-sbox-a31-ad5-g115-gd24-xx84-19.circ.txt | 31 | 5 | **115** | 24 | 84 | 65 | 19 | 128 (A28 AD5 GD20) | 5 |
 | aes-sbox-a31-ad5-g114-gd28-xx83-18.circ.txt | 31 | 5 | **114** | 28 | 83 | 65 | 18 | 124 (A28 AD5 GD27) | 3 |
 
 ### S-box with #AND = 28
@@ -36,16 +32,16 @@ One row per (A, AD, G, GD); "other" = further distinct circuits with the same tu
 | File | #AND (A) | AND depth | #Gates (G) | Gate depth | XX (x+x') | #XOR | #XNOR | published best within the same caps | other |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---:|
 | aes-sbox-a28-ad4-g175-gd14-xx147-68.circ.txt | 28 | 4 | **175** | 14 | 147 | 79 | 68 | 176 (A28 AD4 GD14) | 6 |
-| aes-sbox-a28-ad5-g136-gd17-xx108-60.circ.txt | 28 | 5 | **136** | 17 | 108 | 48 | 60 | 141 (A28 AD4 GD16) | 0 |
+| aes-sbox-a28-ad5-g136-gd17-xx108-58.circ.txt | 28 | 5 | **136** | 17 | 108 | 50 | 58 | 141 (A28 AD4 GD16) | 3 |
 | aes-sbox-a28-ad4-g138-gd17-xx110-61.circ.txt | 28 | 4 | **138** | 17 | 110 | 49 | 61 | 141 (A28 AD4 GD16) | 3 |
-| aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt | 28 | 5 | **133** | 18 | 105 | 54 | 51 | 141 (A28 AD4 GD16) | 3 |
+| aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt | 28 | 5 | **133** | 18 | 105 | 54 | 51 | 141 (A28 AD4 GD16) | 6 |
 | aes-sbox-a28-ad4-g135-gd18-xx107-55.circ.txt | 28 | 4 | **135** | 18 | 107 | 52 | 55 | 141 (A28 AD4 GD16) | 3 |
 | aes-sbox-a28-ad5-g130-gd19-xx102-53.circ.txt | 28 | 5 | **130** | 19 | 102 | 49 | 53 | 141 (A28 AD4 GD16) | 3 |
-| aes-sbox-a28-ad4-g133-gd19-xx105-55.circ.txt | 28 | 4 | **133** | 19 | 105 | 50 | 55 | 141 (A28 AD4 GD16) | 0 |
-| aes-sbox-a28-ad4-g132-gd20-xx104-56.circ.txt | 28 | 4 | **132** | 20 | 104 | 48 | 56 | 134 (A28 AD4 GD20) | 0 |
-| aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt | 28 | 5 | **127** | 22 | 99 | 51 | 48 | 128 (A28 AD5 GD20) | 0 |
-| aes-sbox-a28-ad4-g131-gd22-xx103-52.circ.txt | 28 | 4 | **131** | 22 | 103 | 51 | 52 | 132 (A28 AD4 GD22) | 1 |
-| aes-sbox-a28-ad5-g126-gd24-xx98-45.circ.txt | 28 | 5 | **126** | 24 | 98 | 53 | 45 | 128 (A28 AD5 GD20) | 1 |
+| aes-sbox-a28-ad4-g133-gd19-xx105-55.circ.txt | 28 | 4 | **133** | 19 | 105 | 50 | 55 | 141 (A28 AD4 GD16) | 3 |
+| aes-sbox-a28-ad4-g132-gd20-xx104-56.circ.txt | 28 | 4 | **132** | 20 | 104 | 48 | 56 | 134 (A28 AD4 GD20) | 3 |
+| aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt | 28 | 5 | **127** | 22 | 99 | 51 | 48 | 128 (A28 AD5 GD20) | 3 |
+| aes-sbox-a28-ad4-g131-gd22-xx103-52.circ.txt | 28 | 4 | **131** | 22 | 103 | 51 | 52 | 132 (A28 AD4 GD22) | 5 |
+| aes-sbox-a28-ad5-g126-gd24-xx98-45.circ.txt | 28 | 5 | **126** | 24 | 98 | 53 | 45 | 128 (A28 AD5 GD20) | 4 |
 | aes-sbox-a28-ad5-g125-gd25-xx97-43.circ.txt | 28 | 5 | **125** | 25 | 97 | 54 | 43 | 128 (A28 AD5 GD20) | 3 |
 
 ### S-box with #AND = 32..36 / AD >= 4
@@ -119,6 +115,6 @@ One row per (A, AD, G, GD); "other" = further distinct circuits with the same tu
 | 21 | 33 4 108 20 | **33 4 107 20** |
 | 29 | 32 5 105 26 | **32 5 104 29** |
 
-Sources: F, ab2base, ab2gen, ab3gen, ab4ad3, long, results/aes
+Sources: long, results/aes
 
-Candidates: 17777 files, 3287 distinct circuits, 1490 distinct tuples, 396 not dominated by the pinned set; 0 files could not be read.
+Candidates: 17931 files, 3370 distinct circuits, 1518 distinct tuples, 409 not dominated by the pinned set; 0 files could not be read.
