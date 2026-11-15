@@ -1,0 +1,140 @@
+{
+  "interleaved_block_family": {
+    "blocks": 3,
+    "full_map_rank": 12,
+    "output_interleaving": "by local output stage across three blocks",
+    "gates": 15,
+    "selected_targets": 12,
+    "initial_deficiency_profile": [
+      0,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "initial_phi": 3,
+    "activating_auxiliary": 3,
+    "neutral_auxiliary": 0,
+    "every_gate_interval_verified": true,
+    "persistent_layer_occupation_verified": true,
+    "phi_monotone_verified": true,
+    "first_target_gates_have_zero_rank_credit": true,
+    "exact_auxiliary_ledger_verified": true
+  },
+  "path": {
+    "path_edges": 7,
+    "supplied_inputs": 9,
+    "specified_cover": [
+      2,
+      4,
+      6,
+      8
+    ],
+    "disjoint_matching": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        7,
+        8
+      ]
+    ],
+    "certified_minimum_cover_size": 4,
+    "effective_even_rank": 4,
+    "square_map_rank": 9,
+    "all_square_rows_odd": true,
+    "gates": 11,
+    "selected_targets": 7,
+    "initial_deficiency_profile": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "initial_phi": 1,
+    "activating_auxiliary": 1,
+    "neutral_auxiliary": 3,
+    "every_gate_interval_verified": true,
+    "persistent_layer_occupation_verified": true,
+    "phi_monotone_verified": true,
+    "first_target_gates_have_zero_rank_credit": true,
+    "exact_auxiliary_ledger_verified": true
+  },
+  "cancelling_triangle": {
+    "effective_even_rank": 2,
+    "cancelled_coordinate": "x_2",
+    "cancellation_checked_in_both_parents_and_result": true,
+    "even_helpers_are_anchor_pairs": false,
+    "gates": 5,
+    "selected_targets": 3,
+    "initial_deficiency_profile": [
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "initial_phi": 1,
+    "activating_auxiliary": 1,
+    "neutral_auxiliary": 1,
+    "every_gate_interval_verified": true,
+    "persistent_layer_occupation_verified": true,
+    "phi_monotone_verified": true,
+    "first_target_gates_have_zero_rank_credit": true,
+    "exact_auxiliary_ledger_verified": true
+  },
+  "order_counterexample": {
+    "wrong_order_phi": 1,
+    "actual_order_phi": 0,
+    "wrong_flag_first_output_increases_rank": true,
+    "gates": 2,
+    "selected_targets": 2,
+    "initial_deficiency_profile": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "initial_phi": 0,
+    "activating_auxiliary": 0,
+    "neutral_auxiliary": 0,
+    "every_gate_interval_verified": true,
+    "persistent_layer_occupation_verified": true,
+    "phi_monotone_verified": true,
+    "first_target_gates_have_zero_rank_credit": true,
+    "exact_auxiliary_ledger_verified": true
+  },
+  "overlapping_cuts": {
+    "nested_cuts": 6,
+    "physical_gates": 1,
+    "simultaneous_rank_increases": 6,
+    "potential_drop": 1
+  },
+  "circuit_search": false,
+  "output_order_enumeration": false,
+  "target_subset_enumeration": false,
+  "representation_search": false
+}

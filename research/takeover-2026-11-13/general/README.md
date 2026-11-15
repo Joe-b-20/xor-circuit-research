@@ -1,9 +1,78 @@
 # General arguments for unrestricted XOR circuits
 
-2026-11-14, continuing reviewed commit `f034b0d`. General structural understanding
+2026-11-14, continuing reviewed commit `4136cf8`. General structural understanding
 remains the priority. Fixed-budget classifications are deferred. This phase uses
 hand proofs and checks of specified constructions, without SAT, circuit search,
 representation enumeration, or computer-driven case elimination.
+
+## One gate activates at most one empty output layer
+
+[Flag relation transport](FLAG_RELATION_TRANSPORT.md) resolves overlapping
+relation credit for nested subspaces. Along a flag, adjoining one value changes
+the relation ranks on a single interval. In layer dimensions this moves one
+rank unit from a later layer to an earlier one; crossing many cuts is one move.
+
+There is a stronger law for flags formed by successively spanning required
+outputs. Every strict output step has dimension one. Its layer is occupied
+exactly when the actual dictionary has a word of length at most two in that
+prefix subspace but outside the preceding one. This witness persists, so an
+occupied output layer never becomes empty. Let Phi count initially empty
+layers. A gate can activate at most one of them.
+
+Choose the flag from the circuit's ACTUAL first-production order. A required
+output gate activates no layer: earlier prefixes are already spanned and later
+prefixes contain its result. Thus, with M selected absent outputs,
+
+    G = M + Phi + Z,
+
+where Z counts auxiliary gates that leave the empty-layer count unchanged.
+This is exact, allows cancellation and dependent dictionaries, and counts other
+required outputs among auxiliaries if they were not selected. For a target-only
+bound, minimize Phi over possible orders; choosing a favorable order without
+justification is invalid. Before the first activation, a distance argument also
+forces Z>=Delta_*-3, where Delta_* is the minimum escape length of any initially
+unsaturated cut in that SAME flag. Single parities and the prepared common-offset
+family attain the resulting bound.
+
+The abstract transport relaxation requires exactly Phi moves; a greedy proof
+attains this by filling deficits from later surplus layers. Actual dictionary
+and operand constraints are essential to force further work. A full-rank family
+on B disjoint four-coordinate blocks has exact unrestricted cost 5B for 4B
+outputs, proving the auxiliary count sharp even when competitors mix blocks.
+For a complete coordinate-input basis flag, bare Phi<=n-ceil(log2(n+1)); the
+32-output bare certificate is at most 58. This ceiling excludes the separate
+distance correction and is not a bound on MixColumns complexity.
+
+## A known exact graph law exposes the remaining physical cost
+
+[Common-anchor graphs](COMMON_ANCHOR_GRAPH.md) recover the known
+Boyar–Matthews–Peralta theorem: for graph edges uv and targets a+x_u+x_v,
+exact unrestricted cost is m+tau(F), with tau the minimum vertex-cover size.
+The note cites the primary paper and gives a short binary parity-partition
+proof. Every compatible input partition yields a cover of size equal to its
+rank; a cover supplies actual helpers a+x_v attaining that count. Every optimum
+has even rank tau, no excess odd gates, no EE gates, and no odd-graph cycles.
+This does not imply cancellation-free wiring; a five-gate triangle optimum
+explicitly cancels a variable and uses no anchor-pair helper.
+
+The new diagnostic is exact too. For any selected edge set, the initial
+short-relation deficiency is its number of active components if the selected
+graph is bipartite, and zero if any odd cycle is present. An odd cycle supplies
+the anchor as a span relation, making all edge directions accessible to the
+closure, without physically preparing their helpers.
+
+For EVERY connected graph, the maximum of the distance-augmented chronological
+flag certificate over selected target subsets is only m+1, after the necessary
+minimum over orders. The true cost remains m+tau(F). On a path this is
+m+ceil(m/2), even though every output has weight three; retaining two identity
+outputs makes the map square, invertible, and all odd. This is a precise limit
+of that certificate, not of all subspace methods or of an argument that first
+proves a useful circuit normalization.
+
+The distinction is physical: accessible relations and one representative per
+output layer do not determine how many intermediate values must actually be
+computed. The parity-partition account detects this missing cost in the graph
+family. A more general argument must retain it while allowing all sharing.
 
 ## Independent directions force preparation outside the target subspace
 
@@ -199,10 +268,19 @@ and the q=3 incidence construction (27 targets, 54 gates, H=9,E=18). No circuit,
 representation, or codeword search is used. The
 [final scope review](reviews/subspace-sidon-progress-review.md) checks the synthesis.
 
-Next: identify a shared accounting for several proper target subspaces, or connect
-their independent-relation growth to the target-difference sharing tradeoff.
-Simply adding their outside counts is invalid: the same gate can serve many
-subspaces. The useful objective is a general mechanism controlling that shared
-credit, while retaining actual dictionaries and all competing circuit choices.
-Do not return to a fixed-basis or fixed-budget classification. Unrestricted
-MixColumns remains 75<=L<=88; 88 is not assumed optimal.
+The latest [flag proof review](reviews/flag-relation-transport-review.md),
+[adversarial review](reviews/flag-relation-adversarial-review.md), and
+[graph review](reviews/common-anchor-graph-review.md) check the transport,
+monotonicity, exact accounts, source attribution, and certificate limits.
+[Specified checks](checks/check_flag_and_anchor.py) and
+[saved results](checks/flag-anchor-result.json) verify fixed interleaved blocks,
+a seven-edge path, and a cancelling triangle, with chronological rank traces.
+No orders, target subsets, representations, or circuits are searched.
+[Final scope review](reviews/flag-anchor-progress-review.md).
+
+Next: the physical cost of supplying several useful representatives inside an
+already accessible relation space. Couple preparation with parity partitions or
+actual dictionary structure; rank transport alone has the explicit graph-family
+limit above. Non-nested overlap also remains open. Do not return to a fixed
+basis or fixed-budget classification. Unrestricted MixColumns remains 75<=L<=88;
+88 is not assumed optimal.

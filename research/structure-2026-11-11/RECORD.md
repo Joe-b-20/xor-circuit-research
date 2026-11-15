@@ -3224,3 +3224,99 @@ or circuits. No literature-novelty claim. MixColumns remains 75-88. Next: a
 shared accounting across target subspaces or a connection between their
 independent-relation growth and the difference-capacity law; avoid double
 counting, fixed-basis restrictions, and incremental fixed-budget casework.
+
+
+## 52. Relation transport, monotone output layers, and a known graph law (2026-11-14)
+
+Continuing reviewed commit `4136cf8`, this phase resolves overlapping rank credit
+for nested target subspaces and identifies a general physical cost it misses.
+All claims concern unrestricted competing XOR circuits. No circuit, order,
+representation, or target-subset search is used.
+
+**One unit of rank transport.** For a nested flag W_i, let R_i(D) span actual
+singletons and pair sums in W_i. Adjoining one value v changes these ranks by
+one on a single interval [a,b), or nowhere. At the first possible collision
+choose old u and w=v+u; all later new differences agree modulo old R_i, and
+nestedness makes w stay in old R_i once it enters. In layer ranks this moves
+one unit from b to a. For a real gate, membership v in W_j forces b<=j, since
+its parents already put v in old R_j.
+
+With c_i=dim R_i-dim R_(i-1), d_i=dim W_i-dim W_(i-1), and q_i=dim W_i-dim R_i,
+Phi=sum max(0,q_i-q_(i-1))=(1/2)sum|d_i-c_i| changes by at most one. The exact
+general-flag ledger is G=Phi_initial+2*N_up+N_flat. A greedy transfer from the
+end of the first positive run of q to its beginning lowers Phi by one, proving
+that exactly Phi moves suffice for the abstract transport relaxation. Actual
+operand and dictionary restrictions are discarded only in that relaxation.
+
+**Monotone activation in output-prefix flags.** Every strict prefix step adding
+one target has dimension one. Its layer is occupied exactly when a current
+singleton/pair word lies in W_i outside W_(i-1); a short generator inside the
+previous subspace is already in its relation space. Occupation therefore
+persists under dictionary growth. The final appended V layer is never deficient.
+Consequently Phi counts initially empty output layers and never increases;
+a gate can activate at most one of them.
+
+Choose the flag by the selected M absent targets' actual first-production order.
+Each of those M gates leaves every relation rank unchanged: earlier prefixes
+are saturated and later ones contain its value. Thus the exact account is
+G=M+Phi_initial+Z, where Z counts neutral auxiliary gates. Other required
+outputs count among auxiliaries if omitted from selection. For a target-only
+bound minimize over all possible selected output orders; choosing an arbitrary
+favorable order would be invalid.
+
+Let Delta_* be the minimum initial word length escaping R_i within an initially
+unsaturated W_i. Before the first global relation movement, all prior selected
+outputs lie in the activated W_i; otherwise its prefix would already be complete.
+The first-collision argument forces at least Delta_*-3 neutral auxiliary gates
+before that event. Hence G>=M+Phi+Delta_*-3, using the same order for both terms;
+use zero correction if Phi=0. Single parities and the actual prepared common-offset
+dictionary attain this bound.
+
+Four-coordinate targets abc,abd,abcd,bcd have initial prefix deficiencies
+(0,1,1,0,0) in every order and a five-gate construction. Across B disjoint blocks,
+initial closures split, so arbitrary global interleavings have Phi=B. Thus the
+4B-output full-rank family has exact unrestricted complexity 5B without assuming
+competitors respect blocks. For coordinate complete flags, initial q_i=i-n+t_i,
+where t_i counts nonzero quotient colors. Positive jumps occur precisely at
+color-count plateaus. Each strict drop can reduce t only to at least floor(t/2),
+so at least ceil(log2(n+1)) drops are needed. Bare Phi<=n-ceil(log2(n+1)); the
+32-output bare certificate is at most 58. The distance correction is separate.
+See [flag transport](../takeover-2026-11-13/general/FLAG_RELATION_TRANSPORT.md).
+
+**A known exact graph law recovered through parity.** For a simple graph F,
+common-anchor triples a+x_u+x_v have exact unrestricted complexity m+tau(F).
+This is the existing Boyar–Matthews–Peralta result, Section 3.1.1 Lemma 1 of the
+January 2011 manuscript cited in the note, not a new cost theorem. Our binary
+derivation extracts a vertex cover directly from any compatible parity partition:
+choose all vertices in the anchor block and all but one vertex per other block.
+Every edge is covered, with cover size equal to partition rank r. Hence r>=tau,
+while cover-star helpers attain m+tau. Every optimum has even rank tau and
+H=d_EE=mu=0. This does not force cancellation-free wiring: the optimal five-gate
+triangle circuit with vertex-pair suppliers cancels x_2 at its last gate.
+
+For any selected edge set, initial closure deficiency equals its number of
+active components if it is bipartite, and zero once any odd cycle is present.
+Bipartite short generators are pairs within each side of each component. An
+odd cycle puts the anchor in the target span, then every edge pair is a short
+generator, saturating the closure globally. The order-minimized Phi is therefore
+c for bipartite graphs and one for nonbipartite nonempty graphs; Delta_*=3.
+
+For every connected original graph, the maximum flag certificate over selected
+target subsets, with the required order minimization and distance correction,
+is exactly m+1. A selected p-edge bipartite graph has at most m-p+1 active
+components; a nonbipartite selection gives p+1. The full set attains m+1.
+The true complexity is m+tau(F). Paths have exact cost m+ceil(m/2), all target
+weights three, and an all-odd square invertible embedding by retaining a,x_1.
+The growing gap survives subset selection and is not due to a long output.
+This is a ceiling on the named raw certificate, not on all lower bounds or a
+method that first proves a useful circuit normalization. See
+[common-anchor graphs](../takeover-2026-11-13/general/COMMON_ANCHOR_GRAPH.md).
+
+Independent machine reviews reconstruct the proofs and check primary-source
+attribution; this is not formal verification or human certification. Direct
+checks verify fixed interleaved block, path, and cancelling triangle circuits
+and their actual rank traces, without optimization. No literature-novelty claim
+or improved MixColumns bound is made; the range remains 75-88. Next: charge
+physical representatives of accessible relations, coupling supply with parity
+partitions or richer dictionary information while preserving sharing and
+cancellation. The rank-overlap account alone cannot measure that cost.

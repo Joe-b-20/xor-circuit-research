@@ -1,5 +1,33 @@
 # What changed in the takeover
 
+**Current continuation after `4136cf8`, 2026-11-14:**
+[Flag relation transport](general/FLAG_RELATION_TRANSPORT.md) proves that one
+gate moves one rank unit along a nested subspace flag, even when many cuts
+benefit. For output-prefix flags, occupied one-dimensional layers never become
+empty; each gate activates at most one empty layer. In the actual output order,
+all selected output gates have zero activation credit. Hence the exact account
+is G=M+Phi+Z, with Phi initially empty layers and Z neutral auxiliary gates.
+When Phi>0, a startup distance forces Z>=Delta_*-3. Target-only bounds must minimize over
+orders. A full-rank 4B-output family has exact cost 5B under unrestricted mixing.
+The bare complete-flag certificate on 32 inputs is at most 58; distance is separate.
+
+[Common-anchor graph costs](general/COMMON_ANCHOR_GRAPH.md) explicitly recover
+the KNOWN Boyar–Matthews–Peralta law L=m+tau(F), using a short parity-partition
+proof and deriving the exact optimal even rank. No new optimum is claimed.
+The family then gives a general limit of the new flag measurement: on every
+connected graph, its best selected-subset/order-minimized certificate is exactly
+m+1. The actual helper cost tau(F) can grow. Paths give all-odd invertible maps
+with weight-three nonidentity outputs and cost m+ceil(m/2), so the gap is not due to a long
+individual output. A cancelling triangle also shows that zero parity defect
+does not force cancellation-free wiring.
+
+Independent machine reviews and specified construction/rank checks are saved;
+no formal verification, literature novelty, or MixColumns improvement is claimed.
+Next: charge the physical supply of several useful representatives after a
+relation space is already accessible, retaining arbitrary sharing and cancellation.
+MixColumns remains 75-88. The nested-overlap issue is resolved at the level of
+rank credit; that accounting alone does not determine physical preparation cost.
+
 **Current continuation after `f034b0d`, 2026-11-14:**
 [Subspace preparation](general/SUBSPACE_PREPARATION.md) gives an unrestricted
 joint state invariant. R(S) spans supplied target-subspace values and differences
