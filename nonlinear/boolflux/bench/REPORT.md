@@ -31,7 +31,8 @@ repair, restarts, coordination, with file and line references); reproduction in
 **Limitations**
 - On good AES circuits the gate search gives 1-3 gates in 120 s and the skeleton stage contributes
   nothing (its output is the input skeleton in 11 of 12 AES cases). One benchmark run produced a
-  new published-set point (124 gates at GD 14, A38, section 4.3).
+  point that was new on the published set of that day, pin e6ac0d0 (124 gates at GD 14, A38,
+  section 4.3). It has since been overtaken: see the note in section 4.3.
 - Depth repair is slow: 116@GD15 -> GD 14 reached GD 14 in 2 of 35 runs of 120 s (129 gates in v1,
   124 gates in v3; only the 124 is below the published 127); the earlier success needed 3 rounds x
   300,000 iterations x 8 seeds.
@@ -91,8 +92,13 @@ skeleton move lowers K + 0.02 E, so the skeleton kernel almost always returns it
 
 ## 4. Benchmarks
 
-Machine: Intel i7-13700H (WSL2 shows 10 cores x 2 threads), one worker process per physical core
-(CPUs 0,2,...,14) pinned with `sched_setaffinity`; all of a run's work (Python driver included) on
+Machine: Intel i7-13700H (WSL2 shows 10 cores x 2 threads), one worker process per even-numbered
+WSL CPU (0,2,...,14) pinned with `sched_setaffinity`. (Corrected 2026-11-15: the earlier text
+said "per physical core". This processor has 6 performance cores with two threads and 8
+efficiency cores, and WSL's topology is synthetic, so CPUs 12 and 14 are probably efficiency
+cores [not verified from inside WSL]. Absolute times and iteration counts are therefore not
+comparable across CPUs. The paired comparisons (linear maps, the no-op A/B of section 7) ran both arms on
+the same CPU; the other tables compare medians of runs spread over these CPUs.) All of a run's work (Python driver included) is on
 its CPU; linear-map pairs run back to back on the same CPU. Seeds 1-5 and budgets fixed before
 running; seeds 6-15 added only for the two unclear comparisons. Time = wall seconds since the
 search started; start construction is reported separately; final circuits verified by both
@@ -184,6 +190,10 @@ v2 numbers (v3 full/rebuild in brackets where different).
   A38 AD4, verified by both verifiers, not dominated by any of the 102 published circuits and 3
   gates below the best published G at GD <= 14 (127). It is a time-budgeted run (not
   bit-reproducible); it is in `results/aes/` with its provenance.
+  Note of 2026-11-15: those numbers are against pin e6ac0d0 (102 forward circuits). At the
+  current pin 3d80774 (104 circuits) the published best at GD <= 14 is 125 (A33), and the 124 is
+  strictly dominated by our own 37/4/121/14 ([../HISTORY.md](../HISTORY.md)). The target column
+  "G <= 126 (below published 127)" in the table above is likewise the e6ac0d0 target.
 
 ### 4.4 External comparator: Berkeley ABC
 

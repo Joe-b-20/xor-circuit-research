@@ -81,7 +81,91 @@ All candidates pass hub.common.verify.
   only the base arm computes: the arms run ONE AFTER THE OTHER at ~1 CPU each (coordinator asked
   00:23; checked: the abtest unit held only bash + sleep, 60 ms CPU). No operator tests of mine on
   CPU 19 while an arm runs.
-- (results pending)
+- Results (compare2.py --check, `ab_compare.json`; L1 eval_run in `l1eval/`) [H, one pair of 1-CPU-hour
+  blocks; L1 found 0/1/2/4 front admissions in 11/5/3/1 of twenty blocks of ONE configuration, so a
+  front count of 1 vs 0 alone does not separate the arms]:
+  | arm | CPU-h | jobs | admissions | new frontier points | V (L1) | goal-near / met |
+  |---|---|---|---|---|---|---|
+  | base | 1.01 | 143 | 16 | 0 | 0 | 0 / 0 |
+  | test | 1.01 | 83 | 33 | 1 (39/3/172/13, aes_check OK-new) | 2 | 0 / 0 |
+  aslack in the test arm: 29 jobs, 0.47 CPU-h, 23 admissions, gain 8.22 (17.7 / CPU-h; next best
+  operator in either arm 0.92 / CPU-h). The bandit gave it half the CPU after its first gain.
+  The frontier point is an **A reduction**: parent 40/3/172/13 (join-made) -> 39/3/172/13 directly by the
+  window move (raw, before polish; window k = 3 ANDs at level 3, r = 2, 2 new products, same G and GD).
+- Per-job view of the 29 aslack jobs: windows found A reductions (raw) on A >= 36 circuits only:
+  40/3/172/13 (21 raw), 37/4/121/14 (69 raw, all with GD +1..+2 so none was kept by v1), 48/4/151/11 (6),
+  37/3/155/15 (9; 36/3/155/16 admitted), 39/3/172/13 (6). On A <= 35 front circuits: 0 A reductions;
+  admissions there are same-cell ties with new structure (28/5/127/22 x3, 29/5/134/17 x3, 28/5/128/21 x4).
+
+### v2 (after the A/B, 02:30 UTC; `code-v2/` md5 43d2f0d0 op, 0baabd7b aslack)
+The A/B showed A-reduced raw circuits were discarded when their GD rose (lexicographic key put the cap
+violation first). v2: chains into A reductions (least cap violation first), polishes the best two A
+reductions with A cap = their A (kernel repairs GD), returns all of them. Tests (60 s):
+37/4/121/14 -> 34/4/119/15 (A -3, G -2, GD +1); 48/4/151/11 -> 44/4/149/14 (A -4, G -2, GD +3).
+
+### (a) Per-job improvement on fixed goal-near targets under their own caps (v2, 60 s jobs) [H]
+`fixed/fixed.jsonl`: 13 tuples x 3 jobs = 39 jobs: **0/39 improved** (28/4/131/23, 28/4/133/20,
+29/4/130/22, 28/5/127/22, 28/5/130/19, 32/4/116/20, 32/4/119/18, 33/4/108/19, 32/5/104/29, 35/3/140/25,
+35/3/141/24, 43/4/141/12, 48/4/151/11). Each job did produce 4-40 feasible same-metric circuits with new
+structure (the hub keeps up to 4 per cell). A reductions (raw) appeared only on 43/4/141/12 (2-3 per
+job) and 48/4/151/11 (3-12), always with GD above the cap, which the 60-s polish did not repair.
+
+### Kernel control for the A reductions (op_polish, A cap = what aslack reached, 2 seeds x 90 s) [H]
+`kctl.log`:
+- 40/3/172/13, caps 39,3,13: kernel stays at A 40 (2/2). aslack: 39/3/172/13 (raw window move).
+- 37/4/121/14, caps 34,4,15: kernel reaches 34/4/117/15 and 34/4/115/15 (better than aslack's 34/4/119/15).
+- 48/4/151/11, caps 44,4,14: kernel stays at A 48 (48/4/139/14, 48/4/141/14). aslack: 44/4/149/14.
+So in 2 of 3 cases aslack finds A reductions that the kernel's repair mode does not find within 90 s.
+These are all on redundant A >= 37 circuits, not near the A28-A32 goals.
+
+### (b) Goal-directed run, goals B-G (goal_run.py, v2, 90 s jobs, 03:10-04:03 UTC, stopped early) [H]
+`goal/log.jsonl`: 30 jobs over goals F,G,F,G,B,C,D,E (pool = 12 closest archive circuits per goal, A
+allowed up to cap + 8). No pool improved: F 35/3/140/25, G 43/4/141/12, B 28/4/132/22, C 28/5/128/20,
+D 32/4/117/19, E 32/5/104/29 at the end, the same as at the start. 0 goal hits. Stopped to free the CPU for
+the cap-respecting descents below.
+
+### Cap-respecting A descent (cap_descent.py: window moves accepted only with AD, GD within the goal caps
+and (A, G) lexicographically lower; then kernel 60 s with caps (A reached, AD cap, GD cap)) [H]
+- Goal G caps (44, 4, 140, 11), 240 s windows each: 48/4/151/11, 49/4/148/11 unchanged (raw: no A
+  reduction keeps GD <= 11); 51/4/151/11 -> 50/4/148/11 and 53/4/152/11 -> 52/4/153/11 (both by the
+  kernel; the raw window results kept A); 59/4/159/10 -> raw 57/4/165/11 -> 56/4/162/11. Under GD <= 11
+  the window move's A reductions mostly disappear (they came with GD +1..+3).
+- Goal F caps (35, 3, 138, 26): every start reached A 35 by RAW window moves, GD within the cap:
+  36/3/144/23 -> 35/3/143/22 (aes_check OK, new vs pin; dominated in our archive by 35/3/142/22),
+  36/3/146/22 -> 35/3/145/23, 37/3/148/21 -> 35/3/150/23, 38/3/148/18 -> 35/3/148/24, 39/3/148/22 ->
+  35/3/153/25 (A -1..-4 at AD 3). None reaches G <= 138. Files: descF/found/*.bfx (+ .json).
+- Second F descent from the F front (35/3/140/25, 141/24, 142/21) and two of the above, 240 s + 120 s
+  kernel (descF2/descent.jsonl): no A reduction at A 35, no G <= 138. 35/3/140/25 -> 140/26,
+  141/24 -> 141/25, 142/21 -> 140/26, 143/22 unchanged, 145/23 -> 144/22. Nothing better than the archive.
+
+## Conclusion (05:30 UTC)
+- Move works as designed. Over 10,000 rebuilt circuits were checked inside the operator and every one
+  was correct on 256 inputs (func_bad = 0 in every calibration, test and job record). Typical time is about 0.3 s per
+  window. It often creates new intermediate products: at least one new product in 63% of windows.
+- Value: **A reductions on redundant circuits** (made by join/gen, A >= 36). In the A/B it produced the
+  only new frontier point, 40/3/172/13 -> 39/3/172/13. Under F caps it took 36-39/3 circuits to 35/3 within
+  the GD cap. On 48/4/151/11 it reached 44/4/149/14, where the kernel's repair mode with the same A cap
+  stayed at A 48 (and also at A 40 for 40/3/172/13).
+- No value near the A28-A35 fronts: 0/39 fixed-target jobs improved, the goal run made no progress, no
+  goal B-G met. Exhaustive at level 1: no A reduction for any level-1 window subset of 8 A28/A29 circuits
+  [C, window model].
+- AND depth never increases by construction. AD reduction by the same move needs the targets' degree to
+  be at most 2^(L-1) (an AND depth d function has degree <= 2^d). The one exhaustive test (the single
+  level-2 AND of a NIST A28/AD5) found nothing. Not pursued further.
+
+### Exhaustive level-1 scan [C, within the window model]
+`scan_l1.jsonl` (scan_l1.py). 8 front circuits: 28/4/131/23, 28/4/133/20, 28/5/127/22, 28/5/130/19,
+28/5/124/27, 29/4/130/22, 28/4/141/16, 28/5/137/17. For EVERY subset S (|S| >= 2) of the level-1 ANDs
+(9 ANDs: 502 subsets; 10 ANDs: 1013 subsets): full downstream linear closure, wide slack (all signals
+independent of S with AND level <= 1), new products with operands ranging over ALL non-constant affine
+functions of x (both operands complete: a enumerated, b by elimination). r < k in 98 (9-AND) / 142
+(10-AND) subsets, of which 85 / 127 have r = k - 1. **No subset admits m = r products** (0 spanned in all
+8 circuits). For the r = k - 1 subsets, m = r is the only A-reducing size, so for them no A reduction
+exists in this model. Case covered: replacing a set of level-1 ANDs by new level-1 ANDs, with targets =
+the functions read outside the window's downstream linear closure, slack = level <= 1 signals. It says
+nothing about moves that also change level-2+ ANDs, nor about m strictly between r and k - 1 for
+k - r >= 2 (13 / 15 subsets per circuit). Identical counts across circuits with the same number of
+level-1 ANDs suggest a shared stage-1 structure (not checked further).
 
 ## Failures / limits
 - A reduction: never found. Necessary condition r < k holds in ~7% of 2-5-AND windows (level 1 mostly).

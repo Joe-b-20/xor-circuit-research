@@ -84,6 +84,9 @@ def run(b, U, rec, amax, cap, control=False):
         rec['result'] = 'UNSAT-deep2 (no |A|+|B| <= %d)%s' % (mmax, ' with CAPs' if rec.get('caps') else '')
         return rec
     tot, wA, wB = best
+    rec['how_desc'] = ('H3 deep2.py (amax %d) on %s: window U = all last-level ANDs + closure %s (%d ANDs); new = %d interior '
+                       'AND(s) over span(x, kept) + %d parallel products over span(x, kept, interior), classes in Sigma_U; '
+                       'exact min-cover' % (amax, rec.get('src'), rec.get('win'), len(U), len(wA), len(wB)))
     return chain.build(b, R, R, wA + wB, rec, lambda r: None, nen, tt, len(choices))
 
 
@@ -96,6 +99,7 @@ def main():
     ap.add_argument('--maxnv', type=int, default=26)
     ap.add_argument('--cap', type=int, default=200000)
     ap.add_argument('--control', action='store_true', help='allow |U| new ANDs (positive control)')
+    ap.add_argument('--verify', action='store_true', help='aes_check every circuit written')
     ap.add_argument('--nosinks-added', action='store_true', help='windows = closure(X) only (no sinks added)')
     a = ap.parse_args()
     log = mklog(a.log)
@@ -122,6 +126,12 @@ def main():
                 import traceback; traceback.print_exc()
                 rec['result'] = 'ERROR %r' % (e,)
             rec['time'] = round(time.time() - t0, 1)
+            if a.verify and rec.get('file'):
+                import subprocess
+                chk = Path(__file__).resolve().parents[2] / 'campaigns' / 'aes_check.py'
+                pr = subprocess.run([sys.executable, str(chk), rec['file']], capture_output=True, text=True)
+                rec['aes_check'] = 'OK' if pr.returncode == 0 else 'FAIL'
+                rec['aes_check_out'] = pr.stdout[-600:]
             log(rec)
 
 

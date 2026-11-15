@@ -102,7 +102,7 @@ def fingerprint(c):
 
 
 def run(c, caps, keys, seconds, rng, would_place=None, K=8, maxg=9, budget=30000, sideways=0.3, log=None, odc=True, explore=0.0,
-        relax=0.0, relax_max=2, modes=(('cost', 0.55), ('slack', 0.25), ('gd', 0.15), ('ad', 0.05)), strategies=('and', 'pair', 'reconv', 'crit', 'mixed')):
+        relax=0.0, relax_max=2, ming=3, maxo=4, modes=(('cost', 0.55), ('slack', 0.25), ('gd', 0.15), ('ad', 0.05)), strategies=('and', 'pair', 'reconv', 'crit', 'mixed')):
     t_end = time.time() + seconds
     c_gd = metrics(c)[3]
     cur = c; curk = key(metrics(c), keys); net = R.Net(cur); curcrit = len(R.critical(net, net.GD))
@@ -121,7 +121,7 @@ def run(c, caps, keys, seconds, rng, would_place=None, K=8, maxg=9, budget=30000
         if mode == 'ad': DA = net.AD - 1
         W = None
         for _try in range(30 if mode != 'cost' else 1):     # depth modes: the window must cut every late path
-            W = R.pick_window(net, 'crit' if mode not in ('cost', 'relax') else (strat if strat != 'mixed' else 'x'), rng, K=K, maxg=maxg)
+            W = R.pick_window(net, 'crit' if mode not in ('cost', 'relax') else (strat if strat != 'mixed' else 'x'), rng, K=K, maxg=maxg, ming=ming, maxo=maxo)
             if W and (mode in ('cost', 'slack', 'relax') or net.outside_ok(W, net.tfo(W), *net.req_ex(W, D, DA))): break
             W = None
         if mode not in ('cost', 'relax'): strat = 'crit'

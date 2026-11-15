@@ -25,7 +25,12 @@ def main():
     if '--k' in argv:
         i = argv.index('--k'); k = int(argv[i + 1]); del argv[i:i + 2]
     args = argv
-    pre, _, T = prefix_and_last(args[0])
+    if "+" in args[0]:                   # S1FILE+MIDFILE: stage 1 of the first, middle of the second
+        f1, f2 = args[0].split("+")
+        c1, a1, o1, T = xag.parse(f1); c2, a2, o2, _ = xag.parse(f2)
+        pre = [A["tab"] for A in a1 if xag.role(A) == "S1"] + [A["tab"] for A in a2 if xag.role(A) == "MID"]
+    else:
+        pre, _, T = prefix_and_last(args[0])
     pool = []
     for f in args[1:]:
         _, last, _ = prefix_and_last(f); pool += last

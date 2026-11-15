@@ -52,9 +52,14 @@ python3 nonlinear/boolflux/cli.py run --target aes --model nist \
 repaired first. `--seeds 1-8` or `1,3,5`. `--jobs N` runs N kernels at a time (default: all
 CPUs). `--rounds R --pool P` runs R rounds, each starting from the P best distinct circuits of
 the previous round. `--seconds` is a safety cap per process. A run that its `--iters` budget ends
-is deterministic. The replay above needs `--set skip_noop=0`, because the default no-op filter
-(on since 7ae20c8) changes the random trajectory. Without it the same command gives 109 at
-20,000 iterations.
+is deterministic for a given seed, settings and code version. The replay above needs
+`--set skip_noop=0`, because the default no-op filter (on since 7ae20c8) changes the random
+trajectory. Without it the same command gives 109 at 20,000 iterations. The same holds for
+every result recorded before 7ae20c8, which includes all 2026-11-13 `cli.py run` results in the
+manifest: add `--set skip_noop=0` to the recorded command, or use the `src/` and `bin/`
+snapshot in the run folder. Checked on 2026-11-15 for 28/4/133/20 (seed 5, 100,000 iterations):
+identical gate list both ways, 134 instead of 133 with the default filter
+([VERIFICATION.md](VERIFICATION.md) section 6).
 
 The command exits nonzero with `CAPS NOT MET` when no feasible circuit was found (the best
 repair so far is still written), and with `VERIFICATION FAILED` if a verifier rejects the
@@ -152,6 +157,29 @@ python3 nonlinear/boolflux/campaigns/verify_all.py [--json OUT.json]      # ever
 ```
 
 `best_table.py` without `--out` writes into `~/xs-campaigns/2026-11-13-aes/best/`.
+
+## The hub (shared archive and scheduler)
+
+These lines are the command forms used in the 2026-11-14 campaigns, copied from the scripts'
+help text and the campaign records. They were not re-run for this page. The design and what was
+measured are in [hub/SPEC.md](hub/SPEC.md) and [DESIGN.md](DESIGN.md).
+
+```bash
+bash nonlinear/boolflux/hub/seedlist.sh SEEDS.list                     # every verified circuit file we have
+python3 nonlinear/boolflux/hub/scheduler.py --dir CAMPAIGN --cpus 4,5,6,7 --hours 1 \
+    --seed-list SEEDS.list --ops polish,pull,join,trb \
+    --seconds polish=90,pull=90,join=60,trb=30 --eps 0.25 --seed 1     # options also: --nursery P, --near P, --seed-only
+python3 nonlinear/boolflux/hub/op_polish.py --archive CAMPAIGN --in ID --caps A,AD,GD \
+    --objective KEYS --seed S --seconds T --out JOBDIR                 # one operator job; op_pull, op_join (--in2), op_trb alike
+```
+
+`CAMPAIGN/archive/` holds every admitted circuit (`<id>.bfx`, `<id>.json`), `front.json` the
+current front, `runs/<run_id>.json` one record per job, `stats.jsonl` one line per job, and
+`control.json` is re-read while the scheduler runs (operator list, registered operator
+scripts, shares). Launch long runs through `~/xs-campaigns/guard/xsrun`, one busy process per
+CPU. To judge a hub directory use `strategies/L1/eval_run.py` (frontier admissions by AND
+class and goal-near admissions), not the scheduler's own gain figures
+(`strategies/L1/WHAT-WORKS.md` finding 1).
 
 ## Output
 

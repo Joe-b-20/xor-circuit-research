@@ -1,10 +1,9 @@
 # H3 status (general-model window re-solve)
 
-Updated 00:50 UTC 2026-11-15.
+Updated 06:05 UTC 2026-11-15.  Data: ~/xs-campaigns/2026-11-15-study/H3/
 
-Running (CPUs 14, 15):
-- xs-H-h3-ch1b (CPU 14): chainbatch slack-1 windows, ops=nosinks, A29 g137 / A28-AD5 g124 / A28-AD4 g131 -> chain1.jsonl
-- xs-H-h3-ch2b (CPU 15): same for BP32-like a32-ad5-g104 and a30-ad4-g147 -> chain2.jsonl
-
-Done: SAT calibration (timeouts), lay parallel re-layers (all UNSAT), controls verified.
-Best so far: nothing below the starting points.
+Nothing running (06:06).  Last jobs: deep2 amax 1 on the two 9+5+14 A28s, 30 windows UNSAT.
+Done today: see NOTES.md R1-R8.  Best: verified A28 28/5/210/31 from hub A29 g134 (deep2), same AND
+space as NIST g128 (X1b).  No 27.  Both dependent last-layer pairs of the 9+5+14 A28s: 2 -> 1
+impossible with the full operand space [C, kept ANDs fixed].
+Overnight specs: QUEUE.md H3 (overnight/job.sh a28|a29|c14|x1|deep) and H3b (overnight/sweep_job.sh).

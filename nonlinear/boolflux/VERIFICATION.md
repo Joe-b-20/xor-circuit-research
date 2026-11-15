@@ -38,7 +38,10 @@ Run on 2026-11-14 at 18:07 UTC (CPU 0, 72 s):
 That run found 130 distinct AES tuples of ours, 83 of them not dominated by the pinned set, and
 41 of those not dominated by another circuit of ours. `best_table.py`, `pareto_audit.py` and the
 `aes_pareto` field of MANIFEST.json gave the same 41. Campaign folders that are still being
-written change the `campaigns` counts.
+written change the `campaigns` counts. (Updated after re-curation: this table and the counts
+130 / 83 / 41 are the run of 2026-11-14, before the hub campaign and the 2026-11-15 study. The
+hub verifies each circuit with the same two verifiers at admission, but its circuits are not in
+`results/` or the manifest yet.)
 
 ## 1. Inside the search
 
@@ -156,18 +159,48 @@ iterations, rounds, code hash, wall time, metrics, the verifier verdicts, and:
 - `mechanism`, `parents` (the full lineage for track E's pool circuits, up to NIST or BoolFlux
   input files), `time_to_result_s`, `run_record` and `code_version`;
 - `reproduction`, which takes one of these values:
-  - *deterministic command*: every job ended on its iteration budget, so re-running the command
-    gives the same circuit.
+  - *deterministic command*: every job ended on its iteration budget, so the run is
+    deterministic for its seed, settings and code. (Corrected 2026-11-15.) These 47 entries
+    are runs of 2026-11-13 (code b0e56ecb18fe for all but one of the 49 entries of this kind and
+    the next), before the no-op filter became the default (7ae20c8). With later
+    code the recorded command needs `--set skip_noop=0`, or the `src/` and `bin/` snapshot of
+    the run folder. Checked on 28/4/133/20 (seed 5, 100,000 iterations; outputs in
+    `~/xs-campaigns/2026-11-15-study/L2/det_old`, `det3`, `det1`): the run's own binary gives
+    the byte-identical circuit; code f9fe6f7 with `--set skip_noop=0` gives the identical gate
+    list (133 at iteration 56,529); code f9fe6f7 with the default settings ends at 134 with no
+    improvement. The other 46 entries were not re-run.
   - *reproduced*: re-run from scratch, with an identical gate list. This holds for two results.
     Also on 2026-11-14, with `--iters 20000 --seeds 7 --set skip_noop=0`, the current code
     re-ran `a32-ad5-g109-gd20 -> 108` bit for bit.
-  - *deterministic construction* (track E joins).
-  - *one-off*: a time-budgeted run, verified but not bit-reproducible.
+  - *deterministic construction* (track E joins). The entries say "not re-run"; on 2026-11-15
+    the first A31 join and all 29 join admissions of the long1 and low1 runs were rebuilt from
+    their recorded parents and cut levels and are identical (`strategies/L2/rejoin.py`).
+  - *one-off*: a time-budgeted run, verified but not bit-reproducible. Every A28 and A29 result
+    of the AES push is of this kind and none was repeated.
 
 The curated AES-push circuits keep their campaign sidecar as `*.campaign.json`. The
 `strategies/` code was not committed when they were curated, so `code_version` records the
-sha256 of the strategy scripts as they were at curation, and the commit of the kernel copy
-they ran.
+sha256 of the strategy scripts as they were at curation (17:54 UTC), not at run time, and the
+commit of the kernel copy they ran. The scripts were committed 14 minutes later in 377b03f; the
+manifest does not cite that commit yet (updated after re-curation).
+
+Known gaps in the provenance records, from the audit of 2026-11-15
+(`strategies/L2/DOC-AUDIT.md`, `strategies/L2/WHAT-WORKED-BEFORE.md` section 4):
+
+- Two entries are circuits that do not meet the A cap of the job that made them:
+  `aes-nist-E-polish-g104-a32-gd29-ad5` (job cap A31, circuit A32) and
+  `aes-nist-E-pull-g135-a29-gd17-ad5` (job cap A28, circuit A29). Both circuits are correct and
+  verified; they are the kernel's best infeasible state. The entry shows the cap only in
+  `job_caps`, and the `mechanism` text reads as if the cap had been met.
+- The 10 polish entries of track E's long1 run have no time within the job
+  (`time_to_result_s.within_job_s` is null) and no caps in their lineage records.
+- In track E's memetic driver the kernel seed of a job is the pool member's polish counter
+  (1, 2, ...), so a seed is meaningful only together with the start circuit's hash.
+- `aes-nist-main-flow-g175-a28-gd14-ad4` records a result time of 960 s in a 900 s job; two
+  track F entries give their seed as "see cmd"; track F's kernel is named by a hash prefix.
+- Track D's window statistics cannot be rebuilt in full: the surviving logs hold 3,062 windows.
+- Time-budgeted jobs ran on CPUs of probably different speed (CPUs 12-19 of the machine are
+  likely efficiency cores), and the memetic polishes did not record iteration counts.
 
 ```bash
 taskset -c 0 python3 nonlinear/boolflux/campaigns/curate_aes.py --dry-run   # what would be added to results/aes

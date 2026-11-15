@@ -1,10 +1,10 @@
-# R1 status (window exact resynthesis)
+# R1 status (window exact resynthesis -> exact window AND removal)
 
-- ab1 (v1) done 01:26 UTC: base 0 vs base+wres 0 new frontier points; wres 0 admissions in 583 windows. Not adopted.
-- 01:26 UTC: A/B ab2 running (v2 = op_wres2.py: equal-cost exploration + sideways adoption + 40% kernel polish of
-  adopted structures), CPU 17 base / CPU 18 test, snapshot ab2-snap (t=1794705986, 2299 records, 455 cells,
-  front 85), frozen-ab2, wres2 --seconds 60. Ends ~02:27 UTC.
-- Side tests (30 s each, pinned to CPU 18 during ab2, i.e. against the test arm): relax-mode windows (deadlines
-  from GD+1..2) on 28/4/135/18: 29 windows, nothing; kernel with GD cap +1 on 28/4/135/18 and 28/5/137/17:
-  no G reduction in 30 s.
-- Best so far: nothing claimed.
+- wres (SAT window resynthesis): ab1 and ab2 0 vs 0 new frontier points; 28 fixed-target jobs on goal-near tuples
+  0 strictly better. Not recommended.
+- mc1.py (rank test + exhaustive flat products) and seq2.py (sequential 3->2) remove ANDs exactly in windows:
+  dozens of verified A-1 circuits from A = 29..35 archive circuits; the A = 28 front shows none.
+- NEW verified A = 28 front points (aes_check OK, new on the NIST pin, not dominated by the final hub archive):
+  28/4/134/19 and 28/5/126/24 in ~/xs-campaigns/2026-11-15-study/R1/found/ (AND removal + kernel grind).
+- 04:04-05:05 UTC: A/B ab3 = base vs base + andrm (op_andrm.py, generator), CPUs 17/18, snapshot ab3-snap.
+  (test arm control.json had a quoting error for its first ~40 s: first job ran with base ops only.)

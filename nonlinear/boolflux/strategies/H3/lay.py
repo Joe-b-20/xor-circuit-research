@@ -27,7 +27,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from wsat import Base, Span, info_set, ONES, NR, finish, save_circuit, mklog  # noqa: E402
 
-BIN = HERE / "r1enum_v2"
+BIN = HERE / "r1enum_v3"
 FOUND = '/home/joebachir20/xs-campaigns/2026-11-15-study/H3/found'
 
 

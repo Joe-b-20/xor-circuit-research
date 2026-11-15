@@ -4,14 +4,20 @@ BoolFlux was built on 2026-11-13 and 2026-11-14 on the local branch `boolflux-20
 has been published or pushed. This page is a dated record of that work: what was built, what
 the reviews found and how it was fixed, which measurements changed the method, and what the
 2026-11-14 AES push produced, failed experiments included. Times are UTC. Commit times are
-converted from the repository's -0500 timestamps.
+converted from the repository's timestamps (-0500; -0400 for the October commit).
+
+**Corrections of 2026-11-15.** The text below was checked against the run records
+(`strategies/L2/DOC-AUDIT.md`, with the hub-era analysis in `strategies/L1/WHAT-WORKS.md`).
+Corrected sentences carry "(corrected 2026-11-15)". Numbers that depend on the result set carry
+"(updated after re-curation)": they are the curation of 2026-11-14 17:54 UTC and do not yet
+include the hub runs, track F's AD3 runs after 17:40 or anything later.
 
 **Sources and marks.** The commit hashes come from
 `git log --format='%h %ci %s' boolflux-2026-11-13`. Other sources are named next to each claim.
 Campaign records live outside the repository, in `~/xs-campaigns/2026-11-13-boolflux/` and
 `~/xs-campaigns/2026-11-13-aes/` ([runs/INDEX.md](runs/INDEX.md)). The strategy code of the AES
-push (`strategies/C,D,E,F/`) and the hub (`hub/`) had not been committed when this page was
-written. **[V]** marks a circuit that passed both verifiers
+push (`strategies/C,D,E,F,G/`) was committed in 377b03f and the hub (`hub/`) in 97abda7, both
+after this page was first written. **[V]** marks a circuit that passed both verifiers
 ([VERIFICATION.md](VERIFICATION.md)) and appears in [results/MANIFEST.json](results/MANIFEST.json).
 **[C]** marks an exhaustive or exact computation by track C (`strategies/C/NOTES.md`).
 
@@ -37,7 +43,12 @@ written. **[V]** marks a circuit that passed both verifiers
 | 11-14 15:48 | 8225691 | REPORT section 7: review-3 corrections, and the repeated no-op A/B, which showed no measurable effect |
 | 11-14 17:26 | 417e449 | NIST re-pinned at **3d80774**, upstream HEAD on that day. It adds the forward circuits a33-ad4-g125-gd14 and a34-ad4-g139-gd13 and two inverse circuits. Also `refresh.py --repin`, the `aes-sbox-sel` table and `best_table.py` |
 | 11-14 17:26-17:28 | E/F NOTES, main/queue.log | tracks E and F and the main queue stopped. Track C's exhaustive runs and track F's AD3 runs (started 17:31-17:34) were still running when this page was written |
-| 11-14 17:40-17:47 | this documentation pass | 36 AES-push circuits curated into `results/aes/` (`campaigns/curate_aes.py`); MANIFEST.json regenerated; `verify_all.py` run: all OK |
+| 11-14 17:40-17:54 | this documentation pass | 36 AES-push circuits curated into `results/aes/` (`campaigns/curate_aes.py`, `curated_utc` 17:54); MANIFEST.json regenerated; `verify_all.py` run: all OK |
+| 11-14 17:38-18:40 | `~/xs-campaigns/2026-11-14-hub/`, 97abda7 | hub built; first A/B, hub against the memetic splice arm, 4 CPUs each for 1 h |
+| 11-14 18:41 - 11-15 01:30 | `2026-11-14-hub/long`, f9fe6f7 | hub long runs (five scheduler starts) and six 1-CPU 1-hour A/B arms: 65.9 CPU-h, 7,231 jobs in all (`strategies/L1/WHAT-WORKS.md`) |
+| 11-14 22:50 | `F/ad3b/` | track F's AD3 runs end: 35/3/177/13, 35/3/162/14, 35/3/142/22, 40/3/172/13, 39/3/156/15 (not in the manifest; updated after re-curation) |
+| 11-14 ~23:55 | `C/STOPPED-gq.txt`, `C/logs/` | track C's gamma sweeps stopped to free CPUs: 10 of 16 gammas finished for the AD5 prefix and 11 of 16 for the AD4 prefix, 0 hits in each |
+| 11-15 00:10 - | `~/xs-campaigns/2026-11-15-study/` | study phase: structure and algebra (H1-H4), window redesigns (R1, R2), goal-directed runs (T1-T4, X1-X3), log analysis and this page's corrections (L1, L2) |
 
 ## Building blocks (2026-11-13)
 
@@ -74,8 +85,9 @@ NOT gates came with e5bab59.
 What happened to those 12 at pin 3d80774 (MANIFEST.json, `pinned_set`): NIST's new
 a34-ad4-g139-gd13 equals our 34/4/139/13, so that tuple is no longer new. Five more (131@13 A36,
 124@14 A38, 167@14 AD3, 126@15 A32, 131@26 A28) are now strictly dominated by later results of
-ours. The other six are still on the Pareto front: 33/4/110/18, 32/4/122/18, 33/4/108/19,
-32/5/108/20, 28/4/133/20 and 35/3/144/20.
+ours. The other six were still on the Pareto front at the 17:54 curation: 33/4/110/18, 32/4/122/18,
+33/4/108/19, 32/5/108/20, 28/4/133/20 and 35/3/144/20 (updated after re-curation: the hub's
+32/4/121/17 and 32/4/119/18 now dominate 32/4/122/18).
 
 ## Reviews and their fixes
 
@@ -130,29 +142,45 @@ circuits (10|1|2|2|13 and 9|2|4|13 ANDs per level):
   An earlier "k = 7 UNSAT" was retracted, because it fixed a basis of the target space, which is
   unsound.
 - The GF(16) inversion needs exactly 5 ANDs **[C]** (SAT: k = 4 UNSAT in 76 s).
-- Every last-layer AND of the A28 circuits is a GF(4) norm. No 9-product stage 1 fits the
-  published last layer or any of the 2,321 valid 13-member layers of its family **[C]**. No
-  12-member GF(4)-norm last layer exists over the three fixed front spans tested **[C]**. That
-  rules out 27 (and 26) only within that family. Gamma sweeps were still running.
+- Every last-layer AND of the two A28 circuits examined (a28-ad5-g124 and a28-ad4-g131-gd31; the
+  pin has 14 A28 files) is a GF(4) norm. No 9-product stage 1 fits the published last layer or
+  any of the 2,321 valid 13-member layers of its family **[C]**. No 12-member GF(4)-norm last
+  layer exists over the three fixed front spans tested, **for one gamma per front and in the
+  cases dim Z = rank = 4 and dim Z = 3 [C]** (corrected 2026-11-15; `strategies/C/NOTES.md`
+  section 9 lists what is not covered: dim Z = 2, other gammas, members with an independent
+  N-part, non-GF(4)-norm members, other stage-1 covers). That excludes 27 (and 26) only in those
+  cases of that family, and says nothing about circuits outside the three-stage model. The gamma
+  sweeps that were still running were stopped at about 23:55 UTC: 10 of 16 gammas done for the
+  AD5 prefix and 11 of 16 for the AD4 prefix, each with 0 hits (`C/logs/zdfs_r4_k12_*.json`);
+  the rest are queued. H1 continues this line (`strategies/H1/`).
 
 ### Track D: exact SAT resynthesis of windows (`strategies/D/README.md`, D/STATUS.md)
 
-A failed experiment. At the frontier caps, **0 of about 3,900 windows** improved anything:
-windows of up to 9-12 gates on published 103, 116, 124 (A28), 127, 133 and our 108@19, 124@14,
-131@13. About 60 % were UNSAT and 40 % ran over a 30k-conflict budget. In depth mode (GD - 1),
-0 of about 115 improved. With the depth cap relaxed by one, windows occasionally found a -1, and
+A failed experiment, for its objective: fewer gates at fixed caps. At the frontier caps,
+**0 of 3,062 recorded windows** improved anything (corrected 2026-11-15 from "about 3,900";
+the surviving logs `D/t1`, `t3`, `t4` hold 3,062 windows and 3,337 SAT calls, 72 % UNSAT and
+28 % over the 30k-conflict budget). The windows had 4-9 gates (5-12 in one cut-mode run) on
+published 116, 124 (A28), 127, 133 and, for 180 of them before the outage, on our 108@19,
+124@14, 131@13. No log exists for NIST 103. In depth mode (GD - 1), 0 of 115 improved; those
+four runs were cut by the outage after 64 of 400 s. The encoding asked for one gate fewer, or
+for the same number of gates with one AND fewer. It never asked for one AND fewer at a free
+gate count, so it is not a test of AND removal. With the depth cap relaxed by one, windows occasionally found a -1, and
 the kernel repair back to the cap undid it every time. In the final fair test (breathe cycles
 against the kernel alone, about 1,100 s each, CPUs 11-13), the two gains came from the kernel
 stage, after the window stage had returned its input unchanged. They are kernel seed variance,
-not window effects. Conclusion: these circuits are locally exact-optimal for windows of that
-size. Products: 121@GD14 A37 (from our 124, 269 s) and 125@14 A33, both kernel results
-**[V for 121; 125@14 A33 is now dominated by NIST's new a33-ad4-g125-gd14]**.
+not window effects. Conclusion (corrected 2026-11-15): no sampled window of that size could be
+replaced by a smaller one, and 28 % of the SAT calls were undecided. The windows were drawn at
+random, not enumerated, so this is not a proof of local optimality. Products: 121@GD14 A37
+(from our 124, 269 s) and 125@14 A33, both kernel results
+**[V for 121; 125@14 A33 is equalled by NIST's new a33-ad4-g125-gd14, so it is not new]**.
 
 ### Track E: joint AND/XOR optimisation (`strategies/E/NOTES.md`, E/STATUS.md)
 
 - **M1, ejection chains**: an uphill kick at a gate, then up to 6 greedy repair steps. Negative:
   median 135 against 133 for the control (a36, 60 s, 5 seeds); no gain from A28 124 at cap A 30/31
-  or from 104 at cap A31.
+  (one seed, 300 s per arm). On 104 at cap A31 only the control finished; the chain run and the
+  A29 batch were lost in the outage. The objective was gate count throughout: chains were never
+  run with an AND-first objective.
 - **M2, skeleton kicks**: one AND-product move, seeded rebuild, short polish. Negative: single
   moves cost +12 to +42 gates (A28 124) or +0 to +19 (104), and 20 s polishes never got back to
   the parent.
@@ -166,11 +194,20 @@ size. Products: 121@GD14 A37 (from our 124, 269 s) and 125@14 A33, both kernel r
   the splice arm's points are not dominated by any control point, and 0 of the control's are not
   dominated by the splice arm. The low1 run (joins, polishes and depth pulls aimed at A <= 31)
   added A28 and A29 points at GD 16-25 and 33/4/115/15 **[V]**.
+- **Reading of that A/B** (added 2026-11-15, `strategies/L2/WHAT-WORKED-BEFORE.md`): all 26 join
+  admissions came in the first 8.6 minutes of 2.3 hours, and 14 of the 17 points are those joins
+  or polishes of them. Polishing published A28 circuits at their own caps changed nothing in 52
+  jobs. On the A28 line the gains came from depth pulls (cap GD lowered by 1-3, AD free; 7
+  admitted points from 53 jobs) and from polishing what the pulls made. The A29 points are A28
+  circuits whose pull ended one AND above its cap, with a 10-AND last layer (ANDs per level
+  10, 2, 3, 4, 10). 32/5/104/29 came from a 240 s kernel job from NIST 107@GD22 whose cap A31
+  was never met; a paired probe on 2026-11-15 showed that the released depth cap, not the unmet
+  A cap, is what produced the gain.
 
 ### Track F: low gate depth (`strategies/F/NOTES.md`, F/STATUS.md)
 
-- **Facts.** For every frontier circuit, the depth reached by rebuilding every XOR form optimally
-  equals the circuit's GD. So a cap repair cannot come from XOR-layer resynthesis alone: some
+- **Facts.** For each of the six circuits analysed (116@15, 127@14, 124@14, 131@13, 133@13,
+  141@12), the depth reached by rebuilding every XOR form optimally equals the circuit's GD. So a cap repair cannot come from XOR-layer resynthesis alone: some
   AND functions must change. Over {AND, XOR, XNOR, NOT}, y2 and y3 of the GF(2^4) inversion are
   not depth-3 computable from its 4 inputs alone (exhaustive).
 - **Failed**: AND distribution transforms (no single transform lowers the depth bound below 15;
@@ -179,10 +216,11 @@ size. Products: 121@GD14 A37 (from our 124, 269 s) and 125@14 A33, both kernel r
 - **Gains**: 122@GD14 A37 by the plain gate kernel from our 124 (4 of 4 seeds, 25-123 s); an
   independent, constructive 122 from a depth-3 inversion block spliced into NIST's 116; and
   **121@GD14 A37** from the timing-driven regional rebuild arm (`trb`, 1 of 3 one-hour runs, at
-  1,407 s; 0 of 9 for the other arms) **[V]**. It is a different circuit from track D's 121.
+  1,407 s; 0 of 10 for the other arms; with n = 3 per arm this is not significant) **[V]**. It is a different circuit from track D's 121.
 - **Repair baseline**: GD14 -> 13 met the cap in 2 of 35 runs (137 and 136 gates), and GD13 -> 12
   in 0 of 10. Repair is fast exactly when the start's depth bound already meets the cap.
-- After 17:31, AD3 runs found 161@GD14 A38 AD3 and 174@GD13 A40 AD3 (curated 17:40, both new
+- (Updated after re-curation: the runs ended at 22:50 UTC with further AD3 points, see the
+  timeline.) After 17:31, AD3 runs found 161@GD14 A38 AD3 and 174@GD13 A40 AD3 (curated 17:40, both new
   points; the runs were still going).
 
 ### Main queue (`~/xs-campaigns/2026-11-13-aes/main/`)
@@ -193,6 +231,9 @@ own caps. 10 of 28 starts were done when it stopped at 17:26. One gain: NIST a28
 103@32 and 124@27 (`main/queue.log`).
 
 ### Where the AES results stand (pin 3d80774)
+
+This section is the curation of 2026-11-14 17:54 UTC (updated after re-curation: the count, the
+mechanism split and the table do not include the hub runs or track F's later AD3 results).
 
 41 tuples are new on the pinned set and not dominated by another result of ours. The same 41
 come from `best_table.py`, `pareto_audit.py`, MANIFEST.json and `verify_all.py`. By mechanism:
@@ -207,8 +248,18 @@ come from `best_table.py`, `pareto_audit.py`, MANIFEST.json and `verify_all.py`.
 
 Source: `pareto_audit.py` on `results/aes` (2026-11-14 17:43). NIST's targets were not reached:
 A < 28, G < 103 (the record is 103 at GD 32), and about 110 at GD <= 14. All of the AES-push
-results are one-off time-budgeted runs or deterministic joins. None was re-run
-(MANIFEST.json `reproduction`).
+results are one-off time-budgeted runs or deterministic joins (MANIFEST.json `reproduction`).
+None had been re-run when this was written. On 2026-11-15 the 30 recorded joins of track E were
+rebuilt from their parents and cut levels, all identical (`strategies/L2/rejoin.py`). The
+one-off kernel results, which include every A28 and A29 point of the push, have not been
+repeated. Two of the 41 tuples are circuits that do not meet the A cap of the job that made
+them (32/5/104/29 under cap A31, 29/5/135/17 under cap A28); the manifest shows this only
+through `job_caps`.
+
+None of the mechanisms lowered an AND count below its family's published minimum, and none was
+asked to: before the hub no kernel, window or chain run on AES had an AND-first objective or an
+A cap below its start's A, apart from eight 240 s runs with cap A31 from A32 circuits
+(`strategies/L2/WHAT-WORKED-BEFORE.md` sections 0 and 3).
 
 ## Decisions and their evidence
 
@@ -217,15 +268,30 @@ results are one-off time-budgeted runs or deterministic joins. None was re-run
 | complete truth tables and exact care sets, never an approximate state | no review or audit found a saved circuit that computes the wrong function (reviews 1-3, audit) |
 | feasibility first, then lexicographic keys, the same ranking everywhere | review 1 M1, review 3 M1/M2 |
 | seeded rebuild instead of rebuilding from forms | 31-72-gate penalty -> +0 (REPORT section 3) |
-| skeleton moves kept only for AND reduction (small functions) | GF(2^4) mult 9 AND needs them; 11 of 12 AES cases unchanged; track E M2 negative |
-| no SAT windows in the main loop | 0 of about 3,900 windows (track D) |
-| joins at interface functions as a first-class operator (hub) | track E A/B: 17 vs 3 frontier points in the same CPU time |
+| skeleton moves kept only for AND reduction (small functions) | GF(2^4) mult 9 AND needs them; 11 of 12 AES cases unchanged; track E M2 negative. Not tested: a search for one product fewer on an A28 skeleton |
+| no gate-saving SAT windows in the main loop | 0 of 3,062 recorded windows (track D). AND-removing windows are a different design, under test since 2026-11-15 (H3, R1) |
+| joins at interface functions as a first-class operator (hub) | track E A/B: 17 vs 3 frontier points in the same CPU time, the join admissions all in the first 9 minutes. In the hub, repeat joins on the same target gave 3 frontier admissions in 3,471 jobs (`strategies/L1/WHAT-WORKS.md` finding 8) |
+| A/B arms need at least 8 CPU-hours and a value measure that is not the hub's gain | twenty identical 1-CPU-hour blocks gave 0, 1, 2, 4 frontier admissions in 11, 5, 3, 1 blocks; the gain rule scored 51 of 75 admissions as "lowers A" although none lowered a class minimum (`strategies/L1/WHAT-WORKS.md` findings 1, 10) |
 | every result through two verifiers, then `aes_check` against a pinned set | the 0876577 -> e6ac0d0 correction withdrew 13 of 18 claimed points |
 | memory guard for every campaign job | the 05:09 OOM outage |
 
-## Next: the hub (in progress)
+## The hub (2026-11-14 evening)
 
-[hub/SPEC.md](hub/SPEC.md) describes a shared archive that every operator (polish, pull, join,
-trb, later linres and generators) reads and writes, with cells per (A, AD, GD) and a bandit
-scheduler. Its implementation began on 2026-11-14 (`hub/`, campaign `~/xs-campaigns/2026-11-14-hub/`).
-It is not described here as a result.
+[hub/SPEC.md](hub/SPEC.md) describes a shared archive that every operator reads and writes, with
+cells per (A, AD, GD) and a bandit scheduler (`hub/`, campaign `~/xs-campaigns/2026-11-14-hub/`).
+It was built from 17:30 UTC and ran until 01:30 UTC on 11-15. Its circuits are verified at
+admission and listed in `~/xs-campaigns/2026-11-14-hub/best/BEST.md`; they are not in
+MANIFEST.json yet (updated after re-curation). Track E's running notes are
+`strategies/E/NOTES.md`; the recount of all hub logs is `strategies/L1/WHAT-WORKS.md`. From the
+recount, all counted over 65.9 CPU-h and 7,231 jobs:
+
+- 80 frontier admissions, every one "fewer gates under the same caps". None lowered the smallest
+  A, the smallest AD at an A, or the smallest GD of a class. No goal box (B-G) was met.
+- The mature best circuits are fixed points of the kernel: 138 polish jobs on seed circuits,
+  none with lower G.
+- The new 29/4 and 30/4 families were first made by pull jobs that ended infeasible.
+- The scheduler's gain is not a value signal, and the one-CPU-hour A/B arms that chose the
+  operators (osc, gen_skel, ad3_share) differ by counts of 1 against 2. Those choices are not
+  established. osc: 347 jobs, 9.5 CPU-h, 4 frontier admissions.
+- Earlier text in `strategies/E/NOTES.md` that ranks operators by "gain per CPU-h" should be
+  read with this in mind.

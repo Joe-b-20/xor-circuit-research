@@ -76,6 +76,26 @@ Files analysed (63): all NIST A28 (14), A29 (4, umizame-derived), A30 (2, umizam
    outputs additively. These are the only deviations; nothing in any file computes an output bit
    early, merges stages inside an AND, or uses another subfield chain.
 
+8. **Levels vs stages, and explicit vs spanned N^-1** (answer to L2 / coordinator, 02:30 UTC).
+   (a) L2's "10-AND last layer" (hub 29/5/134-138, AND levels 10|2|3|4|10) is in the 63 files:
+   by operand spans it is 10 S1 + 6 MID + 13 LAST, all 13 GF(4)-norm members (gamma g^187),
+   Jx = 3, dim U = 7 [C, decomp_all]; 3 of the 13 members just sit at AND level 4 because their
+   operands are ready early. Likewise the A31 joins (9|1|2|6|13) are 9 + 5 + 17 with 4 of the 17
+   last members at level 4. AND level is a scheduling fact; the stage roles above are by operand
+   spans and are unaffected. (b) Everything here about N^-1 is about SPANS: "rank of n in the
+   circuit span = 4" holds in all files but one. Explicit wires are a different matter [C,
+   `nwires.py`]: number of non-constant wires lying in span(1, n): A28 AD5/AD4 0, hub A29
+   (10|2|3|4|10) 0, umizame A29 1, A30 g147 2, BP A32 9, A32 AD4 9, hub A31 9. So A28 circuits never
+   materialise any nonzero GF(2)-combination of n's coordinates as a wire - n exists only inside
+   the operands of the last layer (each operand mixes x, N and n) - which matches L2's count of
+   explicit N^-1 signals (54 of 101 pinned, none in A28). (L2 reports none for A30; with my
+   definition A30 g147 has 2 such wires - definitions differ: one combination of n's
+   coordinates vs all four coordinates.)
+
+(Caveat, 10.2: the 13-norm-member property holds for these files, not for A28 circuits in
+general - later A28s have 11 or 12 members plus a non-member pair - and the 63 files come from 3
+independent designs.)
+
 **Answer to the user's question [C on these 63 files]:** none of the known circuits deviates from
 "stage 1 -> GF(16) inverse -> last layer" except additively (junk). So the known record circuits
 give NO evidence about what a non-three-stage 27 would look like; equally, nothing known rules it
@@ -155,6 +175,13 @@ with a different (non-norm) 5-member row (12 bilinear + 5 mixed members).
   deg(f|V) >= deg(f|V_old) - 1 (write f = l g + h: if both h and g + h had degree < d - 1 so would
   g). After t steps f is affine on V, so deg f - t <= 1). So t >= 6, a_1..a_5 have degree <= 6 and
   are distinct from the >= 8. Hence k >= 5 + 8 = 13.
+  Re-checked 02:50 for X3: (1) the degree fact was re-verified independently on a NIST circuit's
+  output tables (`lb_check2.py`: 255 x degree 7); (2) the span step needs only that every
+  element of D has degree <= 6 and every nonzero output combination degree 7; (3) "first top
+  AND" uses the sub-circuit of its ancestors (<= t ANDs), so Schnorr's bound applies; (4) the
+  restriction lemma is applied to f = a_t with c chosen per step, and an AND whose left operand
+  is already constant costs no equation; NOT/XNOR/constants are affine and change nothing.
+  The bound is weak (13) and says nothing about structure; it is the only general bound we have.
 * [H, literature recollection + web search 00:40] Boyar-Peralta/BMP give the upper bound 32 and
   NIST lists "< 32 ?" as open; the Schnorr degree bound MC >= deg - 1 is standard. Jeon, Baek, Kim,
   "Toward Finding S-Box Circuits With Optimal Multiplicative Complexity", IEEE Trans. Computers
@@ -212,8 +239,240 @@ any record circuit).
   C's stage-1 encoding + rank constraint; the positive control (k = 9, rank <= 2, which the
   record circuits satisfy) did not finish in 13 min (C's unconstrained k = 9 instance: 33 s), so
   the UNSAT question was not attempted; stopped 00:40. The [H] "capacity 3" statement stays [H].
-* zdfs / zdfs3 (track C's tools) over umizame's prefix, gamma none, k = 13, cases (dim Z, rank)
-  = (3,3), (3,4), (4,4): running from 01:04 (`.../H1/zdfs/run.log`); results below when done.
+* **zdfs / zdfs3 (track C's tools) over umizame's prefix (9 + 5), gamma none, k = 13 - none**
+  [C, exhaustive within each case; log `.../H1/zdfs/run.log`, 01:04-01:34 UTC]:
+  (dim Z, rank pi) = (3,3): 97155 Z, 0 leaves (24 s; maxmult 1 means at most 7 members);
+  (3,4) zdfs3: 97155 Z, 0 checks (394 s; complete since 13 > 7 points);
+  (4,4): 200787 Z, 0 leaves, 0 hits (1263 s).
+  The same (4,4) case over umizame-L + AD5-inv was started and stopped at 01:40 (CPU 12 became
+  shared, addendum 01:35); it and the uncovered cases (4,5) [partial via zdfs3], all 15 gamma != 0
+  over umizame's E, and AD4-L + AD5-inv are specified in `~/xs-campaigns/2026-11-15-study/QUEUE.md`
+  (section "H1") for the overnight run. Memory: 16 MB peak per job (measured).
+
+## 7. Follow-up from 01:50 UTC: the 9+5+13 target (coordinator request) - scope, for H2
+
+Read H2/NOTES.md first (01:40). H2 covers: the row problem (5 late per isolated row [C]); the
+relaxed tower model (v independent) with umizame's 9 early products forced, row-local members (no
+K = 13/14 for any gamma [C]) and all 1275 members (jsat, gamma 6, running); v-junk parities;
+normspan ((4,4,5) needs 11 > 9 [C], so my (4,4,5) row in TRICKS is now excluded, not [H]).
+**H1 covers, without overlap:** the graph model (true functions of x, operands in
+span(1, x, N, n)), stage 1 NOT fixed (cover test of U from scratch, any 9-cover), members of one
+gamma with gamma solved per candidate; (a) the exact condition list as a fast tester
+(`cond27.py`); (b) exhaustive small neighbourhoods of the 30 A28 layers and of umizame's layer;
+(c) larger neighbourhoods as QUEUE.md jobs. H1 does not run SAT over the full member pool.
+
+### 7.0 Scope label (X3 critique, 03:00 UTC)
+
+Everything in 7.1-7.4 is **[C / P, 1275-member model]**: it assumes every last-layer AND is a
+GF(4)-norm member (x-ratio in {w, w^2} with the inverse n-ratio), a model read off the A28 files,
+not derived. X3 proved [C] that a parallel top layer needs >= 10 products and that at exactly 10
+the tensor spans are member spans; for 11-13 non-members (semi-members) are possible. Section 8
+extends the work to them.
+
+### 7.1 Exact conditions as fast tests (the "(a)" part) [1275-member model]
+
+Model: last layer = k GF(4)-norm members (z_m, zeta_m), one gamma; stage 1 = any 9 level-1
+products; middle = BMP 5-AND (n only). Facts (all checked by script, see `nfast.py` docstring):
+* [C, coeffcheck.py] coefficient of x^239 (class of x^-1) of a member is Y = z/zeta (all 1275
+  members, gamma none/1/g^17/g^187); coefficient of x^188 (class 47) is z (sampled members, two
+  gammas). These classes occur nowhere else in the circuit (S1: weight <= 2; MID: multiples of
+  17), so for each output combination c: (i) sum c Y = b_j, (ii) sum c z = 0 are NECESSARY.
+* [C, junkfit.py, sampled members] x-junk coefficients: c_3 = z^3 zeta, c_9 = z^9 zeta^3 +
+  gamma^8 Y^128, c_5 = 0, c_17 = 0 (gamma none; for gamma != 0 c_17 lies in V_N, free).
+* [C, parity.py; agrees with H2 vjunk.py] N-junk of an output = function of its class-parity
+  vector only; free iff parity in Pi(gamma): Pi(none) = {0, 11111}; for gamma != 0 Pi is 3-dim,
+  spanned by one free class e_f and two class pairs (5 groups of 3 gammas, table in
+  `.../H1/parity.txt`). H2 [C]: no nonzero N-junk lands in G's 30 classes, so with a 5-AND
+  middle every used output combination must have parity in Pi(gamma).
+* Test (`nfast.py`, no truth tables): K_Pi = {c : sum c z = 0, parity(c) in Pi}; need
+  Y(K_Pi) = F; x-junk Jx >= dim J(K_Pi) - dim J(ker Y) (exact if excess 0), J(c) = (sum c z^3 zeta,
+  sum c z^9 zeta^3 + gamma^8 (sum c Y)^128). **Validation [C]:** on all 10 distinct published
+  layers it reproduces decomp.py exactly: A28 AD4 layers fail the parity test (they need the
+  6-AND middle), A28 AD5 pass with Jx = 3, umizame pass with Jx = 3 (g182 variant: 2).
+* `cond27.py`: the same conditions on truth tables (R1 n-block, R2/R3 feasibility with n only,
+  R4 junk with q-parts, R5 = exact 9-cover test of U via track C's cover_enum / G's SAT).
+  Validated: A28 AD5 -> J 3, U not 9-coverable; umizame -> J 3, coverable (k = 15);
+  A28 AD4 -> fails R3.
+
+### 7.2 Consequences (proved from the necessary conditions above) [P, 1275-member model]
+
+Notation: rows P (classes used, r of them), sizes n_P, D_P = span of differences of row P's
+z-values, d = dim(sum D_P), p = dim(Pi restricted to the used classes), C = span of the 8 output
+combinations (C -> F bijective by (i)), C0 = C cap {all parities even}.
+**Lemma [P].** For c in C0 the row sums w_P = sum_{m in P} c_m z_m lie in D_P, sum_P w_P = 0 and
+Y(c) = sum_P zeta_P^-1 w_P; c -> (w_P) is injective on C0 (Y factors through it). Hence
+8 - p <= dim C0 <= sum_P dim D_P - d <= sum_P min(n_P - 1, d) - d, and d <= dim Z <= k - 8.
+* **Theorem 1 [P, 1275-member model, given the cited facts]: gamma = 0 (umizame type, operands x + n only):
+  k >= 14, and k >= 15 unless all 5 classes are used.** (Pi = {0, 11111}: r < 5 needs
+  (r-1) d >= 8 and k >= 8 + r + d -> k >= 15 (r = 3, d = 4 is umizame); r = 5 needs d >= 2 and
+  k >= 14.) So no umizame-type layer gives 9+5+13 = 27 or 9+5+12, whatever stage 1 is; the
+  umizame layer (15) is optimal among <= 4-class gamma = 0 layers.
+* For gamma != 0 the bound gives k >= 12 (`parity.py`), with k = 12 forcing one of two rigid
+  shapes: (A) 3 rows of 4 with d = 3, p = 2; (B) all 5 classes, d = 2, p = 3, row sizes with
+  sum(n_P - 1) = 7, every n_P <= 3.
+* **Theorem 2 [P, 1275-member model]: shape (A) is impossible.** Every class triple with p = 2 contains the free
+  class f of Pi(gamma) (a triple avoiding f contains at most one of the two pairs, so p <= 1), so
+  e_f is a parity of some c in C (dim C/C0 = p forces parity(C) = Pi_used). For that c the row
+  sums satisfy w_f = -(sum of the others) in D, so row f lies in D and (w_P) lies in the image
+  W0 of C0 (C0 -> W0 is onto by the dimension count) - then c + c' (c' in C0 with the same
+  w-vector) is a nonzero element of C with Y = 0, contradicting (i).
+* Shape (B) is not excluded by this argument. What it must look like [P, same reasoning]:
+  parity(C) = Pi (all 3 dims) and C0 -> W0 bijective (dim 5); for the e_f lift row f lies in D
+  and n_f in {1, 2} (for n_f = 3, D_f = D and the lift falls into W0); for each pair pattern
+  e_a + e_b the rows a, b lie in one common coset of D; Z = D + <u, v> (dim <= 4). Filter 1
+  (Y injective on W0; `shapeB.py`) passes 111600 of 118110 (gamma group, D, sizes, deltas)
+  configurations, so it does not kill (B); the full enumeration over cosets and points
+  (~1e10 sets in Python) was not attempted. **Open, small, explicit: handed to H2.**
+* So with a 5-AND middle a GF(4)-norm layer has k >= 12 always, and k = 12 only in shape (B).
+
+### 7.3 Small exhaustive neighbourhoods (the "(b)" part) [C, 1275-member model, `nbhd.py`, stage 1 free]
+
+Each set was tested with R1 (n-block), R2/R3 (n-only feasibility), R4 for all 16 gammas, and R5
+(exact cover_enum) whenever J <= 3. Logs `.../H1/nbhd/*.jsonl`.
+
+| start layer | move | sets | pass R1 | feasible (set, gamma) | J <= 3 | 9-coverable |
+|---|---|---|---|---|---|---|
+| A28 AD5 g124 (gamma g^17) | swap 1 of 13 for any of 1262 | 16406 | 675 | 369 | 21 | 0 |
+| A28 AD5 g128 (g^187) | same | 16406 | 691 | 369 | 21 | 0 |
+| A28 AD5 g150 (g^34) | same | 16406 | 707 | 369 | 21 | 0 |
+| A28 AD4 g131 / g141 / g176 | same | 3 x 16406 | 883 each | 12 each | 4 each | 0 |
+| A28 any | drop 1 (k = 12) | 13 each | 0 | - | - | - |
+| umizame (4 variants) | drop 2 (k = 13) | 105 each | 27 | 54 (all J = 8) | 0 | - |
+| umizame g137 | drop 3, add 1 (k = 13), 3 of 8 chunks | 215460 | 13318 | 1419 (all J = 8) | 0 | - |
+| A28 AD5 g124 (all 16 gamma) | swap 2 of 13 (removed pairs 0-20 of 78) for any 2 of 1262 (`swap2.py`) | 100257066 | 1349 pass n-block + parity | Jlb: 936 x 5, 384 x 4, 29 x 3 | 29 | 0 |
+
+swap2.py cross-check: for all 29 J = 3 sets, cond27 (truth tables) gives the same J = 3 and the
+exact cover test says not 9-coverable (dim U = 7) - nfast's junk formula agrees with the truth
+tables on these new sets. Remaining removed pairs of g124 and the other 5 A28 layers:
+QUEUE.md "H1-b" (234 chunks of ~80 s).
+(The umizame drop-3-add-1 chunks were stopped: Theorem 1 already excludes gamma none, and every
+gamma != 0 result was J = 8.)
+
+## 8. Beyond members: semi-members over fixed 9-spans (03:00-04:00 UTC; X3 SEMI.md)
+
+**Split with H2 (as agreed through the coordinator):** H1 = few non-member products over FIXED
+stage-1 spans (published prefixes), exhaustive over all products; H2 = the generator (gen13)
+over general member + semi-member sets.
+
+* **Lemma S [P].** Product (Tr(Ax) + Tr_K(s n) + ...)(Tr(A'x) + Tr_K(s' n) + ...) (other V0 parts,
+  N-parts, constants do not matter): its x(x)n tensor has class components
+  y_d = A^(2^d) s' + A'^(2^d) s, d = 0..3 (d = 0 class 127, d = 2 class 47, d = 1, 3 the classes
+  15, 111; d = 0, 2 agree with coeffcheck.py). y_1 = y_3 = 0 forces r = A'/A with r^2 = r^8, i.e.
+  r in GF(4)*, and s'/s = r^2: a member (r = w, w^2) or the zero tensor (r = 1). So every
+  semi-member has a class-15/111 part, and nothing else in a three-stage circuit has one (X3 4.1).
+  This is the same statement as X3's semi_mod.py (no semi coset in M8): a lone semi-member among
+  members cannot enter any output.
+* **Consequence [P].** Over a fixed E and a fixed set X of kept products, if exactly
+  j = d(X) = dim(T + E + X) - dim(E + X) new products must be added, each must project into
+  T-bar = pi(T) (pi modulo E + X), so each has zero class-15/111 part: semi-members are useless
+  without slack. Two compatible semi-members (X3 (a)/(b)) can close only ONE missing dimension
+  together (pi(s1) + pi(s2) must lie in T-bar). So "11 members + 2 semi-members = 13" needs an
+  11-subset with d <= 1.
+* **Published-prefix data [C, keep.py, `.../H1/keep/mixed_prefixes.txt`]:** over AD4 level-1 +
+  AD5 middle and over AD4 level-1 + umizame middle, the AD4 layer has d = 1 only when member 0 is
+  dropped (12-subset), all other 12-subsets d = 2, all 11-subsets d >= 2 (minimum 2, exactly the
+  12 subsets {0, j}). AD5 and umizame layers over these and over umizame-L + AD5 middle: d >= 3
+  for <= 13 kept. Hence over these 9 + 5 prefixes **no 11 published members + 2 semi-members**
+  [C + P], and "12 + 1" can only be closed by a member or a zero-tensor product.
+* **12 + 1, exhaustive over ALL products [C, `fixk.py`, O2 = span(1, x, N, n, middle products),
+  2^18 operands l with linear solve for m; positive control: the full AD4 layer is closed (by
+  products of N-functions, H2's 28)]:** AD4 layer minus member 0 over AD4-L + AD5-mid and over
+  AD4-L + umizame-mid: **no single product closes it** - so no 27 of the form
+  9 + 5 + 12 + 1 from this layer [C, case: FIXED prefix, extra AND with both operands in O2;
+  chains and a re-chosen stage 1 are not covered, see 10.2].
+* **11 + 2 over all products [C, fixk.py, O2]:** AD4 g131 layer minus {0, j} (j = 1..12, the
+  only 11-subsets with d = 2), over AD4-L + AD5-mid and AD4-L + umizame-mid: 24 cases, each
+  exhaustive over 2^18 l's; in every case exactly ONE of the three nonzero T-bar elements is
+  reachable by a single product (presumably re-adding member j), never two independent ones, so
+  **no two products complete any of them** - no 27 = 9 + 5 + 11 + 2 from this layer. Log
+  `.../H1/fixk/ad4_11p2.jsonl` (48 chunks, 02:36-02:57 UTC).
+* d-scan (`dscan.py`) of the other AD4-type layers (g141, g176; own stage 1 + AD5 g124 / g150 /
+  umizame middle): the same structure - exactly one special member whose removal keeps d = 1
+  (g141: member 3, g176: member 1), all other 12-subsets d = 2, 11-subsets d >= 2 only with the
+  special member removed. Their 12+1 / 11+2 runs (O2) and the 12+1 runs with OV = aff(x) + all
+  functions of N (2^24 operands, X3's full operand model) are in QUEUE.md "H1-c".
+* Scope of section 8 results: fixed published prefixes and subsets of published layers; extra
+  products over O2 (exhaustive, any type, members and semi-members included); a 13-member layer
+  mostly NOT from a published layer is H2's generator problem.
+
+## 9. The new 9 + 5 + 14 circuits: can 14 become 13? (03:20-04:00 UTC, coordinator request)
+
+Inputs: X1b `aes-sbox-a28-ad5-g158-gd27-x1b-span-2cabef6153f4` (roles 9 S1 + 5 MID + 14 LAST,
+12 GF(4)-norm + 2 other members, Jx 3, dim U 7) and H2's 10 built circuits
+`h2-ad4a-g1-c8c7227f-s{58,59,76,83,103,110,114,372,467,709}` (9 + 5 + 14, all GF(4)-norm, Jx 2).
+Stage 1 and middle FIXED (each circuit's own), so junk coverability is automatic. **Every [C] in
+this section is in that case (fixed prefix, replacements with operands in O2); chains and a
+re-chosen stage 1 are not covered (10.2).**
+* **(a) drop 1 [C, d14.py]:** in all 11 circuits every 13-subset misses exactly one output
+  dimension (d = 1 for all 14 drops). No 13-subset works.
+* **(b) 2 -> 1 [C, d14.py + fixk.py, O2 = span(1, x, N, n, middle), all 2^18 l with linear
+  solve]:** in each circuit exactly ONE pair has d = 1 (X1b {4,5}; s58 {5,6}; s59 {6,7};
+  s76 {6,7}; s83 {5,7}; s103 {1,4}; s110 {2,8}; s114 {2,4}; s467 {2,5}; s709 {4,11}; s372 none);
+  the other 90-91 pairs have d = 2 (one product cannot close them). For each d = 1 pair:
+  **no single product closes it.** Positive control: dropping one member, fixk re-finds exactly
+  that member (6-10 equivalent (l, m) forms) in chunk 0.
+* **(c) 3 -> 2 [C, same]:** triples with d = 2: those containing the d = 1 pair are excluded by
+  (b) [P: a product reaching the second T-bar direction would close the pair]; the 14 others
+  (2 per circuit at most, listed in `.../H1/fixk/triples_todo.txt`): no product reaches any
+  T-bar direction at all, so no two products complete them.
+* **19 further circuits [C, t14.py, O2, 03:25-03:36 UTC]:** H2 s1039 s1312 s1315 s1318 s1320
+  s1328 s1329 s1334 s1336 s1338 s946 (9+5+14), H2 ad5-g14-s2 / s9 / g14v-s0 (10+5+13), X1b g169
+  g170 g221 (9+5+14), g157 g214 (10+5+13). Same picture everywhere: every single drop leaves
+  d = 1; 0-1 pairs with d = 1 (none closable by one product); 0-2 triples with d = 2 (at most one
+  T-bar direction reachable, s1328 {6,9,12}; never two). **No 27.** Log `.../H1/fixk/t14_new.jsonl`.
+  For the 10+5+13 circuits only last-layer products were dropped (dropping a stage-1 product is
+  not covered).
+* OV (aff(x) + all functions of N, 2^24 operands, X3's operand model) for X1b's pair: 4 of 32
+  chunks (operands l < 2^21) done, nothing reached; stopped to give CPU to the O2 sweep. All OV
+  runs and any further circuits: QUEUE.md "H1-d" (`t14.py`, `queue/t14_all.sh`).
+* Observation [C, 30 circuits]: in every 14-member layer each member is "needed" (d = 1 for
+  every single drop) and the pair/triple redundancies are rare and never repairable by one
+  product - the 14th AND is structural in this family, not slack.
+* Scope: stage 1 and middle fixed to each circuit's own; new products with operands in O2 (or
+  OV); 1 or 2 replacements. Not covered: replacing >= 3 members, other stage-1 spans.
+
+## 10. Audits and relabels (04:20-04:40 UTC)
+
+### 10.1 cover_sat SAT branch (X3b: it times out on positive controls)
+G's `eval3.cover_sat(U, l, limit)` is exact only in its enumeration branch (track C's cover_enum,
+used when l - dim U <= 2); otherwise it calls SAT with a time limit and returns None on timeout.
+* **My uses:** only `cond27.cover` -> `nbhd.py` and `swap2.py` (R5). Checked every logged record
+  [C, scan of `.../H1/nbhd/*.jsonl`, `.../H1/swap2/*.jsonl`]: all 105 cover tests (76 nbhd, 29
+  swap2) had dim U = 7 with l = 9 (enumeration branch, exact); none went to SAT, none timed out.
+  The validation runs of cond27 (A28 AD5 False, umizame True) were also dim U 7 (enumeration).
+  So "9-coverable: 0" in 7.3 stands as [C].
+* **Would a timeout have counted as "not coverable"?** In the code, yes silently (R5 None is
+  falsy in `if ok:`). Fixed 04:25: nbhd.py and swap2.py now log "UNDECIDED" for None. No past
+  result is affected (no None occurred).
+* Not using cover tests at all: keep.py, zdfs/zdfs2 (fixed E), nfast.py, fixk.py, t14.py,
+  d14*.py (fixed prefix: coverability is implied), junkrank/junk (ranks only).
+* **Track G camp-X12/X13 "cover=UNSAT" [C, configs `~/xs-campaigns/2026-11-14-G/cfgX12.json`,
+  `cfgX13.json` + `camp-X1*/eval.jsonl`]:** 2707 layers K = 13 with l = 9, dim U = 7 (e = 2);
+  553 K = 12, l = 10, dim U = 9 (e = 1); 445 K = 12, l = 10, dim U = 10 (e = 0). All are in the
+  enumeration branch (l - dim U <= 2): **exact; no relabel needed.** (eval_v.py writes "timeout"
+  for None; no such record exists.)
+* **Track C's cover-lemma uses** (stage1_enum k = 7, 8; the "no 9-product stage 1 fits A28 AD5's
+  U" test; cand13's 2321 sets with dim U 7 / 8 and l = 9): all have l - d <= 2, i.e. the exact
+  enumeration; C's own SAT runs (stage1.py k = 9 SAT, qmc) gave SAT answers, not timeouts.
+  No relabel needed. Only G's NOTES 3.1 phrase "one hour of CHM SAT did not finish" was already
+  stated as undecided.
+
+### 10.2 Case statements (X3b critique; no new compute)
+* NOTES 8 "no 27 of the form 9 + 5 + 12 + 1 ... whatever stage the extra AND belongs to" and
+  "11 + 2": **[C, case: stage 1 and middle FIXED to the named published prefixes, kept products =
+  subsets of the AD4 layer, the new products have both operands in O2 = span(1, x, N, n, middle
+  products) (OV where stated)].** Not excluded: extra ANDs reading stage-1 products, members or
+  outputs (chains), and any re-chosen stage 1 (with stage 1 free, completions exist - X3b found
+  them for H2 s59's pair, and then the cover of the new U decides).
+* NOTES 9 "no 27 by dropping or replacing 1-3 last-layer products": **[C, case: each circuit's own
+  stage 1 and middle fixed; replacements with operands in O2; 1 drop, 2 -> 1, 3 -> 2].** Same
+  exclusions as above.
+* NOTES 1 / TRICKS 0 "every A28 top layer is 13 GF(4)-norm members": true for the A28 files in
+  the 63 analysed [C on those files] but **not a property of A28 circuits in general**: the later
+  spangen A28s are 11 members + a singleton-coset pair, and X1b g158 (NOTES 9) is 12 members +
+  a pair (decomp: 12 norm + 1 x|xNn + 1 other). Also: the 63 files are not 63 independent data
+  points - they come from 3 independent designs (Boyar-Peralta/BMP, umizame, the A28 contribution)
+  plus derivations (linear re-optimisation, hub operators).
 
 ## 5. Failures / pitfalls (kept for the record)
 

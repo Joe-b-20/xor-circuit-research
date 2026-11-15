@@ -30,7 +30,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from wsat import Base, Span, info_set, ONES, NR, finish, save_circuit, mklog  # noqa: E402
 
-BIN = HERE / "r1enum_v2"
+BIN = HERE / "r1enum_v3"
 FOUND = '/home/joebachir20/xs-campaigns/2026-11-15-study/H3/found'
 
 
@@ -175,6 +175,9 @@ def solve_window(b, U, ops, log, rec, maxstates=200, maxhits=500000, dm=1, targe
                 log(rec); return rec
             hits, GH, GC, dt, summ = enum(Vb, HT, comp, maxhits)
             nenum += 1; tenum += dt
+            print('PROGRESS utc=%s enum=%d depth=%d nv=%d hits=%d seen=%d frontier_next=%d dt=%.0fs' % (
+                time.strftime('%H:%M:%S', time.gmtime()), nenum, len(Fs), len(Vb), len(hits), len(seen), len(nxt), dt),
+                file=sys.stderr, flush=True)
             Sspan = Span([sigW(f) for f in Fs])
             for a in hits:
                 kb = kernel([evalrow(G, a) for G in GH], len(Vb))
@@ -224,7 +227,7 @@ def build(b, R, Rop, wits, rec, log, nenum, tenum, nstates):
     newforms = [(form(a, nvl), form(bv, nvl)) for (f, a, bv, nvl) in wits]
     sk, c2 = finish(b, R, newforms)
     path, mt = save_circuit(c2, FOUND, rec.get('tag', 'chain'),
-                            dict(rec, how='H3 chain slack-1 re-solve of %s U=%s' % (rec['src'], rec['U'])))
+                            dict(rec, how=rec.get('how_desc') or 'H3 chain slack-1 re-solve of %s U=%s' % (rec['src'], rec['U'])))
     rec.update(result='SAT', A=mt['A'], AD=mt['AD'], G=mt['G'], file=path, enums=nenum,
                enum_time=round(tenum, 1), states=nstates)
     log(rec); return rec

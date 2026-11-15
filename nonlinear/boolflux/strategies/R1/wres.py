@@ -163,11 +163,11 @@ def critical(net, D):
     return {s for s in range(net.n, net.S) if net.lv[s] >= rq[s]}
 
 
-def pick_window(net, strategy, rng, K=8, maxo=4, maxg=9, greedy=0.5):
+def pick_window(net, strategy, rng, K=8, maxo=4, maxg=9, greedy=0.5, ming=3):
     n = net.n
     if strategy == 'and' and net.ands:
         g = rng.choice(net.ands)
-        return grow(net, {g}, rng, K, maxo, maxg, fanin_only=rng.random() < 0.6, stop_at_and=True, greedy=greedy)
+        return grow(net, {g}, rng, K, maxo, maxg, fanin_only=rng.random() < 0.6, stop_at_and=True, greedy=greedy, ming=ming)
     if strategy == 'pair' and len(net.ands) >= 2:
         # two ANDs sharing an operand or an operand's operand
         for _ in range(20):
@@ -184,20 +184,20 @@ def pick_window(net, strategy, rng, K=8, maxo=4, maxg=9, greedy=0.5):
                             if f2 != g and net.op(f2) == AND: mates.add(f2)
             if mates:
                 h = rng.choice(sorted(mates))
-                return grow(net, {g, h}, rng, K, maxo, maxg, fanin_only=rng.random() < 0.5, stop_at_and=True, greedy=greedy)
+                return grow(net, {g, h}, rng, K, maxo, maxg, fanin_only=rng.random() < 0.5, stop_at_and=True, greedy=greedy, ming=ming)
         return None
     if strategy == 'reconv':
         g = rng.randrange(n, net.S)
-        return grow(net, {g}, rng, K, maxo, maxg, fanin_only=True, greedy=greedy)
+        return grow(net, {g}, rng, K, maxo, maxg, fanin_only=True, greedy=greedy, ming=ming)
     if strategy == 'crit':
         cr = critical(net, net.GD)
         if not cr: return None
         g = rng.choice(sorted(cr))
-        return grow(net, {g}, rng, K, maxo, maxg, crit=cr, greedy=greedy)
+        return grow(net, {g}, rng, K, maxo, maxg, crit=cr, greedy=greedy, ming=ming)
     if strategy == 'mffc':
         return mffc_window(net, rng.randrange(n, net.S), rng, K, maxo, maxg)
     g = rng.randrange(n, net.S)
-    return grow(net, {g}, rng, K, maxo, maxg, greedy=greedy)
+    return grow(net, {g}, rng, K, maxo, maxg, greedy=greedy, ming=ming)
 
 
 def mffc_window(net, root, rng, K=8, maxo=4, maxg=9):

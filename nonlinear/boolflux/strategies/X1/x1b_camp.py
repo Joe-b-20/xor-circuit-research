@@ -1,0 +1,223 @@
+#!/usr/bin/env python3
+"""X1b campaign: flip/split walk (bfw.c) + circuit building + kernel polish over A <= AMAX circuits,
+with a shared registry of known AND spaces.  One process = one CPU, memory < 300 MB, unattended.
+
+    python3 x1b_camp.py OUT_DIR --hours H --shard K --registry REG.json [--slice 120] [--polish 60]
+        [--npolish 3] [--amax 29] [--target 27] [--adcap-prob 0.3] [--seed0 0] --starts FILE...   (--starts last)
+
+Loop until the time is over:
+  1. pick a start: the given files plus OUT_DIR/pool/*.bfx (circuits with new AND spaces made by any shard)
+     restricted to A <= AMAX; 1/3 a given start, 1/3 the lowest A present, 1/3 uniform; fewest runs first;
+  2. walk bfw for --slice s (AND-depth cap = start's AD with probability --adcap-prob, else none);
+     bfw dumps up to 16 circuits at its best A whose product span is new to the walk;
+  3. every result with fewer ANDs than its start -> campaigns/aes_check.py -> OUT_DIR/found/ (.bfx,
+     .circ.txt, .json); log line "REDUCTION" (A <= 29) or "TARGET" (A <= --target);
+  4. every dumped circuit: rebuild the XOR network (x1lib.materialise), 256-input check, compute its
+     span hash (x1b_family); if the span is in no registry (REG.json + OUT_DIR/spans-*.jsonl of all
+     shards) it is a NEW AND SPACE: stored in pool/, appended to spans-K.jsonl; the --npolish ones with
+     the fewest rebuilt gates are polished by the hub kernel for --polish s under caps (A, AD) of the
+     circuit, aes_check'ed and saved to found/ as aes-sbox-aA-adD-gG-gdGD-x1b-span-<hash>.* with a
+     sidecar (span hash, level profile, shared product dimensions with the NIST A28 references).
+Logs: OUT_DIR/camp-K.log, OUT_DIR/runs-K.jsonl.  Success: "TARGET" (27 ANDs) or "REDUCTION" at A <= 28
+from an A <= 29 start whose result lowers the best A (= 27); new A28 spans are the secondary product.
+"""
+import json, random, sys, time, hashlib
+from pathlib import Path
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parents[1] / 'campaigns'))
+import x1lib as X, x1walkc as W, x1b_family as F, x1b_ufilter as UF
+import aes_check
+from boolflux.hub import ops as HO
+from boolflux.hub.common import load, metrics, sbox, MODEL, code_version
+from boolflux import core
+
+NIST = Path('/home/joebachir20/xcr-boolflux/nonlinear/nist/aes-sbox')
+REFS = [NIST / 'aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt', NIST / 'aes-sbox-a28-ad4-g131-gd31-xx103-43.circ.txt']
+PARAMS = [  # plus, psplit, horizon, redec, pmerge  (walkcamp.py table)
+    (1, 0.02, 20000, 0.2, 1.0), (2, 0.05, 5000, 0.2, 1.0), (2, 0.05, 5000, 0.3, 0.05), (1, 0.05, 5000, 0.2, 0.05),
+    (3, 0.05, 20000, 0.3, 0.2), (2, 0.02, 20000, 0.2, 0.01), (1, 0.02, 2000, 0.2, 0.2), (3, 0.1, 5000, 0.2, 0.05)]
+
+
+def A_of_name(f):
+    n = Path(f).name
+    try: return int(n.split('-a')[1].split('-')[0])
+    except Exception: return None
+
+
+def main():
+    a = sys.argv[1:]
+    out = Path(a[0])
+    def opt(name, d): return type(d)(a[a.index(name) + 1]) if name in a else d
+    hours = opt('--hours', 1.0); shard = opt('--shard', 0); slc = opt('--slice', 120.0); pol = opt('--polish', 60.0)
+    npol = opt('--npolish', 3); amax = opt('--amax', 29); target = opt('--target', 27); adp = opt('--adcap-prob', 0.3)
+    regf = opt('--registry', ''); seed0 = opt('--seed0', 0); uregf = opt('--uregistry', '')
+    nfilt = opt('--nfilter', 6); ufilt_amax = opt('--ufilter-amax', 28)
+    starts = a[a.index('--starts') + 1:] if '--starts' in a else []
+    for d in ('found', 'pool', 'work', 'polish'): (out / d).mkdir(parents=True, exist_ok=True)
+    rng = random.Random(7919 * (shard + 1) + seed0)
+    bb = W.binary(out / 'work'); W.binary = lambda o: bb
+    lf = open(out / ('camp-%d.log' % shard), 'a')
+    def log(*x):
+        s = ' '.join(str(v) for v in x); print(s, flush=True); lf.write(time.strftime('%H:%M:%S ') + s + '\n'); lf.flush()
+    reg = set(json.loads(Path(regf).read_text())) if regf else set()
+    refs = [F.analyse_c(load(r)) for r in REFS]
+    def known():
+        k = set(reg)
+        for sf in out.glob('spans-*.jsonl'):
+            for ln in sf.read_text().splitlines():
+                try: k.add(json.loads(ln)['span'])
+                except Exception: pass
+        return k
+    ureg = set(json.loads(Path(uregf).read_text())) if uregf else set()
+    def knownU():
+        k = set(ureg)
+        for sf in out.glob('spans-*.jsonl'):
+            for ln in sf.read_text().splitlines():
+                try:
+                    r = json.loads(ln)
+                    if r.get('ujunk') and r['ujunk'].get('U'): k.add(r['ujunk']['U'])
+                except Exception: pass
+        return k
+    Acache = {}
+    def A_of(f):
+        if f not in Acache:
+            A = A_of_name(f)
+            Acache[f] = A if A is not None else metrics(load(f))[0]
+        return Acache[f]
+    runs = {}; nrun = 0; t_end = time.time() + hours * 3600; t_start = time.strftime('%H%M', time.gmtime())   # tag prefix: restarts never reuse names
+    log('start shard', shard, 'hours', hours, 'slice', slc, 'polish', pol, 'amax', amax, 'starts', len(starts), 'registry', len(reg), 'code', code_version())
+    while time.time() < t_end - 10:
+        pool = [str(f) for f in sorted((out / 'pool').glob('*.bfx'))]
+        cands = [(A_of(f), f) for f in starts + pool]
+        cands = [x for x in cands if x[0] <= amax]
+        if not cands: log('no starts'); break
+        amin = min(x[0] for x in cands)
+        u = rng.random(); given = [f for A, f in cands if f in starts]
+        prom = [f for A, f in cands if '-NU-' in Path(f).name or '-C9-' in Path(f).name]
+        if u < 0.25 and given: sub = given                               # the given starts, round robin
+        elif u < 0.5 and prom: sub = prom                                # new-U / 9-coverable pool circuits
+        elif u < 0.75: sub = [f for A, f in cands if A == amin]          # lowest A present
+        else: sub = [f for A, f in cands]                                # anything (pool included)
+        lo = min(runs.get(f, 0) for f in sub)
+        f = rng.choice([x for x in sub if runs.get(x, 0) == lo])
+        runs[f] = runs.get(f, 0) + 1
+        c = load(f); m0 = metrics(c)
+        plus, psplit, horizon, redec, pmerge = rng.choice(PARAMS)
+        cap = m0[1] if rng.random() < adp else 0
+        seed = rng.randrange(1, 1 << 30); nrun += 1
+        secs = min(slc, max(5.0, t_end - time.time() - 5))
+        tag = 'b%d-%s-%05d' % (shard, t_start, nrun); wd = out / 'work' / tag
+        t0 = time.time()
+        try:
+            res, wlog = W.run(c, wd, secs, seed, plus, psplit, horizon, redec, tag, cap, 16, 0, 0.0, pmerge)
+        except Exception as e:
+            log('run error', tag, repr(e)); continue
+        spans = [ln for ln in wlog.splitlines() if ln.startswith('spans')]
+        rec = {'run': tag, 'start': f, 'start_metrics': m0, 'params': [plus, psplit, horizon, redec, pmerge], 'adcap': cap,
+               'seed': seed, 'seconds': round(time.time() - t0, 1), 'reductions': [], 'spans': spans[-1] if spans else None,
+               'dumped': 0, 'new_spans': [], 'polished': []}
+        bestA = m0[0]
+        for nc, A in res:
+            m = metrics(nc)
+            if m[0] >= m0[0]: continue
+            bestA = min(bestA, m[0])
+            name = 'aes-sbox-a%d-ad%d-g%d-gd%d-x1b-red-%s' % (m + (tag,))
+            bp = out / 'found' / (name + '.bfx'); bp.write_text(core.to_kernel(nc))
+            r = aes_check.check(str(bp))
+            if not r['ok']:
+                bp.rename(out / 'found' / (name + '.FAILED')); log('CHECK FAILED', name); continue
+            fi = F.analyse_c(nc)
+            try: uj = UF.ujunk(c=nc)
+            except Exception as e: uj = {'error': repr(e)}
+            nc.name = name
+            (out / 'found' / (name + '.circ.txt')).write_text(core.write_ncff(nc, MODEL, comments=['agent X1b flip/split walk (bfw.c), x1b_camp.py']))
+            (out / 'found' / (name + '.json')).write_text(json.dumps({'method': 'x1b_camp: bfw flip/split walk + x1lib.materialise (AND reduction)',
+                'start': f, 'start_metrics': m0, 'params': rec['params'], 'adcap': cap, 'seed': seed, 'slice_s': secs, 'metrics': m,
+                'span': fi['span'], 'levels': fi['levels'], 'span_known': fi['span'] in known(), 'ujunk': uj,
+                'U_known': uj.get('U') in knownU(),
+                'aes_check_ok': True, 'new_point_vs_published': bool(r.get('new_point')),
+                'code_version': code_version(), 'time': time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())}, indent=1))
+            rec['reductions'].append(m)
+            log('TARGET' if m[0] <= target else ('REDUCTION' if m[0] <= 29 else 'reduction'), name, 'from', Path(f).name, m0)
+        # dumped circuits at the walk's best A (sideways moves): new AND spaces
+        K = known(); fresh = []
+        for pf in sorted(wd.glob('%s-s%d.span*.prog' % (tag, seed))):
+            try: A = int(pf.name.split('.A')[1].split('.')[0])
+            except Exception: continue
+            if A > bestA: continue
+            q = W.read_prog(pf, c.n, c.m)
+            if not X.check(q, W.TARGET): continue
+            rec['dumped'] += 1
+            nc = X.materialise(q, random.Random(seed))
+            if tuple(nc.value_table()) != sbox(): continue
+            fi = F.analyse_c(nc)
+            if fi['span'] in K or fi['A_eff'] != metrics(nc)[0]: continue
+            K.add(fi['span']); fresh.append((metrics(nc), nc, fi))
+        # U / junk filter (X3b criterion): only a new U, or a 9-coverable U, can lead to a 27 [P]
+        KU = knownU(); promising = []; npool = 0
+        for m, nc, fi in sorted(fresh, key=lambda x: (x[0][1], x[0][2]))[:nfilt]:
+            h = fi['span']
+            try: uj = UF.ujunk(c=nc) if m[0] <= ufilt_amax else None
+            except Exception as e: uj = {'error': repr(e)}
+            newU = bool(uj) and 'U' in uj and uj['U'] not in KU
+            cov = bool(uj) and uj.get('cover9') is True
+            if newU or (bool(uj) and 'error' in uj): promising.append((m, nc, fi, uj))
+            if newU: KU.add(uj['U'])
+            if newU or npool < 2:
+                mark = '-NU' if newU else ('-C9' if cov else '')
+                (out / 'pool' / ('pool-a%d-ad%d-g%d-gd%d%s-%s.bfx' % (m + (mark, h)))).write_text(core.to_kernel(nc)); npool += 1
+            row = {'span': h, 'A': m[0], 'm': m, 'levels': fi['levels'], 'span_L': fi['span_L'],
+                   'shared_with_refs': [F.inter(fi, q) for q in refs], 'from': f, 'run': tag, 'ujunk': uj, 'newU': newU}
+            with open(out / ('spans-%d.jsonl' % shard), 'a') as sf: sf.write(json.dumps(row) + '\n')
+            rec['new_spans'].append([h, m, fi['levels'], row['shared_with_refs'], uj and uj.get('U'), newU, uj and uj.get('cover9')])
+            if newU or cov: log('NEWU' if newU else 'COVER9', h, m, fi['levels'], uj, 'from', Path(f).name)
+        promising.sort(key=lambda x: (not (x[3] or {}).get('cover9') is True, x[0][1], x[0][2]))
+        for k, (m, nc, fi, uj) in enumerate(promising):
+            best = nc; polished = False
+            if k < npol and time.time() < t_end - pol - 10:
+                sd = out / 'polish' / ('%s-%s' % (tag, fi['span'])); sd.mkdir(parents=True, exist_ok=True)
+                try:
+                    cs, info = HO._kernel(nc, {'A': m[0], 'AD': m[1], 'GD': None}, HO.DEFAULT_OBJECTIVE, seed, pol, sd, out)
+                    for pc in cs:
+                        if tuple(pc.value_table()) == sbox() and metrics(pc) < metrics(best): best = pc; polished = True
+                except Exception as e:
+                    log('polish error', repr(e))
+                for g in sd.glob('*'):
+                    if g.name not in ('kernel.log',): g.unlink()
+            versions = [(best, polished)]
+            if polished:
+                try: uj2 = UF.ujunk(c=best)
+                except Exception as e: uj2 = {'error': repr(e)}
+                if uj2.get('U') != (uj or {}).get('U') or uj2.get('cover9') != (uj or {}).get('cover9'):
+                    versions.append((nc, False))          # the polish changed U / the cover verdict: keep the rebuilt one too
+            for cc, pol_ in versions:
+                m2 = metrics(cc); fi2 = F.analyse_c(cc)
+                try: uj2 = UF.ujunk(c=cc)
+                except Exception as e: uj2 = {'error': repr(e)}
+                mark = ('-NU' if uj2.get('U') and uj2.get('U') not in ureg else '') + ('-C9' if uj2.get('cover9') is True else '')
+                name = 'aes-sbox-a%d-ad%d-g%d-gd%d-x1b-span-%s%s%s' % (m2 + (fi2['span'], '' if pol_ else '-raw', mark))
+                bp = out / 'found' / (name + '.bfx'); bp.write_text(core.to_kernel(cc))
+                r = aes_check.check(str(bp))
+                if not r['ok']:
+                    bp.rename(out / 'found' / (name + '.FAILED')); log('CHECK FAILED', name); continue
+                cc.name = name
+                (out / 'found' / (name + '.circ.txt')).write_text(core.write_ncff(cc, MODEL, comments=['agent X1b: new U (bfw sideways walk + U filter)' + (' + kernel polish' if pol_ else ', rebuilt XOR network, not polished')]))
+                (out / 'found' / (name + '.json')).write_text(json.dumps({'method': 'x1b_camp: bfw sideways walk (new product span) + x1lib.materialise + U/junk filter (new U)' + (' + hub kernel polish %.0f s, caps A=%d AD=%d' % (pol, m[0], m[1]) if pol_ else ' (not polished)'),
+                    'start': f, 'start_metrics': m0, 'params': rec['params'], 'adcap': cap, 'seed': seed, 'rebuilt': m, 'metrics': m2,
+                    'span_dumped': fi['span'], 'span': fi2['span'], 'levels': fi2['levels'], 'span_L': fi2['span_L'],
+                    'shared_with_refs': {str(Path(REFS[i]).name): F.inter(fi2, q) for i, q in enumerate(refs)},
+                    'ujunk_rebuilt': uj, 'ujunk': uj2, 'U_new_vs_registry': uj2.get('U') not in ureg,
+                    'aes_check_ok': True, 'new_point_vs_published': bool(r.get('new_point')),
+                    'code_version': code_version(), 'time': time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())}, indent=1))
+                rec['polished'].append([fi2['span'], m, m2, pol_, uj2.get('U'), uj2.get('cover9')])
+                log('SAVED', name, 'rebuilt', m, 'levels', fi2['levels'], 'U', uj2.get('U'), 'cover9', uj2.get('cover9'), 'from', Path(f).name)
+        with open(out / ('runs-%d.jsonl' % shard), 'a') as rf: rf.write(json.dumps(rec) + '\n')
+        log(tag, Path(f).name[:52], m0, 'cap', cap, 'params', rec['params'], '->', rec['reductions'], rec['spans'],
+            'dumped', rec['dumped'], 'new', len(rec['new_spans']), 'polished', [x[2] for x in rec['polished']])
+        for pf in wd.glob('*'):
+            if pf.suffix == '.prog' or pf.name.startswith('bfw-'): pf.unlink()
+    log('end shard', shard, 'runs', nrun)
+
+
+if __name__ == '__main__':
+    main()

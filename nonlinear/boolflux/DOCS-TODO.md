@@ -60,3 +60,55 @@ other agents are working on it. Each item says where the mismatch is.
 16. `manifest.py` now records, for each NIST start, the earliest pin it was taken from. The 17
     starts that were new in e6ac0d0 were labelled 0876577, with sha256 null, before. Only the
     `start` field of existing entries changed.
+
+## Status on 2026-11-15 (documentation audit, `strategies/L2/DOC-AUDIT.md`)
+
+Resolved since the list above was written:
+
+- Item 7: `strategies/C-G` were committed in 377b03f and the hub in 97abda7. The manifest still
+  says "uncommitted, sha256 now" (see item 20).
+- Items 10, 13: [DESIGN.md](DESIGN.md) was rewritten as the architecture as built; MECHANICS.md
+  is still the pre-0659eb9 text and is marked so in DESIGN.md.
+- Item 15, first half: track F's AD3 runs ended 22:50 UTC 11-14 and track C's sweeps were
+  stopped at about 23:55 UTC. The re-curation itself is still to do.
+
+Done in the audit's edit pass (README, HOW-IT-WORKS, HISTORY, USAGE, VERIFICATION, bench/REPORT):
+the wrong and unsupported claims W1-W3, U1-U9 were reworded, stale statements were marked
+"(updated after re-curation)" or corrected, and the gaps G1-G5, G7, G8 were written into the
+text.
+
+Still open, not editable in a documentation pass:
+
+17. **Re-curation** (`curate_aes.py`, `manifest.py`, `verify_all.py`, `best_table.py`): every
+    number marked "(updated after re-curation)" in README.md, HISTORY.md and VERIFICATION.md.
+    The 41-tuple count and the depth-cap table predate the hub (61 rows in
+    `~/xs-campaigns/2026-11-14-hub/best/BEST.md`) and track F's last AD3 results.
+18. **MANIFEST.json, cap not met** (audit W4): two entries need `caps_met: false` and a
+    mechanism text that says the result is the kernel's best infeasible state. Needs a field in
+    `campaigns/manifest.py` / `curate_aes.py`.
+19. **MANIFEST.json, `reproduction`** (audit U10): "deterministic command ... gives the same
+    circuit" should add "with `--set skip_noop=0` on code after 7ae20c8, or with the run's own
+    `src/` and `bin/` snapshot" (tested on 28/4/133/20; VERIFICATION.md section 6). The seven
+    "deterministic construction ...; not re-run" entries can say "re-run 2026-11-15, identical"
+    (`strategies/L2/rejoin.py`).
+20. **MANIFEST.json, `code_version`**: cite 377b03f for the strategy scripts if their sha256
+    still match; record the kernel binary hash per job for track E and track F results.
+21. **MANIFEST.json, smaller gaps** (audit G6): null `within_job_s` for long1; 960 s in a 900 s
+    job for the main-queue 175; "see cmd" seeds.
+22. **`hub/SPEC.md`** (extends item 12): line 6-7 "34 frontier admissions in ~1 h vs 2 ... the
+    only mechanism that lowered A on AES" (the A31 joins undercut their A32 parents; nothing
+    lowered A below a published family minimum); line 82 says the generator and linres
+    operators are "not implemented yet" (they exist in `hub/ops/`); the gain rule it defines is
+    not a value signal (`strategies/L1/WHAT-WORKS.md` finding 1).
+23. **`strategies/E/NOTES.md`**: its per-operator "gain per CPU-h" tables use that gain rule;
+    line 44 does not say that the infeasible cap-A31 runs are where 32/5/104/29 came from.
+    **`strategies/F/NOTES.md:148`**: "1/35" should be 2 of 35. **`strategies/D/README.md:79-89`,
+    `D/STATUS.md`**: "~3,900" windows and "locally exact-optimal" (audit W2, U2).
+    **`strategies/C/NOTES.md`, `C/STATUS.md`**: the finished gamma sweeps are not recorded.
+    These belong to their tracks and were not edited.
+24. **[runs/INDEX.md](runs/INDEX.md)**: lines 38, 41 ("still running") and 51 (hub "not yet
+    documented"); the 2026-11-14-hub, 2026-11-14-G and 2026-11-15-study folders have no entries.
+25. **[LEDGER.md](LEDGER.md) section 3 and [CHECKPOINT.md](CHECKPOINT.md)**: still against pin
+    e6ac0d0 (item 11); README now labels both as historical.
+26. **Tests**: the test counts in USAGE.md (33 and 36) were taken on 2026-11-14 and do not
+    include `hub/tests/test_hub.py`. Recount when the code-review branch is merged.

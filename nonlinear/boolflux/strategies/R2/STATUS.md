@@ -1,7 +1,7 @@
-# R2 status
+# R2 status (05:31 UTC, final)
 
-- 00:24 UTC: A/B base arm running (`xs-R-r2-abbase`, CPU 19, 1 h, ~/xs-campaigns/2026-11-15-study/R2/abbase),
-  restarted clean (first start 00:18 aborted: CPU 19 shared with misplaced hub jobs 00:19-00:25).
-- Test arm (`xs-R-r2-abtest`, ab_test.sh) is only a waiter until the base unit ends (~01:25), then 1 h
-  with aslack (frozen copy). Sequential, not concurrent.
-- Best so far: no verified circuit claimed (operator produces correct near-front alternatives; no A reduction).
+- Nothing running. All R2 jobs stopped (A/B, fixed test, goal run, descents, scan all finished).
+- Operator for the hub: /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/R2/frozen-v2/op_aslack.py
+  (--seconds 60); A/B-tested version: frozen-ab/op_aslack.py.
+- Verified circuits (aes_check OK): ~/xs-campaigns/2026-11-15-study/R2/found/R2-ab-a39-ad3-g172-gd13-7be87a668899.bfx
+  (A/B frontier point), descF/found/*.bfx, descF2/found/*.bfx, descG/found/*.bfx (none meets a goal).

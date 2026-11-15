@@ -26,8 +26,14 @@ ap.add_argument('--target', default='outputs')
 ap.add_argument('--dm', type=int, default=1)
 ap.add_argument('--maxenums', type=int, default=10**9)
 ap.add_argument('--minsize', type=int, default=2)
+ap.add_argument('--shard', default='0/1', help='i/n: run only windows with index %% n == i (index over all circuits)')
+ap.add_argument('--skip', default='', help='comma list of SRCPREFIX:WINNAME already decided elsewhere')
+ap.add_argument('--cheapfirst', action='store_true', help='largest windows (smallest operand space) first')
+ap.add_argument('--verify', action='store_true', help='run campaigns/aes_check.py on every circuit written')
 a = ap.parse_args()
 log = mklog(a.log)
+si, sn = (int(t) for t in a.shard.split('/'))
+gidx = -1
 for path in a.circuits:
     b = Base(path)
     ops = chain.opset(b, a.ops)
@@ -58,8 +64,13 @@ for path in a.circuits:
                 if b.rank_mod(set(S)) < s:
                     found.append(set(S))
                     if keep: wins.append(('s' + '_'.join(map(str, S)), set(S)))
+    skip = {t.split(':')[1] for t in a.skip.split(',') if t and Path(path).name.startswith(t.split(':')[0])}
+    wins = [w for w in wins if w[0] not in skip]
+    if a.cheapfirst: wins.sort(key=lambda w: -len(w[1]))
     print('windows', len(wins), file=sys.stderr, flush=True)
     for name, U in wins:
+        gidx += 1
+        if gidx % sn != si: continue
         nv = 8 + len([k for k in range(b.K) if k not in U and (ops is None or k in ops)])
         rec = {'method': 'chain-slack1', 'src': Path(path).name, 'win': name, 'U': sorted(U), 'ops': a.ops,
                'tag': 'ch-%s-%s' % (Path(path).name[9:26], name)}
@@ -71,4 +82,10 @@ for path in a.circuits:
         except Exception as e:  # keep going, record the failure
             rec['result'] = 'ERROR %r' % (e,)
         rec['time'] = round(time.time() - t0, 1)
+        if a.verify and rec.get('file'):
+            import subprocess
+            chk = Path(__file__).resolve().parents[2] / 'campaigns' / 'aes_check.py'
+            pr = subprocess.run([sys.executable, str(chk), rec['file']], capture_output=True, text=True)
+            rec['aes_check'] = 'OK' if pr.returncode == 0 else 'FAIL'
+            rec['aes_check_out'] = pr.stdout[-600:]
         log(rec)

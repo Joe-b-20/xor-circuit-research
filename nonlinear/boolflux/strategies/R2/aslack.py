@@ -125,8 +125,8 @@ def sparse_decode(gens, x, rng, tries=6, prefer=None, lv=None):
 
 # ---------------------------------------------------------------------------------------------
 class Window:
-    def __init__(self, I: Info, S, mode='wide', rng=None, ddepth=None):
-        self.I = I; self.S = list(S); self.L = I.al[S[0]]; self.mode = mode; self.ddepth = ddepth
+    def __init__(self, I: Info, S, mode='wide', rng=None, ddepth=None, lower=0):
+        self.I = I; self.S = list(S); self.L = I.al[S[0]]; self.mode = mode; self.ddepth = ddepth; self.lower = lower
         n = I.n; L = self.L
         T = I.tfo(S); self.T = T
         D = set(); st = [(s, 0) for s in S]      # linear closure downstream of S, optionally depth-limited
@@ -154,12 +154,12 @@ class Window:
         indep = lambda x: x not in T
         # slack signals C (level <= L, independent of S) and operand signals O (level <= L-1)
         if mode == 'wide':
-            cand = [x for x in range(I.NS) if indep(x) and I.al[x] <= L]
+            cand = [x for x in range(I.NS) if indep(x) and I.al[x] <= L - lower]
         else:   # local: D leaves + operand cones
-            loc = set(x for x in leaves if indep(x) and I.al[x] <= L)
+            loc = set(x for x in leaves if indep(x) and I.al[x] <= L - lower)
             for s in S:
                 for x in I.ins(s): loc |= I.lin_cone(x)
-            cand = sorted(x for x in loc if indep(x) and I.al[x] <= L)
+            cand = sorted(x for x in loc if indep(x) and I.al[x] <= L - lower)
         # drop duplicate / constant tables, keep the shallowest signal per table
         bytab = {}
         for x in sorted(cand, key=lambda x: (I.lg[x], x)):
@@ -167,7 +167,7 @@ class Window:
             if t in (0, ONES) or t in bytab or (t ^ ONES) in bytab: continue
             bytab[t] = x
         self.C = sorted(bytab.values())
-        self.O = [x for x in self.C if I.al[x] <= L - 1]
+        self.O = [x for x in self.C if I.al[x] <= L - 1 - lower]
         self.cset = set(self.C)
         # split each target's form: fixed part (dependent or high leaves) + g part (const, C leaves, S)
         self.fixed = {}; self.gtab = {}; self.wform = {}; self.eS = {}

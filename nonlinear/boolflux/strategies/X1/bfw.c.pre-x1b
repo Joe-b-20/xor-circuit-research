@@ -1,0 +1,381 @@
+/* X1 flip/split walk on a product program (C version of x1walk.py; identities in x1lib.py).
+ *
+ *   bfw PROG_IN OUT_PREFIX SECONDS SEED PLUS PSPLIT HORIZON PREDEC
+ *
+ * PROG_IN:  lines "and BIT L R" (hex masks over atoms: bit 0 = 1, bits 1..8 inputs, bits 9..63 products)
+ *           and "out MASK".  Writes OUT_PREFIX.<A>.prog for every new best AND count and prints stats.
+ * Moves (all exact identities; the function of every output is unchanged):
+ *   merge   two ANDs read by the same forms and sharing a factor -> one AND (flip, then one is dead)
+ *   flip    p_i = a*b_i + l_i, p_j = a*b_j + l_j: p_i := a*(b_i+b_j), every reader of p_i also reads p_j, l_i, l_j
+ *   split   p_i = a*(b+c) + a*c, c from the operand span of another AND j; followed by a flip of the new AND with j
+ *   redec   two ANDs read by the same forms, no shared factor: ab + cd = (a+c)*b + c*(b+d)
+ */
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+typedef uint64_t u64;
+#define NB 64
+#define NIN 8
+typedef struct { u64 L[NB], R[NB], alive, outs[16]; int nout; } Prog;
+
+static u64 rs[4];
+static inline u64 rotl(u64 x, int k) { return (x << k) | (x >> (64 - k)); }
+static u64 rnd(void) {
+    u64 r = rotl(rs[1] * 5, 7) * 9, t = rs[1] << 17;
+    rs[2] ^= rs[0]; rs[3] ^= rs[1]; rs[1] ^= rs[2]; rs[0] ^= rs[3]; rs[2] ^= t; rs[3] = rotl(rs[3], 45);
+    return r;
+}
+static inline int rint_(int n) { return (int)(rnd() % (u64)n); }
+static inline double rdbl(void) { return (rnd() >> 11) * (1.0 / 9007199254740992.0); }
+
+static u64 RS[2 * NB + 16];
+static long st_flip, st_split, st_merge, st_restart, st_step, st_redec, st_shift;
+static double pmerge = 1.0;   /* above the best AND count a merge is accepted with this probability (unless a second merge follows at once) */
+static long st_double;
+static double pshift = 0.0;   /* probability of a shift step: L*R = (L+R)*R + R, readers of the product also read R */
+static int tabu_i = -1, tabu_k = -1, tabu_len = 0; static long tabu_until = 0;   /* tabu_len > 0: no forced flip after a split, the split pair may not merge for tabu_len steps */
+
+static int popc(u64 x) { return __builtin_popcountll(x); }
+static int nA(const Prog *p) { return popc(p->alive); }
+
+static int remove_dead(Prog *p) {
+    int n = 0;
+    for (;;) {
+        u64 used = 0, m = p->alive;
+        while (m) { int b = __builtin_ctzll(m); m &= m - 1; used |= p->L[b] | p->R[b]; }
+        for (int o = 0; o < p->nout; o++) used |= p->outs[o];
+        u64 dead = p->alive & ~used;
+        if (!dead) return n;
+        n += popc(dead); p->alive &= ~dead;
+    }
+}
+
+static int depends(const Prog *p, int j, int i) {     /* product j depends on product i */
+    u64 seen = 0, todo = (p->L[j] | p->R[j]) & p->alive, ib = 1ULL << i;
+    while (todo) {
+        if (todo & ib) return 1;
+        int b = __builtin_ctzll(todo); todo &= todo - 1;
+        seen |= 1ULL << b;
+        todo |= (p->L[b] | p->R[b]) & p->alive & ~seen;
+    }
+    return 0;
+}
+
+static u64 tfo(const Prog *p, int i) {                /* products depending on i, plus i */
+    u64 m = 1ULL << i; int ch = 1;
+    while (ch) {
+        ch = 0; u64 r = p->alive & ~m;
+        while (r) { int b = __builtin_ctzll(r); r &= r - 1; if ((p->L[b] | p->R[b]) & m) { m |= 1ULL << b; ch = 1; } }
+    }
+    return m;
+}
+
+static void substitute(Prog *p, int i, u64 d) {       /* every form reading bit i gets ^= d */
+    u64 ib = 1ULL << i, m = p->alive;
+    while (m) {
+        int b = __builtin_ctzll(m); m &= m - 1;
+        if (p->L[b] & ib) p->L[b] ^= d;
+        if (p->R[b] & ib) p->R[b] ^= d;
+    }
+    for (int o = 0; o < p->nout; o++) if (p->outs[o] & ib) p->outs[o] ^= d;
+}
+
+static void factor(u64 L, u64 R, u64 a, u64 *b, u64 *lam) {   /* L*R = a*b + lam */
+    u64 L0 = L & ~1ULL, R0 = R & ~1ULL;
+    if (a == L0) { *b = R; *lam = (L & 1) ? R : 0; }
+    else if (a == R0) { *b = L; *lam = (R & 1) ? L : 0; }
+    else { *b = L; *lam = ((L ^ R) & 1) ? 0 : L; }
+}
+
+static int flip(Prog *p, int i, int j, u64 a) {       /* j must not depend on i */
+    u64 bi, li, bj, lj;
+    factor(p->L[i], p->R[i], a, &bi, &li); factor(p->L[j], p->R[j], a, &bj, &lj);
+    u64 b = bi ^ bj, b0 = b & ~1ULL;
+    if (b0 == 0 || b0 == a) return 0;
+    substitute(p, i, (1ULL << j) ^ li ^ lj);
+    p->L[i] = a; p->R[i] = b;
+    return 1;
+}
+
+static int split(Prog *p, int i, u64 a, u64 c) {      /* returns new bit or -1 */
+    u64 bi, li;
+    factor(p->L[i], p->R[i], a, &bi, &li);
+    u64 b = bi ^ c, b0 = b & ~1ULL, c0 = c & ~1ULL;
+    if (b0 == 0 || b0 == a || c0 == 0 || c0 == a) return -1;
+    u64 freeb = ~p->alive & ~((1ULL << (NIN + 1)) - 1);
+    if (!freeb) return -1;
+    int k = __builtin_ctzll(freeb);
+    substitute(p, i, (1ULL << k) ^ li);
+    p->L[i] = a; p->R[i] = b; p->L[k] = a; p->R[k] = c; p->alive |= 1ULL << k;
+    return k;
+}
+
+static void sigs(const Prog *p, u64 *sig) {
+    u64 pm = p->alive, m = pm;
+    memset(sig, 0, sizeof(u64) * NB);
+    while (m) {
+        int k = __builtin_ctzll(m); m &= m - 1;
+        u64 f = p->L[k] & pm; while (f) { int b = __builtin_ctzll(f); f &= f - 1; sig[b] ^= RS[2 * k]; }
+        f = p->R[k] & pm; while (f) { int b = __builtin_ctzll(f); f &= f - 1; sig[b] ^= RS[2 * k + 1]; }
+    }
+    for (int o = 0; o < p->nout; o++) { u64 f = p->outs[o] & pm; while (f) { int b = __builtin_ctzll(f); f &= f - 1; sig[b] ^= RS[2 * NB + o]; } }
+}
+
+static inline void span3(const Prog *p, int k, u64 *s) {
+    s[0] = p->L[k] & ~1ULL; s[1] = p->R[k] & ~1ULL; s[2] = s[0] ^ s[1];
+}
+
+static u64 common(const Prog *p, int i, int j, int pick) {    /* a shared span element or 0 */
+    u64 si[3], sj[3], found[3]; int nf = 0;
+    span3(p, i, si); span3(p, j, sj);
+    for (int x = 0; x < 3; x++) for (int y = 0; y < 3; y++) if (si[x] == sj[y]) found[nf++] = si[x];
+    if (!nf) return 0;
+    return found[pick % nf];
+}
+
+static int do_split(Prog *p) {
+    int ks[NB], n = 0; u64 m = p->alive;
+    while (m) { ks[n++] = __builtin_ctzll(m); m &= m - 1; }
+    int i = ks[rint_(n)];
+    u64 s[3]; span3(p, i, s); u64 a = s[rint_(3)];
+    u64 tf = tfo(p, i);
+    int js[NB], nj = 0;
+    for (int x = 0; x < n; x++) if (!((tf >> ks[x]) & 1)) js[nj++] = ks[x];
+    if (!nj) return 0;
+    int j = js[rint_(nj)];
+    u64 sj[3]; span3(p, j, sj); u64 c = sj[rint_(3)];
+    if (c & tf) return 0;
+    if (rint_(2)) c ^= 1;
+    int k = split(p, i, a, c);
+    if (k < 0) return 0;
+    st_split++;
+    /* forced flip of the new AND with j on the shared factor c (so that the split is not undone at once) */
+    u64 c0 = c & ~1ULL;
+    if (tabu_len > 0) { tabu_i = i; tabu_k = k; tabu_until = st_step + tabu_len; return 1; }
+    if (rint_(2)) { if (!depends(p, j, k)) flip(p, k, j, c0); }
+    else { if (!depends(p, k, j)) flip(p, j, k, c0); }
+    return 1;
+}
+
+static int has_merge(const Prog *p, Prog *out) {      /* one merge available? */
+    u64 sig[NB]; int ks[NB], n = 0; u64 m = p->alive;
+    while (m) { ks[n++] = __builtin_ctzll(m); m &= m - 1; }
+    sigs(p, sig);
+    for (int x = 0; x < n; x++) for (int y = x + 1; y < n; y++) if (sig[ks[x]] == sig[ks[y]]) {
+        u64 a = common(p, ks[x], ks[y], 0);
+        if (!a) continue;
+        Prog q = *p;
+        if (flip(&q, ks[x], ks[y], a) && remove_dead(&q)) { *out = q; return 1; }
+    }
+    return 0;
+}
+
+static int step(Prog *p, int bestA, int plus, double psplit, double predec) {   /* returns 1 if an AND was removed */
+    u64 sig[NB]; int ks[NB], n = 0; u64 m = p->alive;
+    st_step++;
+    while (m) { ks[n++] = __builtin_ctzll(m); m &= m - 1; }
+    sigs(p, sig);
+    int ei = -1, ej = -1, neq = 0, ncand = 0; Prog cand;
+    for (int x = 0; x < n; x++) for (int y = x + 1; y < n; y++) if (sig[ks[x]] == sig[ks[y]]) {
+        u64 a = common(p, ks[x], ks[y], 0);
+        if (a && st_step < tabu_until && ((ks[x] == tabu_i && ks[y] == tabu_k) || (ks[x] == tabu_k && ks[y] == tabu_i))) continue;
+        if (a) {
+            Prog q = *p;
+            if (!flip(&q, ks[x], ks[y], a) || !remove_dead(&q)) continue;
+            if (n > bestA) { Prog q2; if (has_merge(&q, &q2)) { *p = q2; st_merge += 2; st_double++; return 1; } }
+            ncand++; if (rint_(ncand) == 0) cand = q;
+        } else { neq++; if (rint_(neq) == 0) { ei = ks[x]; ej = ks[y]; } }
+    }
+    if (ncand && (n <= bestA || rdbl() < pmerge)) { *p = cand; st_merge++; return 1; }
+    if (ei >= 0 && rdbl() < predec) {     /* ab + cd = (a+c)*b + c*(b+d), random roles */
+        int i = ei, j = ej; if (rint_(2)) { i = ej; j = ei; }
+        u64 a = p->L[i], b = p->R[i], c = p->L[j], d = p->R[j], t;
+        if (rint_(2)) { t = a; a = b; b = t; }
+        if (rint_(2)) { t = c; c = d; d = t; }
+        p->L[i] = a ^ c; p->R[i] = b; p->L[j] = c; p->R[j] = b ^ d;
+        st_redec++;
+        return 0;
+    }
+    if (pshift > 0 && rdbl() < pshift) {
+        int k = ks[rint_(n)];
+        if (rint_(2)) { u64 t = p->L[k]; p->L[k] = p->R[k]; p->R[k] = t; }
+        u64 Rk = p->R[k];
+        if (Rk & p->alive) {              /* only useful when R reads a product */
+            substitute(p, k, Rk); p->L[k] ^= Rk; st_shift++;
+            if (remove_dead(p)) { st_merge++; return 1; }
+        }
+        return 0;
+    }
+    if (rdbl() < psplit && n < bestA + plus) return do_split(p) * 0;
+    /* random flip among pairs sharing a factor */
+    int cnt = 0, fi = -1, fj = -1; u64 fa = 0;
+    for (int x = 0; x < n; x++) {
+        u64 sx[3]; span3(p, ks[x], sx);
+        for (int y = x + 1; y < n; y++) {
+            u64 sy[3]; span3(p, ks[y], sy);
+            for (int u = 0; u < 3; u++) for (int v = 0; v < 3; v++) if (sx[u] == sy[v]) {
+                cnt++; if (rint_(cnt) == 0) { fi = ks[x]; fj = ks[y]; fa = sx[u]; }
+            }
+        }
+    }
+    if (!cnt) { if (n < bestA + plus) do_split(p); return 0; }
+    if (rint_(2)) { int t = fi; fi = fj; fj = t; }
+    if (depends(p, fj, fi)) { if (depends(p, fi, fj)) return 0; int t = fi; fi = fj; fj = t; }
+    if (flip(p, fi, fj, fa)) { st_flip++; if (remove_dead(p)) { st_merge++; return 1; } }
+    return 0;
+}
+
+/* ---- truth tables (256 bits) and canonical hashes ------------------------------------------- */
+typedef struct { u64 w[4]; } T256;
+static T256 TIN[NIN + 1];
+static void init_tables(void) {
+    for (int w = 0; w < 4; w++) TIN[0].w[w] = ~0ULL;
+    for (int i = 0; i < NIN; i++) {          /* input i = bit (7 - i) of x (core.input_tables) */
+        int bit = NIN - 1 - i;
+        for (int x = 0; x < 256; x++) if ((x >> bit) & 1) TIN[i + 1].w[x >> 6] |= 1ULL << (x & 63);
+    }
+}
+static void eval_tables(const Prog *p, T256 *T, u64 *done, int k);
+static void form_table(const Prog *p, T256 *T, u64 *done, u64 f, T256 *o) {
+    memset(o, 0, sizeof *o);
+    while (f) {
+        int b = __builtin_ctzll(f); f &= f - 1;
+        if (b > NIN && !((*done >> b) & 1)) eval_tables(p, T, done, b);
+        for (int w = 0; w < 4; w++) o->w[w] ^= T[b].w[w];
+    }
+}
+static void eval_tables(const Prog *p, T256 *T, u64 *done, int k) {
+    T256 a, b;
+    form_table(p, T, done, p->L[k], &a); form_table(p, T, done, p->R[k], &b);
+    for (int w = 0; w < 4; w++) T[k].w[w] = a.w[w] & b.w[w];
+    *done |= 1ULL << k;
+}
+static inline int tbit(const T256 *t, int x) { return (t->w[x >> 6] >> (x & 63)) & 1; }
+static inline u64 mix(u64 h) { h ^= h >> 33; h *= 0xff51afd7ed558ccdULL; h ^= h >> 33; h *= 0xc4ceb9fe1a85ec53ULL; h ^= h >> 33; return h; }
+/* hashes of the product set modulo affine functions (fam) and of its span modulo affine (span) */
+static void hashes(const Prog *p, u64 *fam, u64 *span) {
+    static T256 T[NB]; u64 done = 0; T256 g[NB]; int n = 0;
+    for (int i = 0; i <= NIN; i++) T[i] = TIN[i];
+    u64 m = p->alive;
+    while (m) { int k = __builtin_ctzll(m); m &= m - 1; if (!((done >> k) & 1)) eval_tables(p, T, &done, k); }
+    m = p->alive; *fam = 0;
+    while (m) {
+        int k = __builtin_ctzll(m); m &= m - 1;
+        T256 t = T[k]; int c0 = tbit(&t, 0);
+        if (c0) for (int w = 0; w < 4; w++) t.w[w] ^= TIN[0].w[w];
+        for (int i = 0; i < NIN; i++) { int x = 1 << (NIN - 1 - i); if (tbit(&T[k], x) ^ c0) for (int w = 0; w < 4; w++) t.w[w] ^= TIN[i + 1].w[w]; }
+        u64 h = mix(t.w[0] + 1) ^ mix(t.w[1] + 2) ^ mix(t.w[2] + 3) ^ mix(t.w[3] + 4);
+        *fam += mix(h);
+        g[n++] = t;
+    }
+    /* reduced row echelon form */
+    int piv[NB], r = 0;
+    for (int i = 0; i < n; i++) {
+        T256 t = g[i];
+        for (int j = 0; j < r; j++) if (tbit(&t, piv[j])) for (int w = 0; w < 4; w++) t.w[w] ^= g[j].w[w];
+        int pb = -1;
+        for (int w = 3; w >= 0 && pb < 0; w--) if (t.w[w]) pb = w * 64 + 63 - __builtin_clzll(t.w[w]);
+        if (pb < 0) continue;
+        for (int j = 0; j < r; j++) if (tbit(&g[j], pb)) for (int w = 0; w < 4; w++) g[j].w[w] ^= t.w[w];
+        g[r] = t; piv[r] = pb; r++;
+    }
+    u64 h = 0;
+    for (int j = 0; j < r; j++) h += mix(mix(g[j].w[0] + 1) ^ mix(g[j].w[1] + 2) ^ mix(g[j].w[2] + 3) ^ mix(g[j].w[3] + 4));
+    *span = h ^ (u64)r;
+}
+#define HS (1 << 20)
+static u64 hset_span[HS], hset_fam[HS]; static long n_span, n_fam;
+static int hadd(u64 *hs, u64 h) {
+    if (!h) h = 1;
+    u64 i = h & (HS - 1);
+    for (int probe = 0; probe < HS; probe++) { if (hs[i] == h) return 0; if (!hs[i]) { hs[i] = h; return 1; } i = (i + 1) & (HS - 1); }
+    return 0;
+}
+static int and_depth(const Prog *p) {
+    int lv[NB]; u64 done = (1ULL << (NIN + 1)) - 1; int mx = 0, left = popc(p->alive), guard = 0;
+    memset(lv, 0, sizeof lv);
+    while (left && guard++ < NB) {
+        u64 m = p->alive & ~done;
+        while (m) {
+            int k = __builtin_ctzll(m); m &= m - 1;
+            u64 f = (p->L[k] | p->R[k]) & p->alive;
+            if (f & ~done) continue;
+            int l = 0; while (f) { int b = __builtin_ctzll(f); f &= f - 1; if (lv[b] > l) l = lv[b]; }
+            lv[k] = l + 1; if (l + 1 > mx) mx = l + 1; done |= 1ULL << k; left--;
+        }
+    }
+    return left ? 999 : mx;
+}
+
+static void write_prog(const Prog *p, const char *path) {
+    FILE *f = fopen(path, "w");
+    u64 m = p->alive;
+    while (m) { int b = __builtin_ctzll(m); m &= m - 1; fprintf(f, "and %d %llx %llx\n", b, (unsigned long long)p->L[b], (unsigned long long)p->R[b]); }
+    for (int o = 0; o < p->nout; o++) fprintf(f, "out %llx\n", (unsigned long long)p->outs[o]);
+    fclose(f);
+}
+
+int main(int argc, char **argv) {
+    if (argc < 9) { fprintf(stderr, "usage: bfw PROG OUT_PREFIX SECONDS SEED PLUS PSPLIT HORIZON PREDEC\n"); return 2; }
+    Prog p; memset(&p, 0, sizeof p);
+    FILE *f = fopen(argv[1], "r"); char w[16];
+    if (!f) return 2;
+    while (fscanf(f, "%15s", w) == 1) {
+        if (!strcmp(w, "and")) { int b; unsigned long long L, R; if (fscanf(f, "%d %llx %llx", &b, &L, &R) != 3 || b >= NB) return 3; p.L[b] = L; p.R[b] = R; p.alive |= 1ULL << b; }
+        else if (!strcmp(w, "out")) { unsigned long long o; if (fscanf(f, "%llx", &o) != 1) return 3; p.outs[p.nout++] = o; }
+    }
+    fclose(f);
+    double seconds = atof(argv[3]); u64 seed = strtoull(argv[4], 0, 10); int plus = atoi(argv[5]);
+    double psplit = atof(argv[6]); long horizon = atol(argv[7]); double predec = atof(argv[8]);
+    int adcap = argc > 9 ? atoi(argv[9]) : 0; int dump = argc > 10 ? atoi(argv[10]) : 0;
+    tabu_len = argc > 11 ? atoi(argv[11]) : 0;
+    pshift = argc > 12 ? atof(argv[12]) : 0.0;
+    pmerge = argc > 13 ? atof(argv[13]) : 1.0;
+    rs[0] = seed * 0x9E3779B97F4A7C15ULL + 1; rs[1] = seed ^ 0xD1B54A32D192ED03ULL; rs[2] = 0x8CB92BA72F3D8DD7ULL + seed; rs[3] = 0x2545F4914F6CDD1DULL;
+    for (int i = 0; i < 20; i++) rnd();
+    for (int i = 0; i < 2 * NB + 16; i++) RS[i] = rnd() | 1;
+    init_tables();
+    remove_dead(&p);
+    #define POOL 256
+    static Prog pool[POOL]; int npool = 1; pool[0] = p;
+    int bestA = nA(&p); long since = 0, st_rej = 0, ndump = 0;
+    u64 hf, hsp; hashes(&p, &hf, &hsp); n_fam += hadd(hset_fam, hf); n_span += hadd(hset_span, hsp);
+    time_t t0 = time(0); struct timespec ts0, ts; clock_gettime(CLOCK_MONOTONIC, &ts0);
+    printf("start A %d AD %d adcap %d\n", bestA, and_depth(&p), adcap); fflush(stdout);
+    for (;;) {
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        double el = (ts.tv_sec - ts0.tv_sec) + 1e-9 * (ts.tv_nsec - ts0.tv_nsec);
+        if (el > seconds) break;
+        for (int it = 0; it < 2000; it++) {
+            Prog saved; if (adcap) saved = p;
+            int red = step(&p, bestA, plus, psplit, predec); since++;
+            if (adcap && and_depth(&p) > adcap) { p = saved; st_rej++; continue; }
+            if (red) {
+                int a = nA(&p);
+                if (a < bestA) {
+                    bestA = a; npool = 1; pool[0] = p; since = 0;
+                    memset(hset_fam, 0, sizeof hset_fam); memset(hset_span, 0, sizeof hset_span); n_fam = n_span = 0; ndump = 0;
+                    hashes(&p, &hf, &hsp); n_fam += hadd(hset_fam, hf); n_span += hadd(hset_span, hsp);
+                    char path[1024]; snprintf(path, sizeof path, "%s.%d.prog", argv[2], a); write_prog(&p, path);
+                    printf("best A %d AD %d t %.1f steps %ld flips %ld splits %ld merges %ld redec %ld\n", a, and_depth(&p), el, st_step, st_flip, st_split, st_merge, st_redec); fflush(stdout);
+                } else if (a == bestA) {
+                    hashes(&p, &hf, &hsp);
+                    int nf = hadd(hset_fam, hf), ns = hadd(hset_span, hsp);
+                    n_fam += nf; n_span += ns;
+                    if (ns) {
+                        if (npool < POOL) pool[npool++] = p; else pool[rint_(POOL)] = p;
+                        if (ndump < dump) { char path[1024]; snprintf(path, sizeof path, "%s.span%ld.A%d.prog", argv[2], ndump++, a); write_prog(&p, path); }
+                    }
+                }
+            }
+            if (since > horizon) { p = pool[rint_(npool)]; since = 0; st_restart++; }
+        }
+    }
+    printf("spans at best A: %ld  product sets: %ld  rejected(adcap) %ld  double merges %ld\n", n_span, n_fam, st_rej, st_double);
+    (void)t0;
+    printf("end A %d steps %ld flips %ld splits %ld merges %ld redec %ld shifts %ld restarts %ld pool %d\n", bestA, st_step, st_flip, st_split, st_merge, st_redec, st_shift, st_restart, npool);
+    return 0;
+}

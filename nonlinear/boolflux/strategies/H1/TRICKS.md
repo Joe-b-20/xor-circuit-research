@@ -4,7 +4,7 @@ Input for H2 / H3. Labels: [C] computed exactly on the named files (tools and da
 [P] proved (argument given or cited from strategies/C), [H] heuristic / estimate. Savings are
 relative to Boyar-Peralta 32 = 9 (stage 1) + 5 (GF(16) inversion) + 18 (last layer).
 
-## 0. One picture that covers every known circuit [C, 63 files]
+## 0. One picture that covers every known circuit [C, 63 files from 3 independent designs; later A28s (spangen: 11 members + a non-member pair; X1b g158: 12 + a pair) break the 13-member pattern, NOTES 10.2]
 
 Every known circuit with <= 32 ANDs is  S1 (l products of x-linear forms, span contains V_N)
 -> MID (m ANDs on functions of N) -> LAST (k products of operands
@@ -80,11 +80,32 @@ Notation: a design is (l, m, k); a 27 needs l + m + k = 27, so (9, 5, 13) or (9,
 | T5 x T6 | AD4 type | 28 | known | - |
 | T4 x T6 | umizame + 6-AND middle | 30 | known (A30) | - |
 | T5 with 4-member rows (2 norm ANDs per GF(4) product) | rows (4,4,4) = 12 | 9+5+12 = 26 needs junk 6 | IMPOSSIBLE with l = 9 [P, C/NOTES 6: l >= 4 + J + rho2 >= 11] -> 28 at best (11+5+12) | - |
-| T4 rows x 4-member rows | rows (4,4,5) = 13 | 27 | [H] blocked if every 9-product cover of V_N has c5-rank rho2 >= 2 (all 9-covers in the files have rho2 = 2 [C]); then norm-type junk capacity of a 9-cover is 9-4-2 = 3 < 4 | a 9-product level-1 cover W of V_N with rho2 = 1 containing the 4 within-row norm forms N(a_i), N(b_i) of the two 4-rows (each is a single rank-2 product, so they could be S1 products themselves), plus the umizame row's 3 early products in W. Decidable by SAT (C's stage1.py + c5-rank constraint) or cover lemma for a fixed choice. |
+| T4 rows x 4-member rows | rows (4,4,5) = 13 | 27 | EXCLUDED [C, H2 normspan.py: V_N + two rows' norm forms + third row's early products has dim 11 > 9] (earlier [H] reason: c5-rank) | a 9-product level-1 cover W of V_N with rho2 = 1 containing the 4 within-row norm forms N(a_i), N(b_i) of the two 4-rows (each is a single rank-2 product, so they could be S1 products themselves), plus the umizame row's 3 early products in W. Decidable by SAT (C's stage1.py + c5-rank constraint) or cover lemma for a fixed choice. |
 | T4 rows x (4,5,5) | 14 | 28 | no gain | - |
 | T5's 3-member row x T4 rows | classes (5,3,5) with gamma = 0 | 27 | OPEN | the A28 3-member row works only with gamma != 0 in all files; need a gamma = 0 variant or a junk-coverable gamma variant (same conditions as T4 x T5) |
 | T7 x anything | inexact middle | +0 | - | only useful if a middle "target" other than n is cheaper than 5 (no: G's 30 classes are for n plus one function; a different target function of N could have a different MC - not computed) |
 | T3 with stage-1 depth 2 | N (or the S1 junk) computed with 2 AND levels | ? | NOT EXPLORED | every exact stage-1 bound (9) is for one AND level; a 2-level stage 1 could cover V_N + junk with <= 8 ANDs only if level-2 products help - nothing known either way |
+
+### 2.0 Update 02:50 UTC (NOTES 7): what the 9+5+13 target now requires
+
+* **gamma = 0 is dead for <= 13 members** [P, 1275-member model (all last ANDs GF(4)-norm members); NOTES 7.2 Theorem 1, from checked spectral facts +
+  H2's parity lemma]: a GF(4)-norm layer with operands x + n only and a 5-AND middle needs
+  k >= 14 members (k >= 15 with <= 4 classes; umizame's 15 is optimal there). So "umizame junk
+  placement" can only be combined with a short row if gamma != 0, as in A28.
+* **12 members (gamma != 0) only in one rigid shape** [P, 1275-member model, Theorem 2]: all 5 classes, row
+  sizes with sum(n_P - 1) = 7 and n_P <= 3, all row z-values in cosets of one 2-dim D inside a
+  <= 4-dim Z, free class f of Pi(gamma) of size 1 or 2, cosets: row f in D, paired classes in a
+  common coset each. Shape "(4,4,4) on 3 classes" is impossible. Not enumerated (too large for
+  this session) - an explicit, small algebraic case for H2.
+* (4,4,5) rows: now excluded [C, H2 normspan.py: dim 11 > 9].
+* Fast exact testers: `nfast.py` (no truth tables, microseconds; n-block + parity + x-junk,
+  reproduces all published layers) and `cond27.py` (truth tables + exact 9-cover test).
+* Exhaustive one-swap neighbourhoods of all 6 distinct A28 layers (any gamma, stage 1 free): no
+  27 [C, 1275-member model, NOTES 7.3]
+* 14 -> 13 for 30 new 9+5+14 / 10+5+13 circuits and 12+1 / 11+2 for the AD4 layers: no 27
+  [C, case: prefix FIXED, replacements with operands in O2; chains and re-chosen stage 1 open;
+  NOTES 8, 9, 10.2]. All cover tests used were exact enumeration (NOTES 10.1).; two-swap neighbourhoods: layer g124 pairs 0-20 done, the rest queued
+  (QUEUE.md "H1-b").
 
 ### 2.1 The T4 x T5 question in track C's coordinates (most concrete 27 target)
 
@@ -103,8 +124,9 @@ A 27 with 13 members over a 9 + 5 prefix needs rank pi <= 5, i.e. (dim Z, excess
   A28-AD5 E (k=12), A28-AD4 E (k=12), AD4-L + AD5-inv (k=13), umizame-L + AD5-inv (k=13), all 16
   gamma values (NOTES section 6). So an umizame-like layer keeping excess 3 cannot be squeezed
   to 13 over these prefixes.
-* (3,0), (3,1), (4,0): C's zdfs/zdfs3 over umizame's E with gamma none queued by H1 (NOTES 6);
-  over AD5/AD4 E with k = 12 done by C (none).
+* (3,0), (3,1), (4,0) over umizame's E, gamma none, k = 13: **none** [C, C's zdfs/zdfs3 run by
+  H1, NOTES 6]; over AD5/AD4 E with k = 12 done by C (none). gamma != 0 over umizame's E and the
+  other 9 + 5 prefixes: queued for overnight (QUEUE.md, H1 section).
 * (4,1), (3,2), (5,0) over 9 + 5 prefixes: NOT covered (the A28 layers are (5,0) but over 10+5 /
   9+6 prefixes). An umizame-like 13 (two rows of 5 sharing z-points, one short row) would most
   likely sit at excess 1-2: this is the uncovered zone to search next.

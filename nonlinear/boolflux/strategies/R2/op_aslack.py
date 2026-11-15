@@ -104,12 +104,17 @@ def op_aslack(ar, args, rng, out):
             newp = sum(1 for p in ch if not any(p[4] == I.tabs[s] for s in S))
             if newp: st['new_products'] += 1
             if m[0] < basem[0]: st['a_red'] += 1
+            if m[0] < m0[0] or m[1] < m0[1]: st['below_input'] = st.get('below_input', 0) + 1
             k = core.to_kernel(nc)
             if k not in raw:
                 raw[k] = (nc, m, {'k': len(S), 'L': W.L, 'm_new': len(ch), 'r': W.r, 'mode': mode, 'dd': dd,
                                   'new_products': newp, 'chain': base is not c0})
         # chaining: sometimes continue from a raw result that is not worse in the objective by much
-        if raw and rng.random() < 0.3:
+        lowA = [v for v in raw.values() if v[1][0] < basem[0] and v[1][1] <= basem[1]]
+        if lowA and rng.random() < 0.5:          # v2: chain into A reductions even when GD rose (repaired by the polish)
+            best = min(lowA, key=lambda v: (lexkey(v[1], caps, keys)[0], v[1]))     # least cap violation, then lowest A
+            base = best[0]; basem = best[1]; I = AS.Info(base); st['chained_lowA'] = st.get('chained_lowA', 0) + 1
+        elif raw and rng.random() < 0.3:
             best = min(raw.values(), key=lambda v: lexkey(v[1], caps, keys))
             if lexkey(best[1], caps, keys)[:2] <= lexkey(basem, caps, keys)[:2] and best[0] is not base:
                 base = best[0]; basem = best[1]; I = AS.Info(base); st['chained'] += 1
@@ -119,13 +124,20 @@ def op_aslack(ar, args, rng, out):
     ranked = sorted(raw.values(), key=lambda v: lexkey(v[1], caps, keys))
     # keep structural variety: at most 2 from the same (A, G) and prefer new products
     pol = []; seenAG = {}
+    # v2: A (or AD) reductions first, whatever their gate depth; polished with A/AD caps at their own values
+    ared = [v for v in raw.values() if (v[1][0], v[1][1]) < (m0[0], m0[1]) and v[1][1] <= m0[1]]
+    for key in (lambda v: (lexkey(v[1], caps, keys)[0], v[1]), lambda v: v[1]):   # feasible-most A reduction, then lowest A
+        for v in sorted(ared, key=key):
+            kk = (v[1][0], v[1][2])
+            if kk in seenAG: continue
+            seenAG[kk] = 1; pol.append(v); break
     for v in ranked:
         kk = (v[1][0], v[1][2])
         if seenAG.get(kk, 0) >= 2: continue
         seenAG[kk] = seenAG.get(kk, 0) + 1; pol.append(v)
-        if len(pol) >= args.npolish: break
+        if len(pol) >= args.npolish + min(2, len(ared)): break
     cands = {}
-    for v in ranked[:200]:
+    for v in ranked[:200] + ared:
         if ar.would_place(v[1]): cands[core.to_kernel(v[0])] = (v[0], v[1], dict(v[2], polished=False))
     left = args.seconds - (time.time() - t0)
     pinfo = []
@@ -135,7 +147,8 @@ def op_aslack(ar, args, rng, out):
         if left < 2.5: break
         pd = out / ('p%d' % j); pd.mkdir(exist_ok=True)
         try:
-            pc, info = HO._kernel(v[0], caps, args.objective, rng.randrange(1, 1 << 30), round(secs, 1), pd, args.archive)
+            pcaps = dict(caps, A=min(caps['A'] if caps.get('A') is not None else 99, v[1][0]))
+            pc, info = HO._kernel(v[0], pcaps, args.objective, rng.randrange(1, 1 << 30), round(secs, 1), pd, args.archive)
         except Exception as e:
             pinfo.append({'error': repr(e)[:100]}); continue
         if not pc: pinfo.append({"from": v[1], "to": None, "secs": round(secs, 1)})
