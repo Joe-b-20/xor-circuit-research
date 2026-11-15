@@ -147,7 +147,23 @@ def nist_export(c, model_metrics):
     return name, core.write_ncff(c, None, comments=['BoolFlux result, NIST accounting (NOT counted as a gate)'])
 
 
+def nist_format_name(nf, name, text, written):
+    """File name for a NIST-format copy.  Two different circuits can have the same tuple and gate
+    counts, hence the same NIST-style name; the second used to overwrite the first, and both
+    entries then pointed at one file (review5 P14).  A different circuit gets -v2, -v3, ...
+    (nonlinear/check.py reads the metrics from the front of the name)."""
+    k = 1; nm = name
+    while nm in written and written[nm] != text:
+        k += 1; nm = '%s-v%d' % (name, k)
+    written[nm] = text
+    (nf / (nm + '.circ.txt')).write_text(text, encoding='utf-8')
+    return nm
+
+
 def main():
+    if len(sys.argv) > 1:
+        print(__doc__.strip())
+        return 0 if sys.argv[1] in ('-h', '--help') else 2
     out = {'nist_baseline_commit': NEW_PIN, 'entries': []}
     mp = PKG / 'results' / 'MANIFEST.json'
     prev = {e['sha256']: e for e in json.loads(mp.read_text()).get('entries', [])} if mp.exists() else {}
@@ -158,6 +174,8 @@ def main():
         for f in nf.iterdir(): f.unlink()
     nf.mkdir(parents=True, exist_ok=True)
     bad = 0
+    written = {}                                        # nist-format name -> text
+    by_gates = {}                                       # (target, gate list) -> first results file
     for f in sorted((PKG / 'results').glob('*/*.circ.txt')):
         if f.parent.name in ("nist-format",) or f.parent.name.startswith("_"): continue
         s = json.loads(f.with_suffix('').with_suffix('.summary.json').read_text())
@@ -186,14 +204,19 @@ def main():
         if s['target'] == 'aes':
             c = core.read_ncff(str(f))
             name, text = nist_export(c, c.metrics())
-            (nf / (name + '.circ.txt')).write_text(text, encoding='utf-8')
+            name = nist_format_name(nf, name, text, written)
             e['nist_format_file'] = 'nonlinear/boolflux/results/nist-format/%s.circ.txt' % name
             if s['model'] == 'nist':
                 r = aes_check.check(nf / (name + '.circ.txt'))
                 e['pinned_set'] = {'nist_commit': NEW_PIN[:7], 'tuple_A_AD_G_GD': list(r['tuple']),
                                    'new_point': r.get('new_point'), 'dominated_by': r.get('dominated_by'),
                                    'best_published_at_same_A_AD_GD_caps': r.get('best_at_a_ad_gd_caps')}
+        # the same gate list under two result files is one circuit: say so in both entries
+        first = by_gates.setdefault((s['target'], core.to_kernel(core.read_ncff(str(f)))), e['file'])
+        if first != e['file']:
+            e['same_circuit_as'] = first
         out['entries'].append(e)
+    out['duplicate_circuits'] = sorted([e['file'], e['same_circuit_as']] for e in out['entries'] if 'same_circuit_as' in e)
     # results of ours that strictly dominate an AES entry, and the Pareto set of the AES results
     aes = [e for e in out['entries'] if 'pinned_set' in e]
     tup = lambda e: tuple(e['pinned_set']['tuple_A_AD_G_GD'])
@@ -211,9 +234,11 @@ def main():
     out['nist_format_check'] = r.stdout.strip().splitlines()[-1] if r.stdout.strip() else r.stderr[-500:]
     (PKG / 'results' / 'MANIFEST.json').write_text(json.dumps(out, indent=1) + '\n', encoding='utf-8')
     print('%d entries, %d failing verification; nist-format check: %s' % (len(out['entries']), bad, out['nist_format_check']))
+    for a, b in out['duplicate_circuits']:
+        print('same circuit in two result files: %s = %s' % (a, b))
     if r.returncode != 0 or bad:
         print(r.stdout[-3000:]); sys.exit(1)
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

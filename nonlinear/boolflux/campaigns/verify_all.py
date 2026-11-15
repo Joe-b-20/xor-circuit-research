@@ -30,11 +30,14 @@ Read-only except for the temporary directory and the optional --json file.
 """
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import time
 from pathlib import Path
+
+os.environ['BOOLFLUX_NO_CACHE'] = '1'      # this tool re-verifies the pinned set itself (aes_check cache off)
 
 HERE = Path(__file__).resolve().parent
 PKG = HERE.parent
@@ -126,6 +129,10 @@ def run_boolcirc(path):
 
 def main():
     args = sys.argv[1:]
+    known = {'--json', '--campaigns', '--no-campaigns', '--no-nist', '--quiet'}
+    if any(a.startswith('-') and a not in known for a in args):       # review5 P16: -h used to start the full run
+        print(__doc__.strip())
+        return 0 if all(a in ('-h', '--help') or a in known or not a.startswith('-') for a in args) else 2
     out_json = None
     if '--json' in args:
         i = args.index('--json'); out_json = args[i + 1]; del args[i:i + 2]
