@@ -103,6 +103,7 @@ class Scheduler:
         self.ctl_mtime = None; self.ctl_bad = None
         self.ad3_share = 0.0; self.ingest_globs = []; self.ingested = set(); self.last_ingest = 0
         self.cpus = []; self.free = []; self.running = []; self.allow = set(); self.stop = None
+        self.end = time.time() + args.hours * 3600; self.pending_cpus = None
         self.last_admit = max((r['t_admit'] for r in self.ar.rec.values()), default=0.0)
         self.last_fb_save = time.time()
         for e in self.ar.load_errors: self.log(ev='archive-load-error', what=e)
@@ -186,6 +187,8 @@ class Scheduler:
         self.allow = {c for c in allow if c < online}
         self.cpus = list(cpus); self.free = list(cpus)
         self.save_cpus('start')
+        if self.pending_cpus is not None:                  # control.json was read before the CPUs were set up
+            self.set_cpus(self.pending_cpus); self.pending_cpus = None
 
     def set_cpus(self, want, why='control'):
         """make `want` (within the allow list) the active set; jobs running on dropped CPUs finish, then the CPU is released"""
@@ -275,7 +278,9 @@ class Scheduler:
         if 'ad3_share' in num: self.ad3_share = num['ad3_share']
         if gap is not None: self.args.near_gap = gap
         if tcaps is not None: self.tuple_caps = tcaps
-        if cpus is not None: self.set_cpus(cpus)
+        if cpus is not None:
+            if self.allow: self.set_cpus(cpus)
+            else: self.pending_cpus = cpus
         self.ingest_globs = list(ing)
         self.log(ev='control', control=c, ops=self.ops, secs=self.secs, eps=self.args.eps, near=self.args.near,
                  nursery=self.args.nursery, ad3_share=self.ad3_share, cpus=sorted(self.cpus), tuple_caps=self.tuple_caps,
@@ -421,7 +426,8 @@ class Scheduler:
         return min(ids, key=lambda i: (self.attempts.get((op, self.tkey(i)), 0), 0 if self.ar.rec[i]['A'] <= 31 else 1))
 
     # ---- jobs -------------------------------------------------------------------------------
-    def launch(self, cpu, busy, end):
+    def launch(self, cpu, busy):
+        end = self.end
         fresh = self.fresh_target(busy)
         if fresh is not None:
             op, tid = fresh; why = 'fresh'
@@ -471,6 +477,9 @@ class Scheduler:
     def finish(self, job):
         job['lf'].close()
         jd = job['jd']; op = job['op']; tm = self.ar.rec[job['target']]; rc = job['p'].returncode
+        # (a subclass may build its own job dict: everything beyond the 2026-11-14 keys has a default)
+        job.setdefault('secs', self.secs.get(op)); job.setdefault('script', str(self.scripts.get(op, SCRIPTS.get(op))))
+        job.setdefault('script_sha', file_sha(job['script']))
         wall = round(time.time() - job['t0'], 2)
         rec = {}; rec_error = None
         try:
@@ -561,7 +570,7 @@ class Scheduler:
         atomic_write(self.dir / 'front.json', json.dumps(fr, indent=0))
 
     def run(self):
-        end = time.time() + self.args.hours * 3600
+        end = self.end = time.time() + self.args.hours * 3600
         self.init_cpus()
         running = self.running; last_front = 0; last_ctl = 0
         signal.signal(signal.SIGTERM, lambda s, f: setattr(self, 'stop', 'SIGTERM'))
@@ -580,7 +589,7 @@ class Scheduler:
             for j in list(running):
                 if j['p'].poll() is None:
                     if self.stop: self.kill(j, 'stopped')
-                    elif now - j['t0'] > j['limit']: self.kill(j, 'timeout')
+                    elif now - j['t0'] > j.get('limit', self.secs.get(j['op'], 90.0) * KILL_FACTOR + KILL_GRACE): self.kill(j, 'timeout')
                     continue
                 running.remove(j)
                 if j['cpu'] in self.cpus and j['cpu'] not in self.free: self.free.append(j['cpu'])
@@ -589,7 +598,9 @@ class Scheduler:
                 except Exception as e:     # never lose the loop; the job dir stays as evidence
                     self.log(ev='finish-error', run_id=j['run_id'], error=repr(e))
             while self.free and time.time() < end and not self.stop:
-                j = self.launch(self.free[0], {x['key'] for x in running}, end)
+                # busy: tuple keys and ids (a subclass that overrides launch may test ids)
+                busy = {x.get('key', x['target']) for x in running} | {x['target'] for x in running}
+                j = self.launch(self.free[0], busy)
                 if j is None: break
                 self.free.pop(0); running.append(j)
             if time.time() - last_front > 300:
