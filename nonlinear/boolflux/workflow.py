@@ -3,6 +3,7 @@
 A run is a dict:
   target, model, objective ('cost,gd', ...), caps {GD, AD, A}, start ('anf' | NCFF path |
   XORFlux JSON path | a core.Circuit), seconds (wall budget, rebuild included), seed,
+  seed_scheme (default 'v2'; 'legacy-flow' = the kernel seeds of runs before review 5),
   config  'gate'    one gate-kernel run for the whole budget
           'full'    rounds of round_s seconds: skeleton stage (skel_set; iters 0 = rebuild only)
                     -> rebuild variants -> gate stage, alternating, incumbent kept
@@ -27,6 +28,36 @@ import time
 from pathlib import Path
 
 from boolflux import core, objective, skeleton, starts, targets
+
+# ---- kernel seeds ------------------------------------------------------------------------------
+# Review 5: cli.py run/pipe used seed + 1000 x round, so (seed 1, round 1) and (seed 1001, round 0)
+# ran with the same kernel seed; flow and the benchmark (this module) used seed x 1000 + round,
+# so (seed 1, round 1000) = (seed 2, round 0).  Both now use kernel_seed(seed, round, 'v2'):
+# seed + round x 2^32, one-to-one for 0 <= seed, round < 2^32 (the kernel seed is a u64), and equal
+# to the seed in round 0, so single-round `cli.py run` commands give the kernel seeds they gave
+# before.  The old formulas stay reachable (`--seed-scheme legacy`, run['seed_scheme']), so a
+# command recorded before review 5 is replayed with the seeds it used; every summary.json records
+# the kernel seed of each job and, from review 5 on, the scheme.
+SEED_SCHEMES = {
+    'v2': 'seed + round x 2^32 (review 5; cli.py run/pipe/flow and the benchmark)',
+    'legacy-run': 'seed + 1000 x round (cli.py run and pipe before review 5)',
+    'legacy-flow': 'seed x 1000 + round (cli.py flow and bench/bench.py before review 5)',
+}
+SEED_SPAN = 1 << 32
+
+
+def kernel_seed(seed, rnd, scheme='v2'):
+    """Kernel seed of job `seed` in round `rnd` (see SEED_SCHEMES)."""
+    seed = int(seed); rnd = int(rnd)
+    if scheme == 'v2':
+        if not (0 <= seed < SEED_SPAN and 0 <= rnd < SEED_SPAN):
+            raise ValueError('seed %d / round %d outside 0..2^32-1 (seed scheme v2)' % (seed, rnd))
+        return seed + rnd * SEED_SPAN
+    if scheme == 'legacy-run':
+        return seed + 1000 * rnd
+    if scheme == 'legacy-flow':
+        return seed * 1000 + rnd
+    raise ValueError('unknown seed scheme %r (%s)' % (scheme, ', '.join(SEED_SCHEMES)))
 
 DEFAULTS = {'T0': 0.6, 'Tperiod_it': 20000, 'stall_it': 60000, 'uphill': 1.0, 'max_excess': 8,
             'mv.resub1': 1, 'mv.resub2': 2, 'mv.resub3': 1, 'dmax': 220, 'pdiv': 90,
@@ -155,7 +186,7 @@ def search(run, bindir, wd, cpu=None):
                 (wd / 'sk.in').write_text(skeleton.write_skel(sk, outs))
                 scfg = dict(SKEL_DEFAULTS)
                 if caps.get('AD') is not None: scfg['cap.ad'] = caps['AD']
-                scfg.update({'in': wd / 'sk.in', 'out': wd / 'sk.out', 'seed': run['seed'] * 1000 + rnd,
+                scfg.update({'in': wd / 'sk.in', 'out': wd / 'sk.out', 'seed': kernel_seed(run['seed'], rnd, run.get('seed_scheme', 'v2')),
                              'iters': 10 ** 15, 'seconds': secs})
                 scfg.update(run.get('skel_set', {}))     # skel_set wins (iters 0 = rebuild only)
                 (wd / 'sk.cfg').write_text(''.join('%s %s\n' % kv for kv in scfg.items()))
@@ -185,7 +216,7 @@ def search(run, bindir, wd, cpu=None):
                     rem = budget - (time.time() - T0)
                     secs = min(max(0.5, R_s - (time.time() - round_t0)), rem) if run.get('adaptive') else min(R_s * 0.8, rem)
                 (wd / 'g.in').write_text(core.to_kernel(cand))
-                kernel_cfg(wd / 'g.cfg', wd / 'g.in', wd / 'g.out', model, run, secs, run['seed'] * 1000 + rnd, run.get('set', {}))
+                kernel_cfg(wd / 'g.cfg', wd / 'g.in', wd / 'g.out', model, run, secs, kernel_seed(run['seed'], rnd, run.get('seed_scheme', 'v2')), run.get('set', {}))
                 t_launch = time.time() - T0
                 so, se, r_, wall, rc = timed([str(bindir / 'bfx'), str(wd / 'g.cfg')], cpu)
                 rss.append(r_)

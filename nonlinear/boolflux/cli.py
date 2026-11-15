@@ -42,10 +42,25 @@ INDEP = HERE / 'independent' / 'verify.py'
 REPO = HERE.parents[1]
 
 
+def compile_kernel(src, dst):
+    """gcc -O2 SRC into DST through a temporary file of its own in DST's folder and an atomic
+    rename (review 5: gcc wrote DST in place, so another process could start a half-written
+    binary, and two builders wrote the same file)."""
+    import tempfile
+    dst = Path(dst)
+    fd, tmp = tempfile.mkstemp(prefix=dst.name + '.', suffix='.tmp', dir=str(dst.parent)); os.close(fd)
+    try:
+        subprocess.run(['gcc', '-O2', '-o', tmp, str(src), '-lm'], check=True)
+        os.chmod(tmp, 0o755)
+        os.replace(tmp, dst)
+    finally:
+        if os.path.exists(tmp): os.unlink(tmp)
+
+
 def build_kernel():
     for b, src in ((KBIN, KDIR / 'bfx.c'), (SBIN, KDIR / 'skel.c')):
         if not b.exists() or b.stat().st_mtime < src.stat().st_mtime:
-            subprocess.run(['gcc', '-O2', '-o', str(b), str(src), '-lm'], check=True)
+            compile_kernel(src, b)
     return KBIN
 
 
@@ -59,7 +74,7 @@ def snapshot(out):
         for f in ('kernel/bfx.c', 'kernel/skel.c', 'cli.py', 'core.py', 'skeleton.py', 'starts.py', 'targets.py', 'objective.py', 'workflow.py'):
             shutil.copy(HERE / f, src / Path(f).name)
         for b in ('bfx', 'skel'):
-            subprocess.run(['gcc', '-O2', '-o', str(bindir / b), str(src / (b + '.c')), '-lm'], check=True)
+            compile_kernel(src / (b + '.c'), bindir / b)
     global KBIN, SBIN
     KBIN = bindir / 'bfx'; SBIN = bindir / 'skel'
     h = hashlib.sha256()
@@ -179,6 +194,16 @@ def kernel_config(path, start_path, out_path, model, args, seed, extra):
     return cfg
 
 
+def seed_scheme(args, cmd):
+    """--seed-scheme v2 (default) or legacy = the formula this command used before review 5"""
+    s = getattr(args, 'seed_scheme', None) or 'v2'
+    return ('legacy-flow' if cmd == 'flow' else 'legacy-run') if s == 'legacy' else s
+
+
+def kseed(args, seed, rnd):
+    return workflow.kernel_seed(seed, rnd, seed_scheme(args, 'run'))
+
+
 def parse_seeds(s):
     out = []
     try:
@@ -276,6 +301,7 @@ def cmd_run(args):
                'model_gates': model.gates, 'objective': args.objective, 'caps': caps,
                'start': args.start, 'start_metrics': start.metrics(model), 'seeds': seeds,
                'iters': args.iters, 'seconds_cap': args.seconds, 'rounds': args.rounds,
+               'seed_scheme': seed_scheme(args, 'run'),
                'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'), 'settings': {**DEFAULTS, **extra},
                'command': ' '.join(['python3', 'nonlinear/boolflux/cli.py'] + sys.argv[1:]),
                'runs': []}
@@ -288,7 +314,7 @@ def cmd_run(args):
             tag = 'r%d-s%d' % (rnd, seed)
             sp = out / ('%s.start.bfx' % tag); sp.write_text(core.to_kernel(st), encoding='utf-8')
             bp = out / ('%s.best.bfx' % tag); cp = out / ('%s.cfg' % tag)
-            kernel_config(cp, str(sp), str(bp), model, args, seed + 1000 * rnd, extra)
+            kernel_config(cp, str(sp), str(bp), model, args, kseed(args, seed, rnd), extra)
             procs.append((tag, seed, cp, bp))
         running = []; results = []
         queue = list(procs)
@@ -306,7 +332,7 @@ def cmd_run(args):
                     lf.close(); running.remove(r)
                     log = (out / ('%s.log' % tag)).read_text()
                     final, bests, moves = parse_kernel_log(log)
-                    rec = {'round': rnd, 'seed': seed, 'kernel_seed': seed + 1000 * rnd, 'tag': tag,
+                    rec = {'round': rnd, 'seed': seed, 'kernel_seed': kseed(args, seed, rnd), 'tag': tag,
                            'returncode': p.returncode, 'wall_s': round(time.time() - t0, 2),
                            'final': final, 'improvements': bests, 'moves': moves,
                            'time_capped': final.get('iters', 0) < args.iters}
@@ -416,6 +442,7 @@ def cmd_pipe(args):
                'caps': {'GD': args.cap_gd, 'AD': args.cap_ad, 'A': args.cap_a},
                'start': args.start, 'start_metrics': start.metrics(model), 'seeds': seeds,
                'iters': args.iters, 'skel_iters': args.skel_iters, 'rounds': args.rounds,
+               'seed_scheme': seed_scheme(args, 'run'),
                'skel_share': args.skel_share, 'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'),
                'settings': {**DEFAULTS, **{'skel.' + k: v for k, v in SKEL_DEFAULTS.items()}, **extra},
                'runs': []}
@@ -423,7 +450,7 @@ def cmd_pipe(args):
     for rnd in range(args.rounds):
         def job(i_seed):
             i, seed = i_seed
-            ks = seed + 1000 * rnd
+            ks = kseed(args, seed, rnd)
             c0 = pool[i % len(pool)]
             tag = 'r%d-s%d' % (rnd, seed)
             use_skel = args.skel_share > 0 and ((i * 0.618034) % 1.0) < args.skel_share
@@ -515,7 +542,8 @@ def cmd_flow(args):
             'start': args.start, 'seconds': args.seconds,
             'config': args.config, 'round_s': args.round_s, 'adaptive': args.adaptive,
             'seeded': not args.no_seeded, 'unseeded': not args.no_unseeded,
-            'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set, kernel=False)}
+            'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set, kernel=False),
+            'seed_scheme': seed_scheme(args, 'flow')}
     cpus = [int(x) for x in args.cpus.split(',')] if args.cpus else None
     jobs = [(dict(base, seed=sd), str(KBIN.parent), str(out / ('s%d' % sd)),
              cpus[i % len(cpus)] if cpus else None) for i, sd in enumerate(seeds)]
@@ -645,6 +673,10 @@ def _common(p, seeds, start=True):
         p.add_argument('--cap-a', type=int, metavar='N', help='hard cap on the number of nonlinear gates (default: none)')
         p.add_argument('--seeds', default=seeds, metavar='LIST',
                        help='seeds, one job each: e.g. 1-8 or 1,3,5-7 (default: %(default)s)')
+        p.add_argument('--seed-scheme', choices=['v2', 'legacy'], default='v2',
+                       help='kernel seed of a job: v2 = seed + round x 2^32 (default; equals the seed in round 0); '
+                            'legacy = the formula used before review 5 (run/pipe: seed + 1000 x round, flow: '
+                            'seed x 1000 + round), to replay a command recorded with it')
         p.add_argument('--jobs', type=int, default=0, metavar='N',
                        help='jobs run at the same time (default 0: one per CPU)')
         p.add_argument('--out', required=True, metavar='DIR',

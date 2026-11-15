@@ -10,6 +10,8 @@ CPU (so the runs of a comparison pair share hardware).  A run is a dict:
             workflow.search (the same code as `cli.py flow`)
   target, model, objective, caps {GD, AD, A}, start ('anf' | NCFF path | XORFlux JSON path),
   seconds (wall budget for the search, rebuild included), seed, label
+  seed_scheme (boolflux, optional): kernel seeds, 'v2' (default) or 'legacy-flow' = the seeds of
+            plans run before review 5 (workflow.SEED_SCHEMES)
 Each run writes OUTDIR/<label>.json: trajectory [[t, cost, G, A, GD, AD], ...] (t = wall seconds
 since the search started; for XORFlux the worker's own clock), final metrics, verification of
 the final circuit by both verifiers (outside the budget), peak RSS of the search process(es),
