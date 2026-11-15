@@ -422,6 +422,60 @@ class TestScheduler(unittest.TestCase):
         self.assertEqual(p.wait(timeout=10), -9); self.assertEqual(job['killed'], 'timeout')
         self.assertNotEqual(subprocess.run(['pgrep', '-g', str(p.pid)], capture_output=True).returncode, 0)
 
+    def test_launch_falls_back_cuts_to_the_end_and_never_reuses_a_job_dir(self):
+        """H15, H20, H3: an operator without a target does not idle the CPU; a job is cut to the time left; job
+        directories are new"""
+        with tempfile.TemporaryDirectory() as d:
+            s = sched(d, '--ops', 'join,trb', '--eps', '0'); s.seed([str(P104), str(P107)])
+            for i in s.ar.rec: s.join_mark[i] = s.last_admit           # join has nothing new to do
+            s.hist['join'] = [(1.0, 100.0)]                             # ... although the bandit prefers it
+            started = []
+            real = SCH.subprocess.Popen
+            SCH.subprocess.Popen = lambda cmd, **kw: (started.append((cmd, kw)) or types.SimpleNamespace(pid=0, returncode=None))
+            try:
+                s.end = time.time() + 12.0
+                j = s.launch(3, set())
+                self.assertEqual((j['op'], j['why']), ('trb', 'exploit-fallback'))
+                cmd = j['cmd']; self.assertEqual(cmd[:3], ['taskset', '-c', '3'])
+                self.assertLessEqual(float(cmd[cmd.index('--seconds') + 1]), 12.0)       # trb default is 30
+                self.assertTrue(started[0][1]['start_new_session'])
+                (s.dir / 'jobs' / ('%s.r%05d-trb' % (s.uid, s.nrun + 1))).mkdir()        # left over by something else
+                j2 = s.launch(3, set()); self.assertEqual(s.nrun, 3); self.assertNotEqual(j2['jd'], j['jd'])
+                self.assertFalse(j2['jd'].exists())
+                s.end = time.time() + 2.0
+                self.assertIsNone(s.launch(3, set()))                   # too little time left for any job
+                s.end = time.time() + 100.0; s.suspended = {'join': time.time() + 99, 'trb': time.time() + 99}
+                self.assertIsNone(s.launch(3, set()))                   # every operator suspended
+                j['lf'].close(); j2['lf'].close()
+            finally:
+                SCH.subprocess.Popen = real
+
+    def test_sigterm_ends_the_campaign_cleanly(self):
+        """H15: a stop (systemctl stop sends SIGTERM) kills the jobs, writes their run files, the front and the end event"""
+        import signal
+        with tempfile.TemporaryDirectory() as d:
+            op = Path(d) / 'op_sleep.py'
+            op.write_text('import time\ntime.sleep(300)\n')
+            Path(d, 'control.json').write_text(json.dumps({'scripts': {'sleeper': str(op)}, 'ops': ['sleeper'], 'seconds': {'sleeper': 200}}))
+            lst = Path(d) / 'seed.list'; lst.write_text('%s\n' % P104)
+            code = ('import sys; sys.path.insert(0, %r); from boolflux.hub import scheduler as S; S.kernel_bin = lambda d: None; '
+                    'S.main(sys.argv[1:])' % str(Path(__file__).resolve().parents[3]))
+            cpu = str(min(os.sched_getaffinity(0)))
+            p = subprocess.Popen([sys.executable, '-c', code, '--dir', d, '--cpus', cpu, '--hours', '0.2', '--seed-list', str(lst)],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            t0 = time.time()
+            while time.time() - t0 < 60 and not list(Path(d, 'jobs').glob('*.log')): time.sleep(0.2)
+            self.assertTrue(list(Path(d, 'jobs').glob('*.log')), 'no job started')
+            p.send_signal(signal.SIGTERM)
+            out, err = p.communicate(timeout=60)
+            self.assertEqual(p.returncode, 0, err[-2000:])
+            ev = [json.loads(l) for l in Path(d, 'events.jsonl').read_text().splitlines()]
+            self.assertEqual((ev[-1]['ev'], ev[-1]['reason']), ('end', 'SIGTERM'))
+            runs = [json.loads(f.read_text()) for f in Path(d, 'runs').glob('*.json')]
+            self.assertEqual([r['status'] for r in runs], ['stopped'])
+            self.assertEqual(runs[0]['operator'], 'sleeper'); self.assertEqual(runs[0]['script_sha'], C.file_sha(op))
+            self.assertTrue(Path(d, 'front.json').exists())
+
     def test_ingest_never_fatal_and_keeps_the_sidecar(self):
         """H16: ingest records the file hash and its JSON sidecar; unreadable files are logged, not fatal"""
         with tempfile.TemporaryDirectory() as d:
