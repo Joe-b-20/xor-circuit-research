@@ -7,7 +7,7 @@ Evidence: the records of the 2026-11-14 campaign (`~/xs-campaigns/2026-11-14-hub
 `audit2.py` and the new `hub/lineage.py`. Labels: [C] = counted on those records or proved by a
 test; [H] = judgement.
 
-Tests: `hub/tests/test_review5_hub.py` (24 tests; the finding number is in each docstring).
+Tests: `hub/tests/test_review5_hub.py` (26 tests; the finding number is in each docstring).
 Commits on `boolflux-review5`: 9ef5530 (fixes + tests), 15dc579 (lineage tool), c8a41e1 (subclass
 compatibility), and the documentation commit that adds this file.
 
@@ -63,6 +63,46 @@ of the CPU time misdirected; **medium** = a failure that needs an unlucky event,
 | H19 | low | A restart with the same `--seed` replayed the same choices (12 identical jobs) and started the bandit and the attempt counts from nothing. | scheduler.py:53, 58-59 | RNG seeded with (seed, last run number); history, attempts and join marks restored from `stats.jsonl`. scheduler.py:102, 148-172 | `test_finish_lineage_and_failures` (part 6) |
 | H20 | low | When the bandit's best operator had no free target the CPU stayed idle and the same choice was made again half a second later. `ad3_share` was undone when the near pool replaced the pool. Front, run files and the lock-free `cells.json` tmp name were not written atomically. | scheduler.py:172-185, 238, 250 | Fallback to the other operators by score; AD3 filter applied after the near choice; atomic writes with per-process tmp names. scheduler.py:406-447 | `test_launch_falls_back_cuts_to_the_end_and_never_reuses_a_job_dir` |
 
+## Tuple-cap renewal (follow-up, behind a flag)
+
+`--cap-renew box` (default `never`), `--cap-renew-max N` (default 3). When a circuit is admitted with
+gain > 0 (a new front tuple q), every front tuple t whose cap box contains q (q.A <= t.A, q.AD <= t.AD,
+q.GD <= t.GD; q then has more gates than t) gets its caps renewed for every capped operator: the jobs
+counted against the cap restart from zero, at most N times per (operator, tuple). `Scheduler.renew_caps`,
+event `cap-renew`; test `test_cap_renewal_by_front_change_in_the_cap_box`.
+
+- [H] Why this trigger: a capped tuple is one where polish / pull stopped paying. A new front tuple under
+  the same caps is the only signal in the archive that this region moved again. It is a re-exploration
+  budget, not a change of what polish computes: polish and pull read only their target.
+- [C] Cost bound: one renewal gives a tuple cap(polish) + cap(pull) = 5 jobs (7.5 CPU-min at 90 s). A new
+  low point lies in the box of every front tuple with larger A, AD and GD, so one admission can renew
+  many tuples; N bounds the total at N x 5 jobs per tuple.
+- Not measured: no campaign has run with it. Renewals are kept in memory only; after a restart the counts
+  restored from `stats.jsonl` are the totals, so every old tuple is capped again until the next renewal.
+- For an A/B: arm 1 `--cap-renew never`, arm 2 `--cap-renew box`, same archive snapshot and seeds.
+
+## For X2 (goal scheduler on this code; details and patch in `review5/X2-COMPAT.md`)
+
+Checked: your `hub/scheduler_goal.py` of 02:36 UTC (md5 07960129, the version that launches through
+`super().launch` with the `S.SCRIPTS` swap and `strategies/X2/op_goal.py`), on the review 5 hub, on a copy
+of the long archive.
+
+- **Unchanged, it runs but the goal layer has no effect** [C]: 4 jobs, 4 `goal-compat-warning`. Two causes.
+  (1) The base `launch` now serves `fresh_target` (front tuples without a first polish / pull) before it
+  calls `choose_op` / `choose_target`, so your pick is not asked for while such tuples exist. (2) The base
+  reads `self.scripts[op]`, not `S.SCRIPTS[op]`, so the swap to `op_goal.py` does nothing and no job gets
+  `X2_CAPS` / `X2_OBJECTIVE`.
+- **Fix: `review5/x2-compat.patch`** (86 diff lines). Goal jobs call the new
+  `Scheduler.start_job(cpu, op, why, tid, extra=['--objective', ..., '--caps=A,AD,GD'], env=...)`; the
+  generic share stays `super().launch`. With it: F pull, C gpull under kernel caps 28/5/19, D pull, G polish
+  under 44/4/11, one generic `fresh` job, no warning, run ids with the campaign uid.
+- Also in the patch: `o in self.scripts` in `choose_goal_op`; the `_fix_gjoin_parents` call removed (the
+  base records join parents for every operator that lists `joins` per candidate).
+- Base changes made for you: `tkey` in the base is now `target_key`; options your `_Args` answers with
+  `None` get the base defaults (without that the scheduler stopped at start with `gain_mode None`).
+- Not exercised by the smoke runs: `goal_met`, rewards for new records, `gjoin` (no admission occurred).
+- If you edit the file again, regenerate the patch with `x2compat/make_patched.py` (see X2-COMPAT.md).
+
 ## Not changed (for the coordinator to decide)
 
 1. [H] **Nursery slack is inherited without end.** A circuit made from a generator-made circuit is
@@ -73,16 +113,14 @@ of the CPU time misdirected; **medium** = a failure that needs an unlucky event,
    seed + settings + code version identify a run but do not reproduce its result. The circuit itself
    and its verification are the reproducible artefacts. A fixed iteration budget (`iters`, which the
    kernel accepts) would make polish / pull replayable; not done, because it changes job lengths.
-3. [H] **Tuple caps and the bandit.** With `polish=2,pull=3` and the history restored, most old tuples
+3. [H] **Tuple caps and the bandit** (see also "Tuple-cap renewal" above). With `polish=2,pull=3` and the history restored, most old tuples
    of `long` are at their cap from the first minute. Polish and pull then run only on new tuples, and
    the CPU goes to join (first full pass per target, then only new partners), trb, osc and gen_skel,
    which have no cap unless one is set (`--tuple-caps polish=2,pull=3,osc=1,trb=2`). When every
    operator is capped everywhere the least-attempted tuples get jobs again (`choice: over-cap` in
    the run file). Whether the caps should renew after N admissions is open.
-4. `hub/scheduler_goal.py` (X2, not in this worktree) subclasses `Scheduler` and overrides `launch`.
-   The base class keeps the `launch(cpu, busy)` signature and fills the new job keys by default, and
-   `busy` holds ids as well as tuples, but X2's file builds run ids without the campaign uid and reads
-   `S.SCRIPTS`; it should be run once against the merged code before the overnight run.
+4. `hub/scheduler_goal.py` (X2, not in this worktree): run against this code, see "For X2" above and
+   `review5/X2-COMPAT.md`.
 5. join.py, joinplus.py, trb_impl.py: read line by line; no defect found. Their outputs are exact by
    construction and verified on admission (0 rejections in 5767 candidates of `long`).
 6. compare.py, compare2.py, status.py: read; they work with the new run ids. `snapshot.py` now also
