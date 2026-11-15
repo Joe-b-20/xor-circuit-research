@@ -41,8 +41,8 @@ class TestArchive(unittest.TestCase):
             ar = Archive(d)
             c = load(P104); worse = bloated(c)
             self.assertEqual(metrics(worse)[0:2], metrics(c)[0:2])
-            st, r, g = ar.admit(worse, force_keep=True)
-            self.assertEqual(st, 'admitted')
+            st, r, g = ar.admit(worse, force_keep=True, clean_first=False)   # review 5: admission cleans dead gates away
+            self.assertEqual(st, 'admitted')                                 # by default; an old record can hold them
             st2, r2, g2 = ar.admit(c)
             self.assertEqual(st2, 'admitted')
             k = Archive.key(metrics(c))
@@ -50,8 +50,8 @@ class TestArchive(unittest.TestCase):
             self.assertEqual(metrics(worse)[2], metrics(c)[2] + 2)
             self.assertEqual(ar.cells[k], [r2['id']])           # the 104 replaced the bloated one
             self.assertIn(r['id'], ar.rec)                       # the superseded circuit stays archived
-            st3, r3, g3 = ar.admit(bloated(c))                    # worse again: refused (not force_keep)
-            self.assertIn(st3, ('not-better', 'duplicate'))
+            st3, r3, g3 = ar.admit(bloated(c))                    # worse again: refused (not force_keep); cleaned it is c
+            self.assertIn(st3, ('not-better', 'duplicate', 'duplicate-structure'))
             ar2 = Archive(d)                                      # persisted cells
             self.assertEqual(ar2.cells, ar.cells)
 

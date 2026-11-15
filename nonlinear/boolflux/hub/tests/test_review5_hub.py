@@ -646,5 +646,148 @@ class TestOperators(unittest.TestCase):
             if nc is not None: self.assertTrue(verify(nc)[0])
 
 
+LONG = Path.home() / 'xs-campaigns' / '2026-11-14-hub' / 'long' / 'archive'
+
+
+def with_duplicate_and(c):
+    """c with its first AND written twice, the copy used by the first later reader of the original
+    (same function; A and G one higher), plus one dead XOR at the end"""
+    n = c.n; g = list(c.gates)
+    j = next(k for k, (op, a, b) in enumerate(g) if op == 8); s = n + j
+    sh = lambda x: x + 1 if x > s else x
+    new = g[:j + 1] + [g[j]] + [(op, sh(a), sh(b)) for op, a, b in g[j + 1:]]
+    outs = [sh(o) for o in c.outputs]
+    for k in range(j + 2, len(new)):
+        op, a, b = new[k]
+        if s in (a, b):
+            new[k] = (op, s + 1 if a == s else a, s + 1 if b == s else b); break
+    new.append((6, 0, 1))
+    return core.Circuit(c.n, c.m, new, outs, c.name)
+
+
+class TestCleanup(unittest.TestCase):
+    def test_clean_merges_identical_gates_and_drops_dead_ones(self):
+        """C (review 5): structural-hash cleanup keeps the function, removes the duplicate AND and the dead gate"""
+        c = load(P104); d = with_duplicate_and(c)
+        m, md = metrics(c), metrics(d)
+        self.assertEqual((md[0], md[2]), (m[0] + 1, m[2] + 2))
+        self.assertTrue(verify(d)[0])
+        cc = C.clean(d)
+        self.assertEqual(metrics(cc), m)
+        self.assertTrue(verify(cc)[0])
+        self.assertEqual(structure_key(cc), structure_key(C.clean(c)))
+        self.assertIs(C.clean(cc), cc)                                     # idempotent, and c itself when clean
+        self.assertIs(C.clean(c), c)
+        # merges propagate: a gate whose operands are two copies of one gate equals a gate on the original
+        x = core.Circuit(2, 2, [(8, 0, 1), (8, 1, 0), (6, 0, 2), (6, 3, 0)], [4, 5])
+        y = C.clean(x)
+        self.assertEqual(len(y.gates), 2); self.assertEqual(y.outputs[0], y.outputs[1])
+
+    def test_candidates_are_cleaned_before_admission(self):
+        """C: the archive stores, measures and places the cleaned circuit and records where it came from"""
+        c = load(P104); d = with_duplicate_and(c)
+        with tempfile.TemporaryDirectory() as tmp:
+            ar = Archive(tmp)
+            st, r, g = ar.admit(d)
+            self.assertEqual(st, 'admitted')
+            self.assertEqual((r['A'], r['AD'], r['G'], r['GD']), metrics(c))
+            self.assertEqual(r['operator_settings']['cleaned_from'], cid(d))
+            self.assertEqual(r['operator_settings']['raw_metrics'], list(metrics(d)))
+            self.assertEqual(metrics(ar.circuit(r['id'])), metrics(c))
+            self.assertEqual(metrics(core.from_kernel(Path(tmp, 'archive', r['id'] + '.bfx').read_text())), metrics(c))
+            self.assertIn(ar.admit(c)[0], ('duplicate', 'duplicate-structure'))
+            self.assertEqual(Archive(tmp).rec[r['id']]['A'], metrics(c)[0])
+            st, r2, _ = ar.admit(load(P107))                               # a clean circuit: no cleanup fields
+            self.assertNotIn('cleaned_from', r2['operator_settings'])
+
+    def test_finish_admits_the_cleaned_candidate(self):
+        """C: an operator's candidate with a duplicate AND is admitted with the lower A; the run file shows both"""
+        with tempfile.TemporaryDirectory() as tmp:
+            s = sched(tmp); s.seed([str(P104)]); tid = next(iter(s.ar.rec))
+            c107 = load(P107); d = with_duplicate_and(c107)
+            j = fake_job(s, 'trb', tid, [d]); s.finish(j)
+            run = json.loads(Path(tmp, 'runs', j['run_id'] + '.json').read_text())
+            o = run['outcome'][0]
+            self.assertEqual(o['status'], 'admitted')
+            self.assertEqual(o['metrics'], list(metrics(d))); self.assertEqual(o['cleaned_metrics'], list(metrics(c107)))
+            r = s.ar.rec[o['id']]
+            self.assertEqual((r['A'], r['G']), metrics(c107)[0:3:2])
+            self.assertEqual((r['operator'], r['parents']), ('trb', [tid]))
+            ev = [json.loads(l) for l in Path(tmp, 'events.jsonl').read_text().splitlines()]
+            self.assertEqual([e['m'] for e in ev if e['ev'] == 'admit'], [list(metrics(c107))])
+
+    def test_legacy_records_are_cleaned_once_with_lineage(self):
+        """C: on the first start, old records whose cleaned metrics differ are logged and their cleaned versions
+        admitted as new records (operator clean, parent = old record); no file is rewritten; done once"""
+        c = load(P104); d = with_duplicate_and(c)
+        with tempfile.TemporaryDirectory() as tmp:
+            ar = Archive(tmp)
+            st, old, _ = ar.admit(d, operator='trb', clean_first=False, force_keep=True)    # as the old code did
+            self.assertEqual(st, 'admitted'); self.assertEqual(old['A'], metrics(d)[0])
+            ar.admit(load(P107), operator='trb', clean_first=False)                         # nothing to clean
+            files = {f.name: f.read_bytes() for i in ar.rec for f in Path(tmp, 'archive').glob(i + '.*')}   # the records (cells.json is a cache)
+            s = sched(tmp)
+            ev = [json.loads(l) for l in Path(tmp, 'events.jsonl').read_text().splitlines()]
+            lc = [e for e in ev if e['ev'] == 'legacy-clean']
+            self.assertEqual(len(lc), 1)
+            self.assertEqual((lc[0]['id'], lc[0]['recorded'], lc[0]['cleaned'], lc[0]['status']),
+                             (old['id'], list(metrics(d)), list(metrics(c)), 'admitted'))
+            self.assertTrue(any(e['ev'] == 'legacy-cleaned' and e['records'] == 1 for e in ev))
+            new = s.ar.rec[lc[0]['new_id']]
+            self.assertEqual((new['operator'], new['parents'], new['A']), ('clean', [old['id']], metrics(c)[0]))
+            self.assertEqual(new['operator_settings']['raw_metrics'], list(metrics(d)))
+            self.assertEqual(new['code_version'], s.version)
+            for name, b in files.items():
+                self.assertEqual(Path(tmp, 'archive', name).read_bytes(), b, name)      # old files untouched
+            self.assertIn(old['id'], s.ar.rec)                                           # and still a record
+            s._lockf.close()
+            n0 = len(s.ar.rec)
+            s2 = sched(tmp)                                                              # second start: nothing again
+            ev = [json.loads(l) for l in Path(tmp, 'events.jsonl').read_text().splitlines()]
+            self.assertEqual(len([e for e in ev if e['ev'] == 'legacy-clean']), 1)
+            self.assertEqual(len(s2.ar.rec), n0)
+
+    @unittest.skipUnless((LONG / '1b706c348e80.bfx').exists(), 'the 2026-11-14 hub archive is not on this machine')
+    def test_the_reported_example_of_the_long_campaign(self):
+        """C, on the record named in the finding: recorded 30/4/144/17, cleaned 29/4/143/17"""
+        r = json.loads((LONG / '1b706c348e80.json').read_text())
+        self.assertEqual((r['A'], r['AD'], r['G'], r['GD']), (30, 4, 144, 17))
+        cc = C.clean(core.from_kernel((LONG / '1b706c348e80.bfx').read_text()))
+        self.assertEqual(metrics(cc), (29, 4, 143, 17))
+        self.assertTrue(verify(cc)[0])
+
+
+class TestKernelBin(unittest.TestCase):
+    def test_kernel_bin_unique_temporary_and_atomic_rename(self):
+        """C (review 5): every builder used ARCHIVE/bin/bfx-<hash>.tmp; now each has its own name and renames"""
+        import threading
+        from unittest import mock
+        seen = []; lock = threading.Lock()
+
+        def fake_gcc(cmd, check=True):
+            out = cmd[cmd.index('-o') + 1]
+            with lock: seen.append(out)
+            Path(out).write_text('partial'); time.sleep(0.2); Path(out).write_text('complete')
+            return subprocess.CompletedProcess(cmd, 0)
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(HO.subprocess, 'run', fake_gcc):
+                th = [threading.Thread(target=HO.kernel_bin, args=(tmp,)) for _ in range(4)]
+                for x in th: x.start()
+                for x in th: x.join()
+                b = HO.kernel_bin(tmp)                                 # built: no further compile
+            self.assertEqual(len(seen), len(set(seen)))
+            self.assertTrue(b.name.startswith('bfx-'))
+            self.assertNotIn(str(b) + '.tmp', seen)
+            self.assertEqual(b.read_text(), 'complete')
+            self.assertEqual([f.name for f in b.parent.iterdir()], [b.name])
+
+            def failing(cmd, check=True):
+                Path(cmd[cmd.index('-o') + 1]).write_text('partial'); raise subprocess.CalledProcessError(1, cmd)
+            b.unlink()
+            with mock.patch.object(HO.subprocess, 'run', failing):
+                self.assertRaises(subprocess.CalledProcessError, HO.kernel_bin, tmp)
+            self.assertEqual(list(b.parent.iterdir()), [])
+
+
 if __name__ == '__main__':
     unittest.main()
