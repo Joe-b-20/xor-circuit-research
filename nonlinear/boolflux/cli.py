@@ -1,8 +1,9 @@
 """BoolFlux command line: run searches, verify circuits, build starting circuits.
 
     python3 nonlinear/boolflux/cli.py run --target present --model bgc --start anf \\
-        --objective cost,gd --iters 200000 --seeds 1-8 --out nonlinear/boolflux/runs/present-bgc
-    python3 nonlinear/boolflux/cli.py verify FILE.circ.txt --target present --model bgc
+        --objective cost,gd --iters 200000 --seeds 1-8 --out ~/xs-campaigns/DATE-NAME/present-bgc
+    python3 nonlinear/boolflux/cli.py verify FILE.circ.txt --target present --model bgc [--cap-gd 14]
+    python3 nonlinear/boolflux/cli.py list
     python3 nonlinear/boolflux/cli.py start --target aes --start anf --model nist --out start.circ.txt
     python3 nonlinear/boolflux/cli.py flow --target aes --model nist --start FILE --cap-gd 14 \\
         --objective cost,gd --config full --skel-set iters=0 --adaptive --seconds 120 --seeds 1-4 --out DIR
@@ -10,7 +11,8 @@
 `run` = gate kernel in rounds of a fixed iteration count; `pipe` = skeleton search, rebuild and gate
 search in rounds; `flow` = the time-sliced workflows of the benchmark driver (workflow.py).
 Ranking everywhere: feasible first, then total cap excess, then the objective keys in order
-(objective.py); the kernel compares the same way (`lex`).
+(objective.py); the kernel compares the same way (`lex`).  Run output belongs outside the
+repository (runs/README.md); `python3 nonlinear/boolflux/cli.py CMD -h` explains every option.
 
 Every saved circuit is verified twice before it is reported: by core.Circuit evaluation
 (bitsliced, against targets.py) and by the independent verifier
@@ -173,17 +175,24 @@ def kernel_config(path, start_path, out_path, model, args, seed, extra):
 
 def parse_seeds(s):
     out = []
-    for part in s.split(','):
-        if '-' in part:
-            a, b = part.split('-'); out += list(range(int(a), int(b) + 1))
-        else:
-            out.append(int(part))
+    try:
+        for part in s.split(','):
+            if '-' in part:
+                a, b = part.split('-'); out += list(range(int(a), int(b) + 1))
+            else:
+                out.append(int(part))
+    except ValueError:
+        out = []
+    if not out:                 # review5 P7: 'a-b', '', '8-1' used to give a traceback or an empty run
+        raise SystemExit('bad --seeds %r: use a list of non-negative integers and ranges, e.g. 1-8 or 1,3,5-7' % s)
     return out
 
 
 def parse_sets(items, kernel=True):
     d = {}
     for it in items or []:
+        if '=' not in it or not it.split('=', 1)[0]:
+            raise SystemExit('bad setting %r: use KEY=VALUE (e.g. --set mv.resub3=0)' % it)
         k, v = it.split('=', 1); d[k] = v
     if kernel:      # gate-kernel settings (skel.* and synth.* go to the skeleton stage and are not checked here)
         workflow.check_sets({k: v for k, v in d.items() if not k.startswith(('skel.', 'synth.'))})
@@ -348,7 +357,6 @@ def run_skel(c, table, out, tag, seed, args, extra):
         raise RuntimeError('skel failed %s: %s' % (tag, r.stderr[-500:]))
     sk2 = skeleton.read_skel(so.read_text())
     model = core.Model.load(args.model)
-    # three synthesis variants (greedy; Paar per AND level; Paar also for the outputs): keep the smallest
     # synthesis variants (seeded + three from forms): seeded with the parent circuit (reuses every parent gate whose function
     # survives), and from forms only (greedy; Paar per AND level; Paar also for the outputs)
     variants = []
@@ -486,6 +494,10 @@ def _flow_job(job):
 def cmd_flow(args):
     """The benchmark driver's time-sliced workflows (workflow.search), one process per seed."""
     import multiprocessing as mp
+    bad = sorted(k.split('=', 1)[0] for k in (args.set or []) if k.startswith(('skel.', 'synth.')))
+    if bad:        # review5 P7: these reached the gate kernel, which stopped every job with 'unknown key'
+        raise SystemExit('flow: --set %s is a pipe setting; in flow use --skel-set KEY=VALUE and '
+                         '--no-seeded / --no-unseeded' % ', '.join(bad))
     model = core.Model.load(args.model)
     n, m, table, desc = targets.load(args.target)
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
@@ -494,7 +506,7 @@ def cmd_flow(args):
     caps = caps_of(args); seeds = parse_seeds(args.seeds)
     sp = out / 'start.bfx'; sp.write_text(core.to_kernel(start))
     base = {'target': args.target, 'model': args.model, 'objective': args.objective, 'caps': caps,
-            'start': args.start if args.start != 'anf' else 'anf', 'seconds': args.seconds,
+            'start': args.start, 'seconds': args.seconds,
             'config': args.config, 'round_s': args.round_s, 'adaptive': args.adaptive,
             'seeded': not args.no_seeded, 'unseeded': not args.no_unseeded,
             'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set, kernel=False)}
@@ -529,15 +541,66 @@ def cmd_flow(args):
 
 
 def cmd_verify(args):
+    """Both verifiers on each file; with --cap-* the caps are checked too (by the independent
+    verifier and here).  A kernel .bfx file is converted to NCFF in a temporary folder first."""
+    import tempfile
     ok = True
-    for f in args.files:
-        v = verify_file(f, args.target, args.model)
-        good = v['core_ok'] and v['independent_ok'] and v['library_ok']
-        ok &= good
-        print('%s %s %s core=%s indep=%s lib=%s' % ('ok  ' if good else 'FAIL', f,
-              json.dumps({k: v['metrics'].get(k) for k in ('cost', 'G', 'A', 'GD', 'AD', 'counts')}),
-              v['core_ok'], v['independent_ok'], v['library_ok']))
+    caps = caps_of(args)
+    model = core.Model.load(args.model)
+    with tempfile.TemporaryDirectory(prefix='boolflux-verify-') as tmp:
+        for i, f in enumerate(args.files):
+            try:
+                path = Path(f)
+                if path.suffix == '.bfx':
+                    c = core.from_kernel(path.read_text(), name=path.stem)
+                    path = Path(tmp) / ('%d-%s.circ.txt' % (i, path.stem))
+                    path.write_text(core.write_ncff(c, model), encoding='utf-8')
+                v = verify_file(path, args.target, args.model, caps)
+            except (OSError, ValueError, KeyError) as e:       # unreadable or malformed: this file fails
+                ok = False
+                print('FAIL %s cannot be read as a circuit: %s' % (f, e))
+                continue
+            feas = objective.feasible(v['metrics'], caps)
+            good = v['core_ok'] and v['independent_ok'] and v['library_ok'] and feas
+            ok &= good
+            print('%s %s %s core=%s indep=%s lib=%s%s' % ('ok  ' if good else 'FAIL', f,
+                  json.dumps({k: v['metrics'].get(k) for k in ('cost', 'G', 'A', 'GD', 'AD', 'counts')}),
+                  v['core_ok'], v['independent_ok'], v['library_ok'],
+                  '' if all(x is None for x in caps.values()) else ' caps=%s' % ('met' if feas else 'NOT MET')))
+            if not good:
+                why = list(v['independent'].get('errors') or [])
+                if v['independent'].get('error'): why.append(v['independent']['error'].strip()[-300:])
+                if v['independent'].get('ok') and not v['metrics_agree']:
+                    why.append('metrics differ: core %s, independent %s' % (
+                        {k: v['metrics'].get(k) for k in ('G', 'A', 'GD', 'AD', 'counts')},
+                        {k: (v['independent'].get('metrics') or {}).get(k) for k in ('G', 'A', 'GD', 'AD', 'counts')}))
+                if not v['core_ok']: why.append('core: the circuit does not compute %s' % args.target)
+                if not v['library_ok']: why.append('gates outside model %s' % args.model)
+                print('     ' + '; '.join(why))
     sys.exit(0 if ok else 1)
+
+
+def cmd_list(args):
+    """Targets and stock models."""
+    print('targets (--target):')
+    for nm in targets.names():
+        n, m, _, desc = targets.load(nm)
+        print('  %-18s %2d -> %-2d %s' % (nm, n, m, desc))
+    print('  map:<name>         linear map circuits/<name>/<name>.mat.txt')
+    print('models (--model, or a path to a .json model file):')
+    for f in sorted(core.MODELS.glob('*.json')):
+        md = core.Model.load(f.stem)
+        print('  %-6s %s' % (md.name, md.description))
+    print('objective keys (--objective, lexicographic): %s' % ', '.join(objective.KEYS))
+
+
+def check_target(name):
+    """review5 P7: an unknown target used to end in a KeyError traceback."""
+    try:
+        targets.load(name)
+    except (KeyError, OSError, ValueError, IndexError) as e:
+        raise SystemExit('unknown or unreadable target %r (%s); targets: %s, or map:<name> for a linear map '
+                         'of circuits/ (see `cli.py list`)' % (name, e, ', '.join(targets.names())))
 
 
 def cmd_start(args):
@@ -547,59 +610,136 @@ def cmd_start(args):
     print(json.dumps(c.metrics(model)))
 
 
-def main(argv=None):
-    ap = argparse.ArgumentParser(prog='boolflux')
-    sub = ap.add_subparsers(dest='cmd', required=True)
-    r = sub.add_parser('run')
-    r.add_argument('--target', required=True)
-    r.add_argument('--model', required=True)
-    r.add_argument('--start', default='anf', help="'anf' or an NCFF circuit file")
-    r.add_argument('--objective', default='cost', help='lexicographic, e.g. cost,gd or a,cost')
-    r.add_argument('--cap-gd', type=int); r.add_argument('--cap-ad', type=int); r.add_argument('--cap-a', type=int)
-    r.add_argument('--iters', type=int, default=200000)
-    r.add_argument('--seconds', type=float, default=3600, help='safety cap per process')
-    r.add_argument('--seeds', default='1-8')
-    r.add_argument('--rounds', type=int, default=1)
-    r.add_argument('--pool', type=int, default=4, help='distinct circuits carried to the next round')
-    r.add_argument('--jobs', type=int, default=0)
-    r.add_argument('--out', required=True)
-    r.add_argument('--set', action='append', help='kernel setting key=value')
+EPILOG = """\
+Metrics: G = number of gates (NOT gates count too), A = nonlinear gates (#AND), GD = gate depth,
+AD = AND depth, cost = sum of the model's gate costs (= G for the stock models).
+Ranking: circuits that meet every cap first, then the smaller total cap excess, then the
+--objective keys in order.  Exit status: 0 = a verified circuit within the caps was saved;
+1 = verification failed, caps not met ("CAPS NOT MET"), or a job failed (the message says which).
+Output belongs outside the repository, e.g. --out ~/xs-campaigns/DATE-NAME/RUN (runs/README.md).
+OUT/best.circ.txt and OUT/summary.json are rewritten after every round."""
+
+
+def _common(p, seeds, start=True):
+    p.add_argument('--target', required=True, metavar='NAME',
+                   help='function to implement: aes, aes-inv, an S-box of benchmarks/sboxes.json, map:<name>, ... '
+                        '(`cli.py list` prints all)')
+    p.add_argument('--model', required=True, metavar='NAME|FILE.json',
+                   help='gate library and costs: nist, bgc, gc, gc6, xag, xor, or a model file')
+    if start:
+        p.add_argument('--start', default='anf', metavar='anf|FILE',
+                       help="starting circuit: 'anf' (naive, built from the truth table) or an NCFF / NIST "
+                            ".circ.txt file that computes the target with the model's gates (default: anf)")
+    if seeds is not None:
+        p.add_argument('--objective', default='cost', metavar='KEYS',
+                       help='lexicographic objective, keys from cost, g, a, gd, ad; e.g. cost,gd or a,ad,cost '
+                            '(default: cost)')
+        p.add_argument('--cap-gd', type=int, metavar='N', help='hard cap on the gate depth (default: none)')
+        p.add_argument('--cap-ad', type=int, metavar='N', help='hard cap on the AND depth (default: none)')
+        p.add_argument('--cap-a', type=int, metavar='N', help='hard cap on the number of nonlinear gates (default: none)')
+        p.add_argument('--seeds', default=seeds, metavar='LIST',
+                       help='seeds, one job each: e.g. 1-8 or 1,3,5-7 (default: %(default)s)')
+        p.add_argument('--jobs', type=int, default=0, metavar='N',
+                       help='jobs run at the same time (default 0: one per CPU)')
+        p.add_argument('--out', required=True, metavar='DIR',
+                       help='run folder (created): source snapshot, per-job files, best.circ.txt, summary.json')
+
+
+def _positive(v):
+    v = int(v)
+    if v < 1: raise argparse.ArgumentTypeError('must be at least 1')
+    return v
+
+
+def build_parser():
+    F = argparse.RawDescriptionHelpFormatter
+    ap = argparse.ArgumentParser(
+        prog='boolflux', formatter_class=F,
+        description='BoolFlux: search for small Boolean circuits of a complete function, and verify them.\n'
+                    '`boolflux CMD -h` lists the options of a command.', epilog=EPILOG)
+    sub = ap.add_subparsers(dest='cmd', required=True, metavar='CMD')
+    r = sub.add_parser('run', formatter_class=F, epilog=EPILOG,
+                       help='gate kernel, one job per seed, in rounds of a fixed iteration count (deterministic)',
+                       description='Gate-level search: every seed runs the gate kernel for --iters iterations from a '
+                                   'circuit of the pool; the best --pool distinct results start the next round. '
+                                   'Deterministic unless a job hits the --seconds safety cap.')
+    _common(r, '1-8')
+    r.add_argument('--iters', type=int, default=200000, metavar='N', help='kernel iterations per job and round (default: %(default)s)')
+    r.add_argument('--seconds', type=float, default=3600, metavar='S',
+                   help='safety cap per job; a job stopped by it makes the run non-deterministic (default: %(default)s)')
+    r.add_argument('--rounds', type=_positive, default=1, metavar='N', help='number of rounds (default: %(default)s)')
+    r.add_argument('--pool', type=int, default=4, metavar='N', help='distinct circuits carried to the next round (default: %(default)s)')
+    r.add_argument('--set', action='append', metavar='KEY=VALUE',
+                   help='gate-kernel setting, repeatable (e.g. mv.resub3=0, neutral=0, T0=0.3); costs, caps, '
+                        'objective and run controls are refused here')
     r.set_defaults(func=cmd_run)
-    p = sub.add_parser('pipe', help='skeleton search + synthesis + gate search, in rounds')
-    p.add_argument('--target', required=True); p.add_argument('--model', required=True)
-    p.add_argument('--start', default='anf'); p.add_argument('--objective', default='cost')
-    p.add_argument('--cap-gd', type=int); p.add_argument('--cap-ad', type=int); p.add_argument('--cap-a', type=int)
-    p.add_argument('--iters', type=int, default=100000); p.add_argument('--skel-iters', type=int, default=20000)
-    p.add_argument('--seconds', type=float, default=3600); p.add_argument('--seeds', default='1-8')
-    p.add_argument('--rounds', type=int, default=3); p.add_argument('--pool', type=int, default=4)
-    p.add_argument('--skel-share', type=float, default=0.5, help='fraction of jobs that run the skeleton search first')
-    p.add_argument('--jobs', type=int, default=0); p.add_argument('--out', required=True)
-    p.add_argument('--set', action='append')
+    p = sub.add_parser('pipe', formatter_class=F, epilog=EPILOG,
+                       help='skeleton search + synthesis + gate search, in rounds',
+                       description='A fraction --skel-share of the jobs first searches the AND skeleton of its start '
+                                   '(skel kernel, --skel-iters) and rebuilds a circuit from it, then every job runs the '
+                                   'gate kernel (--iters).  Iteration-based like `run`.')
+    _common(p, '1-8')
+    p.add_argument('--iters', type=int, default=100000, metavar='N', help='gate-kernel iterations per job and round (default: %(default)s)')
+    p.add_argument('--skel-iters', type=int, default=20000, metavar='N',
+                   help='skeleton-kernel iterations (0 = rebuild only) (default: %(default)s)')
+    p.add_argument('--seconds', type=float, default=3600, metavar='S', help='safety cap per kernel process (default: %(default)s)')
+    p.add_argument('--rounds', type=_positive, default=3, metavar='N', help='number of rounds (default: %(default)s)')
+    p.add_argument('--pool', type=int, default=4, metavar='N', help='distinct circuits carried to the next round (default: %(default)s)')
+    p.add_argument('--skel-share', type=float, default=0.5, metavar='X',
+                   help='fraction of jobs that run the skeleton search first (default: %(default)s)')
+    p.add_argument('--set', action='append', metavar='KEY=VALUE',
+                   help='setting, repeatable: gate kernel KEY=VALUE, skeleton kernel skel.KEY=VALUE, '
+                        'synth.seeded=0 / synth.unseeded=0 to drop rebuild variants')
     p.set_defaults(func=cmd_pipe)
-    f = sub.add_parser('flow', help='time-sliced workflows of the benchmark driver (gate / full / rebuild-only / adaptive)')
-    f.add_argument('--target', required=True); f.add_argument('--model', required=True)
-    f.add_argument('--start', default='anf'); f.add_argument('--objective', default='cost')
-    f.add_argument('--cap-gd', type=int); f.add_argument('--cap-ad', type=int); f.add_argument('--cap-a', type=int)
-    f.add_argument('--config', choices=['gate', 'full'], default='gate')
-    f.add_argument('--seconds', type=float, required=True, help='wall budget per seed, rebuild included')
-    f.add_argument('--round-s', type=float, default=10.0, help='full: seconds per round')
+    f = sub.add_parser('flow', formatter_class=F, epilog=EPILOG,
+                       help='time-sliced workflows of the benchmark driver (gate / full / rebuild-only / adaptive)',
+                       description='One search per seed with a wall-time budget (the loop of bench/bench.py, '
+                                   'workflow.py): --config gate = one gate-kernel run; --config full = rounds of '
+                                   'skeleton stage, rebuild and gate stage.  Time-budgeted, so not bit-reproducible.\n'
+                                   'The measured workflows: gate: --config gate; rebuild + gate (bench v3/v4 "full"): '
+                                   '--config full --skel-set iters=0 --adaptive; repair under a cap: add --cap-gd N '
+                                   'with a start outside the cap.')
+    _common(f, '1-4')
+    f.add_argument('--config', choices=['gate', 'full'], default='gate', help='workflow (default: %(default)s)')
+    f.add_argument('--seconds', type=float, required=True, metavar='S', help='wall budget per seed, rebuild included')
+    f.add_argument('--round-s', type=float, default=10.0, metavar='S', help='full: seconds per round (default: %(default)s)')
     f.add_argument('--adaptive', action='store_true', help='full: adaptive skeleton share (bench v3)')
     f.add_argument('--no-seeded', action='store_true', help='full: no rebuild seeded with the parent')
     f.add_argument('--no-unseeded', action='store_true', help='full: no rebuilds from forms only')
-    f.add_argument('--skel-set', action='append', help='skeleton kernel setting key=value (iters=0: rebuild only)')
-    f.add_argument('--set', action='append', help='gate kernel setting key=value')
-    f.add_argument('--seeds', default='1-4'); f.add_argument('--jobs', type=int, default=0)
-    f.add_argument('--cpus', default='', help='pin seed i to CPU cpus[i %% len], like bench.py')
-    f.add_argument('--out', required=True)
+    f.add_argument('--skel-set', action='append', metavar='KEY=VALUE', help='skeleton kernel setting, repeatable (iters=0: rebuild only)')
+    f.add_argument('--set', action='append', metavar='KEY=VALUE', help='gate kernel setting, repeatable')
+    f.add_argument('--cpus', default='', metavar='LIST', help='pin seed i to CPU LIST[i %% len], like bench.py (default: not pinned)')
     f.set_defaults(func=cmd_flow)
-    v = sub.add_parser('verify')
-    v.add_argument('files', nargs='+'); v.add_argument('--target', required=True); v.add_argument('--model', required=True)
+    v = sub.add_parser('verify', formatter_class=F,
+                       help='check circuit files with both verifiers (function, library, metrics, optional caps)',
+                       description='Each FILE (NCFF / NIST .circ.txt, or kernel .bfx) is evaluated on every input by '
+                                   'boolflux.core and by independent/verify.py; the gate library is the model\'s and '
+                                   'the two metric sets (G, A, GD, AD, cost, counts) must agree.  Exit status 1 if any '
+                                   'file fails.  For AES S-box circuits against the pinned NIST set use '
+                                   'campaigns/aes_check.py.')
+    v.add_argument('files', nargs='+', metavar='FILE')
+    _common(v, None, start=False)
+    v.add_argument('--cap-gd', type=int, metavar='N', help='fail a circuit whose gate depth exceeds N')
+    v.add_argument('--cap-ad', type=int, metavar='N', help='fail a circuit whose AND depth exceeds N')
+    v.add_argument('--cap-a', type=int, metavar='N', help='fail a circuit with more than N nonlinear gates')
     v.set_defaults(func=cmd_verify)
-    s = sub.add_parser('start')
-    s.add_argument('--target', required=True); s.add_argument('--model', required=True)
-    s.add_argument('--start', default='anf'); s.add_argument('--out', required=True)
-    s.set_defaults(func=cmd_start)
-    a = ap.parse_args(argv)
+    st = sub.add_parser('start', formatter_class=F, help='write a starting circuit as NCFF and print its metrics',
+                        description="Build the naive ANF circuit of the target (or re-write an existing circuit file) "
+                                    "in the model's gates, check that it computes the target, and write it to --out.")
+    _common(st, None)
+    st.add_argument('--out', required=True, metavar='FILE', help='NCFF file to write')
+    st.set_defaults(func=cmd_start)
+    ls = sub.add_parser('list', help='list the targets, stock models and objective keys')
+    ls.set_defaults(func=cmd_list)
+    return ap
+
+
+def main(argv=None):
+    a = build_parser().parse_args(argv)
+    if getattr(a, 'target', None) is not None:
+        check_target(a.target)
+    if getattr(a, 'objective', None) is not None:
+        objective.parse(a.objective)                  # a bad key stops here, before the source snapshot
     a.func(a)
 
 
