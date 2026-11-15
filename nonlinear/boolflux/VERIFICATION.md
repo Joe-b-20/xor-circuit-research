@@ -26,22 +26,34 @@ optional JSON file.
 At the end it lists the AES `(A, AD, G, GD)` tuples of ours that no pinned circuit dominates,
 and the subset that no other circuit of ours strictly dominates.
 
-Run on 2026-11-14 at 18:07 UTC (CPU 0, 72 s):
+Run on 2026-11-15 at 06:57 UTC, during the re-curation (150 s; log
+`~/xs-campaigns/2026-11-15-study/best/verify_all.log`):
 
 | group | checked | passed | failed |
 |---|---:|---:|---:|
-| results | 138 | 138 | 0 (manifest sha256: 138 match) |
-| nist-format | 86 | 86 | 0 (boolcirc: 86 files, 0 failing) |
-| campaigns | 237 | 237 | 0 (220 of them new on the pinned set) |
-| nist pin 3d80774 | 207 files | sha256 all match | boolcirc: 204 circuit files, 0 failing |
+| results | 194 | 194 | 0 (manifest sha256: 138 match, 56 not yet in the manifest, see below) |
+| nist-format | 124 | 124 | 0 (boolcirc: 124 files, 0 failing) |
+| campaigns | 244 | 244 | 0 (227 of them new on the pinned set, per file; root `~/xs-campaigns/2026-11-13-aes`) |
+| nist pin 3d80774 | 207 files | sha256 all match | boolcirc: 204 circuit files, 0 failing; forward set 104 circuits, 92 distinct tuples |
 
-That run found 130 distinct AES tuples of ours, 83 of them not dominated by the pinned set, and
-41 of those not dominated by another circuit of ours. `best_table.py`, `pareto_audit.py` and the
-`aes_pareto` field of MANIFEST.json gave the same 41. Campaign folders that are still being
-written change the `campaigns` counts. (Updated after re-curation: this table and the counts
-130 / 83 / 41 are the run of 2026-11-14, before the hub campaign and the 2026-11-15 study. The
-hub verifies each circuit with the same two verifiers at admission, but its circuits are not in
-`results/` or the manifest yet.)
+That run found **186 distinct AES tuples of ours, 139 of them not dominated by the pinned set,
+and 73 of those not dominated by another circuit of ours**. The `aes_pareto` field of
+MANIFEST.json lists the same 73. [results/BEST.md](results/BEST.md) has 73 rows, but one row is
+29/4/130/22 where the other two have 29/4/129/22 ([DOCS-TODO.md](DOCS-TODO.md) item 27). The
+hub's and the study agents' circuits are counted through `results/aes`, where the re-curation put
+them; their campaign folders are not among the default `campaigns` roots.
+
+The run came between two `manifest.py` runs. The first (06:54 UTC) stopped with a TypeError on
+an entry without a start file, before writing the manifest. That is why 56 of the 194 result
+files were not in the manifest yet and `nist-format` had 124 files. The second (06:59 UTC) wrote
+the committed MANIFEST.json: 194 entries, 0 failing verification, and the boolcirc check of
+`results/nist-format/` passed on 142 circuit files with 0 failing (`best/manifest2.log`). No
+`verify_all.py` run after that one is recorded, so its sha256 check of the 56 new entries is
+still to do (DOCS-TODO.md item 28).
+
+The previous run (2026-11-14 18:07 UTC, before the hub and the study phase) checked 138 results,
+86 nist-format files and 237 campaign circuits and found 130 / 83 / 41 tuples. Campaign folders
+that are still being written change the `campaigns` counts.
 
 ## 1. Inside the search
 
@@ -181,8 +193,11 @@ iterations, rounds, code hash, wall time, metrics, the verifier verdicts, and:
 The curated AES-push circuits keep their campaign sidecar as `*.campaign.json`. The
 `strategies/` code was not committed when they were curated, so `code_version` records the
 sha256 of the strategy scripts as they were at curation (17:54 UTC), not at run time, and the
-commit of the kernel copy they ran. The scripts were committed 14 minutes later in 377b03f; the
-manifest does not cite that commit yet (updated after re-curation).
+commit of the kernel copy they ran. The scripts were committed 14 minutes later in 377b03f.
+(Re-curated 2026-11-15.) Since review 5 (P23) each such entry says so in
+`code_version_recorded`, and `code_version_commit_check` compares every curation-time hash with
+the file in 377b03f: 37 entries, 124 script hashes, all "identical to commit 377b03f". The 36 hub
+entries carry the hub's run-time code version (git commit plus a hash of uncommitted changes).
 
 Known gaps in the provenance records, from the audit of 2026-11-15
 (`strategies/L2/DOC-AUDIT.md`, `strategies/L2/WHAT-WORKED-BEFORE.md` section 4):
@@ -190,8 +205,10 @@ Known gaps in the provenance records, from the audit of 2026-11-15
 - Two entries are circuits that do not meet the A cap of the job that made them:
   `aes-nist-E-polish-g104-a32-gd29-ad5` (job cap A31, circuit A32) and
   `aes-nist-E-pull-g135-a29-gd17-ad5` (job cap A28, circuit A29). Both circuits are correct and
-  verified; they are the kernel's best infeasible state. The entry shows the cap only in
-  `job_caps`, and the `mechanism` text reads as if the cap had been met.
+  verified; they are the kernel's best infeasible state. (Re-curated 2026-11-15.) Review 5 (P22)
+  added `caps_met` to every entry and a "CAPS NOT MET by this job" sentence to the mechanism.
+  Seven entries now have `caps_met: false`: these two and five hub pulls (32/5/115/17,
+  30/4/130/20, 29/4/132/19, 35/3/141/24, 29/4/146/15).
 - The 10 polish entries of track E's long1 run have no time within the job
   (`time_to_result_s.within_job_s` is null) and no caps in their lineage records.
 - In track E's memetic driver the kernel seed of a job is the pool member's polish counter

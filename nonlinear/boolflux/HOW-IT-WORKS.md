@@ -147,9 +147,11 @@ against the pinned NIST set with `campaigns/aes_check.py`. Details:
 ## The hub
 
 > The hub was built on 2026-11-14 ([hub/SPEC.md](hub/SPEC.md)) and ran for 65.9 CPU-hours that
-> evening. The results quoted elsewhere on this page are from before it; the hub's circuits
-> enter the result tables at the next curation (updated after re-curation). What it was measured
-> to do and not to do is in [DESIGN.md](DESIGN.md) section 6, from `strategies/L1/WHAT-WORKS.md`.
+> evening. The results quoted elsewhere on this page are from before it. (Re-curated
+> 2026-11-15.) Its circuits entered the result tables at the curation of 2026-11-15 06:53 UTC:
+> 36 MANIFEST.json entries with track `hub`, all on the Pareto front of 73 tuples
+> ([results/BEST.md](results/BEST.md), [README.md](README.md)). What it was measured to do and
+> not to do is in [DESIGN.md](DESIGN.md) section 6, from `strategies/L1/WHAT-WORKS.md`.
 
 The hub replaces separate strategy scripts with one shared search state that every operator
 reads and writes:

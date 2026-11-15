@@ -2,15 +2,18 @@
 
 BoolFlux was built on 2026-11-13 and 2026-11-14 on the local branch `boolflux-2026-11-13`. Nothing
 has been published or pushed. This page is a dated record of that work: what was built, what
-the reviews found and how it was fixed, which measurements changed the method, and what the
-2026-11-14 AES push produced, failed experiments included. Times are UTC. Commit times are
+the reviews found and how it was fixed, which measurements changed the method, what the
+2026-11-14 AES push produced, failed experiments included, and the hub and the study phase of
+2026-11-15. Times are UTC. Commit times are
 converted from the repository's timestamps (-0500; -0400 for the October commit).
 
 **Corrections of 2026-11-15.** The text below was checked against the run records
 (`strategies/L2/DOC-AUDIT.md`, with the hub-era analysis in `strategies/L1/WHAT-WORKS.md`).
-Corrected sentences carry "(corrected 2026-11-15)". Numbers that depend on the result set carry
-"(updated after re-curation)": they are the curation of 2026-11-14 17:54 UTC and do not yet
-include the hub runs, track F's AD3 runs after 17:40 or anything later.
+Corrected sentences carry "(corrected 2026-11-15)". Numbers that depend on the result set were
+marked "(updated after re-curation)" until the curation of 2026-11-15 06:53 UTC (commit cb8fd56),
+which added the hub runs, track F's last AD3 runs and the study phase. Those places now carry
+"(re-curated 2026-11-15)" and give that curation; text that describes the state of 2026-11-14
+keeps the numbers of the 17:54 UTC curation and says so.
 
 **Sources and marks.** The commit hashes come from
 `git log --format='%h %ci %s' boolflux-2026-11-13`. Other sources are named next to each claim.
@@ -46,9 +49,13 @@ after this page was first written. **[V]** marks a circuit that passed both veri
 | 11-14 17:40-17:54 | this documentation pass | 36 AES-push circuits curated into `results/aes/` (`campaigns/curate_aes.py`, `curated_utc` 17:54); MANIFEST.json regenerated; `verify_all.py` run: all OK |
 | 11-14 17:38-18:40 | `~/xs-campaigns/2026-11-14-hub/`, 97abda7 | hub built; first A/B, hub against the memetic splice arm, 4 CPUs each for 1 h |
 | 11-14 18:41 - 11-15 01:30 | `2026-11-14-hub/long`, f9fe6f7 | hub long runs (five scheduler starts) and six 1-CPU 1-hour A/B arms: 65.9 CPU-h, 7,231 jobs in all (`strategies/L1/WHAT-WORKS.md`) |
-| 11-14 22:50 | `F/ad3b/` | track F's AD3 runs end: 35/3/177/13, 35/3/162/14, 35/3/142/22, 40/3/172/13, 39/3/156/15 (not in the manifest; updated after re-curation) |
+| 11-14 22:50 | `F/ad3b/` | track F's AD3 runs end: 35/3/177/13, 35/3/162/14, 35/3/142/22, 40/3/172/13, 39/3/156/15. (Re-curated 2026-11-15.) 177/13 and 162/14 are in the manifest now (`aes-nist-F-gate-g177-a35-gd13-ad3`, `aes-nist-F-trb-g162-a35-gd14-ad3`; the hub made the same tuples). The other three were not curated: 35/3/142/19 (T3), 39/3/172/13 (R2) and 37/3/155/15 (hub) dominate them |
 | 11-14 ~23:55 | `C/STOPPED-gq.txt`, `C/logs/` | track C's gamma sweeps stopped to free CPUs: 10 of 16 gammas finished for the AD5 prefix and 11 of 16 for the AD4 prefix, 0 hits in each |
-| 11-15 00:10 - | `~/xs-campaigns/2026-11-15-study/` | study phase: structure and algebra (H1-H4), window redesigns (R1, R2), goal-directed runs (T1-T4, X1-X3), log analysis and this page's corrections (L1, L2) |
+| 11-15 00:10-06:45 | `~/xs-campaigns/2026-11-15-study/`, d961083 (06:10) | study phase (section below): structure and algebra (H1-H4), window redesigns (R1, R2), goal-directed runs (T1-T4), new moves, a goal scheduler and a red team (X1-X3), log analysis and this page's corrections (L1, L2). Agents X1b, X3b and L1b took over X1, X3 and L1 at about 03:00-03:05 UTC |
+| 11-15 01:44-03:19 (commits) | `boolflux-review5`, merged in 924b4c0 (06:44) | review 5 of the kernel (C1), the Python package (C2, finished by C23) and the hub (C3, finished by C23): `review5/KERNEL.md`, `PYTHON.md`, `HUB.md`, `X2-COMPAT.md` |
+| 11-15 03:19 | `strategies/X1/NOTES.md` section 8 | first circuit with the new 9 + 5 + 14 AND structure (X1b walk from NIST a28-ad5-g128-gd20, 28/5/158/27) |
+| 11-15 06:47 | `launch-0700.sh`, `launch-0700.out` | overnight queue launched on all 20 CPUs (section below) |
+| 11-15 06:53-07:13 | `curated_utc` 06:53, cb8fd56 (07:13) | re-curation: 56 new entries, MANIFEST.json 194 entries, all verified; `verify_all.py` (06:57) 186 distinct AES tuples of ours, 139 not dominated by the pin, 73 Pareto among ours; [results/BEST.md](results/BEST.md) is the curated table |
 
 ## Building blocks (2026-11-13)
 
@@ -86,8 +93,10 @@ What happened to those 12 at pin 3d80774 (MANIFEST.json, `pinned_set`): NIST's n
 a34-ad4-g139-gd13 equals our 34/4/139/13, so that tuple is no longer new. Five more (131@13 A36,
 124@14 A38, 167@14 AD3, 126@15 A32, 131@26 A28) are now strictly dominated by later results of
 ours. The other six were still on the Pareto front at the 17:54 curation: 33/4/110/18, 32/4/122/18,
-33/4/108/19, 32/5/108/20, 28/4/133/20 and 35/3/144/20 (updated after re-curation: the hub's
-32/4/121/17 and 32/4/119/18 now dominate 32/4/122/18).
+33/4/108/19, 32/5/108/20, 28/4/133/20 and 35/3/144/20. (Re-curated 2026-11-15.) Three of them
+remain: 33/4/110/18, 33/4/108/19 and 32/5/108/20. The hub's 32/4/121/17 and 32/4/119/18 dominate
+32/4/122/18, T1's 28/4/132/20 and R1's 28/4/133/19 dominate 28/4/133/20, and T3's 35/3/142/19 and
+35/3/143/18 dominate 35/3/144/20.
 
 ## Reviews and their fixes
 
@@ -219,9 +228,10 @@ random, not enumerated, so this is not a proof of local optimality. Products: 12
   1,407 s; 0 of 10 for the other arms; with n = 3 per arm this is not significant) **[V]**. It is a different circuit from track D's 121.
 - **Repair baseline**: GD14 -> 13 met the cap in 2 of 35 runs (137 and 136 gates), and GD13 -> 12
   in 0 of 10. Repair is fast exactly when the start's depth bound already meets the cap.
-- (Updated after re-curation: the runs ended at 22:50 UTC with further AD3 points, see the
-  timeline.) After 17:31, AD3 runs found 161@GD14 A38 AD3 and 174@GD13 A40 AD3 (curated 17:40, both new
-  points; the runs were still going).
+- After 17:31, AD3 runs found 161@GD14 A38 AD3 and 174@GD13 A40 AD3 (curated 17:40, both new
+  points at the time). (Re-curated 2026-11-15.) The runs ended at 22:50 UTC with further AD3
+  points (timeline). 35/3/177/13 and 35/3/162/14 are in the manifest now. 38/3/161/14 is
+  dominated by the hub's 36/3/161/14 and 40/3/174/13 by R2's 39/3/172/13.
 
 ### Main queue (`~/xs-campaigns/2026-11-13-aes/main/`)
 
@@ -232,34 +242,49 @@ own caps. 10 of 28 starts were done when it stopped at 17:26. One gain: NIST a28
 
 ### Where the AES results stand (pin 3d80774)
 
-This section is the curation of 2026-11-14 17:54 UTC (updated after re-curation: the count, the
-mechanism split and the table do not include the hub runs or track F's later AD3 results).
+(Re-curated 2026-11-15.) This section is the curation of 2026-11-15 06:53 UTC (commit cb8fd56):
+the AES push, the hub runs, track F's last AD3 runs and the study phase.
 
-41 tuples are new on the pinned set and not dominated by another result of ours. The same 41
-come from `best_table.py`, `pareto_audit.py`, MANIFEST.json and `verify_all.py`. By mechanism:
-20 kernel polishes (11 of them have a join in their lineage), 7 joins, 4 depth pulls, 6 earlier
-`cli.py run` results, 3 track F trb results, 1 track D kernel result and 1 main-queue result
-(two circuits share 121@14). Fewest gates at a gate-depth cap, A and AD free:
+**73 tuples** are new on the pinned set and not dominated by another result of ours. The same 73
+come from MANIFEST.json (`aes_pareto`) and `verify_all.py` (2026-11-15 06:57 UTC);
+[results/BEST.md](results/BEST.md) has 73 rows, one of them stale (29/4/130/22 instead of
+29/4/129/22, [DOCS-TODO.md](DOCS-TODO.md) item 27). 79 manifest entries carry them (some tuples
+have two circuits). By maker of the entries: the hub 36 (join 14, pull 13, osc 3, polish 3, trb 2,
+gen_skel 1), study agents 18 (T4 6, R1 3, T1 3, T3 2, X2 2, L1 1, R2 1), track E 17, track F 3,
+`cli.py` runs of 2026-11-13 3, track D 1, main queue 1.
 
-| GD <= | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 21 | 29 |
-|---|---|---|---|---|---|---|---|---|---|
-| published best G | 133 | 125 | 116 | 116 | 116 | 116 | 116 | 108 | 105 |
-| ours | **129** (A36) | **121** (A37) | **115** (A33) | **113** (A33) | **112** (A33) | **110** (A33) | **108** (A33) | **107** (A33) | **104** (A32) |
+Against the curation of 2026-11-14 17:54 UTC, which had 41 tuples: 22 of the 41 remain, 19 are now
+dominated by later results of ours, and 51 tuples are new. Of the 51, 36 have a hub circuit (2 of
+them also a track F circuit, 35/3/177/13 and 35/3/162/14, and 1 also an R1 circuit, 28/5/136/17)
+and 15 come from study agents only (T4 6, T3 2, X2 2, R1 1, R2 1, T1 1, and 28/5/126/24 from R1
+and T1, 28/4/131/22 from T1 and L1). Fewest gates at a gate-depth cap, A and AD free
+(results/BEST.md):
 
-Source: `pareto_audit.py` on `results/aes` (2026-11-14 17:43). NIST's targets were not reached:
-A < 28, G < 103 (the record is 103 at GD 32), and about 110 at GD <= 14. All of the AES-push
-results are one-off time-budgeted runs or deterministic joins (MANIFEST.json `reproduction`).
-None had been re-run when this was written. On 2026-11-15 the 30 recorded joins of track E were
-rebuilt from their parents and cut levels, all identical (`strategies/L2/rejoin.py`). The
-one-off kernel results, which include every A28 and A29 point of the push, have not been
-repeated. Two of the 41 tuples are circuits that do not meet the A cap of the job that made
-them (32/5/104/29 under cap A31, 29/5/135/17 under cap A28); the manifest shows this only
-through `job_caps`.
+| GD <= | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 29 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| published best G | 133 | 125 | 116 | 116 | 116 | 116 | 116 | 108 | 108 | 105 |
+| ours | **129** (A36) | **121** (A37) | **115** (A33) | **112** (A33) | **112** (A33) | **110** (A33) | **108** (A33) | **107** (A33) | **107** (A33) | **104** (A32) |
+
+Against the 17:54 table, GD 16 went from 113 to 112 (the hub's join 33/4/112/16) and 107@20 (the
+hub's pull 33/4/107/20) replaced 107@21. NIST's targets were not reached: A < 28, G < 103 (the
+record is 103 at GD 32), and about 110 at GD <= 14.
+
+Reproduction (MANIFEST.json `reproducibility`): of the 79 entries, 72 are one-off time-budgeted
+jobs, among them every hub and study result and every A28 and A29 point, and none was repeated.
+4 are deterministic joins of track E; on 2026-11-15 the 30 recorded joins of track E were rebuilt
+from their parents and cut levels, all identical (`strategies/L2/rejoin.py`). 3 are deterministic
+`cli.py` commands of 2026-11-13. Seven manifest entries are circuits that do not meet the caps of
+the job that made them (`caps_met: false`, review 5 P22), and six of them are on the front:
+32/5/104/29 (cap A31), and the hub pulls 32/5/115/17 (cap A31), 30/4/130/20 (cap A29),
+29/4/132/19 (cap AD3), 35/3/141/24 (cap A34) and 29/4/146/15 (cap A28). The seventh,
+29/5/135/17 (cap A28), is now dominated.
 
 None of the mechanisms lowered an AND count below its family's published minimum, and none was
 asked to: before the hub no kernel, window or chain run on AES had an AND-first objective or an
 A cap below its start's A, apart from eight 240 s runs with cap A31 from A32 circuits
-(`strategies/L2/WHAT-WORKED-BEFORE.md` sections 0 and 3).
+(`strategies/L2/WHAT-WORKED-BEFORE.md` sections 0 and 3). The study phase asked for fewer ANDs
+directly (goal A, 27 ANDs) and found no circuit below 28. At gate depth 11 its circuits have 42-47
+ANDs, where no published circuit with A <= 48 has GD <= 11 (`strategies/T4/NOTES.md`).
 
 ## Decisions and their evidence
 
@@ -280,8 +305,10 @@ A cap below its start's A, apart from eight 240 s runs with cap A31 from A32 cir
 [hub/SPEC.md](hub/SPEC.md) describes a shared archive that every operator reads and writes, with
 cells per (A, AD, GD) and a bandit scheduler (`hub/`, campaign `~/xs-campaigns/2026-11-14-hub/`).
 It was built from 17:30 UTC and ran until 01:30 UTC on 11-15. Its circuits are verified at
-admission and listed in `~/xs-campaigns/2026-11-14-hub/best/BEST.md`; they are not in
-MANIFEST.json yet (updated after re-curation). Track E's running notes are
+admission and listed in `~/xs-campaigns/2026-11-14-hub/best/BEST.md`. (Re-curated 2026-11-15.)
+Since the curation of 2026-11-15 06:53 UTC they are in MANIFEST.json too: 36 entries with track
+`hub` (21 from the `long` archive, the rest from the A/B arms), all on the Pareto front, each a
+one-off job with the hub's run-time code version. Track E's running notes are
 `strategies/E/NOTES.md`; the recount of all hub logs is `strategies/L1/WHAT-WORKS.md`. From the
 recount, all counted over 65.9 CPU-h and 7,231 jobs:
 
@@ -295,3 +322,74 @@ recount, all counted over 65.9 CPU-h and 7,231 jobs:
   established. osc: 347 jobs, 9.5 CPU-h, 4 frontier admissions.
 - Earlier text in `strategies/E/NOTES.md` that ranks operators by "gain per CPU-h" should be
   read with this in mind.
+
+## The study phase (2026-11-15, 00:10-06:45 UTC)
+
+Fifteen agents worked from `~/xs-campaigns/2026-11-15-study/` (briefs `BRIEF-COMMON.md` and
+`BRIEF-ADDENDUM-0135.md`), each with its code and `NOTES.md` in `strategies/<agent>/`, committed in
+d961083. The goals were boxes in (A, AD, G, GD): A = at most 27 ANDs; B = 28/4/<=130/<=22;
+C = 28/5/<=127/<=19; D = <=32/4/<=116/<=19; E = <=32/<=6/<=102/<=31; F = <=35/3/<=138/<=26;
+G = <=44/<=4/<=140/<=11 (`strategies/T1-T4/NOTES.md`). **No goal box was met.** The notes use
+[C] for exact or exhaustive within the stated case only, [P] for proved, [H] for heuristic or
+measured, [V] for a verified circuit.
+
+| agent | what | result | source |
+|---|---|---|---|
+| H1 | structure of the known low-AND circuits | they share one three-stage skeleton (stage 1, inversion, last layer) [C on 63 files]. The only general lower bound is 13 ANDs [P]; every earlier exact result of ours is listed with what it does not exclude. In 25 built 9 + 5 + 14 circuits (prefix fixed) the last layer cannot go from 14 to 13 by one drop or by replacing two or three members with one fewer [C, that case] | `H1/NOTES.md` sections 1, 4, 4.1, 9 |
+| H2 | algebraic constructions, exact layer search (`gen13`) | the new AND structure 9 + 5 + 14: 69 covering 14-member last layers over the stage-1 span of NIST a28-ad4-g131, 69 each over g141 and g176; no 13-member layer over umizame's or ten published 9-product spans, no 12-member layer over the AD5 spans [C, member model, BMP middle, one gamma, stage 1 fixed] | `H2/NOTES.md` sections 5.6, 5.8, 6 |
+| H3 | exact window re-solve around known circuits | a 29 -> 28 reduction (28/5/210/31, a re-bracketing of the AND space of NIST a28-ad5-g128); no single AND replaces the dependent pair of either 9 + 5 + 14 circuit tested (2^33 operands each) [C, kept ANDs fixed] | `H3/NOTES.md` R7, R8, scope notes |
+| H4 | other representations of GF(2^8) inversion | a change of representation cannot change an AND count [P]; the non-tower constructions tried need 41-108 ANDs; the AD3 frontier is the GF(4)-norm route; 34 ANDs at AD3 not found [H overall] | `H4/NOTES.md` summary |
+| R1 | SAT window resynthesis (`wres`), window AND removal (`mc1`, `seq2`) | `wres`: 0 of 1,107 hub windows improved. AND removal plus kernel grind: 28/4/133/19, 28/5/126/24, 28/5/136/17 [V] | `R1/NOTES.md` summary |
+| R2 | affine-slack window redesign (`aslack`) | A reductions on redundant circuits (39/3/172/13 from 40/3/172/13 [V]); 0 of 39 fixed-target jobs near the A28-A35 fronts improved; no level-1 A reduction in 8 front circuits [C, window model] | `R2/NOTES.md` conclusion |
+| T1 | goals B and C | not met; 28/4/131/22 and 28/4/132/20 [V], from GD pulls, long deep runs and joins | `T1/NOTES.md` section 5 |
+| T2 | goals D and E | not met; nothing better than the starting points (about 70 kernel jobs for E, 21 walk jobs and 49 front-deadline jobs for D, 388k joins) [H] | `T2/NOTES.md` summary, final numbers |
+| T3 | goal F (AD3) | not met; GF(4)-coordinate moves at level 3 and level-1 product exchanges gave 35/3/142/19 and 35/3/143/18 [V] | `T3/NOTES.md` sections 11, 15, 16 |
+| T4 | goal G | A <= 44, AD 4, GD 11 met, G <= 140 not: 47/4/186/11, 46/4/203/11, 44/4/254/11, 43/4/278/11, 42/4/284/11 and 42/4/230/12 [V] | `T4/NOTES.md` |
+| X1, X1b | AND merge / split / flip moves on the product program | Boyar-Peralta's 32 to 29 ANDs in 0.2 s (large G); the first 9 + 5 + 14 circuit (28/5/158/27, lowest of the family 28/5/156/28) [V]; no 27 and no A29 -> 28 in 97 walk runs [H] | `X1/NOTES.md` sections 5, 8 |
+| X2 | goal-directed hub scheduler | in a 4-arm ABBA A/B of 0.9 CPU-h per arm no difference from the generic scheduler; new points 30/4/129/21 and 29/4/128/23 [V] | `X2/NOTES.md` A/B result |
+| X3, X3b | red team for 27 ANDs | the degree bound is tight for inversion in GF(8) and GF(16) and fails by at least 2 in GF(32); no optimal GF(16) inversion circuit is three-stage; a parallel top layer with operands affine in x plus functions of N needs >= 10 products [C]; the critique of over-claims below | `X3/NOTES.md` sections 0, 8, 10 |
+| L1, L1b | hub-era log analysis; the overnight queue review | `WHAT-WORKS.md` (findings 1-10), `TONIGHT.md`, `QUEUE-REVIEW.md` | `L1/NOTES.md` |
+| L2 | pre-hub log analysis; documentation audit | `WHAT-WORKED-BEFORE.md`, `DOC-AUDIT.md`; the corrections marked on this page | `L2/NOTES.md` |
+
+The 9 + 5 + 14 structure has 9 stage-1 ANDs, a 5-AND inversion and 14 last-layer ANDs. The
+published A28 families are 10 + 5 + 13 (AD5) and 9 + 6 + 13 (AD4). Its circuits so far have
+G >= 156, so none is on the frontier.
+
+**Review 5** ran alongside, on the branch `boolflux-review5` (merged in 924b4c0):
+
+- C1, the gate kernel (`review5/KERNEL.md`): bugs K1-K4 fixed or behind an option; speed changes
+  P1-P3 with the same trajectories, about 15-20 % less CPU per iteration [H, noisy CPU]; new
+  options (`xspan`, `repair_keep`, `nl_root`) off by default, and the default search is
+  bit-identical to f9fe6f7 for fixed seeds and iteration counts.
+- C2, finished by C23, the Python package (`review5/PYTHON.md`, P1-P26): among them curation with
+  hub archives (P12), `cli.py verify` with an explicit NOT (P19), reproducibility records and
+  `manifest.py --check-repro` (P21, P24), `caps_met` (P22), `code_version_commit_check` against
+  377b03f (P23), atomic kernel builds and collision-free kernel seeds (P25, P26).
+- C3, finished by C23, the hub (`review5/HUB.md`, `review5/X2-COMPAT.md`): a value-correct gain,
+  targets by tuple with caps, incremental joins over all cell members, an A cap for osc,
+  clean-up before admission (H21), and the compatibility of X2's goal scheduler with this code.
+
+**Corrections the study phase made to earlier readings:**
+
+- **Restricted exhaustive results are not general bounds.** Every "no 27" or UNSAT result of
+  tracks C and G and of H1-H3 holds for a fixed stage-1 span or prefix, a fixed pool of
+  last-layer products (the 1,275 GF(4)-norm members, sometimes the 107,100 semi-members), a 5-AND
+  middle and one gamma. They say nothing about circuits outside that case. That every 28 found is
+  three-stage is no evidence either, because every generator used preserves the three stages
+  (`H1/NOTES.md` sections 4.1 and 7.0, `X3/NOTES.md` section 8, `H3/NOTES.md` scope notes).
+- **The hub's gain was not a value signal.** Its rule scored 51 of the 75 hub-made front
+  admissions as "lowers A", although none lowered the smallest A of a class
+  (`strategies/L1/WHAT-WORKS.md` finding 1).
+- **One-CPU-hour A/Bs cannot separate configurations.** Twenty identical 1-CPU 1-hour blocks gave
+  0, 1, 2 and 4 front admissions in 11, 5, 3 and 1 blocks (`strategies/L1/WHAT-WORKS.md`
+  finding 10). X2's A/B of 0.9 CPU-h arms shows the same (`X2/NOTES.md`).
+
+**Overnight queue.** Launched at 06:47 UTC by `~/xs-campaigns/2026-11-15-study/launch-0700.sh`
+(log `launch-0700.out`) on all 20 CPUs, with no agents running. The allocation and the launch
+fixes are from `strategies/L1/QUEUE-REVIEW.md` sections 1-3: every job runs under
+`timeout 705m` (11 h 45 min), except the uncapped H3 window `g124w8` (47 h limit), and the heavy
+families are spread over track slices with their own memory caps. CPUs: 0-1 H3 windows of the
+9 + 5 + 14 circuits, 2 H3 `g124w8`, 3-4 H2 layer search over H4 and Karatsuba covers, 5-6 X3b,
+7 H1 14 -> 13 tests, 8-9 X1b walks, 10-12 T1 (goal B), 13-14 R1, 15-17 the hub (`long5`, review-5
+code), 18 T4, 19 T3 (AD3 low-GD band). Its results are not on this page or in the manifest;
+`QUEUE-REVIEW.md` section 4 lists what has to be checked by hand afterwards.

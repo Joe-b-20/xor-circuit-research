@@ -76,32 +76,43 @@ Resolved since the list above was written:
   says "uncommitted, sha256 now" (see item 20).
 - Items 10, 13: [DESIGN.md](DESIGN.md) was rewritten as the architecture as built; MECHANICS.md
   is still the pre-0659eb9 text and is marked so in DESIGN.md.
-- Item 15, first half: track F's AD3 runs ended 22:50 UTC 11-14 and track C's sweeps were
-  stopped at about 23:55 UTC. The re-curation itself is still to do.
+- Item 15: track F's AD3 runs ended 22:50 UTC 11-14 and track C's sweeps were stopped at about
+  23:55 UTC. The re-curation was done on 2026-11-15 (06:53 UTC, commit cb8fd56; item 17).
 
 Done in the audit's edit pass (README, HOW-IT-WORKS, HISTORY, USAGE, VERIFICATION, bench/REPORT):
 the wrong and unsupported claims W1-W3, U1-U9 were reworded, stale statements were marked
 "(updated after re-curation)" or corrected, and the gaps G1-G5, G7, G8 were written into the
-text.
+text. The "(updated after re-curation)" marks were replaced in the pass below.
 
-Still open, not editable in a documentation pass:
+## Status after the re-curation (2026-11-15, documentation pass after cb8fd56)
 
-17. **Re-curation** (`curate_aes.py`, `manifest.py`, `verify_all.py`, `best_table.py`): every
-    number marked "(updated after re-curation)" in README.md, HISTORY.md and VERIFICATION.md.
-    The 41-tuple count and the depth-cap table predate the hub (61 rows in
-    `~/xs-campaigns/2026-11-14-hub/best/BEST.md`) and track F's last AD3 results.
-18. **MANIFEST.json, cap not met** (audit W4): two entries need `caps_met: false` and a
-    mechanism text that says the result is the kernel's best infeasible state. Needs a field in
-    `campaigns/manifest.py` / `curate_aes.py`.
-19. **MANIFEST.json, `reproduction`** (audit U10): "deterministic command ... gives the same
-    circuit" should add "with `--set skip_noop=0` on code after 7ae20c8, or with the run's own
-    `src/` and `bin/` snapshot" (tested on 28/4/133/20; VERIFICATION.md section 6). The seven
-    "deterministic construction ...; not re-run" entries can say "re-run 2026-11-15, identical"
-    (`strategies/L2/rejoin.py`).
-20. **MANIFEST.json, `code_version`**: cite 377b03f for the strategy scripts if their sha256
-    still match; record the kernel binary hash per job for track E and track F results.
+Resolved:
+
+- **Item 17, re-curation.** Done in cb8fd56: MANIFEST.json has 194 entries, all verified;
+  `verify_all.py` (06:57 UTC) found 186 distinct AES tuples of ours, 139 not dominated by the pin
+  and 73 Pareto among ours; `results/BEST.md` is the curated table. This pass replaced every
+  "(updated after re-curation)" placeholder with those numbers, marked "(re-curated 2026-11-15)":
+  README.md (result count, depth-cap table, the "also new" line, a study-phase paragraph),
+  HISTORY.md (introduction, timeline rows for track F's AD3 runs and the study phase, the six
+  earlier points, track F, where the results stand, the hub, a new study-phase section),
+  HOW-IT-WORKS.md (hub note) and VERIFICATION.md (the verify_all run, `code_version`, caps not
+  met).
+- **Item 18, cap not met.** Review 5 P22 (4191e08): `caps_met` on every entry and "CAPS NOT MET
+  by this job" in the mechanism. Seven entries have `caps_met: false`.
+- **Item 20, first half.** Review 5 P23: `code_version_commit_check` compares the curation-time
+  script hashes with 377b03f (37 entries, all identical).
+- **Item 19, first half.** Review 5 P21: the `reproducibility` record and the generated
+  `reproduction` text ("deterministic with the run's own snapshot ...").
+
+Still open:
+
+19. **MANIFEST.json, joins** (second half of the old item): the seven "deterministic construction
+    ..." entries still end "not re-run" (three of them without the splice2 sentence), although
+    `strategies/L2/rejoin.py` rebuilt them identically on 2026-11-15.
+20. **MANIFEST.json, kernel binary per job** for track E and track F results (second half of the
+    old item; not checked in this pass).
 21. **MANIFEST.json, smaller gaps** (audit G6): null `within_job_s` for long1; 960 s in a 900 s
-    job for the main-queue 175; "see cmd" seeds.
+    job for the main-queue 175 (still recorded so at cb8fd56); "see cmd" seeds.
 22. **`hub/SPEC.md`** (extends item 12): line 6-7 "34 frontier admissions in ~1 h vs 2 ... the
     only mechanism that lowered A on AES" (the A31 joins undercut their A32 parents; nothing
     lowered A below a published family minimum); line 82 says the generator and linres
@@ -117,5 +128,24 @@ Still open, not editable in a documentation pass:
     documented"); the 2026-11-14-hub, 2026-11-14-G and 2026-11-15-study folders have no entries.
 25. **[LEDGER.md](LEDGER.md) section 3 and [CHECKPOINT.md](CHECKPOINT.md)**: still against pin
     e6ac0d0 (item 11); README now labels both as historical.
+    Line 45 also describes `best/BEST.md` as 38 rows against a 41-row table; the curated table is
+    now `results/BEST.md` (73 rows).
 26. **Tests**: the test counts in USAGE.md (33 and 36) were taken on 2026-11-14 and do not
-    include `hub/tests/test_hub.py`. Recount when the code-review branch is merged.
+    include `hub/tests/test_hub.py`. Review 5 is merged (924b4c0) and the message of cb8fd56
+    reports "Suite 86 OK"; USAGE.md was not recounted in this pass.
+27. **`results/BEST.md`, one stale row.** It lists 29/4/130/22 (`aes-sbox-a29-ad4-g130-gd22`)
+    where MANIFEST.json `aes_pareto` and `verify_all.py` have 29/4/129/22
+    (`aes-nist-hub-trb-g129-a29-gd22-ad4`, curated 06:53 UTC). BEST.md is byte-identical to
+    `~/xs-campaigns/2026-11-15-study/best/BEST.md`, written at 06:51 UTC. The other 72 rows match.
+    Rerun `best_table.py` and copy its BEST.md to `results/` (one CPU; not done in this pass,
+    because the CPUs belong to the overnight queue).
+28. **`verify_all.py` after the final manifest.** The recorded run (06:57 UTC) came before the
+    `manifest.py` run that wrote the committed MANIFEST.json (06:59 UTC), so it matched 138 of the
+    194 sha256 against the manifest, reported 56 as absent, and checked 124 nist-format files
+    instead of 142. Rerun it once (VERIFICATION.md, "One command"). Its default `campaigns` roots do
+    not include `~/xs-campaigns/2026-11-14-hub/` or `2026-11-15-study/`; those circuits are checked
+    only through `results/aes`.
+29. **Overnight queue** (launched 06:47 UTC, `launch-0700.sh`; HISTORY.md, study phase): its
+    results are in no document yet. After it ends, the morning checklist of
+    `strategies/L1/QUEUE-REVIEW.md` section 4, then `curate_aes.py`, `manifest.py`,
+    `verify_all.py` and `best_table.py`, then README.md, HISTORY.md and VERIFICATION.md.
