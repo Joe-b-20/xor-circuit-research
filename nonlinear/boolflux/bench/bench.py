@@ -10,6 +10,8 @@ CPU (so the runs of a comparison pair share hardware).  A run is a dict:
             workflow.search (the same code as `cli.py flow`)
   target, model, objective, caps {GD, AD, A}, start ('anf' | NCFF path | XORFlux JSON path),
   seconds (wall budget for the search, rebuild included), seed, label
+  seed_scheme (boolflux, optional): kernel seeds, 'v2' (default) or 'legacy-flow' = the seeds of
+            plans run before review 5 (workflow.SEED_SCHEMES)
 Each run writes OUTDIR/<label>.json: trajectory [[t, cost, G, A, GD, AD], ...] (t = wall seconds
 since the search started; for XORFlux the worker's own clock), final metrics, verification of
 the final circuit by both verifiers (outside the budget), peak RSS of the search process(es),
@@ -32,6 +34,8 @@ sys.path.insert(0, str(PKG.parent)); sys.path.insert(0, str(PKG))
 import cli                                         # noqa: E402
 from boolflux import core, workflow   # noqa: E402
 
+if __name__ == '__main__' and (len(sys.argv) < 3 or sys.argv[1] in ('-h', '--help')):      # review5 P16: before the build
+    print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
 if os.environ.get('BFXBENCH_BIN'):                     # worker: binaries built by the parent
     BIN = Path(os.environ['BFXBENCH_BIN'])
 else:

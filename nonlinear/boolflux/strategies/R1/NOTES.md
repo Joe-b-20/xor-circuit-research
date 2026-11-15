@@ -232,3 +232,8 @@ quoting error (ab.sh GEN line) for its first ~40 s, fixed by hand; its first job
   (andrm, ab3) 0 vs 0: the scheduler only targets front circuits.
 - The kernel grind of A-1 results produced two NEW verified A = 28 frontier points: 28/4/134/19 and
   28/5/126/24 (found/).  Suggested overnight: strategies/R1/overnight.sh on 2 CPUs (QUEUE.md).
+- Second grind round 05:08-06:18 UTC (CPU 18 seed 43 on the 28/4 pool + 28/4/134/19; CPU 17 seed 44 on the
+  28/5 pool + 28/5/126/24) added two more verified new points: **28/4/133/19** (dominates 28/4/134/19;
+  from 134/19 by polish) and **28/5/136/17** (dominates the archive's 28/5/137/17; polish/pull chain from
+  a seq2 result).  Final R1 points (aes_check OK, new on the NIST pin, not dominated by the final hub
+  archive): 28/4/133/19, 28/5/126/24, 28/5/136/17 (plus the superseded 28/4/134/19), all in found/.

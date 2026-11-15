@@ -49,8 +49,14 @@ def _fromwords(toks):
     return sum(int(t, 16) << (64 * i) for i, t in enumerate(toks))
 
 
+MAXK = 480      # the skel kernel's limit on the number of ANDs (kernel/skel.c)
+
+
 def write_skel(sk, out_tables):
     n = sk['n']; W = max(1, (1 << n) // 64)
+    if len(sk['ands']) > MAXK or 1 + n + len(sk['ands']) > 64 * MW:
+        # review5 P17: a form beyond 64*MW basis positions was cut off without a word
+        raise ValueError('skeleton with %d ANDs: the skeleton kernel takes at most %d' % (len(sk['ands']), min(MAXK, 64 * MW - 1 - n)))
     lines = ['n %d m %d k %d mw %d w %d' % (n, sk['m'], len(sk['ands']), MW, W)]
     for L, R in sk['ands']:
         lines.append(_hexwords(L, MW) + ' ' + _hexwords(R, MW))

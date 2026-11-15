@@ -52,14 +52,21 @@ python3 nonlinear/boolflux/cli.py run --target aes --model nist \
 repaired first. `--seeds 1-8` or `1,3,5`. `--jobs N` runs N kernels at a time (default: all
 CPUs). `--rounds R --pool P` runs R rounds, each starting from the P best distinct circuits of
 the previous round. `--seconds` is a safety cap per process. A run that its `--iters` budget ends
-is deterministic for a given seed, settings and code version. The replay above needs
-`--set skip_noop=0`, because the default no-op filter (on since 7ae20c8) changes the random
-trajectory. Without it the same command gives 109 at 20,000 iterations. The same holds for
-every result recorded before 7ae20c8, which includes all 2026-11-13 `cli.py run` results in the
-manifest: add `--set skip_noop=0` to the recorded command, or use the `src/` and `bin/`
-snapshot in the run folder. Checked on 2026-11-15 for 28/4/133/20 (seed 5, 100,000 iterations):
-identical gate list both ways, 134 instead of 133 with the default filter
-([VERIFICATION.md](VERIFICATION.md) section 6).
+is deterministic for a given seed, settings and code version. The kernel seed of seed S in
+round R is S + R x 2^32 (`workflow.kernel_seed`, the same in `run`, `pipe`, `flow` and the
+benchmark; round 0 gives S). Before review 5, `run` and `pipe` used S + 1000 R and `flow`
+S x 1000 + R, which collide ((1, 1) = (1001, 0)); a command recorded with them is replayed with
+`--seed-scheme legacy` (bench plans: `"seed_scheme": "legacy-flow"`). `summary.json` records
+the kernel seed of every job.
+
+The replay above needs `--set skip_noop=0`, because the default no-op filter (on since 7ae20c8)
+changes the random trajectory. Without it the same command gives 109 at 20,000 iterations. The
+same holds for every result recorded before 7ae20c8, which includes all 2026-11-13 `cli.py run`
+results in the manifest: add `--set skip_noop=0` to the recorded command, or use the `src/` and
+`bin/` snapshot in the run folder. Checked on 2026-11-15 for 28/4/133/20 (seed 5, 100,000
+iterations): identical gate list both ways, 134 instead of 133 with the default filter
+([VERIFICATION.md](VERIFICATION.md) section 6). Multi-round recorded commands also need
+`--seed-scheme legacy`.
 
 The command exits nonzero with `CAPS NOT MET` when no feasible circuit was found (the best
 repair so far is still written), and with `VERIFICATION FAILED` if a verifier rejects the
@@ -107,9 +114,11 @@ python3 nonlinear/boolflux/cli.py verify nonlinear/boolflux/results/aes/aes-nist
     --target aes --model nist
 ```
 
-`verify` prints `ok` or `FAIL` per file, with metrics, and exits with 1 if any file fails. It
-does not check caps. Use `independent/verify.py --max-GD N` or `campaigns/aes_check.py` for
-that.
+`verify` prints `ok` or `FAIL` per file, with metrics, and exits with 1 if any file fails; a
+failing file gets a second line that says why. With `--cap-gd N`, `--cap-ad N` or `--cap-a N` a
+circuit outside the cap fails too (`caps=NOT MET`). Kernel `.bfx` files are accepted (converted
+in a temporary folder). `cli.py list` prints the targets, the stock models and the objective
+keys, and `cli.py CMD -h` explains every option of a command.
 
 ## Targets, models, objectives, caps
 
@@ -147,16 +156,22 @@ python3 nonlinear/boolflux/bench/show_trace.py OUT/maj3t/moves.txt
 ## Checking and placing AES circuits
 
 ```bash
-python3 nonlinear/boolflux/campaigns/aes_check.py FILE [FILE ...] [--json OUT.json]   # 8 s for one file
+python3 nonlinear/boolflux/campaigns/aes_check.py FILE [FILE ...] [--json OUT.json]   # under 1 s per file
 python3 nonlinear/boolflux/independent/verify.py FILE --aes --model nonlinear/boolflux/models/nist.json --max-GD 14
 python3 nonlinear/boolflux/campaigns/pareto_audit.py [--json OUT.json]    # results/aes vs the pinned set, 10 s
-python3 nonlinear/boolflux/campaigns/best_table.py --out DIR              # NIST-style tables of all candidates
+python3 nonlinear/boolflux/campaigns/best_table.py --out DIR [--clean]    # NIST-style tables of all candidates (12 s CPU)
 python3 nonlinear/boolflux/campaigns/curate_aes.py --dry-run              # new Pareto points not yet in results/aes
 python3 nonlinear/boolflux/campaigns/manifest.py                          # MANIFEST.json + nist-format/ (47 s)
 python3 nonlinear/boolflux/campaigns/verify_all.py [--json OUT.json]      # everything (68 s)
 ```
 
-`best_table.py` without `--out` writes into `~/xs-campaigns/2026-11-13-aes/best/`.
+`best_table.py` without `--out` writes into `~/xs-campaigns/2026-11-13-aes/best/`. It has one
+row per (A, AD, G, GD) tuple; the column `other` counts further distinct circuits at that tuple
+and `DIR/BEST.json` lists them with their source files, together with candidate files that could
+not be read. Circuit files of earlier runs that are no longer in the table are listed, and
+removed with `--clean`. `aes_check.py` keeps the metrics of the pinned NIST set in
+`~/.cache/boolflux/` (keyed by the bytes of the pinned files and of `independent/verify.py`;
+`BOOLFLUX_NO_CACHE=1` recomputes them, which takes about 10 s; `verify_all.py` always does).
 
 ## The hub (shared archive and scheduler)
 

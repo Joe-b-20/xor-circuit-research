@@ -1,13 +1,15 @@
 """Collect verified campaign results into nonlinear/boolflux/results/ and print ledger rows.
 
-    python3 nonlinear/boolflux/campaigns/collect.py RUN_DIR [RUN_DIR ...] [--label TEXT] [--copy]
+    python3 nonlinear/boolflux/campaigns/collect.py RUN_DIR [RUN_DIR ...] [--copy]
 
 For every RUN_DIR/summary.json (searched recursively), re-verify the best circuit with both
 verifiers (cli.verify_file), and print one markdown row: target, model, objective, caps, start,
 start metrics, result (G, counts by type, A, GD, AD, cost), wall time, CPU time (sum of job wall
 times), seeds, iterations.  With --copy the circuit is copied to
 results/<target>/<target>-<model>-<objective>-<caps>-g<G>-a<A>-gd<GD>-ad<AD>.circ.txt and its
-summary next to it (.summary.json).
+summary next to it (.summary.json); an existing results file with that name and another content
+is never overwritten (the row says so).  "Improved" = the result ranks before the start under the
+run's objective and caps (objective.rank: feasible first, then cap excess, then the keys in order).
 """
 import json
 import shutil
@@ -19,6 +21,7 @@ PKG = HERE.parent
 sys.path.insert(0, str(PKG.parent))
 sys.path.insert(0, str(PKG))
 import cli   # noqa: E402
+from boolflux import objective   # noqa: E402
 
 
 def caps_str(c):
@@ -31,6 +34,10 @@ def counts_str(c):
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    unknown = [a for a in sys.argv[1:] if a.startswith('-') and a != '--copy']
+    if unknown or not args:
+        print(__doc__.strip())
+        return 0 if set(unknown) <= {'-h', '--help'} and unknown else 2
     copy = '--copy' in sys.argv
     rows = []
     for d in args:
@@ -43,11 +50,10 @@ def main():
             m = v['metrics']; sm = s['start_metrics']
             feas = all(c is None or m[k] <= c for k, c in caps.items())
             ok = v['core_ok'] and v['independent_ok'] and v['library_ok'] and feas
-            w = cli.objective_weights(s['objective'])
-            ob = lambda x: sum(w['w.' + k] * x[{'cost': 'cost', 'g': 'G', 'a': 'A', 'gd': 'GD', 'ad': 'AD'}[k]]
-                               for k in ('cost', 'g', 'a', 'gd', 'ad'))
-            start_feas = all(c is None or sm[k] <= c for k, c in caps.items())
-            improved = ok and (not start_feas or ob(m) < ob(sm) - 1e-12)
+            # review5 P15: the same ranking as everything else (the weighted sum with weights
+            # 1, 1e-4, 1e-8 lets a later key outvote an earlier one when it differs by >= 10^4)
+            improved = ok and (not objective.feasible(sm, caps) or
+                               objective.rank(m, caps, s['objective'])[3:] < objective.rank(sm, caps, s['objective'])[3:])
             cpu = sum(r.get('wall_s', 0) for r in s['runs'])
             start = Path(s['start']).name.replace('.circ.txt', '') if s['start'] != 'anf' else 'ANF (naive)'
             row = {'target': s['target'], 'model': s['model'], 'objective': s['objective'],
@@ -64,7 +70,12 @@ def main():
                 cp = ('-'.join(('%s%s' % (k.lower(), v)) for k, v in s['caps'].items() if v is not None) or 'nocap')
                 nm = '%s-%s-%s-%s-g%d-a%d-gd%d-ad%d' % (s['target'], s['model'], s['objective'].replace(',', '_'),
                                                         cp, m['G'], m['A'], m['GD'], m['AD'])
-                shutil.copy(b['file'], dest / (nm + '.circ.txt'))
+                tgt = dest / (nm + '.circ.txt')
+                if tgt.exists() and tgt.read_bytes() != Path(b['file']).read_bytes():
+                    row['file'] = 'NOT COPIED: %s exists with another circuit' % tgt.name
+                    print('NOT COPIED: %s exists with another content (from %s)' % (tgt, b['file']), file=sys.stderr)
+                    continue
+                shutil.copy(b['file'], tgt)
                 slim = {k: s[k] for k in s if k != 'runs'}
                 slim['jobs'] = [{k: r.get(k) for k in ('tag', 'seed', 'kernel_seed', 'metrics', 'wall_s', 'final', 'skel')}
                                 for r in s['runs']]
@@ -80,4 +91,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

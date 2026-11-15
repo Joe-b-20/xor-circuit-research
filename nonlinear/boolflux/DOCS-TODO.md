@@ -5,6 +5,13 @@ other agents are working on it. Each item says where the mismatch is.
 
 ## Code or tool behaviour
 
+Review 5 (2026-11-15, `review5/PYTHON.md`) resolved items 1 to 5 in the code: the category title
+is computed from the pinned set (1); `best_table.py` has one row per tuple, counts and lists the
+other distinct circuits in `BEST.json`, lists stale files and removes them with `--clean` (2);
+`aes_check.py` writes nothing for a `.bfx` input, not even a temporary folder (3); every `cli.py`
+command and option has help text and `verify` takes `--cap-*` (4); the docstring example writes
+outside the repository (5). Items 6 to 9 are unchanged by that review.
+
 1. **`campaigns/best_table.py` category title.** "Fewer ANDs than any published circuit except
    A = 28 (29 <= A <= 31)" is wrong. The pinned set has A29 and A30 forward circuits
    (`nist/sbox/aes-sbox-fwd-a29-*`, `-a30-*`). The dominance computation itself includes them.

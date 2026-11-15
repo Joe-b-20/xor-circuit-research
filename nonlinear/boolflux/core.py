@@ -84,13 +84,14 @@ class Circuit:
         lg = [0] * self.n; la = [0] * self.n
         counts = {}
         cost = 0.0
+        cost_of = model.cost if model is not None else None      # built once (it was rebuilt for every gate)
         for op, a, b in self.gates:
             lg.append(1 + max(lg[a], lg[b]))
             la.append((1 if op in NONLINEAR_OPS else 0) + max(la[a], la[b]))
             nm = OPNAME.get(op, 'OP%d' % op)
             counts[nm] = counts.get(nm, 0) + 1
-            if model is not None:
-                cost += model.cost.get(op, float('nan'))
+            if cost_of is not None:
+                cost += cost_of.get(op, float('nan'))
         return {'G': len(self.gates), 'A': sum(1 for g in self.gates if g[0] in NONLINEAR_OPS),
                 'GD': max((lg[s] for s in self.outputs), default=0),
                 'AD': max((la[s] for s in self.outputs), default=0),
@@ -114,16 +115,24 @@ class Circuit:
                        self.in_names, self.out_names)
 
 
+_INPUT_TABLES = {}
+
+
 def input_tables(n):
-    N = 1 << n
-    tabs = []
-    for i in range(n):
-        bit = n - 1 - i
-        t = 0
-        for x in range(N):
-            if (x >> bit) & 1: t |= 1 << x
-        tabs.append(t)
-    return tabs
+    """Truth tables of the n inputs (a new list on every call; the tables are computed once per n:
+    the 2^n-step loop was most of the time of evaluating a small circuit)."""
+    tabs = _INPUT_TABLES.get(n)
+    if tabs is None:
+        N = 1 << n
+        tabs = []
+        for i in range(n):
+            bit = n - 1 - i
+            t = 0
+            for x in range(N):
+                if (x >> bit) & 1: t |= 1 << x
+            tabs.append(t)
+        tabs = _INPUT_TABLES[n] = tuple(tabs)
+    return list(tabs)
 
 
 def tables_from_values(n, m, table):
@@ -164,6 +173,8 @@ class Model:
                 raise SystemExit('model %s: unknown or unsupported gate %r' % (d.get('name'), nm))
             if not isinstance(c, (int, float)) or not math.isfinite(c) or c < 0:
                 raise SystemExit('model %s: gate %s has cost %r (must be finite and >= 0)' % (d.get('name'), nm, c))
+        if d.get('not_as', 'NOT') not in ('NOT', 'XNOR0'):      # review5 P8: a typo used to mean 'NOT' silently
+            raise SystemExit('model %s: not_as must be "NOT" or "XNOR0", got %r' % (d.get('name'), d.get('not_as')))
         if d.get('not_as') == 'XNOR0' and 'NOT' in d['gates'] and d['gates'].get('XNOR') != d['gates']['NOT']:
             raise SystemExit('model %s: NOT is written as XNOR(x, 0), so NOT and XNOR must cost the same' % d.get('name'))
         return cls(d['name'], d['gates'], d.get('not_as', 'NOT'), d.get('description', ''))
@@ -191,10 +202,23 @@ def to_kernel(c: Circuit) -> str:
 
 
 def from_kernel(text: str, name='circuit') -> Circuit:
+    """Read the kernel's .bfx text.  The structure is checked (review5 P5): a truncated file, a
+    forward or negative operand or an output outside the circuit raises ValueError instead of
+    giving an IndexError later or, for negative numbers, a silently different circuit."""
     toks = [ln.split() for ln in text.splitlines() if ln.strip() and not ln.startswith('#')]
-    n = int(toks[0][1]); m = int(toks[1][1]); g = int(toks[2][1])
-    gates = [tuple(int(t) for t in toks[3 + j]) for j in range(g)]
-    outs = [int(t) for t in toks[3 + g][1:]]
+    try:
+        if [t[0] for t in toks[:3]] != ['n', 'm', 'g']: raise ValueError('header lines n, m, g expected')
+        n = int(toks[0][1]); m = int(toks[1][1]); g = int(toks[2][1])
+        if len(toks) < 4 + g or toks[3 + g][0] != 'o': raise ValueError('%d gate lines and an o line expected' % g)
+        gates = [tuple(int(t) for t in toks[3 + j]) for j in range(g)]
+        outs = [int(t) for t in toks[3 + g][1:]]
+    except (IndexError, ValueError) as e:
+        raise ValueError('bad kernel circuit %s: %s' % (name, e)) from None
+    for j, gt in enumerate(gates):
+        if len(gt) != 3 or not 0 <= gt[0] <= 15 or not (0 <= gt[1] < n + j and 0 <= gt[2] < n + j):
+            raise ValueError('bad kernel circuit %s: gate %d = %s (op 0..15, operands defined earlier)' % (name, j, gt))
+    if len(outs) != m or not all(0 <= o < n + g for o in outs):
+        raise ValueError('bad kernel circuit %s: %d outputs declared, o line %s' % (name, m, outs))
     return Circuit(n, m, gates, outs, name)
 
 
@@ -203,13 +227,17 @@ _RANGE = re.compile(r'^([A-Za-z_][A-Za-z_0-9]*?)(\d+):([A-Za-z_][A-Za-z_0-9]*?)(
 
 
 def _expand(spec):
+    """Names of a declaration line.  As independent/verify.py reads them (review5 P4): commas
+    separate too, and a range written with a leading zero keeps its digit width (x00:x07)."""
     out = []
-    for tok in spec.split():
+    for tok in spec.replace(',', ' ').split():
         mm = _RANGE.match(tok)
         if mm and mm.group(1) == mm.group(3):
-            lo, hi = int(mm.group(2)), int(mm.group(4))
+            s = mm.group(2)
+            width = len(s) if (len(s) > 1 and s.startswith('0')) else 0
+            lo, hi = int(s), int(mm.group(4))
             step = 1 if hi >= lo else -1
-            out += ['%s%d' % (mm.group(1), k) for k in range(lo, hi + step, step)]
+            out += ['%s%s' % (mm.group(1), str(k).zfill(width)) for k in range(lo, hi + step, step)]
         else:
             out.append(tok)
     return out
@@ -219,28 +247,47 @@ def read_ncff(path_or_text, name=None) -> Circuit:
     """Read an NCFF / NIST .slp circuit.  Constant operands are folded: XNOR t a 0 -> NOT a,
     XOR t a 1 -> NOT a, XOR t a 0 -> wire alias; other constant uses raise ValueError."""
     text = Path(path_or_text).read_text(encoding='utf-8') if '\n' not in str(path_or_text) else path_or_text
-    inputs = outputs = None; body = False; ops = []; cname = name or 'circuit'
+    inputs = outputs = None; body = False; ops = []; cname = name or 'circuit'; ncirc = 0
     for raw in text.splitlines():
         ln = re.split(r'[%#]', raw, 1)[0].strip()
         if not ln: continue
         low = ln.lower()
-        if low.startswith('begin circuit'): cname = name or ln.split(None, 2)[2]; continue
-        if low.startswith('inputs:'): inputs = _expand(ln.split(':', 1)[1]); continue
-        if low.startswith('outputs:'): outputs = _expand(ln.split(':', 1)[1]); continue
+        if low.startswith('begin circuit'):
+            ncirc += 1
+            if ncirc > 1: break                  # review5 P4: the first circuit only, as independent/verify.py
+            cname = name or (ln.split(None, 2) + ['circuit'])[2]; continue
+        if low.startswith('inputs:'): inputs = (inputs or []) + _expand(ln.split(':', 1)[1]); continue
+        if low.startswith('outputs:'): outputs = (outputs or []) + _expand(ln.split(':', 1)[1]); continue
         if low == 'begin slp': body = True; continue
         if low == 'end slp': body = False; continue
         if body: ops.append(ln.split())
+    # review5 P4: malformed files give a ValueError that names the problem (they used to give a
+    # TypeError / KeyError, or, for a wire assigned twice, silently the later definition)
+    if not inputs or not outputs:
+        raise ValueError('circuit %s: no Inputs: or no Outputs: line' % cname)
+    if len(set(inputs)) != len(inputs):
+        raise ValueError('circuit %s: an input is declared twice' % cname)
     sig = {nm: i for i, nm in enumerate(inputs)}
     n = len(inputs); gates = []
     alias = {}
 
-    def ref(t):
+    def ref(t, tok):
         if t in ('0', '1'): return t
-        t = alias.get(t, t)
-        return sig[t] if not isinstance(t, int) else t
+        if t in alias:
+            if alias[t] is None: raise ValueError('constant wire used in %s' % ' '.join(tok))
+            return alias[t]
+        if t not in sig: raise ValueError('operand %s is not defined before %s' % (t, ' '.join(tok)))
+        return sig[t]
 
     for tok in ops:
-        op = tok[0].upper(); out = tok[1]; args = [ref(a) for a in tok[2:]]
+        op = tok[0].upper()
+        if op not in OPS and op != 'BUF':
+            raise ValueError('unknown gate %s' % ' '.join(tok))
+        if len(tok) != (3 if op in ('NOT', 'BUF') else 4):
+            raise ValueError('wrong number of operands in %s' % ' '.join(tok))
+        out = tok[1]; args = [ref(a, tok) for a in tok[2:]]
+        if out in sig or out in alias or out in ('0', '1'):
+            raise ValueError('wire %s is assigned twice (or is an input) in %s' % (out, ' '.join(tok)))
         if op in ('BUF',):
             alias[out] = args[0] if isinstance(args[0], int) else None; continue
         if op == 'NOT':
@@ -258,7 +305,7 @@ def read_ncff(path_or_text, name=None) -> Circuit:
         code, a, b = canonical(code, a, b)
         sig[out] = n + len(gates); gates.append((code, a, b))
     outs = [alias.get(o, sig.get(o)) for o in outputs]
-    if any(o is None for o in outs): raise ValueError('unassigned output')
+    if any(o is None for o in outs): raise ValueError('unassigned (or constant) output')
     return Circuit(n, len(outputs), gates, outs, cname, list(inputs), list(outputs))
 
 
@@ -272,13 +319,18 @@ def write_ncff(c: Circuit, model: Model | None = None, comments=()) -> str:
     for j, s in enumerate(c.outputs):
         if s >= c.n and s not in out_owner: out_owner[s] = c.out_names[j]
     lines_body = []; k = 0
-    lv = [0] * c.n
+    # review5 P3: internal wires are t1, t2, ... unless an input or output already has such a name
+    # (then t_1, t__1, ...); a collision used to give a file that reads back as another circuit
+    taken = set(c.in_names) | set(c.out_names)
+    if len(taken) != c.n + c.m or taken & {'0', '1'}:
+        raise ValueError('write_ncff: input/output names must be distinct and not 0 or 1')
+    pre = 't'
+    while any(re.fullmatch(re.escape(pre) + r'\d+', x) for x in taken): pre += '_'
     for j, (op, a, b) in enumerate(c.gates):
         s = c.n + j
         nm = out_owner.get(s)
-        if nm is None: k += 1; nm = 't%d' % k
+        if nm is None: k += 1; nm = '%s%d' % (pre, k)
         name_of[s] = nm
-        lv.append(1 + max(lv[a], lv[b]))
         if op == 3:
             if model is not None and model.not_as == 'XNOR0':
                 lines_body.append('XNOR %s %s 0' % (nm, name_of[a]))
@@ -289,7 +341,6 @@ def write_ncff(c: Circuit, model: Model | None = None, comments=()) -> str:
     for j, s in enumerate(c.outputs):
         if name_of.get(s) != c.out_names[j]:
             lines_body.append('BUF %s %s' % (c.out_names[j], name_of[s]))
-    internal = ['t%d' % i for i in range(1, k + 1)]
     head = ['%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux', '',
             'begin circuit %s' % c.name, '']
     for cm in comments: head.append('  %% %s' % cm)
@@ -302,6 +353,6 @@ def write_ncff(c: Circuit, model: Model | None = None, comments=()) -> str:
         ' '.join('%s=%d' % kv for kv in counts.items()),
         ('; cost %s under model %s' % (m['cost'], model.name)) if model else ''))
     head += ['', 'Inputs: ' + ' '.join(c.in_names), 'Outputs: ' + ' '.join(c.out_names)]
-    if internal: head.append('Internal: t1:t%d' % k)
+    if k: head.append('Internal: %s1:%s%d' % (pre, pre, k))
     head += ['GateSyntax: GateName Output Inputs', '', 'begin SLP']
     return '\n'.join(head + lines_body + ['end SLP', 'end circuit']) + '\n'

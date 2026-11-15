@@ -19,5 +19,5 @@ if (src / 'funcbank').exists():
     shutil.copytree(src / 'funcbank', dst / 'funcbank', dirs_exist_ok=True)
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from boolflux.hub.archive import Archive   # noqa: E402
-ar = Archive(dst); ar._save_cells()
+ar = Archive(dst); ar._save_cells(); ar.write_index()
 print('records', n, 'cells', len(ar.cells), 'front', len(ar.front()))

@@ -17,6 +17,8 @@ SEEDS = [1, 2, 3, 4, 5]
 
 
 def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):      # review5 P16
+        print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
     out = Path(sys.argv[1])
     only = sys.argv[sys.argv.index('--only') + 1].split(',') if '--only' in sys.argv else ['L', 'N', 'A', 'X', 'F']
     tag = sys.argv[sys.argv.index('--tag') + 1] if '--tag' in sys.argv else 'v1'

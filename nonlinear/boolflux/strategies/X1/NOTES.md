@@ -128,3 +128,14 @@ Facts:
   g124's 10 stage-1 products; dim U 7, U cap U_g124 = 6, U new (ae8547e553f6), jc(U) 3, c5(U) 1, **9-cover(U) True**.
   The extra (28th) AND sits in the last layer (NIST AD5: 10+5+13, NIST AD4: 9+6+13).  A 13-member last layer over
   this prefix would give 27; H1 (exact 14 -> 13) and H3 (slack-1 windows) take it from here (coordinator 03:2x).
+- c29 totals (03:17-06:10 UTC, CPU 10, 97 runs of 90 s + filter/polish; starts H3 A28, 6 hub-best A29, 2 NIST A29,
+  6 NIST A28 + pool): 70 runs from A28, 27 from A29 (each best/ A29 >= 2 runs, H3 g210 2 runs).  [H] no 27, no
+  A29 -> 28 reduction, no reduction at all.  496 new product spans, 14 new U (registry 6 -> 20,
+  X1/x1b/uregistry-tonight.json): 12 of profile 9|1|2|2|14 with 9-cover(U) True and c5(U) = 1, 2 of profile
+  10|1|2|2|13 without cover.  The 9+5+14 circuits were reached from NIST g128 (first) and NIST g124
+  directly.  [C, the first 11] they have only 2 distinct 9+5 prefixes (per-level spans L1..L4: P1 shares 21
+  product dims with g124, P2 shares 27).  Found files (all aes_check OK): X1/x1b/c29/found/*-C9* (11) + span-2cabef6153f4.
+  Lowest G of the family: 28/5/156/28 (span-14c7c805276a-NU-C9).
+- Profiles seen among the new spans (all verified circuits, any U): 10|1|2|2|13, 9|1|2|2|14, 9|1|2|2|15 (A29),
+  10|2|4|13 (A29), 9|2|4|14 (A29), 10|2|3|4|10 (A29), 10|1|2|3|12, 9|2|3|4|11, 10|2|3|5|9, 10|1|3|2|13, 9|2|3|5|10.
+- Overnight: QUEUE.md "X1b" (queue_x1b.sh, registry uregistry-tonight.json).

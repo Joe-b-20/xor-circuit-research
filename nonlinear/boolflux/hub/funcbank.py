@@ -15,7 +15,10 @@ class FuncBank:
     def __init__(self, root):
         self.dir = Path(root) / 'funcbank'; self.dir.mkdir(parents=True, exist_ok=True)
         self.f = self.dir / 'bank.json'
-        self.bank = json.loads(self.f.read_text()) if self.f.exists() else {}
+        try:
+            self.bank = json.loads(self.f.read_text()) if self.f.exists() else {}
+        except ValueError:                 # a damaged bank is rebuilt by later admissions; the archive is the truth
+            self.f.replace(self.f.with_suffix('.json.damaged')); self.bank = {}
         self.dirty = 0
 
     def add_circuit(self, c, ident):

@@ -5,9 +5,10 @@ degree >= 2 is one AND of the monomial without its highest variable (built the s
 shared between outputs) and that variable; XOR sums are balanced trees; a constant-1 ANF term
 complements the last XOR (XNOR) or adds a NOT.  Uses AND, XOR, XNOR (and NOT).
 
-``anf-or``: the same but every two-input XOR is written with the model's gates when XOR is not
-allowed: XOR(a,b) = OR(ANDN(a,b), ANDN(b,a)) or = AND(OR(a,b), NAND(a,b)).  Only used for
-libraries without XOR.
+When the model lacks one of these gates, ``anf`` rewrites the circuit with fixed templates
+(``translate``): XOR(a,b) = XNOR(a, NOT b), or OR(ANDN(a,b), ANDN(b,a)), or AND(OR(a,b), NAND(a,b)),
+or four NANDs; AND = NOT(NAND) or NOR of the complements; NOT = NAND(a,a) or NOR(a,a).  There is
+no separate ``anf-or`` start (an earlier docstring named one).
 """
 from __future__ import annotations
 

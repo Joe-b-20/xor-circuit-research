@@ -1,6 +1,6 @@
 """Render a kernel move trace: the improving moves, with the circuit before and after each.
 
-    python3 nonlinear/boolflux/bench/show_trace.py MOVES.txt [--names x0,x1,...] [--max N]
+    python3 nonlinear/boolflux/bench/show_trace.py MOVES.txt [--max N]
 
 MOVES.txt is the file written by the gate kernel's `tracemoves` setting; for every improving
 move the kernel also wrote MOVES.txt.it<N>.before / .after (kernel circuit format).  Signals are
@@ -37,6 +37,8 @@ def by_function(c):
 
 
 def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):      # review5 P16
+        print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
     path = Path(sys.argv[1]); mx = int(sys.argv[sys.argv.index('--max') + 1]) if '--max' in sys.argv else 99
     shown = 0
     for line in path.read_text().splitlines():

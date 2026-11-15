@@ -12,7 +12,6 @@ column are the best under the run's own objective (review3 m10), shown by their 
 """
 import json
 import statistics as st
-sys_path_done = False
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -162,8 +161,9 @@ def nonlinear(runs, prefix, title):
 
 
 def main():
-    from pathlib import Path as _P
-    sys.path.insert(0, str(_P(__file__).resolve().parents[2]))
+    if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):      # review5 P16
+        print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
     runs = load(sys.argv[1:])
     errs = [r for r in runs if r.get('error')]
     print('%d runs, %d with errors, %d verified\n' % (len(runs), len(errs), sum(1 for r in runs if r.get('verified'))))

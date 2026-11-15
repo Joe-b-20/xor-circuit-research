@@ -4,11 +4,14 @@
     taskset -c 0 python3 nonlinear/boolflux/campaigns/curate_aes.py [--dry-run]
 
 Selection is best_table.py's: every candidate it collects (results/aes, each track's found/, the
-main track's best.circ.txt, track E's admitted pools), first circuit per (A, AD, G, GD) tuple, kept
-when no pinned NIST forward circuit has all four metrics <= (equality counts as dominated) and no
-other candidate strictly dominates it.  In addition, a distinct circuit at a surviving tuple is kept
-once per track (so a tuple reached independently by two tracks is recorded twice).  Tuples already
-in results/aes are skipped.  Each selected circuit is re-verified (aes_check: both verifiers, all
+main track's best.circ.txt, track E's admitted pools, the hub archives), first circuit per
+(A, AD, G, GD) tuple, kept when no pinned NIST forward circuit has all four metrics <= (equality
+counts as dominated) and no other candidate strictly dominates it.  In addition, a distinct circuit
+at a surviving tuple is kept once per track (so a tuple reached independently by two tracks is
+recorded twice); the same gate list found under two tracks (a track's circuit ingested by the hub)
+is one circuit and is recorded once, under the track that comes first.  Tuples already in
+results/aes are skipped.  A selected circuit whose provenance cannot be described (missing
+sidecar, unknown folder) is not written; it is listed and the exit status is 1.  Each selected circuit is re-verified (aes_check: both verifiers, all
 256 inputs) and written as
 
     results/aes/aes-nist-<track>-<mechanism>-g<G>-a<A>-gd<GD>-ad<AD>.circ.txt   (NCFF, NOT as XNOR t a 0)
@@ -22,6 +25,7 @@ Campaign folders are only read.  Run campaigns/manifest.py afterwards.
 """
 import hashlib
 import json
+import re
 import shutil
 import sys
 import time
@@ -36,6 +40,7 @@ import best_table as BT                    # noqa: E402
 from boolflux import core                  # noqa: E402
 
 C = BT.C
+HUB = Path.home() / 'xs-campaigns' / '2026-11-14-hub'
 RES = PKG / 'results' / 'aes'
 MODEL = core.Model.load('nist')
 HOME = str(Path.home())
@@ -59,7 +64,9 @@ def file_sha(p):
 
 
 def strategy_version(track, names):
-    """strategies/ is not committed: record the sha256 of the scripts as they are now."""
+    """sha256 of the track's scripts as they are NOW, at curation.  The AES-push campaigns recorded
+    no code version per job, so this is not what ran (manifest.py says so in
+    code_version_recorded and compares the hashes with the commit that archived the scripts)."""
     d = PKG / 'strategies' / track
     return {n: (sha((d / n).read_bytes())[:12] if (d / n).exists() else None) for n in names}
 
@@ -69,11 +76,75 @@ def load_circuit(f):
 
 
 def track_of(f):
+    """'results', the track folder of the AES-push campaign (C, D, E, F, main), 'hub' for a hub
+    archive, else 'other' (review5 P12: every hub archive file used to raise ValueError here, so
+    the tool stopped as soon as best_table.candidates() included the hub)."""
     s = str(f)
     if s.startswith(str(RES)):
         return 'results'
-    rel = Path(s).relative_to(C)
-    return rel.parts[0]
+    for root, name in ((C, None), (HUB, 'hub')):
+        try:
+            rel = Path(s).relative_to(root)
+        except ValueError:
+            continue
+        return name or rel.parts[0]
+    return 'other'
+
+
+# ---- hub archives: lineage from the archive's own sidecars ---------------------------------
+def hub_lineage(adir, i, depth=0, budget=None):
+    """Ancestry of archive id `i` from ARCHIVE/<id>.json (parents, operator), at most 4 levels and
+    40 nodes; what is cut off is named in parents_not_expanded (the archive keeps the rest)."""
+    budget = [40] if budget is None else budget
+    budget[0] -= 1
+    j = Path(adir) / (i + '.json')
+    if not j.exists():
+        return {'id': i, 'unresolved': True}
+    d = json.loads(j.read_text())
+    st = d.get('operator_settings') or {}
+    out = {'id': i, 'metrics_A_AD_G_GD': [d.get(k) for k in ('A', 'AD', 'G', 'GD')], 'operator': d.get('operator')}
+    if st.get('file'):                       # seed / ingest: a circuit file from outside the archive
+        out['file'] = tilde(st['file'])
+    par = d.get('parents') or []
+    if par and (depth >= 4 or budget[0] < len(par)):
+        out['parents_not_expanded'] = par
+    elif par:
+        out['parents'] = [hub_lineage(adir, q, depth + 1, budget) for q in par]
+    return out
+
+
+def describe_hub(f, m):
+    adir = f.parent; camp = adir.parent
+    sd = json.loads(f.with_suffix('.json').read_text())
+    op = sd.get('operator') or 'unknown'
+    st = sd.get('operator_settings') or {}
+    caps = st.get('caps') or {}
+    par = sd.get('parents') or []
+    rr = camp / 'runs' / ('%s.json' % sd.get('run_id'))
+    cmd = None
+    if sd.get('run_id') and rr.exists():
+        cmd = ' '.join(map(str, json.loads(rr.read_text()).get('command') or [])).replace(HOME, '~') or None
+    extra = ', '.join('%s %s' % (k, st[k]) for k in ('front', 'back', 'LX', 'LY', 'interface_gates', 'lowered') if st.get(k) is not None)
+    lin = hub_lineage(adir, f.stem)
+    s = {'mechanism': 'hub operator %s%s (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign %s'
+                      % (op, ' (%s)' % extra if extra else '', tilde(camp)),
+         'mech_short': re.sub(r'[^a-z0-9]', '', op.lower()) or 'op',
+         'command': cmd or 'hub operator %s on archive %s (no run record: %s)' % (op, tilde(camp), sd.get('run_id')),
+         'run_record': tilde(rr) if rr.exists() else tilde(camp),
+         'parents': lin.get('parents') or ([{'file': lin['file']}] if lin.get('file') else []),
+         'start': (tilde(adir / (par[0] + '.bfx')) if par else tilde(st.get('file') or f)),
+         'objective': st.get('objective') or 'construction',
+         'caps': {k: caps.get(k) for k in ('GD', 'AD', 'A')},
+         'seeds': [sd.get('seed')] if sd.get('seed') is not None else [], 'iters': None, 'rounds': None,
+         'time_to_result_s': {'job_wall_s': sd.get('wall_s'), 'job_cpu_s': sd.get('cpu_s'),
+                              'within_job_s': st.get('t_last_improvement'), 'job_budget_s': st.get('seconds'),
+                              'admitted_unix_time': sd.get('t_admit')},
+         'code_version': {'hub (git commit + hash of uncommitted changes)': sd.get('code_version')},
+         'reproduction': ('copied into the archive from %s' % tilde(st['file']) if st.get('file') and not par
+                          else 'one-off: hub job (operator %s, seed %s, %s s budget; not bit-reproducible); not re-run'
+                          % (op, sd.get('seed'), st.get('seconds')))}
+    s['campaign_sidecar_src'] = f.with_suffix('.json')
+    return s
 
 
 # ---- track E memetic runs: resolve a pool hash to its origin ------------------------------
@@ -186,6 +257,8 @@ def describe_memetic(rdir, h, m):
 def describe(f, m):
     """Provenance of one campaign circuit, from its sidecar."""
     tr = track_of(f)
+    if tr == 'hub':
+        return describe_hub(f, m)
     side = None
     if f.suffix == '.bfx':
         side = f.with_suffix('.json')
@@ -256,34 +329,43 @@ def describe(f, m):
 
 
 def main():
+    if any(a in ('-h', '--help') for a in sys.argv[1:]) or any(a != '--dry-run' for a in sys.argv[1:]):
+        print(__doc__.strip())
+        return 0 if any(a in ('-h', '--help') for a in sys.argv[1:]) else 2
     dry = '--dry-run' in sys.argv
     pub = AC.published()
     cands = BT.candidates()
-    seen, per_track = {}, {}
-    for f in cands:
-        try:
-            c = load_circuit(f); m = c.metrics(MODEL)
-        except Exception:
-            continue
-        t = (m['A'], m['AD'], m['G'], m['GD'])
-        seen.setdefault(t, (f, c, m))
-        k = core.to_kernel(c)
-        per_track.setdefault((t, track_of(f)), {}).setdefault(k, (f, c, m))
-    new = {t for t in seen if not any(BT.le(u, t) for u, _ in pub)}
-    pareto = {t for t in new if not any(u != t and BT.le(u, t) for u in new)}
+    # review5 P12/P13: byte-identical files are parsed once (BT.scan); a circuit (gate list) belongs
+    # to the first track that holds it, so the same circuit is never curated under two tracks
+    by_tuple, skipped = BT.scan(cands, MODEL)
+    new, front = BT.pareto(by_tuple, [u for u, _ in pub])
+    pareto = set(front)
     have = set()
     for f in RES.glob('*.circ.txt'):
         m = core.read_ncff(str(f)).metrics(MODEL)
         have.add((m['A'], m['AD'], m['G'], m['GD']))
     pick = []
-    for (t, tr), circs in sorted(per_track.items()):
-        if t not in pareto or tr == 'results' or t in have:
-            continue
-        pick.append(next(iter(circs.values())))         # first circuit of that track at t
+    for t in sorted(pareto - have):
+        done = set()
+        for ent in by_tuple[t]:                         # distinct circuits, candidate order
+            tr = track_of(ent['file'])
+            if tr == 'results' or tr in done:
+                continue
+            done.add(tr)                                # first circuit of that track at t
+            c = load_circuit(ent['file'])
+            pick.append((ent['file'], c, c.metrics(MODEL)))
     now = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     print('%d Pareto tuples (best_table rule), %d already in results/aes, %d circuits to add' % (len(pareto), len(pareto & have), len(pick)))
-    for f, c, m in sorted(pick, key=lambda x: (x[2]['GD'], x[2]['G'])):
-        s = describe(f, m)
+    if skipped:
+        print('%d candidate file(s) could not be read as circuits (first: %s: %s)' % (len(skipped), tilde(skipped[0][0]), skipped[0][1][:120]))
+    undescribed = []
+    for f, c, m in sorted(pick, key=lambda x: (x[2]['GD'], x[2]['G'], str(x[0]))):
+        try:
+            s = describe(f, m)
+        except Exception as e:                          # not written, not hidden: listed, exit status 1
+            undescribed.append((f, repr(e)))
+            print('  NO PROVENANCE, not curated: %s (%s)' % (tilde(f), repr(e)[:160]))
+            continue
         tr = track_of(f)
         caps = s.get('caps') or {}
         if any(v is not None and m[k] > v for k, v in caps.items()):
@@ -291,10 +373,16 @@ def main():
             s['job_caps'] = caps
             s['caps'] = {'GD': None, 'AD': None, 'A': None}
             s['note'] = 'the job did not meet its caps (job_caps); the circuit is recorded without caps'
+            s['mechanism'] += ' -- CAPS NOT MET by this job (%s): the circuit is the best state of a run that never came within its caps, recorded without caps' % '; '.join(
+                'cap %s %s, circuit %s %s' % (k, v, k, m[k]) for k, v in caps.items() if v is not None and m[k] > v)
         base = 'aes-nist-%s-%s-g%d-a%d-gd%d-ad%d' % (tr, s.pop('mech_short'), m['G'], m['A'], m['GD'], m['AD'])
         dst = RES / (base + '.circ.txt')
         print('  %-48s <- %s' % (dst.name, tilde(f)))
         if dry:
+            continue
+        if dst.exists():                                # never overwrite a curated result
+            undescribed.append((f, 'target name exists'))
+            print('  NOT WRITTEN: %s already exists' % dst.name)
             continue
         side = s.pop('campaign_sidecar_src')
         c.name = base
@@ -317,7 +405,8 @@ def main():
             shutil.copy(side, RES / (base + '.campaign.json'))
             summ['campaign_sidecar'] = base + '.campaign.json'
         (RES / (base + '.summary.json')).write_text(json.dumps(summ, indent=1, default=str) + '\n', encoding='utf-8')
+    return 1 if undescribed else 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
