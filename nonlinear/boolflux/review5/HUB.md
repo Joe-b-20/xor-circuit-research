@@ -1,5 +1,10 @@
 # Review 5: hub (`nonlinear/boolflux/hub/`), agent C3, 2026-11-15
 
+C3 stopped at a usage limit with H21 (cleanup before admission) half done (`common.clean`,
+`Archive.reclean_legacy` and an opt-in `clean_first`, uncommitted, not called by the scheduler, no
+tests) and H22 (kernel_bin temp name) not started. Agent C23 finished both with tests (03:00-05:30
+UTC); see H21 and H22 below.
+
 Scope: SPEC.md, archive.py, common.py, funcbank.py, join.py, joinplus.py, ops.py, scheduler.py,
 op_*.py, trb_impl.py, compare.py, compare2.py, snapshot.py, status.py, after_ab.py, ops/*.py, tests/.
 Evidence: the records of the 2026-11-14 campaign (`~/xs-campaigns/2026-11-14-hub/long`, 6134 jobs,
@@ -7,7 +12,7 @@ Evidence: the records of the 2026-11-14 campaign (`~/xs-campaigns/2026-11-14-hub
 `audit2.py` and the new `hub/lineage.py`. Labels: [C] = counted on those records or proved by a
 test; [H] = judgement.
 
-Tests: `hub/tests/test_review5_hub.py` (26 tests; the finding number is in each docstring).
+Tests: `hub/tests/test_review5_hub.py` (32 tests; the finding number is in each docstring).
 Commits on `boolflux-review5`: 9ef5530 (fixes + tests), 15dc579 (lineage tool), c8a41e1 (subclass
 compatibility), and the documentation commit that adds this file.
 
@@ -62,6 +67,18 @@ of the CPU time misdirected; **medium** = a failure that needs an unlucky event,
 | H18 | low | linres scanned the whole function bank (13185 functions, a Gaussian reduction each) in every rebuild try, although the result depends only on the layer. | ops/op_linres.py:96-100 | Cached per layer. ops/op_linres.py:97-105 | `test_linres_scans_the_bank_once_per_layer` |
 | H19 | low | A restart with the same `--seed` replayed the same choices (12 identical jobs) and started the bandit and the attempt counts from nothing. | scheduler.py:53, 58-59 | RNG seeded with (seed, last run number); history, attempts and join marks restored from `stats.jsonl`. scheduler.py:102, 148-172 | `test_finish_lineage_and_failures` (part 6) |
 | H20 | low | When the bandit's best operator had no free target the CPU stayed idle and the same choice was made again half a second later. `ad3_share` was undone when the near pool replaced the pool. Front, run files and the lock-free `cells.json` tmp name were not written atomically. | scheduler.py:172-185, 238, 250 | Fallback to the other operators by score; AD3 filter applied after the near choice; atomic writes with per-process tmp names. scheduler.py:406-447 | `test_launch_falls_back_cuts_to_the_end_and_never_reuses_a_job_dir` |
+| H21 | high | [C, C1's finding, recounted] 172 of 2311 archived circuits of `long` hold a structurally duplicate AND (same operation, same operands), so their true A is one lower: 1b706c348e80 is recorded 30/4/144/17 and is 29/4/143/17. Candidates were admitted as the operators wrote them (join and trb outputs carried the copies). | archive.py:admit, scheduler.py:finish | `common.clean` (C3): identical gates merged in topological order (operand order ignored for symmetric gates, merges propagate), then dead gates dropped; the function is unchanged. `Archive.admit(clean_first=True)` (default; C23): the archive stores, measures, verifies and places the cleaned circuit; `operator_settings` keeps `cleaned_from` (id of the text as given) and `raw_metrics`. `finish` records `cleaned_metrics` in the run outcome, gives the function bank the stored circuit and renews caps with the cleaned tuple. `Scheduler.reclean` at every start (once per record, `archive/cleaned.json`): an old record whose cleaned metrics differ is logged (`legacy-clean`: id, recorded, cleaned, status, new id) and its cleaned circuit admitted as a new record, operator `clean`, parent = the old record; old record files are not rewritten. | `test_clean_merges_identical_gates_and_drops_dead_ones`, `test_candidates_are_cleaned_before_admission`, `test_finish_admits_the_cleaned_candidate`, `test_legacy_records_are_cleaned_once_with_lineage`, `test_the_reported_example_of_the_long_campaign` |
+| H22 | medium | `ops.kernel_bin` compiled into `ARCHIVE/bin/bfx-<hash>.tmp`, one name for every builder: two operators that found the binary missing (first jobs after a kernel change) wrote the same file and could rename the other's half-written binary into place. | ops.py:34-44 | `mkstemp` in the bin folder (a name per build), `chmod 755`, `os.replace`; a failed build removes its file. (`cli.build_kernel`, same pattern: PYTHON.md P25.) | `test_kernel_bin_unique_temporary_and_atomic_rename` |
+
+## H21 on the `long` archive (C23, a copy, read-only on the original)
+
+[C, `~/xs-campaigns/2026-11-15-study/C23/C23-count-clean.py` and `reclean_copy.py` on a copy of
+`~/xs-campaigns/2026-11-14-hub/long/archive`]: 2311 records; 172 change under cleanup, all by exactly
+one AND (G by 1 or 2); none changes only in G. `reclean_legacy` on the copy: 93 cleaned circuits are new
+records, 65 are `duplicate-structure` and 14 `duplicate` of circuits already archived (the operators had
+found the clean version too); no new front tuple, no front tuple lost, gain 0 for all. The lowest cleaned
+tuples are A28 ones (28/4/134/24, 28/5/126/30, 28/5/130/20, 28/5/132/20), all dominated by the front.
+First start on `long`: about 19 s wall (8 s CPU) on the shared CPU 12, then nothing on later starts.
 
 ## Tuple-cap renewal (follow-up, behind a flag)
 
@@ -133,6 +150,7 @@ of the long archive.
         --ops polish,pull,join,trb,osc,gen_skel
 
 `--cpus` is not needed (the xsrun list is used). The first start on the old archive does the one-off structure keys, cell deduplication (event
-`cells-deduplicated`) and index, and reads the 6134 old run files for the attempt counts (not timed on
+`cells-deduplicated`), the H21 cleanup of old records (events `legacy-clean`, `legacy-cleaned`; 172
+records, 93 new `clean` records) and index, and reads the 6134 old run files for the attempt counts (not timed on
 a free CPU). Old
 behaviour for an A/B arm: `--gain legacy --target-mode id --join-mode legacy --tuple-caps ''`.

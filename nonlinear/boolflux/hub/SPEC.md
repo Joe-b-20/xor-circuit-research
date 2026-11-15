@@ -92,6 +92,13 @@ code version, seed, settings, parents, timing, outcome).
   `index.jsonl` (one record per line, appended on admission) are caches: the cells are recomputed from
   the records on every load. Only the scheduler admits (one scheduler per campaign directory,
   `scheduler.lock`); operators open the archive read-only.
+- **Cleaned before admission.** Every candidate is cleaned first (`common.clean`: gates with the same
+  operation and operands merged, dead gates dropped); the archive stores, measures and places the
+  cleaned circuit, and the record keeps `cleaned_from` and `raw_metrics` in `operator_settings`. Old
+  records whose cleaned metrics differ (172 of 2311 in `long`, one AND each) are logged on the
+  scheduler's first start (event `legacy-clean`) and their cleaned circuits admitted as new records
+  (operator `clean`, parent = the old record, once per record: `archive/cleaned.json`); no record file
+  is rewritten.
 - **Distinct structures.** A circuit whose DAG equals an archived one up to gate order and operand
   order of symmetric gates (`common.structure_key`, record field `skey`) is refused as
   `duplicate-structure`. An archive filled before this rule is deduplicated in its cells on the
