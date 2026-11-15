@@ -290,20 +290,37 @@ static long max_iters = -1;
 
 static void die(const char *m) { fprintf(stderr, "bfx: %s\n", m); exit(2); }
 
+/* review5 K1: op number of a cost.N / gdw.N key; anything outside 0..15 wrote past the op tables */
+static int cfg_op(const char *t) {
+    char *e; long op = strtol(t, &e, 10);
+    if (e == t || *e || op < 0 || op > 15) { fprintf(stderr, "bfx: bad op number in config key (%s)\n", t); exit(2); }
+    return (int)op;
+}
 static void parse_config(const char *path) {
     FILE *f = fopen(path, "r"); if (!f) die("cannot open config");
-    char k[256], v[1024];
+    char k[256], v[1024], line[2048];
     for (int i = 0; i < 16; i++) { op_ok[i] = 0; op_cost[i] = 0; op_gdw[i] = 1; }
-    while (fscanf(f, "%255s %1023s", k, v) == 2) {
-        if (k[0] == '#') { int ch; while ((ch = fgetc(f)) != '\n' && ch != EOF); continue; }
+    /* review5 K1: one "key value" per line.  (The old token reader took the first word of the
+     * next line as the value of a one-word comment and then dropped the rest of that line.)
+     * Blank lines and lines starting with # are skipped; a path value is the rest of the line. */
+    while (fgets(line, sizeof line, f)) {
+        char *p = line + strspn(line, " \t\r\n");
+        if (!*p || *p == '#') continue;
+        if (sscanf(p, "%255s %1023s", k, v) != 2) { fprintf(stderr, "bfx: config key %s has no value\n", k); exit(2); }
+        if (!strcmp(k, "in") || !strcmp(k, "out") || !strcmp(k, "trace") || !strcmp(k, "tracemoves")) {
+            char *q = p + strlen(k); q += strspn(q, " \t");
+            size_t L = strlen(q); while (L && strchr(" \t\r\n", q[L - 1])) L--;
+            if (L > 1023) die("config: path too long");
+            memcpy(v, q, L); v[L] = 0;
+        }
         if (!strcmp(k, "in")) strcpy(cfg_in, v);
         else if (!strcmp(k, "out")) strcpy(cfg_out, v);
         else if (!strcmp(k, "trace")) strcpy(cfg_trace, v);
         else if (!strcmp(k, "seconds")) cfg_seconds = atof(v);
         else if (!strcmp(k, "iters")) max_iters = atol(v);
         else if (!strcmp(k, "seed")) cfg_seed = strtoull(v, 0, 10);
-        else if (!strncmp(k, "cost.", 5)) { int op = atoi(k + 5); op_ok[op] = 1; op_cost[op] = atof(v); }
-        else if (!strncmp(k, "gdw.", 4)) op_gdw[atoi(k + 4)] = atoi(v);
+        else if (!strncmp(k, "cost.", 5)) { int op = cfg_op(k + 5); op_ok[op] = 1; op_cost[op] = atof(v); }
+        else if (!strncmp(k, "gdw.", 4)) op_gdw[cfg_op(k + 4)] = atoi(v);
         else if (!strcmp(k, "w.cost")) w_cost = atof(v);
         else if (!strcmp(k, "w.g")) w_g = atof(v);
         else if (!strcmp(k, "w.a")) w_a = atof(v);
@@ -329,7 +346,11 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "stall_it")) stall_it = atof(v);
         else if (!strcmp(k, "max_excess")) max_excess = atof(v);
         else if (!strcmp(k, "uphill")) uphill = atof(v);
-        else if (!strncmp(k, "mv.", 3)) { for (int i = 0; i < NMOVES; i++) if (!strcmp(k + 3, MVNAME[i])) mv_w[i] = atof(v); }
+        else if (!strncmp(k, "mv.", 3)) {
+            int hit = 0;
+            for (int i = 0; i < NMOVES; i++) if (!strcmp(k + 3, MVNAME[i])) { mv_w[i] = atof(v); hit = 1; }
+            if (!hit) { fprintf(stderr, "bfx: unknown move %s\n", k); exit(2); }   /* review5 K1: was ignored */
+        }
         else if (!strcmp(k, "dmax")) dmax = atoi(v);
         else if (!strcmp(k, "pdiv")) pdiv = atoi(v);
         else if (!strcmp(k, "nl_samples")) nl_samples = atoi(v);
@@ -343,13 +364,15 @@ static void parse_config(const char *path) {
         else { fprintf(stderr, "bfx: unknown key %s\n", k); exit(2); }
     }
     fclose(f);
+    if (cand_cap < 1) die("cand_cap must be at least 1");
+    if (!cfg_in[0] || !cfg_out[0]) die("config needs in and out");
 }
 
 static void read_circuit(const char *path, Circ *c) {
     FILE *f = fopen(path, "r"); if (!f) die("cannot open circuit");
     int ng;
     if (fscanf(f, " n %d m %d g %d", &N, &M, &ng) != 3) die("bad circuit header");
-    if (N < 1 || N > MAXN || M < 1 || M > MAXM || ng > GCAP) die("circuit too large");
+    if (N < 1 || N > MAXN || M < 1 || M > MAXM || ng < 0 || ng > GCAP) die("circuit too large");
     W = N >= 6 ? 1 << (N - 6) : 1;
     LASTMASK = N >= 6 ? ~0ULL : ((1ULL << (1 << N)) - 1);
     c->ng = ng;
@@ -734,6 +757,7 @@ int main(int argc, char **argv) {
 
     int stats_only = !strcmp(argv[1], "--stats");
     if (stats_only) {
+        if (argc < 3) die("usage: bfx --stats CIRCUIT");
         for (int i = 0; i < 16; i++) { op_ok[i] = 1; op_cost[i] = 1; op_gdw[i] = 1; }
         strcpy(cfg_in, argv[2]);
     } else parse_config(argv[1]);
@@ -826,8 +850,14 @@ int main(int argc, char **argv) {
         st_cands[mv] += ncand;
         /* evaluate all candidates; take the best improvement, else a random one under Metropolis */
         int bi = -1, bfeas = 0; Metrics m, bm;
-        static int order[1024], neu[1024], up[1024]; static double upd[1024];
-        int no = ncand < 1024 ? ncand : 1024, nneu = 0, nup = 0;
+        /* review5 K2: these were fixed 1024-entry arrays, so with cand_cap > 1024 the candidates
+         * past the first 1024 were kept but never evaluated */
+        static int *order, *neu, *up; static double *upd;
+        if (!order) {
+            order = malloc(sizeof(int) * (cand_cap + 1)); neu = malloc(sizeof(int) * (cand_cap + 1));
+            up = malloc(sizeof(int) * (cand_cap + 1)); upd = malloc(sizeof(double) * (cand_cap + 1));
+        }
+        int no = ncand, nneu = 0, nup = 0;
         for (int i = 0; i < no; i++) order[i] = i;
         for (int i = no - 1; i > 0; i--) { int j = rndint(i + 1); int x = order[i]; order[i] = order[j]; order[j] = x; }
         for (int q = 0; q < no; q++) {
@@ -847,12 +877,12 @@ int main(int argc, char **argv) {
         if (accept >= 0) {
             if (tmv) {
                 Cand *k = &CAND[accept]; Gate *gs = &cur.g[s - N];
-                fprintf(tmv, "it %ld t %.4f mv %s target s%d=%s(s%d,s%d) mffc_cost %.2f care %d/%d cands %d | new %d gate(s):",
+                fprintf(tmv, "it %ld t %.4f mv %s target s%d=%s(s%d,s%d) mffc_cost %.10g care %d/%d cands %d | new %d gate(s):",
                         it, t, MVNAME[mv], s, OPNAME[gs->op], gs->a, gs->b, mc, popc_care(), patterns(), ncand, k->k);
                 for (int q = 0; q < k->k; q++) fprintf(tmv, " n%d=%s(%s%d,%s%d)", q, OPNAME[k->g[q].op],
                     k->g[q].a >= N + cur.ng ? "n" : "s", k->g[q].a >= N + cur.ng ? k->g[q].a - N - cur.ng : k->g[q].a,
                     k->g[q].b >= N + cur.ng ? "n" : "s", k->g[q].b >= N + cur.ng ? k->g[q].b - N - cur.ng : k->g[q].b);
-                fprintf(tmv, " root %s%d | before cost %.2f G %d A %d GD %d AD %d", k->root >= N + cur.ng ? "n" : "s",
+                fprintf(tmv, " root %s%d | before cost %.10g G %d A %d GD %d AD %d", k->root >= N + cur.ng ? "n" : "s",
                         k->root >= N + cur.ng ? k->root - N - cur.ng : k->root, mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
             }
             Circ *before = tmv ? &tmp_before : 0;
@@ -861,7 +891,7 @@ int main(int argc, char **argv) {
             circ_copy(&cur, &cand_c); state_refresh();
             int newbest = (mcur.feas || !mbest.feas) && (mcmp(&mcur, &mbest) < 0 || (mcur.feas && !mbest.feas));
             if (tmv) {
-                fprintf(tmv, " -> after cost %.2f G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
+                fprintf(tmv, " -> after cost %.10g G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
                 if (newbest) {
                     char fn[1200];
                     snprintf(fn, sizeof fn, "%s.it%ld.before", cfg_tracemoves, it); write_circuit(fn, before, &mprev, "before");
@@ -878,7 +908,7 @@ int main(int argc, char **argv) {
                        mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj);
                 fflush(stdout);
             }
-            if (trace) fprintf(trace, "%.3f %ld %s %.4f %d %d %d %d\n", t, it, MVNAME[mv], mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
+            if (trace) fprintf(trace, "%.3f %ld %s %.10g %d %d %d %d\n", t, it, MVNAME[mv], mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
         }
         st_time[mv] += now_s() - tm;
     }
