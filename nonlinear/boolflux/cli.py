@@ -121,10 +121,16 @@ def verify_file(path, target, model_name, caps=None):
     nbuf = (im.get('counts') or {}).get('BUF', 0)
     if nbuf:
         im['counts'] = {k: v for k, v in im['counts'].items() if k != 'BUF'}
-    counts = dict(mt['counts'])
-    if model.not_as == 'XNOR0' and 'NOT' in counts:     # written as XNOR t a 0 in the file
-        counts['XNOR'] = counts.get('XNOR', 0) + counts.pop('NOT')
-    agree = all(im.get(k) == mt[k] for k in ('G', 'A', 'GD', 'AD')) and im.get('counts') == dict(sorted(counts.items()))
+    def fold(cn):
+        # under a NOT-as-XNOR0 model a NOT may be written `XNOR t a 0` (our files) or `NOT t a`
+        # (NIST-format copies); core reads both as NOT, the independent verifier counts what is
+        # written, so both sides are compared with NOT counted as XNOR.  review5 P19: only core's
+        # side was folded, and every file with an explicit NOT failed with identical metrics.
+        cn = dict(cn or {})
+        if model.not_as == 'XNOR0' and 'NOT' in cn:
+            cn['XNOR'] = cn.get('XNOR', 0) + cn.pop('NOT')
+        return dict(sorted(cn.items()))
+    agree = all(im.get(k) == mt[k] for k in ('G', 'A', 'GD', 'AD')) and fold(im.get('counts')) == fold(mt['counts'])
     if lib_ok and ind.get('ok'):
         agree = agree and abs(float(im.get('cost', -1)) - mt['cost']) < 1e-6
     return {'file': str(path), 'core_ok': ok1, 'library_ok': lib_ok, 'buf_lines': nbuf,
@@ -696,9 +702,10 @@ def build_parser():
                        description='One search per seed with a wall-time budget (the loop of bench/bench.py, '
                                    'workflow.py): --config gate = one gate-kernel run; --config full = rounds of '
                                    'skeleton stage, rebuild and gate stage.  Time-budgeted, so not bit-reproducible.\n'
-                                   'The measured workflows: gate: --config gate; rebuild + gate (bench v3/v4 "full"): '
-                                   '--config full --skel-set iters=0 --adaptive; repair under a cap: add --cap-gd N '
-                                   'with a start outside the cap.')
+                                   'The benchmark configurations (bench/make_plan.py): "gate" = --config gate; "full" = '
+                                   '--config full; "rebuild" = --config full --skel-set iters=0; the adaptive skeleton '
+                                   'share of bench v3 = add --adaptive; repair under a cap = add --cap-gd N with a '
+                                   'start outside the cap.')
     _common(f, '1-4')
     f.add_argument('--config', choices=['gate', 'full'], default='gate', help='workflow (default: %(default)s)')
     f.add_argument('--seconds', type=float, required=True, metavar='S', help='wall budget per seed, rebuild included')
