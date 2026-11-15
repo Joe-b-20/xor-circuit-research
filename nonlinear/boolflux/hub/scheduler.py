@@ -52,7 +52,7 @@ SCRIPTS = {'polish': HUBDIR / 'op_polish.py', 'pull': HUBDIR / 'op_pull.py', 'jo
            'linres': HUBDIR / 'ops' / 'op_linres.py', 'gen_joinplus': HUBDIR / 'ops' / 'gen_joinplus.py'}
 WINDOW = 40
 GENERATORS = {'gen_skel', 'gen_joinplus', 'gen_inv3', 'gen_bottom'}   # admitted with the nursery slack
-KILL_FACTOR = 2.0; KILL_GRACE = 60.0     # a job is killed after seconds * KILL_FACTOR + KILL_GRACE wall seconds
+KILL_FACTOR = 2.0; KILL_GRACE = 120.0    # a job is killed after seconds * KILL_FACTOR + KILL_GRACE wall seconds
 MIN_JOB_S = 5.0                          # no job is started with less than this left before the end
 FAIL_LIMIT = 5; SUSPEND_S = 600.0        # an operator failing FAIL_LIMIT times in a row is suspended
 FB_SAVE_S = 60.0                         # function bank written at most this often

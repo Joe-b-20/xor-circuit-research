@@ -113,7 +113,7 @@ code version, seed, settings, parents, timing, outcome).
 - **CPUs.** `--cpus` defaults to the CPU affinity of the scheduler process (the list given to xsrun).
   An explicit list outside that affinity is refused unless `--cpu-allow` names it. `control.json`
   `"cpus"` is the exact active set (shrinks and grows) inside the allow list; the current set is in
-  `cpus.json`. One job per CPU; a job is killed (process group) after 2 x seconds + 60 s.
+  `cpus.json`. One job per CPU; a job is killed (process group) after 2 x seconds + 120 s.
 - **Run ids** are `<campaign uid>.r<number>-<op>` (`campaign.json`), unique across campaigns; numbers
   continue after the highest one used in `runs/` or `jobs/`; a job directory is never reused.
 - **Operator CLI contract.** Exit 0: `record.json` written with `cand_ids` (content ids of
