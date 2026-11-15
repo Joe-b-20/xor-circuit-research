@@ -440,6 +440,35 @@ class TestScheduler(unittest.TestCase):
             self.assertIn('ingest-error', ev); self.assertIn('ingest-reject', ev)
 
 
+class TestLineage(unittest.TestCase):
+    def test_lineage_audit(self):
+        """H3: hub/lineage.py finds every record whose origin cannot be reconstructed"""
+        from boolflux.hub import lineage as LN
+        with tempfile.TemporaryDirectory() as d:
+            s = sched(d); s.seed([str(P104)]); tid = next(iter(s.ar.rec))
+            j = fake_job(s, "trb", tid, [load(P107)]); s.finish(j)
+            rows, gaps = LN.audit(d)
+            self.assertEqual(len(rows), 2); self.assertEqual(gaps, {})
+            self.assertEqual(LN.main([d]), 0)
+            new = cid(load(P107))
+            rows, gaps = LN.audit(d, ids=[new]); self.assertEqual(set(rows), {new, tid})     # ancestors are followed
+            run = Path(d, "runs", j["run_id"] + ".json"); keep = run.read_text()
+            other = json.loads(keep); other["outcome"] = []                   # a run of the same name that did not make it
+            run.write_text(json.dumps(other))
+            self.assertIn("run", LN.audit(d)[1][new][0])
+            run.unlink()
+            with tempfile.TemporaryDirectory() as d2:                       # the run file lives in another campaign
+                Path(d2, "runs").mkdir(); Path(d2, "runs", run.name).write_text(keep)
+                self.assertEqual(LN.audit(d, also=[d2])[1], {})
+            rf = Path(d, "archive", new + ".json"); r = json.loads(rf.read_text())
+            r["seed"] = None; r["parents"] = ["ffffffffffff"]; rf.write_text(json.dumps(r)); Path(d, "archive", "index.jsonl").unlink()
+            g = LN.audit(d)[1][new]
+            self.assertIn("seed", g); self.assertTrue(any(x.startswith("parent ffffffffffff") for x in g))
+            Path(d, "archive", tid + ".bfx").write_text(core.to_kernel(load(P117)))
+            self.assertTrue(any(x.startswith("file") for x in LN.audit(d)[1][tid]))
+            self.assertEqual(LN.main([d]), 1)
+
+
 def sched_rng_first(d, seed, nrun):
     return random.Random('%s/%d' % (seed, nrun)).random()
 
