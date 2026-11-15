@@ -129,3 +129,8 @@ code version, seed, settings, parents, timing, outcome).
 - **control.json** is validated as a whole and applied only if valid; keys: ops, seconds, eps, near,
   near_gap, nursery, ad3_share, tuple_caps, cpus, ingest, scripts, generators.
 - **osc** keeps the input's A cap (`--caps=-,AD,GD` for the old behaviour).
+- **Tuple-cap renewal** (`--cap-renew box`, default `never`; `--cap-renew-max`, default 3): a new front tuple q
+  renews the caps of every front tuple t with q.A <= t.A, q.AD <= t.AD, q.GD <= t.GD (event `cap-renew`).
+- **Subclasses** choose (operator, target) their own way and call `Scheduler.start_job(cpu, op, why, tid,
+  extra=(), env=None)`, which does everything after the choice (run id, job directory, time cut, process
+  group, script hash, attempts). `review5/X2-COMPAT.md` has the goal scheduler\x27s case.

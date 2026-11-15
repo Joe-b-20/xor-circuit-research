@@ -79,6 +79,8 @@ def parse_cpus(s):
 
 class Scheduler:
     def __init__(self, args):
+        for k, v in vars(parser().parse_args(['--dir', '.'])).items():     # a subclass with its own argument parser
+            if getattr(args, k, None) is None: setattr(args, k, v)          # gets the defaults of the options it lacks
         self.args = args; self.dir = Path(args.dir); self.dir.mkdir(parents=True, exist_ok=True)
         (self.dir / 'runs').mkdir(exist_ok=True); (self.dir / 'jobs').mkdir(exist_ok=True)
         self._lock()
@@ -93,6 +95,7 @@ class Scheduler:
         self.hist = {o: [] for o in self.ops}            # recent (cpu_s, gain)
         self.attempts = {}                                 # (op, target key) -> n; key = (A, AD, G, GD), or the id with --target-mode id
         self.tuple_caps = parse_caps_arg(args.tuple_caps)  # op -> jobs per tuple before it stops being chosen
+        self.cap_base = {}; self.renewals = {}             # (op, tuple) -> attempts at the last renewal / renewals so far
         self.join_mark = {}                                # target id -> t_admit through which it was joined with every partner
         self.fail = {}; self.suspended = {}                # op -> consecutive failures / suspended until
         self.version = code_version()
@@ -373,20 +376,39 @@ class Scheduler:
         for k, ids in self.ar.cells.items():
             if not ids: continue
             r = self.ar.rec[ids[0]]
-            if (r['operator'] in self.generators or (r.get('operator_settings') or {}).get('nursery')) and ids[0] not in fr and self.attempts.get((op, self.tkey(ids[0])), 0) < 3:
+            if (r['operator'] in self.generators or (r.get('operator_settings') or {}).get('nursery')) and ids[0] not in fr and self.attempts.get((op, self.target_key(ids[0])), 0) < 3:
                 out.append((r['t_admit'], ids[0]))
         return [i for t, i in sorted(out, reverse=True)]
 
-    def tkey(self, i):
+    def target_key(self, i):
         """what attempts are counted against: the (A, AD, G, GD) tuple (default; the up to K equal-tuple
         circuits of a cell share one count, review 5 H7) or the circuit id (--target-mode id, as before)"""
         if self.args.target_mode == 'id': return i
         r = self.ar.rec[i]
         return (r['A'], r['AD'], r['G'], r['GD'])
 
+    def eff_attempts(self, op, key):
+        """jobs of op on the tuple since its cap was last renewed"""
+        return self.attempts.get((op, key), 0) - self.cap_base.get((op, key), 0)
+
     def capped(self, op, key):
         cap = self.tuple_caps.get(op)
-        return cap is not None and self.attempts.get((op, key), 0) >= cap
+        return cap is not None and self.eff_attempts(op, key) >= cap
+
+    def renew_caps(self, q):
+        """--cap-renew box: a new front tuple q renews the caps of every front tuple t whose cap box contains it
+        (q.A <= t.A, q.AD <= t.AD, q.GD <= t.GD; q then has more gates than t): something moved under t's caps,
+        so t gets its jobs again.  At most --cap-renew-max renewals per (operator, tuple)."""
+        if self.args.cap_renew != 'box' or self.args.target_mode != 'tuple': return 0
+        n = 0
+        for t in self.ar.front():
+            if t == q or not (q[0] <= t[0] and q[1] <= t[1] and q[3] <= t[3]): continue
+            for op in self.tuple_caps:
+                k = (op, t)
+                if self.eff_attempts(op, t) > 0 and self.renewals.get(k, 0) < self.args.cap_renew_max:
+                    self.cap_base[k] = self.attempts.get(k, 0); self.renewals[k] = self.renewals.get(k, 0) + 1; n += 1
+        if n: self.log(ev='cap-renew', by=list(q), renewed=n)
+        return n
 
     def fresh_target(self, busy):
         """a front tuple that has not had its first polish / pull yet: (op, id) or None.  A <= 31 first,
@@ -395,7 +417,7 @@ class Scheduler:
         if not ops or self.args.target_mode == 'id': return None
         best = None
         for i in self.ar.front_ids():
-            k = self.tkey(i)
+            k = self.target_key(i)
             if k in busy: continue
             todo = [o for o in ops if self.attempts.get((o, k), 0) == 0]
             if not todo: continue
@@ -406,7 +428,7 @@ class Scheduler:
     def choose_target(self, op, busy, ignore_caps=False):
         pool = self.ar.front_ids()
         if op in ('polish', 'pull', 'trb') and self.args.nursery > 0 and self.rng.random() < self.args.nursery:
-            nu = [i for i in self.nursery_ids(op) if self.tkey(i) not in busy]
+            nu = [i for i in self.nursery_ids(op) if self.target_key(i) not in busy]
             if nu: return nu[0]
         ad3 = self.ad3_share > 0 and self.rng.random() < self.ad3_share
         if op in ('polish', 'pull', 'trb') and self.args.near > 0 and self.rng.random() < self.args.near:
@@ -414,8 +436,8 @@ class Scheduler:
         if ad3:                                            # after the near choice, so that the share holds for both pools
             p3 = [i for i in pool if self.ar.rec[i]['AD'] <= 3]
             if p3: pool = p3
-        ids = [i for i in pool if self.tkey(i) not in busy]
-        if not ignore_caps: ids = [i for i in ids if not self.capped(op, self.tkey(i))]
+        ids = [i for i in pool if self.target_key(i) not in busy]
+        if not ignore_caps: ids = [i for i in ids if not self.capped(op, self.target_key(i))]
         if op == 'join' and self.args.join_mode == 'incremental':
             # a join of X with partners it has already met is the same computation: one pass per (target, archive state)
             ids = [i for i in ids if self.join_mark.get(i, 0.0) < self.last_admit]
@@ -423,11 +445,10 @@ class Scheduler:
         self.rng.shuffle(ids)                              # ties random (also which of a tuple's circuits is used)
         if self.args.target_mode == 'id':
             return min(ids, key=lambda i: self.attempts.get((op, i), 0))
-        return min(ids, key=lambda i: (self.attempts.get((op, self.tkey(i)), 0), 0 if self.ar.rec[i]['A'] <= 31 else 1))
+        return min(ids, key=lambda i: (self.eff_attempts(op, self.target_key(i)), 0 if self.ar.rec[i]['A'] <= 31 else 1))
 
     # ---- jobs -------------------------------------------------------------------------------
     def launch(self, cpu, busy):
-        end = self.end
         fresh = self.fresh_target(busy)
         if fresh is not None:
             op, tid = fresh; why = 'fresh'
@@ -444,9 +465,18 @@ class Scheduler:
                     tid = self.choose_target(o, busy, ignore_caps=True)
                     if tid is not None: op, why = o, 'over-cap'; break
             if tid is None: return None
+        return self.start_job(cpu, op, why, tid)
+
+    def start_job(self, cpu, op, why, tid, extra=(), env=None):
+        """Start operator `op` on archive member `tid`, pinned to `cpu`; returns the job dict, or None when
+        too little time is left.  Everything a job needs for its run record is set here (unique run id, fresh job
+        directory, seconds cut to the end of the campaign, own process group, kill limit, script hash, join
+        mark), so a subclass that chooses (op, target) its own way should call this instead of building the
+        command itself.  extra: more command-line arguments (e.g. ['--caps', '28,4,22']); env: environment."""
+        end = self.end
         secs = min(self.secs[op], end - time.time())       # a job never runs past the end of the campaign
         if secs < MIN_JOB_S: return None
-        key = self.tkey(tid); self.attempts[(op, key)] = self.attempts.get((op, key), 0) + 1
+        key = self.target_key(tid); self.attempts[(op, key)] = self.attempts.get((op, key), 0) + 1
         while True:                                        # a job directory is never reused
             self.nrun += 1
             run_id = '%s.r%05d-%s' % (self.uid, self.nrun, op)
@@ -459,8 +489,9 @@ class Scheduler:
         since = None
         if op == 'join' and self.args.join_mode == 'incremental':
             since = self.join_mark.get(tid, 0.0); cmd += ['--since', repr(since)]
+        cmd += [str(x) for x in extra]
         lf = open(self.dir / 'jobs' / (run_id + '.log'), 'w')
-        p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT, start_new_session=True)
+        p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env)
         return {'p': p, 'lf': lf, 'op': op, 'why': why, 'target': tid, 'run_id': run_id, 'jd': jd, 'seed': seed,
                 'cpu': cpu, 't0': time.time(), 'cmd': cmd, 'key': key, 'secs': secs, 'script': str(script), 'script_sha': file_sha(script),
                 'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since}
@@ -469,8 +500,10 @@ class Scheduler:
     def kill(job, why):
         if job.get('killed'): return
         job['killed'] = why
+        p = job['p']
         try:
-            os.killpg(job['p'].pid, signal.SIGKILL)        # the operator and its kernel child
+            if os.getpgid(p.pid) == p.pid: os.killpg(p.pid, signal.SIGKILL)    # the operator and its kernel child
+            else: p.kill()                                                     # started without its own process group
         except OSError:
             pass
 
@@ -491,6 +524,7 @@ class Scheduler:
         except Exception as e:
             rec_error = 'record.json unreadable: %r' % (e,)
         if job.get('killed'): status = job['killed']                       # 'timeout' or 'stopped'
+        elif self.stop and rc is not None and rc < 0: status = 'stopped'   # the stop signal reached the job first
         elif rc != 0 or rec_error or rec.get('error'): status = 'failed'
         else: status = 'ok'
         info = rec.get('info') if isinstance(rec.get('info'), dict) else {}
@@ -534,6 +568,7 @@ class Scheduler:
                 outcome.append({'cand': f.name, 'metrics': m, 'status': st, 'id': r['id'] if r else None, 'gain': g})
                 if st == 'admitted':
                     gain += g; self.fb.add_circuit(c, r['id']); self.last_admit = r['t_admit']
+                    if g > 0: self.renew_caps(tuple(m))
                     self.log(ev='admit', run_id=job['run_id'], op=op, id=r['id'], m=m, gain=g, parents=parents)
         except Exception as e:                              # the run file is written whatever happens
             run['finish_error'] = repr(e); self.log(ev='finish-error', run_id=job['run_id'], error=repr(e))
@@ -642,6 +677,9 @@ def parser():
                     help='incremental: one join pass per (target, archive state) over all cell members; legacy: front-first 300 partners every time')
     ap.add_argument('--tuple-caps', default='polish=2,pull=3',
                     help="jobs per tuple after which an operator stops choosing it (with --target-mode tuple); '' for none")
+    ap.add_argument('--cap-renew', choices=('never', 'box'), default='never',
+                    help='box: a new front tuple inside the cap box (A, AD, GD) of a front tuple renews that tuple\'s caps')
+    ap.add_argument('--cap-renew-max', type=int, default=3, help='renewals per (operator, tuple) with --cap-renew box')
     return ap
 
 

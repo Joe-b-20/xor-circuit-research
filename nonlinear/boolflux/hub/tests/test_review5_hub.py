@@ -70,7 +70,7 @@ def fake_job(s, op, tid, cands=(), rc=0, record=True, cand_ids=None, info=None, 
         (jd / 'record.json').write_text(json.dumps(rec))
     return {'p': types.SimpleNamespace(returncode=rc, pid=0), 'lf': open(s.dir / 'jobs' / (run_id + '.log'), 'w'), 'op': op,
             'why': 'test', 'target': tid, 'run_id': run_id, 'jd': jd, 'seed': 5, 'cpu': 0, 't0': time.time() - 1, 'cmd': ['x'],
-            'secs': 3.0, 'script': str(s.scripts[op]), 'script_sha': 'sha', 'limit': 100.0, 'since': None, 'key': s.tkey(tid)}
+            'secs': 3.0, 'script': str(s.scripts[op]), 'script_sha': 'sha', 'limit': 100.0, 'since': None, 'key': s.target_key(tid)}
 
 
 class TestArchive(unittest.TestCase):
@@ -353,18 +353,18 @@ class TestScheduler(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             s = sched(d, '--ops', 'polish,pull,trb', '--tuple-caps', 'polish=2,pull=3'); s.seed([str(P104), str(P107), str(P117)])
             ids = {metrics(s.ar.circuit(i)): i for i in s.ar.rec}
-            self.assertEqual(s.tkey(ids[(32, 5, 104, 30)]), (32, 5, 104, 30))
+            self.assertEqual(s.target_key(ids[(32, 5, 104, 30)]), (32, 5, 104, 30))
             got = []
             for n in range(6):                              # 3 tuples x (polish, pull): all first jobs before anything else
-                op, tid = s.fresh_target(set()); got.append((op, s.tkey(tid)))
-                s.attempts[(op, s.tkey(tid))] = 1
+                op, tid = s.fresh_target(set()); got.append((op, s.target_key(tid)))
+                s.attempts[(op, s.target_key(tid))] = 1
             self.assertEqual(len(set(got)), 6); self.assertIsNone(s.fresh_target(set()))
             self.assertEqual({g[0] for g in got}, {'polish', 'pull'})
             # busy tuples are skipped
-            s.attempts.clear(); self.assertNotIn((32, 5, 104, 30), [s.tkey(s.fresh_target({(32, 5, 104, 30)})[1]) for n in range(3)])
+            s.attempts.clear(); self.assertNotIn((32, 5, 104, 30), [s.target_key(s.fresh_target({(32, 5, 104, 30)})[1]) for n in range(3)])
             # caps: a tuple with 2 polish jobs is not chosen for polish again, the others are
             s.attempts[('polish', (32, 5, 104, 30))] = 2; s.attempts[('polish', (32, 5, 107, 22))] = 1
-            seen = {s.tkey(s.choose_target('polish', set())) for n in range(20)}
+            seen = {s.target_key(s.choose_target('polish', set())) for n in range(20)}
             self.assertEqual(seen, {(32, 4, 117, 19)})        # fewest attempts first, never the capped one
             for k in ids: s.attempts[('polish', k)] = 2
             self.assertIsNone(s.choose_target('polish', set()))
@@ -373,8 +373,42 @@ class TestScheduler(unittest.TestCase):
             s._lockf.close()
         with tempfile.TemporaryDirectory() as d:        # old mode
             s = sched(d, '--target-mode', 'id'); s.seed([str(P104)])
-            tid = next(iter(s.ar.rec)); self.assertEqual(s.tkey(tid), tid); self.assertIsNone(s.fresh_target(set()))
+            tid = next(iter(s.ar.rec)); self.assertEqual(s.target_key(tid), tid); self.assertIsNone(s.fresh_target(set()))
             s._lockf.close()
+
+    def test_cap_renewal_by_front_change_in_the_cap_box(self):
+        """H7b: --cap-renew box gives a capped tuple its jobs again when a new front tuple appears under its caps"""
+        with tempfile.TemporaryDirectory() as d:
+            s = sched(d, '--ops', 'polish,pull', '--tuple-caps', 'polish=2', '--cap-renew', 'box', '--cap-renew-max', '1')
+            s.seed([str(P104), str(P107), str(P117)])
+            t104, t107, t117 = (32, 5, 104, 30), (32, 5, 107, 22), (32, 4, 117, 19)
+            for t in (t104, t107, t117): s.attempts[('polish', t)] = 2
+            self.assertIsNone(s.choose_target('polish', set()))
+            # 32/4/117/19 is inside the boxes of 104@30 and 107@22 (A, AD, GD all <=), not the other way round
+            self.assertEqual(s.renew_caps(t117), 2)
+            self.assertEqual({s.target_key(s.choose_target('polish', set())) for n in range(20)}, {t104, t107})
+            self.assertTrue(s.capped('polish', t117))
+            s.attempts[('polish', t104)] = 4; s.attempts[('polish', t107)] = 4
+            self.assertEqual(s.renew_caps(t117), 0)                         # --cap-renew-max 1: no second renewal
+            self.assertIsNone(s.choose_target('polish', set()))
+            self.assertEqual(s.renew_caps((32, 5, 120, 31)), 0)             # outside every box
+        with tempfile.TemporaryDirectory() as d:                            # default: never
+            s = sched(d); s.seed([str(P104), str(P117)]); s.attempts[('polish', (32, 5, 104, 30))] = 2
+            self.assertEqual(s.renew_caps((32, 4, 117, 19)), 0); self.assertTrue(s.capped('polish', (32, 5, 104, 30)))
+
+    def test_subclass_with_its_own_parser_and_job_dict(self):
+        """X2 compatibility: a subclass may pass an argparse namespace without the review 5 options, and a job started
+        without its own process group is still killed"""
+        import argparse
+        with tempfile.TemporaryDirectory() as d:
+            ns = argparse.Namespace(dir=d, cpus=str(min(os.sched_getaffinity(0))), hours=0.1, seed_list=None, ops='polish,pull',
+                                    seconds=None, eps=0.25, seed=1, seed_only=False, near=0.0, near_gap=3, nursery=0.0)
+            s = SCH.Scheduler(ns); OPEN.append(s._lockf)
+            self.assertEqual((s.args.gain, s.args.target_mode, s.args.join_mode, s.args.cap_renew), ('value', 'tuple', 'incremental', 'never'))
+            self.assertEqual(s.tuple_caps, {'polish': 2, 'pull': 3})
+        p = subprocess.Popen(['sleep', '60'])                               # same process group as this test
+        job = {'p': p}; SCH.Scheduler.kill(job, 'timeout')
+        self.assertEqual(p.wait(timeout=10), -9)
 
     def test_one_join_pass_per_target_and_archive_state(self):
         """H8: join is offered a target only when the archive has members it has not been joined with; the pool is every
