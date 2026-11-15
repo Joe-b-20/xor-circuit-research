@@ -1,8 +1,9 @@
 """Target functions, as value tables ``table[x]`` (msb/msb, see core.py).
 
-Built-in: AES S-box and inverse (FIPS-197), chi (Keccak/Xoodoo-style) of width 3 and 5,
-majority, full adder, multiplication and inversion in GF(2^4), and every S-box of
-``benchmarks/sboxes.json`` (spec tables with sources).
+Built-in (BUILTIN): AES S-box and inverse (FIPS-197), majority, full adder, multiplication and
+inversion in GF(2^4); plus every S-box of ``benchmarks/sboxes.json`` that has a table (spec tables
+with sources), and ``map:<name>`` for a linear map of ``circuits/``.  ``chi(w)`` is a helper for
+the Keccak/Xoodoo-style chi of width w; it is not a named target.
 """
 from __future__ import annotations
 
@@ -108,7 +109,7 @@ def load(name):
         return n, m, f(), d
     if SBOX_FILE.exists():
         for s in json.loads(SBOX_FILE.read_text(encoding='utf-8'))['sboxes']:
-            if s['name'] == name:
+            if s['name'] == name and 'table' in s:        # entries without a table are not targets (names())
                 return s['n'], s['m'], s['table'], s.get('source', '')
     raise KeyError('unknown target %s' % name)
 
