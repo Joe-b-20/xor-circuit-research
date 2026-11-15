@@ -64,7 +64,9 @@ def file_sha(p):
 
 
 def strategy_version(track, names):
-    """strategies/ is not committed: record the sha256 of the scripts as they are now."""
+    """sha256 of the track's scripts as they are NOW, at curation.  The AES-push campaigns recorded
+    no code version per job, so this is not what ran (manifest.py says so in
+    code_version_recorded and compares the hashes with the commit that archived the scripts)."""
     d = PKG / 'strategies' / track
     return {n: (sha((d / n).read_bytes())[:12] if (d / n).exists() else None) for n in names}
 
@@ -371,6 +373,8 @@ def main():
             s['job_caps'] = caps
             s['caps'] = {'GD': None, 'AD': None, 'A': None}
             s['note'] = 'the job did not meet its caps (job_caps); the circuit is recorded without caps'
+            s['mechanism'] += ' -- CAPS NOT MET by this job (%s): the circuit is the best state of a run that never came within its caps, recorded without caps' % '; '.join(
+                'cap %s %s, circuit %s %s' % (k, v, k, m[k]) for k, v in caps.items() if v is not None and m[k] > v)
         base = 'aes-nist-%s-%s-g%d-a%d-gd%d-ad%d' % (tr, s.pop('mech_short'), m['G'], m['A'], m['GD'], m['AD'])
         dst = RES / (base + '.circ.txt')
         print('  %-48s <- %s' % (dst.name, tilde(f)))
