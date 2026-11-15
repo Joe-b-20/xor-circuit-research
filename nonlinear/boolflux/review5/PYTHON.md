@@ -286,7 +286,7 @@ re-verifies the pinned set. First call 9.5 s, later calls 0.02 s [H].
 `python3 -m unittest nonlinear/boolflux/tests/test_review5_py.py`: 38 tests, OK (76 s wall, 33 s CPU, CPU 12, 03:10 UTC). `hub/tests/test_hub.py` + `test_review5_hub.py`: 36 tests, OK after `test_hub.test_cell_keeps_min_g` was adapted to cleaning on admission (H21: its dead-gate "worse" circuit is now admitted with `clean_first=False`).
 
 Full suite `python3 -m unittest discover -s nonlinear/boolflux/tests` (from the repository
-root): FULLSUITE.
+root), at 6ce0adf (code identical to the final commit), CPU 12, 03:14 UTC: 86 tests, OK (4 min wall, 3 min CPU). Hub, from `nonlinear/`: `python3 -m unittest boolflux.hub.tests.test_hub boolflux.hub.tests.test_review5_hub`: 36 tests, OK (26 s).
 
 Helper scripts kept in `review5/`: `py_roundtrip.py` (all 426 circuit files through both
 formats), `py_prof_best_table.py` (where the old best_table spent its time), `py_timing.py`
