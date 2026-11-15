@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import resource
 import subprocess
@@ -38,9 +39,17 @@ def kernel_bin(archive_dir):
     h = hashlib.sha1(src.read_bytes()).hexdigest()[:10]
     b = Path(archive_dir) / 'bin' / ('bfx-' + h)
     if not b.exists():
+        # review 5: every builder used the same `.tmp` name, so two builders could rename each
+        # other's half-written file.  Each builds to its own temporary name and renames atomically.
+        import tempfile
         b.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(['gcc', '-O3', '-march=native', '-o', str(b) + '.tmp', str(src), '-lm'], check=True)
-        Path(str(b) + '.tmp').rename(b)
+        fd, tmp = tempfile.mkstemp(prefix=b.name + '.', suffix='.tmp', dir=str(b.parent)); os.close(fd)
+        try:
+            subprocess.run(['gcc', '-O3', '-march=native', '-o', tmp, str(src), '-lm'], check=True)
+            os.chmod(tmp, 0o755)
+            os.replace(tmp, b)
+        finally:
+            if os.path.exists(tmp): os.unlink(tmp)
     return b
 
 
