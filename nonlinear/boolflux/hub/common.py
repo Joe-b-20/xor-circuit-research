@@ -49,6 +49,28 @@ def cid(c):
     return hashlib.sha1(core.to_kernel(c).encode()).hexdigest()[:12]
 
 
+def structure_key(c):
+    """Canonical hash of the circuit as a DAG: invariant under gate order and the operand order
+    of the symmetric gates.  Two circuits with the same key are the same structure written
+    differently (review 5, H2: the cell rule keeps K *distinct structures*).  Every gate counts,
+    also a dead one (it is part of G), so a circuit and its cleaned copy are different."""
+    n = c.n
+    h = [b'i%d' % j for j in range(n)] + [None] * len(c.gates)
+    live = []
+    for j, (op, a, b) in enumerate(c.gates):
+        op, a, b = core.canonical(op, a, b)
+        x, y = h[a], h[b]
+        if op in core.SYMMETRIC and y < x: x, y = y, x
+        h[n + j] = hashlib.blake2b(b'%d|' % op + x + b'|' + y, digest_size=12).digest()
+        live.append(h[n + j])
+    t = hashlib.blake2b(digest_size=12)
+    t.update(b'%d %d|' % (n, c.m))
+    for x in sorted(live): t.update(x)
+    t.update(b'|')
+    for o in c.outputs: t.update(h[o]); t.update(b',')
+    return t.hexdigest()
+
+
 def metrics(c):
     m = c.metrics(MODEL)
     return (m['A'], m['AD'], m['G'], m['GD'])
@@ -56,8 +78,23 @@ def metrics(c):
 
 def verify(c):
     """Admission check: core evaluation on all 256 inputs, independent verifier on the NCFF text,
-    NIST library, metrics agreement.  Returns (ok, info)."""
+    NIST library, metrics agreement.  Returns (ok, info).  Never raises: a malformed circuit
+    (forward reference, wrong shape, unknown op) is a rejection, not a crash of the caller."""
+    try:
+        return _verify(c)
+    except Exception as e:
+        return False, {'error': 'malformed circuit: %r' % (e,)}
+
+
+def _verify(c):
     info = {}
+    if (c.n, c.m) != (8, 8) or len(c.outputs) != 8:
+        return False, {'error': 'shape %d -> %d, %d outputs' % (c.n, c.m, len(c.outputs))}
+    for j, g in enumerate(c.gates):
+        if len(g) != 3 or not (0 <= g[1] < c.n + j and 0 <= g[2] < c.n + j):
+            return False, {'error': 'gate %d reads a signal that is not defined before it' % j}
+    if any(not (0 <= o < c.n + len(c.gates)) for o in c.outputs):
+        return False, {'error': 'output outside the circuit'}
     if {g[0] for g in c.gates} - MODEL.ops():
         return False, {'error': 'gate outside the NIST library'}
     if tuple(c.value_table()) != sbox():
@@ -88,22 +125,51 @@ def published():
     return tuple(u for (u, n) in aes_check.published())
 
 
-def code_version():
-    """git commit of the worktree + hash of the hub sources and the kernel source (dirty state)."""
+def source_files():
+    """every source file whose content decides what a hub job computes: the hub and its operators
+    (incl. hub/ops libraries and C sources), the gate kernel, and the package modules they import"""
+    fs = sorted(HUB.glob('*.py'))
+    fs += sorted(f for f in (HUB / 'ops').rglob('*') if f.is_file() and f.suffix in ('.py', '.c', '.txt')
+                 and '__pycache__' not in f.parts)
+    fs += [KERNEL_SRC] + [PKG / n for n in ('core.py', 'objective.py', 'targets.py', 'skeleton.py')]
+    fs += [PKG / 'independent' / 'verify.py', PKG / 'campaigns' / 'aes_check.py', PKG / 'models' / 'nist.json']
+    return [f for f in fs if f.exists()]
+
+
+def file_sha(path):
     try:
-        commit = subprocess.run(['git', '-C', str(REPO), 'rev-parse', '--short', 'HEAD'], capture_output=True,
-                                text=True).stdout.strip()
+        return hashlib.sha1(Path(path).read_bytes()).hexdigest()[:10]
+    except OSError:
+        return None
+
+
+@lru_cache(None)
+def code_version():
+    """'<git commit>[-dirty]+<hash>': commit of the worktree, '-dirty' when tracked files under
+    nonlinear/boolflux differ from it, and a hash of source_files() (review 5, H9: the hash used
+    to cover hub/*.py and kernel/bfx.c only, so edits to hub/ops/, core.py or the verifier did
+    not change the recorded version).  '?' when git is not available."""
+    commit = '?'
+    try:
+        r = subprocess.run(['git', '-C', str(REPO), 'rev-parse', '--short', 'HEAD'], capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            commit = r.stdout.strip()
+            d = subprocess.run(['git', '-C', str(REPO), 'status', '--porcelain', '--untracked-files=no', '--',
+                                str(PKG)], capture_output=True, text=True)
+            if d.returncode == 0 and d.stdout.strip(): commit += '-dirty'
     except Exception:
-        commit = '?'
+        pass
     h = hashlib.sha1()
-    for f in sorted(HUB.glob('*.py')) + [KERNEL_SRC]:
-        h.update(f.name.encode()); h.update(f.read_bytes())
+    for f in source_files():
+        h.update(str(f.relative_to(PKG)).encode()); h.update(b'\0'); h.update(f.read_bytes())
     return '%s+%s' % (commit, h.hexdigest()[:10])
 
 
 def atomic_write(path, text):
-    path = Path(path); tmp = path.with_suffix(path.suffix + '.tmp')
-    tmp.write_text(text); os.replace(tmp, path)
+    path = Path(path); tmp = path.with_name('%s.%d.tmp' % (path.name, os.getpid()))
+    with open(tmp, 'w') as f:
+        f.write(text); f.flush(); os.fsync(f.fileno())
+    os.replace(tmp, path)
 
 
 # ---- GF(2^8) interface spaces (intrinsic: independent of the tower basis) ----------------------

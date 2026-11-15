@@ -41,7 +41,9 @@ def _ok(c):
 
 def op_osc(ar, args, rng, out):
     c = ar.circuit(args.inp); A, AD, G, GD = metrics(c)
-    caps = dict(args.caps or {'A': None, 'AD': AD, 'GD': GD})
+    # A cap = the input's own (review 5 H8; until 2026-11-14 osc ran without an A cap and could trade
+    # ANDs for gates; `--caps=-,AD,GD` gives the old behaviour)
+    caps = dict(args.caps or {'A': A, 'AD': AD, 'GD': GD})
     relaxed = dict(caps); relaxed['GD'] = (caps['GD'] or GD) + 1
     t = args.seconds
     s1 = out / 'relax'; s1.mkdir(exist_ok=True)

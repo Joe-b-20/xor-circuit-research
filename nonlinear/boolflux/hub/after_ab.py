@@ -28,7 +28,12 @@ adopt = nt >= 1 and nt >= nb
 cf = Path(long_) / 'control.json'
 c = json.loads(cf.read_text()) if cf.exists() else {}
 if adopt: c.update(json.loads(tctl))
-c['cpus'] = sorted(set(c.get('cpus', [])) | {int(x) for x in cpus.split(',')})
+# control.json "cpus" is the exact active set since review 5 (it used to be add-only): start from what the
+# long campaign runs on now (LONG/cpus.json, written by the scheduler).  The long scheduler must have been
+# started with --cpu-allow covering the A/B CPUs, otherwise it refuses them (and logs a control-error).
+cj = Path(long_) / 'cpus.json'
+active = json.loads(cj.read_text())['active'] if cj.exists() else c.get('cpus', [])
+c['cpus'] = sorted(set(active) | {int(x) for x in cpus.split(',')})
 c['note'] = '%s: after A/B %s (base %d vs test %d new frontier points): %s; cpus %s added' % (
     time.strftime('%H:%M UTC', time.gmtime()), Path(test).name, nb, nt, 'ADOPTED ' + tctl if adopt else 'not adopted', cpus)
 cf.write_text(json.dumps(c, indent=1))

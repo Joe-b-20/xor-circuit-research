@@ -84,7 +84,7 @@ def paar(rows, bankforms, rng):
     return merges, rows
 
 
-def rebuild_layer(c, k, bank, rng):
+def rebuild_layer(c, k, bank, rng, cache=None):
     n = c.n; tabs = c.tables()
     R, al = layer_region(c, k)
     if len(R) < 3: return None
@@ -95,10 +95,14 @@ def rebuild_layer(c, k, bank, rng):
         if f is None or f & ~1 == 0: return None
         tf[s] = f
     # bank functions in the leaves' span (forms without the constant)
-    bankforms = set()
-    for hx in bank:
-        f = form(int(hx, 16))
-        if f is not None and bin(f & ~1).count('1') >= 2: bankforms.add(f & ~1)
+    # (c and k fix the leaves, so the scan of the whole bank is done once per layer, not once per try)
+    bankforms = None if cache is None else cache.get(k)
+    if bankforms is None:
+        bankforms = set()
+        for hx in bank:
+            f = form(int(hx, 16))
+            if f is not None and bin(f & ~1).count('1') >= 2: bankforms.add(f & ~1)
+        if cache is not None: cache[k] = bankforms
     rows = [{i for i in range(1, len(leaves) + 1) if (tf[s] >> i) & 1} for s in targets]
     merges, rows = paar(rows, bankforms, rng)
     # gates
@@ -161,11 +165,11 @@ def op_linres(ar, args, rng, out):
     c = ar.circuit(args.inp); A, AD, G, GD = metrics(c)
     bf = Path(args.archive) / 'funcbank' / 'bank.json'
     bank = list(json.loads(bf.read_text()).keys()) if bf.exists() else []
-    t0 = time.time(); cands = {}; tried = []
+    t0 = time.time(); cands = {}; tried = []; cache = {}
     while time.time() - t0 < args.seconds:
         k = rng.randrange(0, AD + 1)
         try:
-            nc = rebuild_layer(c, k, bank, rng)
+            nc = rebuild_layer(c, k, bank, rng, cache)
         except Exception as e:
             tried.append((k, 'error %s' % str(e)[:60])); continue
         if nc is None: tried.append((k, None)); continue

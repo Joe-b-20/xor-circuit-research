@@ -69,7 +69,9 @@ class TestScheduler(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             lst = Path(d) / 'seed.list'; lst.write_text('%s\n%s\n%s\n' % (P104, P107, P117))
             hub = Path(__file__).resolve().parents[1] / 'scheduler.py'
-            r = subprocess.run([sys.executable, str(hub), '--dir', d, '--cpus', '0', '--hours', '0.004',
+            import os
+            cpu = str(min(os.sched_getaffinity(0)))            # a CPU this process may use (the scheduler refuses others)
+            r = subprocess.run([sys.executable, str(hub), '--dir', d, '--cpus', cpu, '--hours', '0.004',
                                 '--seed-list', str(lst), '--ops', 'join,trb', '--seconds', 'join=5,trb=3'],
                                capture_output=True, text=True, timeout=300)
             self.assertEqual(r.returncode, 0, r.stderr[-2000:])
