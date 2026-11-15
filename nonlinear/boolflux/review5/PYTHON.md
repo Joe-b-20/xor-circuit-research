@@ -169,8 +169,8 @@ own binary (`snapshot`) and with the kernel built from the review tree at that t
 | serpent_s7 6/4/16/10 | identical | 6/6/16/14 |
 
 So the snapshots replay byte for byte, and the current code does not reproduce the recorded circuits
-(the kernel changed: P1-P3 kept trajectories, but earlier changes and C1's K/S commits did not
-all). L2's reading is confirmed on 5 of 5: "deterministic" holds for the run's own snapshot only.
+(the kernel and package source changed between those runs and the review tree; which change moves
+each trajectory was not traced). L2's reading is confirmed on 5 of 5: "deterministic" holds for the run's own snapshot only.
 
 The regenerated `results/MANIFEST.json` (C2, 02:59 UTC, committed in 4191e08) is a format change
 only [C: compared entry by entry with the version before]: the same 138 entries (files, sha256,
