@@ -157,5 +157,47 @@ class TestTraceAndEdges(unittest.TestCase):
         self.assertEqual(rc, 2)
 
 
+def stats_lines(log):
+    """final metrics + per-move counters + no-op count, without wall-clock fields."""
+    keep = [re.sub(r' (t|seconds|time) [0-9.]+', '', x) for x in log.splitlines()
+            if x.startswith(('final ', 'move ', 'noop_'))]
+    return ' | '.join(keep)
+
+
+def golden_cases():
+    a = dict(BASE); a.update(NIST_LIB); a.update(LEX_A); a.update({'cap.a': 29, 'cap.ad': 5, 'iters': 400})
+    b = dict(BASE); b.update(NIST_LIB); b.update(LEX_COST); b.update({'iters': 400, 'seed': 2})
+    c = dict(BASE); c.update(NIST_LIB); c.update(LEX_A); c.update({'cap.a': 32, 'cap.ad': 5, 'cap.gd': 24, 'iters': 400})
+    e = dict(BASE); e.update(BGC_LIB); e.update(LEX_COST); e.update({'iters': 6000, 'seed': 3})
+    return {'aes_a29_lexA': (aes('aes-sbox-a29-ad5-g137-gd32-xx108-22.circ.txt'), a),
+            'aes_a32_cost': (aes('aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt'), b),
+            'aes_repair_gd24': (aes('aes-sbox-a32-ad5-g104-gd30-xx72-5.circ.txt'), c),
+            'present_bgc': (present_start(), e)}
+
+
+# Recorded with the kernel of commit 695a90b (before any review-5 performance work); the same
+# lines come from the pre-review-5 kernel f9fe6f7.  Regenerate (C1/golden.py in the campaign
+# directory, or stats_lines() by hand) ONLY for a change that is meant to alter the default search.
+GOLDEN = {
+    'aes_a29_lexA': 'final cost 137 G 137 A 29 GD 32 AD 5 obj 29.000501370031998 feas 1 iters 400 restarts 0 | move resub1 prop 79 acc 11 imp 0 cands 80 | move resub2 prop 213 acc 87 imp 0 cands 4469 | move resub3 prop 108 acc 41 imp 0 cands 2875 | noop_candidates_skipped 801',
+    'aes_a32_cost': 'final cost 103 G 103 A 32 GD 32 AD 7 obj 103.00320000000001 feas 1 iters 400 restarts 0 | move resub1 prop 92 acc 9 imp 0 cands 92 | move resub2 prop 202 acc 58 imp 0 cands 3449 | move resub3 prop 106 acc 28 imp 0 cands 2827 | noop_candidates_skipped 1013',
+    'aes_repair_gd24': 'final cost 117 G 117 A 33 GD 24 AD 5 obj 1000033.0005011701 feas 0 iters 400 restarts 0 | move resub1 prop 103 acc 19 imp 2 cands 109 | move resub2 prop 193 acc 58 imp 15 cands 1580 | move resub3 prop 104 acc 38 imp 11 cands 1406 | noop_candidates_skipped 783',
+    'present_bgc': 'final cost 14 G 14 A 4 GD 7 AD 2 obj 14.0007 feas 1 iters 6000 restarts 0 | move resub1 prop 1557 acc 219 imp 2 cands 1918 | move resub2 prop 3006 acc 1164 imp 10 cands 37625 | move resub3 prop 1437 acc 485 imp 10 cands 30488 | noop_candidates_skipped 28007',
+}
+
+
+class TestTrajectory(unittest.TestCase):
+    """P1-P3: the performance changes (linear-digest pair table, cached structure hashes, lazy
+    levels in fraig) and every later default-off option must leave the default search bit-identical
+    for a fixed seed and iteration count."""
+
+    def test_default_trajectories_unchanged(self):
+        for name, (text, settings) in golden_cases().items():
+            rc, out, err, d = run(text, settings)
+            self.assertEqual(rc, 0, err)
+            self.assertEqual(stats_lines(out), GOLDEN[name], name)
+            check_same_function(self, text, (d / 'out.bfx').read_text())
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -406,7 +406,9 @@ static Metrics mcur, mbest;
 static int *DIV; static int ndiv;
 static u64 CARE[1024], GT[1024], TT[1024], CC[1024];
 
+static int SH_ycached;   /* same_structure's cache of the current circuit */
 static void state_refresh(void) {
+    SH_ycached = 0;
     sim(&cur, Vcur);
     if (!outputs_ok(&cur, Vcur)) die("INTERNAL: current circuit does not match target");
     metrics(&cur, &mcur);
@@ -474,18 +476,43 @@ static double mffc_cost(int s) {
     return c;
 }
 
-/* pair table: values of op(d1,d2) (and NOT d) over a divisor subset, masked by CARE */
+/* pair table: values of op(d1,d2) (and NOT d) over a divisor subset, masked by CARE.
+ * review5 P1: each entry keeps a 64-bit digest of its masked value that is GF(2)-linear in the
+ * value: ldig(x ^ y) == ldig(x) ^ ldig(y).  The value wanted from the table at level 3 is
+ * GT ^ X for a stored X, so its digest is one XOR of two stored digests and no words are touched
+ * unless a slot holds the same digest.  Slots are stamped with the build number instead of being
+ * cleared for every move.  Entries with equal values share a digest and therefore a probe
+ * sequence, in which they stay in insertion order for any table size, so lookups return the same
+ * entries in the same order as the previous table (same search trajectory). */
 typedef struct { unsigned char op; int a, b; int lg, la; } PEnt;
-static PEnt *PE; static u64 *PV; static int np, PCAP;
-static int *PHT; static int phts, phmask;
-static inline unsigned hval(const u64 *v) {
-    u64 h = 0x12345;
-    for (int w = 0; w < W; w++) { h ^= v[w]; h *= 0x9E3779B97F4A7C15ULL; h ^= h >> 31; }
-    return (unsigned)(h >> 17);
+typedef struct { int idx; unsigned gen; } PSlot;
+static PEnt *PE; static u64 *PV, *PD, *PV0; static int np, PCAP;
+static PSlot *PHT; static int phts, phmask; static unsigned pgen;
+static int *L1; static int nl1;      /* entries whose value equals GT (level-1 candidates) */
+static inline u64 ldig(const u64 *v) {
+    u64 h = 0;      /* per-word linear maps, no dependency chain between words */
+    for (int w = 0; w < W; w++) { u64 x = v[w]; int r = (w * 21 + 1) & 63; h ^= ((x << r) | (x >> (64 - r))) ^ (x >> ((w % 29) + 3)); }
+    return h;
 }
+static inline unsigned dslot(u64 d) { return (unsigned)((d * 0x9E3779B97F4A7C15ULL) >> 40) & phmask; }
 static inline int eqc(const u64 *a, const u64 *b, const u64 *c) {
     for (int w = 0; w < W; w++) if ((a[w] ^ b[w]) & c[w]) return 0;
     return 1;
+}
+static inline int eqw(const u64 *a, const u64 *b) {
+    for (int w = 0; w < W; w++) if (a[w] != b[w]) return 0;
+    return 1;
+}
+/* o = op(a, b) & c, the op chosen once per entry instead of once per word */
+static inline void pair_val(int op, const u64 *a, const u64 *b, const u64 *c, u64 *o) {
+    switch (op) {
+    case 8: for (int w = 0; w < W; w++) o[w] = a[w] & b[w] & c[w]; break;
+    case 6: for (int w = 0; w < W; w++) o[w] = (a[w] ^ b[w]) & c[w]; break;
+    case 9: for (int w = 0; w < W; w++) o[w] = ~(a[w] ^ b[w]) & c[w]; break;
+    case 14: for (int w = 0; w < W; w++) o[w] = (a[w] | b[w]) & c[w]; break;
+    case 3: for (int w = 0; w < W; w++) o[w] = ~a[w] & c[w]; break;
+    default: for (int w = 0; w < W; w++) o[w] = apply(op, a[w], b[w]) & c[w];
+    }
 }
 
 /* candidates */
@@ -504,14 +531,17 @@ static int req_g, req_a;       /* required levels at s */
 static inline int arr_g(int op, int la_, int lb_) { return (la_ > lb_ ? la_ : lb_) + op_gdw[op]; }
 static inline int arr_a(int op, int la_, int lb_) { return (la_ > lb_ ? la_ : lb_) + op_adw(op); }
 
-static void build_pairs(void) {
-    np = 0;
+static void build_pairs(int want_table) {
+    np = 0; nl1 = 0;
     int nd = ndiv < pdiv ? ndiv : pdiv;   /* DIV is shuffled: first nd are the pair divisors */
-    long bound = (long)nd * (nd + 1) / 2 * (2 * nlib2) + nd + 16;
-    if (bound > PCAP) bound = PCAP;
-    int hs = 64; while (hs < 2 * bound) hs <<= 1;
-    phmask = hs - 1;
-    for (int i = 0; i < hs; i++) PHT[i] = -1;
+    if (want_table) {
+        long bound = (long)nd * (nd + 1) / 2 * (2 * nlib2) + nd + 16;
+        if (bound > PCAP) bound = PCAP;
+        int hs = 64; while (hs < 2 * bound) hs <<= 1;
+        phmask = hs - 1;
+        if (++pgen == 0) { memset(PHT, 0, sizeof(PSlot) * phts); pgen = 1; }
+    }
+    u64 dgt = ldig(GT);
     for (int i = 0; i < nd; i++) {
         int d1 = DIV[i];
         for (int j = (op_ok[3] ? i : i + 1); j < nd; j++) {
@@ -528,23 +558,26 @@ static void build_pairs(void) {
                 PEnt *e = &PE[np]; e->op = op; e->a = a; e->b = b;
                 e->lg = arr_g(op, LGc[a], LGc[b]); e->la = arr_a(op, LAc[a], LAc[b]);
                 if (e->lg > req_g || e->la > req_a) continue;
-                u64 *pv = PV + (size_t)np * W; const u64 *va = Vcur + (size_t)a * W, *vb = Vcur + (size_t)b * W;
-                for (int w = 0; w < W; w++) pv[w] = apply(op, va[w], vb[w]) & CARE[w];
-                unsigned h = hval(pv) & phmask;
-                while (PHT[h] >= 0) h = (h + 1) & phmask;
-                PHT[h] = np; np++;
+                u64 *pv = PV + (size_t)np * W;
+                pair_val(op, Vcur + (size_t)a * W, Vcur + (size_t)b * W, CARE, pv);
+                u64 d = ldig(pv); PD[np] = d; PV0[np] = pv[0];
+                if (d == dgt && eqw(pv, GT)) L1[nl1++] = np;
+                if (want_table) {
+                    unsigned h = dslot(d);
+                    while (PHT[h].gen == pgen) h = (h + 1) & phmask;
+                    PHT[h].gen = pgen; PHT[h].idx = np;
+                }
+                np++;
             }
         }
     }
 }
-/* find up to `lim` pair entries whose masked value equals v (v already masked) */
-static int lookup(const u64 *v, int *hits, int lim) {
-    int nh = 0; unsigned h = hval(v) & phmask;
-    while (PHT[h] >= 0 && nh < lim) {
-        int i = PHT[h];
-        const u64 *pv = PV + (size_t)i * W; int eq = 1;
-        for (int w = 0; w < W; w++) if (pv[w] != v[w]) { eq = 0; break; }
-        if (eq) hits[nh++] = i;
+/* find up to `lim` pair entries whose masked value equals v (v already masked; d = ldig(v)) */
+static int lookup(u64 d, const u64 *v, int *hits, int lim) {
+    int nh = 0; unsigned h = dslot(d);
+    while (PHT[h].gen == pgen && nh < lim) {
+        int i = PHT[h].idx;
+        if (PD[i] == d && eqw(PV + (size_t)i * W, v)) hits[nh++] = i;
         h = (h + 1) & phmask;
     }
     return nh;
@@ -562,13 +595,12 @@ static void find_cands(int lev) {
         if (eqc(Vcur + (size_t)d * W, GT, CARE)) { c.k = 0; c.root = d; c.ncost = 0; add_cand(&c); }
     }
     if (lev < 1) return;
-    build_pairs();
+    build_pairs(lev >= 2);
     /* level 1 */
-    for (int i = 0; i < np; i++)
-        if (eqc(PV + (size_t)i * W, GT, CARE)) {
-            PEnt *e = &PE[i]; c.k = 1; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
-            c.root = base; c.ncost = op_cost[e->op]; add_cand(&c);
-        }
+    for (int q = 0; q < nl1; q++) {
+        PEnt *e = &PE[L1[q]]; c.k = 1; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
+        c.root = base; c.ncost = op_cost[e->op]; add_cand(&c);
+    }
     if (lev < 2) return;
     int hits[8];
     /* level 2, XOR/XNOR root:  s = X ^ d3  (or ~) */
@@ -577,7 +609,7 @@ static void find_cands(int lev) {
         for (int i = 0; i < ndiv; i++) {
             int d3 = DIV[i];
             for (int w = 0; w < W; w++) TT[w] = ((r == 6 ? GT[w] : ~GT[w]) ^ Vcur[(size_t)d3 * W + w]) & CARE[w];
-            int nh = lookup(TT, hits, 4);
+            int nh = lookup(ldig(TT), TT, hits, 4);
             for (int h = 0; h < nh; h++) {
                 PEnt *e = &PE[hits[h]];
                 double nc = op_cost[e->op] + op_cost[r];
@@ -615,7 +647,9 @@ static void find_cands(int lev) {
         }
         if (bad) continue;
         double nc0 = op_cost[op2];
+        u64 t0 = TT[0], c0 = CC[0];
         for (int i = 0; i < np; i++) {
+            if ((PV0[i] ^ t0) & c0) continue;          /* first word, from a dense array */
             PEnt *e = &PE[i];
             if (op_cost[e->op] + nc0 > budget) continue;
             if (!eqc(PV + (size_t)i * W, TT, CC)) continue;
@@ -630,12 +664,24 @@ static void find_cands(int lev) {
     for (int r = 6; r <= 9; r += 3) {
         if (!op_ok[r]) continue;
         int lim = np < 30000 ? np : 30000;
+        /* wanted partner value = GX ^ pv with GX = GT (XOR) or ~GT on the care set (XNOR) */
+        for (int w = 0; w < W; w++) CC[w] = (r == 6 ? GT[w] : ~GT[w]) & CARE[w];
+        u64 dgx = ldig(CC);
         for (int q = 0; q < lim; q++) {
             int i = np <= 30000 ? q : rndint(np);
             PEnt *e = &PE[i];
             const u64 *pv = PV + (size_t)i * W;
-            for (int w = 0; w < W; w++) TT[w] = ((r == 6 ? GT[w] : ~GT[w]) ^ pv[w]) & CARE[w];
-            int nh = lookup(TT, hits, 2);
+            u64 d = dgx ^ PD[i];
+            int nh = 0; unsigned hh = dslot(d);
+            while (PHT[hh].gen == pgen && nh < 2) {
+                int j = PHT[hh].idx;
+                if (PD[j] == d) {
+                    const u64 *pj = PV + (size_t)j * W; int eq = 1;
+                    for (int w = 0; w < W; w++) if (pj[w] != (CC[w] ^ pv[w])) { eq = 0; break; }
+                    if (eq) hits[nh++] = j;
+                }
+                hh = (hh + 1) & phmask;
+            }
             for (int h = 0; h < nh; h++) {
                 if (hits[h] <= i) continue;
                 PEnt *e2 = &PE[hits[h]];
@@ -653,8 +699,7 @@ static void find_cands(int lev) {
 /* fraig: merge gates whose complete function equals an earlier signal (never deeper) */
 static int *FR_map; static int *FR_ht; static int FR_hts;
 static int fraig(Circ *c, u64 *V) {
-    int tot = N + c->ng, any = 0;
-    levels(c, LG_tmp, LA_tmp);
+    int tot = N + c->ng, any = 0, lv = 0;
     int hts = 64; while (hts < 2 * tot) hts <<= 1;
     if (hts > FR_hts) hts = FR_hts;
     for (int i = 0; i < hts; i++) FR_ht[i] = -1;
@@ -670,8 +715,11 @@ static int fraig(Circ *c, u64 *V) {
             if (eq) { found = u; break; }
             hh = (hh + 1) & (hts - 1);
         }
-        if (found >= 0 && LG_tmp[found] <= LG_tmp[v] && LA_tmp[found] <= LA_tmp[v]) { FR_map[v] = found; any = 1; }
-        else if (found < 0) FR_ht[hh] = v;
+        if (found >= 0) {
+            if (!lv) { levels(c, LG_tmp, LA_tmp); lv = 1; }      /* review5 P3: only when two signals are equal */
+            if (LG_tmp[found] <= LG_tmp[v] && LA_tmp[found] <= LA_tmp[v]) { FR_map[v] = found; any = 1; }
+        }
+        else FR_ht[hh] = v;
     }
     if (!any) return 0;
     if (rebuild(c, -1, -1, 0, 0, FR_map, &tmp_c, 1) < 0) return 0;
@@ -695,13 +743,24 @@ static void shash(const Circ *c, u64 *h) {
     }
 }
 static int sh_cmp(const void *p, const void *q) { u64 a = SH_key[*(const int *)p], b = SH_key[*(const int *)q]; return a < b ? -1 : a > b; }
+/* review5 P2: y is always the current circuit; its hashes, their sum and the sorted order are kept
+ * until it changes (SH_ycached, cleared in state_refresh).  Equal structures have equal hash
+ * multisets, so a different sum or output hash means "different" before anything is sorted. */
+static u64 SH_ysum;
 static int same_structure(const Circ *x, const Circ *y) {
     if (x->ng != y->ng) return 0;
-    shash(x, SH_x); shash(y, SH_y);
+    if (!SH_ycached) {
+        shash(y, SH_y); SH_ysum = 0;
+        for (int j = 0; j < y->ng; j++) { SH_iy[j] = N + j; SH_ysum += SH_y[N + j]; }
+        SH_key = SH_y; qsort(SH_iy, y->ng, sizeof(int), sh_cmp);
+        SH_ycached = 1;
+    }
+    shash(x, SH_x);
+    u64 xsum = 0; for (int j = 0; j < x->ng; j++) xsum += SH_x[N + j];
+    if (xsum != SH_ysum) return 0;
     for (int k = 0; k < M; k++) if (SH_x[x->out[k]] != SH_y[y->out[k]]) return 0;
-    for (int j = 0; j < x->ng; j++) { SH_ix[j] = N + j; SH_iy[j] = N + j; }
+    for (int j = 0; j < x->ng; j++) SH_ix[j] = N + j;
     SH_key = SH_x; qsort(SH_ix, x->ng, sizeof(int), sh_cmp);
-    SH_key = SH_y; qsort(SH_iy, y->ng, sizeof(int), sh_cmp);
     for (int i = 0; i < N; i++) SH_map[i] = i;
     for (int j = 0; j < x->ng; j++) { if (SH_x[SH_ix[j]] != SH_y[SH_iy[j]]) return 0; SH_map[SH_ix[j]] = SH_iy[j]; }
     for (int j = 0; j < x->ng; j++) {
@@ -807,7 +866,8 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 8; i++) if (op_ok[canon[i]]) lib2[nlib2++] = canon[i];
     PCAP = 200000; if ((size_t)PCAP * W > 16000000) PCAP = 16000000 / W;
     PE = malloc(sizeof(PEnt) * PCAP); PV = malloc(sizeof(u64) * (size_t)PCAP * W);
-    phts = 1; while (phts < PCAP * 2) phts <<= 1; PHT = malloc(sizeof(int) * phts);
+    PD = malloc(sizeof(u64) * PCAP); PV0 = malloc(sizeof(u64) * PCAP); L1 = malloc(sizeof(int) * PCAP);
+    phts = 1; while (phts < PCAP * 2) phts <<= 1; PHT = calloc(phts, sizeof(PSlot));
     CAND = malloc(sizeof(Cand) * (cand_cap + 1));
 
     circ_copy(&best, &cur); mbest = mcur;
@@ -863,7 +923,8 @@ int main(int argc, char **argv) {
         for (int q = 0; q < no; q++) {
             int i = order[q];
             if (!eval_cand(s, &CAND[i], &m)) continue;
-            if (skip_noop && same_structure(&cand_c, &cur)) { st_noop++; continue; }
+            if (skip_noop && m.g == mcur.g && m.a == mcur.a && m.gd == mcur.gd && m.ad == mcur.ad
+                && same_structure(&cand_c, &cur)) { st_noop++; continue; }
             double d = ldelta(&m, &mcur); int cc = mcmp(&m, &mcur);
             if ((m.feas || !mcur.feas) && (bi < 0 || mcmp(&m, &bm) < 0)) { bm = m; bi = i; bfeas = m.feas; }
             if (cc == 0 && m.feas >= mcur.feas) neu[nneu++] = i;
