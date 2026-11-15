@@ -105,7 +105,7 @@ static int outputs_ok(const Circ *c, const u64 *V) {
     return 1;
 }
 
-typedef struct { double cost, obj, vsum; int g, a, gd, ad, feas, viol; } Metrics;
+typedef struct { double cost, obj, vsum; int g, a, gd, ad, feas, viol, xgd, xad, xa; } Metrics;   /* x*: excess over each cap */
 #define VIOL_PENALTY 1e6
 static double w_cost = 1, w_g = 0, w_a = 0, w_gd = 0, w_ad = 0;
 static int cap_gd = -1, cap_ad = -1, cap_a = -1;
@@ -137,8 +137,10 @@ static void metrics(const Circ *c, Metrics *m) {
         if (LG_tmp[c->out[k]] > m->gd) m->gd = LG_tmp[c->out[k]];
         if (LA_tmp[c->out[k]] > m->ad) m->ad = LA_tmp[c->out[k]];
     }
-    m->viol = (cap_gd >= 0 && m->gd > cap_gd ? m->gd - cap_gd : 0) + (cap_ad >= 0 && m->ad > cap_ad ? m->ad - cap_ad : 0)
-            + (cap_a >= 0 && m->a > cap_a ? m->a - cap_a : 0);
+    m->xgd = cap_gd >= 0 && m->gd > cap_gd ? m->gd - cap_gd : 0;
+    m->xad = cap_ad >= 0 && m->ad > cap_ad ? m->ad - cap_ad : 0;
+    m->xa = cap_a >= 0 && m->a > cap_a ? m->a - cap_a : 0;
+    m->viol = m->xgd + m->xad + m->xa;
     m->feas = m->viol == 0;
     /* A state that violates a cap is penalised, so a start outside the caps is repaired first.
      * Besides the largest excess, the penalty counts, over all gates, by how much the longest
@@ -278,9 +280,17 @@ static char cfg_in[1024], cfg_out[1024], cfg_trace[1024];
 static double Tperiod_it = 0, stall_it = 0;
 static double cfg_seconds = 10, T0 = 0.0, Tperiod = 30.0, stall = 60.0, max_excess = 1e18, uphill = 1.0;
 static u64 cfg_seed = 1;
-#define NMOVES 3
-static double mv_w[NMOVES] = {1, 1, 1};
-static const char *MVNAME[NMOVES] = {"resub1", "resub2", "resub3"};
+#define NMOVES 4
+#define MV_XSPAN 3
+static double mv_w[NMOVES] = {1, 1, 1, 0};      /* xspan (review5 S1) is off unless mv.xspan > 0 */
+static const char *MVNAME[NMOVES] = {"resub1", "resub2", "resub3", "xspan"};
+static int xspan_tries = 3, xspan_any = 0;
+/* review5 S2: the violation is the SUM of the cap excesses, so a repair may pay for one unit of
+ * gate depth with an AND above cap.a (or AND depth above cap.ad) and then sit at violation 1 in
+ * a cap that is much harder to repair.  repair_keep 1: while the current circuit violates a cap,
+ * no move may raise the excess of any single cap. */
+static int repair_keep = 0;
+static int sweep = 0;     /* review5: 1 = target gates in index order instead of at random (exact scans) */
 static int dmax = 200, pdiv = 90, nl_samples = 12, cand_cap = 40, use_fraig = 1;
 static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches; linear: see main */
 static int skip_noop = 1;    /* v2: a candidate whose rebuilt circuit equals the current one is no move */
@@ -359,12 +369,17 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "neutral")) use_neutral = atoi(v);
         else if (!strcmp(k, "skip_noop")) skip_noop = atoi(v);
         else if (!strcmp(k, "odc")) use_odc = atoi(v);
+        else if (!strcmp(k, "repair_keep")) repair_keep = atoi(v);
+        else if (!strcmp(k, "sweep")) sweep = atoi(v);
+        else if (!strcmp(k, "xspan_tries")) xspan_tries = atoi(v);
+        else if (!strcmp(k, "xspan_any")) xspan_any = atoi(v);
         else if (!strcmp(k, "linear")) linear_mode = atoi(v);
         else if (!strcmp(k, "tracemoves")) strcpy(cfg_tracemoves, v);
         else { fprintf(stderr, "bfx: unknown key %s\n", k); exit(2); }
     }
     fclose(f);
     if (cand_cap < 1) die("cand_cap must be at least 1");
+    if (xspan_tries < 1 || xspan_tries > 16) die("xspan_tries must be 1..16");
     if (!cfg_in[0] || !cfg_out[0]) die("config needs in and out");
 }
 
@@ -463,13 +478,16 @@ static void tfo_care(int s) {
     for (int w = 0; w < W; w++) { CARE[w] &= wmask(w); GT[w] = Vcur[(size_t)s * W + w] & CARE[w]; }
 }
 
+static int mffc_a;      /* AND-like gates in the cone counted by the last mffc_cost call */
+static unsigned *MFM, mfm_gen;   /* MFM[v] == mfm_gen: v is in that cone (it dies when s is replaced) */
 static double mffc_cost(int s) {
     static int *ref = 0, *stk = 0;
-    if (!ref) { ref = malloc(sizeof(int) * (MAXN + GCAP + 8)); stk = malloc(sizeof(int) * (MAXN + GCAP + 8)); }
+    if (!ref) { ref = malloc(sizeof(int) * (MAXN + GCAP + 8)); stk = malloc(sizeof(int) * (MAXN + GCAP + 8)); MFM = calloc(MAXN + GCAP + 8, sizeof(unsigned)); }
+    if (++mfm_gen == 0) { memset(MFM, 0, sizeof(unsigned) * (MAXN + GCAP + 8)); mfm_gen = 1; }
     int tot = N + cur.ng; memcpy(ref, REF, sizeof(int) * tot);
-    double c = 0; int sp = 0; stk[sp++] = s;
+    double c = 0; int sp = 0; stk[sp++] = s; mffc_a = 0;
     while (sp) {
-        int v = stk[--sp]; Gate *g = &cur.g[v - N]; c += op_cost[g->op];
+        int v = stk[--sp]; Gate *g = &cur.g[v - N]; c += op_cost[g->op]; mffc_a += op_nl(g->op); MFM[v] = mfm_gen;
         if (g->a >= N && --ref[g->a] == 0) stk[sp++] = g->a;
         if (!op_unary(g->op) && g->b >= N && --ref[g->b] == 0) stk[sp++] = g->b;
     }
@@ -516,7 +534,8 @@ static inline void pair_val(int op, const u64 *a, const u64 *b, const u64 *c, u6
 }
 
 /* candidates */
-typedef struct { int k; Gate g[3]; int root; double ncost; } Cand;
+typedef struct { int k; Gate g[3]; int root; double ncost; const Gate *ext; } Cand;   /* ext: gate list of an xspan candidate (k may exceed 3) */
+static inline const Gate *cand_gates(const Cand *c) { return c->ext ? c->ext : c->g; }
 static Cand *CAND; static int ncand, nseen;
 static void add_cand(const Cand *c) {
     nseen++;
@@ -586,7 +605,7 @@ static int lookup(u64 d, const u64 *v, int *hits, int lim) {
 /* enumerate candidates for signal s up to `lev` new gates */
 static void find_cands(int lev) {
     int base = N + cur.ng;
-    Cand c;
+    Cand c; c.ext = 0;
     ncand = 0; nseen = 0;
     /* level 0: an existing divisor */
     for (int i = 0; i < ndiv; i++) {
@@ -696,8 +715,98 @@ static void find_cands(int lev) {
     }
 }
 
-/* fraig: merge gates whose complete function equals an earlier signal (never deeper) */
-static int *FR_map; static int *FR_ht; static int FR_hts;
+/* ------------------------------------------------------------------ xspan (review5 S1)
+ * Linear-span resubstitution: is signal s, on its care set, the XOR of ANY number of signals
+ * outside its fanout cone (optionally complemented)?  Decided exactly by Gaussian elimination
+ * over GF(2) on the divisor tables masked by CARE; resub1-3 reach at most four XORed divisors
+ * and only within the cost budget.  The replacement has no AND gate, so every AND-like gate in
+ * the fanout-free cone of s disappears: the move is tried only when that cone holds one
+ * (xspan_any 1: always).  Gates of that cone are not divisors (s is trivially the XOR of its own
+ * operands; using a cone gate would keep its ANDs alive), so every solution found removes at
+ * least one AND.  Divisors must respect the AND-depth requirement at s; the XOR tree is
+ * built smallest-arrival-first, and the ordinary evaluation and acceptance decide the rest
+ * (feasibility, lexicographic objective), so cost may go up when A is the first key.
+ * Each of the xspan_tries solves uses another divisor order: by gate level (shallow first), then
+ * random orders; elimination stops at the first prefix whose span contains s. */
+#define XMAX 1024
+#define XCW (XMAX / 64)
+static u64 *XB, *XC; static int *XP, *XORD, *XSEL, *XLV; static Gate *XG;
+static long st_xspan_solved;
+static int xspan_solve(const int *ord, int nd, int use_const, int *sel, int *cst) {
+    u64 tc[XCW]; memset(tc, 0, sizeof tc);
+    int nz = 0, rank = 0, nv = nd + use_const;
+    for (int w = 0; w < W; w++) { TT[w] = GT[w]; nz |= TT[w] != 0; }
+    for (int q = 0; q < nv && nz; q++) {
+        u64 *b = XB + (size_t)rank * W, *bc = XC + (size_t)rank * XCW;
+        if (use_const && q == 0) for (int w = 0; w < W; w++) b[w] = CARE[w];
+        else { const u64 *vd = Vcur + (size_t)ord[q - use_const] * W; for (int w = 0; w < W; w++) b[w] = vd[w] & CARE[w]; }
+        memset(bc, 0, sizeof(u64) * XCW); bc[q >> 6] |= 1ULL << (q & 63);
+        for (int i = 0; i < rank; i++) {
+            int pv = XP[i];
+            if ((b[pv >> 6] >> (pv & 63)) & 1) {
+                const u64 *o = XB + (size_t)i * W, *oc = XC + (size_t)i * XCW;
+                for (int w = 0; w < W; w++) b[w] ^= o[w];
+                for (int w = 0; w < XCW; w++) bc[w] ^= oc[w];
+            }
+        }
+        int pv = -1;
+        for (int w = 0; w < W; w++) if (b[w]) { pv = w * 64 + __builtin_ctzll(b[w]); break; }
+        if (pv < 0) continue;                       /* dependent on the earlier ones */
+        XP[rank++] = pv;
+        if ((TT[pv >> 6] >> (pv & 63)) & 1) {
+            nz = 0;
+            for (int w = 0; w < W; w++) { TT[w] ^= b[w]; nz |= TT[w] != 0; }
+            for (int w = 0; w < XCW; w++) tc[w] ^= bc[w];
+        }
+    }
+    if (nz) return 0;
+    int ns = 0; *cst = 0;
+    for (int q = 0; q < nv; q++) if ((tc[q >> 6] >> (q & 63)) & 1) {
+        if (use_const && q == 0) *cst = 1; else sel[ns++] = ord[q - use_const];
+    }
+    return ns;
+}
+static void xspan_cands(void) {
+    ncand = 0; nseen = 0;
+    if (linear_mode || !op_ok[6] || (mffc_a < 1 && !xspan_any)) return;
+    int base = N + cur.ng, nd = 0, use_const = op_ok[9] || op_ok[3];
+    for (int i = 0; i < ndiv && nd < XMAX - 1; i++)
+        if (LAc[DIV[i]] <= req_a && (xspan_any || MFM[DIV[i]] != mfm_gen)) XORD[nd++] = DIV[i];
+    if (!nd) return;
+    for (int tr = 0; tr < xspan_tries; tr++) {
+        if (tr == 0) {                 /* stable insertion sort by gate level; DIV was shuffled, so ties are random */
+            for (int i = 1; i < nd; i++) { int x = XORD[i], j = i; while (j > 0 && LGc[XORD[j - 1]] > LGc[x]) { XORD[j] = XORD[j - 1]; j--; } XORD[j] = x; }
+        } else for (int i = nd - 1; i > 0; i--) { int j = rndint(i + 1); int x = XORD[i]; XORD[i] = XORD[j]; XORD[j] = x; }
+        int cst, ns = xspan_solve(XORD, nd, use_const, XSEL, &cst);
+        if (ns < 1) return;            /* not in the span of all divisors (no order helps), or constant on the care set */
+        if (cst && ns == 1 && !op_ok[3]) continue;
+        if (cur.ng + ns + 1 > GCAP) continue;
+        st_xspan_solved++;
+        Gate *xg = XG + (size_t)tr * (XMAX + 2); int nx = 0, n = ns;
+        for (int i = 0; i < ns; i++) XLV[i] = LGc[XSEL[i]];
+        double nc = 0;
+        while (n > 1) {
+            int i0 = 0, i1 = 1; if (XLV[i1] < XLV[i0]) { i0 = 1; i1 = 0; }
+            for (int i = 2; i < n; i++) { if (XLV[i] < XLV[i0]) { i1 = i0; i0 = i; } else if (XLV[i] < XLV[i1]) i1 = i; }
+            int op = 6; if (n == 2 && cst && op_ok[9]) { op = 9; cst = 0; }
+            xg[nx].op = op; xg[nx].a = XSEL[i0]; xg[nx].b = XSEL[i1]; nc += op_cost[op];
+            int lv = (XLV[i0] > XLV[i1] ? XLV[i0] : XLV[i1]) + op_gdw[op];
+            int lo = i0 < i1 ? i0 : i1, hi = i0 < i1 ? i1 : i0;
+            XSEL[lo] = base + nx; XLV[lo] = lv; XSEL[hi] = XSEL[n - 1]; XLV[hi] = XLV[n - 1]; n--; nx++;
+        }
+        if (cst) { xg[nx].op = 3; xg[nx].a = xg[nx].b = XSEL[0]; nc += op_cost[3]; XSEL[0] = base + nx; nx++; }
+        Cand c; c.k = nx; c.ext = xg; c.root = XSEL[0]; c.ncost = nc; add_cand(&c);
+    }
+}
+
+/* fraig: merge gates whose complete function equals an earlier signal (never deeper).
+ * review5 K4 (`fraig 2`): the old rule looked only at the first signal with the same function
+ * and merged the later one into it; when the earlier one was deeper nothing happened and the
+ * later one was not even remembered.  With fraig 2 the pair is merged into whichever of the two
+ * is not deeper in both gate depth and AND depth (the later signal cannot depend on a strictly
+ * deeper earlier one, so replacing the earlier by the later makes no cycle; rebuild checks
+ * anyway), and signals with incomparable depths are all kept as representatives. */
+static int *FR_map; static int *FR_ht; static int FR_hts; static long st_fraig_rev;
 static int fraig(Circ *c, u64 *V) {
     int tot = N + c->ng, any = 0, lv = 0;
     int hts = 64; while (hts < 2 * tot) hts <<= 1;
@@ -708,18 +817,21 @@ static int fraig(Circ *c, u64 *V) {
         const u64 *pv = V + (size_t)v * W;
         u64 h = 0x777; for (int w = 0; w < W; w++) { h ^= pv[w] & wmask(w); h *= 0x9E3779B97F4A7C15ULL; h ^= h >> 29; }
         unsigned hh = (unsigned)(h >> 20) & (hts - 1);
-        int found = -1;
+        int done = 0;
         while (FR_ht[hh] >= 0) {
             int u = FR_ht[hh]; const u64 *pu = V + (size_t)u * W; int eq = 1;
             for (int w = 0; w < W; w++) if ((pu[w] ^ pv[w]) & wmask(w)) { eq = 0; break; }
-            if (eq) { found = u; break; }
+            if (eq) {
+                if (!lv) { levels(c, LG_tmp, LA_tmp); lv = 1; }      /* review5 P3: only when two signals are equal */
+                if (LG_tmp[u] <= LG_tmp[v] && LA_tmp[u] <= LA_tmp[v]) { FR_map[v] = u; any = 1; done = 1; break; }
+                if (use_fraig < 2) { done = 1; break; }              /* old rule: first equal signal decides */
+                if (LG_tmp[v] <= LG_tmp[u] && LA_tmp[v] <= LA_tmp[u]) {   /* earlier one is the deeper: replace it */
+                    FR_map[u] = v; FR_ht[hh] = v; any = 1; done = 1; st_fraig_rev++; break;
+                }
+            }
             hh = (hh + 1) & (hts - 1);
         }
-        if (found >= 0) {
-            if (!lv) { levels(c, LG_tmp, LA_tmp); lv = 1; }      /* review5 P3: only when two signals are equal */
-            if (LG_tmp[found] <= LG_tmp[v] && LA_tmp[found] <= LA_tmp[v]) { FR_map[v] = found; any = 1; }
-        }
-        else FR_ht[hh] = v;
+        if (!done) FR_ht[hh] = v;
     }
     if (!any) return 0;
     if (rebuild(c, -1, -1, 0, 0, FR_map, &tmp_c, 1) < 0) return 0;
@@ -777,7 +889,7 @@ static int same_structure(const Circ *x, const Circ *y) {
 
 /* evaluate candidate: build into cand_c, return obj (or +inf if invalid) */
 static int eval_cand(int s, const Cand *k, Metrics *m) {
-    if (rebuild(&cur, s, k->root, k->g, k->k, 0, &cand_c, 1) < 0) return 0;
+    if (rebuild(&cur, s, k->root, cand_gates(k), k->k, 0, &cand_c, 1) < 0) return 0;
     sim(&cand_c, Vcand);
     if (!outputs_ok(&cand_c, Vcand)) {
         fprintf(stderr, "INTERNAL: candidate breaks the function (s=%d k=%d)\n", s, k->k); exit(3);
@@ -869,6 +981,11 @@ int main(int argc, char **argv) {
     PD = malloc(sizeof(u64) * PCAP); PV0 = malloc(sizeof(u64) * PCAP); L1 = malloc(sizeof(int) * PCAP);
     phts = 1; while (phts < PCAP * 2) phts <<= 1; PHT = calloc(phts, sizeof(PSlot));
     CAND = malloc(sizeof(Cand) * (cand_cap + 1));
+    if (mv_w[MV_XSPAN] > 0) {
+        XB = malloc(sizeof(u64) * (size_t)XMAX * W); XC = malloc(sizeof(u64) * XMAX * XCW); XP = malloc(sizeof(int) * XMAX);
+        XORD = malloc(sizeof(int) * XMAX); XSEL = malloc(sizeof(int) * XMAX); XLV = malloc(sizeof(int) * XMAX);
+        XG = malloc(sizeof(Gate) * (size_t)xspan_tries * (XMAX + 2));
+    }
 
     circ_copy(&best, &cur); mbest = mcur;
     FILE *trace = cfg_trace[0] ? fopen(cfg_trace, "w") : 0;
@@ -893,9 +1010,10 @@ int main(int argc, char **argv) {
         if (cur.ng == 0) break;
         double r = rnd01() * mvsum; int mv = 0;
         while (mv < NMOVES - 1 && r >= mv_w[mv]) { r -= mv_w[mv]; mv++; }
+        while (mv > 0 && mv_w[mv] <= 0) mv--;          /* a move with weight 0 is never chosen (rounding) */
         double tm = now_s();
         st_prop[mv]++;
-        int s = N + rndint(cur.ng);
+        int s = sweep ? N + (int)((it - 1) % cur.ng) : N + rndint(cur.ng);
         tfo_care(s);
         /* required levels; in repair mode (current state violates a cap) never deeper than s */
         req_g = RGc[s] > LGc[s] ? RGc[s] : LGc[s]; req_a = RAc[s] > LAc[s] ? RAc[s] : LAc[s];
@@ -906,7 +1024,7 @@ int main(int argc, char **argv) {
         for (int i = ndiv - 1; i > 0; i--) { int j = rndint(i + 1); int x = DIV[i]; DIV[i] = DIV[j]; DIV[j] = x; }
         if (ndiv > dmax && dmax > 0) ndiv = dmax;
         if (ndiv == 0) continue;
-        find_cands(mv + 1);
+        if (mv == MV_XSPAN) xspan_cands(); else find_cands(mv + 1);
         st_cands[mv] += ncand;
         /* evaluate all candidates; take the best improvement, else a random one under Metropolis */
         int bi = -1, bfeas = 0; Metrics m, bm;
@@ -925,6 +1043,7 @@ int main(int argc, char **argv) {
             if (!eval_cand(s, &CAND[i], &m)) continue;
             if (skip_noop && m.g == mcur.g && m.a == mcur.a && m.gd == mcur.gd && m.ad == mcur.ad
                 && same_structure(&cand_c, &cur)) { st_noop++; continue; }
+            if (repair_keep && !mcur.feas && (m.xa > mcur.xa || m.xad > mcur.xad || m.xgd > mcur.xgd)) continue;
             double d = ldelta(&m, &mcur); int cc = mcmp(&m, &mcur);
             if ((m.feas || !mcur.feas) && (bi < 0 || mcmp(&m, &bm) < 0)) { bm = m; bi = i; bfeas = m.feas; }
             if (cc == 0 && m.feas >= mcur.feas) neu[nneu++] = i;
@@ -940,9 +1059,10 @@ int main(int argc, char **argv) {
                 Cand *k = &CAND[accept]; Gate *gs = &cur.g[s - N];
                 fprintf(tmv, "it %ld t %.4f mv %s target s%d=%s(s%d,s%d) mffc_cost %.10g care %d/%d cands %d | new %d gate(s):",
                         it, t, MVNAME[mv], s, OPNAME[gs->op], gs->a, gs->b, mc, popc_care(), patterns(), ncand, k->k);
-                for (int q = 0; q < k->k; q++) fprintf(tmv, " n%d=%s(%s%d,%s%d)", q, OPNAME[k->g[q].op],
-                    k->g[q].a >= N + cur.ng ? "n" : "s", k->g[q].a >= N + cur.ng ? k->g[q].a - N - cur.ng : k->g[q].a,
-                    k->g[q].b >= N + cur.ng ? "n" : "s", k->g[q].b >= N + cur.ng ? k->g[q].b - N - cur.ng : k->g[q].b);
+                const Gate *kg = cand_gates(k);
+                for (int q = 0; q < k->k; q++) fprintf(tmv, " n%d=%s(%s%d,%s%d)", q, OPNAME[kg[q].op],
+                    kg[q].a >= N + cur.ng ? "n" : "s", kg[q].a >= N + cur.ng ? kg[q].a - N - cur.ng : kg[q].a,
+                    kg[q].b >= N + cur.ng ? "n" : "s", kg[q].b >= N + cur.ng ? kg[q].b - N - cur.ng : kg[q].b);
                 fprintf(tmv, " root %s%d | before cost %.10g G %d A %d GD %d AD %d", k->root >= N + cur.ng ? "n" : "s",
                         k->root >= N + cur.ng ? k->root - N - cur.ng : k->root, mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
             }
@@ -981,7 +1101,9 @@ int main(int argc, char **argv) {
     printf("final cost %.10g G %d A %d GD %d AD %d obj %.17g feas %d iters %ld restarts %ld seconds %.2f\n",
            mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj, mbest.feas, it, restarts, now_s() - t0);
     for (int i = 0; i < NMOVES; i++)
-        printf("move %s prop %ld acc %ld imp %ld cands %ld time %.2f\n", MVNAME[i], st_prop[i], st_acc[i], st_imp[i], st_cands[i], st_time[i]);
+        if (i < 3 || mv_w[i] > 0) printf("move %s prop %ld acc %ld imp %ld cands %ld time %.2f\n", MVNAME[i], st_prop[i], st_acc[i], st_imp[i], st_cands[i], st_time[i]);
     printf("noop_candidates_skipped %ld\n", st_noop);
+    if (use_fraig >= 2) printf("fraig_reverse_merges %ld\n", st_fraig_rev);
+    if (mv_w[MV_XSPAN] > 0) printf("xspan_solutions %ld\n", st_xspan_solved);
     return 0;
 }

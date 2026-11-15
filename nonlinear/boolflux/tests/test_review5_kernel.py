@@ -157,6 +157,88 @@ class TestTraceAndEdges(unittest.TestCase):
         self.assertEqual(rc, 2)
 
 
+def parity_from_ands(k):
+    """x0 ^ ... ^ x(k-1) built from AND and NOT only (a ^ b = ~(~(a & ~b) & ~(~a & b))): 3 ANDs per XOR."""
+    gates = []; n = k
+
+    def add(op, a, b):
+        gates.append((op, a, b)); return n + len(gates) - 1
+    acc = 0
+    for i in range(1, k):
+        na, nb = add(3, acc, acc), add(3, i, i)
+        p, q = add(8, acc, nb), add(8, na, i)
+        r = add(8, add(3, p, p), add(3, q, q))
+        acc = add(3, r, r)
+    return 'n %d\nm 1\ng %d\n%s\no %d\n' % (k, len(gates), '\n'.join('%d %d %d' % g for g in gates), acc)
+
+
+class TestOptions(unittest.TestCase):
+    """K4, S1, S2: options that are off by default (TestTrajectory checks that the default is untouched)."""
+
+    def test_fraig2_reverse_merge(self):
+        s = dict(BASE); s.update(NIST_LIB); s.update(LEX_A)
+        s.update({'cap.a': 29, 'cap.ad': 5, 'cap.gd': 20, 'iters': 300, 'fraig': 2})
+        text = aes('aes-sbox-a29-ad5-g182-gd16-xx153-29.circ.txt')
+        rc, out, err, d = run(text, s)
+        self.assertEqual(rc, 0, err)
+        self.assertGreater(int(out.split('fraig_reverse_merges')[1].split()[0]), 0)
+        f = final(out)
+        self.assertEqual(f['feas'], 1); self.assertLessEqual(f['G'], 182)
+        check_same_function(self, text, (d / 'out.bfx').read_text())
+
+    def test_xspan_removes_all_ands_of_a_parity(self):
+        text = parity_from_ands(7)                       # 18 ANDs; the output is the XOR of the 7 inputs
+        s = dict(BASE); s.update(NIST_LIB); s.update(LEX_A)
+        s.update({'mv.resub1': 0, 'mv.resub2': 0, 'mv.resub3': 0, 'mv.xspan': 1, 'iters': 400, 'T0': 0})
+        rc, out, err, d = run(text, s)
+        self.assertEqual(rc, 0, err)
+        f = final(out)
+        self.assertEqual(f['A'], 0); self.assertLessEqual(f['G'], 21)
+        self.assertIn('move xspan', out)
+        self.assertGreater(int(out.split('xspan_solutions')[1].split()[0]), 0)
+        check_same_function(self, text, (d / 'out.bfx').read_text())
+
+    def test_sweep_tests_every_gate_once(self):
+        # sweep 1: gates in index order; one pass over an unchanged circuit is an exact scan
+        text = aes('aes-sbox-a28-ad4-g153-gd15-xx125-29.circ.txt')
+        s = dict(BASE); s.update(NIST_LIB); s.update(LEX_A)
+        s.update({'mv.resub1': 0, 'mv.resub2': 0, 'mv.resub3': 0, 'mv.xspan': 1, 'iters': 153, 'T0': 0, 'sweep': 1})
+        rc, out, err, d = run(text, s)
+        self.assertEqual(rc, 0, err)
+        self.assertIn('move xspan prop 153 acc 0', out)       # no AND of this NIST 28 is in the span of the rest
+        self.assertEqual(final(out)['A'], 28)
+
+    def test_xspan_complemented_and_caps(self):
+        # complement of a parity (needs the constant), under a gate-depth cap the balanced tree can meet
+        base = parity_from_ands(8).splitlines()
+        g = int(base[2].split()[1]); out_sig = int(base[-1].split()[1])
+        text = '\n'.join(base[:2] + ['g %d' % (g + 1)] + base[3:-1] + ['3 %d %d' % (out_sig, out_sig), 'o %d' % (8 + g)]) + '\n'
+        s = dict(BASE); s.update(NIST_LIB); s.update(LEX_A)
+        s.update({'mv.xspan': 3, 'iters': 1500, 'cap.gd': 3})
+        rc, out, err, d = run(text, s)
+        self.assertEqual(rc, 0, err)
+        f = final(out)
+        self.assertEqual((f['A'], f['feas']), (0, 1)); self.assertLessEqual(f['GD'], 3)
+        check_same_function(self, text, (d / 'out.bfx').read_text())
+
+    def test_repair_keep_never_raises_a_cap_excess(self):
+        text = aes('aes-sbox-a32-ad5-g104-gd30-xx72-5.circ.txt')
+        worst = {}
+        for keep in (0, 1):
+            d = Path(tempfile.mkdtemp(prefix='r5k-'))
+            s = dict(BASE); s.update(NIST_LIB); s.update(LEX_A)
+            s.update({'cap.a': 32, 'cap.ad': 5, 'cap.gd': 24, 'iters': 400, 'repair_keep': keep, 'trace': d / 'tr.txt'})
+            rc, out, err, _ = run(text, s, d=d)
+            self.assertEqual(rc, 0, err)
+            rows = [x.split() for x in (d / 'tr.txt').read_text().splitlines()]
+            worst[keep] = (max(int(r[5]) for r in rows), max(int(r[7]) for r in rows))     # A, AD
+            gd = [int(r[6]) for r in rows]
+            if keep: self.assertEqual(gd, sorted(gd, reverse=True))                        # GD excess never rises
+            check_same_function(self, text, (d / 'out.bfx').read_text())
+        self.assertEqual(worst[1], (32, 5))            # A and AD stay inside their caps during the repair
+        self.assertGreater(worst[0][0], 32)            # default: the repair buys depth with an AND above cap.a
+
+
 def stats_lines(log):
     """final metrics + per-move counters + no-op count, without wall-clock fields."""
     keep = [re.sub(r' (t|seconds|time) [0-9.]+', '', x) for x in log.splitlines()
