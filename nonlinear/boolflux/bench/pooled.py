@@ -23,6 +23,8 @@ def sign_p(w, l):
 
 
 def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):      # review5 P16
+        print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
     pairs = defaultdict(dict); a36 = defaultdict(list)
     for d in sys.argv[1:]:
         for f in Path(d).glob('*.json'):

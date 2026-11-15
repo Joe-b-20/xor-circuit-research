@@ -24,6 +24,8 @@ STARTS = ['aes-sbox-a32-ad5-g104-gd30-xx72-5', 'aes-sbox-a36-ad4-g142-gd13-xx106
 
 
 def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):      # review5 P16
+        print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
     out = Path(sys.argv[1]); tab = targets.aes_sbox(); ops = core.Model.load('nist').ops()
     skel_bin = Path(tempfile.mkdtemp()) / 'skel'
     subprocess.run(['gcc', '-O2', '-o', str(skel_bin), str(KDIR / 'skel.c'), '-lm'], check=True)
