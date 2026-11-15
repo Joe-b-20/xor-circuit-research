@@ -1,0 +1,64 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/4495fcdeb39c.bfx",
+  "sha256": "4a91448f79f994517e8ef1cd1564eeeddb0628495c1dbbeea123a9dad16f22a3"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/4495fcdeb39c.bfx",
+  "seed": 143277323,
+  "metrics": {
+   "cost": 129.0,
+   "G": 129,
+   "A": 29,
+   "GD": 22,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator trb (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 16 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_trb.py --archive ~/xs-campaigns/2026-11-14-hub/long --in 442582ae7d35 --seed 143277323 --seconds 30 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/long-4b689e.r06158-trb",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/long-4b689e.r06158-trb.json",
+ "parents": [
+  {
+   "id": "442582ae7d35",
+   "metrics_A_AD_G_GD": [
+    29,
+    4,
+    128,
+    23
+   ],
+   "operator": "ingest",
+   "file": "~/xs-campaigns/2026-11-15-study/X2/found/ab/aes-sbox-a29-ad4-g128-gd23-442582ae7d35.circ.txt"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/442582ae7d35.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  143277323
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 30.09,
+  "job_cpu_s": 27.87,
+  "within_job_s": null,
+  "job_budget_s": 30.0,
+  "admitted_unix_time": 1794725562.268789
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "924b4c0-dirty+1df9fcd2fb"
+ },
+ "reproduction": "one-off: hub job (operator trb, seed 143277323, 30.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-trb-g129-a29-gd22-ad4.campaign.json"
+}

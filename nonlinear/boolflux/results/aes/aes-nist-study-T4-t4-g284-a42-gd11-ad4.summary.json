@@ -1,0 +1,46 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "study-T4",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-study/T4/found/t4-q-s42g23-42-4-284-11.circ.txt",
+  "sha256": "3df2ddd4d46990c3649552d35c1f991e6f962f01a7b8dd47149ea3f96e4dffcc"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-study/T4/found/t4-q-s42g23-42-4-284-11.circ.txt",
+  "seed": 23,
+  "metrics": {
+   "cost": 284.0,
+   "G": 284,
+   "A": 42,
+   "GD": 11,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "overnight T4 polish_job: strategies/F/fdrive.py mode gate, caps GD11 AD4 A42, kernel bfx-593fa798f5 (study agent T4, 2026-11-15; strategies/T4/NOTES.md)",
+ "command": "see campaign sidecar",
+ "run_record": "~/xs-campaigns/2026-11-15-study/T4/found",
+ "parents": [
+  {
+   "file": "/home/joebachir20/xs-campaigns/2026-11-15-study/T4/found/t4-a42-ad4-g301-gd11-kernel.circ.txt"
+  }
+ ],
+ "start": "/home/joebachir20/xs-campaigns/2026-11-15-study/T4/found/t4-a42-ad4-g301-gd11-kernel.circ.txt",
+ "objective": null,
+ "caps": null,
+ "seeds": [
+  23
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": null,
+ "code_version": {
+  "strategies/T4 (sha256 at curation)": "committed at d961083 (study snapshot)"
+ },
+ "reproduction": "one-off: produced by study agent T4; method and seeds in the sidecar (not re-run)",
+ "campaign_sidecar": "aes-nist-study-T4-t4-g284-a42-gd11-ad4.campaign.json"
+}

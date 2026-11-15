@@ -1,0 +1,217 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/121e21e37bd6.bfx",
+  "sha256": "45e0258e2efcf68f827644d20a4ee5e9dfea64f8760fa2bc91c141cd4eeb842b"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/121e21e37bd6.bfx",
+  "seed": 599070310,
+  "metrics": {
+   "cost": 115.0,
+   "G": 115,
+   "A": 32,
+   "GD": 22,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator join (front c138d34d2414, back ce7b558738b2, LX 2, LY 2, interface_gates 0) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab2base",
+ "command": "hub operator join on archive ~/xs-campaigns/2026-11-14-hub/ab2base (no run record: r00266-join)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab2base",
+ "parents": [
+  {
+   "id": "c138d34d2414",
+   "metrics_A_AD_G_GD": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "b0f7541320e7",
+     "metrics_A_AD_G_GD": [
+      33,
+      4,
+      106,
+      22
+     ],
+     "operator": "join",
+     "parents": [
+      {
+       "id": "a43e1ae3d73f",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        116,
+        20
+       ],
+       "operator": "seed",
+       "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+      },
+      {
+       "id": "9afcc26c8b63",
+       "metrics_A_AD_G_GD": [
+        33,
+        4,
+        106,
+        22
+       ],
+       "operator": "seed",
+       "file": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt"
+      }
+     ]
+    },
+    {
+     "id": "370a9cca3c08",
+     "metrics_A_AD_G_GD": [
+      33,
+      4,
+      107,
+      20
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "b0f7541320e7",
+       "metrics_A_AD_G_GD": [
+        33,
+        4,
+        106,
+        22
+       ],
+       "operator": "join",
+       "parents": [
+        {
+         "id": "a43e1ae3d73f",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          116,
+          20
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+        },
+        {
+         "id": "9afcc26c8b63",
+         "metrics_A_AD_G_GD": [
+          33,
+          4,
+          106,
+          22
+         ],
+         "operator": "seed",
+         "file": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ce7b558738b2",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    115,
+    23
+   ],
+   "operator": "pull",
+   "parents": [
+    {
+     "id": "f981940910eb",
+     "metrics_A_AD_G_GD": [
+      32,
+      4,
+      115,
+      24
+     ],
+     "operator": "join",
+     "parents": [
+      {
+       "id": "a5a0f5c4240d",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        115,
+        24
+       ],
+       "operator": "join",
+       "parents": [
+        {
+         "id": "3d3691b8f8bb",
+         "metrics_A_AD_G_GD": [
+          33,
+          4,
+          105,
+          27
+         ],
+         "operator": "join",
+         "parents_not_expanded": [
+          "48e97b8cb70d",
+          "c8f64f4bf1ff"
+         ]
+        },
+        {
+         "id": "48e97b8cb70d",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          115,
+          24
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a32-ad4-g115-gd24.circ.txt"
+        }
+       ]
+      },
+      {
+       "id": "48e97b8cb70d",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        115,
+        24
+       ],
+       "operator": "seed",
+       "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a32-ad4-g115-gd24.circ.txt"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/c138d34d2414.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  599070310
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 2.48,
+  "job_cpu_s": 2.75,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794680288.9973145
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "377b03f+af064d3f90"
+ },
+ "reproduction": "one-off: hub job (operator join, seed 599070310, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-join-g115-a32-gd22-ad4.campaign.json"
+}

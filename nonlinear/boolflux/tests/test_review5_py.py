@@ -536,7 +536,11 @@ class TestCuration(unittest.TestCase):
         self.assertEqual(CU.track_of(CU.RES / 'x.circ.txt'), 'results')
         self.assertEqual(CU.track_of(Path('/somewhere/else/x.circ.txt')), 'other')
         for base, g in BT.EXTRA:                             # every source best_table lists has a track
-            self.assertIn(CU.track_of(base / g.replace('*', 'x')), ('hub', 'other'))
+            tr = CU.track_of(base / g.replace('*', 'x'))
+            self.assertTrue(tr in ('hub', 'other') or tr.startswith('study-'), tr)
+        # 2026-11-15 study agents: the track is the agent id of the found/ folder
+        self.assertEqual(CU.track_of(CU.STUDY / 'T1' / 'found' / 'front' / 'x.bfx'), 'study-T1')
+        self.assertEqual(CU.track_of(CU.STRAT / 'H2' / 'found' / 'x.circ.txt'), 'study-H2')
 
     def test_p12_hub_provenance_and_lineage(self):
         CU = self.CU
@@ -667,8 +671,11 @@ class TestCuration(unittest.TestCase):
         man = json.loads((PKG / 'results' / 'MANIFEST.json').read_text())
         for x in man['entries']:
             self.assertEqual('CAPS NOT MET' in x['mechanism'], not x['caps_met'], x['file'])
-        self.assertEqual(sorted(Path(x['file']).name for x in man['entries'] if not x['caps_met']),
-                         ['aes-nist-E-polish-g104-a32-gd29-ad5.circ.txt', 'aes-nist-E-pull-g135-a29-gd17-ad5.circ.txt'])
+        # the two cap misses of the 11-14 push stay flagged; later curations may add more (e.g. the
+        # hub's depth pulls that ended above their GD cap, L1's "infeasible-end" circuits)
+        missed = {Path(x['file']).name for x in man['entries'] if not x['caps_met']}
+        self.assertLessEqual({'aes-nist-E-polish-g104-a32-gd29-ad5.circ.txt',
+                              'aes-nist-E-pull-g135-a29-gd17-ad5.circ.txt'}, missed)
 
     def test_p23_code_version_of_curated_results_says_when_it_was_taken(self):
         MF = self.MF

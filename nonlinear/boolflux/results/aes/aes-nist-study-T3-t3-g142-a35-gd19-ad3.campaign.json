@@ -1,0 +1,79 @@
+{
+ "metrics": [
+  35,
+  3,
+  142,
+  19
+ ],
+ "id": "724d37c6a122",
+ "made_by": "gf4loop.py lowgd3 run (seed 88, CPU 6, from 04:50 UTC): level-1 product exchange walk (2 steps at s42, l1move.py, G unchanged 142@20) on pool member 142@20 (93205e395424, itself a descendant of the T3 142@20 25c6b601e491 via l1 walks/polishes in the shared lowgd pool) + kernel polish 150 s, caps (35,3,19), objective cost,gd -> 142@19",
+ "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-study/T3/lowgd/pool/a35-ad3-g142-gd19-724d37c6a122.bfx",
+ "code_version": "f9fe6f7+0c2d27db70",
+ "time": "2026-11-15T05:08:54Z",
+ "aes_check": {
+  "file": "/home/joebachir20/xs-campaigns/2026-11-15-study/T3/found/aes-sbox-a35-ad3-g142-gd19-724d37c6a122.circ.txt",
+  "core_ok": true,
+  "independent_ok": true,
+  "metrics_agree": true,
+  "library_ok": true,
+  "counts": {
+   "AND": 35,
+   "XNOR": 50,
+   "XOR": 57
+  },
+  "tuple": [
+   35,
+   3,
+   142,
+   19
+  ],
+  "ok": true,
+  "dominated_by": [],
+  "new_point": true,
+  "best_at_gd_cap": {
+   "tuple": [
+    33,
+    4,
+    116,
+    15
+   ],
+   "file": "aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt",
+   "gain": -26
+  },
+  "best_at_a_cap": {
+   "tuple": [
+    32,
+    7,
+    103,
+    32
+   ],
+   "file": "aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt",
+   "gain": -39
+  },
+  "best_at_a_gd_caps": {
+   "tuple": [
+    33,
+    4,
+    116,
+    15
+   ],
+   "file": "aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt",
+   "gain": -26
+  },
+  "best_at_a_ad_gd_caps": {
+   "tuple": [
+    35,
+    3,
+    157,
+    15
+   ],
+   "file": "aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt",
+   "gain": 15
+  }
+ },
+ "loop_record": {
+  "it": 4,
+  "seed": 974194677,
+  "log": "lowgd/loop-s88.jsonl"
+ }
+}

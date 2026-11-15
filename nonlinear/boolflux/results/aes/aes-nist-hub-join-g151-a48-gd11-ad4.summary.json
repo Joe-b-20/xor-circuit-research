@@ -1,0 +1,75 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/4d335411443f.bfx",
+  "sha256": "bc542926a21fb9ac976b68305fadf033d0adedfcdb4ce580a794b310f68ea31a"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/4d335411443f.bfx",
+  "seed": 816935704,
+  "metrics": {
+   "cost": 151.0,
+   "G": 151,
+   "A": 48,
+   "GD": 11,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator join (front a857d939a8e5, back fa5ff9af1107, LX 3, LY 3, interface_gates 0) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab2base",
+ "command": "hub operator join on archive ~/xs-campaigns/2026-11-14-hub/ab2base (no run record: r00067-join)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab2base",
+ "parents": [
+  {
+   "id": "a857d939a8e5",
+   "metrics_A_AD_G_GD": [
+    48,
+    4,
+    151,
+    11
+   ],
+   "operator": "seed",
+   "file": "~/xs-campaigns/2026-11-14-hub/abmem/admitted/a857d939a8e53b4b.bfx"
+  },
+  {
+   "id": "fa5ff9af1107",
+   "metrics_A_AD_G_GD": [
+    49,
+    4,
+    148,
+    11
+   ],
+   "operator": "seed",
+   "file": "nonlinear/nist/aes-sbox/aes-sbox-a49-ad4-g148-gd11-xx99-23.circ.txt"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/a857d939a8e5.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  816935704
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 6.35,
+  "job_cpu_s": 7.05,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794681976.2743933
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+be293f5991"
+ },
+ "reproduction": "one-off: hub job (operator join, seed 816935704, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-join-g151-a48-gd11-ad4.campaign.json"
+}

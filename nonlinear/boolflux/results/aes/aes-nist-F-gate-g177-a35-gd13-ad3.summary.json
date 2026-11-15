@@ -1,0 +1,56 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "F",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-13-aes/F/found/camp-ad3b-a35-f13-g177-a35-gd13-ad3.circ.txt",
+  "sha256": "9896328dc05dbdc9e8c3d72addd89cf84517c80ac9b649239d77cebb9615c1c8"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-13-aes/F/found/camp-ad3b-a35-f13-g177-a35-gd13-ad3.circ.txt",
+  "seed": "812",
+  "metrics": {
+   "cost": 177.0,
+   "G": 177,
+   "A": 35,
+   "GD": 13,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "fdrive fresh; fdrive mode fresh cap 13",
+ "command": "taskset -c 2 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/strategies/F/fdrive.py --start ~/xs-campaigns/2026-11-13-aes/F/ad3b/best-13ad3a35.circ.txt --cap 13 --mode fresh --seconds 2700 --seed 812 --out ~/xs-campaigns/2026-11-13-aes/F/ad3b/a35-f13 --stage-iters 400000 --cap-ad 3 --cap-a 35  env {}",
+ "run_record": "~/xs-campaigns/2026-11-13-aes/F/ad3b/a35-f13",
+ "parents": [
+  {
+   "file": "BEST:13ad3a35"
+  }
+ ],
+ "start": "BEST:13ad3a35",
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 13,
+  "AD": 3,
+  "A": null
+ },
+ "seeds": [
+  "812"
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": "see /home/joebachir20/xs-campaigns/2026-11-13-aes/F/ad3b/a35-f13/log.jsonl",
+ "code_version": {
+  "kernel": "F snapshot kernel (bfx.c sha256 7c53f2e4..., ~/xs-campaigns/2026-11-13-aes/F/snap)",
+  "strategies/F (uncommitted, sha256 now)": {
+   "fdrive.py": "12d1f1a3b4bb",
+   "trb.py": "c80cee738bb0",
+   "campaign.py": "53d30823db06"
+  }
+ },
+ "reproduction": "one-off: time-budgeted job (not bit-reproducible); not re-run",
+ "recorded_utc": "2026-11-14T22:05:50Z",
+ "campaign_sidecar": "aes-nist-F-gate-g177-a35-gd13-ad3.campaign.json"
+}

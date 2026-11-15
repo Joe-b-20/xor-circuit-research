@@ -1,0 +1,99 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/0294fe7e3772.bfx",
+  "sha256": "3e5bce124999bf9567b82a231dc77916efd0d76e9840efe57849a88d3e007bcd"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/0294fe7e3772.bfx",
+  "seed": 671872631,
+  "metrics": {
+   "cost": 134.0,
+   "G": 134,
+   "A": 34,
+   "GD": 13,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator join (front d39f7e1d5d32, back 4a3bb5d58502, LX 3, LY 3, interface_gates 0) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab4ad3",
+ "command": "hub operator join on archive ~/xs-campaigns/2026-11-14-hub/ab4ad3 (no run record: r00630-join)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab4ad3",
+ "parents": [
+  {
+   "id": "d39f7e1d5d32",
+   "metrics_A_AD_G_GD": [
+    34,
+    4,
+    134,
+    13
+   ],
+   "operator": "polish",
+   "parents": [
+    {
+     "id": "83664cd1aecc",
+     "metrics_A_AD_G_GD": [
+      35,
+      4,
+      133,
+      13
+     ],
+     "operator": "seed",
+     "file": "nonlinear/nist/aes-sbox/aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt"
+    }
+   ]
+  },
+  {
+   "id": "4a3bb5d58502",
+   "metrics_A_AD_G_GD": [
+    35,
+    4,
+    133,
+    13
+   ],
+   "operator": "pull",
+   "parents": [
+    {
+     "id": "83664cd1aecc",
+     "metrics_A_AD_G_GD": [
+      35,
+      4,
+      133,
+      13
+     ],
+     "operator": "seed",
+     "file": "nonlinear/nist/aes-sbox/aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt"
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/d39f7e1d5d32.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  671872631
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 4.97,
+  "job_cpu_s": 5.47,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794686849.0170856
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+79babf349a"
+ },
+ "reproduction": "one-off: hub job (operator join, seed 671872631, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-join-g134-a34-gd13-ad4.campaign.json"
+}

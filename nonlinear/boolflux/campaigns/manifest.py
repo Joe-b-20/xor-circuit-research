@@ -85,6 +85,8 @@ def git_show(rev, path):
 def start_info(start):
     if start == 'anf':
         return {'kind': 'naive ANF circuit built by starts.anf from the target table'}
+    if not start:      # construction or study-agent result without a single start file (parents list it)
+        return {'kind': 'no single start file; see parents and the campaign sidecar'}
     p = Path(str(start).replace('~', HOME, 1) if str(start).startswith('~') else start)
     rel = str(p) if not p.is_absolute() else str(p.relative_to(REPO)) if str(p).startswith(str(REPO)) else str(p)
     info = {'path': rel.replace(HOME, '~')}

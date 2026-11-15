@@ -1,0 +1,19 @@
+{
+ "file": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/found/camp-ad3b-a35-t14-g162-a35-gd14-ad3.circ.txt",
+ "metrics": {
+  "G": 162,
+  "A": 35,
+  "GD": 14,
+  "AD": 3
+ },
+ "source": "/home/joebachir20/xs-campaigns/2026-11-13-aes/F/ad3b/a35-t14/best.circ.txt",
+ "start": "/home/joebachir20/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g163-gd14-xx128-58.circ.txt",
+ "command": "taskset -c 1 /usr/bin/python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/F/fdrive.py --start /home/joebachir20/xs-campaigns/2026-11-13-aes/best/aes-sbox-a35-ad3-g163-gd14-xx128-58.circ.txt --cap 14 --mode trb --seconds 2700 --seed 801 --out /home/joebachir20/xs-campaigns/2026-11-13-aes/F/ad3b/a35-t14 --stage-iters 200000 --cap-ad 3 --cap-a 35  env {}",
+ "seed": "801",
+ "config": "fdrive mode trb cap 14",
+ "time_to_result_s": "see /home/joebachir20/xs-campaigns/2026-11-13-aes/F/ad3b/a35-t14/log.jsonl",
+ "mechanism": "fdrive trb",
+ "note": "",
+ "recorded_utc": "2026-11-14T18:19:42Z",
+ "check_exit": 0
+}

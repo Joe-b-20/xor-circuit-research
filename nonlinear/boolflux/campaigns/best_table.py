@@ -37,7 +37,12 @@ SOURCES = [HERE.parent / 'results' / 'aes']
 GLOBS = ['D/found/*.circ.txt', 'E/found/*.circ.txt', 'F/found/*.circ.txt', 'main/**/best.circ.txt',
          'E/long1/*/admitted/*.bfx', 'E/low1/**/admitted/*.bfx', 'C/found/*.circ.txt']
 # 2026-11-14 hub phase: every hub campaign archive, track G found/
-EXTRA = [(Path.home() / 'xs-campaigns' / '2026-11-14-hub', '*/archive/*.bfx'),
+# 2026-11-15 study phase first (every agent's found/, any depth), so that a circuit later ingested
+# by the hub is credited to the agent that made it; then the hub archives and track G
+_STUDY = Path.home() / 'xs-campaigns' / '2026-11-15-study'
+EXTRA = [(_STUDY, '**/found/**/*.circ.txt'), (_STUDY, '**/found/**/*.bfx'),
+         (HERE.parent / 'strategies', '*/found/*.circ.txt'),
+         (Path.home() / 'xs-campaigns' / '2026-11-14-hub', '*/archive/*.bfx'),
          (Path.home() / 'xs-campaigns' / '2026-11-14-G', 'found/*.circ.txt')]
 OWN_NAME = re.compile(r'^aes-sbox-a\d+-ad\d+-g\d+-gd\d+-xx\d+-\d+\.circ\.txt$')
 

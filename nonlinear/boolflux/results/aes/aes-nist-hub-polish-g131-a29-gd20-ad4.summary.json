@@ -1,0 +1,115 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/602f56235174.bfx",
+  "sha256": "3174f34f11b4c3c9a04bf1a87c9b2d8a42b1a2e6b7153fc3477f7eb4e1ea7bcf"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/602f56235174.bfx",
+  "seed": 314102355,
+  "metrics": {
+   "cost": 131.0,
+   "G": 131,
+   "A": 29,
+   "GD": 20,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator polish (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 11 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_polish.py --archive ~/xs-campaigns/2026-11-14-hub/long --in bf5ead649b60 --seed 314102355 --seconds 90 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/r04791-polish",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/r04791-polish.json",
+ "parents": [
+  {
+   "id": "bf5ead649b60",
+   "metrics_A_AD_G_GD": [
+    29,
+    4,
+    143,
+    20
+   ],
+   "operator": "gen_skel",
+   "parents": [
+    {
+     "id": "70751e0f9ad4",
+     "metrics_A_AD_G_GD": [
+      29,
+      4,
+      140,
+      16
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "ec4a643deed8",
+       "metrics_A_AD_G_GD": [
+        28,
+        5,
+        132,
+        19
+       ],
+       "operator": "join",
+       "parents": [
+        {
+         "id": "914a7d9b964b",
+         "metrics_A_AD_G_GD": [
+          28,
+          5,
+          132,
+          19
+         ],
+         "operator": "polish",
+         "parents_not_expanded": [
+          "dfb8f2eff43d"
+         ]
+        },
+        {
+         "id": "dfb8f2eff43d",
+         "metrics_A_AD_G_GD": [
+          28,
+          5,
+          132,
+          19
+         ],
+         "operator": "pull",
+         "parents_not_expanded": [
+          "64fe283d6a06"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/bf5ead649b60.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 20,
+  "AD": 4,
+  "A": 29
+ },
+ "seeds": [
+  314102355
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 99.84,
+  "job_cpu_s": 98.97,
+  "within_job_s": 52.32,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794701855.6265106
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+28875c4eb2"
+ },
+ "reproduction": "one-off: hub job (operator polish, seed 314102355, 90.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-polish-g131-a29-gd20-ad4.campaign.json"
+}

@@ -1,0 +1,87 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/370a9cca3c08.bfx",
+  "sha256": "370d0c65da876260e8936d05586797d6fb4267e7c803c00130b8b5c169e42d03"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/370a9cca3c08.bfx",
+  "seed": 119875672,
+  "metrics": {
+   "cost": 107.0,
+   "G": 107,
+   "A": 33,
+   "GD": 20,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator pull (lowered GD) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab2base",
+ "command": "hub operator pull on archive ~/xs-campaigns/2026-11-14-hub/ab2base (no run record: r00242-pull)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab2base",
+ "parents": [
+  {
+   "id": "b0f7541320e7",
+   "metrics_A_AD_G_GD": [
+    33,
+    4,
+    106,
+    22
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "a43e1ae3d73f",
+     "metrics_A_AD_G_GD": [
+      32,
+      4,
+      116,
+      20
+     ],
+     "operator": "seed",
+     "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+    },
+    {
+     "id": "9afcc26c8b63",
+     "metrics_A_AD_G_GD": [
+      33,
+      4,
+      106,
+      22
+     ],
+     "operator": "seed",
+     "file": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt"
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/b0f7541320e7.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 21,
+  "AD": null,
+  "A": 33
+ },
+ "seeds": [
+  119875672
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 100.8,
+  "job_cpu_s": 100.05,
+  "within_job_s": 78.761,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794680059.3918009
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "377b03f+af064d3f90"
+ },
+ "reproduction": "one-off: hub job (operator pull, seed 119875672, 90.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-pull-g107-a33-gd20-ad4.campaign.json"
+}

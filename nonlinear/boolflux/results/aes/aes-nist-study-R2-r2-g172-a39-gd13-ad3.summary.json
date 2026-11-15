@@ -1,0 +1,44 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "study-R2",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-study/R2/found/R2-ab-a39-ad3-g172-gd13-7be87a668899.bfx",
+  "sha256": "9f181a1b548c45fe312a3b54fa0eebbd2fd17ca18b9864305d4764270d0aea48"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-study/R2/found/R2-ab-a39-ad3-g172-gd13-7be87a668899.bfx",
+  "seed": 842318927,
+  "metrics": {
+   "cost": 172.0,
+   "G": 172,
+   "A": 39,
+   "GD": 13,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub A/B test arm, operator aslack (frozen-ab, md5 op 836f6058, aslack d6d5824e), raw window move, no polish (study agent R2, 2026-11-15; strategies/R2/NOTES.md)",
+ "command": "see campaign sidecar",
+ "run_record": "~/xs-campaigns/2026-11-15-study/R2/found",
+ "parents": [
+  "d463ed8725a8"
+ ],
+ "start": null,
+ "objective": null,
+ "caps": null,
+ "seeds": [
+  842318927
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": null,
+ "code_version": {
+  "strategies/R2 (sha256 at curation)": "committed at d961083 (study snapshot)"
+ },
+ "reproduction": "one-off: produced by study agent R2; method and seeds in the sidecar (not re-run)",
+ "campaign_sidecar": "aes-nist-study-R2-r2-g172-a39-gd13-ad3.campaign.json"
+}

@@ -1,0 +1,44 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "study-X2",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-study/X2/found/ab/aes-sbox-a30-ad4-g129-gd21-efbf58c4f532.circ.txt",
+  "sha256": "9e84c9eaa88eea78221a5d1b3fffaaf5719eef167bd41e9ad2e13028cf38302c"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-study/X2/found/ab/aes-sbox-a30-ad4-g129-gd21-efbf58c4f532.circ.txt",
+  "seed": 833287512,
+  "metrics": {
+   "cost": 129.0,
+   "G": 129,
+   "A": 30,
+   "GD": 21,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "jump (study agent X2, 2026-11-15; strategies/X2/NOTES.md)",
+ "command": "see campaign sidecar",
+ "run_record": "~/xs-campaigns/2026-11-15-study/X2/found/ab",
+ "parents": [
+  "3e4d22ebac24"
+ ],
+ "start": null,
+ "objective": null,
+ "caps": null,
+ "seeds": [
+  833287512
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": null,
+ "code_version": {
+  "strategies/X2 (sha256 at curation)": "committed at d961083 (study snapshot)"
+ },
+ "reproduction": "one-off: produced by study agent X2; method and seeds in the sidecar (not re-run)",
+ "campaign_sidecar": "aes-nist-study-X2-x2-g129-a30-gd21-ad4.campaign.json"
+}

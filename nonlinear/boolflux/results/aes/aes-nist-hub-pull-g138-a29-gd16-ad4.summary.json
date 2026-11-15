@@ -1,0 +1,139 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/8fa85b2b195d.bfx",
+  "sha256": "2e561502e7f5e4bd14d1998b61b4175ffe074d7740de166730f8f51e7602895c"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/8fa85b2b195d.bfx",
+  "seed": 388876930,
+  "metrics": {
+   "cost": 138.0,
+   "G": 138,
+   "A": 29,
+   "GD": 16,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator pull (lowered GD) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 3 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_pull.py --archive ~/xs-campaigns/2026-11-14-hub/long --in 65df10c36364 --seed 388876930 --seconds 90 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/r05319-pull",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/r05319-pull.json",
+ "parents": [
+  {
+   "id": "65df10c36364",
+   "metrics_A_AD_G_GD": [
+    30,
+    4,
+    144,
+    17
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "0b9e6797273e",
+     "metrics_A_AD_G_GD": [
+      29,
+      4,
+      146,
+      15
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "9746ef599ff4",
+       "metrics_A_AD_G_GD": [
+        29,
+        4,
+        148,
+        15
+       ],
+       "operator": "polish",
+       "parents": [
+        {
+         "id": "d45543784321",
+         "metrics_A_AD_G_GD": [
+          29,
+          4,
+          148,
+          15
+         ],
+         "operator": "pull",
+         "parents_not_expanded": [
+          "70751e0f9ad4"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "d49951a441c4",
+     "metrics_A_AD_G_GD": [
+      29,
+      4,
+      133,
+      18
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "3c5e8a8033de",
+       "metrics_A_AD_G_GD": [
+        29,
+        4,
+        148,
+        19
+       ],
+       "operator": "gen_skel",
+       "parents": [
+        {
+         "id": "0b9e6797273e",
+         "metrics_A_AD_G_GD": [
+          29,
+          4,
+          146,
+          15
+         ],
+         "operator": "pull",
+         "parents_not_expanded": [
+          "9746ef599ff4"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/65df10c36364.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 16,
+  "AD": null,
+  "A": 30
+ },
+ "seeds": [
+  388876930
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 99.4,
+  "job_cpu_s": 98.45,
+  "within_job_s": 80.56,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794704130.3797295
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+28875c4eb2"
+ },
+ "reproduction": "one-off: hub job (operator pull, seed 388876930, 90.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-pull-g138-a29-gd16-ad4.campaign.json"
+}

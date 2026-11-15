@@ -1,0 +1,105 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/3608b77dc9ea.bfx",
+  "sha256": "1aad212f95b852b1a72c8c0ab09aa1e302c074a7d650587355a47823cb351faf"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/3608b77dc9ea.bfx",
+  "seed": 861540948,
+  "metrics": {
+   "cost": 141.0,
+   "G": 141,
+   "A": 35,
+   "GD": 24,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator pull (lowered A) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab2base -- CAPS NOT MET by this job (cap A 34, circuit A 35): the circuit is the best state of a run that never came within its caps, recorded without caps",
+ "command": "taskset -c 10 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_pull.py --archive ~/xs-campaigns/2026-11-14-hub/ab2base --in ef7c8b350c8f --seed 861540948 --seconds 90 --out ~/xs-campaigns/2026-11-14-hub/ab2base/jobs/r00077-pull",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab2base/runs/r00077-pull.json",
+ "parents": [
+  {
+   "id": "ef7c8b350c8f",
+   "metrics_A_AD_G_GD": [
+    35,
+    3,
+    142,
+    24
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "4acdd3ec02db",
+     "metrics_A_AD_G_GD": [
+      35,
+      3,
+      142,
+      24
+     ],
+     "operator": "trb",
+     "parents": [
+      {
+       "id": "6ca48240265c",
+       "metrics_A_AD_G_GD": [
+        35,
+        3,
+        140,
+        25
+       ],
+       "operator": "seed",
+       "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-long1-splice-a35-ad3-g140-gd25.circ.txt"
+      }
+     ]
+    },
+    {
+     "id": "ecd180445c69",
+     "metrics_A_AD_G_GD": [
+      35,
+      3,
+      144,
+      20
+     ],
+     "operator": "seed",
+     "file": "nonlinear/boolflux/results/aes/aes-nist-cost_gd-gd20-ad3-a35-g144-a35-gd20-ad3.circ.txt"
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/ef7c8b350c8f.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  861540948
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 97.06,
+  "job_cpu_s": 99.83,
+  "within_job_s": 27.747,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794683757.4455862
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+4ee81e74a9"
+ },
+ "reproduction": "one-off: hub job (operator pull, seed 861540948, 90.0 s budget; not bit-reproducible); not re-run",
+ "job_caps": {
+  "GD": 24,
+  "AD": 3,
+  "A": 34
+ },
+ "note": "the job did not meet its caps (job_caps); the circuit is recorded without caps",
+ "campaign_sidecar": "aes-nist-hub-pull-g141-a35-gd24-ad3.campaign.json"
+}

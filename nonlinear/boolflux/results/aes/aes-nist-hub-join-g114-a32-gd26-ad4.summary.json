@@ -1,0 +1,133 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/34d081c9287c.bfx",
+  "sha256": "8594c96d44df79504883388c067893833bf80dca04c240f27f3e60bd9be1eb3f"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/34d081c9287c.bfx",
+  "seed": 609184672,
+  "metrics": {
+   "cost": 114.0,
+   "G": 114,
+   "A": 32,
+   "GD": 26,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator join (front a43e1ae3d73f, back 8f2a1f4f7951, LX 3, LY 3, interface_gates 0) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 6 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_join.py --archive ~/xs-campaigns/2026-11-14-hub/long --in 8f2a1f4f7951 --seed 609184672 --seconds 60 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/r01396-join",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/r01396-join.json",
+ "parents": [
+  {
+   "id": "a43e1ae3d73f",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    116,
+    20
+   ],
+   "operator": "seed",
+   "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+  },
+  {
+   "id": "8f2a1f4f7951",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    114,
+    26
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "b3b34fdf5429",
+     "metrics_A_AD_G_GD": [
+      32,
+      5,
+      105,
+      26
+     ],
+     "operator": "seed",
+     "file": "nonlinear/nist/aes-sbox/aes-sbox-a32-ad5-g105-gd26-xx73-5.circ.txt"
+    },
+    {
+     "id": "786bb330d5ad",
+     "metrics_A_AD_G_GD": [
+      32,
+      4,
+      115,
+      26
+     ],
+     "operator": "gen_skel",
+     "parents": [
+      {
+       "id": "79bccd2434fd",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        117,
+        19
+       ],
+       "operator": "join",
+       "parents": [
+        {
+         "id": "e2d7ba7e76fc",
+         "metrics_A_AD_G_GD": [
+          33,
+          4,
+          108,
+          19
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a33-ad4-g108-gd19.circ.txt"
+        },
+        {
+         "id": "073a719e1bc5",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          117,
+          19
+         ],
+         "operator": "seed",
+         "file": "nonlinear/nist/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/a43e1ae3d73f.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  609184672
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 3.28,
+  "job_cpu_s": 3.59,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794691456.9923368
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+d317aff7b7"
+ },
+ "reproduction": "one-off: hub job (operator join, seed 609184672, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-join-g114-a32-gd26-ad4.campaign.json"
+}

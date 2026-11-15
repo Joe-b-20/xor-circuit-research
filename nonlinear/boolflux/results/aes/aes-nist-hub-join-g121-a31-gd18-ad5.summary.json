@@ -1,0 +1,125 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/2e22e8f31a1a.bfx",
+  "sha256": "6dd88a05e6b43ab5fde7aaa6649642d22b92e32c76d9d7fbd60e7b834b9f8833"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/2e22e8f31a1a.bfx",
+  "seed": 200580767,
+  "metrics": {
+   "cost": 121.0,
+   "G": 121,
+   "A": 31,
+   "GD": 18,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator join (front d20ee139e5eb, back 7c60a013f347, LX 1, LY 1, interface_gates 2) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab4ad3",
+ "command": "hub operator join on archive ~/xs-campaigns/2026-11-14-hub/ab4ad3 (no run record: r00625-join)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab4ad3",
+ "parents": [
+  {
+   "id": "d20ee139e5eb",
+   "metrics_A_AD_G_GD": [
+    31,
+    5,
+    124,
+    17
+   ],
+   "operator": "seed",
+   "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a31-ad5-g124-gd17.circ.txt"
+  },
+  {
+   "id": "7c60a013f347",
+   "metrics_A_AD_G_GD": [
+    31,
+    5,
+    121,
+    18
+   ],
+   "operator": "polish",
+   "parents": [
+    {
+     "id": "0d90fdc8ba95",
+     "metrics_A_AD_G_GD": [
+      31,
+      5,
+      122,
+      18
+     ],
+     "operator": "join",
+     "parents": [
+      {
+       "id": "2055870343e7",
+       "metrics_A_AD_G_GD": [
+        31,
+        5,
+        122,
+        18
+       ],
+       "operator": "polish",
+       "parents": [
+        {
+         "id": "eb618f4e103d",
+         "metrics_A_AD_G_GD": [
+          31,
+          5,
+          123,
+          18
+         ],
+         "operator": "join",
+         "parents_not_expanded": [
+          "d20ee139e5eb",
+          "67ddf01dc075"
+         ]
+        }
+       ]
+      },
+      {
+       "id": "67ddf01dc075",
+       "metrics_A_AD_G_GD": [
+        31,
+        5,
+        118,
+        19
+       ],
+       "operator": "seed",
+       "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a31-ad5-g118-gd19.circ.txt"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/d20ee139e5eb.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  200580767
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 3.89,
+  "job_cpu_s": 4.29,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794686838.7459872
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+79babf349a"
+ },
+ "reproduction": "one-off: hub job (operator join, seed 200580767, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-join-g121-a31-gd18-ad5.campaign.json"
+}

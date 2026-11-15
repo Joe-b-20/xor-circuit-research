@@ -1,0 +1,122 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab2gen/archive/230f6a67c628.bfx",
+  "sha256": "f0d0f0777a28c920432041fbb0f30da9161f0a98672e5ec2cf94ddd46f1425a6"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab2gen/archive/230f6a67c628.bfx",
+  "seed": 575970048,
+  "metrics": {
+   "cost": 134.0,
+   "G": 134,
+   "A": 29,
+   "GD": 17,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator osc (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab2gen",
+ "command": "taskset -c 11 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/ops/op_osc.py --archive ~/xs-campaigns/2026-11-14-hub/ab2gen --in 6c011b6efee3 --seed 575970048 --seconds 90 --out ~/xs-campaigns/2026-11-14-hub/ab2gen/jobs/r00006-osc",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab2gen/runs/r00006-osc.json",
+ "parents": [
+  {
+   "id": "6c011b6efee3",
+   "metrics_A_AD_G_GD": [
+    29,
+    5,
+    135,
+    17
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "c2bc762af508",
+     "metrics_A_AD_G_GD": [
+      29,
+      5,
+      137,
+      18
+     ],
+     "operator": "join",
+     "parents": [
+      {
+       "id": "0bbd82012fd6",
+       "metrics_A_AD_G_GD": [
+        29,
+        5,
+        135,
+        17
+       ],
+       "operator": "seed",
+       "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a29-ad5-g135-gd17.circ.txt"
+      },
+      {
+       "id": "aaa888857ec4",
+       "metrics_A_AD_G_GD": [
+        29,
+        5,
+        138,
+        16
+       ],
+       "operator": "trb",
+       "parents": [
+        {
+         "id": "492089d26ec1",
+         "metrics_A_AD_G_GD": [
+          29,
+          5,
+          138,
+          16
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a29-ad5-g138-gd16.circ.txt"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "0bbd82012fd6",
+     "metrics_A_AD_G_GD": [
+      29,
+      5,
+      135,
+      17
+     ],
+     "operator": "seed",
+     "file": "~/xs-campaigns/2026-11-13-aes/E/found/final/E-final-low1-a29-ad5-g135-gd17.circ.txt"
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab2gen/archive/6c011b6efee3.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  575970048
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 100.69,
+  "job_cpu_s": 99.95,
+  "within_job_s": null,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794682455.310493
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+4ee81e74a9"
+ },
+ "reproduction": "one-off: hub job (operator osc, seed 575970048, 90.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-osc-g134-a29-gd17-ad5.campaign.json"
+}

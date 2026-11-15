@@ -1,0 +1,244 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/06ed740c038c.bfx",
+  "sha256": "4165595343a6da00620fb2cc0bba2b458d6b1686483b538bbcc7445c963ce085"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/06ed740c038c.bfx",
+  "seed": 1071344797,
+  "metrics": {
+   "cost": 119.0,
+   "G": 119,
+   "A": 32,
+   "GD": 18,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator join (front 7b13e300c14f, back 1c4a09d1c780, LX 2, LY 2, interface_gates 2) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab2base",
+ "command": "hub operator join on archive ~/xs-campaigns/2026-11-14-hub/ab2base (no run record: r00348-join)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab2base",
+ "parents": [
+  {
+   "id": "7b13e300c14f",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    122,
+    17
+   ],
+   "operator": "join",
+   "parents": [
+    {
+     "id": "3e8be1c790e6",
+     "metrics_A_AD_G_GD": [
+      32,
+      4,
+      120,
+      18
+     ],
+     "operator": "join",
+     "parents": [
+      {
+       "id": "de766bfb8675",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        122,
+        17
+       ],
+       "operator": "pull",
+       "parents": [
+        {
+         "id": "a43e1ae3d73f",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          116,
+          20
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+        }
+       ]
+      },
+      {
+       "id": "85688e53fda2",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        117,
+        19
+       ],
+       "operator": "join",
+       "parents": [
+        {
+         "id": "43ed6d857435",
+         "metrics_A_AD_G_GD": [
+          31,
+          5,
+          117,
+          20
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-a31-ad5-g117-gd20-A31gd20-splice-s1.circ.txt"
+        },
+        {
+         "id": "8a0d890de9f4",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          116,
+          20
+         ],
+         "operator": "join",
+         "parents_not_expanded": [
+          "c8f64f4bf1ff",
+          "073a719e1bc5"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "de766bfb8675",
+     "metrics_A_AD_G_GD": [
+      32,
+      4,
+      122,
+      17
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "a43e1ae3d73f",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        116,
+        20
+       ],
+       "operator": "seed",
+       "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "1c4a09d1c780",
+   "metrics_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    18
+   ],
+   "operator": "polish",
+   "parents": [
+    {
+     "id": "e51429bbc33f",
+     "metrics_A_AD_G_GD": [
+      32,
+      4,
+      120,
+      18
+     ],
+     "operator": "join",
+     "parents": [
+      {
+       "id": "de766bfb8675",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        122,
+        17
+       ],
+       "operator": "pull",
+       "parents": [
+        {
+         "id": "a43e1ae3d73f",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          116,
+          20
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-splice-a32-ad4-g116-gd20.circ.txt"
+        }
+       ]
+      },
+      {
+       "id": "85688e53fda2",
+       "metrics_A_AD_G_GD": [
+        32,
+        4,
+        117,
+        19
+       ],
+       "operator": "join",
+       "parents": [
+        {
+         "id": "43ed6d857435",
+         "metrics_A_AD_G_GD": [
+          31,
+          5,
+          117,
+          20
+         ],
+         "operator": "seed",
+         "file": "~/xs-campaigns/2026-11-13-aes/E/found/E-a31-ad5-g117-gd20-A31gd20-splice-s1.circ.txt"
+        },
+        {
+         "id": "8a0d890de9f4",
+         "metrics_A_AD_G_GD": [
+          32,
+          4,
+          116,
+          20
+         ],
+         "operator": "join",
+         "parents_not_expanded": [
+          "c8f64f4bf1ff",
+          "073a719e1bc5"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab2base/archive/7b13e300c14f.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  1071344797
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 2.74,
+  "job_cpu_s": 3.01,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794680840.6749694
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "377b03f+af064d3f90"
+ },
+ "reproduction": "one-off: hub job (operator join, seed 1071344797, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-join-g119-a32-gd18-ad4.campaign.json"
+}

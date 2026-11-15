@@ -1,0 +1,46 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "study-R1",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-study/R1/found/r1-grind-28-5-136-17.bfx",
+  "sha256": "7ec6a78e2dabbdb89503f677394cb2dc6b330fbb20e75b15057acea583df1c35"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-study/R1/found/r1-grind-28-5-136-17.bfx",
+  "seed": 44,
+  "metrics": {
+   "cost": 136.0,
+   "G": 136,
+   "A": 28,
+   "GD": 17,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "mc1.py window AND removal + kernel polish/pull grind (grind.py) (study agent R1, 2026-11-15; strategies/R1/NOTES.md)",
+ "command": "see campaign sidecar",
+ "run_record": "~/xs-campaigns/2026-11-15-study/R1/found",
+ "parents": [
+  {
+   "file": "r0029 <- polish(r0004 <- pull(/home/joebachir20/xs-campaigns/2026-11-15-study/R1/goal/mc1-a29/mc1-a8427e2ba2cd-1902.bfx))"
+  }
+ ],
+ "start": "r0029 <- polish(r0004 <- pull(/home/joebachir20/xs-campaigns/2026-11-15-study/R1/goal/mc1-a29/mc1-a8427e2ba2cd-1902.bfx))",
+ "objective": null,
+ "caps": null,
+ "seeds": [
+  44
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": null,
+ "code_version": {
+  "strategies/R1 (sha256 at curation)": "committed at d961083 (study snapshot)"
+ },
+ "reproduction": "one-off: produced by study agent R1; method and seeds in the sidecar (not re-run)",
+ "campaign_sidecar": "aes-nist-study-R1-r1-g136-a28-gd17-ad5.campaign.json"
+}

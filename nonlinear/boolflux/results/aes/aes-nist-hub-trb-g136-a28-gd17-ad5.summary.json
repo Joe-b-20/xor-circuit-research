@@ -1,0 +1,64 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/1faba1073405.bfx",
+  "sha256": "cdbb53e035ebaaa590fe0de7c877a1677546606588f0877855980ec30a8cbc71"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/1faba1073405.bfx",
+  "seed": 649184072,
+  "metrics": {
+   "cost": 136.0,
+   "G": 136,
+   "A": 28,
+   "GD": 17,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator trb (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 17 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_trb.py --archive ~/xs-campaigns/2026-11-14-hub/long --in d2803dc95a34 --seed 649184072 --seconds 30 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/long-4b689e.r06156-trb",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/long-4b689e.r06156-trb.json",
+ "parents": [
+  {
+   "id": "d2803dc95a34",
+   "metrics_A_AD_G_GD": [
+    28,
+    5,
+    136,
+    17
+   ],
+   "operator": "ingest",
+   "file": "~/xs-campaigns/2026-11-15-study/R1/found/r1-grind-28-5-136-17.bfx"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/d2803dc95a34.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  649184072
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 30.13,
+  "job_cpu_s": 28.78,
+  "within_job_s": null,
+  "job_budget_s": 30.0,
+  "admitted_unix_time": 1794725559.3263185
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "924b4c0-dirty+1df9fcd2fb"
+ },
+ "reproduction": "one-off: hub job (operator trb, seed 649184072, 30.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-trb-g136-a28-gd17-ad5.campaign.json"
+}

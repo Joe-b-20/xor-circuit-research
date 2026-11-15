@@ -1,0 +1,103 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/2e7abb8f92cf.bfx",
+  "sha256": "4e00139a4445e03fc620cc3951ee8b0e50a95aaa8934468ce4788cd23911a173"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/2e7abb8f92cf.bfx",
+  "seed": 573806191,
+  "metrics": {
+   "cost": 155.0,
+   "G": 155,
+   "A": 37,
+   "GD": 15,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator pull (lowered GD) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 5 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_pull.py --archive ~/xs-campaigns/2026-11-14-hub/long --in 74ef88f6f06c --seed 573806191 --seconds 90 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/r04505-pull",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/r04505-pull.json",
+ "parents": [
+  {
+   "id": "74ef88f6f06c",
+   "metrics_A_AD_G_GD": [
+    37,
+    3,
+    152,
+    16
+   ],
+   "operator": "pull",
+   "parents": [
+    {
+     "id": "210c0a124491",
+     "metrics_A_AD_G_GD": [
+      37,
+      3,
+      149,
+      19
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "da43361a7778",
+       "metrics_A_AD_G_GD": [
+        37,
+        3,
+        153,
+        26
+       ],
+       "operator": "gen_skel",
+       "parents": [
+        {
+         "id": "43934ee5d5b9",
+         "metrics_A_AD_G_GD": [
+          37,
+          3,
+          160,
+          14
+         ],
+         "operator": "join",
+         "parents_not_expanded": [
+          "1aafd6c6e8de",
+          "cf0115700901"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/74ef88f6f06c.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 15,
+  "AD": null,
+  "A": 37
+ },
+ "seeds": [
+  573806191
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 99.07,
+  "job_cpu_s": 98.19,
+  "within_job_s": 76.635,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794701114.6103587
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+d317aff7b7"
+ },
+ "reproduction": "one-off: hub job (operator pull, seed 573806191, 90.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-pull-g155-a37-gd15-ad3.campaign.json"
+}

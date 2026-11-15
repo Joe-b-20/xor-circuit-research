@@ -1,0 +1,44 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "study-T1",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-study/T1/found/front/aes-sbox-a28-ad5-g126-gd24-19a2a6cf9d80.bfx",
+  "sha256": "86f5fd1370031d6788aae9f830d1213f1e4b97051ccdae0f33c79c5459b05127"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-study/T1/found/front/aes-sbox-a28-ad5-g126-gd24-19a2a6cf9d80.bfx",
+  "seed": null,
+  "metrics": {
+   "cost": 126.0,
+   "G": 126,
+   "A": 28,
+   "GD": 24,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "see campaign sidecar (study agent T1, 2026-11-15; strategies/T1/NOTES.md)",
+ "command": "see campaign sidecar",
+ "run_record": "~/xs-campaigns/2026-11-15-study/T1/found/front",
+ "parents": [
+  {
+   "file": "/home/joebachir20/xs-campaigns/2026-11-15-study/T1/run1/scratch/w0ns/gf/best.bfx"
+  }
+ ],
+ "start": "/home/joebachir20/xs-campaigns/2026-11-15-study/T1/run1/scratch/w0ns/gf/best.bfx",
+ "objective": null,
+ "caps": null,
+ "seeds": [],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": null,
+ "code_version": {
+  "strategies/T1 (sha256 at curation)": "committed at d961083 (study snapshot)"
+ },
+ "reproduction": "one-off: produced by study agent T1; method and seeds in the sidecar (not re-run)",
+ "campaign_sidecar": "aes-nist-study-T1-t1-g126-a28-gd24-ad5.campaign.json"
+}

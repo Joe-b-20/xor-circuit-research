@@ -1,0 +1,64 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/4b3113248655.bfx",
+  "sha256": "52fd31d0b12d818681c17b3ce43290baafb681b4ed43007be6c215e62659a54f"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/4b3113248655.bfx",
+  "seed": 961931595,
+  "metrics": {
+   "cost": 130.0,
+   "G": 130,
+   "A": 28,
+   "GD": 19,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator pull (lowered GD) (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/ab4ad3",
+ "command": "hub operator pull on archive ~/xs-campaigns/2026-11-14-hub/ab4ad3 (no run record: r00761-pull)",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/ab4ad3",
+ "parents": [
+  {
+   "id": "688e861dabce",
+   "metrics_A_AD_G_GD": [
+    28,
+    5,
+    128,
+    20
+   ],
+   "operator": "seed",
+   "file": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/ab4ad3/archive/688e861dabce.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 19,
+  "AD": null,
+  "A": 28
+ },
+ "seeds": [
+  961931595
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 96.72,
+  "job_cpu_s": 99.5,
+  "within_job_s": 4.176,
+  "job_budget_s": 90.0,
+  "admitted_unix_time": 1794688468.3771737
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+79babf349a"
+ },
+ "reproduction": "one-off: hub job (operator pull, seed 961931595, 90.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-pull-g130-a28-gd19-ad5.campaign.json"
+}

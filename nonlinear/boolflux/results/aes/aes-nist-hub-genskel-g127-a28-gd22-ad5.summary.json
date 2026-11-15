@@ -1,0 +1,88 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/4d1642c45c7d.bfx",
+  "sha256": "061abdb3d301a01665db08d73ad83ff1674c3e7cb123f21d2ba947458b6f0a04"
+ },
+ "curated_utc": "2026-11-15T06:53:07Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/4d1642c45c7d.bfx",
+  "seed": 442068439,
+  "metrics": {
+   "cost": 127.0,
+   "G": 127,
+   "A": 28,
+   "GD": 22,
+   "AD": 5
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator gen_skel (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 8 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/ops/gen_skel.py --archive ~/xs-campaigns/2026-11-14-hub/long --in 3252197ed60f --seed 442068439 --seconds 60 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/r01940-gen_skel",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/r01940-gen_skel.json",
+ "parents": [
+  {
+   "id": "3252197ed60f",
+   "metrics_A_AD_G_GD": [
+    28,
+    5,
+    130,
+    19
+   ],
+   "operator": "polish",
+   "parents": [
+    {
+     "id": "4b3113248655",
+     "metrics_A_AD_G_GD": [
+      28,
+      5,
+      130,
+      19
+     ],
+     "operator": "pull",
+     "parents": [
+      {
+       "id": "688e861dabce",
+       "metrics_A_AD_G_GD": [
+        28,
+        5,
+        128,
+        20
+       ],
+       "operator": "seed",
+       "file": "nonlinear/nist/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/3252197ed60f.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  442068439
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 53.26,
+  "job_cpu_s": 54.92,
+  "within_job_s": null,
+  "job_budget_s": 60.0,
+  "admitted_unix_time": 1794693913.660549
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "97abda7+d317aff7b7"
+ },
+ "reproduction": "one-off: hub job (operator gen_skel, seed 442068439, 60.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-genskel-g127-a28-gd22-ad5.campaign.json"
+}

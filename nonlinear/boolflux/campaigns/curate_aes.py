@@ -41,6 +41,8 @@ from boolflux import core                  # noqa: E402
 
 C = BT.C
 HUB = Path.home() / 'xs-campaigns' / '2026-11-14-hub'
+STUDY = Path.home() / 'xs-campaigns' / '2026-11-15-study'          # 2026-11-15 study agents
+STRAT = Path(__file__).resolve().parents[1] / 'strategies'
 RES = PKG / 'results' / 'aes'
 MODEL = core.Model.load('nist')
 HOME = str(Path.home())
@@ -82,6 +84,13 @@ def track_of(f):
     s = str(f)
     if s.startswith(str(RES)):
         return 'results'
+    for root in (STUDY, STRAT):                         # study agents: track = agent id (T1, R1, H2, ...)
+        try:
+            rel = Path(s).relative_to(root)
+        except ValueError:
+            continue
+        if 'found' in rel.parts:
+            return 'study-' + rel.parts[0]
     for root, name in ((C, None), (HUB, 'hub')):
         try:
             rel = Path(s).relative_to(root)
@@ -322,6 +331,24 @@ def describe(f, m):
              'time_to_result_s': {'within_job_s': traj[-1][0] if traj else None, 'job_budget_s': rs['workflow']['seconds']},
              'code_sha256_12': rs['code_sha256_12'], 'code_version': {'snapshot': tilde(rs['code_snapshot'])},
              'reproduction': 'one-off: %d of %d seeds reached G %d (time-budgeted, not bit-reproducible)' % (reach, len(rs['seeds']), m['G'])}
+    elif tr.startswith('study-'):                       # 2026-11-15 study agents: their own JSON sidecar
+        agent = tr[len('study-'):]
+        if not sd:
+            for cand in (Path(str(f) + '.json'), f.parent / (f.name.split('.')[0] + '.json')):
+                if cand.exists():
+                    side = cand; sd = json.loads(cand.read_text()); break
+        if not sd:
+            raise ValueError('no sidecar for %s' % f)
+        mech = sd.get('mechanism') or sd.get('how') or sd.get('method') or sd.get('operator') or 'see campaign sidecar'
+        par = sd.get('parents') or sd.get('parent') or sd.get('start') or sd.get('source') or sd.get('from')
+        s = {'mechanism': '%s (study agent %s, 2026-11-15; strategies/%s/NOTES.md)' % (mech if isinstance(mech, str) else json.dumps(mech), agent, agent),
+             'mech_short': agent.lower(), 'command': sd.get('command') or sd.get('cmd') or 'see campaign sidecar',
+             'run_record': tilde(f.parent), 'parents': par if isinstance(par, list) else ([{'file': par}] if par else []),
+             'start': par if isinstance(par, str) else None, 'objective': sd.get('objective'), 'caps': sd.get('caps'),
+             'seeds': [sd['seed']] if 'seed' in sd else [], 'iters': None, 'rounds': None,
+             'time_to_result_s': sd.get('time_to_result_s'),
+             'code_version': {'strategies/%s (sha256 at curation)' % agent: 'committed at d961083 (study snapshot)'},
+             'reproduction': 'one-off: produced by study agent %s; method and seeds in the sidecar (not re-run)' % agent}
     else:
         raise ValueError('no provenance rule for %s' % f)
     s['campaign_sidecar_src'] = side if side and Path(side).exists() else None
