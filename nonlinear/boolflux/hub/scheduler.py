@@ -115,7 +115,21 @@ class Scheduler:
         if self.ar.index_missing: self.ar.write_index()
         n = self.ar.dedupe_legacy()
         if n: self.log(ev='cells-deduplicated', dropped_members=n, cells=len(self.ar.cells))
+        self.reclean()
         self.restore()
+
+    def reclean(self):
+        """Records admitted before candidates were cleaned (review 5): each record whose cleaned
+        circuit has other metrics is logged (event legacy-clean) and the cleaned circuit is admitted
+        as a new record, operator 'clean', parent = the old record.  No file is rewritten; done
+        once per record (archive/cleaned.json)."""
+        def one(i, m0, m1, st, nid, g):
+            self.log(ev='legacy-clean', id=i, recorded=m0, cleaned=m1, status=st, new_id=nid, gain=g)
+            if st == 'admitted':
+                self.fb.add_circuit(self.ar.circuit(nid), nid); self.last_admit = max(self.last_admit, self.ar.rec[nid]['t_admit'])
+        n = self.ar.reclean_legacy(self.version, log=one)
+        if n:
+            self.log(ev='legacy-cleaned', records=n); self.fb.save()
 
     # ---- campaign identity, lock, state carried across restarts ---------------------------------
     def _lock(self):
@@ -318,8 +332,8 @@ class Scheduler:
                 except Exception as e:                    # vanished file, unreadable text: logged, never fatal
                     bad += 1; self.log(ev='ingest-error', file=f, error=repr(e)); continue
                 if st == 'admitted':
-                    n += 1; self.fb.add_circuit(c, r['id']); self.last_admit = r['t_admit']
-                    self.log(ev='ingest', file=f, id=r['id'], m=metrics(c), gain=gn)
+                    n += 1; self.fb.add_circuit(self.ar.circuit(r['id']), r['id']); self.last_admit = r['t_admit']
+                    self.log(ev='ingest', file=f, id=r['id'], m=rec_metrics(r), gain=gn)
                 elif st.startswith('rejected'):
                     bad += 1; self.log(ev='ingest-reject', file=f, status=st)
         self.log(ev='ingested', files=seen, admitted=n, bad=bad)
@@ -338,7 +352,7 @@ class Scheduler:
                 bad += 1; self.log(ev='seed-reject', file=str(f), status='unreadable: %r' % (e,)); continue
             st, r, g = self.ar.admit(c, operator='seed', settings=self.source_info(f), code_version=self.version, force_keep=True)
             if st == 'admitted':
-                n += 1; self.fb.add_circuit(c, r['id']); self.last_admit = r['t_admit']
+                n += 1; self.fb.add_circuit(self.ar.circuit(r['id']), r['id']); self.last_admit = r['t_admit']
             elif not st.startswith(('duplicate', 'not-better')):
                 bad += 1; self.log(ev='seed-reject', file=str(f), status=st)
         self.fb.save()
@@ -565,11 +579,13 @@ class Scheduler:
                 st, r, g = self.ar.admit(c, parents=parents, operator=op, settings=settings, seed=job['seed'],
                                          run_id=job['run_id'], code_version=version, cpu_s=cpu,
                                          wall_s=rec.get('wall_s', wall), slack=GEN_SLACK if nurs else None)
-                outcome.append({'cand': f.name, 'metrics': m, 'status': st, 'id': r['id'] if r else None, 'gain': g})
+                o = {'cand': f.name, 'metrics': m, 'status': st, 'id': r['id'] if r else None, 'gain': g}
+                if r is not None and rec_metrics(r) != m: o['cleaned_metrics'] = rec_metrics(r)   # stored cleaned (archive.admit)
+                outcome.append(o)
                 if st == 'admitted':
-                    gain += g; self.fb.add_circuit(c, r['id']); self.last_admit = r['t_admit']
-                    if g > 0: self.renew_caps(tuple(m))
-                    self.log(ev='admit', run_id=job['run_id'], op=op, id=r['id'], m=m, gain=g, parents=parents)
+                    gain += g; self.fb.add_circuit(self.ar.circuit(r['id']), r['id']); self.last_admit = r['t_admit']
+                    if g > 0: self.renew_caps(rec_metrics(r))
+                    self.log(ev='admit', run_id=job['run_id'], op=op, id=r['id'], m=rec_metrics(r), gain=g, parents=parents)
         except Exception as e:                              # the run file is written whatever happens
             run['finish_error'] = repr(e); self.log(ev='finish-error', run_id=job['run_id'], error=repr(e))
         if self.fb.dirty and time.time() - self.last_fb_save > FB_SAVE_S:
@@ -681,6 +697,10 @@ def parser():
                     help='box: a new front tuple inside the cap box (A, AD, GD) of a front tuple renews that tuple\'s caps')
     ap.add_argument('--cap-renew-max', type=int, default=3, help='renewals per (operator, tuple) with --cap-renew box')
     return ap
+
+
+def rec_metrics(r):
+    return (r['A'], r['AD'], r['G'], r['GD'])
 
 
 def main(argv=None):

@@ -71,6 +71,24 @@ def structure_key(c):
     return t.hexdigest()
 
 
+def clean(c):
+    """Structural-hash cleanup: gates with the same operation and operands (operand order ignored
+    for the symmetric gates) are merged into the first one, then gates no output depends on are
+    dropped.  The function is unchanged.  Returns c itself when nothing changes.  (Review 5, C1:
+    join and trb outputs carried duplicate AND gates, so their recorded A was one too high.)"""
+    n = c.n; seen = {}; new = list(range(n)); gates = []
+    for op, a, b in c.gates:
+        op, a, b = core.canonical(op, new[a], new[b])
+        if op in core.SYMMETRIC and b < a: a, b = b, a
+        k = (op, a, b)
+        s = seen.get(k)
+        if s is None:
+            gates.append(k); s = seen[k] = n + len(gates) - 1
+        new.append(s)
+    out = core.Circuit(c.n, c.m, gates, [new[o] for o in c.outputs], c.name, c.in_names, c.out_names).live()
+    return c if len(out.gates) == len(c.gates) else out
+
+
 def metrics(c):
     m = c.metrics(MODEL)
     return (m['A'], m['AD'], m['G'], m['GD'])

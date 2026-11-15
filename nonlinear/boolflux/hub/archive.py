@@ -19,7 +19,7 @@ import time
 from collections import OrderedDict
 from pathlib import Path
 
-from .common import core, metrics, verify, cid, leq, atomic_write, published, structure_key
+from .common import core, metrics, verify, cid, leq, atomic_write, published, structure_key, clean
 
 K_PER_CELL = 4
 # gain weights: lexicographic research priorities (AND count, AND depth first; then G, GD)
@@ -93,6 +93,39 @@ class Archive:
         before = sum(len(v) for v in self.cells.values())
         self.skeys(); self.rebuild_cells(); self.write_index(); self._save_cells()
         return before - sum(len(v) for v in self.cells.values())
+
+    def reclean_legacy(self, code_version=None, log=None):
+        """Owner only, once per record (archive/cleaned.json lists the records already looked at).
+        Records admitted before candidates were cleaned may hold duplicate gates: their recorded
+        metrics are those of the stored text, not of the circuit it computes most cheaply.  Each
+        such record is reported through log(id, old metrics, cleaned metrics, status, new id, gain); its files are not
+        touched; the cleaned circuit is admitted as a new record (operator 'clean', parent = the
+        old record).  Returns the number of records whose cleaned metrics differ."""
+        mf = self.dir / 'cleaned.json'
+        try:
+            done = set(json.loads(mf.read_text()))
+        except Exception:
+            done = set()
+        todo = [i for i in self.rec if i not in done]
+        if not todo: return 0
+        n = 0
+        for i in todo:
+            try:
+                c = core.from_kernel((self.dir / (i + '.bfx')).read_text(), i)
+                cc = clean(c)
+            except Exception:
+                continue
+            done.add(i)
+            if cc is c: continue
+            r = self.rec[i]; m0 = (r['A'], r['AD'], r['G'], r['GD']); m1 = metrics(cc)
+            if m1 == m0: continue
+            n += 1
+            st, nr, g = self.admit(cc, parents=[i], operator='clean', code_version=code_version, force_keep=True,
+                                   settings={'cleaned_from': i, 'raw_metrics': list(m0), 'nursery': bool((r.get('operator_settings') or {}).get('nursery'))})
+            if nr is not None: done.add(nr['id'])
+            if log: log(i, m0, m1, st, nr['id'] if nr else None, g)
+        atomic_write(mf, json.dumps(sorted(done)))
+        return n
 
     def _save_cells(self):
         atomic_write(self.dir / 'cells.json', json.dumps({'%d,%d,%d' % k: v for k, v in sorted(self.cells.items())}))
@@ -217,12 +250,20 @@ class Archive:
 
     # ---- admission ----------------------------------------------------------------------------
     def admit(self, c, parents=(), operator='seed', settings=None, seed=None, run_id=None, code_version=None,
-              cpu_s=None, wall_s=None, force_keep=False, slack=None):
+              cpu_s=None, wall_s=None, force_keep=False, slack=None, clean_first=True):
         """Verify and admit c if it lowers (or ties, up to K distinct structures) the G of its
         (A, AD, GD) cell.  Returns (status, record_or_None, gain); status is 'admitted', 'duplicate'
         (same text), 'duplicate-structure' (same DAG written differently), 'not-better' or
-        'rejected: <why>'.  Never raises for a malformed circuit."""
+        'rejected: <why>'.  Never raises for a malformed circuit.
+        clean_first (default): c is cleaned first (common.clean: identical gates merged, dead gates
+        dropped); the archive stores, measures and places the cleaned circuit, and its record keeps
+        `cleaned_from` (id of the text as given) and `raw_metrics` in operator_settings.  Review 5:
+        172 of 2311 records of the 2026-11-14 campaign held a duplicate AND, so their A was one high."""
         try:
+            if clean_first:              # merge identical gates, drop dead ones: the archive stores the cleaned circuit
+                raw = c; c = clean(raw)
+                if c is not raw:
+                    settings = dict(settings or {}, cleaned_from=cid(raw), raw_metrics=list(metrics(raw)))
             i = cid(c); m = metrics(c)
         except Exception as e:
             return 'rejected: malformed circuit: %r' % (e,), None, 0.0
