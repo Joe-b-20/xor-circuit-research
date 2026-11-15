@@ -85,3 +85,47 @@ code version, seed, settings, parents, timing, outcome).
   library), `archive.py`, `funcbank.py`, `join.py`, `ops.py` + `op_{polish,pull,join,trb}.py`,
   `scheduler.py`, `seedlist.sh`, `tests/test_hub.py` (wrong circuit rejected; cell keeps min G and
   persists; join reproduces the 31/5/119/20 transplant; run and archive record fields).
+
+## Changes in review 5 (2026-11-15; findings and evidence in `review5/HUB.md`)
+
+- **Truth on disk.** The record files `archive/<id>.json` + `<id>.bfx` are the archive. `cells.json` and
+  `index.jsonl` (one record per line, appended on admission) are caches: the cells are recomputed from
+  the records on every load. Only the scheduler admits (one scheduler per campaign directory,
+  `scheduler.lock`); operators open the archive read-only.
+- **Distinct structures.** A circuit whose DAG equals an archived one up to gate order and operand
+  order of symmetric gates (`common.structure_key`, record field `skey`) is refused as
+  `duplicate-structure`. An archive filled before this rule is deduplicated in its cells on the
+  scheduler's first start (`Archive.dedupe_legacy`; nothing is deleted).
+- **Gain** (`Archive.gain`, `--gain value`, default): 8 when no archived circuit has A <= and AD <=
+  the new tuple and some circuit meets the AD cap (the AND count at that depth drops), 4 when none
+  meets the AD cap (new AND depth), 1 when only the gate depth inside (A, AD) is new, otherwise
+  0.5 per gate saved (at most 3) against the best G inside the cap box A, AD, GD; 0 for dominated
+  tuples. `--gain legacy` is the rule of 2026-11-14.
+- **Targets** (`--target-mode tuple`, default): attempts are counted per (A, AD, G, GD) tuple, not per
+  circuit id; `--tuple-caps polish=2,pull=3` (also `control.json` `"tuple_caps"`) stops an operator
+  choosing a tuple after that many jobs; a front tuple without its first polish / pull gets it before
+  any bandit choice (A <= 31 first, newest first). When every operator is capped everywhere the
+  least-attempted tuple is used (a CPU never idles). `--target-mode id` is the old rule.
+- **Join** (`--join-mode incremental`, default): the scheduler passes `--since T`; partners are all
+  cell members (front or not) admitted after T, oldest first; the job reports `joined_through`, and a
+  target is offered to join again only when the archive has admissions after that mark. One pass per
+  (target, archive state). `--join-mode legacy`: front-first 300 partners every time.
+- **CPUs.** `--cpus` defaults to the CPU affinity of the scheduler process (the list given to xsrun).
+  An explicit list outside that affinity is refused unless `--cpu-allow` names it. `control.json`
+  `"cpus"` is the exact active set (shrinks and grows) inside the allow list; the current set is in
+  `cpus.json`. One job per CPU; a job is killed (process group) after 2 x seconds + 60 s.
+- **Run ids** are `<campaign uid>.r<number>-<op>` (`campaign.json`), unique across campaigns; numbers
+  continue after the highest one used in `runs/` or `jobs/`; a job directory is never reused.
+- **Operator CLI contract.** Exit 0: `record.json` written with `cand_ids` (content ids of
+  `cand-000.bfx`, ... in order). Exit 1: the operator failed; `record.json` carries `error`. Exit 2:
+  bad command line. A candidate file not listed in `cand_ids` is not admitted. Every job gets a run
+  file with `status` (ok / failed / timeout / stopped); verified candidates of a failed job are still
+  admitted, with `operator_settings.job_status`. Five failures in a row suspend an operator for 10
+  minutes (event `op-suspended`).
+- **Lineage in every record**: operator, parents, run_id, seed, code_version (commit, `-dirty`, hash of
+  hub + hub/ops + kernel + core/objective/verifier sources), operator_settings with caps, objective,
+  seconds, script path and hash, scheduler version, kernel binary; seeds and ingested files carry the
+  file hash and their JSON sidecar. `hub/lineage.py CAMPAIGN [--also OTHER]` audits an archive.
+- **control.json** is validated as a whole and applied only if valid; keys: ops, seconds, eps, near,
+  near_gap, nursery, ad3_share, tuple_caps, cpus, ingest, scripts, generators.
+- **osc** keeps the input's A cap (`--caps=-,AD,GD` for the old behaviour).
