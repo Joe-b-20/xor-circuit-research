@@ -66,11 +66,11 @@ from boolflux import objective as OBJ               # noqa: E402
 sys.path.insert(0, str(HERE))
 import common as OC                                 # noqa: E402  (Recorder, aes_check wrapper, limits)
 
-INDEX_DEFAULT = OC.CACHE / 'spanindex.json'
+INDEX_DEFAULT = OC.CACHE / 'spanindex.json'          # aes-sbox; spanindex-<function>.json otherwise
 AES_CHECK = PKG / 'aes_check.py'
 
 AND, XOR, XNOR, NOT = 8, 6, 9, 3
-TAB = tuple(targets.aes_sbox())
+TAB = tuple(targets.aes_sbox())                      # set to the process's function in main()
 ONES = (1 << 256) - 1
 STOP = {'flag': False}
 
@@ -121,9 +121,11 @@ def span_key(c):
 
 
 def index_dirs(extra=()):
-    """(dir, recursive) of the circuit sources: our AES S-box circuits (circuits/aes-sbox/), NIST's
-    (seeds/aes-sbox/), the folders in $BOOLFLUX_POOL_DIRS (os.pathsep-separated), plus extra dirs."""
-    out = [(REPO / 'circuits' / 'aes-sbox', False), (PKG.parent / 'seeds' / 'aes-sbox', False)]
+    """(dir, recursive) of the circuit sources: our circuits of the function (circuits/aes-sbox/ or
+    circuits/aes-invsbox/), NIST's (seeds/aes-sbox/ or seeds/aes-invsbox/), the folders in
+    $BOOLFLUX_POOL_DIRS (os.pathsep-separated), plus extra dirs."""
+    fi = OC.aesfn.INFO[OC.aesfn.name()]
+    out = [(REPO / 'circuits' / fi['circuits_dir'], False), (PKG.parent / 'seeds' / fi['seed_dir'], False)]
     out += [(Path(d), True) for d in os.environ.get('BOOLFLUX_POOL_DIRS', '').split(os.pathsep) if d]
     out += [(Path(d), True) for d in extra]
     return out
@@ -465,7 +467,8 @@ def main():
     ap.add_argument('--restrict', type=int, default=3, help='basic profile restriction level (3 = mix)')
     ap.add_argument('--focus', type=float, default=1.0, help='probability of a focus query after an accepted sideways move (fast)')
     ap.add_argument('--focus-max', type=int, default=60, help='largest focus neighbourhood')
-    ap.add_argument('--index', default=str(INDEX_DEFAULT)); ap.add_argument('--pool-extra', action='append', default=[])
+    ap.add_argument('--index', default=None, help='span index file (default: $BOOLFLUX_CACHE/spanindex.json, '
+                    'spanindex-aes-invsbox.json for the inverse)'); ap.add_argument('--pool-extra', action='append', default=[])
     ap.add_argument('--no-index-update', action='store_true')
     ap.add_argument('--pool-before', help='only pool files with mtime before this UTC (validation)')
     ap.add_argument('--pool-exclude-better', action='store_true',
@@ -492,7 +495,17 @@ def main():
     ap.add_argument("--prop-rate", type=float, default=1.2e7,
                     help='propagation budget per query = time limit x this rate (0 = time limit only)')
     ap.add_argument('--selftest-record', action='store_true', help='test: record the start itself (recording path check)')
+    OC.function_arg(ap)
     a = ap.parse_args()
+    global TAB
+    if a.build_index and a.function == 'auto' and not a.inp:
+        a.function = OC.aesfn.name()
+    if a.function != 'auto' or a.inp:
+        OC.init_function(a)
+    TAB = OC.aesfn.table()
+    if a.index is None:
+        f = OC.aesfn.name()
+        a.index = str(INDEX_DEFAULT if f == 'aes-sbox' else OC.CACHE / ('spanindex-%s.json' % f))
     if a.build_index:
         build_index(a.index, a.pool_extra); return 0
     if not (a.inp and a.target and a.out):
@@ -533,7 +546,8 @@ def main():
               'caps': {'A': capA, 'AD': capAD, 'GD': D}, 'objective': 'G under GD <= D (walk), A <= A cap in the model'}
     rc = OC.Recorder(out, 'satlns', a.target, start_path, a.seed, 'cd %s && python3 %s' % (os.getcwd(), ' '.join(sys.argv)),
                      method, {k: v for k, v in vars(a).items() if k not in ('inp', 'out')},
-                     kernel=a.kernel if (a.polish_every or (a.excursion and a.pull_kernel > 0)) else None, t0=T0)
+                     kernel=a.kernel if (a.polish_every or (a.excursion and a.pull_kernel > 0)) else None, t0=T0,
+                     budget_s=a.seconds, seeds={'rng': 'random.Random(seed)'})
 
     def write_result(status):
         result['exit'] = status; result['wall_s'] = round(time.time() - T0, 1); result['stats'] = stats
@@ -543,7 +557,7 @@ def main():
 
     stats = {}
     if tuple(start.value_table()) != TAB:
-        write_result('error: start is not the AES S-box'); return 2
+        write_result('error: start is not the %s' % OC.aesfn.label()); return 2
     if st[0] > capA or st[1] > capAD:
         log({'event': 'note', 'msg': 'start outside the hard limits (allowed as a search state; never recorded)', 'start': st})
     if st[0] > capA:

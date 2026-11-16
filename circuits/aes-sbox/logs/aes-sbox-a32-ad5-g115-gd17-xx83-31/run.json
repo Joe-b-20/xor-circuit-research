@@ -1,0 +1,104 @@
+{
+ "run_id": "r00055-pull",
+ "operator": "pull",
+ "choice": "exploit",
+ "target": "c06b3dc92ba9",
+ "target_metrics": [
+  32,
+  5,
+  116,
+  17
+ ],
+ "target_class": "A32-35",
+ "seed": 602041990,
+ "cpu": 10,
+ "command": [
+  "taskset",
+  "-c",
+  "10",
+  "/usr/bin/python3",
+  "<checkout>/nonlinear/boolflux/hub/op_pull.py",
+  "--archive",
+  "<campaign archive>/2026-11-14-hub/ab3gen",
+  "--in",
+  "c06b3dc92ba9",
+  "--seed",
+  "602041990",
+  "--seconds",
+  "90",
+  "--out",
+  "<campaign archive>/2026-11-14-hub/ab3gen/jobs/r00055-pull"
+ ],
+ "returncode": 0,
+ "code_version": "97abda7+79babf349a",
+ "scheduler_version": "97abda7+79babf349a",
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "op_info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 31,
+   "cap.ad": 5,
+   "cap.gd": 17,
+   "in": "<campaign archive>/2026-11-14-hub/ab3gen/jobs/r00055-pull/start.bfx",
+   "out": "<campaign archive>/2026-11-14-hub/ab3gen/jobs/r00055-pull/best.bfx",
+   "seed": 602041990,
+   "seconds": 90.0
+  },
+  "t_last_improvement": 68.987,
+  "kernel_bin": "bfx-593fa798f5",
+  "caps": {
+   "A": 31,
+   "AD": 5,
+   "GD": 17
+  },
+  "lowered": "A"
+ },
+ "parents": [
+  "c06b3dc92ba9"
+ ],
+ "wall_s": 101.15,
+ "cpu_s": 99.9,
+ "candidates": 1,
+ "admitted": 1,
+ "gain": 8.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    32,
+    5,
+    115,
+    17
+   ],
+   "status": "admitted",
+   "id": "e7d74c8e57c7",
+   "gain": 8.0
+  }
+ ]
+}

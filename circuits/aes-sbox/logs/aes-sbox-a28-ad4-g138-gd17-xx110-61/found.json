@@ -109,22 +109,32 @@
    "nonlinear/boolflux/strategies/E/low.sh"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "exact_code": {
+   "commit": "377b03f",
+   "scope": "scripts as found at curation, not at run time",
+   "how": "the campaign recorded no code version per job; at curation (2026-11-14) the driver scripts were identical to public commit 377b03f and the kernel was a copy of kernel/bfx.c at 0659eb9. The exact code of the run is not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "strategies/E/low.sh low1 8.8 120 (memetic.py --arm splice --amax 31 --gd-pull 0.5 --polish 120; stopped 17:28 UTC)",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298)",
+ "command_note": "the campaign launcher line as recorded (driver arguments in parentheses); the command of the kernel job itself was not recorded",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "ed25a5db0cd892065212cdce8e0ee1d13c2de3ff13fb0cead6390c6a2c6c5e03",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "frontier.json.gz",
+  "log.jsonl.gz",
+  "run-sidecar.json",
   "start.circ.txt"
  ]
 }

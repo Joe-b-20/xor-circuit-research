@@ -14,7 +14,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[3])); sys.path.insert(0, str(HERE))
-from boolflux import core, targets   # noqa: E402
+from boolflux import aesfn, core   # noqa: E402
 from invspec import spec, project   # noqa: E402
 
 OPC = {'XOR': 6, 'XNOR': 9, 'AND': 8, 'NOT': 3}
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     base = core.read_ncff(sys.argv[1])
     inv = parse_inv(Path(sys.argv[2]).read_text())
     c = splice(base, inv)
-    m = c.metrics(); ok = c.value_table() == targets.aes_sbox()
+    m = c.metrics(); ok = tuple(c.value_table()) == aesfn.table()
     print('G=%d A=%d GD=%d AD=%d ok=%s' % (m['G'], m['A'], m['GD'], m['AD'], ok))
     if ok:
         Path(sys.argv[3]).write_text(core.write_ncff(c, core.Model.load(str(core.MODELS / 'nist.json'))), encoding='utf-8')

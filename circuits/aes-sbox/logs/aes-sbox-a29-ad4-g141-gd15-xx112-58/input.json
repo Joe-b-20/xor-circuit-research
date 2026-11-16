@@ -1,0 +1,42 @@
+{
+ "id": "8a0c6514e869",
+ "A": 29,
+ "AD": 4,
+ "G": 145,
+ "GD": 15,
+ "counts": {
+  "AND": 29,
+  "XNOR": 53,
+  "XOR": 63
+ },
+ "parents": [
+  "8fa85b2b195d"
+ ],
+ "operator": "pull",
+ "operator_settings": {
+  "nursery": true,
+  "caps": {
+   "A": 29,
+   "AD": null,
+   "GD": 15
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "script": "<checkout>/nonlinear/boolflux/hub/op_pull.py",
+  "script_sha": "0501d3973e",
+  "scheduler_version": "924b4c0+1df9fcd2fb",
+  "lowered": "GD",
+  "t_last_improvement": 75.732,
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "seed": 44510272,
+ "run_id": "long-4b689e.r06184-pull",
+ "code_version": "924b4c0-dirty+1df9fcd2fb",
+ "cpu_s": 94.44,
+ "wall_s": 97.84,
+ "t_admit": 1794726222.0363464,
+ "verified": true,
+ "pub_new": true,
+ "gain": 0.5,
+ "skey": "002add3f5b6262f467256b48"
+}

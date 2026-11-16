@@ -29,27 +29,37 @@
  "found_utc_source": "file time of the run's copy",
  "time_to_result_s": null,
  "code": {
-  "commit_at_run": "d961083",
-  "uncommitted_changes_at_run": false,
+  "commit_at_run": "f9fe6f7",
+  "uncommitted_changes_at_run": true,
   "files": [
    "nonlinear/boolflux/strategies/F/fdrive.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run 'd961083', uncommitted_changes_at_run False",
+  "exact_code": {
+   "commit": null,
+   "scope": "kernel only",
+   "how": "recorded as f9fe6f7 plus uncommitted strategies/T4; its kernel binary bfx-593fa798f5 is named by the sha1 of kernel/bfx.c, which is kernel/bfx.c at f9fe6f7. The driver (strategies/F/fdrive.py) and strategies/T4 at run time are not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "env F_BFX=<campaign archive>/2026-11-14-hub/long/bin/bfx-593fa798f5 python3 strategies/F/fdrive.py --start <campaign archive>/2026-11-15-study/T4/b46/ds47.circ.txt --cap 11 --cap-ad 4 --cap-a 47 --mode gate --seconds 1800 --seed 1 --out <campaign archive>/2026-11-15-study/T4/p47s1",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "52b6e6dcef522be9457b8da6888cdbe480b3555eb14a849425b9927a19739488",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
-  "verification.json"
+  "verification.json",
+  "log.jsonl.gz",
+  "run-sidecar.json",
+  "run-start.circ.txt"
  ]
 }

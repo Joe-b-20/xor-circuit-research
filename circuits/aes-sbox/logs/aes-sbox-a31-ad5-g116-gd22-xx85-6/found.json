@@ -65,6 +65,7 @@
   "polish": 120
  },
  "seed": null,
+ "seed_source": "not applicable: a deterministic join of two parent circuits",
  "found_utc": "2026-11-14T15:51:27Z",
  "found_utc_source": "file time of the run's copy",
  "time_to_result_s": {
@@ -78,22 +79,32 @@
    "nonlinear/boolflux/strategies/E/long.sh"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "exact_code": {
+   "commit": "377b03f",
+   "scope": "scripts as found at curation, not at run time",
+   "how": "the campaign recorded no code version per job; at curation (2026-11-14) the driver scripts were identical to public commit 377b03f and the kernel was a copy of kernel/bfx.c at 0659eb9. The exact code of the run is not known"
+  }
  },
  "reproducibility": {
   "class": "construction",
   "text": "deterministic construction from its two parent circuits"
  },
- "command": null,
+ "command": "strategies/E/long.sh long1 9.3 120 (memetic.py --arm splice --hours 9.3 --polish 120; stopped 17:28 UTC)",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298)",
+ "command_note": "the campaign launcher line as recorded (driver arguments in parentheses); the command of the kernel job itself was not recorded",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "438fc92a6ef1e8705e55ae940cd1d6efbc7100f8c7719454b8047cfe836049be",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
-  "back.circ.txt"
+  "back.circ.txt",
+  "frontier.json",
+  "log.jsonl.gz",
+  "run-sidecar.json"
  ]
 }

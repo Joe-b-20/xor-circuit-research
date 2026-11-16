@@ -1,0 +1,134 @@
+{
+ "circuit": "aes-invsbox-a28-ad4-g135-gd19-xx107-53.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  4,
+  135,
+  19
+ ],
+ "found_by": "BoolFlux",
+ "method": "conjugation",
+ "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "operator": "conjpull",
+ "hub": false,
+ "start": {
+  "kind": "NIST circuit",
+  "file": "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt",
+  "nist_path": "data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt",
+  "tuple_A_AD_G_GD": [
+   28,
+   4,
+   135,
+   20
+  ]
+ },
+ "chain_root": "NIST's aes-invsbox-a28-ad4-g135-gd20-xx107-35",
+ "lineage": null,
+ "parameters": {
+  "conj": "rank:1,rank:2,rank:3",
+  "schedule": "g:26:240,m:23:300,m:21:300,m:20:360,m:19:360,m:18:360",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 28,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-4e8a87c511",
+  "function": "aes-invsbox",
+  "stages_done": [
+   "conj lam 24 k 3 (rank:1, score 51)",
+   "stage 1 g:26 best 28/4/133/25",
+   "stage 2 m:23 best 28/4/135/22",
+   "stage 3 m:21 best 28/4/135/21",
+   "stage 4 m:20 best 28/4/135/20",
+   "stage 5 m:19:360 seed 1000040 rk 0",
+   "o19-gate"
+  ],
+  "how": "o19-gate"
+ },
+ "seed": 1000,
+ "found_utc": "2026-11-16T16:37:06Z",
+ "found_utc_source": "written by the conjugation job (its sidecar)",
+ "time_to_result_s": {
+  "since_job_start_s": 1354.2
+ },
+ "campaign": {
+  "name": "2026-11-16-invsbox",
+  "launched_utc": "2026-11-16T16:14:32Z",
+  "hard_stop_utc": "2026-11-17T04:14:32Z",
+  "snapshot_utc": "2026-11-16T18:23:40Z",
+  "running_at_snapshot": true,
+  "launch": "../_runtime/bin/launch.sh <campaign archive>/run inv 43200 1800 1 (12 h; hub on CPUs 2-11, 10 workers; one conjugation job runner on each of CPUs 12-19; xsrun is the local systemd-run wrapper that pins the CPUs and caps memory)",
+  "seed_list": "../_runtime/run/seeds.list (the 91 pinned NIST inverse circuits, written by mkqueue.py)",
+  "hub_command": "cd <checkout> && XS_INVSBOX=1 XS_INVSBOX_LINE=1 PYTHONPATH=<campaign archive>/shim python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/run/hub --cpus 2-11 --hours 11.9333 --seed-list <campaign archive>/run/seeds.list --ops polish,pull,join,trb --seconds polish=90,pull=90,join=60,trb=30 --eps 0.25 --seed 1"
+ },
+ "code": {
+  "commit_at_run": "c0fb67d",
+  "uncommitted_changes_at_run": false,
+  "files": [
+   "search/nonlinear/boolflux/ops/conjpull.py",
+   "search/nonlinear/boolflux/ops/conj_lib/",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "c0fb67d",
+  "runtime_layer": {
+   "files": [
+    "../_runtime/bin/invconjpull.py",
+    "../_runtime/shim/invshim.py",
+    "../_runtime/shim/sitecustomize.py"
+   ],
+   "note": "the inverse S-box support the run used, outside the repository at c0fb67d (BoolFlux was forward-only there): the shim rebinds, in-process, the S-box tables of boolflux/targets.py and independent/verify.py to their inverse tables and the NIST comparison set to the 91 inverse circuits; invconjpull.py runs ops/conjpull.py with inverse conjugates. Inverse support is being added to the BoolFlux code itself"
+  },
+  "ops_sha256_at_run": {
+   "bottom.py": "d1aa4be06d1dd42d051e7d7a543a3b7faca8fd55f7fd43bcaf884a1f90613656",
+   "common.py": "117cf26a5a65d5241285a8c85f7d36841ea0c2335f5368e26c1c6482e09f005c",
+   "conjpull.py": "7c2e0050c158740a377cc4d027e6a6bcad6efbcd7e85a66e73e134bd9edd7837",
+   "rebase.py": "141d73776b18737cd3d0b3da6a24b686268811360902a3dd7dd59c9aaf17cca0",
+   "rebuild_common.py": "7a6af13cda75b509ea3aabaeb8ed082e072af422ab5ea228758781934ed03dfe",
+   "satlns.py": "d6da4e57f9b5a74a04c2b2a6f5d3ef116a7f47a8a178dffb0fb268d6185e3577"
+  },
+  "kernel_src_sha256_at_run": "5724bcd9c78d3d3bae7f6341dcf3c6815e738bf70334928a0cf401311b958f96",
+  "kernel_src_sha256_at_commit": "5724bcd9c78d3d3bae7f6341dcf3c6815e738bf70334928a0cf401311b958f96",
+  "checked": "kernel source and ops/conjpull.py at run = c0fb67d (sha256)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted conjugation job (not bit-reproducible); not re-run. The exact command, seeds, code and the run's own logs for this circuit are here"
+ },
+ "command": "XS_INVSBOX=1 PYTHONPATH=<campaign archive>/shim /usr/bin/python3 <campaign archive>/bin/invconjpull.py --in <checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt --target <checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt --seed 1000 --seconds 1800 --out <campaign archive>/run/conj/jobs/0000-r1-a28-ad4-g135-gd20-rank1_rank2_rank3 --conj rank:1,rank:2,rank:3 --schedule g:26:240,m:23:300,m:21:300,m:20:360,m:19:360,m:18:360 --repair-keep alt --screen-cache <campaign archive>/cache/conj3",
+ "environment": {
+  "XS_INVSBOX": "1",
+  "PYTHONPATH": "<campaign archive>/shim",
+  "cwd": "<checkout>"
+ },
+ "paths": {
+  "<checkout>": "a checkout of this repository at commit c0fb67d (jobs started after 16:33 UTC record a3a10c3, whose search/ tree is the same)",
+  "<campaign archive>": "the campaign archive (not published); its shim/ and bin/ are published as ../_runtime/shim and ../_runtime/bin",
+  "<home>": "the home folder of the machine that ran the search (the kernel binary is built into <home>/.cache/boolflux)"
+ },
+ "record": {
+  "where": "campaign 2026-11-16-invsbox (not published): <campaign archive>/run/conj/jobs/0000-r1-a28-ad4-g135-gd20-rank1_rank2_rank3/conjpull-a28-ad4-g135-gd19-81ff6f3a5a.circ.txt",
+  "sha256": "81ff6f3a5ac53fd555d203122614e6983960d49842220f461426691c50017d02",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "conj-job.json.gz",
+  "conjpull.log.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "conj-job.json.gz",
+  "conjpull.log.gz",
+  "../_runtime/"
+ ]
+}

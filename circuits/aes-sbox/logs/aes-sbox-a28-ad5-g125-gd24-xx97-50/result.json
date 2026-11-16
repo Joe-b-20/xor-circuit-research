@@ -1,0 +1,187 @@
+{
+ "op": "conjpull",
+ "target": "T03",
+ "seed": 466964,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/T03/found/conjpull-a28-ad5-g125-gd25-1f642d7931.circ.txt",
+ "start_tuple": [
+  28,
+  5,
+  125,
+  25
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:+0:360,m:-1:360,m:-1:600",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 28,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 1316.5,
+ "n_written": 4,
+ "rejected": {
+  "outside": 0,
+  "dominated": 20,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T04:23:42Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    28,
+    5,
+    125,
+    24
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-161/conjpull-a28-ad5-g125-gd24-7a2073a23b.circ.txt",
+   "how": "g25",
+   "t": 358.5,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    28,
+    5,
+    127,
+    23
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-161/conjpull-a28-ad5-g127-gd23-76326f7df7.circ.txt",
+   "how": "t23-top",
+   "t": 650.2,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    28,
+    5,
+    129,
+    22
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-161/conjpull-a28-ad5-g129-gd22-7c9f757a38.circ.txt",
+   "how": "o22-repair",
+   "t": 829.0,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    28,
+    5,
+    125,
+    24
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-161/conjpull-a28-ad5-g125-gd24-7a2073a23b.circ.txt",
+   "how": "g25",
+   "t": 358.5,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    28,
+    5,
+    127,
+    23
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-161/conjpull-a28-ad5-g127-gd23-76326f7df7.circ.txt",
+   "how": "t23-top",
+   "t": 650.2,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    28,
+    5,
+    129,
+    22
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-161/conjpull-a28-ad5-g129-gd22-7c9f757a38.circ.txt",
+   "how": "o22-repair",
+   "t": 829.0,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 25,
+   "seed": 466964000,
+   "in": [
+    28,
+    5,
+    125,
+    25
+   ],
+   "best": [
+    28,
+    5,
+    125,
+    24
+   ],
+   "seconds": 358.5
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 23,
+   "seed": 466964010,
+   "in": [
+    28,
+    5,
+    125,
+    24
+   ],
+   "best": [
+    28,
+    5,
+    127,
+    23
+   ],
+   "seconds": 358.2
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "mode": "m",
+   "cap": 22,
+   "seed": 466964020,
+   "in": [
+    28,
+    5,
+    127,
+    23
+   ],
+   "best": [
+    28,
+    5,
+    129,
+    22
+   ],
+   "seconds": 599.7
+  }
+ ],
+ "kernel_calls": 20
+}

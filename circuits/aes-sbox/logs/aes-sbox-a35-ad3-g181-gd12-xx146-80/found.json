@@ -47,29 +47,40 @@
   "elapsed_s": 468.9
  },
  "code": {
-  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "commit_at_run": "d9507dd",
   "uncommitted_changes_at_run": true,
   "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
   "files": [
    "nonlinear/boolflux/campaigns/targets/ops/rebase.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run 'd9507dda7bcc83055879fefbfafb7e729e62b22f', uncommitted_changes_at_run True",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: of the files the run hashed, rebase.py and satlns.py match no public commit (the other ops files and kernel/bfx.c are identical at d72204c)"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "cd <checkout> && python3 nonlinear/boolflux/campaigns/targets/ops/rebase.py --in <campaign archive>/2026-11-15-study/best-1400/aes-sbox-a35-ad3-g177-gd13-xx142-61.circ.txt --target T08 --seed 31 --seconds 1200 --moves --move-budget 0.4 --stages 1 --stage-seconds 240 --out <campaign archive>/2026-11-15-targets/M3/runs/screen/rb-t08full",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "8f46d04fc56d06b45b85057d20b33f400a9ec9a2518cb0cd88f1470c5853f448",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "rebase.jsonl.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run-start.circ.txt",
   "start.circ.txt"
  ]
 }

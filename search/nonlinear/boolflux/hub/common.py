@@ -14,7 +14,7 @@ PKG = HUB.parent                       # search/nonlinear/boolflux
 REPO = PKG.parents[2]
 sys.path.insert(0, str(PKG.parent))
 sys.path.insert(0, str(PKG / 'independent'))
-from boolflux import core, targets      # noqa: E402
+from boolflux import aesfn, core, targets   # noqa: E402,F401
 import verify as V                      # noqa: E402
 
 MODEL = core.Model.load('nist')
@@ -24,14 +24,19 @@ NIST = PKG.parent / 'seeds'
 KERNEL_SRC = PKG / 'kernel' / 'bfx.c'
 
 
-@lru_cache(None)
 def sbox():
-    return tuple(targets.aes_sbox())
+    """Value table of this process's function (aesfn: $BOOLFLUX_FUNCTION, the S-box or its inverse)."""
+    return aesfn.table()
+
+
+def vsbox():
+    """The same function for the independent verifier, from its own FIPS-197 code."""
+    return _vsbox(aesfn.name())
 
 
 @lru_cache(None)
-def vsbox():
-    return (8, 8, V.aes_sbox())
+def _vsbox(f):
+    return (8, 8, V.aes_inv_sbox() if f == 'aes-invsbox' else V.aes_sbox())
 
 
 def load(path):
@@ -135,12 +140,16 @@ def leq(u, m):
     return all(a <= b for a, b in zip(u, m))
 
 
-@lru_cache(None)
 def published():
-    """(A, AD, G, GD) of every forward AES S-box circuit in the pinned NIST collection."""
+    """(A, AD, G, GD) of every circuit of this process's function in the pinned NIST collection."""
+    return _published(aesfn.name())
+
+
+@lru_cache(None)
+def _published(f):
     sys.path.insert(0, str(PKG))
     import aes_check
-    return tuple(u for (u, n) in aes_check.published())
+    return tuple(u for (u, n) in aes_check.published(f))
 
 
 def source_files():
@@ -149,7 +158,8 @@ def source_files():
     fs = sorted(HUB.glob('*.py'))
     fs += sorted(f for f in (HUB / 'ops').rglob('*') if f.is_file() and f.suffix in ('.py', '.c', '.txt')
                  and '__pycache__' not in f.parts)
-    fs += [KERNEL_SRC, PKG / 'kernel' / 'skel.c'] + [PKG / n for n in ('core.py', 'objective.py', 'targets.py', 'skeleton.py')]
+    fs += [KERNEL_SRC, PKG / 'kernel' / 'skel.c'] + [PKG / n for n in ('core.py', 'objective.py', 'targets.py', 'skeleton.py',
+                                                                                 'aesfn.py', 'runlog.py')]
     fs += [PKG / 'independent' / 'verify.py', PKG / 'aes_check.py', PKG / 'models' / 'nist.json']
     return [f for f in fs if f.exists()]
 
@@ -240,8 +250,12 @@ class Span:
         return self.reduce(t) == 0
 
 
-@lru_cache(None)
 def interface_spaces():
+    return _interface_spaces(aesfn.name())
+
+
+@lru_cache(None)
+def _interface_spaces(f):
     inv = lambda y: _gpow(y, 14) if y else 0
     N = lambda x: _gpow(x, 17)
     return {'N': Span(_bit_tables(N)), 'Ninv': Span(_bit_tables(lambda x: inv(N(x)))),

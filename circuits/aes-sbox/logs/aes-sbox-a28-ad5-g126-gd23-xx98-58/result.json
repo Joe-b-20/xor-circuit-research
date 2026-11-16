@@ -1,0 +1,185 @@
+{
+ "op": "conjpull",
+ "target": "T03",
+ "seed": 256244,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/starts/104c1eda4172-a28-ad5-g124-gd27.circ.txt",
+ "start_tuple": [
+  28,
+  5,
+  124,
+  27
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "g:28:300,m:25:360,m:23:360,m:22:600",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 28,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 1615.9,
+ "n_written": 4,
+ "rejected": {
+  "outside": 0,
+  "dominated": 24,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T04:01:36Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    28,
+    5,
+    126,
+    23
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g126-gd23-14b498119b.circ.txt",
+   "how": "g23",
+   "t": 1015.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    28,
+    5,
+    129,
+    22
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g129-gd22-cd465a82bd.circ.txt",
+   "how": "o22-repair",
+   "t": 1124.4,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    28,
+    5,
+    126,
+    23
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g126-gd23-14b498119b.circ.txt",
+   "how": "g23",
+   "t": 1015.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    28,
+    5,
+    129,
+    22
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g129-gd22-cd465a82bd.circ.txt",
+   "how": "o22-repair",
+   "t": 1124.4,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "g",
+   "cap": 28,
+   "seed": 256244000,
+   "in": [
+    28,
+    5,
+    124,
+    27
+   ],
+   "best": [
+    28,
+    5,
+    124,
+    27
+   ],
+   "seconds": 299.6
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 25,
+   "seed": 256244010,
+   "in": [
+    28,
+    5,
+    124,
+    27
+   ],
+   "best": [
+    28,
+    5,
+    127,
+    23
+   ],
+   "seconds": 358.1
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "mode": "m",
+   "cap": 23,
+   "seed": 256244020,
+   "in": [
+    28,
+    5,
+    127,
+    23
+   ],
+   "best": [
+    28,
+    5,
+    126,
+    23
+   ],
+   "seconds": 359.6
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 4,
+   "mode": "m",
+   "cap": 22,
+   "seed": 256244030,
+   "in": [
+    28,
+    5,
+    126,
+    23
+   ],
+   "best": [
+    28,
+    5,
+    129,
+    22
+   ],
+   "seconds": 598.6
+  }
+ ],
+ "kernel_calls": 24
+}

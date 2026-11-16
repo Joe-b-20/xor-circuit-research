@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Conjugates of an AES S-box circuit by the symmetries of GF(2^8) inversion.
+"""Conjugates of an AES S-box (or inverse S-box) circuit by the symmetries of GF(2^8) inversion.
 
 For G(z) = lam * z^(2^k) (lam != 0, k = 0..7) inversion satisfies inv = G' o inv o G with
-G'(w) = (lam * w)^(2^(8-k)).  With S = Aff o inv (Aff(w) = A w + 0x63):
-    S(x) = Mout * (S(G x) + c) + c,   Mout = A G' A^-1,  c = 0x63.
-So from a circuit C for S we get a circuit for S: inputs transformed by G, C unchanged, outputs
-transformed by the affine map w -> Mout (w + c) + c.  Its top linear layer (forms of G x) and its bottom
-linear layer (Mout applied to the outputs) are re-synthesised with trb.rebuild (randomised Paar
-with Kraft depth checks), several seeds; the AND structure and the middle layers are unchanged.  The
-result is checked on all 256 inputs.  2040 conjugates (255 x 8) per circuit.
+G'(w) = (lam * w)^(2^(8-k)).  With S = Aff o inv (Aff(w) = A w + 0x63), c = 0x63:
+    S(x)    = Mout (S(G x) + c) + c,     Mout = A G' A^-1          (aes-sbox)
+    S^-1(y) = G' (S^-1(Lin y + cL)),     Lin = A G A^-1, cL = Lin c + c   (aes-invsbox)
+So from a circuit C for the function we get another: inputs through an affine map (In, cin), C
+unchanged, outputs through an affine map (Out, cout) (maps()).  Its top linear layer and its bottom
+linear layer are re-synthesised with trb.rebuild (randomised Paar with Kraft depth checks), several
+seeds; the AND structure and the middle layers are unchanged.  The result is checked on all 256
+inputs.  2040 conjugates (255 x 8) per circuit.  The function is aesfn's (the process's).
 
     conj.py FILE --out DIR [--seeds 3] [--lams 1-255] [--ks 0-7] [--save-best 30]
 """
@@ -18,11 +19,16 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parents[2]))
 import bottom as BT  # noqa
 import trb  # noqa
-from boolflux import core, targets  # noqa
+from boolflux import aesfn, core, targets  # noqa
 
 AND, XOR, XNOR, NOT = 8, 6, 9, 3
-AES = targets.aes_sbox()
+FWD = targets.aes_sbox()                   # the forward S-box: the affine map A below comes from it
 MODEL = core.Model.load('nist')
+
+
+def table():
+    """value table of the process's function (aesfn): what every conjugate must compute"""
+    return list(aesfn.table())
 
 
 def gmul(a, b):
@@ -56,8 +62,8 @@ def apply(M, x):
 
 
 INV = [0] + [gpow(z, 254) for z in range(1, 256)]
-assert all(AES[z] == apply(matrix(lambda w: AES[INV[w]] ^ 0x63), INV[z]) ^ 0x63 for z in range(256))
-A = matrix(lambda w: AES[INV[w]] ^ 0x63)
+assert all(FWD[z] == apply(matrix(lambda w: FWD[INV[w]] ^ 0x63), INV[z]) ^ 0x63 for z in range(256))
+A = matrix(lambda w: FWD[INV[w]] ^ 0x63)
 Ainv = [0] * 8
 for y in range(256):
     v = apply(A, y)
@@ -65,52 +71,50 @@ for y in range(256):
         if v == 1 << j: Ainv[j] = y
 
 
-def conj_circuit(c, lam, k):
-    """Naive conjugate circuit (input XOR network, c, output affine network)."""
+def maps(lam, k, function=None):
+    """(In, cin, Out, cout) of conjugate (lam, k): new circuit = Out (C(In y + cin)) + cout (see the top)."""
     G = matrix(lambda z: gmul(lam, gpow(z, 1 << k)))
     Gp = matrix(lambda w: gpow(gmul(lam, w), 1 << ((8 - k) % 8)))
+    if aesfn.name(function) == 'aes-invsbox':
+        Lin = matrix(lambda y: apply(A, apply(G, apply(Ainv, y))))
+        return Lin, apply(Lin, 0x63) ^ 0x63, Gp, 0
     Mout = matrix(lambda y: apply(A, apply(Gp, apply(Ainv, y))))
-    const = apply(Mout, 0x63) ^ 0x63
+    return G, 0, Mout, apply(Mout, 0x63) ^ 0x63
+
+
+def conj_circuit(c, lam, k, function=None):
+    """Naive conjugate circuit (input affine network, c, output affine network); a constant is an
+    XNOR on the last XOR of its chain (NOT for a single term).  For aes-sbox the gates are those of
+    the forward-only version before 2026-11-16 (cin = 0)."""
+    In, cin, Out, cout = maps(lam, k, function)
     n = c.n
     gates = []
     def sid(): return n + len(gates) - 1
-    # circuit input i (x_i) is byte bit (7 - i)
-    def xsig(bit): return 7 - bit
-    u = []
-    for i in range(8):           # u_i = circuit input i of C = byte bit 7-i of G x
-        bit = 7 - i
-        terms = [xsig(j) for j in range(8) if G[j] >> bit & 1]
-        s = terms[0]
-        for t in terms[1:]:
-            gates.append((XOR, s, t)); s = sid()
-        if len(terms) == 1:
-            pass
-        u.append(s)
-    mp = {i: u[i] for i in range(n)}
-    for j, (op, a, b) in enumerate(c.gates):
-        gates.append((op, mp[a], mp[b])); mp[n + j] = sid()
-    old = [mp[s] for s in c.outputs]     # old output i = byte bit 7-i of S(Gx)
-    outs = []
-    for i in range(8):
-        bit = 7 - i
-        terms = [old[7 - j] for j in range(8) if Mout[j] >> bit & 1]
-        cst = const >> bit & 1
+
+    def chain(terms, cst):
         s = terms[0]
         for q, t in enumerate(terms[1:]):
             last = q == len(terms) - 2
             gates.append((XNOR if (last and cst) else XOR, s, t)); s = sid()
         if cst and len(terms) == 1:
             gates.append((NOT, s, s)); s = sid()
-        outs.append(s)
+        return s
+    # circuit input i (x_i) is byte bit (7 - i); u_i = input i of C = byte bit 7-i of In y + cin
+    u = [chain([7 - j for j in range(8) if In[j] >> (7 - i) & 1], cin >> (7 - i) & 1) for i in range(8)]
+    mp = {i: u[i] for i in range(n)}
+    for j, (op, a, b) in enumerate(c.gates):
+        gates.append((op, mp[a], mp[b])); mp[n + j] = sid()
+    old = [mp[s] for s in c.outputs]     # old output i = byte bit 7-i of C(In y + cin)
+    outs = [chain([old[7 - j] for j in range(8) if Out[j] >> (7 - i) & 1], cout >> (7 - i) & 1) for i in range(8)]
     return core.Circuit(n, 8, gates, outs).live()
 
 
 def resynth(c, rng, rounds=1):
-    m = c.metrics(MODEL); D = m['GD']
+    m = c.metrics(MODEL); D = m['GD']; tab = table()
     for _ in range(rounds):
         for kind in ('top', 'bottom'):
             c2, info = trb.rebuild(c, D, kind, rng)
-            if c2.value_table() == AES and len(c2.gates) <= len(c.gates): c = c2
+            if c2.value_table() == tab and len(c2.gates) <= len(c.gates): c = c2
     return c
 
 
@@ -124,6 +128,8 @@ def main():
     ks = rng_(a[a.index('--ks') + 1]) if '--ks' in a else range(8)
     save = int(a[a.index('--save-best') + 1]) if '--save-best' in a else 30
     c = BT.load(f)
+    aesfn.use(aesfn.resolve('auto', f))
+    AES = table()
     assert c.value_table() == AES
     res = []
     t0 = time.time()

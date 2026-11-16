@@ -15,7 +15,9 @@ CPU (so the runs of a comparison pair share hardware).  A run is a dict:
 Each run writes OUTDIR/<label>.json: trajectory [[t, cost, G, A, GD, AD], ...] (t = wall seconds
 since the search started; for XORFlux the worker's own clock), final metrics, verification of
 the final circuit by both verifiers (outside the budget), peak RSS of the search process(es),
-overhead (start construction, extraction, skeleton kernel, synthesis, kernel start-up), CPU.
+overhead (start construction, extraction, skeleton kernel, synthesis, kernel start-up), CPU; and
+the run record of each run in its work folder (run.json + events.jsonl.gz, runlog.py; path in
+the result as run_record).
 """
 import json
 import os
@@ -32,7 +34,7 @@ PKG = HERE.parent
 REPO = PKG.parents[2]
 sys.path.insert(0, str(PKG.parent)); sys.path.insert(0, str(PKG))
 import cli                                         # noqa: E402
-from boolflux import core, workflow   # noqa: E402
+from boolflux import core, runlog, workflow   # noqa: E402
 
 if __name__ == '__main__' and (len(sys.argv) < 3 or sys.argv[1] in ('-h', '--help')):      # usage before the kernel build
     print(__doc__.strip()); sys.exit(0 if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help') else 2)
@@ -41,7 +43,7 @@ if os.environ.get('BFXBENCH_BIN'):                     # worker: binaries built 
 else:
     BIN = Path(tempfile.mkdtemp(prefix='bfxbench-'))
     for b in ('bfx', 'skel'):
-        subprocess.run(['gcc', '-O2', '-o', str(BIN / b), str(PKG / 'kernel' / (b + '.c')), '-lm'], check=True)
+        cli.compile_kernel(PKG / 'kernel' / (b + '.c'), BIN / b)       # gcc -O2 (cli.build_command)
 
 
 timed = workflow.timed
@@ -54,9 +56,9 @@ def to_xorflux_json(c, name, path):
                                 'outputSignals': c.outputs}) + '\n')
 
 
-def run_boolflux(run, cpu, wd):
+def run_boolflux(run, cpu, wd, log=None):
     """The search loop lives in workflow.py (also behind `cli.py flow`)."""
-    r = workflow.search(run, BIN, wd, cpu)
+    r = workflow.search(run, BIN, wd, cpu, log=log)
     return r['circuit'], r['trajectory'], r['rss'], r['overhead'], r['search_s']
 
 
@@ -102,16 +104,26 @@ def driver_hwm_kb():
 
 def execute(run, cpu, outdir):
     wd = Path(tempfile.mkdtemp(prefix='run-', dir=outdir))
+    log = runlog.RunLog(wd, 'bench.' + run['tool'],
+                        seeds={'seed': run.get('seed'), 'seed_scheme': run.get('seed_scheme', 'v2')},
+                        config=dict(run, cpu=cpu), budget_s=run.get('seconds'))
+    if run['tool'] == 'boolflux':
+        for b in ('bfx', 'skel'):
+            log.add_kernel(BIN / b, source=PKG / 'kernel' / (b + '.c'),
+                           command=cli.build_command(PKG / 'kernel' / (b + '.c'), BIN / b), write=False)
+        st = run.get('start')
+        log.add_start(None if st in (None, 'anf') else st, label=str(st))
     t0 = time.time(); driver_hwm_reset()
     try:
         if run['tool'] == 'xorflux': c, traj, rss, ov, search_s = run_xorflux(run, cpu, wd)
-        else: c, traj, rss, ov, search_s = run_boolflux(run, cpu, wd)
+        else: c, traj, rss, ov, search_s = run_boolflux(run, cpu, wd, log)
         err = None
     except Exception as e:                           # recorded, not hidden
         c, traj, rss, ov, search_s, err = None, [], [], {}, None, repr(e)
     res = {'run': run, 'cpu': cpu, 'error': err, 'trajectory': traj, 'peak_rss_kb': max([r for r in rss if r] or [0]),
            'driver_rss_kb': driver_hwm_kb() if run['tool'] == 'boolflux' else None,
-           'overhead': {k: round(v, 4) for k, v in ov.items()}, 'search_wall_s': search_s}
+           'overhead': {k: round(v, 4) for k, v in ov.items()}, 'search_wall_s': search_s,
+           'run_record': str(wd / 'run.json'), 'rss_source': runlog.timing()}
     if c is not None:
         model = core.Model.load(run['model'] if run['tool'] == 'boolflux' else 'xor')
         c.in_names = ['x%d' % i for i in range(c.n)]; c.out_names = ['y%d' % j for j in range(c.m)]
@@ -124,6 +136,7 @@ def execute(run, cpu, outdir):
         res['verified'] = bool(v['core_ok'] and v['independent_ok'] and v['library_ok'])
         res['feasible'] = all(c is None or v['metrics'][k] <= c for k, c in (run.get('caps') or {}).items())
         res['final_file'] = str(f)
+    log.finish('error' if err else 'ok', final=res.get('final'), verified=res.get('verified'), error=err)
     (outdir / (run['label'] + '.json')).write_text(json.dumps(res) + '\n')
     return res
 

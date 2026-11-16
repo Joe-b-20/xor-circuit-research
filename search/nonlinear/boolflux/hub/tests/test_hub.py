@@ -1,4 +1,5 @@
 """Hub regression tests:  python3 -m unittest boolflux.hub.tests.test_hub   (from search/nonlinear/)"""
+import gzip
 import json
 import sys
 import tempfile
@@ -87,6 +88,49 @@ class TestScheduler(unittest.TestCase):
                 for k in ('id', 'A', 'AD', 'G', 'GD', 'counts', 'parents', 'operator', 'operator_settings', 'seed',
                           'run_id', 'code_version', 'cpu_s', 'wall_s', 't_admit', 'verified'):
                     self.assertIn(k, rr)
+            # run records (runlog.py): the job's and the scheduler session's
+            jr = json.loads(Path(rec['run_record']).read_text())
+            self.assertEqual((jr['schema'], jr['kind'], jr['status'], jr['function']),
+                             ('boolflux-run/1', 'hub.op.' + rec['operator'], 'ok', 'aes-sbox'))
+            self.assertEqual(jr['seeds']['seed'], rec['seed'])
+            self.assertEqual(jr['starts'][0]['path'], str((Path(d) / 'archive' / (rec['target'] + '.bfx')).resolve()))
+            for k in ('argv', 'git', 'sources_sha256', 'host', 'tools', 'wall_s', 'cpu_s', 'budget_s'): self.assertIn(k, jr)
+            sess = list(Path(d, 'sessions').glob('*/run.json'))
+            self.assertEqual(len(sess), 1)
+            sr = json.loads(sess[0].read_text())
+            self.assertEqual((sr['kind'], sr['status'], sr['seeds']['seed']), ('hub.scheduler', 'time', 1))
+            self.assertEqual(len(sr['starts']), 3)
+            self.assertTrue(sr['kernels'][0]['compiler'])
+            with gzip.open(sess[0].parent / 'events.jsonl.gz', 'rt') as f:
+                ev = [json.loads(ln) for ln in f]
+            self.assertEqual(sorted(e['run_id'] for e in ev if e['ev'] == 'job'), sorted(p.stem for p in runs))
+
+    def test_inverse_campaign(self):
+        """--function aes-invsbox: NIST inverse seeds are admitted (both verifiers, inverse table), forward ones
+        rejected, the function is kept in campaign.json and a restart with another function is refused"""
+        import subprocess
+        inv = sorted((NIST / 'aes-invsbox').glob('aes-invsbox-a32-ad5-*.circ.txt'))[:3]
+        with tempfile.TemporaryDirectory() as d:
+            lst = Path(d) / 'seed.list'; lst.write_text('\n'.join(map(str, inv + [P104])) + '\n')
+            hub = Path(__file__).resolve().parents[1] / 'scheduler.py'
+            import os
+            cpu = str(min(os.sched_getaffinity(0)))
+            r = subprocess.run([sys.executable, str(hub), '--dir', d, '--cpus', cpu, '--hours', '0.003', '--function',
+                                'aes-invsbox', '--seed-list', str(lst), '--ops', 'trb', '--seconds', 'trb=3'],
+                               capture_output=True, text=True, timeout=300)
+            self.assertEqual(r.returncode, 0, r.stderr[-2000:])
+            self.assertEqual(json.loads(Path(d, 'campaign.json').read_text())['function'], 'aes-invsbox')
+            ar = Archive(d)
+            seeds = [x for x in ar.rec.values() if x['operator'] == 'seed']
+            self.assertEqual(len(seeds), 3)
+            sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+            import aes_check
+            for i in ar.rec:
+                c = ar.circuit(i); f = Path(d) / ('%s.bfx' % i); f.write_text(core.to_kernel(c))
+                self.assertTrue(aes_check.check(f, 'aes-invsbox')['ok'], i)
+            r = subprocess.run([sys.executable, str(hub), '--dir', d, '--cpus', cpu, '--hours', '0.001', '--function',
+                                'aes-sbox', '--seed-only'], capture_output=True, text=True, timeout=120)
+            self.assertNotEqual(r.returncode, 0); self.assertIn('aes-invsbox campaign', r.stderr)
 
 
 if __name__ == '__main__':

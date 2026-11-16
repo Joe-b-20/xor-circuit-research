@@ -1,0 +1,209 @@
+{
+ "op": "conjpull",
+ "target": "T05",
+ "seed": 94435,
+ "status": "ok",
+ "start": "<checkout>/nonlinear/nist/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt",
+ "start_tuple": [
+  32,
+  4,
+  117,
+  19
+ ],
+ "params": {
+  "conj": "rank:2",
+  "schedule": "g:30:300,m:26:360,m:24:360,m:22:360",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 7
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 1379.0,
+ "n_written": 7,
+ "rejected": {
+  "outside": 0,
+  "dominated": 21,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T02:27:28Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    111,
+    25
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-5/conjpull-a32-ad4-g111-gd25-1593dfe1d7.circ.txt",
+   "how": "o26-relaxed27",
+   "t": 347.1,
+   "class": "tradeoff:and_depth_for_gates"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    112,
+    22
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-5/conjpull-a32-ad4-g112-gd22-e467f34ee4.circ.txt",
+   "how": "t26-random",
+   "t": 543.0,
+   "class": "tradeoff:and_depth_for_gates"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    113,
+    21
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-5/conjpull-a32-ad4-g113-gd21-7b8f9b200b.circ.txt",
+   "how": "o24-gate",
+   "t": 797.4,
+   "class": "tradeoff:and_depth_for_gates"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    111,
+    25
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-5/conjpull-a32-ad4-g111-gd25-1593dfe1d7.circ.txt",
+   "how": "o26-relaxed27",
+   "t": 347.1,
+   "class": "tradeoff:and_depth_for_gates"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    112,
+    22
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-5/conjpull-a32-ad4-g112-gd22-e467f34ee4.circ.txt",
+   "how": "t26-random",
+   "t": 543.0,
+   "class": "tradeoff:and_depth_for_gates"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    113,
+    21
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-5/conjpull-a32-ad4-g113-gd21-7b8f9b200b.circ.txt",
+   "how": "o24-gate",
+   "t": 797.4,
+   "class": "tradeoff:and_depth_for_gates"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "rank:2",
+   "lam": 188,
+   "k": 0,
+   "stage": 1,
+   "mode": "g",
+   "cap": 30,
+   "seed": 94435000,
+   "in": [
+    32,
+    4,
+    126,
+    26
+   ],
+   "best": [
+    32,
+    4,
+    111,
+    27
+   ],
+   "seconds": 299.5
+  },
+  {
+   "conj": "rank:2",
+   "lam": 188,
+   "k": 0,
+   "stage": 2,
+   "mode": "m",
+   "cap": 26,
+   "seed": 94435010,
+   "in": [
+    32,
+    4,
+    111,
+    27
+   ],
+   "best": [
+    32,
+    4,
+    111,
+    25
+   ],
+   "seconds": 359.8
+  },
+  {
+   "conj": "rank:2",
+   "lam": 188,
+   "k": 0,
+   "stage": 3,
+   "mode": "m",
+   "cap": 24,
+   "seed": 94435020,
+   "in": [
+    32,
+    4,
+    111,
+    25
+   ],
+   "best": [
+    32,
+    4,
+    112,
+    23
+   ],
+   "seconds": 359.5
+  },
+  {
+   "conj": "rank:2",
+   "lam": 188,
+   "k": 0,
+   "stage": 4,
+   "mode": "m",
+   "cap": 22,
+   "seed": 94435030,
+   "in": [
+    32,
+    4,
+    112,
+    23
+   ],
+   "best": [
+    32,
+    4,
+    114,
+    21
+   ],
+   "seconds": 359.6
+  }
+ ],
+ "kernel_calls": 25
+}

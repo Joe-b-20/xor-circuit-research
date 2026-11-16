@@ -1,0 +1,169 @@
+{
+ "run_id": "r01940-gen_skel",
+ "operator": "gen_skel",
+ "choice": "exploit",
+ "target": "3252197ed60f",
+ "target_metrics": [
+  28,
+  5,
+  130,
+  19
+ ],
+ "target_class": "A<=31",
+ "seed": 442068439,
+ "cpu": 8,
+ "command": [
+  "taskset",
+  "-c",
+  "8",
+  "/usr/bin/python3",
+  "<checkout>/nonlinear/boolflux/hub/ops/gen_skel.py",
+  "--archive",
+  "<campaign archive>/2026-11-14-hub/long",
+  "--in",
+  "3252197ed60f",
+  "--seed",
+  "442068439",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-14-hub/long/jobs/r01940-gen_skel"
+ ],
+ "returncode": 0,
+ "code_version": "97abda7+d317aff7b7",
+ "scheduler_version": "97abda7+d317aff7b7",
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "kicks": 6,
+  "tried": [
+   [
+    3,
+    [
+     28,
+     5,
+     163,
+     26
+    ],
+    [
+     28,
+     5,
+     133,
+     23
+    ]
+   ],
+   [
+    1,
+    [
+     28,
+     5,
+     153,
+     26
+    ],
+    [
+     28,
+     5,
+     127,
+     22
+    ]
+   ],
+   [
+    2,
+    [
+     28,
+     5,
+     155,
+     23
+    ],
+    [
+     28,
+     5,
+     133,
+     30
+    ]
+   ],
+   [
+    3,
+    [
+     28,
+     5,
+     156,
+     25
+    ],
+    [
+     28,
+     5,
+     141,
+     25
+    ]
+   ],
+   [
+    1,
+    [
+     28,
+     5,
+     155,
+     28
+    ],
+    [
+     28,
+     5,
+     140,
+     30
+    ]
+   ],
+   [
+    1,
+    [
+     28,
+     5,
+     130,
+     19
+    ],
+    [
+     28,
+     5,
+     127,
+     28
+    ]
+   ]
+  ]
+ },
+ "parents": [
+  "3252197ed60f"
+ ],
+ "wall_s": 53.55,
+ "cpu_s": 54.92,
+ "candidates": 2,
+ "admitted": 2,
+ "gain": 8.01,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    22
+   ],
+   "status": "admitted",
+   "id": "4d1642c45c7d",
+   "gain": 8.0
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    28
+   ],
+   "status": "admitted",
+   "id": "0052a466e6d8",
+   "gain": 0.01
+  }
+ ]
+}

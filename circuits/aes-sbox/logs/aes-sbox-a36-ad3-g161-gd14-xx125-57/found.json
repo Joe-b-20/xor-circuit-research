@@ -45,22 +45,36 @@
    "nonlinear/boolflux/kernel/bfx.c"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "97abda7+d317aff7b7",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: the recorded hash of hub/*.py and kernel/bfx.c (d317aff7b7) matches no public commit; the uncommitted changes were not kept"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "taskset -c 4 /usr/bin/python3 <checkout>/nonlinear/boolflux/hub/ops/op_osc.py --archive <campaign archive>/2026-11-14-hub/long --in 77b3ebe9084c --seed 1029111798 --seconds 90 --out <campaign archive>/2026-11-14-hub/long/jobs/r01628-osc",
+ "command_source": "hub run record <campaign archive>/2026-11-14-hub/long/runs/r01628-osc.json (published: run.json)",
  "record": {
   "where": "campaign archive (not published): hub archive, circuit id 1aafd6c6e8de",
   "sha256": "165940dd416d8b1ec51b98efac09b1d9f239a63dc1c8cc6a94f3b7224f43458d",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "circuit.json",
+  "control.json",
+  "events.jsonl.gz",
+  "input.bfx",
+  "input.json",
+  "job-record.json",
+  "run.json",
   "start.circ.txt"
  ]
 }

@@ -1,0 +1,178 @@
+{
+ "circuit": "aes-invsbox-a28-ad4-g145-gd16-xx117-62.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  4,
+  145,
+  16
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   28,
+   4,
+   146,
+   16
+  ],
+  "source_sha256": "963af02e5775fcebfccbf4ab73f736bc0f4e8127ffd504d3764675392c6cd773",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a28-ad4-g146-gd16-xx118-65",
+  "archive_id": "3b8d8345af89",
+  "made_by": "hub operator polish"
+ },
+ "chain_root": "NIST's aes-invsbox-a28-ad4-g150-gd16-xx122-27",
+ "lineage": [
+  {
+   "id": "026c5c179848",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    28,
+    4,
+    145,
+    16
+   ],
+   "parents": [
+    "3b8d8345af89"
+   ],
+   "seed": 993810233,
+   "run_id": "hub-f0c803.r00024-polish",
+   "admitted_utc": "2026-11-16T16:18:49Z"
+  },
+  {
+   "id": "3b8d8345af89",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    28,
+    4,
+    146,
+    16
+   ],
+   "parents": [
+    "0bcf3b9dcaf4"
+   ],
+   "seed": 122230442,
+   "run_id": "hub-f0c803.r00011-polish",
+   "admitted_utc": "2026-11-16T16:17:25Z"
+  },
+  {
+   "id": "0bcf3b9dcaf4",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    28,
+    4,
+    148,
+    16
+   ],
+   "parents": [
+    "a371fb92d468"
+   ],
+   "seed": 270676728,
+   "run_id": "hub-f0c803.r00008-polish",
+   "admitted_utc": "2026-11-16T16:16:01Z"
+  },
+  {
+   "id": "a371fb92d468",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    28,
+    4,
+    150,
+    16
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T16:14:35Z",
+   "file": "<checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g150-gd16-xx122-27.circ.txt"
+  }
+ ],
+ "parameters": {
+  "caps": {
+   "A": 28,
+   "AD": 4,
+   "GD": 16
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "t_last_improvement": 82.309,
+  "kernel_bin": "bfx-4e8a87c511"
+ },
+ "seed": 993810233,
+ "found_utc": "2026-11-16T16:18:49Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 83.18,
+  "cpu_s": 83.67
+ },
+ "campaign": {
+  "name": "2026-11-16-invsbox",
+  "launched_utc": "2026-11-16T16:14:32Z",
+  "hard_stop_utc": "2026-11-17T04:14:32Z",
+  "snapshot_utc": "2026-11-16T18:23:40Z",
+  "running_at_snapshot": true,
+  "launch": "../_runtime/bin/launch.sh <campaign archive>/run inv 43200 1800 1 (12 h; hub on CPUs 2-11, 10 workers; one conjugation job runner on each of CPUs 12-19; xsrun is the local systemd-run wrapper that pins the CPUs and caps memory)",
+  "seed_list": "../_runtime/run/seeds.list (the 91 pinned NIST inverse circuits, written by mkqueue.py)",
+  "hub_command": "cd <checkout> && XS_INVSBOX=1 XS_INVSBOX_LINE=1 PYTHONPATH=<campaign archive>/shim python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/run/hub --cpus 2-11 --hours 11.9333 --seed-list <campaign archive>/run/seeds.list --ops polish,pull,join,trb --seconds polish=90,pull=90,join=60,trb=30 --eps 0.25 --seed 1"
+ },
+ "code": {
+  "commit_at_run": "c0fb67d",
+  "uncommitted_changes_at_run": false,
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/hub/archive.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "c0fb67d",
+  "runtime_layer": {
+   "files": [
+    "../_runtime/shim/invshim.py",
+    "../_runtime/shim/sitecustomize.py"
+   ],
+   "note": "the inverse S-box support the run used, outside the repository at c0fb67d (BoolFlux was forward-only there): the shim rebinds, in-process, the S-box tables of boolflux/targets.py and independent/verify.py to their inverse tables and the NIST comparison set to the 91 inverse circuits; invconjpull.py runs ops/conjpull.py with inverse conjugates. Inverse support is being added to the BoolFlux code itself"
+  },
+  "code_version_at_run": "c0fb67d+924fa92a4c",
+  "scheduler_version_at_run": "c0fb67d+924fa92a4c",
+  "checked": "the '+924fa92a4c' source hash (hub/common.py code_version) of the run is that of c0fb67d and a3a10c3; no uncommitted change"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run. The exact command, seeds, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 5 /usr/bin/python3 <checkout>/search/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/run/hub --in 3b8d8345af89 --seed 993810233 --seconds 90.0 --out <campaign archive>/run/hub/jobs/hub-f0c803.r00024-polish",
+ "environment": {
+  "XS_INVSBOX": "1",
+  "XS_INVSBOX_LINE": "1",
+  "PYTHONPATH": "<campaign archive>/shim",
+  "cwd": "<checkout>",
+  "note": "the scheduler's environment, which its operator jobs inherit; the job reads its input circuit from the hub archive (--archive, --in), whose records for this circuit's lineage are in hub-lineage.json.gz"
+ },
+ "paths": {
+  "<checkout>": "a checkout of this repository at commit c0fb67d (jobs started after 16:33 UTC record a3a10c3, whose search/ tree is the same)",
+  "<campaign archive>": "the campaign archive (not published); its shim/ and bin/ are published as ../_runtime/shim and ../_runtime/bin",
+  "<home>": "the home folder of the machine that ran the search (the kernel binary is built into <home>/.cache/boolflux)"
+ },
+ "record": {
+  "where": "campaign 2026-11-16-invsbox (not published): hub archive, circuit id 026c5c179848",
+  "sha256": "e4c76eec4b2bbfcb0107498a0b6866eb8a70127a036328821aaf860905adabd8",
+  "note": "the circuit as first recorded (kernel .bfx text); this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz",
+  "../_runtime/"
+ ]
+}

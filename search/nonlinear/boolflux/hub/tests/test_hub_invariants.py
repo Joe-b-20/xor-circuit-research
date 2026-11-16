@@ -18,7 +18,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
-from boolflux import core                                           # noqa: E402
+from boolflux import core, runlog                                         # noqa: E402
 from boolflux.hub import archive as AR, common as C, ops as HO, scheduler as SCH   # noqa: E402
 from boolflux.hub.archive import Archive, pareto                    # noqa: E402
 from boolflux.hub.common import NIST, load, metrics, cid, structure_key, verify   # noqa: E402
@@ -472,7 +472,9 @@ class TestScheduler(unittest.TestCase):
                 s.end = time.time() + 12.0
                 j = s.launch(3, set())
                 self.assertEqual((j['op'], j['why']), ('trb', 'exploit-fallback'))
-                cmd = j['cmd']; self.assertEqual(cmd[:3], ['taskset', '-c', '3'])
+                cmd = j['cmd']
+                if runlog.taskset(): self.assertEqual(cmd[:3], ['taskset', '-c', '3'])
+                else: self.assertIsNotNone(started[0][1]['preexec_fn'])            # pinned by os.sched_setaffinity
                 self.assertLessEqual(float(cmd[cmd.index('--seconds') + 1]), 12.0)       # trb default is 30
                 self.assertTrue(started[0][1]['start_new_session'])
                 (s.dir / 'jobs' / ('%s.r%05d-trb' % (s.uid, s.nrun + 1))).mkdir()        # left over by something else

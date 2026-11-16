@@ -1,0 +1,578 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 20,
+  "AD": 4,
+  "A": 33
+ },
+ "start": "nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt",
+ "start_metrics": {
+  "G": 108,
+  "A": 33,
+  "GD": 20,
+  "AD": 4,
+  "cost": 108.0,
+  "counts": {
+   "AND": 33,
+   "XNOR": 5,
+   "XOR": 70
+  }
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "iters": 100000,
+ "seconds_cap": 3600,
+ "rounds": 1,
+ "code_sha256_12": "b0e56ecb18fe",
+ "code_snapshot": "<campaign archive>/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a33-ad4-g108-gd20-xx75-5/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt --objective cost,gd --cap-a 33 --cap-ad 4 --cap-gd 20 --iters 100000 --seeds 1-8 --jobs 8 --out <campaign archive>/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a33-ad4-g108-gd20-xx75-5",
+ "runs": [
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 7,
+   "kernel_seed": 7,
+   "tag": "r0-s7",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 19,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 22,
+     "XOR": 53
+    }
+   },
+   "wall_s": 36.86,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 19.0,
+    "AD": 4.0,
+    "obj": 108.0019,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 36.83
+   },
+   "improvements": [
+    {
+     "t": 6.251,
+     "it": 16645,
+     "mv": "resub3",
+     "cost": 108.0,
+     "G": 108,
+     "A": 33,
+     "GD": 19,
+     "AD": 4
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 24814.0,
+     "acc": 21356.0,
+     "imp": 0.0,
+     "cands": 22361.0,
+     "time": 5.1
+    },
+    "resub2": {
+     "prop": 50158.0,
+     "acc": 40325.0,
+     "imp": 0.0,
+     "cands": 398673.0,
+     "time": 17.11
+    },
+    "resub3": {
+     "prop": 25028.0,
+     "acc": 19761.0,
+     "imp": 1.0,
+     "cands": 328400.0,
+     "time": 14.61
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 1,
+   "kernel_seed": 1,
+   "tag": "r0-s1",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 36.01,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 35.98
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 25083.0,
+     "acc": 21619.0,
+     "imp": 0.0,
+     "cands": 22570.0,
+     "time": 5.08
+    },
+    "resub2": {
+     "prop": 49948.0,
+     "acc": 40431.0,
+     "imp": 0.0,
+     "cands": 373936.0,
+     "time": 16.65
+    },
+    "resub3": {
+     "prop": 24969.0,
+     "acc": 19714.0,
+     "imp": 0.0,
+     "cands": 301964.0,
+     "time": 14.23
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 2,
+   "kernel_seed": 2,
+   "tag": "r0-s2",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 36.81,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 36.8
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 25029.0,
+     "acc": 21378.0,
+     "imp": 0.0,
+     "cands": 22308.0,
+     "time": 5.13
+    },
+    "resub2": {
+     "prop": 49998.0,
+     "acc": 40037.0,
+     "imp": 0.0,
+     "cands": 390814.0,
+     "time": 17.06
+    },
+    "resub3": {
+     "prop": 24973.0,
+     "acc": 19445.0,
+     "imp": 0.0,
+     "cands": 327120.0,
+     "time": 14.59
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 3,
+   "kernel_seed": 3,
+   "tag": "r0-s3",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 36.06,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 36.04
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 25316.0,
+     "acc": 21924.0,
+     "imp": 0.0,
+     "cands": 22760.0,
+     "time": 5.13
+    },
+    "resub2": {
+     "prop": 49850.0,
+     "acc": 40342.0,
+     "imp": 0.0,
+     "cands": 367120.0,
+     "time": 16.7
+    },
+    "resub3": {
+     "prop": 24834.0,
+     "acc": 19634.0,
+     "imp": 0.0,
+     "cands": 298513.0,
+     "time": 14.2
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 4,
+   "kernel_seed": 4,
+   "tag": "r0-s4",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 35.96,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 35.91
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 25097.0,
+     "acc": 21549.0,
+     "imp": 0.0,
+     "cands": 22733.0,
+     "time": 5.06
+    },
+    "resub2": {
+     "prop": 49785.0,
+     "acc": 40123.0,
+     "imp": 0.0,
+     "cands": 378291.0,
+     "time": 16.62
+    },
+    "resub3": {
+     "prop": 25118.0,
+     "acc": 19819.0,
+     "imp": 0.0,
+     "cands": 312347.0,
+     "time": 14.22
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 5,
+   "kernel_seed": 5,
+   "tag": "r0-s5",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 35.8,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 35.78
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 25301.0,
+     "acc": 21770.0,
+     "imp": 0.0,
+     "cands": 22886.0,
+     "time": 5.17
+    },
+    "resub2": {
+     "prop": 50070.0,
+     "acc": 40612.0,
+     "imp": 0.0,
+     "cands": 374164.0,
+     "time": 16.71
+    },
+    "resub3": {
+     "prop": 24629.0,
+     "acc": 19461.0,
+     "imp": 0.0,
+     "cands": 295685.0,
+     "time": 13.89
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 6,
+   "kernel_seed": 6,
+   "tag": "r0-s6",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 36.76,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 36.72
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 25300.0,
+     "acc": 21625.0,
+     "imp": 0.0,
+     "cands": 22931.0,
+     "time": 5.19
+    },
+    "resub2": {
+     "prop": 49909.0,
+     "acc": 40086.0,
+     "imp": 0.0,
+     "cands": 405034.0,
+     "time": 17.08
+    },
+    "resub3": {
+     "prop": 24791.0,
+     "acc": 19330.0,
+     "imp": 0.0,
+     "cands": 325912.0,
+     "time": 14.44
+    }
+   }
+  },
+  {
+   "time_capped": false,
+   "round": 0,
+   "seed": 8,
+   "kernel_seed": 8,
+   "tag": "r0-s8",
+   "returncode": 0,
+   "core_ok": true,
+   "metrics": {
+    "G": 108,
+    "A": 33,
+    "GD": 20,
+    "AD": 4,
+    "cost": 108.0,
+    "counts": {
+     "AND": 33,
+     "XNOR": 5,
+     "XOR": 70
+    }
+   },
+   "wall_s": 36.91,
+   "final": {
+    "cost": 108.0,
+    "G": 108.0,
+    "A": 33.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 108.002,
+    "feas": 1.0,
+    "iters": 100000.0,
+    "restarts": 1.0,
+    "seconds": 36.87
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 24934.0,
+     "acc": 21337.0,
+     "imp": 0.0,
+     "cands": 22632.0,
+     "time": 5.1
+    },
+    "resub2": {
+     "prop": 49978.0,
+     "acc": 40035.0,
+     "imp": 0.0,
+     "cands": 400315.0,
+     "time": 17.12
+    },
+    "resub3": {
+     "prop": 25088.0,
+     "acc": 19825.0,
+     "imp": 0.0,
+     "cands": 329590.0,
+     "time": 14.63
+    }
+   }
+  }
+ ],
+ "wall_s": 36.9,
+ "best": {
+  "file": "<campaign archive>/2026-11-13-boolflux/frontier-fwd-2/aes-sbox-a33-ad4-g108-gd20-xx75-5/best.circ.txt",
+  "seed": 7,
+  "round": 0,
+  "feasible": true,
+  "metrics": {
+   "G": 108,
+   "A": 33,
+   "GD": 19,
+   "AD": 4,
+   "cost": 108.0,
+   "counts": {
+    "AND": 33,
+    "XNOR": 22,
+    "XOR": 53
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "independent_metrics": {
+   "G": 108,
+   "counts": {
+    "AND": 33,
+    "XNOR": 22,
+    "XOR": 53
+   },
+   "A": 33,
+   "XX": 75,
+   "GD": 19,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 108.0
+  }
+ }
+}

@@ -48,22 +48,32 @@
    "nonlinear/boolflux/kernel/bfx.c"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "exact_code": {
+   "commit": "377b03f",
+   "scope": "scripts as found at curation, not at run time",
+   "how": "the campaign recorded no code version per job; at curation (2026-11-14) the driver scripts were identical to public commit 377b03f and the kernel was kernel/bfx.c at 0659eb9. The exact code of the run is not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "breathe.py --start <checkout>/nonlinear/boolflux/results/aes/aes-nist-bench-rebuild-gd14-g124-a38-gd14-ad4.circ.txt --out <campaign archive>/2026-11-13-aes/D/fair/B124 --cap-gd 14 --hours 0.27 --t-relax 90 --t-kernel 120 --t-polish 45 --seed 11",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "d032e18eb4e27cd0a0cf962b98e3051673f2f2ca85967709b7e520d724314e29",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "best-g121-a37-gd14-ad4.json",
+  "breathe.jsonl.gz",
+  "kern.cfg",
+  "run-sidecar.json",
   "start.circ.txt"
  ]
 }

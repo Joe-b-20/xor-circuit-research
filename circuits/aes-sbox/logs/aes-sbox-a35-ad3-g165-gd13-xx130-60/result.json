@@ -1,0 +1,68 @@
+{
+ "op": "rebase",
+ "target": "T08",
+ "seed": 17292,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/T08/found/rebase-a35-ad3-g166-gd13-14aee760f9.circ.txt",
+ "start_tuple": [
+  35,
+  3,
+  166,
+  13
+ ],
+ "params": {
+  "cap": 13,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 200.0,
+  "stages": 1,
+  "moves": false,
+  "move_top": 4,
+  "move_budget": 0.25,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "shard": "0/1"
+ },
+ "wall_s": 877.2,
+ "n_written": 1,
+ "rejected": {
+  "outside": 0,
+  "dominated": 1,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T09:22:03Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    165,
+    13
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T08/runs/T08/rebase-760/rebase-a35-ad3-g165-gd13-c1848d8fa7.circ.txt",
+   "how": "kernel {\"cap\": 13, \"parent_how\": \"start\", \"build_G\": 170, \"kernel_seed\": 21499, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 13}}",
+   "t": 208.1,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    165,
+    13
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T08/runs/T08/rebase-760/rebase-a35-ad3-g165-gd13-c1848d8fa7.circ.txt",
+   "how": "kernel {\"cap\": 13, \"parent_how\": \"start\", \"build_G\": 170, \"kernel_seed\": 21499, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 13}}",
+   "t": 208.1,
+   "class": "strict"
+  }
+ ]
+}

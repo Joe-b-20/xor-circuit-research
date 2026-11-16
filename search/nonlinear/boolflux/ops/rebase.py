@@ -91,7 +91,9 @@ def main():
     ap.add_argument('--no-paar', action='store_true'); ap.add_argument('--repair-keep', type=int, default=1)
     ap.add_argument('--max-build-over', type=int, default=40, help='skip builds with G > best build + this')
     ap.add_argument('--shard', default=None, help='i/K: this worker scans move candidates with index = i mod K (set by --cpus)')
+    MC.C.function_arg(ap)
     a = ap.parse_args()
+    MC.C.init_function(a)
     if a.shard is None: a.shard = '0/%d' % max(1, a.cpus)
     t0 = time.time(); deadline = t0 + a.seconds
     rng = random.Random(a.seed)

@@ -7,7 +7,9 @@ and AND count. Its moves change which AND gates exist and what they read, not on
 layers around them. It needs Python 3.11 or newer (standard library only) and gcc.
 
 The code is in [`boolflux/`](boolflux/). It has no version numbers yet and is still being
-developed. Its circuits are in [circuits/](../../circuits/README.md), next to NIST's.
+developed. Its circuits are in [circuits/](../../circuits/README.md), next to NIST's. Each is
+verified independently; [REPRODUCE.md](../../circuits/REPRODUCE.md) replays six of them from
+public commits, and each circuit's `found.json` says what its run recorded.
 
 | Page | What is in it |
 |---|---|

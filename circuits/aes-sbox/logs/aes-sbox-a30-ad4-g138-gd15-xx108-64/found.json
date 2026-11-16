@@ -48,7 +48,7 @@
   "cpu_s": 92.21
  },
  "code": {
-  "commit_at_run": "924b4c0-dirty",
+  "commit_at_run": "924b4c0",
   "uncommitted_changes_at_run": true,
   "files": [
    "nonlinear/boolflux/hub/op_pull.py",
@@ -56,22 +56,39 @@
    "nonlinear/boolflux/kernel/bfx.c"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "924b4c0-dirty+1df9fcd2fb",
+  "corrected_2026_11_16": "was commit_at_run '924b4c0-dirty', uncommitted_changes_at_run True",
+  "exact_code": {
+   "commit": "924b4c0",
+   "scope": "the files the hub hashes (hub/*.py, hub/ops/, kernel/bfx.c, core.py, objective.py, targets.py, skeleton.py, independent/verify.py, campaigns/aes_check.py, models/nist.json)",
+   "how": "code_version 924b4c0-dirty+1df9fcd2fb: the tree differed from 924b4c0, but the hashed source files are identical to 924b4c0 (hash recomputed there); the changed files were outside that list and are not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "taskset -c 16 /usr/bin/python3 <checkout>/nonlinear/boolflux/hub/op_pull.py --archive <campaign archive>/2026-11-14-hub/long --in 32ff331051f5 --seed 183232877 --seconds 90 --out <campaign archive>/2026-11-14-hub/long/jobs/long-4b689e.r06202-pull",
+ "command_source": "hub run record <campaign archive>/2026-11-14-hub/long/runs/long-4b689e.r06202-pull.json (published: run.json)",
  "record": {
   "where": "campaign archive (not published): hub archive, circuit id a16f2ed0b9d0",
   "sha256": "7b41f4a2e37c0a134bee1818d2cbea9e6f75da7f14e561ff342713c7a780b5d1",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "circuit.json",
+  "control.json",
+  "events.jsonl.gz",
+  "input.bfx",
+  "input.json",
+  "job-record.json",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "run.json",
   "start.circ.txt"
  ]
 }

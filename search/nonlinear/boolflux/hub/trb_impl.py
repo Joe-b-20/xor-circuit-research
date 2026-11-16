@@ -22,7 +22,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[1]))  # search/nonlinear/ (for `boolflux`)
-from boolflux import core, targets   # noqa: E402
+from boolflux import aesfn, core   # noqa: E402
 
 AND, XOR, XNOR, NOT = 8, 6, 9, 3
 INF = 10 ** 9
@@ -230,7 +230,7 @@ if __name__ == '__main__':
     kind = sys.argv[sys.argv.index('--region') + 1] if '--region' in sys.argv else 'bottom'
     seed = int(sys.argv[sys.argv.index('--seed') + 1]) if '--seed' in sys.argv else 1
     c = core.read_ncff(f); rng = random.Random(seed)
-    tab = targets.aes_sbox()
+    tab = list(aesfn.table())
     for k in range(int(sys.argv[sys.argv.index('--reps') + 1]) if '--reps' in sys.argv else 1):
         nc, info = rebuild(c, D, kind, rng)
         m = nc.metrics()

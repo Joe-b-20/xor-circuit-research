@@ -18,32 +18,43 @@
  "chain_root": null,
  "lineage": null,
  "parameters": {},
- "seed": null,
+ "seed": 2,
+ "seed_source": "campaign sidecar (\"seed 2\") and the start event of the run log (published: log.jsonl.gz)",
  "found_utc": "2026-11-15T03:29:00Z",
  "found_utc_source": "file time of the run's copy",
  "time_to_result_s": null,
  "code": {
-  "commit_at_run": "d961083",
-  "uncommitted_changes_at_run": false,
+  "commit_at_run": "f9fe6f7",
+  "uncommitted_changes_at_run": true,
   "files": [
    "nonlinear/boolflux/strategies/F/fdrive.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run 'd961083', uncommitted_changes_at_run False",
+  "exact_code": {
+   "commit": null,
+   "scope": "kernel only",
+   "how": "recorded as f9fe6f7 plus uncommitted strategies/T4; its kernel binary bfx-593fa798f5 is named by the sha1 of kernel/bfx.c, which is kernel/bfx.c at f9fe6f7. The driver (strategies/F/fdrive.py) and strategies/T4 at run time are not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
  "command": null,
+ "command_source": "not recorded by the run",
+ "command_note": "the campaign sidecar records: kernel polish (strategies/F/fdrive.py mode gate, hard caps GD11 AD4 A43, hub kernel bfx-593fa798f5, seed 2, 7 min) of t4-a43-ad4-g284-gd11-kernel.circ.txt",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "21da290af6fb7a7c016f8409491fd5b2b166b0b8d1f06f1c374f436895d4c037",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
-  "verification.json"
+  "verification.json",
+  "log.jsonl.gz",
+  "run-sidecar.json"
  ]
 }

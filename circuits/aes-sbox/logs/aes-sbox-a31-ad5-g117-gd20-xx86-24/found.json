@@ -50,22 +50,34 @@
    "nonlinear/boolflux/strategies/E/erun.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "exact_code": {
+   "commit": "377b03f",
+   "scope": "scripts as found at curation, not at run time",
+   "how": "the campaign recorded no code version per job; at curation (2026-11-14) the driver scripts were identical to public commit 377b03f and the kernel was a copy of kernel/bfx.c at 0659eb9. The exact code of the run is not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "nonlinear/boolflux/strategies/E/erun.py --start <campaign archive>/2026-11-13-aes/E/found/E-splice-a31-ad5-g119-gd20.circ.txt --out <campaign archive>/2026-11-13-aes/E/polish1 --tag A31gd20-splice-s1 --seed 1 --seconds 240.0 --objective cost,gd --arm control --cap-a 31 --cap-gd 20",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298)",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "d543b3819cbdc1463f736b8281c39a5b0506273c0022fb393599bc3760b153e6",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "job.cfg",
+  "job.driver.log.gz",
+  "job.json",
+  "job.log.gz",
+  "run-sidecar.json",
+  "run-start.circ.txt",
   "start.circ.txt"
  ]
 }

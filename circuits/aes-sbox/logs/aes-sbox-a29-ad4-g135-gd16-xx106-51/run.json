@@ -1,0 +1,109 @@
+{
+ "run_id": "long-4b689e.r07340-polish",
+ "campaign": "long-4b689e",
+ "operator": "polish",
+ "choice": "explore",
+ "target": "acd786ac1194",
+ "target_metrics": [
+  29,
+  4,
+  136,
+  16
+ ],
+ "target_class": "A<=31",
+ "seed": 79336822,
+ "cpu": 16,
+ "command": [
+  "taskset",
+  "-c",
+  "16",
+  "/usr/bin/python3",
+  "<checkout>/nonlinear/boolflux/hub/op_polish.py",
+  "--archive",
+  "<campaign archive>/2026-11-14-hub/long",
+  "--in",
+  "acd786ac1194",
+  "--seed",
+  "79336822",
+  "--seconds",
+  "90",
+  "--out",
+  "<campaign archive>/2026-11-14-hub/long/jobs/long-4b689e.r07340-polish"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<checkout>/nonlinear/boolflux/hub/op_polish.py",
+ "script_sha": "192d2a0510",
+ "code_version": "8922cac+1df9fcd2fb",
+ "scheduler_version": "924b4c0+1df9fcd2fb",
+ "t_start": 1794748111.82,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "op_info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 29,
+   "cap.ad": 4,
+   "cap.gd": 16,
+   "in": "<campaign archive>/2026-11-14-hub/long/jobs/long-4b689e.r07340-polish/start.bfx",
+   "out": "<campaign archive>/2026-11-14-hub/long/jobs/long-4b689e.r07340-polish/best.bfx",
+   "seed": 79336822,
+   "seconds": 90.0
+  },
+  "t_last_improvement": 73.066,
+  "kernel_bin": "bfx-94a75e2c18",
+  "caps": {
+   "A": 29,
+   "AD": 4,
+   "GD": 16
+  }
+ },
+ "parents": [
+  "acd786ac1194"
+ ],
+ "wall_s": 95.07,
+ "cpu_s": 94.35,
+ "candidates": 1,
+ "admitted": 1,
+ "gain": 0.5,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    29,
+    4,
+    135,
+    16
+   ],
+   "status": "admitted",
+   "id": "30c44cb2f59a",
+   "gain": 0.5
+  }
+ ]
+}

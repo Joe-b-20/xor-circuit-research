@@ -1,8 +1,9 @@
 # circuits
 
-XOR circuits for linear maps, found by XORFlux, and AND/XOR circuits for the AES S-box, found by
-BoolFlux ([search/](../search/README.md)). For each linear map: the smallest circuit our search
-found at each depth. For the S-box: every circuit of ours that no NIST circuit matches or beats.
+XOR circuits for linear maps, found by XORFlux, and AND/XOR circuits for the AES S-box and its
+inverse, found by BoolFlux ([search/](../search/README.md)). For each linear map: the smallest
+circuit our search found at each depth. For the S-box and its inverse: every circuit of ours that
+no NIST circuit matches or beats.
 We don't claim that any of them is optimal or the best known: they are what the search reached
 in the time it ran. Published or unpublished work may have smaller or shallower circuits for some
 of these functions, NIST's own list among them (see the NIST column), and more search time would
@@ -19,6 +20,8 @@ aes-sbox/
   aes-sbox-a<A>-ad<AD>-g<G>-gd<GD>-xx<X>-<Y>.circ.txt
                                    a Boolean circuit: NIST's circuit file format and file name
   logs/aes-sbox-a<A>-...-<Y>/      how it was found
+aes-invsbox/                       the same for the inverse S-box
+  logs/_runtime/                   the run-time inverse layer its search used
 ```
 
 ## Check
@@ -27,13 +30,14 @@ aes-sbox/
 python3 circuits/check.py                   # every circuit, linear and Boolean
 python3 circuits/check.py circuits/joltik   # one map, or one file
 python3 circuits/check.py circuits/aes-sbox # the S-box circuits
+python3 circuits/check.py circuits/aes-invsbox # the inverse S-box circuits
 ```
 
 `check.py` uses the standard library only and none of the search code; its library for Boolean
 circuits is [boolcirc/](boolcirc/). For a linear map it
 checks that each output equals its matrix row and that the gate count and depth match the file
 name. For a Boolean circuit it computes the complete truth table twice, from the gate list and
-from its AND skeleton, compares it with the S-box computed from FIPS 197's definition, and checks
+from its AND skeleton, compares it with the S-box or its inverse computed from FIPS 197's definition, and checks
 A, AD, G, GD, X and Y against the file name and the tallies in the header. By default it also
 checks NIST's own S-box circuits in [search/nonlinear/seeds/](../search/nonlinear/seeds/).
 
@@ -45,7 +49,7 @@ checks NIST's own S-box circuits in [search/nonlinear/seeds/](../search/nonlinea
   output constants (`y_i = row_i·x ⊕ c_i`).
 - Boolean circuits: gates AND, XOR, XNOR and NOT, counted as NIST counts them (below). Inputs are
   `U0:U7` and outputs `S0:S7`, as in NIST's files: `U0` is the most significant bit of the input byte
-  and `S0` of the output byte.
+  and `S0` of the output byte (the inverse S-box: `x0:x7` and `y0:y7`, as in NIST's inverse files).
 - Each circuit's header names the search that found it (the XORFlux version, or the BoolFlux
   method), how its run started and where its logs are. XORFlux versions are listed in
   [search/linear/HISTORY.md](../search/linear/HISTORY.md#versions); the time each
@@ -77,16 +81,28 @@ Boolean circuits:
 
 | File | Content |
 |---|---|
-| `found.json` | method and operator, start circuit, chain root, parameters, seed, time, code (commit of the run, file paths), reproducibility, where the circuit was first recorded |
+| `found.json` | method and operator, start circuit, chain root, parameters, seed, time, command, code (commit of the run, the public commit that has its exact code, file paths), reproducibility, where the circuit was first recorded; a field recovered later names its source |
 | `verification.json` | both truth-table checks, the metrics, and the comparison with every NIST circuit of the pin |
-| `start.circ.txt` | the circuit the run started from, when it is ours (`front.circ.txt` and `back.circ.txt` for a join) |
+| `start.circ.txt` | the circuit the run started from, when it is ours (`front.circ.txt` and `back.circ.txt` for a join), in NIST's format |
+| `run-start.circ.txt`, `input.bfx`, `input.json` | the start file exactly as the run read it, for a replay |
+| `run.json`, `job-record.json`, `circuit.json` | hub runs: the scheduler's run record (command, settings, outcome), the operator's record, the circuit's archive record |
+| `kernel.cfg`, `kernel.log.gz` | the gate kernel's settings and trace |
+| `events.jsonl.gz`, `control.json` | hub runs: the hub's event log and its control file as at the end of the run |
+| `result.json`, `<op>.log.gz`, `<op>.jsonl.gz`, `plan.json.gz`, `runner.log`, `job.out` | operator runs (conjugation, re-basing, shared bottom, SAT LNS): the job's result and log, the campaign plan, the runner's lines for the job |
+| `summary.json`, `r0-s<S>.cfg`, `r0-s<S>.log.gz` | `cli.py run`: the run summary, each seed's kernel settings and log |
+| `run-sidecar.json`, `log.jsonl.gz`, `frontier.json`, `jobs.jsonl.gz`, `loop.jsonl.gz`, … | other drivers: the record written next to the circuit, the driver's log |
+| `hub-lineage.json.gz`, `hub-events.jsonl.gz`, `conjpull.log.gz`, `conj-job.json.gz` | inverse S-box runs ([below](#aes-inverse-s-box)) |
 
-The runs' own logs stay in the campaign archive (not published); most BoolFlux runs were
-time-budgeted and are not bit-reproducible, which each `found.json` says.
+`found.json` lists the files of each circuit. Paths in them are rewritten: `<checkout>` is the
+repository at the commit of the run, `<campaign archive>` the campaign archive (not published)
+and `<home>` the home folder of the machine that ran it.
+Every circuit is verified independently ([Check](#check)); [REPRODUCE.md](REPRODUCE.md) has tested
+replay instructions for six of them. For the others, `found.json` says what was recorded and what
+was not: most BoolFlux runs were time-budgeted and are not bit-reproducible.
 
 ## Circuits
 
-208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128); and 74 circuits for the [AES S-box](#aes-s-box), at the top of the AES section. Sizes are inputs × outputs; notes are [below the tables](#notes).
+208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128); and 74 circuits for the [AES S-box](#aes-s-box) and 45 for the [AES inverse S-box](#aes-inverse-s-box), at the top of the AES section. Sizes are inputs × outputs; notes are [below the tables](#notes).
 
 ## AES
 
@@ -109,8 +125,9 @@ circuits with A, AD and GD at most ours, linked to that file; — where it has n
 Rows are sorted as NIST sorts its tables: by A, then AD, then G, then GD, in
 groups close to NIST's.
 
-We have no circuits for NIST's other S-box functions: the inverse S-box (`aes-invsbox/`) and the
-S-box with a direction bit that selects the S-box or its inverse (`aes-sbox-sel/`). NIST lists no small (4- and 5-bit) S-boxes;
+The inverse S-box (`aes-invsbox/`) has [its own section](#aes-inverse-s-box), below. We have no
+circuits for the S-box with a direction bit that selects the S-box or its inverse
+(`aes-sbox-sel/`). NIST lists no small (4- and 5-bit) S-boxes;
 BoolFlux's runs on them found nothing better than the published circuits
 ([search/nonlinear/](../search/nonlinear/README.md)) and are not listed here.
 
@@ -233,6 +250,109 @@ The commit shown is the run's own when the linked file is in it, and otherwise `
 `found.json` records the paths (the file was uncommitted when the run started). Most runs had
 uncommitted changes, which `found.json` says, so the linked code can differ from what ran. Where
 `found.json` names no file, the link is to the BoolFlux folder at the run's commit.
+
+### AES inverse S-box
+
+[aes-invsbox](aes-invsbox/): 8 inputs, 8 outputs; the inverse of the AES S-box, in NIST's file
+format and naming (`aes-invsbox-aA-adAD-gG-gdGD-xxX-Y`; with N NOT gates, `-xxnL-Y-N` and
+L = X + N, as NIST names them), counted as for the S-box. Inputs are `x0:x7` and outputs `y0:y7`,
+as in NIST's inverse files (`x0` and `y0` are the most significant bits).
+
+Which circuits are here: the same rule as for the S-box, against all 91 inverse S-box circuits of
+NIST's repository at commit `3d807741` (its folders `aes-invsbox/`, `sbox/` (`aes-sbox-inv-*`) and
+`old-2020/` (`aes-sbox-rev-*`)). **NIST**: NIST's fewest gates among its circuits with A, AD and GD
+at most ours. Rows are sorted by A, then AD, then G, then GD.
+
+**These 45 circuits are from a search that was still running**: a snapshot taken
+2026-11-16 18:23 UTC of a 12-hour BoolFlux run started 16:14 UTC (until 04:14 UTC the next day),
+seeded with NIST's 91 inverse circuits: the hub (gate kernel, depth pull, join, region rebuild)
+and conjugation jobs from the 33 points of NIST's inverse Pareto front. 20 of those 33 points are
+dominated by one of ours (as good in all four metrics and better in at least one); at the other 13
+the run had, at the snapshot, only circuits equal to NIST's, which are not listed. Where the run
+found several circuits with the same (A, AD, G, GD), the one here is the first it found.
+
+They are the first circuits here published with the run's own logs. Each `logs/<name>/` has
+`found.json` (start circuit, the exact command and environment, seed, time, code),
+`verification.json`, `start.circ.txt` where the start is ours (`front.circ.txt` and
+`back.circ.txt` for a join), and the run's logs for that circuit: for a hub circuit,
+`hub-lineage.json.gz` (every circuit of its lineage back to NIST's, with its hub record, the job's
+run record, kernel settings and kernel log) and `hub-events.jsonl.gz`; for a conjugation job,
+`conjpull.log.gz` and `conj-job.json.gz`. Paths in them are written `<checkout>`, `<campaign archive>` and
+`<home>`, which `found.json` explains. The search ran BoolFlux at commit `c0fb67d`, without uncommitted
+changes, with a run-time layer for the inverse (BoolFlux was then written for the forward S-box
+only), published in [aes-invsbox/logs/_runtime/](aes-invsbox/logs/_runtime/): `shim/` points
+BoolFlux's S-box checks (both verifiers) and its NIST comparison set at the inverse, and
+`bin/invconjpull.py` runs `ops/conjpull.py` with inverse conjugates; `bin/launch.sh` started the
+run.
+
+#### #AND = 28
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 28 | 4 | [132](aes-invsbox/aes-invsbox-a28-ad4-g132-gd22-xx104-60.circ.txt) | 22 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [135](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g132-gd22-xx104-60/) |
+| 28 | 4 | [134](aes-invsbox/aes-invsbox-a28-ad4-g134-gd21-xx106-64.circ.txt) | 21 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [135](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g134-gd21-xx106-64/) |
+| 28 | 4 | [135](aes-invsbox/aes-invsbox-a28-ad4-g135-gd19-xx107-53.circ.txt) | 19 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [140](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g140-gd19-xx112-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g135-gd19-xx107-53/) |
+| 28 | 4 | [136](aes-invsbox/aes-invsbox-a28-ad4-g136-gd18-xx108-56.circ.txt) | 18 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [150](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g150-gd16-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g136-gd18-xx108-56/) |
+| 28 | 4 | [137](aes-invsbox/aes-invsbox-a28-ad4-g137-gd17-xx109-69.circ.txt) | 17 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [150](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g150-gd16-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g137-gd17-xx109-69/) |
+| 28 | 4 | [145](aes-invsbox/aes-invsbox-a28-ad4-g145-gd16-xx117-62.circ.txt) | 16 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [150](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g150-gd16-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g145-gd16-xx117-62/) |
+| 28 | 4 | [154](aes-invsbox/aes-invsbox-a28-ad4-g154-gd15-xx126-61.circ.txt) | 15 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [156](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g156-gd15-xx128-28.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad4-g154-gd15-xx126-61/) |
+| 28 | 5 | [127](aes-invsbox/aes-invsbox-a28-ad5-g127-gd25-xx99-28.circ.txt) | 25 | [join (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/join.py) | [129](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g129-gd22-xx101-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad5-g127-gd25-xx99-28/) |
+| 28 | 5 | [128](aes-invsbox/aes-invsbox-a28-ad5-g128-gd24-xx100-28.circ.txt) | 24 | [region rebuild (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/trb_impl.py) | [129](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g129-gd22-xx101-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad5-g128-gd24-xx100-28/) |
+| 28 | 5 | [130](aes-invsbox/aes-invsbox-a28-ad5-g130-gd21-xx102-49.circ.txt) | 21 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [131](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g131-gd20-xx103-29.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad5-g130-gd21-xx102-49/) |
+| 28 | 5 | [134](aes-invsbox/aes-invsbox-a28-ad5-g134-gd18-xx106-54.circ.txt) | 18 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [147](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g147-gd16-xx119-25.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad5-g134-gd18-xx106-54/) |
+| 28 | 5 | [143](aes-invsbox/aes-invsbox-a28-ad5-g143-gd16-xx115-44.circ.txt) | 16 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [147](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g147-gd16-xx119-25.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a28-ad5-g143-gd16-xx115-44/) |
+
+#### 29 ≤ #AND ≤ 31
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 31 | 5 | [119](aes-invsbox/aes-invsbox-a31-ad5-g119-gd22-xx88-28.circ.txt) | 22 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [129](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g129-gd22-xx101-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad5-g119-gd22-xx88-28/) |
+| 31 | 5 | [120](aes-invsbox/aes-invsbox-a31-ad5-g120-gd21-xx89-36.circ.txt) | 21 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [131](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g131-gd20-xx103-29.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad5-g120-gd21-xx89-36/) |
+| 31 | 5 | [121](aes-invsbox/aes-invsbox-a31-ad5-g121-gd20-xx90-35.circ.txt) | 20 | [join (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/join.py) | [131](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g131-gd20-xx103-29.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad5-g121-gd20-xx90-35/) |
+| 31 | 5 | [122](aes-invsbox/aes-invsbox-a31-ad5-g122-gd19-xx91-40.circ.txt) | 19 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g132-gd19-xx104-23.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad5-g122-gd19-xx91-40/) |
+| 31 | 5 | [127](aes-invsbox/aes-invsbox-a31-ad5-g127-gd18-xx96-38.circ.txt) | 18 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [147](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g147-gd16-xx119-25.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad5-g127-gd18-xx96-38/) |
+| 31 | 5 | [131](aes-invsbox/aes-invsbox-a31-ad5-g131-gd17-xx100-33.circ.txt) | 17 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [147](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g147-gd16-xx119-25.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad5-g131-gd17-xx100-33/) |
+| 31 | 6 | [117](aes-invsbox/aes-invsbox-a31-ad6-g117-gd25-xx86-47.circ.txt) | 25 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [129](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a28-ad5-g129-gd22-xx101-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a31-ad6-g117-gd25-xx86-47/) |
+
+#### 32 ≤ #AND ≤ 37, AND depth ≥ 4
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 32 | 4 | [118](aes-invsbox/aes-invsbox-a32-ad4-g118-gd19-xx86-40.circ.txt) | 19 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad4-g128-gd16-xx96-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad4-g118-gd19-xx86-40/) |
+| 32 | 4 | [120](aes-invsbox/aes-invsbox-a32-ad4-g120-gd18-xx88-35.circ.txt) | 18 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad4-g128-gd16-xx96-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad4-g120-gd18-xx88-35/) |
+| 32 | 4 | [123](aes-invsbox/aes-invsbox-a32-ad4-g123-gd17-xx91-38.circ.txt) | 17 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad4-g128-gd16-xx96-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad4-g123-gd17-xx91-38/) |
+| 32 | 4 | [125](aes-invsbox/aes-invsbox-a32-ad4-g125-gd16-xx93-44.circ.txt) | 16 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad4-g128-gd16-xx96-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad4-g125-gd16-xx93-44/) |
+| 32 | 4 | [131](aes-invsbox/aes-invsbox-a32-ad4-g131-gd15-xxn99-29-1.circ.txt) | 15 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [135](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad4-g135-gd15-xx103-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad4-g131-gd15-xxn99-29-1/) |
+| 32 | 5 | [107](aes-invsbox/aes-invsbox-a32-ad5-g107-gd22-xx75-24.circ.txt) | 22 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [110](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad5-g110-gd20-xx78-7.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad5-g107-gd22-xx75-24/) |
+| 32 | 5 | [108](aes-invsbox/aes-invsbox-a32-ad5-g108-gd21-xx76-27.circ.txt) | 21 | [join (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/join.py) | [110](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad5-g110-gd20-xx78-7.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad5-g108-gd21-xx76-27/) |
+| 32 | 5 | [111](aes-invsbox/aes-invsbox-a32-ad5-g111-gd19-xx79-31.circ.txt) | 19 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad5-g125-gd15-xx93-21.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad5-g111-gd19-xx79-31/) |
+| 32 | 5 | [113](aes-invsbox/aes-invsbox-a32-ad5-g113-gd18-xx81-38.circ.txt) | 18 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad5-g125-gd15-xx93-21.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad5-g113-gd18-xx81-38/) |
+| 32 | 5 | [116](aes-invsbox/aes-invsbox-a32-ad5-g116-gd17-xx84-37.circ.txt) | 17 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad5-g125-gd15-xx93-21.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad5-g116-gd17-xx84-37/) |
+| 32 | 5 | [124](aes-invsbox/aes-invsbox-a32-ad5-g124-gd15-xxn92-38-1.circ.txt) | 15 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a32-ad5-g125-gd15-xx93-21.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a32-ad5-g124-gd15-xxn92-38-1/) |
+| 33 | 4 | [109](aes-invsbox/aes-invsbox-a33-ad4-g109-gd19-xx76-26.circ.txt) | 19 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [114](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a33-ad4-g114-gd18-xx81-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a33-ad4-g109-gd19-xx76-26/) |
+| 33 | 4 | [110](aes-invsbox/aes-invsbox-a33-ad4-g110-gd18-xx77-12.circ.txt) | 18 | [join (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/join.py) | [114](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a33-ad4-g114-gd18-xx81-11.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a33-ad4-g110-gd18-xx77-12/) |
+| 33 | 4 | [111](aes-invsbox/aes-invsbox-a33-ad4-g111-gd17-xx78-30.circ.txt) | 17 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [118](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a33-ad4-g118-gd15-xx85-9.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a33-ad4-g111-gd17-xx78-30/) |
+| 33 | 4 | [114](aes-invsbox/aes-invsbox-a33-ad4-g114-gd16-xx81-36.circ.txt) | 16 | [join (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/join.py) | [118](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a33-ad4-g118-gd15-xx85-9.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a33-ad4-g114-gd16-xx81-36/) |
+| 33 | 4 | [117](aes-invsbox/aes-invsbox-a33-ad4-g117-gd15-xx84-18.circ.txt) | 15 | [join (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/join.py) | [118](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a33-ad4-g118-gd15-xx85-9.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a33-ad4-g117-gd15-xx84-18/) |
+| 33 | 4 | [122](aes-invsbox/aes-invsbox-a33-ad4-g122-gd14-xx89-40.circ.txt) | 14 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [123](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a33-ad4-g123-gd14-xx90-16.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a33-ad4-g122-gd14-xx89-40/) |
+| 34 | 4 | [131](aes-invsbox/aes-invsbox-a34-ad4-g131-gd13-xx97-43.circ.txt) | 13 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [134](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a34-ad4-g134-gd13-xx100-23.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a34-ad4-g131-gd13-xx97-43/) |
+
+#### AND depth 3
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 35 | 3 | [144](aes-invsbox/aes-invsbox-a35-ad3-g144-gd24-xx109-40.circ.txt) | 24 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [151](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g151-gd22-xx116-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g144-gd24-xx109-40/) |
+| 35 | 3 | [145](aes-invsbox/aes-invsbox-a35-ad3-g145-gd21-xx110-45.circ.txt) | 21 | [region rebuild (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/trb_impl.py) | [154](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g154-gd20-xx119-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g145-gd21-xx110-45/) |
+| 35 | 3 | [146](aes-invsbox/aes-invsbox-a35-ad3-g146-gd20-xx111-57.circ.txt) | 20 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [154](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g154-gd20-xx119-30.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g146-gd20-xx111-57/) |
+| 35 | 3 | [147](aes-invsbox/aes-invsbox-a35-ad3-g147-gd19-xx112-57.circ.txt) | 19 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g157-gd15-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g147-gd19-xx112-57/) |
+| 35 | 3 | [149](aes-invsbox/aes-invsbox-a35-ad3-g149-gd18-xx114-61.circ.txt) | 18 | [conjugation @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/ops/conjpull.py) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g157-gd15-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g149-gd18-xx114-61/) |
+| 35 | 3 | [150](aes-invsbox/aes-invsbox-a35-ad3-g150-gd17-xx115-57.circ.txt) | 17 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g157-gd15-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g150-gd17-xx115-57/) |
+| 35 | 3 | [152](aes-invsbox/aes-invsbox-a35-ad3-g152-gd15-xx117-56.circ.txt) | 15 | [gate kernel (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g157-gd15-xx122-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g152-gd15-xx117-56/) |
+| 35 | 3 | [154](aes-invsbox/aes-invsbox-a35-ad3-g154-gd14-xx119-55.circ.txt) | 14 | [depth pull (hub) @ c0fb67d](https://github.com/Joe-b-20/xor-circuit-research/blob/c0fb67d08e227c91e8ade9fa0a47ff0e46ba7210/search/nonlinear/boolflux/hub/ops.py) | [190](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-invsbox/aes-invsbox-a35-ad3-g190-gd14-xx155-27.circ.txt) | [logs](aes-invsbox/logs/aes-invsbox-a35-ad3-g154-gd14-xx119-55/) |
+
+**Found by**: as for the S-box; each entry links to the code at `c0fb67d`, which ran with
+`logs/_runtime/`. 15 runs started from a NIST circuit (named in `found.json`); the other
+30 from circuits of the same run, all descended from NIST's.
 
 ### AES MixColumns
 

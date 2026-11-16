@@ -1,0 +1,187 @@
+{
+ "op": "conjpull",
+ "target": "T05",
+ "seed": 775495,
+ "status": "ok",
+ "start": "<checkout>/nonlinear/nist/aes-sbox/aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt",
+ "start_tuple": [
+  32,
+  7,
+  103,
+  32
+ ],
+ "params": {
+  "conj": "rank:7",
+  "schedule": "g:34:300,t:32:300,m:32:360",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 7
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 956.7,
+ "n_written": 9,
+ "rejected": {
+  "outside": 0,
+  "dominated": 6,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T03:09:12Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    7,
+    103,
+    29
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-71/conjpull-a32-ad7-g103-gd29-8e51adc4e9.circ.txt",
+   "how": "t32-bottom",
+   "t": 598.3,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    7,
+    110,
+    28
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-71/conjpull-a32-ad7-g110-gd28-a57f3cbc23.circ.txt",
+   "how": "t32-bottom-build",
+   "t": 517.7,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    7,
+    111,
+    27
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-71/conjpull-a32-ad7-g111-gd27-f0168e058c.circ.txt",
+   "how": "t32-top-build",
+   "t": 766.4,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    7,
+    103,
+    29
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-71/conjpull-a32-ad7-g103-gd29-8e51adc4e9.circ.txt",
+   "how": "t32-bottom",
+   "t": 598.3,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    7,
+    110,
+    28
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-71/conjpull-a32-ad7-g110-gd28-a57f3cbc23.circ.txt",
+   "how": "t32-bottom-build",
+   "t": 517.7,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    7,
+    111,
+    27
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-71/conjpull-a32-ad7-g111-gd27-f0168e058c.circ.txt",
+   "how": "t32-top-build",
+   "t": 766.4,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "rank:7",
+   "lam": 151,
+   "k": 3,
+   "stage": 1,
+   "mode": "g",
+   "cap": 34,
+   "seed": 775495000,
+   "in": [
+    32,
+    7,
+    116,
+    27
+   ],
+   "best": [
+    32,
+    7,
+    103,
+    31
+   ],
+   "seconds": 299.0
+  },
+  {
+   "conj": "rank:7",
+   "lam": 151,
+   "k": 3,
+   "stage": 2,
+   "mode": "t",
+   "cap": 32,
+   "seed": 775495010,
+   "in": [
+    32,
+    7,
+    103,
+    31
+   ],
+   "best": [
+    32,
+    7,
+    103,
+    29
+   ],
+   "seconds": 298.3
+  },
+  {
+   "conj": "rank:7",
+   "lam": 151,
+   "k": 3,
+   "stage": 3,
+   "mode": "m",
+   "cap": 32,
+   "seed": 775495020,
+   "in": [
+    32,
+    7,
+    103,
+    29
+   ],
+   "best": [
+    32,
+    7,
+    103,
+    29
+   ],
+   "seconds": 358.4
+  }
+ ],
+ "kernel_calls": 11
+}

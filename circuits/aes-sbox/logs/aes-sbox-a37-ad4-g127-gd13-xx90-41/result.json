@@ -1,0 +1,95 @@
+{
+ "op": "conjpull",
+ "target": "T09",
+ "seed": 75437,
+ "status": "ok",
+ "start": "<checkout>/nonlinear/boolflux/results/aes/aes-nist-E-polish-g129-a36-gd13-ad4.circ.txt",
+ "start_tuple": [
+  36,
+  4,
+  129,
+  13
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:12:400:rk0",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 45,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 399.7,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 8,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T09:36:26Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    37,
+    4,
+    127,
+    13
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T09/runs/T09/conjpull-813/conjpull-a37-ad4-g127-gd13-00578f7482.circ.txt",
+   "how": "o12-relaxed13",
+   "t": 286.3,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    37,
+    4,
+    127,
+    13
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T09/runs/T09/conjpull-813/conjpull-a37-ad4-g127-gd13-00578f7482.circ.txt",
+   "how": "o12-relaxed13",
+   "t": 286.3,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 12,
+   "seed": 75437000,
+   "in": [
+    36,
+    4,
+    129,
+    13
+   ],
+   "best": [
+    37,
+    4,
+    127,
+    13
+   ],
+   "seconds": 399.7
+  }
+ ],
+ "kernel_calls": 8
+}

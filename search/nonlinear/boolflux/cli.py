@@ -32,7 +32,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from boolflux import core, objective, starts, targets, skeleton, workflow   # noqa: E402
+from boolflux import core, objective, runlog, starts, targets, skeleton, workflow   # noqa: E402
 from concurrent.futures import ThreadPoolExecutor   # noqa: E402
 
 KDIR = HERE / 'kernel'
@@ -45,7 +45,7 @@ REPO = HERE.parents[2]
 def compile_kernel(src, dst):
     """gcc -O2 SRC into DST through a temporary file of its own in DST's folder and an atomic
     rename (gcc writing DST in place would let another process start a half-written binary, and
-    two builders would write the same file)."""
+    two builders would write the same file).  build_command() is the command, for run records."""
     import tempfile
     dst = Path(dst)
     fd, tmp = tempfile.mkstemp(prefix=dst.name + '.', suffix='.tmp', dir=str(dst.parent)); os.close(fd)
@@ -55,6 +55,10 @@ def compile_kernel(src, dst):
         os.replace(tmp, dst)
     finally:
         if os.path.exists(tmp): os.unlink(tmp)
+
+
+def build_command(src, dst):
+    return ['gcc', '-O2', '-o', str(dst), str(src), '-lm']
 
 
 def build_kernel():
@@ -274,7 +278,27 @@ def write_best(out, bc, model, args, desc, summary, origin):
     return v, feas, bpath
 
 
-def finish(v, feas, bpath, failures):
+def start_log(args, out, cmd, start, model, seeds, config, budget_s=None):
+    """the run record OUT/run.json + OUT/events.jsonl.gz (runlog.py) of a run, pipe or flow"""
+    log = runlog.RunLog(out, 'cli.' + cmd, seeds=seeds, config=config, budget_s=budget_s,
+                        function={'aes': 'aes-sbox', 'aes-inv': 'aes-invsbox'}.get(args.target))
+    st = None if args.start == 'anf' else args.start
+    log.add_start(st, metrics=start.metrics(model), label='anf (built from the target table)' if st is None else 'start',
+                  circuit_text=core.to_kernel(start), write=False)
+    for b in (KBIN, SBIN):
+        src = b.parent.parent / 'src' / (b.name + '.c')               # snapshot(): OUT/src/<b>.c -> OUT/bin/<b>
+        if not src.exists(): src = KDIR / (b.name + '.c')
+        if b.exists(): log.add_kernel(b, source=src, command=build_command(src, b), write=False)
+    log.write()
+    return log
+
+
+def finish(v, feas, bpath, failures, rlog=None):
+    if rlog is not None:
+        rlog.finish('verification-failed' if not (v['core_ok'] and v['library_ok'] and (v['independent_ok'] or not feas))
+                   else 'caps-not-met' if not feas else 'job-failures' if failures else 'ok',
+                   best=str(bpath), metrics={k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')},
+                   feasible=feas, failures=failures)
     print('best: %s  core_ok=%s independent_ok=%s library_ok=%s  -> %s' % (
         json.dumps({k: v['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}), v['core_ok'],
         v['independent_ok'], v['library_ok'], bpath))
@@ -304,7 +328,12 @@ def cmd_run(args):
                'seed_scheme': seed_scheme(args, 'run'),
                'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'), 'settings': {**DEFAULTS, **extra},
                'command': ' '.join(['python3', 'search/nonlinear/boolflux/cli.py'] + sys.argv[1:]),
-               'runs': []}
+               'argv': [sys.executable] + sys.argv, 'run_record': 'run.json', 'runs': []}
+    rlog = start_log(args, out, 'run', start, model,
+                    {'seeds': seeds, 'seed_scheme': summary['seed_scheme'],
+                     'kernel_seeds': {'r%d-s%d' % (r, s): kseed(args, s, r) for r in range(args.rounds) for s in seeds}},
+                    {k: summary[k] for k in ('target', 'model', 'objective', 'caps', 'iters', 'seconds_cap', 'rounds', 'settings')}
+                    | {'pool': args.pool, 'jobs': args.jobs})
     t_all = time.time(); failures = []
     best = {'circuit': start, 'metrics': objective.measure(start, model, caps), 'seed': -1, 'round': -1}
     for rnd in range(args.rounds):
@@ -325,6 +354,7 @@ def cmd_run(args):
                 lf = open(out / ('%s.log' % tag), 'w')
                 p = subprocess.Popen([str(KBIN), str(cp)], stdout=lf, stderr=subprocess.STDOUT)
                 running.append((p, lf, tag, seed, bp, time.time()))
+                rlog.event('kernel', tag=tag, round=rnd, seed=seed, kernel_seed=kseed(args, seed, rnd))
             time.sleep(0.05)
             for r in list(running):
                 p, lf, tag, seed, bp, t0 = r
@@ -336,6 +366,9 @@ def cmd_run(args):
                            'returncode': p.returncode, 'wall_s': round(time.time() - t0, 2),
                            'final': final, 'improvements': bests, 'moves': moves,
                            'time_capped': final.get('iters', 0) < args.iters}
+                    for b in bests:
+                        rlog.improvement({k: b[k] for k in ('cost', 'G', 'A', 'GD', 'AD')}, 'gate kernel',
+                                        t=round(t0 - rlog.t0 + b['t'], 3), tag=tag, seed=seed, it=b['it'], move=b['mv'])
                     try:
                         c = core.from_kernel(bp.read_text(), '%s-%s' % (args.target, tag))
                         rec['core_ok'] = p.returncode == 0 and verify_core(c, table)
@@ -365,7 +398,7 @@ def cmd_run(args):
         print('round %d: best %s %s (seed %d)%s' % (rnd, json.dumps({k: best['metrics'][k] for k in ('cost', 'G', 'A', 'GD', 'AD')}),
                                                      json.dumps(best['metrics']['counts']), best['seed'],
                                                      '' if feas else ' CAPS NOT MET'), flush=True)
-    finish(v, feas, bpath, failures)
+    finish(v, feas, bpath, failures, rlog)
 
 
 # ---- pipeline: skeleton search -> synthesis -> gate search ---------------------------------
@@ -445,7 +478,13 @@ def cmd_pipe(args):
                'seed_scheme': seed_scheme(args, 'run'),
                'skel_share': args.skel_share, 'code_sha256_12': code_hash, 'code_snapshot': str(Path(args.out) / 'src'),
                'settings': {**DEFAULTS, **{'skel.' + k: v for k, v in SKEL_DEFAULTS.items()}, **extra},
-               'runs': []}
+               'argv': [sys.executable] + sys.argv, 'run_record': 'run.json', 'runs': []}
+    rlog = start_log(args, out, 'pipe', start, model,
+                    {'seeds': seeds, 'seed_scheme': summary['seed_scheme'],
+                     'kernel_seeds': {'r%d-s%d' % (r, s): kseed(args, s, r) for r in range(args.rounds) for s in seeds},
+                     'note': 'the skeleton and the gate kernel of a job use the same kernel seed'},
+                    {k: summary[k] for k in ('target', 'model', 'objective', 'caps', 'iters', 'skel_iters', 'rounds',
+                                             'skel_share', 'settings')} | {'pool': args.pool, 'jobs': args.jobs, 'seconds_cap': args.seconds})
     pool = [start]; t_all = time.time(); best = None; failures = []
     for rnd in range(args.rounds):
         def job(i_seed):
@@ -466,6 +505,7 @@ def cmd_pipe(args):
                 c2, final, bests, moves = run_gate(c1, out, tag, ks, model, args, extra)
             except Exception as e:                 # recorded; the other jobs and earlier rounds survive
                 rec.update({'core_ok': False, 'error': repr(e), 'wall_s': round(time.time() - t0, 2)})
+                rlog.event('job-error', tag=tag, round=rnd, seed=seed, kernel_seed=ks, error=repr(e))
                 return rec, None
             c2.in_names = ['x%d' % k for k in range(n)]; c2.out_names = ['y%d' % k for k in range(m)]
             ok = verify_core(c2, table)
@@ -474,6 +514,11 @@ def cmd_pipe(args):
                         'core_ok': ok, 'metrics': mt, 'rank': R(mt), 'feasible': objective.feasible(mt, caps),
                         'final': final, 'improvements': bests, 'moves': moves,
                         'wall_s': round(time.time() - t0, 2)})
+            rlog.event('kernel', tag=tag, round=rnd, seed=seed, kernel_seed=ks, skel=use_skel,
+                      synth=rec.get('synth'), wall_s=rec['wall_s'])
+            for b in bests:
+                rlog.improvement({k: b[k] for k in ('cost', 'G', 'A', 'GD', 'AD')}, 'gate kernel',
+                                tag=tag, seed=seed, it=b['it'], move=b['mv'], t_kernel=b['t'])
             return rec, c2
         order = list(enumerate(seeds))
         with ThreadPoolExecutor(max_workers=args.jobs or os.cpu_count()) as ex:
@@ -506,16 +551,18 @@ def cmd_pipe(args):
             ' '.join('%s:%s' % ('S' if r['skel'] else 'G', ('%g/%d' % (r['metrics']['cost'], r['metrics']['A'])) if r.get('metrics') else 'FAILED')
                      for r, _ in res)), flush=True)
     if best is None:
+        rlog.finish('failed', failures=failures)
         raise SystemExit('every job failed (%s)' % ', '.join(failures))
-    finish(v, feas, bpath, failures)
+    finish(v, feas, bpath, failures, rlog)
 
 
 def _flow_job(job):
-    run, bindir, wd, cpu = job
+    run, bindir, wd, cpu = job[:4]
+    log = job[4] if len(job) > 4 else None
     if cpu is not None:
         os.sched_setaffinity(0, {cpu})
     try:
-        r = workflow.search(run, bindir, wd, cpu)
+        r = workflow.search(run, bindir, wd, cpu, log=log)
     except Exception as e:
         return {'seed': run['seed'], 'error': repr(e)}
     c = r.pop('circuit')
@@ -545,13 +592,21 @@ def cmd_flow(args):
             'set': parse_sets(args.set), 'skel_set': parse_sets(args.skel_set, kernel=False),
             'seed_scheme': seed_scheme(args, 'flow')}
     cpus = [int(x) for x in args.cpus.split(',')] if args.cpus else None
+    rlog = start_log(args, out, 'flow', start, model,
+                    {'seeds': seeds, 'seed_scheme': base['seed_scheme'],
+                     'kernel_seed': 'workflow.kernel_seed(seed, round, scheme): %s; every kernel seed used is a '
+                                    "'kernel' event" % workflow.SEED_SCHEMES[base['seed_scheme']]},
+                    dict(base, kernel_defaults=workflow.DEFAULTS, skel_defaults=workflow.SKEL_DEFAULTS,
+                         cpus=cpus, jobs=args.jobs), budget_s=args.seconds)
     jobs = [(dict(base, seed=sd), str(KBIN.parent), str(out / ('s%d' % sd)),
-             cpus[i % len(cpus)] if cpus else None) for i, sd in enumerate(seeds)]
+             cpus[i % len(cpus)] if cpus else None, rlog) for i, sd in enumerate(seeds)]
     summary = {'command': ' '.join(['python3', 'search/nonlinear/boolflux/cli.py'] + sys.argv[1:]),
+               'argv': [sys.executable] + sys.argv, 'run_record': 'run.json',
                'target': args.target, 'target_description': desc, 'model': model.name,
                'objective': args.objective, 'caps': caps, 'start': args.start,
                'start_metrics': start.metrics(model), 'workflow': base, 'seeds': seeds,
-               'code_sha256_12': code_hash, 'code_snapshot': str(out / 'src'), 'runs': []}
+               'code_sha256_12': code_hash, 'code_snapshot': str(out / 'src'),
+               'timing': runlog.timing(), 'pinning': runlog.pinning() if cpus else 'none', 'runs': []}
     t_all = time.time()
     width = args.jobs or (len(cpus) if cpus else os.cpu_count())
     with mp.get_context('fork').Pool(min(width, len(jobs))) as pool:
@@ -561,6 +616,7 @@ def cmd_flow(args):
     for r in res:
         summary['runs'].append({k: v for k, v in r.items()})
     if not ok:
+        rlog.finish('failed', errors=[r['error'] for r in res])
         raise SystemExit('every job failed: %s' % [r['error'] for r in res])
     R = lambda mt: objective.rank(mt, caps, args.objective)
     best = min(ok, key=lambda r: (R(r['metrics']), r['seed']))
@@ -571,7 +627,7 @@ def cmd_flow(args):
     for r in ok:
         print('seed %d: %s%s  (%d trajectory points, %.1f s)' % (
             r['seed'], json.dumps(r['metrics']), '' if r['feasible'] else ' CAPS NOT MET', len(r['trajectory']), r['search_s']))
-    finish(v, feas, bpath, failures)
+    finish(v, feas, bpath, failures, rlog)
 
 
 def cmd_verify(args):
@@ -635,6 +691,16 @@ def check_target(name):
     except (KeyError, OSError, ValueError, IndexError) as e:
         raise SystemExit('unknown or unreadable target %r (%s); targets: %s, or map:<name> for a linear map '
                          'of circuits/ (see `cli.py list`)' % (name, e, ', '.join(targets.names())))
+
+
+def cmd_tools(args):
+    """What is installed, what each part needs, and what replaces a missing optional tool."""
+    t = runlog.report(sys.stdout)
+    ok = sys.version_info >= (3, 11) and bool(t['gcc'])
+    print('needs: Python >= 3.11 (%s) and gcc (%s); optional: GNU time and taskset (cli.py flow and the hub '
+          'measure and pin with Python when they are missing), numpy and python-sat (ops/conjpull.py: both; '
+          'ops/satlns.py: python-sat)' % ('ok' if sys.version_info >= (3, 11) else 'TOO OLD', 'ok' if t['gcc'] else 'MISSING'))
+    sys.exit(0 if ok else 1)
 
 
 def cmd_start(args):
@@ -770,6 +836,10 @@ def build_parser():
     st.set_defaults(func=cmd_start)
     ls = sub.add_parser('list', help='list the targets, stock models and objective keys')
     ls.set_defaults(func=cmd_list)
+    tl = sub.add_parser('tools', help='print the Python, gcc, GNU time, taskset, numpy and python-sat this machine has',
+                        description='What this machine has of the requirements (search/nonlinear/USAGE.md, Requirements) '
+                                    'and what replaces a missing optional tool.  Exit status 1 if Python < 3.11 or gcc is missing.')
+    tl.set_defaults(func=cmd_tools)
     return ap
 
 
@@ -779,6 +849,8 @@ def main(argv=None):
         check_target(a.target)
     if getattr(a, 'objective', None) is not None:
         objective.parse(a.objective)                  # a bad key stops here, before the source snapshot
+    if a.cmd in ('run', 'pipe', 'flow'):
+        runlog.report()                                # startup line on stderr: what is there, what replaces what is not
     a.func(a)
 
 

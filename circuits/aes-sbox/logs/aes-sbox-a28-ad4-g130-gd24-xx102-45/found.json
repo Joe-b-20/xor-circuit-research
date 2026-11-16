@@ -24,26 +24,37 @@
  "time_to_result_s": null,
  "code": {
   "commit_at_run": "924b4c0",
-  "uncommitted_changes_at_run": true,
+  "uncommitted_changes_at_run": false,
   "files": [
    "nonlinear/boolflux/strategies/T1/t1run.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "924b4c0+1df9fcd2fb",
+  "corrected_2026_11_16": "was commit_at_run '924b4c0', uncommitted_changes_at_run True",
+  "exact_code": {
+   "commit": "924b4c0",
+   "scope": "all files the run hashed",
+   "how": "code_version 924b4c0+1df9fcd2fb has no -dirty flag (tracked files under nonlinear/boolflux matched 924b4c0) and its source hash, recomputed at 924b4c0, is the same"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
  "command": null,
+ "command_source": "not recorded by the run",
+ "command_note": "the campaign sidecar records: strategies/T1/t1run.py v3.3",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "47079cc0b9ba2592745786cd673a1778ca1c2afb2650cb7e6f70a5d5d5a9e4d8",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
-  "verification.json"
+  "verification.json",
+  "jobs.jsonl.gz",
+  "run-sidecar.json"
  ]
 }

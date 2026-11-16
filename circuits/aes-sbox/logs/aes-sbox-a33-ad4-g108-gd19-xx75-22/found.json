@@ -62,21 +62,45 @@
    "nonlinear/boolflux/cli.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "exact_code": {
+   "commit": "e5bab59",
+   "scope": "the run's code snapshot",
+   "how": "the run's code snapshot (kernel/bfx.c, kernel/skel.c, cli.py, core.py, skeleton.py, starts.py, targets.py; code b0e56ecb18fe) is identical to public commit e5bab59; replayed at e5bab59 (circuits/REPRODUCE.md): the same gate list"
+  }
  },
  "reproducibility": {
   "class": "deterministic",
-  "text": "deterministic: the recorded command gives this gate list with the code of the run"
+  "text": "deterministic: every job ends on its iteration budget; the recorded command at public commit e5bab59 gives this circuit",
+  "replay": "replayed on 2026-11-16 at public commit e5bab59: the same best.circ.txt byte for byte except the output folder in its command line, and every seed's best circuit unchanged (circuits/REPRODUCE.md#1-gate-kernel-iteration-budget)"
  },
  "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt --objective cost,gd --cap-a 33 --cap-ad 4 --cap-gd 20 --iters 100000 --seeds 1-8 --jobs 8 --out OUT",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) (output folder replaced by OUT)",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "cd4d0a532eb30da0a52720c800400cd4406023b91d339bff5c059e96c16f55e3",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
-  "verification.json"
+  "verification.json",
+  "r0-s1.cfg",
+  "r0-s1.log.gz",
+  "r0-s2.cfg",
+  "r0-s2.log.gz",
+  "r0-s3.cfg",
+  "r0-s3.log.gz",
+  "r0-s4.cfg",
+  "r0-s4.log.gz",
+  "r0-s5.cfg",
+  "r0-s5.log.gz",
+  "r0-s6.cfg",
+  "r0-s6.log.gz",
+  "r0-s7.cfg",
+  "r0-s7.log.gz",
+  "r0-s8.cfg",
+  "r0-s8.log.gz",
+  "summary.json"
  ]
 }

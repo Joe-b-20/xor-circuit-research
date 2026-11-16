@@ -32,28 +32,38 @@
  "found_utc_source": "file time of the run's copy",
  "time_to_result_s": null,
  "code": {
-  "commit_at_run": "d961083",
-  "uncommitted_changes_at_run": false,
+  "commit_at_run": "f9fe6f7",
+  "uncommitted_changes_at_run": true,
   "files": [
    "nonlinear/boolflux/strategies/F/fdrive.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run 'd961083', uncommitted_changes_at_run False",
+  "exact_code": {
+   "commit": null,
+   "scope": "kernel only",
+   "how": "recorded as f9fe6f7 plus uncommitted strategies/T4; its kernel binary bfx-593fa798f5 is named by the sha1 of kernel/bfx.c, which is kernel/bfx.c at f9fe6f7. The driver (strategies/F/fdrive.py) and strategies/T4 at run time are not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "cd <checkout>/nonlinear/boolflux && env F_BFX=<campaign archive>/2026-11-14-hub/long/bin/bfx-593fa798f5 python3 strategies/F/fdrive.py --start <campaign archive>/2026-11-15-study/T4/found/t4-a42-ad4-g301-gd11-kernel.circ.txt --cap 11 --cap-ad 4 --cap-a 42 --mode gate --seconds 9719 --seed 23 --out <campaign archive>/2026-11-15-study/T4/queue/run-s42g23",
+ "command_source": "the job script polish_job.sh (published) with the arguments recorded in the campaign sidecar (start, A cap 42, mode gate, seed 23, 9719 s, tag s42g23)",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "22fd97847e8a4986b498aae4d4f7c4351286a30dbbcb30bbd0fe2453eaa9bb89",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "log.jsonl.gz",
+  "polish_job.sh",
+  "run-sidecar.json",
   "start.circ.txt"
  ]
 }

@@ -3,10 +3,22 @@
 How to run BoolFlux, check a circuit and read its output. How it works is in
 [HOW-IT-WORKS.md](HOW-IT-WORKS.md).
 
-It needs Python 3.11 or newer (standard library only) and gcc; two method scripts also need
-`numpy` or `python-sat`. The C kernels are compiled on first use, and each run compiles a private
-copy into its output folder. **Run every command from the repository root.** `OUT` is any output
-folder. Times are wall times on one CPU of the machine in [HISTORY.md](HISTORY.md#compute).
+**Run every command from the repository root.** `OUT` is any output folder. Times are wall times
+on one CPU of the machine in [HISTORY.md](HISTORY.md#compute).
+
+## Requirements
+
+| Needed | For | Without it |
+|---|---|---|
+| Python ≥ 3.11 (standard library) | everything | — |
+| gcc | the C kernels, compiled on first use (each `run`/`pipe`/`flow` compiles a private copy into its output folder) | nothing runs a search |
+| GNU time (`time -v` on `PATH`) | wall time and peak RSS of each kernel process in `flow`, `bench/bench.py` | Python measures both (wall clock, `os.wait4` `ru_maxrss`); the run record says which |
+| `taskset` (util-linux) | pinning: `flow --cpus`, the hub's workers | pinned with `os.sched_setaffinity` (unpinned, with a warning, where that is missing too) |
+| `numpy` and `python-sat` | `ops/conjpull.py` (both) | that script stops at import |
+| `python-sat` | `ops/satlns.py` | that script stops at import |
+
+`python3 search/nonlinear/boolflux/cli.py tools` prints what this machine has; `run`, `pipe`,
+`flow` and the hub print the same line on stderr when they start.
 
 ## Quick start
 
@@ -16,9 +28,9 @@ python3 search/nonlinear/boolflux/cli.py run --target maj3 --model xag --objecti
     --iters 3000 --seeds 1 --jobs 1 --out OUT/maj3                           # 2 s: 4 gates, 1 AND
 python3 search/nonlinear/boolflux/cli.py verify OUT/maj3/best.circ.txt --target maj3 --model xag
 
-python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear       # 75 tests, 2 minutes
+python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear       # 83 tests, 3 minutes
 python3 -m unittest discover -s search/nonlinear/boolflux/independent                     # 36 tests, 4 s
-python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/nonlinear   # 20 s
+python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/nonlinear   # 36 tests, 1 minute
 ```
 
 ## Commands
@@ -31,6 +43,7 @@ python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/no
 | `verify FILE ...` | both verifiers, the library check and metric agreement for each file |
 | `start` | write the starting circuit (naive ANF, or a checked copy of a file) |
 | `list` | the targets, stock models and objective keys |
+| `tools` | Python, gcc, GNU time, taskset, numpy and python-sat on this machine |
 
 Every command has `-h`. The ranking is the same everywhere: feasible first, then cap excess, then
 the objective keys in order.
@@ -101,14 +114,19 @@ python3 search/nonlinear/boolflux/cli.py verify search/nonlinear/seeds/aes-sbox/
 
 ```bash
 python3 search/nonlinear/boolflux/aes_check.py FILE [FILE ...] [--json OUT.json]   # under 1 s per file
+python3 search/nonlinear/boolflux/aes_check.py FILE --function aes-invsbox         # the inverse S-box
 python3 search/nonlinear/boolflux/independent/verify.py FILE --aes --model search/nonlinear/boolflux/models/nist.json
 python3 circuits/check.py                                                          # every circuit in circuits/ and seeds/
 ```
 
 `aes_check.py` runs both verifiers with the NIST library, then compares the circuit's
-`(A, AD, G, GD)` with every forward AES S-box circuit of the pinned NIST set in [seeds/](seeds/):
-it lists those with all four metrics ≤ (equality counts as dominated, so a circuit equal to
-NIST's is not new) and the published best G at the circuit's caps.
+`(A, AD, G, GD)` with every circuit of the same function in the pinned NIST set in
+[seeds/](seeds/): it lists those with all four metrics ≤ (equality counts as dominated, so a
+circuit equal to NIST's is not new) and the published best G at the circuit's caps.
+`--function` is `aes-sbox` (the default, 91 NIST circuits: `seeds/aes-sbox/`, `old-2020/*-fwd-*`,
+`sbox/*-fwd-*`), `aes-invsbox` (91: `seeds/aes-invsbox/`, `old-2020/*-rev-*`, `sbox/*-inv-*`) or
+`auto` (the function each file computes). The same choice is `$BOOLFLUX_FUNCTION` for the hub and
+the method scripts ([boolflux/aesfn.py](boolflux/aesfn.py)).
 
 ## The hub
 
@@ -122,7 +140,9 @@ python3 search/nonlinear/boolflux/hub/scheduler.py --dir OUT/hub --cpus 2,3 --ho
 One worker per CPU in `--cpus`. `OUT/hub/archive/` holds every admitted circuit (`<id>.bfx` and
 `<id>.json` with its parents, operator, seed and code version), `front.json` the front,
 `runs/<run_id>.json` and `stats.jsonl` one record per job; `control.json` is re-read while the
-scheduler runs. Each operator is also a program (`hub/op_polish.py --archive OUT/hub --in ID
+scheduler runs. `--function aes-invsbox` runs the hub on the inverse S-box (seed it with
+`seeds/aes-invsbox/*.circ.txt`); the function is kept in `OUT/hub/campaign.json`, and the
+operators inherit it. Each operator is also a program (`hub/op_polish.py --archive OUT/hub --in ID
 --caps A,AD,GD --objective KEYS --seed S --seconds T --out JOBDIR`; more in `hub/ops/`). Judge a
 run by its frontier admissions per AND count, not by the scheduler's gain figures. `hub/status.py OUT/hub` prints
 the operators' jobs, admissions and CPU time and the front points the run produced.
@@ -131,8 +151,14 @@ the operators' jobs, admissions and CPU time and the front points the run produc
 
 The four methods of [HOW-IT-WORKS.md](HOW-IT-WORKS.md#moves-around-the-kernel) are scripts in
 [boolflux/ops/](boolflux/ops/) with one interface. `--target` is a reference circuit (a path, or a
-file name in `seeds/aes-sbox/`): its A and AD are hard limits on every circuit written, its G and
-GD the point to beat. Search states may pass above the limits.
+file name in `seeds/aes-sbox/` or `seeds/aes-invsbox/`): its A and AD are hard limits on every
+circuit written, its G and GD the point to beat. Search states may pass above the limits.
+`--function` (default `auto`: the function the `--in` circuit computes) selects the AES S-box or
+its inverse for every check and for the NIST set; `conjpull.py` builds the inverse's conjugates
+(S⁻¹(y) = G′(S⁻¹(Lin y + c_L)), Lin = A G A⁻¹), `satlns.py` pools `circuits/aes-invsbox/` and
+`seeds/aes-invsbox/`. `bottom.py` models the forward S-box's last AND level and reports
+`not-applicable` on inverse circuits; `rebase.py` runs on them (its class analysis of a 35/3/190/14
+inverse circuit took 70 s).
 
 ```bash
 S=search/nonlinear/seeds/aes-sbox
@@ -149,8 +175,9 @@ python3 search/nonlinear/boolflux/ops/satlns.py --in $S/aes-sbox-a28-ad5-g128-gd
 On one CPU these two-minute runs wrote 35/3/180/13 (re-basing, from NIST's 35/3/183/13) and
 41/4/136/12 (shared bottom, from NIST's 45/4/141/12); conjugation and the SAT LNS need longer
 lineages. `OUT` gets only circuits that pass both verifiers inside the limits, each with a
-sidecar `.json` (start and its sha256, method, command, seed, time, code), and `result.json`
-(best per (G, GD), wall time, status). Main options: `conjpull.py --conj` (which of the 2,040
+sidecar `.json` (start and its sha256, method, command, seed, time, code, function and the run
+record's main fields), `result.json` (best per (G, GD), wall time, status), and the run record
+`run.json` + `events.jsonl.gz` ([Run logs](#run-logs)). Main options: `conjpull.py --conj` (which of the 2,040
 conjugates) and `--schedule MODE:CAPGD:SECONDS,...` (the kernel stages); `rebase.py --cap D`
 and `--moves`; `bottom.py --cut K` (AND level of the kept front); `satlns.py --gd D` (it pools
 the circuits in `circuits/aes-sbox/`, `seeds/aes-sbox/` and `$BOOLFLUX_POOL_DIRS`). Kernel
@@ -160,6 +187,7 @@ builds and caches go to `$BOOLFLUX_CACHE` (default `~/.cache/boolflux`).
 
 ```
 OUT/
+  run.json, events.jsonl.gz   the run record (next section)
   summary.json          command, settings, caps, seeds, code hash, every job (seed, kernel seed,
                         improvements with time and iteration, moves, wall time), best (verifier verdicts)
   best.circ.txt         the best circuit (header: command, code hash, origin; CAPS NOT MET if infeasible)
@@ -171,3 +199,48 @@ OUT/
 
 Circuit files carry a `% Tally:` comment (`G A GD AD` and counts by type). In `nist` files a NOT
 is written `XNOR t a 0`, as in NIST's own files.
+
+## Run logs
+
+Every search run writes a run record, from which it can be replayed: `cli.py run`, `pipe` and
+`flow` into `OUT/`; each method script into its `--out` folder; each hub job into
+`OUT/hub/jobs/<run_id>/`, and each start of the scheduler into `OUT/hub/sessions/<UTC>-<pid>/`;
+`bench/bench.py` into each run's work folder. The code is
+[boolflux/runlog.py](boolflux/runlog.py). Worked replays of published circuits are in
+[circuits/REPRODUCE.md](../../circuits/REPRODUCE.md).
+
+| File | Content |
+|---|---|
+| `run.json` | written at the start and at the end (`status` is `running` until then) |
+| `events.jsonl.gz` | one JSON line per event: `t` (seconds since the start), `ev`, and its fields |
+| `git-<sha256>.diff.gz` | when the tree had uncommitted changes: `git diff HEAD` plus every untracked file under `search/` (the hub keeps one copy per campaign in `OUT/hub/runlog/`) |
+
+| `run.json` field | Content |
+|---|---|
+| `kind` | `cli.run`, `cli.pipe`, `cli.flow`, `hub.scheduler`, `hub.op.<name>`, `ops.<name>`, `bench.<tool>` |
+| `argv`, `cwd`, `command` | the exact command line (Python first), the folder it ran in, a shell-quoted line that replays it from there |
+| `git` | `commit`, `branch`, `dirty`, `untracked`, and when dirty `diff` (the saved file) and `diff_sha256` |
+| `sources_sha256` | sha256 over every `.py`, `.c` and `.json` file of `search/nonlinear/boolflux/` (paths and bytes) |
+| `function` | `aes-sbox` or `aes-invsbox` (AES runs) |
+| `seeds` | every seed: the job seeds, the kernel seed of every job (`run`, `pipe`), and how derived seeds are formed (each derived seed is also an event) |
+| `config` | the resolved settings, caps and kernel defaults |
+| `starts` | start circuits (seed files of the hub): path, sha256, metrics |
+| `budget_s` | the wall-time budget (`null`: an iteration budget) |
+| `kernels` | each kernel binary: path, sha256, source and its sha256, the gcc command that built it, the gcc version on `PATH` |
+| `host`, `tools` | CPU count and affinity, OS, Python; GNU time and taskset (path or `null`) and how times, RSS and pinning were done |
+| `env` | the `BOOLFLUX_*` variables |
+| `t_start_utc`, `t_end_utc`, `wall_s`, `cpu_s`, `max_rss_kb`, `status`, `result` | timing (CPU time of the process and its children; RSS of the largest child), exit status, outcome |
+
+Events: `improvement` (`metrics`, `operator`; every new best of a kernel job, every trajectory
+point of `flow` with its source, every circuit a method script records, every hub admission),
+`kernel` (round, kernel seed, caps, wall time, RSS, exit code), `stage` and `conjugate`
+(conjpull), `job` (hub: run id, operator, target, seed, CPU), `candidate` (hub operators). Read
+them with `zcat events.jsonl.gz` or `runlog.read_events(path)`. A killed run keeps every event
+written before it was killed.
+
+To replay a run: check out `git.commit`; if `git.dirty`, apply the diff
+(`zcat git-….diff.gz | git apply`); check that `sources_sha256` matches
+(`python3 -c "import sys; sys.path.insert(0, 'search/nonlinear'); from boolflux import runlog; print(runlog.sources_sha256())"`);
+then run `command` from `cwd`. Iteration-budgeted runs (`run`, `pipe` without a `--seconds` stop)
+give the same circuits; time-budgeted runs (`flow`, the hub, the method scripts) repeat the same
+seeds and settings, not the same trajectory.

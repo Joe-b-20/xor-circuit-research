@@ -63,22 +63,34 @@
    "nonlinear/boolflux/kernel/bfx.c"
   ],
   "files_at": "e657298",
-  "note": "the memetic run recorded no code version; paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "the memetic run recorded no code version; paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: the memetic run recorded no code version"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted kernel job (not bit-reproducible); not re-run"
  },
  "command": null,
+ "command_source": "not recorded: the memetic run wrote no command line",
+ "command_note": "the kernel job's configuration is in kernel-p1.cfg",
  "record": {
   "where": "campaign archive (not published): memetic-run archive; later entered the hub archive as a seed",
   "sha256": "a18545b65d423b92e93ba499b033ca4c509b403279b74c0cda73bc26960b3720",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "circuit.json",
+  "frontier.json.gz",
+  "kernel-p1.cfg",
+  "kernel-p1.log.gz",
+  "log.jsonl.gz",
   "start.circ.txt"
  ]
 }

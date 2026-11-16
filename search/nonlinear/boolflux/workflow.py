@@ -22,12 +22,10 @@ feasible incumbent, wherever it came from (kernel improvement, the kernel's clea
 rebuild), timed in wall seconds since the search started.
 """
 import json
-import re
-import subprocess
 import time
 from pathlib import Path
 
-from boolflux import core, objective, skeleton, starts, targets
+from boolflux import core, objective, runlog, skeleton, starts, targets
 
 # ---- kernel seeds ------------------------------------------------------------------------------
 # Review 5: cli.py run/pipe used seed + 1000 x round, so (seed 1, round 1) and (seed 1001, round 0)
@@ -67,12 +65,9 @@ SKEL_DEFAULTS = {'w.a': 1, 'w.lin': 0.02, 'T0': 0.3, 'Tperiod_it': 4000, 'mv.swa
 
 
 def timed(cmd, cpu=None):
-    """Run (pinned to `cpu` if given) under /usr/bin/time -v; (stdout, stderr, peak RSS kB, wall s, rc)."""
-    t0 = time.time()
-    pre = (['taskset', '-c', str(cpu)] if cpu is not None else []) + ['/usr/bin/time', '-v']
-    r = subprocess.run(pre + cmd, capture_output=True, text=True)
-    m = re.search(r'Maximum resident set size \(kbytes\): (\d+)', r.stderr)
-    return r.stdout, r.stderr, int(m.group(1)) if m else None, time.time() - t0, r.returncode
+    """Run (pinned to `cpu` if given); (stdout, stderr, peak RSS kB, wall s, rc).  GNU time -v when it
+    is on PATH, else Python's own measurement (runlog.measured); taskset, else os.sched_setaffinity."""
+    return runlog.measured(cmd, cpu)
 
 
 def load_start(run, model):
@@ -144,9 +139,13 @@ def metrics5(c, model, caps=None):
     return {k: m[k] for k in ('cost', 'G', 'A', 'GD', 'AD', 'VSUM') if k in m}
 
 
-def search(run, bindir, wd, cpu=None):
+def search(run, bindir, wd, cpu=None, log=None):
     """Run one workflow; returns a dict with the incumbent circuit (best-ranked, possibly
-    infeasible if nothing met the caps), its metrics, trajectory, RSS list, overhead, timing."""
+    infeasible if nothing met the caps), its metrics, trajectory, RSS list, overhead, timing.
+    log: a runlog.RunLog; every trajectory point is an 'improvement' event (source: start, rebuild,
+    kernel-start, kernel) and every kernel process a 'kernel' event (round, stage, kernel seed,
+    seconds, wall, RSS, exit code), each with the job's seed."""
+    ev = (lambda kind, **kw: log.event(kind, seed=run['seed'], **kw)) if log is not None else (lambda kind, **kw: None)
     bindir, wd = Path(bindir), Path(wd); wd.mkdir(parents=True, exist_ok=True)
     model = core.Model.load(run['model'])
     n, m, table, _ = targets.load(run['target'])
@@ -158,13 +157,17 @@ def search(run, bindir, wd, cpu=None):
     traj = [[0.0, sm['cost'], sm['G'], sm['A'], sm['GD'], sm['AD']]]
     traj_best = sm if feas(sm) else None             # last feasible trajectory point
 
-    def offer_traj(mt, t):
+    def offer_traj(mt, t, src):
         nonlocal traj_best
         if feas(mt) and (traj_best is None or R(mt) < R(traj_best)):
             traj_best = dict(mt); traj.append([round(t, 3), mt['cost'], mt['G'], mt['A'], mt['GD'], mt['AD']])
+            ev('improvement', t_search=round(t, 3), metrics={k: mt[k] for k in ('cost', 'G', 'A', 'GD', 'AD')},
+               operator=src)
 
     overhead = {'start_s': round(t_start, 4), 'extract_s': 0, 'skel_s': 0, 'synth_s': 0, 'kernel_startup_s': 0}
     rss = []; budget = run['seconds']; T0 = time.time()
+    if traj_best is not None:
+        ev('improvement', t_search=0.0, metrics={k: sm[k] for k in ('cost', 'G', 'A', 'GD', 'AD')}, operator='start')
     best_c, best_m = start, sm
     cur = start; rnd = 0; skel_share = 0.2; R_s = run.get('round_s', 10.0)
     rounds = []
@@ -193,6 +196,8 @@ def search(run, bindir, wd, cpu=None):
                 ts = time.time()
                 so, se, r_, wall, rc = timed([str(bindir / 'skel'), str(wd / 'sk.cfg')], cpu)
                 overhead['skel_s'] += time.time() - ts; rss.append(r_)
+                ev('kernel', kernel='skel', round=rnd, kernel_seed=scfg['seed'], seconds=secs, wall_s=round(wall, 3),
+                   rss_kb=r_, rc=rc)
                 if rc != 0: raise RuntimeError('skel failed: ' + se[-500:])
                 sk2 = skeleton.read_skel((wd / 'sk.out').read_text())
                 ts = time.time(); vs = []
@@ -210,25 +215,27 @@ def search(run, bindir, wd, cpu=None):
                 if synth_gain: cand = best_v                   # keep the input unless the rebuild is better
                 if R(bvm) < R(best_m):                         # incumbent, at once (end of budget too)
                     best_c, best_m = best_v, bvm
-                offer_traj(bvm, time.time() - T0)
+                offer_traj(bvm, time.time() - T0, 'rebuild')
             else:
                 if secs is None:
                     rem = budget - (time.time() - T0)
                     secs = min(max(0.5, R_s - (time.time() - round_t0)), rem) if run.get('adaptive') else min(R_s * 0.8, rem)
                 (wd / 'g.in').write_text(core.to_kernel(cand))
-                kernel_cfg(wd / 'g.cfg', wd / 'g.in', wd / 'g.out', model, run, secs, kernel_seed(run['seed'], rnd, run.get('seed_scheme', 'v2')), run.get('set', {}))
+                ks = kernel_seed(run['seed'], rnd, run.get('seed_scheme', 'v2'))
+                kernel_cfg(wd / 'g.cfg', wd / 'g.in', wd / 'g.out', model, run, secs, ks, run.get('set', {}))
                 t_launch = time.time() - T0
                 so, se, r_, wall, rc = timed([str(bindir / 'bfx'), str(wd / 'g.cfg')], cpu)
                 rss.append(r_)
+                ev('kernel', kernel='bfx', round=rnd, kernel_seed=ks, seconds=secs, wall_s=round(wall, 3), rss_kb=r_, rc=rc)
                 if rc != 0: raise RuntimeError('bfx failed: ' + (so + se)[-800:])
                 startup = max(0.0, wall - parse_kernel(so, 0)[2].get('seconds', wall))
                 # kernel times count from its own clock, which starts after reading and the start
                 # clean-up; shift them by the measured start-up so they are wall time since T0
                 rows, kstart, final = parse_kernel(so, t_launch + startup)
                 overhead['kernel_startup_s'] += startup
-                if kstart: offer_traj(kstart, t_launch + startup)   # the kernel's cleaned start
+                if kstart: offer_traj(kstart, t_launch + startup, 'kernel-start')   # the kernel's cleaned start
                 for row in rows:
-                    offer_traj({'cost': row[1], 'G': row[2], 'A': row[3], 'GD': row[4], 'AD': row[5]}, row[0])
+                    offer_traj({'cost': row[1], 'G': row[2], 'A': row[3], 'GD': row[4], 'AD': row[5]}, row[0], 'kernel')
                 cand = core.from_kernel((wd / 'g.out').read_text())
                 cm = metrics5(cand, model, caps); rec['gate'] = cm
                 if R(cm) <= R(best_m):
@@ -240,4 +247,5 @@ def search(run, bindir, wd, cpu=None):
         rnd += 1
         if run['config'] == 'gate': break
     return {'circuit': best_c, 'metrics': best_m, 'feasible': feas(best_m), 'trajectory': traj, 'rss': rss,
+            'rss_source': runlog.timing(), 'pinning': runlog.pinning() if cpu is not None else 'none',
             'overhead': overhead, 'search_s': time.time() - T0, 'rounds': rounds}

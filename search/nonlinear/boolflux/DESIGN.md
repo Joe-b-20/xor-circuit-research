@@ -59,7 +59,9 @@ boolflux/
   skeleton.py                 AND skeleton: extraction, kernel format, synthesis back to gates
   starts.py                   naive starts from a value table (anf, anf-or)
   targets.py                  targets: AES and its inverse from FIPS-197, small S-boxes, GF(2^4), maj3, fulladd, map:<name>
-  aes_check.py                both verifiers, then placement against the pinned NIST set
+  aes_check.py                both verifiers, then placement against the pinned NIST set (S-box or inverse)
+  aesfn.py                    the AES function of the AES tools: aes-sbox or aes-invsbox ($BOOLFLUX_FUNCTION), its NIST set
+  runlog.py                   run records (run.json, events.jsonl.gz), kernel build records, GNU time / taskset fallbacks
   kernel/bfx.c, skel.c        the gate kernel and the skeleton kernel (C, built on first use)
   models/*.json               nist, bgc, gc6, gc, xag, xor
   benchmarks/                 sboxes.json (S-box tables with sources); LITERATURE.md (published sizes, by gate library)
@@ -164,6 +166,19 @@ Every `run`, `pipe` and `flow` writes `summary.json` (command, settings, caps, s
 (`workflow.kernel_seed`). A run that its iteration budget ends is deterministic for its seed,
 settings and code version; time-budgeted runs are not.
 
+### 4.5a Run records (`runlog.py`)
+
+Every entry point (`cli.py run/pipe/flow`, the hub scheduler and each operator job, the method
+scripts through `ops/common.Recorder`, `bench/bench.py`) makes one `RunLog`: `run.json` (command
+line, git commit and dirty state with the diff saved, `sources_sha256`, seeds, resolved config,
+starts with sha256, budget, kernel binaries with sha256 and compiler, host, tools, timing, status)
+and `events.jsonl.gz` (every improvement with time, metrics and operator; kernel calls with their
+seeds). Each event is one gzip member written by one `O_APPEND` write, so forked workers share
+the file and a killed run keeps what it wrote. Overhead: about 0.3 s per process (`git diff`, a hash of the
+package sources, tool versions), one write per event. `runlog.measured` and `runlog.pin` replace GNU time
+(`os.wait4` `ru_maxrss`) and taskset (`os.sched_setaffinity`) when they are missing; the record
+says which was used. Fields: [USAGE.md](../USAGE.md#run-logs).
+
 ### 4.6 Hub (`hub/`)
 
 | Part | File | Contract |
@@ -173,12 +188,13 @@ settings and code version; time-budgeted runs are not.
 | function bank | `funcbank.py` | every distinct signal truth table with its cheapest known levels and cone AND count, tagged with interface functions (N, N^-1, N + N^-1, the outputs) |
 | operators | `op_*.py`, `ops.py`, `join.py`, `trb_impl.py`, `ops/` | separate programs: `--archive --in ID [--in2 ID] --caps A,AD,GD --objective KEYS --seed S --seconds T --out DIR`; they write candidates and `record.json` and never admit |
 | scheduler | `scheduler.py` | one pinned worker per CPU; epsilon-greedy choice of operator on recent frontier gain per CPU second; `control.json` re-read while running, every change logged in `events.jsonl` |
-| records | `runs/<run_id>.json`, `stats.jsonl` | one record per job: code version, kernel hash, seed, settings, parents, timing, outcome |
+| records | `runs/<run_id>.json`, `stats.jsonl` | one record per job: code version, kernel hash, seed, settings, parents, timing, outcome, the job's run record (`jobs/<run_id>/run.json`); `sessions/<UTC>-<pid>/run.json` per scheduler start |
+| function | `--function`, `campaign.json` | `aes-sbox` or `aes-invsbox` (aesfn.py), inherited by the operators through `$BOOLFLUX_FUNCTION` |
 
 ### 4.7 Method scripts
 
 `ops/<name>.py --in START --target REF --seed S --seconds T --out DIR [--cpus N] [flags]`.
-`REF` is a reference circuit (a path, or a file name in `seeds/aes-sbox/`) or an id in
+`REF` is a reference circuit (a path, or a file name in `seeds/aes-sbox/` or `seeds/aes-invsbox/`) or an id in
 `$BOOLFLUX_TARGETS_JSON`; its A and AD are hard limits on what is written, its G and GD the point to
 beat (`common.target`, `common.limits`). Search states may pass above every cap. `common.Recorder`
 writes a circuit only after `aes_check.check` accepts it and it is inside the limits, with a
@@ -188,7 +204,7 @@ T + 60 s.
 
 | Script | Method | Libraries |
 |---|---|---|
-| `conjpull.py` | screen the 2,040 conjugates `x -> λ x^(2^k)` by a proxy cost (heuristic top, Paar bottom), build the chosen ones (Boyar–Peralta top, timing-driven bottom), then a schedule of kernel stages at loosening-then-tightening GD caps | `conj_lib/` (conj, conj3, bottom, bp, slp, trb) |
+| `conjpull.py` | screen the 2,040 conjugates `x -> λ x^(2^k)` by a proxy cost (heuristic top, Paar bottom), build the chosen ones (Boyar–Peralta top, timing-driven bottom), then a schedule of kernel stages at loosening-then-tightening GD caps; for the inverse S-box the input map is `Lin y + c_L` (Lin = A G A⁻¹) and the output map G′ (`conj.maps`) | `conj_lib/` (conj, conj3, bottom, bp, slp, trb) |
 | `rebase.py` | enumerate the 840 bases of each last-level product class, price each output by its Kraft sum, keep the per-output Pareto sets, pick the best combination exactly, build a depth-feasible hybrid circuit, polish under the cap | `rebase_lib/` (botbasis, gbasis, hybrid, ...), `hub/ops/gf4_lib/` for `--moves` |
 | `bottom.py` | anneal per-output rank-1 decompositions of the last AND level with an exact depth check, build (kept front, Y-sums, x-forms, products, shared pairs, Huffman output trees), polish under cap A | `bottom_lib/` (bopt, bbuild, bsel, botclass) |
 | `satlns.py` | pool the gates of every indexed circuit with the start's AND span as templates, encode availability by level in SAT (glucose4), LNS with sideways (K = G), improving (K = G − 1) and focus queries | `python-sat` |
@@ -201,15 +217,17 @@ T + 60 s.
 | verifier 1 | `core.py` | bitsliced evaluation against `targets.py` (AES from FIPS-197, small S-boxes from `benchmarks/sboxes.json`) |
 | verifier 2 | `independent/verify.py` | one input at a time, its own parser, its own FIPS-197 table, library and cap checks; imports nothing from BoolFlux |
 | agreement | `cli.verify_file` | both accept, the library holds, the caps hold, and G, A, GD, AD, cost and counts are equal |
-| placement | `aes_check.py` | both verifiers, then dominance against every forward AES S-box circuit of the pinned NIST set, by recomputed metrics |
+| placement | `aes_check.py` | both verifiers, then dominance against every circuit of the same function (S-box or inverse, `aesfn.py`) in the pinned NIST set, by recomputed metrics |
 
 `cli.py verify`, the hub's admission and every method script use `cli.verify_file` or
 `aes_check.check`.
 
 ## 6. Code rules
 
-- Python ≥ 3.11, standard library only (`ops/conjpull.py` also needs `numpy`, `ops/satlns.py`
-  `python-sat`); the C kernels are built with gcc on first use, one private copy per run folder.
+- Python ≥ 3.11, standard library only (`ops/conjpull.py` also needs `numpy` and `python-sat`,
+  `ops/satlns.py` `python-sat`); the C kernels are built with gcc on first use, one private copy
+  per run folder. GNU time and taskset are optional (`runlog.measured`, `runlog.pin`).
+- Every search run writes a run record (`runlog.RunLog`); a new entry point makes one too.
 - Correctness is exact: complete truth tables everywhere; nothing is admitted, written as a
   result or compared before both verifiers accept it.
 - One rank (`objective.py`) for every component; a new objective key goes there first.

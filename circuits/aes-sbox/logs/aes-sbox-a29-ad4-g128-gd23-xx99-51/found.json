@@ -36,22 +36,36 @@
   "uncommitted_changes_at_run": true,
   "files": [],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "f9fe6f7+0c2d27db70",
+  "exact_code": {
+   "commit": "d961083",
+   "scope": "hub/*.py and kernel/bfx.c only",
+   "how": "code_version f9fe6f7+0c2d27db70 hashes hub/*.py and kernel/bfx.c only; those are identical to commit d961083 (hash recomputed there), not to f9fe6f7. Other files, including the driver script, were not hashed at run time"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "taskset -c 11 /usr/bin/python3 <checkout>/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/2026-11-15-study/X2/gen2 --in ded372fdab1e --seed 487426159 --seconds 90 --out <campaign archive>/2026-11-15-study/X2/gen2/jobs/r00002-polish",
+ "command_source": "hub run record <campaign archive>/2026-11-15-study/X2/gen2/runs/r00002-polish.json (published: run.json)",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "2ccccf89ee761b110674f8036b319381b5866677603ee1338dbce110c8e515af",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "input.bfx",
+  "input.json",
+  "job-record.json",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "run-sidecar.json",
+  "run.json",
   "start.circ.txt"
  ]
 }

@@ -1,0 +1,95 @@
+{
+ "op": "conjpull",
+ "target": "T02",
+ "seed": 844225,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/starts/66868125efb4-a28-ad4-g175-gd14.circ.txt",
+ "start_tuple": [
+  28,
+  4,
+  175,
+  14
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:13:600:rk0",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 28,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 599.5,
+ "n_written": 1,
+ "rejected": {
+  "outside": 0,
+  "dominated": 11,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T10:18:06Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    28,
+    4,
+    174,
+    14
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T02/runs/T02/conjpull-879/conjpull-a28-ad4-g174-gd14-04e92693dc.circ.txt",
+   "how": "o13-relaxed14",
+   "t": 348.8,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    28,
+    4,
+    174,
+    14
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T02/runs/T02/conjpull-879/conjpull-a28-ad4-g174-gd14-04e92693dc.circ.txt",
+   "how": "o13-relaxed14",
+   "t": 348.8,
+   "class": "strict"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 13,
+   "seed": 844225000,
+   "in": [
+    28,
+    4,
+    175,
+    14
+   ],
+   "best": [
+    28,
+    4,
+    174,
+    14
+   ],
+   "seconds": 599.5
+  }
+ ],
+ "kernel_calls": 10
+}

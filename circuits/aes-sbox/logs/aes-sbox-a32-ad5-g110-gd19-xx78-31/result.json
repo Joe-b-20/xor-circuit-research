@@ -1,0 +1,117 @@
+{
+ "op": "conjpull",
+ "target": "T05",
+ "seed": 467217,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/T05/found/conjpull-a32-ad5-g108-gd20-7f0dee10af.circ.txt",
+ "start_tuple": [
+  32,
+  5,
+  108,
+  20
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:+0:360,m:-1:360",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 7
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 717.6,
+ "n_written": 1,
+ "rejected": {
+  "outside": 0,
+  "dominated": 15,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T02:46:35Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    110,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-43/conjpull-a32-ad5-g110-gd19-1655161739.circ.txt",
+   "how": "o19-repair",
+   "t": 437.5,
+   "class": "tradeoff:and_depth_for_gates"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    110,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-43/conjpull-a32-ad5-g110-gd19-1655161739.circ.txt",
+   "how": "o19-repair",
+   "t": 437.5,
+   "class": "tradeoff:and_depth_for_gates"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 20,
+   "seed": 467217000,
+   "in": [
+    32,
+    5,
+    108,
+    20
+   ],
+   "best": [
+    32,
+    5,
+    108,
+    20
+   ],
+   "seconds": 358.7
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 19,
+   "seed": 467217010,
+   "in": [
+    32,
+    5,
+    108,
+    20
+   ],
+   "best": [
+    32,
+    5,
+    110,
+    19
+   ],
+   "seconds": 358.8
+  }
+ ],
+ "kernel_calls": 14
+}

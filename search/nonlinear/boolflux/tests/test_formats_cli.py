@@ -315,16 +315,16 @@ class TestAesCheck(unittest.TestCase):
         d = tmpdir()
         try:
             os.environ['XDG_CACHE_HOME'] = str(d); os.environ.pop('BOOLFLUX_NO_CACHE', None)
-            fresh = AC.published.__wrapped__()                 # computed, written to the cache
+            fresh = AC.compute_published()                 # computed, written to the cache
             cf = AC._cache_file(AC.published_files())
             self.assertTrue(cf.exists())
-            self.assertEqual(AC.published.__wrapped__(), fresh)  # read back
+            self.assertEqual(AC.compute_published(), fresh)  # read back
             self.assertEqual(len(fresh), len(AC.published_files()))
             self.assertTrue(all(len(u) == 4 for u, _ in fresh))
             other = AC._cache_file(AC.published_files()[:-1])   # another set of files: another cache entry
             self.assertNotEqual(other, cf)
             cf.write_text('garbage')                            # a damaged cache file is recomputed, not trusted
-            self.assertEqual(AC.published.__wrapped__(), fresh)
+            self.assertEqual(AC.compute_published(), fresh)
             os.environ['BOOLFLUX_NO_CACHE'] = '1'
             self.assertIsNone(AC._cache_file(AC.published_files()))
         finally:
@@ -338,7 +338,7 @@ class TestCli(unittest.TestCase):
     def test_every_command_and_option_has_help(self):
         ap = cli.build_parser()
         sub = next(a for a in ap._actions if a.__class__.__name__ == '_SubParsersAction')
-        self.assertEqual(set(sub.choices), {'run', 'pipe', 'flow', 'verify', 'start', 'list'})
+        self.assertEqual(set(sub.choices), {'run', 'pipe', 'flow', 'verify', 'start', 'list', 'tools'})
         self.assertEqual({a.dest for a in sub._choices_actions}, set(sub.choices))      # one-line help for each
         for name, p in sub.choices.items():
             if name != 'list': self.assertTrue(p.description, name)

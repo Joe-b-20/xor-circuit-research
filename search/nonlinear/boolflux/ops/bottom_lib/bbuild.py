@@ -12,7 +12,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import signals as L  # noqa: E402
 import bopt  # noqa: E402
-from boolflux import targets  # noqa: E402
+from boolflux import aesfn  # noqa: E402
 core = L.core
 XOR, XNOR, NOT, AND = 6, 9, 3, 8
 MODEL = core.Model.load(str(core.MODELS / 'nist.json'))
@@ -220,10 +220,10 @@ def main():
     for t in range(tries):          # randomised tie-breaks (BP choices, shared pairs); keep the fewest gates
         RNG = random.Random(t + 1)
         c2 = build(plan)
-        if c2.value_table() == targets.aes_sbox() and c2.metrics(MODEL)['GD'] <= plan['cap'] and len(c2.gates) < len(nc.gates):
+        if tuple(c2.value_table()) == aesfn.table() and c2.metrics(MODEL)['GD'] <= plan['cap'] and len(c2.gates) < len(nc.gates):
             nc = c2
     RNG = None
-    assert nc.value_table() == targets.aes_sbox(), 'wrong function'
+    assert tuple(nc.value_table()) == aesfn.table(), 'wrong function'
     m = nc.metrics(MODEL)
     print('A AD G GD = %d %d %d %d' % (m['A'], m['AD'], m['G'], m['GD']), m['counts'])
     Path(sys.argv[2]).write_text(core.write_ncff(nc, MODEL, comments=['bbuild.py from plan %s (front %s)' % (sys.argv[1], plan['circuit'])]))

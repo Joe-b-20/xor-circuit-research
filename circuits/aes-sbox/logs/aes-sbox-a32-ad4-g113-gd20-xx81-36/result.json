@@ -1,0 +1,165 @@
+{
+ "op": "conjpull",
+ "target": "T04",
+ "seed": 580971,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/T05/found/conjpull-a32-ad4-g112-gd22-2cb236bb73.circ.txt",
+ "start_tuple": [
+  32,
+  4,
+  112,
+  22
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:21:360,m:19:600",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 959.0,
+ "n_written": 5,
+ "rejected": {
+  "outside": 0,
+  "dominated": 15,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T08:33:55Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    113,
+    20
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-688/conjpull-a32-ad4-g113-gd20-4ddf8b05f2.circ.txt",
+   "how": "t21-random",
+   "t": 257.1,
+   "class": "tradeoff:gates_for_depth"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    114,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-688/conjpull-a32-ad4-g114-gd19-60b586db8b.circ.txt",
+   "how": "o19-repair",
+   "t": 461.9,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    125,
+    18
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-688/conjpull-a32-ad4-g125-gd18-1f57c9b7e3.circ.txt",
+   "how": "t19-bottom-build",
+   "t": 508.6,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    113,
+    20
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-688/conjpull-a32-ad4-g113-gd20-4ddf8b05f2.circ.txt",
+   "how": "t21-random",
+   "t": 257.1,
+   "class": "tradeoff:gates_for_depth"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    114,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-688/conjpull-a32-ad4-g114-gd19-60b586db8b.circ.txt",
+   "how": "o19-repair",
+   "t": 461.9,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    125,
+    18
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-688/conjpull-a32-ad4-g125-gd18-1f57c9b7e3.circ.txt",
+   "how": "t19-bottom-build",
+   "t": 508.6,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 21,
+   "seed": 580971000,
+   "in": [
+    32,
+    4,
+    112,
+    22
+   ],
+   "best": [
+    32,
+    4,
+    113,
+    20
+   ],
+   "seconds": 359.9
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 19,
+   "seed": 580971010,
+   "in": [
+    32,
+    4,
+    113,
+    20
+   ],
+   "best": [
+    32,
+    4,
+    114,
+    19
+   ],
+   "seconds": 599.1
+  }
+ ],
+ "kernel_calls": 17
+}

@@ -29,7 +29,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2]))
-from boolflux.hub.common import core, metrics, targets  # noqa: E402
+from boolflux.hub.common import aesfn, core, metrics  # noqa: E402
 from boolflux.hub import trb_impl as T  # noqa: E402
 from pysat.solvers import Solver  # noqa: E402
 from pysat.card import CardEnc, EncType  # noqa: E402
@@ -245,7 +245,7 @@ def optimise(c, D, region, rng, timeout=60, budget=None, log=print, slack=0):
             i = (f).bit_length() - 1
             for t in ts: tb[t] = (i, form[t] & 1)
         nc = assemble(c, rd, gates, tb)
-        if nc.value_table() != targets.aes_sbox():
+        if tuple(nc.value_table()) != aesfn.table():
             info['error'] = 'wrong'; break
         best = nc
         k = len(set(gates)) - 1

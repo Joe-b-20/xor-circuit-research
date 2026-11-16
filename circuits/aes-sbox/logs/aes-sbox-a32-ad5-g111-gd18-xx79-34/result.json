@@ -1,0 +1,141 @@
+{
+ "op": "conjpull",
+ "target": "T05",
+ "seed": 524647,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/T05/found/conjpull-a32-ad5-g112-gd18-6e730095f8.circ.txt",
+ "start_tuple": [
+  32,
+  5,
+  112,
+  18
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:+0:360,m:-1:360",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 7
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 642.5,
+ "n_written": 3,
+ "rejected": {
+  "outside": 0,
+  "dominated": 11,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T03:33:42Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    111,
+    18
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-112/conjpull-a32-ad5-g111-gd18-6a1b3326e0.circ.txt",
+   "how": "o17-relaxed18",
+   "t": 404.2,
+   "class": "tradeoff:and_depth_for_gates"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    115,
+    17
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-112/conjpull-a32-ad5-g115-gd17-1734392a7a.circ.txt",
+   "how": "o17-repair",
+   "t": 451.7,
+   "class": "tradeoff:and_depth_for_gates"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    111,
+    18
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-112/conjpull-a32-ad5-g111-gd18-6a1b3326e0.circ.txt",
+   "how": "o17-relaxed18",
+   "t": 404.2,
+   "class": "tradeoff:and_depth_for_gates"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    115,
+    17
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-112/conjpull-a32-ad5-g115-gd17-1734392a7a.circ.txt",
+   "how": "o17-repair",
+   "t": 451.7,
+   "class": "tradeoff:and_depth_for_gates"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 18,
+   "seed": 524647000,
+   "in": [
+    32,
+    5,
+    112,
+    18
+   ],
+   "best": [
+    32,
+    5,
+    112,
+    18
+   ],
+   "seconds": 358.8
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 17,
+   "seed": 524647010,
+   "in": [
+    32,
+    5,
+    112,
+    18
+   ],
+   "best": [
+    32,
+    5,
+    115,
+    17
+   ],
+   "seconds": 283.8
+  }
+ ],
+ "kernel_calls": 12
+}

@@ -4,16 +4,19 @@
 Operator contract:
 
     python3 search/nonlinear/boolflux/ops/<name>.py --in START --target REF --seed S \
-        --seconds T --out DIR [--cpus 1] [op-specific flags]
+        --seconds T --out DIR [--cpus 1] [--function auto|aes-sbox|aes-invsbox] [op-specific flags]
 
-  * --target is a reference circuit (a path, or a file name in seeds/aes-sbox/) or an id in the JSON file
-    $BOOLFLUX_TARGETS_JSON (see target()); A <= ref A, AD <= ref AD are the hard limits of a RECORDED
-    result (search states may exceed every cap);
+  * --function: the AES S-box or its inverse (aesfn.py); auto (default) = the function START computes.
+    It is the function of every check and of the NIST set (init_function());
+  * --target is a reference circuit (a path, or a file name in seeds/aes-sbox/ or seeds/aes-invsbox/) or
+    an id in the JSON file $BOOLFLUX_TARGETS_JSON (see target()); A <= ref A, AD <= ref AD are the hard
+    limits of a RECORDED result (search states may exceed every cap);
   * DIR receives only circuits that pass aes_check (two verifiers, all 256 inputs, NIST library) and are
     inside the target's hard limits, named <name>-a..-ad..-g..-gd..-<hash>.circ.txt, each with a full
     sidecar <same stem>.json (target, tuple, start and parent with sha256, op, params, method, command,
-    seed, code version, aes_check output);
-  * DIR/result.json: best per (G, GD), wall time, exit status; exit within T + 60 s.
+    seed, code version, aes_check output, run: the run record's main fields);
+  * DIR/result.json: best per (G, GD), wall time, exit status; exit within T + 60 s;
+  * DIR/run.json and DIR/events.jsonl.gz: the run record (runlog.py; every recorded point is an event).
 
 What is here:
   limits(tid) / target(tid)          the target's reference tuple (a circuit file, or an entry of the targets
@@ -46,15 +49,35 @@ REPO = PKG.parents[2]                             # the repository root
 # kernel builds and caches are set by the environment.
 TARGETS_JSON = Path(os.environ.get('BOOLFLUX_TARGETS_JSON', 'TARGETS.json'))
 CACHE = Path(os.environ.get('BOOLFLUX_CACHE', Path(os.environ.get('XDG_CACHE_HOME') or Path.home() / '.cache') / 'boolflux'))
-NIST_DIR = PKG.parent / 'seeds' / 'aes-sbox'
+NIST_DIR = PKG.parent / 'seeds' / 'aes-sbox'      # forward set; seed_dirs() for the function of the process
 
 sys.path.insert(0, str(PKG))
 sys.path.insert(0, str(PKG.parent))
 import aes_check                                   # noqa: E402  (sets sys.path for boolflux + verify)
-from boolflux import core, targets as _targets     # noqa: E402
+from boolflux import aesfn, core, runlog           # noqa: E402
 
 MODEL = core.Model.load('nist')
-AES = _targets.aes_sbox()
+
+
+def __getattr__(name):
+    """AES: value table (list) of the process's function (aesfn), read when used, so that
+    init_function() decides it."""
+    if name == 'AES':
+        return list(aesfn.table())
+    raise AttributeError(name)
+
+
+def init_function(a):
+    """--function of a method script: 'auto' = the function of --in; made the process's function
+    (and its children's).  Returns the name."""
+    return aesfn.use(aesfn.resolve(getattr(a, 'function', 'auto') or 'auto', a.inp))
+
+
+def seed_dirs():
+    """NIST folders searched for a --target file name: the process's function first"""
+    first = aesfn.INFO[aesfn.name()]['seed_dir']
+    rest = [aesfn.INFO[f]['seed_dir'] for f in aesfn.NAMES if aesfn.INFO[f]['seed_dir'] != first]
+    return [PKG.parent / 'seeds' / d for d in [first] + rest]
 
 
 def utc(ts=None):
@@ -82,11 +105,12 @@ def spec():
 
 
 def target(tid):
-    """The target `tid`.  A circuit file (a path, or a file name in seeds/aes-sbox/) is the reference
-    itself: limits A and AD are its own, G and GD its own point to beat.  Otherwise an entry of
-    TARGETS_JSON: {"targets": [{"id", "ref" (file name in seeds/aes-sbox/ or a path), "A", "AD", "G",
-    "GD", "tradeoffs" (optional)}], "definitions": {...} (optional, see classify)}."""
-    for f in (Path(tid), NIST_DIR / tid):
+    """The target `tid`.  A circuit file (a path, or a file name in seeds/aes-sbox/ or
+    seeds/aes-invsbox/) is the reference itself: limits A and AD are its own, G and GD its own point
+    to beat.  Otherwise an entry of TARGETS_JSON: {"targets": [{"id", "ref" (file name in the NIST
+    folder or a path), "A", "AD", "G", "GD", "tradeoffs" (optional)}], "definitions": {...}
+    (optional, see classify)}."""
+    for f in [Path(tid)] + [d / tid for d in seed_dirs()]:
         if f.is_file():
             A, AD, G, GD = metrics(load(f))
             return {'id': f.name.split('.')[0], 'ref': str(f.resolve()), 'A': A, 'AD': AD, 'G': G, 'GD': GD}
@@ -104,7 +128,8 @@ def limits(tid):
 
 
 def reference_file(tid):
-    return NIST_DIR / target(tid)['ref']
+    ref = Path(target(tid)['ref'])
+    return ref if ref.is_absolute() else seed_dirs()[0] / ref
 
 
 def in_limits(tup, tid, lim=None):
@@ -219,7 +244,11 @@ def git_head():
 
 
 def code_info(kernel=None, extra_files=()):
-    info = {'git': git_head(), 'tree': 'working tree (uncommitted changes included)',
+    g, _ = runlog.git_state()
+    info = {'git': git_head(), 'dirty': g.get('dirty'), 'diff_sha256': g.get('diff_sha256'),
+            'tree': ('working tree with uncommitted changes (diff saved with the run record, run.json)' if g.get('dirty')
+                     else 'the commit, unchanged' if g.get('commit') else 'not a git checkout'),
+            'sources_sha256': runlog.sources_sha256(),
             'ops_sha256': {p.name: sha256(p) for p in sorted(OPS.glob('*.py'))}}
     for f in extra_files:
         try: info.setdefault('used_sha256', {})[str(f)] = sha256(f)
@@ -238,7 +267,8 @@ class Recorder:
     once (so a killed job keeps its results), checked with aes_check and given a sidecar; a file that
     fails aes_check is removed.  result.json is rewritten on every new point and by finish()."""
 
-    def __init__(self, out, op, tid, start, seed, command, method, params, kernel=None, t0=None):
+    def __init__(self, out, op, tid, start, seed, command, method, params, kernel=None, t0=None,
+                 budget_s=None, seeds=None):
         import time
         self.out = Path(out); self.out.mkdir(parents=True, exist_ok=True)
         self.op, self.tid, self.seed, self.command, self.method = op, tid, seed, command, method
@@ -257,6 +287,21 @@ class Recorder:
             self.start_tuple = metrics(load(self.start))
         except Exception:
             self.start_tuple = None
+        if budget_s is None and '--seconds' in sys.argv[:-1]:
+            try: budget_s = float(sys.argv[sys.argv.index('--seconds') + 1])
+            except ValueError: pass
+        self.log = runlog.RunLog(self.out, 'ops.' + op, seeds=dict({'seed': seed}, **(seeds or {})),
+                                 config={'target': tid, 'limits': self.lim, 'params': params, 'method': method,
+                                         'command': command},
+                                 budget_s=budget_s, function=aesfn.name(), t0=self.t0)
+        self.log.add_start(self.start, metrics=list(self.start_tuple) if self.start_tuple else None, label='start',
+                           write=False)
+        if self.tgt.get('ref') and Path(self.tgt['ref']).is_file():
+            self.log.add_start(self.tgt['ref'], label='reference (target)', write=False)
+        if kernel:
+            from boolflux.hub.ops import kernel_record
+            self.log.add_kernel(kernel, write=False, **kernel_record(kernel))
+        self.log.write()
 
     def code(self):
         if self._code is None: self._code = code_info(self.kernel)
@@ -272,7 +317,7 @@ class Recorder:
         if any(all(a <= b for a, b in zip(p, t)) for p in known):
             # weakly dominated in (A, AD, G, GD) (hence also in (G, GD)) by a point already written or the start
             self.rejected['dominated'] += 1; return None
-        if c.value_table() != AES:
+        if tuple(c.value_table()) != aesfn.table():
             self.rejected['aes_check_fail'] += 1; return None
         text = core.write_ncff(c, MODEL, comments=['%s job target %s seed %s: %s t=%.1f s' % (
             self.op, self.tid, self.seed, how, time.time() - self.t0)])
@@ -299,9 +344,12 @@ class Recorder:
                 'aes_check': line, 'aes_check_full': full, 'circuit_sha256': sha256(p),
                 'path_certified': path_certified,
                 'path_note': 'informational; search states may exceed the caps, recorded circuits never exceed A and AD',
+                'function': aesfn.name(), 'run': self.log.summary(),
                 'utc': utc()}
         write_json(self.out / (name + '.json'), side)
         self.points[t] = {'tuple': list(t), 'file': str(p), 'how': how, 't': side['elapsed_s'], 'class': side['class']}
+        self.log.improvement({'A': t[0], 'AD': t[1], 'G': t[2], 'GD': t[3]}, self.op, how=how, file=p.name,
+                             circuit_sha256=side['circuit_sha256'])
         self.write_result()
         return p
 
@@ -323,6 +371,14 @@ class Recorder:
     def finish(self, status='ok', extra=None):
         self.status = status
         self.write_result(extra)
+        self.log.finish(status, n_written=len(self.points), rejected=self.rejected,
+                        pareto_A_AD_G_GD=[p['tuple'] for p in self.best_points()['pareto_A_AD_G_GD']])
+
+
+def function_arg(ap):
+    ap.add_argument('--function', choices=aesfn.CHOICES, default='auto',
+                    help='aes-sbox or aes-invsbox; auto (default) = the function the --in circuit computes')
+    return ap
 
 
 def contract_args(ap):
@@ -333,4 +389,5 @@ def contract_args(ap):
     ap.add_argument('--seconds', type=float, required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--cpus', type=int, default=1)
+    function_arg(ap)
     return ap

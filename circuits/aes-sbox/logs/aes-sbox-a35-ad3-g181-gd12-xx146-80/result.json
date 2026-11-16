@@ -1,0 +1,68 @@
+{
+ "op": "rebase",
+ "target": "T08",
+ "seed": 31,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-15-study/best-1400/aes-sbox-a35-ad3-g177-gd13-xx142-61.circ.txt",
+ "start_tuple": [
+  35,
+  3,
+  177,
+  13
+ ],
+ "params": {
+  "cap": null,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 240.0,
+  "stages": 1,
+  "moves": true,
+  "move_top": 4,
+  "move_budget": 0.4,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "shard": "0/1"
+ },
+ "wall_s": 1180.0,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 6,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T01:22:01Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    181,
+    12
+   ],
+   "file": "<campaign archive>/2026-11-15-targets/M3/runs/screen/rb-t08full/rebase-a35-ad3-g181-gd12-63aaf33ed1.circ.txt",
+   "how": "kernel {\"cap\": 12, \"parent_how\": \"move [14, 25, 186, 72] of 5156b95e1c7f (bound 0.750)\", \"build_G\": 198, \"kernel_seed\": 826472, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 12}}",
+   "t": 468.9,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    181,
+    12
+   ],
+   "file": "<campaign archive>/2026-11-15-targets/M3/runs/screen/rb-t08full/rebase-a35-ad3-g181-gd12-63aaf33ed1.circ.txt",
+   "how": "kernel {\"cap\": 12, \"parent_how\": \"move [14, 25, 186, 72] of 5156b95e1c7f (bound 0.750)\", \"build_G\": 198, \"kernel_seed\": 826472, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 12}}",
+   "t": 468.9,
+   "class": "strict"
+  }
+ ]
+}

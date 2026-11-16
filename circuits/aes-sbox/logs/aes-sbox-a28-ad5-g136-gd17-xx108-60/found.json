@@ -27,21 +27,30 @@
   "uncommitted_changes_at_run": true,
   "files": [],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "f9fe6f7+0c2d27db70",
+  "exact_code": {
+   "commit": "d961083",
+   "scope": "hub/*.py and kernel/bfx.c only",
+   "how": "code_version f9fe6f7+0c2d27db70 hashes hub/*.py and kernel/bfx.c only; those are identical to commit d961083 (hash recomputed there), not to f9fe6f7. Other files, including the driver script, were not hashed at run time"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
  "command": null,
+ "command_source": "not recorded by the run",
+ "command_note": "the campaign sidecar records: mc1.py window AND removal + kernel polish/pull grind (grind.py)",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "112d91a82e772a7d83ed851b87590d3e5bb80db67058d61f20e2b31beddc2c82",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
-  "verification.json"
+  "verification.json",
+  "run-sidecar.json"
  ]
 }

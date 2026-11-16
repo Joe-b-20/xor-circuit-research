@@ -1,0 +1,46 @@
+{
+ "target": "T03",
+ "A": 28,
+ "AD": 5,
+ "G": 129,
+ "GD": 19,
+ "start": {
+  "path": "<checkout>/nonlinear/boolflux/results/aes/aes-nist-hub-pull-g130-a28-gd19-ad5.circ.txt",
+  "sha256": "e074f95080a8bf03c1ca51fb0c64fef738f20a73eafd9e8ff355a06533fa2c78"
+ },
+ "method": {
+  "engine": "strategies/P1/unionsat2.py (span-pooled SAT LNS, glucose4)",
+  "pool": {
+   "circuits": 111,
+   "forms": 1174,
+   "templates_pooled": 2396,
+   "templates": 7941,
+   "and_templates": 252,
+   "D": 19,
+   "closure": 1,
+   "start": "<checkout>/nonlinear/boolflux/results/aes/aes-nist-hub-pull-g130-a28-gd19-ad5.circ.txt"
+  },
+  "operator_chain": [
+   {
+    "op": "unionsat2-LNS",
+    "run": "t03-d19",
+    "seed": 23,
+    "step": 337,
+    "file": "runs/usat2/t03-d19-out/us2-a28-ad5-g129-gd19-s23-337.circ.txt"
+   }
+  ]
+ },
+ "command": "cd <campaign archive>/2026-11-15-targets/P1/runs/usat2 && python3 <checkout>/nonlinear/boolflux/strategies/P1/unionsat2.py --lns <checkout>/nonlinear/boolflux/results/aes/aes-nist-hub-pull-g130-a28-gd19-ad5.circ.txt --starts <campaign archive>/2026-11-15-targets/P1/starts_fam.json --extra <campaign archive>/2026-11-15-targets/P1/shared --D 19 --cap-ad 5 --seconds 900 --lns-sec 20 --seed 23 --out t03-d19-best.circ.txt --outdir t03-d19-out --log <campaign archive>/2026-11-15-targets/P1/runs/usat2/lns2.jsonl",
+ "pool_snapshot": "starts_fam.json rows + DATA/shared files whose json t precedes the run start (pool.json not written by this version)",
+ "seed": 23,
+ "elapsed_s": "not logged per step by this version (run total 900 s; step 337 of 480)",
+ "code": {
+  "git": "8922cacae4d4314968c5ce9baa740dea7aa38935",
+  "unionsat2_sha256": "fa35ceefeb1fe54ca68544afd4a5fd1bcddf53d7eed46188ca494dfc24c78774"
+ },
+ "aes_check": "OK   <campaign archive>/2026-11-15-targets/P1/found/P1-T03-a28-ad5-g129-gd19-04c1f2de0543.circ.txt  A AD G GD = 28 5 129 19  counts {'AND': 28, 'XNOR': 56, 'XOR': 45}",
+ "aes_check_rc": 0,
+ "utc": "2026-11-15T17:28:49Z",
+ "reproduction": "Run t03-d19 (17:03:28-17:18:30 UTC, CPU 10, unit xs-P-P1-lns2seq2). Code = unionsat2.py as of 17:03 UTC (not snapshotted); logically identical to runs/code/unionsat2-f3f9ce6e.py with --restrict 0 --side 0.3 --closure-max 6000. Pool = starts_fam.json rows + DATA/shared/*.bfx whose .json t precedes 17:03:28 UTC (111 circuits in the span). Per-step log: runs/usat2/t03-d19.log (step number in the file name: ...-s23-<step>).",
+ "class_vs_ref": "other"
+}

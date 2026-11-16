@@ -146,7 +146,9 @@ def main():
     ap.add_argument('--plan-seeds', default='', help='comma list of exact SA seeds to use first (bopt.py --seed S gives the same plan)')
     ap.add_argument('--init', choices=['random', 'own', 'mix'], default='mix',
                     help="SA start: random per-output bases, the start circuit's own bottom, or alternate (mix)")
+    MC.C.function_arg(ap)
     a = ap.parse_args()
+    MC.C.init_function(a)
     t0 = time.time(); deadline = t0 + a.seconds
     rng = random.Random(a.seed)
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)

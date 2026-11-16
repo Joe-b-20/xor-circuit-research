@@ -1,0 +1,87 @@
+{
+ "target": "T05",
+ "A": 32,
+ "AD": 5,
+ "G": 105,
+ "GD": 24,
+ "class": "tradeoff:and_depth_for_gates",
+ "reference": "aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt",
+ "start": {
+  "path": "<checkout>/nonlinear/boolflux/results/aes/aes-nist-E-polish-g104-a32-gd29-ad5.circ.txt",
+  "sha256": "9f893283b39b3fec7f7aa7a626e72ef1df9fc3447eea4b18637d0825ccc6963d",
+  "tuple": [
+   32,
+   5,
+   104,
+   29
+  ]
+ },
+ "parent": {
+  "path": "<checkout>/nonlinear/boolflux/results/aes/aes-nist-E-polish-g104-a32-gd29-ad5.circ.txt",
+  "sha256": "9f893283b39b3fec7f7aa7a626e72ef1df9fc3447eea4b18637d0825ccc6963d"
+ },
+ "op": "conjpull",
+ "params": {
+  "conj": "rank:1",
+  "schedule": "g:32:300,m:+0:360,m:-1:360",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 7
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "how": "o26-relaxed27",
+ "lineage": [
+  "conj lam 43 k 4 (rank:1, score 47)",
+  "stage 1 g:32 best 32/5/105/26",
+  "stage 2 m:26:360 seed 610750010 rk 0",
+  "o26-relaxed27"
+ ],
+ "method": "ops/conjpull.py: GF(2^8) conjugate (P3 conj3 screen + mkconj build) then staged kernel pulls g:32:300,m:+0:360,m:-1:360 (fdrive semantics; kernel bfx-94a75e2c18, repair_keep 0 unless a stage says rk0/rk1); search states may exceed caps, recorded circuits inside A<=32 AD<=7",
+ "command": "/usr/bin/python3 <checkout>/nonlinear/boolflux/campaigns/targets/ops/conjpull.py --in <checkout>/nonlinear/boolflux/results/aes/aes-nist-E-polish-g104-a32-gd29-ad5.circ.txt --target T05 --seed 610750 --seconds 1100 --out <campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-9 --cap-ad 5 --schedule g:32:300,m:+0:360,m:-1:360 --repair-keep alt --conj rank:1",
+ "seed": 610750,
+ "elapsed_s": 405.2,
+ "code": {
+  "git": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "tree": "xcr-boolflux working tree incl. uncommitted campaigns/targets/ops",
+  "ops_sha256": {
+   "bottom.py": "cdd7c0ef1041cc61babfc6a9e20b5bb6bf0a885d97f699c16a1413afdcd946e7",
+   "common.py": "34274be7632c0df33d46fb33477dfe91a9ce445b7c538d2216209ddd53ea55cf",
+   "conjpull.py": "3e71a87052afb17ec5014eb088e0e994624ae70d730636a34cc19d992735329e",
+   "m3common.py": "cf043c3d649190967017da21c0be8642ee150f204affd361c17e60a90574c013",
+   "rebase.py": "311398ea41b1e7fac75e3f623a576c81dd1776d9139d12a5019827ad4a533b21",
+   "satlns.py": "afff86f40d1bee2d152da428202198a041530e41baa4353ec0e55071f25b25d9"
+  },
+  "kernel": "<campaign archive>/2026-11-16-night/bin/bfx-94a75e2c18",
+  "kernel_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "kernel_src_sha256": "c8d293b6ee35e201e7e08d58d750c95ab14af249ee8de8013a3cd1309c244fe8"
+ },
+ "aes_check": "OK   <campaign archive>/2026-11-16-night/T05/found/conjpull-a32-ad5-g105-gd24-48b9e7a153.circ.txt  A AD G GD = 32 5 105 24  counts {'AND': 32, 'XNOR': 24, 'XOR': 49}",
+ "aes_check_full": "OK   <campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-9/conjpull-a32-ad5-g105-gd24-48b9e7a153.circ.txt  A AD G GD = 32 5 105 24  counts {'AND': 32, 'XNOR': 24, 'XOR': 49}\n     new Pareto point on pinned set: YES\n     published best G at GD<=24: 33 4 106 22 (aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt, gain +1)\n     published best G at A<=32: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -2)\n     published best G at A<=32, GD<=24: 32 5 107 22 (aes-sbox-a32-ad5-g107-gd22-xx75-4.circ.txt, gain +2)\n",
+ "circuit_sha256": "48b9e7a153992d82c5fe8f76c1f05c0a530970767e54e243145c131bb35631e3",
+ "path_certified": true,
+ "path_note": "informational only from 2026-11-15 23:50 UTC (user); search states may exceed caps",
+ "utc": "2026-11-16T02:11:14Z",
+ "night": {
+  "runner": "<checkout>/nonlinear/boolflux/campaigns/targets/runner.py",
+  "plan": "<campaign archive>/2026-11-16-night/plan.json",
+  "block": "T05",
+  "job": "conjpull-9",
+  "unit": "xs-P-night-T05-9",
+  "job_dir": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-9",
+  "source_file": "<campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-9/conjpull-a32-ad5-g105-gd24-48b9e7a153.circ.txt",
+  "skey": "538f3ef81dd0a2208df9238a",
+  "runner_aes_check": "OK   <campaign archive>/2026-11-16-night/T05/runs/T05/conjpull-9/conjpull-a32-ad5-g105-gd24-48b9e7a153.circ.txt  A AD G GD = 32 5 105 24  counts {'AND': 32, 'XNOR': 24, 'XOR': 49}",
+  "harvest_utc": "2026-11-16T02:11:16Z"
+ }
+}

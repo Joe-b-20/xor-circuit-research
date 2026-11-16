@@ -44,28 +44,38 @@
   "elapsed_s": "not logged per step by this version (run total 900 s; step 337 of 480)"
  },
  "code": {
-  "commit_at_run": "8922cacae4d4314968c5ce9baa740dea7aa38935",
-  "uncommitted_changes_at_run": false,
+  "commit_at_run": "8922cac",
+  "uncommitted_changes_at_run": true,
   "files": [
    "nonlinear/boolflux/strategies/P1/unionsat2.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run '8922cacae4d4314968c5ce9baa740dea7aa38935', uncommitted_changes_at_run False",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: strategies/P1/unionsat2.py was not in commit 8922cac (an untracked file), and its recorded sha256 matches no public commit"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "cd <campaign archive>/2026-11-15-targets/P1/runs/usat2 && python3 <checkout>/nonlinear/boolflux/strategies/P1/unionsat2.py --lns <checkout>/nonlinear/boolflux/results/aes/aes-nist-hub-pull-g130-a28-gd19-ad5.circ.txt --starts <campaign archive>/2026-11-15-targets/P1/starts_fam.json --extra <campaign archive>/2026-11-15-targets/P1/shared --D 19 --cap-ad 5 --seconds 900 --lns-sec 20 --seed 23 --out t03-d19-best.circ.txt --outdir t03-d19-out --log <campaign archive>/2026-11-15-targets/P1/runs/usat2/lns2.jsonl",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "1427721b1afc6ee01f3d25fd90615113000ad44087b9edf5d49b02847cf63a50",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "lns.jsonl.gz",
+  "run-sidecar.json",
+  "run.log.gz",
   "start.circ.txt"
  ]
 }

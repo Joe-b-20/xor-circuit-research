@@ -1,0 +1,103 @@
+{
+ "run_id": "r00002-polish",
+ "operator": "polish",
+ "choice": "exploit",
+ "target": "ded372fdab1e",
+ "target_metrics": [
+  29,
+  4,
+  129,
+  23
+ ],
+ "target_class": "A<=31",
+ "seed": 487426159,
+ "cpu": 11,
+ "command": [
+  "taskset",
+  "-c",
+  "11",
+  "/usr/bin/python3",
+  "<checkout>/nonlinear/boolflux/hub/op_polish.py",
+  "--archive",
+  "<campaign archive>/2026-11-15-study/X2/gen2",
+  "--in",
+  "ded372fdab1e",
+  "--seed",
+  "487426159",
+  "--seconds",
+  "90",
+  "--out",
+  "<campaign archive>/2026-11-15-study/X2/gen2/jobs/r00002-polish"
+ ],
+ "returncode": 0,
+ "code_version": "f9fe6f7+0c2d27db70",
+ "scheduler_version": "f9fe6f7+0c2d27db70",
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "op_info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 29,
+   "cap.ad": 4,
+   "cap.gd": 23,
+   "in": "<campaign archive>/2026-11-15-study/X2/gen2/jobs/r00002-polish/start.bfx",
+   "out": "<campaign archive>/2026-11-15-study/X2/gen2/jobs/r00002-polish/best.bfx",
+   "seed": 487426159,
+   "seconds": 90.0
+  },
+  "t_last_improvement": 79.587,
+  "kernel_bin": "bfx-593fa798f5",
+  "caps": {
+   "A": 29,
+   "AD": 4,
+   "GD": 23
+  }
+ },
+ "parents": [
+  "ded372fdab1e"
+ ],
+ "wall_s": 104.1,
+ "cpu_s": 94.53,
+ "candidates": 1,
+ "admitted": 1,
+ "gain": 8.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    29,
+    4,
+    128,
+    23
+   ],
+   "status": "admitted",
+   "id": "442582ae7d35",
+   "gain": 8.0
+  }
+ ]
+}

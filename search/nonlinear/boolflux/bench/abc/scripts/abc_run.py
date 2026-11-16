@@ -17,6 +17,7 @@ Mapping portfolio on cur_k.aig (each from a fresh &r):
   m3: &put; dch -f; amap      m4: &dch -f; &nf -p; &put
   m5: &nf -p -k; &put   (last: it aborts ABC with an assertion on many inputs)
 """
+import shutil
 import argparse
 import json
 import os
@@ -86,8 +87,10 @@ def main():
         with open(P(f"step{k}.abc"), "w", encoding="utf-8", newline="\n") as f:
             f.write(script)
         ts = time.time()
-        cmd = ["/usr/bin/time", "-v", "-o", P(f"step{k}.time"), "timeout", "-s", "KILL",
-               f"{max(rem, 0.5):.2f}", a.abc, "-f", P(f"step{k}.abc")]
+        # GNU time records peak memory; without it the step runs untimed and memory is not recorded
+        time_bin = "/usr/bin/time" if os.path.exists("/usr/bin/time") else shutil.which("time")
+        cmd = ([time_bin, "-v", "-o", P(f"step{k}.time")] if time_bin else []) + [
+            "timeout", "-s", "KILL", f"{max(rem, 0.5):.2f}", a.abc, "-f", P(f"step{k}.abc")]
         with open(P(f"step{k}.log"), "w") as lf:
             rc = subprocess.call(cmd, stdout=lf, stderr=subprocess.STDOUT)
         te = time.time()

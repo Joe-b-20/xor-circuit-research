@@ -19,6 +19,7 @@
  "lineage": null,
  "parameters": {},
  "seed": null,
+ "seed_source": "not recorded per job; the worker (w1) ran with seed 222 (campaign sidecar)",
  "found_utc": "2026-11-15T02:26Z",
  "found_utc_source": "recorded by the run",
  "time_to_result_s": null,
@@ -29,21 +30,31 @@
    "nonlinear/boolflux/strategies/T1/t1run.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "f9fe6f7+fb7d3b9e39",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: the recorded hash of hub/*.py and kernel/bfx.c (fb7d3b9e39) matches no public commit; the uncommitted changes were not kept"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
  "command": null,
+ "command_source": "not recorded by the run",
+ "command_note": "the campaign sidecar records: t1run.py v3 op pullD: kernel caps A 28, GD = start GD - 1 or - 2, AD cap off or goal AD (see w1.jobs.jsonl job line), objective a,cost,gd",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "1744039db84b34f0f47d420688798566d80f482c6b30799c49fff9f43db80d14",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
-  "verification.json"
+  "verification.json",
+  "jobs.jsonl.gz",
+  "run-sidecar.json"
  ]
 }

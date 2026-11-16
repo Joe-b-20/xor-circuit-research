@@ -27,31 +27,41 @@
  "chain_root": null,
  "lineage": null,
  "parameters": {},
- "seed": null,
+ "seed": 166382251,
+ "seed_source": "campaign sidecar (results/aes/aes-nist-study-L1-l1-g131-a28-gd22-ad4.campaign.json at e657298): \"seed 166382251\"",
  "found_utc": "2026-11-15T02:57:51Z",
  "found_utc_source": "file time of the run's copy",
  "time_to_result_s": null,
  "code": {
-  "commit_at_run": "d961083",
-  "uncommitted_changes_at_run": false,
+  "commit_at_run": null,
+  "uncommitted_changes_at_run": null,
   "files": [],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run 'd961083', uncommitted_changes_at_run False",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: this job's code version was not recorded (another worker of the same T1 run recorded f9fe6f7+fb7d3b9e39, which matches no public commit)"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
  "command": null,
+ "command_source": "not recorded by the run",
+ "command_note": "the campaign sidecar records: T1 t1run.py v3.1 worker w2, op deep (one 480-s gate-kernel run, caps A 28 / AD 4 / GD 22, lex a,cost,gd, T0 0.3, max_excess 8, seed 166382251) from start 28/4/132/24 (start.bfx copied alongside); G 131 reached at t = 94 s. The worker was stopped at 03:04 UTC (CPU 2 reassigned) before the job finished, so T1 never logged or harvested it.",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "c7d85507e2705eddad6ca4a9616b934e7374f7a91a1ccb1f9748978d9e66a2da",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "run-sidecar.json",
   "start.circ.txt"
  ]
 }

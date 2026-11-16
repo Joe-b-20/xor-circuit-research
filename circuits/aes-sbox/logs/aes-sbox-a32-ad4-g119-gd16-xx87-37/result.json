@@ -1,0 +1,141 @@
+{
+ "op": "conjpull",
+ "target": "T04",
+ "seed": 247057,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-16-night/T04/found/conjpull-a32-ad4-g117-gd17-b83f9deb89.circ.txt",
+ "start_tuple": [
+  32,
+  4,
+  117,
+  17
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "m:-1:600,m:-1:600",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 1197.8,
+ "n_written": 4,
+ "rejected": {
+  "outside": 0,
+  "dominated": 25,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T08:25:49Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    119,
+    16
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-677/conjpull-a32-ad4-g119-gd16-3acd9d4790.circ.txt",
+   "how": "o16-gate",
+   "t": 383.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    129,
+    15
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-677/conjpull-a32-ad4-g129-gd15-3f019bfcc1.circ.txt",
+   "how": "t15-bottom",
+   "t": 1195.8,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    119,
+    16
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-677/conjpull-a32-ad4-g119-gd16-3acd9d4790.circ.txt",
+   "how": "o16-gate",
+   "t": 383.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    129,
+    15
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-677/conjpull-a32-ad4-g129-gd15-3f019bfcc1.circ.txt",
+   "how": "t15-bottom",
+   "t": 1195.8,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "m",
+   "cap": 16,
+   "seed": 247057000,
+   "in": [
+    32,
+    4,
+    117,
+    17
+   ],
+   "best": [
+    32,
+    4,
+    119,
+    16
+   ],
+   "seconds": 598.4
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 15,
+   "seed": 247057010,
+   "in": [
+    32,
+    4,
+    119,
+    16
+   ],
+   "best": [
+    32,
+    4,
+    129,
+    15
+   ],
+   "seconds": 599.3
+  }
+ ],
+ "kernel_calls": 24
+}

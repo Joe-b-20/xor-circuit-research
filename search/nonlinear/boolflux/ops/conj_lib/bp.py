@@ -24,7 +24,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2]))
 sys.path.insert(0, str(HERE))
-from boolflux.hub.common import core, metrics, targets  # noqa: E402
+from boolflux.hub.common import aesfn, core, metrics  # noqa: E402
 import slp  # noqa: E402
 
 
@@ -103,7 +103,7 @@ def optimise(c, D, region, rng, runs, p_norm=0.5, log=print, region_seed=None):
             s = vec.index(f) if f in vec else None
             for t in ts: tb[t] = (s, form[t] & 1)
         nc = slp.assemble(c, rd, gates, tb)
-        if nc.value_table() != targets.aes_sbox():
+        if tuple(nc.value_table()) != aesfn.table():
             info['error'] = 'wrong'; continue
         mm = metrics(nc)
         info['runs'].append((len(gates), mm[2], mm[3]))

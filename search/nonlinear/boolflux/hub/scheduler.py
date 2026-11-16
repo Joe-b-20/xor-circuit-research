@@ -22,6 +22,12 @@ the allow list.  The active set is written to DIR/cpus.json on every change.
 
 Run ids are '<campaign uid>.r<number>-<op>' (DIR/campaign.json holds the uid), unique across
 campaigns, so an archive copied into another campaign keeps unambiguous lineage.
+
+Function: --function aes-sbox (default) or aes-invsbox, kept in DIR/campaign.json (a restart with
+another function is refused); the operators inherit it ($BOOLFLUX_FUNCTION).  Run records
+(runlog.py): DIR/sessions/<UTC>-<pid>/run.json + events.jsonl.gz per scheduler start (command, git
+state, seeds, settings, seed files, kernel, host; every job and admission), and JOBDIR/run.json per
+job; git diffs of a dirty tree go once to DIR/runlog/.  Pinning: taskset, else os.sched_setaffinity.
 """
 from __future__ import annotations
 
@@ -37,11 +43,11 @@ from pathlib import Path
 
 HUBDIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(HUBDIR.parents[1]))
-from boolflux import core   # noqa: E402
+from boolflux import aesfn, core, runlog   # noqa: E402
 from boolflux.hub.common import load, code_version, metrics, cid, file_sha, atomic_write   # noqa: E402
 from boolflux.hub.archive import Archive, GEN_SLACK   # noqa: E402
 from boolflux.hub.funcbank import FuncBank   # noqa: E402
-from boolflux.hub.ops import kernel_bin   # noqa: E402
+from boolflux.hub.ops import kernel_bin, kernel_record   # noqa: E402
 
 DEFAULT_SECONDS = {'polish': 90, 'pull': 90, 'join': 60, 'trb': 30, 'osc': 90, 'gen_inv3': 60,
                    'gen_bottom': 60, 'gen_skel': 60, 'linres': 30, 'gen_joinplus': 90}
@@ -84,6 +90,7 @@ class Scheduler:
         self.args = args; self.dir = Path(args.dir); self.dir.mkdir(parents=True, exist_ok=True)
         (self.dir / 'runs').mkdir(exist_ok=True); (self.dir / 'jobs').mkdir(exist_ok=True)
         self._lock()
+        self.function = self._function()
         self.scripts = dict(SCRIPTS); self.generators = set(GENERATORS)
         self.ar = Archive(self.dir, gain_mode=args.gain); self.fb = FuncBank(self.dir)
         self.ops = args.ops.split(',')
@@ -102,7 +109,17 @@ class Scheduler:
         self.uid = self._campaign_uid()
         self.nrun = self._last_run_number()
         self.rng = random.Random('%s/%d' % (args.seed, self.nrun))   # a restart does not replay the same jobs
-        kernel_bin(self.dir)
+        kb = kernel_bin(self.dir)
+        os.environ['BOOLFLUX_RUNLOG_STORE'] = str((self.dir / 'runlog').resolve())   # one copy of a git diff per campaign
+        sess = self.dir / 'sessions' / ('%s-%d' % (runlog.utc().replace(':', ''), os.getpid()))
+        self.runlog = runlog.RunLog(sess, 'hub.scheduler', argv=getattr(args, 'argv', None),
+                                    seeds={'seed': args.seed, 'rng': "random.Random('%s/%d' % (seed, last run number))",
+                                           'last_run_number': self.nrun,
+                                           'jobs': 'each job gets rng.randrange(1, 2^30); every job is an event'},
+                                    config=dict({k: v for k, v in vars(args).items() if k != 'argv'}, seconds_resolved=self.secs,
+                                                campaign=self.uid, code_version=self.version),
+                                    budget_s=args.hours * 3600, function=self.function)
+        if kb: self.runlog.add_kernel(kb, **kernel_record(kb))
         self.ctl_mtime = None; self.ctl_bad = None
         self.ad3_share = 0.0; self.ingest_globs = []; self.ingested = set(); self.last_ingest = 0
         self.cpus = []; self.free = []; self.running = []; self.allow = set(); self.stop = None
@@ -148,8 +165,21 @@ class Scheduler:
             return json.loads(f.read_text())['uid']
         except Exception:
             uid = '%s-%s' % (self.dir.resolve().name.replace('.', '_'), os.urandom(3).hex())
-            atomic_write(f, json.dumps({'uid': uid, 'created': time.time(), 'dir': str(self.dir.resolve())}, indent=1))
+            atomic_write(f, json.dumps({'uid': uid, 'created': time.time(), 'dir': str(self.dir.resolve()),
+                                        'function': self.function}, indent=1))
             return uid
+
+    def _function(self):
+        """--function, checked against DIR/campaign.json (a campaign written before 2026-11-16 is aes-sbox);
+        made the process's function, so every operator it starts inherits it"""
+        try:
+            old = json.loads((self.dir / 'campaign.json').read_text()).get('function', 'aes-sbox')
+        except Exception:
+            old = None
+        f = aesfn.name(getattr(self.args, 'function', None) or old or 'aes-sbox')
+        if old is not None and f != old:
+            raise SystemExit('%s is an %s campaign (campaign.json); --function %s refused' % (self.dir, old, f))
+        return aesfn.use(f)
 
     def _last_run_number(self):
         """highest run number used in runs/ or jobs/ (a count of run files repeats numbers when a
@@ -351,11 +381,12 @@ class Scheduler:
             except Exception as e:
                 bad += 1; self.log(ev='seed-reject', file=str(f), status='unreadable: %r' % (e,)); continue
             st, r, g = self.ar.admit(c, operator='seed', settings=self.source_info(f), code_version=self.version, force_keep=True)
+            self.runlog.add_start(f, metrics=list(metrics(c)), label='seed: %s' % st, write=False)
             if st == 'admitted':
                 n += 1; self.fb.add_circuit(self.ar.circuit(r['id']), r['id']); self.last_admit = r['t_admit']
             elif not st.startswith(('duplicate', 'not-better')):
                 bad += 1; self.log(ev='seed-reject', file=str(f), status=st)
-        self.fb.save()
+        self.fb.save(); self.runlog.write()
         self.log(ev='seeded', admitted=n, rejected=bad, cells=len(self.ar.cells), front=len(self.ar.front()))
         return n
 
@@ -498,17 +529,21 @@ class Scheduler:
             if not jd.exists() and not (self.dir / 'runs' / (run_id + '.json')).exists(): break
         seed = self.rng.randrange(1, 1 << 30)
         script = self.scripts[op]
-        cmd = ['taskset', '-c', str(cpu), sys.executable, str(script), '--archive', str(self.dir),
+        cmd = [sys.executable, str(script), '--archive', str(self.dir),
                '--in', tid, '--seed', str(seed), '--seconds', str(round(secs, 1)), '--out', str(jd)]
         since = None
         if op == 'join' and self.args.join_mode == 'incremental':
             since = self.join_mark.get(tid, 0.0); cmd += ['--since', repr(since)]
         cmd += [str(x) for x in extra]
+        cmd, pre = runlog.pin(cmd, cpu)                    # taskset -c CPU, else os.sched_setaffinity in the child
+        if env is not None: env = dict(env, **{k: v for k, v in os.environ.items() if k in (aesfn.ENV, 'BOOLFLUX_RUNLOG_STORE')})
         lf = open(self.dir / 'jobs' / (run_id + '.log'), 'w')
-        p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env)
+        p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env, preexec_fn=pre)
+        self.runlog.event('job', run_id=run_id, op=op, why=why, target=tid, seed=seed, cpu=cpu, seconds=round(secs, 1),
+                          pinning=runlog.pinning())
         return {'p': p, 'lf': lf, 'op': op, 'why': why, 'target': tid, 'run_id': run_id, 'jd': jd, 'seed': seed,
                 'cpu': cpu, 't0': time.time(), 'cmd': cmd, 'key': key, 'secs': secs, 'script': str(script), 'script_sha': file_sha(script),
-                'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since}
+                'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since, 'pinning': runlog.pinning()}
 
     @staticmethod
     def kill(job, why):
@@ -552,7 +587,9 @@ class Scheduler:
                'code_version': version, 'scheduler_version': self.version, 't_start': round(job['t0'], 2),
                'settings': {'caps': rec.get('caps'), 'objective': rec.get('objective'), 'seconds': rec.get('seconds', job['secs'])},
                'op_info': rec.get('info'), 'parents': [job['target']], 'wall_s': wall, 'cpu_s': cpu,
-               'candidates': 0, 'admitted': 0, 'gain': 0.0, 'outcome': outcome}
+               'candidates': 0, 'admitted': 0, 'gain': 0.0, 'outcome': outcome,
+               'run_record': str(jd / 'run.json') if (jd / 'run.json').exists() else None,
+               'function': self.function, 'pinning': job.get('pinning')}
         try:
             joins = info.get('joins') if isinstance(info.get('joins'), list) else []
             cand_ids = rec.get('cand_ids') if isinstance(rec.get('cand_ids'), list) else None
@@ -570,7 +607,7 @@ class Scheduler:
                 parents = [job['target']]
                 settings = {'nursery': nurs, 'caps': rec.get('caps'), 'objective': rec.get('objective'),
                             'seconds': rec.get('seconds', job['secs']), 'script': job['script'], 'script_sha': job['script_sha'],
-                            'scheduler_version': self.version}
+                            'scheduler_version': self.version, 'run_record': run['run_record']}
                 if status != 'ok': settings['job_status'] = status       # lineage completed from the launch, flagged
                 if len(joins) == len(files) and isinstance(joins[k], dict) and 'front' in joins[k] and 'back' in joins[k]:
                     parents = [joins[k]['front'], joins[k]['back']]; settings.update(joins[k])
@@ -586,6 +623,8 @@ class Scheduler:
                     gain += g; self.fb.add_circuit(self.ar.circuit(r['id']), r['id']); self.last_admit = r['t_admit']
                     if g > 0: self.renew_caps(rec_metrics(r))
                     self.log(ev='admit', run_id=job['run_id'], op=op, id=r['id'], m=rec_metrics(r), gain=g, parents=parents)
+                    self.runlog.improvement(dict(zip(('A', 'AD', 'G', 'GD'), rec_metrics(r))), op, run_id=job['run_id'],
+                                            id=r['id'], gain=g, pub_new=r.get('pub_new'), parents=parents)
         except Exception as e:                              # the run file is written whatever happens
             run['finish_error'] = repr(e); self.log(ev='finish-error', run_id=job['run_id'], error=repr(e))
         if self.fb.dirty and time.time() - self.last_fb_save > FB_SAVE_S:
@@ -663,6 +702,8 @@ class Scheduler:
             time.sleep(0.5 if not self.stop else 0.1)
         self.fb.save(); self.write_front()
         self.log(ev='end', reason=self.stop or 'time', archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()))
+        self.runlog.finish(self.stop or 'time', archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()),
+                           jobs=self.nrun)
 
 
 def parse_caps_arg(text):
@@ -696,6 +737,8 @@ def parser():
     ap.add_argument('--cap-renew', choices=('never', 'box'), default='never',
                     help='box: a new front tuple inside the cap box (A, AD, GD) of a front tuple renews that tuple\'s caps')
     ap.add_argument('--cap-renew-max', type=int, default=3, help='renewals per (operator, tuple) with --cap-renew box')
+    ap.add_argument('--function', choices=aesfn.NAMES, default=None,
+                    help='aes-sbox or aes-invsbox (default: the campaign\'s, from campaign.json; aes-sbox for a new one)')
     return ap
 
 
@@ -705,11 +748,15 @@ def rec_metrics(r):
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    args.argv = list(sys.argv if argv is None else [sys.argv[0]] + list(argv))
+    runlog.report()
     s = Scheduler(args)
     if args.seed_list:
         s.seed(Path(args.seed_list).read_text().split())
     if not args.seed_only:
         s.run()
+    else:
+        s.runlog.finish('seed-only', archive=len(s.ar.rec), front=len(s.ar.front()))
 
 
 if __name__ == '__main__':

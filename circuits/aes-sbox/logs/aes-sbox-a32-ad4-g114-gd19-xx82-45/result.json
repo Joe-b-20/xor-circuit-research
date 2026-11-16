@@ -1,0 +1,187 @@
+{
+ "op": "conjpull",
+ "target": "T04",
+ "seed": 186032,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-15-study/best-1400/aes-sbox-a32-ad4-g119-gd18-xx87-30.circ.txt",
+ "start_tuple": [
+  32,
+  4,
+  119,
+  18
+ ],
+ "params": {
+  "conj": "188:0",
+  "schedule": "g:24:240,m:21:360,m:19:360",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "wall_s": 957.8,
+ "n_written": 7,
+ "rejected": {
+  "outside": 0,
+  "dominated": 12,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "notes": [],
+ "utc": "2026-11-16T08:01:44Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    112,
+    24
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-655/conjpull-a32-ad4-g112-gd24-af05e10621.circ.txt",
+   "how": "g24",
+   "t": 232.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    113,
+    21
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-655/conjpull-a32-ad4-g113-gd21-14e59964f9.circ.txt",
+   "how": "g21",
+   "t": 595.8,
+   "class": "tradeoff:gates_for_depth"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    114,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-655/conjpull-a32-ad4-g114-gd19-3c51554b08.circ.txt",
+   "how": "o19-gate",
+   "t": 751.8,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    112,
+    24
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-655/conjpull-a32-ad4-g112-gd24-af05e10621.circ.txt",
+   "how": "g24",
+   "t": 232.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    113,
+    21
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-655/conjpull-a32-ad4-g113-gd21-14e59964f9.circ.txt",
+   "how": "g21",
+   "t": 595.8,
+   "class": "tradeoff:gates_for_depth"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    114,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-16-night/T04/runs/T04/conjpull-655/conjpull-a32-ad4-g114-gd19-3c51554b08.circ.txt",
+   "how": "o19-gate",
+   "t": 751.8,
+   "class": "strict"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "188:0",
+   "lam": 188,
+   "k": 0,
+   "stage": 1,
+   "mode": "g",
+   "cap": 24,
+   "seed": 186032000,
+   "in": [
+    32,
+    4,
+    128,
+    22
+   ],
+   "best": [
+    32,
+    4,
+    112,
+    24
+   ],
+   "seconds": 239.4
+  },
+  {
+   "conj": "188:0",
+   "lam": 188,
+   "k": 0,
+   "stage": 2,
+   "mode": "m",
+   "cap": 21,
+   "seed": 186032010,
+   "in": [
+    32,
+    4,
+    112,
+    24
+   ],
+   "best": [
+    32,
+    4,
+    113,
+    21
+   ],
+   "seconds": 358.2
+  },
+  {
+   "conj": "188:0",
+   "lam": 188,
+   "k": 0,
+   "stage": 3,
+   "mode": "m",
+   "cap": 19,
+   "seed": 186032020,
+   "in": [
+    32,
+    4,
+    113,
+    21
+   ],
+   "best": [
+    32,
+    4,
+    114,
+    19
+   ],
+   "seconds": 359.2
+  }
+ ],
+ "kernel_calls": 17
+}

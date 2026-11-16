@@ -45,29 +45,44 @@
   "elapsed_s": 208.1
  },
  "code": {
-  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "commit_at_run": "d9507dd",
   "uncommitted_changes_at_run": true,
   "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
   "files": [
    "nonlinear/boolflux/campaigns/targets/ops/rebase.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run 'd9507dda7bcc83055879fefbfafb7e729e62b22f', uncommitted_changes_at_run True",
+  "exact_code": {
+   "commit": "d72204c",
+   "scope": "all files the run hashed (campaigns/targets/ops/*.py, kernel/bfx.c)",
+   "how": "the run recorded commit d9507dd plus the sha256 of campaigns/targets/ops/*.py and kernel/bfx.c; all of them are identical at public commit d72204c. Other imported files were not hashed"
+  }
  },
  "reproducibility": {
   "class": "one-off",
-  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+  "text": "one-off: a time-budgeted run (not bit-reproducible); re-run on 2026-11-16 (replay)",
+  "replay": "replayed on 2026-11-16 at public commit d72204c: the same gate list as the circuit first recorded, reached at 236 s (the original at 208 s), with the same rebuilt start and stage seed (circuits/REPRODUCE.md#3-re-basing)"
  },
- "command": null,
+ "command": "cd <checkout> && python3 <checkout>/nonlinear/boolflux/campaigns/targets/ops/rebase.py --in <campaign archive>/2026-11-16-night/T08/found/rebase-a35-ad3-g166-gd13-14aee760f9.circ.txt --target T08 --seed 17292 --seconds 900 --out <campaign archive>/2026-11-16-night/T08/runs/T08/rebase-760 --cap 13 --stages 1 --stage-seconds 200",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "e5b68672b0013f3adfc6bce59a66a0ecf9e53184c2764b5fff8a1b0aa81f300e",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "job.out",
+  "plan.json.gz",
+  "rebase.jsonl.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run-start.circ.txt",
+  "runner.log",
   "start.circ.txt"
  ]
 }

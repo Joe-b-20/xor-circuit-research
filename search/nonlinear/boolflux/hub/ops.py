@@ -3,7 +3,10 @@
     op_<name>.py --archive DIR --in ID [--in2 ID] [--caps A,AD,GD] [--objective KEYS] --seed S --seconds T --out JOBDIR
 
 Each writes candidate circuits JOBDIR/cand-*.bfx and JOBDIR/record.json (operator, inputs, settings,
-seed, timing, candidate count, code version).  Operators never admit; the scheduler verifies and admits.
+seed, timing, candidate count, code version), and the run record JOBDIR/run.json + events.jsonl.gz
+(runlog.py: command, git state, seeds, kernel, host; every kernel improvement and every candidate).
+Operators never admit; the scheduler verifies and admits.  The function (aes-sbox or aes-invsbox)
+is the process's ($BOOLFLUX_FUNCTION, set by the scheduler, or --function).
   polish  gate kernel (bfx, strict lexicographic objective) under the given caps (default: the input's own)
   pull    the same with one cap lowered (GD by 1-3, AD by 1 or A by 1; repair mode of the kernel)
   join    transplants of the input with archive partners in both roles (join.py)
@@ -20,8 +23,9 @@ import subprocess
 import time
 from pathlib import Path
 
-from .common import core, metrics, code_version, cid, HUB, PKG
+from .common import aesfn, core, metrics, code_version, cid, HUB, PKG
 from .. import objective as OBJ
+from .. import runlog
 from .archive import Archive
 from . import join as J
 
@@ -53,6 +57,14 @@ def kernel_bin(archive_dir):
     return b
 
 
+KERNEL_SRC = PKG / 'kernel' / 'bfx.c'
+
+
+def kernel_record(b):
+    """source and build command of a kernel_bin() binary, for run records (runlog.RunLog.add_kernel)"""
+    return {'source': KERNEL_SRC, 'command': ['gcc', '-O3', '-march=native', '-o', str(b), str(KERNEL_SRC), '-lm']}
+
+
 def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
     sp = out / 'start.bfx'; sp.write_text(core.to_kernel(c))
     bp = out / 'best.bfx'; cp = out / 'kernel.cfg'
@@ -64,6 +76,7 @@ def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
     cfg.update({'in': sp, 'out': bp, 'seed': seed, 'seconds': seconds})
     cp.write_text(''.join('%s %s\n' % kv for kv in cfg.items()))
     kb = kernel_bin(archive_dir)
+    if RUN is not None: RUN.add_kernel(kb, **kernel_record(kb))
     with open(out / 'kernel.log', 'w') as lf:
         try:
             rc = subprocess.run([str(kb), str(cp)], stdout=lf, stderr=subprocess.STDOUT,
@@ -74,7 +87,12 @@ def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
         raise OpError('kernel %s exit %s: %s' % (kb.name, rc, (out / 'kernel.log').read_text()[-300:].strip()))
     t_imp = None
     for ln in (out / 'kernel.log').read_text().splitlines():
-        if ln.startswith('best t '): t_imp = float(ln.split()[2])
+        if ln.startswith('best t '):
+            t_imp = float(ln.split()[2])
+            if RUN is not None:
+                tk = ln.split(); d = {tk[i]: tk[i + 1] for i in range(1, len(tk) - 1, 2)}
+                RUN.improvement({k: int(d[k]) for k in ('A', 'AD', 'G', 'GD') if k in d}, 'gate kernel',
+                                t_kernel=float(d['t']), it=d.get('it'), move=d.get('mv'), kernel_seed=seed)
     cands = []
     if bp.exists():
         cands.append(core.from_kernel(bp.read_text(), 'best'))
@@ -84,6 +102,9 @@ def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
 
 class OpError(Exception):
     pass
+
+
+RUN = None                                 # the job's runlog.RunLog (set by main)
 
 
 def op_polish(ar, args, rng, out):
@@ -202,12 +223,24 @@ def main(name, argv=None):
     ap.add_argument('--since', type=float, default=None,
                     help='join: partners = every cell member admitted after this time (0 = all); omit for the legacy pool')
     ap.add_argument('--max-cands', type=int, default=40)
+    ap.add_argument('--function', choices=aesfn.NAMES, default=None,
+                    help='aes-sbox or aes-invsbox (default: $BOOLFLUX_FUNCTION, which the scheduler sets, else aes-sbox)')
     ap.add_argument('--out', required=True)
     args = ap.parse_args(argv)
+    if args.function: aesfn.use(args.function)
     if args.caps: args.caps = parse_caps(args.caps)
     OBJ.parse(args.objective)
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     if any(out.glob('cand-*.bfx')): raise SystemExit('--out %s already holds candidates: a job directory is used once' % out)
+    global RUN
+    RUN = runlog.RunLog(out, 'hub.op.' + name,
+                        seeds={'seed': args.seed, 'rng': 'random.Random(seed): pull cap choice, join partner order, trb regions',
+                               'kernel_seed': args.seed if name in ('polish', 'pull') else None},
+                        config={k: v for k, v in vars(args).items() if k != 'out'}, budget_s=args.seconds,
+                        function=aesfn.name())
+    for i in [args.inp] + ([args.in2] if args.in2 else []):
+        RUN.add_start(Path(args.archive) / 'archive' / (i + '.bfx'), label='archive member %s' % i, write=False)
+    RUN.write()
     rng = random.Random(args.seed)
     t0 = time.time(); r0 = resource.getrusage(resource.RUSAGE_SELF); c0 = resource.getrusage(resource.RUSAGE_CHILDREN)
     cands, info, error = [], {}, None
@@ -222,11 +255,14 @@ def main(name, argv=None):
     ids = []
     for k, c in enumerate(cands):
         (out / ('cand-%03d.bfx' % k)).write_text(core.to_kernel(c)); ids.append(cid(c))
+        RUN.event('candidate', file='cand-%03d.bfx' % k, id=ids[-1], metrics=dict(zip(('A', 'AD', 'G', 'GD'), metrics(c))))
     r1 = resource.getrusage(resource.RUSAGE_SELF); c1 = resource.getrusage(resource.RUSAGE_CHILDREN)
     cpu = (r1.ru_utime + r1.ru_stime - r0.ru_utime - r0.ru_stime) + (c1.ru_utime + c1.ru_stime - c0.ru_utime - c0.ru_stime)
     rec = {'operator': name, 'inputs': [args.inp] + ([args.in2] if args.in2 else []), 'caps': args.caps,
            'objective': args.objective, 'seed': args.seed, 'seconds': args.seconds, 'wall_s': round(time.time() - t0, 2),
-           'cpu_s': round(cpu, 2), 'candidates': len(cands), 'cand_ids': ids, 'code_version': code_version(), 'info': info}
+           'cpu_s': round(cpu, 2), 'candidates': len(cands), 'cand_ids': ids, 'code_version': code_version(), 'info': info,
+           'function': aesfn.name(), 'run': RUN.summary()}
     if error: rec['error'] = error
     (out / 'record.json').write_text(json.dumps(rec, indent=1, default=str))
+    RUN.finish('error' if error else 'ok', candidates=len(cands), error=error)
     return 1 if error else 0

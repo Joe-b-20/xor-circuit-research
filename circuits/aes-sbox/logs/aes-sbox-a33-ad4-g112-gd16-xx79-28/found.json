@@ -52,22 +52,37 @@
    "nonlinear/boolflux/kernel/bfx.c"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "377b03f+af064d3f90",
+  "exact_code": {
+   "commit": null,
+   "scope": null,
+   "how": "unknown: the recorded hash of hub/*.py and kernel/bfx.c (af064d3f90) matches no public commit; the uncommitted changes were not kept"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "taskset -c 5 /usr/bin/python3 <checkout>/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/2026-11-14-hub/abhub --in de51578711e8 --seed 912964571 --seconds 90 --out <campaign archive>/2026-11-14-hub/abhub/jobs/r00368-polish",
+ "command_source": "hub run record <campaign archive>/2026-11-14-hub/abhub/runs/r00368-polish.json (published: run.json)",
  "record": {
   "where": "campaign archive (not published): hub archive, circuit id 564912ee59ce",
   "sha256": "1300ad97ff3ea8b55b1e741210ef0e191affdabb906778fa536d0ff8da57343f",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "circuit.json",
+  "events.jsonl.gz",
+  "input.bfx",
+  "input.json",
+  "job-record.json",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "run.json",
   "start.circ.txt"
  ]
 }

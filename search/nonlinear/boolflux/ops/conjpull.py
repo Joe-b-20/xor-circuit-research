@@ -29,7 +29,9 @@ which writes each new job-local Pareto point (aes_check, sidecar) at once.
 
 Method: inv = H o inv o G for G(z) = lam z^(2^k), so every
 circuit has 2040 conjugates with the same AND structure; only the top linear layer (forms f -> f o G)
-and the output layer (Mout) change.  conj3 scores each by a BP top proxy + Paar bottom proxy; build_conj
+and the output layer (Mout) change.  For the inverse S-box (--function aes-invsbox, or a start that
+computes it with the default --function auto) S^-1(y) = G'(S^-1(Lin y + cL)), Lin = A G A^-1: the top
+layer goes through the affine map Lin y + cL and the outputs through G' (conj_lib/conj.py maps()).  conj3 scores each by a BP top proxy + Paar bottom proxy; build_conj
 builds one (BP top resynthesis, trb top/bottom passes).  The kernel then finds other XOR layers in the
 new linear basis: loose GD cap in gate mode first, then mix stages at tighter caps.
 """
@@ -106,7 +108,8 @@ def screen(c, start_sha, cache_dir, top_runs=4, log=print, offset=0):
 
 
 def screen_slice(c, k, top_runs):
-    """conj3.py main loop for one k (255 lams): BP top proxy + Paar bottom proxy."""
+    """conj3.py main loop for one k (255 lams): BP top proxy + Paar bottom proxy.  The input map In
+    and output map Out are conj.maps() of the process's function (aes-sbox: G and Mout)."""
     if True:
         import conj3 as C3
         CJ = C3.CJ
@@ -114,9 +117,7 @@ def screen_slice(c, k, top_runs):
         rows = []
         for k in [k]:
             for lam in range(1, 256):
-                G = CJ.matrix(lambda z: CJ.gmul(lam, CJ.gpow(z, 1 << k)))
-                Gp = CJ.matrix(lambda w: CJ.gpow(CJ.gmul(lam, w), 1 << ((8 - k) % 8)))
-                Mout = CJ.matrix(lambda y: CJ.apply(CJ.A, CJ.apply(Gp, CJ.apply(CJ.Ainv, y))))
+                G, _, Mout, _ = CJ.maps(lam, k)
                 urow = []
                 for i in range(8):
                     bit = 7 - i
@@ -208,6 +209,7 @@ def kernel(ctx, c, capgd, iters, seed, seconds, rk, style='f'):
     m0 = CM.metrics(c)
     inside = m0[0] <= ctx.cap['A'] and m0[1] <= ctx.cap['AD'] and m0[3] <= capgd
     ctx.cert = ctx.cert and (inside or rk == 1)
+    t_call = now()
     try:
         r = subprocess.run([str(ctx.bfx), str(cp)], capture_output=True, text=True, timeout=max(1, seconds) + 30)
         rc = r.returncode
@@ -220,6 +222,10 @@ def kernel(ctx, c, capgd, iters, seed, seconds, rk, style='f'):
             ctx.log('kernel returned a wrong function (call %d); ignored' % ctx.ncall); out = None
     else:
         ctx.log('kernel call %d exit %s: %s' % (ctx.ncall, rc, (getattr(r, 'stdout', '') or '')[-300:] if rc != 'timeout' else ''))
+    ctx.rec.log.event('kernel', call=ctx.ncall, seed=seed, cap_gd=capgd, cap_a=ctx.cap['A'], cap_ad=ctx.cap['AD'],
+                      repair_keep=rk, style=style, iters=iters, seconds=max(1, int(seconds)), rc=rc,
+                      wall_s=round(now() - t_call, 2), start=list(m0), best=list(CM.metrics(out)) if out is not None else None,
+                      lineage=list(ctx.lineage))
     for p in (sp, op_, cp):
         try: p.unlink()
         except OSError: pass
@@ -357,6 +363,7 @@ def main(argv=None):
     ap.add_argument('--screen-cache', default=str(CM.CACHE / 'cache' / 'conj3'))
     ap.add_argument('--kernel', default=None, help='kernel binary (default: repo build bfx-<sha1(bfx.c)[:10]>)')
     a = ap.parse_args(argv)
+    function = CM.init_function(a)
     T0 = now(); T_END = T0 + a.seconds
     a.repair_keep = a.seed % 2 if str(a.repair_keep) == 'alt' else int(a.repair_keep)
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
@@ -380,12 +387,18 @@ def main(argv=None):
     params = {'conj': a.conj, 'schedule': a.schedule, 'beam': a.beam, 'repair_keep': a.repair_keep, 'beam_rk': beam_rk,
               'kcfg': ctx.kcfg, 'stage_iters': a.stage_iters, 'relax': a.relax, 'repair_iters': a.repair_iters,
               'trb_regions': a.trb_regions, 'top_runs': a.top_runs, 'screen_runs': a.screen_runs,
-              'caps': {'A': ctx.lim['A'], 'AD': ctx.lim['AD']}, 'kernel_bin': ctx.bfx.name}
+              'caps': {'A': ctx.lim['A'], 'AD': ctx.lim['AD']}, 'kernel_bin': ctx.bfx.name, 'function': function}
     command = ' '.join([sys.executable, str(Path(__file__).resolve())] + list(argv if argv is not None else sys.argv[1:]))
-    method = ('ops/conjpull.py: GF(2^8) conjugate (conj3 screen + build_conj) then staged kernel pulls %s '
+    method = (('' if function == 'aes-sbox' else '%s: ' % CM.aesfn.label(function)) +
+              'ops/conjpull.py: GF(2^8) conjugate (conj3 screen + build_conj) then staged kernel pulls %s '
               '(kernel %s, repair_keep %d unless a stage says rk0/rk1); search states may exceed '
               'caps, recorded circuits inside A<=%d AD<=%d' % (a.schedule, ctx.bfx.name, a.repair_keep, ctx.lim['A'], ctx.lim['AD']))
-    rec = CM.Recorder(out, OP, a.target, a.inp, a.seed, command, method, params, kernel=ctx.bfx, t0=T0)
+    rec = CM.Recorder(out, OP, a.target, a.inp, a.seed, command, method, params, kernel=ctx.bfx, t0=T0,
+                      budget_s=a.seconds,
+                      seeds={'stage_seed': 'seed x 1000 + stage index x 10 + beam index (or the stage s<N> option); '
+                                            'every stage and kernel seed is an event in events.jsonl.gz',
+                             'kernel_seed': 'stage seed x 100000 + sub-step (+7, +13 within an osc step)',
+                             'trb_rng': 'random.Random(stage seed)'})
     ctx.rec = rec
     stages_log = []
 
@@ -398,7 +411,7 @@ def main(argv=None):
     status = 'ok'
     try:
         start = CM.load(a.inp)
-        assert start.value_table() == CM.AES, 'start does not compute the AES S-box'
+        assert start.value_table() == CM.AES, 'start does not compute the %s' % CM.aesfn.label(function)
         log('start', CM.metrics(start), a.inp, 'kernel', ctx.bfx)
         items = conj_list(a.conj, start, rec.start_sha, a, log)
         if is_conjugated(a.inp) and not a.allow_reconj:
@@ -418,6 +431,8 @@ def main(argv=None):
             else:
                 t1 = now()
                 cc = build_conj(start, lam, k, a.top_runs)
+                rec.log.event('conjugate', name=name, lam=lam, k=k, score=score, metrics=list(CM.metrics(cc)),
+                              build_rng='random.Random(%d) (BP top), random.Random(1) (resynth)' % (lam * 8 + k))
                 ctx.lineage = ['conj lam %d k %d (%s, score %s)' % (lam, k, name, score)]
                 log('conjugate', name, lam, k, 'score', score, '->', CM.metrics(cc), '%.1fs' % (now() - t1))
             cur = cc
@@ -443,6 +458,7 @@ def main(argv=None):
                     stages_log.append({'conj': name, 'lam': lam, 'k': k, 'stage': si + 1, 'mode': mode, 'cap': D,
                                        'seed': sd, 'in': list(CM.metrics(cur)), 'best': list(CM.metrics(b)),
                                        'seconds': round(now() - t1, 1)})
+                    rec.log.event('stage', **stages_log[-1], repair_keep=rkk)
                     log('stage', si + 1, mode, D, 'seed', sd, CM.metrics(cur), '->', CM.metrics(b), '%.0fs' % (now() - t1))
                 feasD = lambda c: CM.metrics(c)[3] <= D
                 bests.sort(key=lambda c: (0 if feasD(c) else 1, CM.metrics(c)[2], CM.metrics(c)[3]))

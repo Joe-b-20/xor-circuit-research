@@ -44,28 +44,40 @@
  "found_utc_source": "file time of the run's copy",
  "time_to_result_s": null,
  "code": {
-  "commit_at_run": "7c53f2e4",
+  "commit_at_run": null,
   "uncommitted_changes_at_run": true,
   "files": [
    "nonlinear/boolflux/strategies/F/fdrive.py"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "corrected_2026_11_16": "was commit_at_run '7c53f2e4', uncommitted_changes_at_run True",
+  "exact_code": {
+   "commit": "377b03f",
+   "scope": "scripts as found at curation, not at run time",
+   "how": "the campaign recorded no commit (the earlier 7c53f2e4 was the sha256 prefix of its kernel source, which is kernel/bfx.c at 154ded8); at curation the driver scripts were identical to public commit 377b03f. The exact code of the run is not known"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "taskset -c 1 /usr/bin/python3 <checkout>/nonlinear/boolflux/strategies/F/fdrive.py --start <campaign archive>/2026-11-13-aes/best/aes-sbox-a35-ad3-g163-gd14-xx128-58.circ.txt --cap 14 --mode trb --seconds 2700 --seed 801 --out <campaign archive>/2026-11-13-aes/F/ad3b/a35-t14 --stage-iters 200000 --cap-ad 3 --cap-a 35  env {}",
+ "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",
  "record": {
   "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
   "sha256": "1fc5ca49da406c2694bbf193290054cbe5b84350ed34af176785e425d5cc330a",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "cmd.txt",
+  "env.json",
+  "log.jsonl.gz",
+  "run-sidecar.json",
+  "run-start.circ.txt",
   "start.circ.txt"
  ]
 }

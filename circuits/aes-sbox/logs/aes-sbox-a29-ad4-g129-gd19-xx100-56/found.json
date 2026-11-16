@@ -49,29 +49,46 @@
  },
  "code": {
   "commit_at_run": "8922cac",
-  "uncommitted_changes_at_run": true,
+  "uncommitted_changes_at_run": false,
   "files": [
    "nonlinear/boolflux/hub/op_pull.py",
    "nonlinear/boolflux/hub/archive.py",
    "nonlinear/boolflux/kernel/bfx.c"
   ],
   "files_at": "e657298",
-  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)",
+  "code_version": "8922cac+1df9fcd2fb",
+  "corrected_2026_11_16": "was commit_at_run '8922cac', uncommitted_changes_at_run True",
+  "exact_code": {
+   "commit": "8922cac",
+   "scope": "all files the run hashed",
+   "how": "code_version 8922cac+1df9fcd2fb has no -dirty flag (tracked files under nonlinear/boolflux matched 8922cac) and its source hash, recomputed at 8922cac, is the same"
+  }
  },
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
  },
- "command": null,
+ "command": "taskset -c 16 /usr/bin/python3 <checkout>/nonlinear/boolflux/hub/op_pull.py --archive <campaign archive>/2026-11-14-hub/long --in d88a0185bd60 --seed 852217122 --seconds 90 --out <campaign archive>/2026-11-14-hub/long/jobs/long-4b689e.r06378-pull",
+ "command_source": "hub run record <campaign archive>/2026-11-14-hub/long/runs/long-4b689e.r06378-pull.json (published: run.json)",
  "record": {
   "where": "campaign archive (not published): hub archive, circuit id f3cc0288308a",
   "sha256": "497a20690d2d9ad04db93a162eaeaea0486e16f4da869fcfa029b9c8e42f6c04",
   "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
  },
- "run_logs": "campaign archive (not published)",
+ "run_logs": "published here: the records of this run that the campaign archive kept (listed in logs; paths rewritten, see circuits/README.md#logs); the rest of the archive is not published",
  "logs": [
   "found.json",
   "verification.json",
+  "circuit.json",
+  "control.json",
+  "events.jsonl.gz",
+  "input.bfx",
+  "input.json",
+  "job-record.json",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "run.json",
   "start.circ.txt"
  ]
 }
