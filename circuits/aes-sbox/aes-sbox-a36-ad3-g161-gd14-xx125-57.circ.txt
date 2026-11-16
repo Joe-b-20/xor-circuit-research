@@ -2,19 +2,26 @@
 
 ## File source
   % Timestamp (UTC): 2026-11-14T21:39:05Z
-  % Not a NIST-issued circuit
-  % Found by: BoolFlux, cap oscillation (hub operator osc)
-  % Started from: our 35/3/162/14 circuit (start.circ.txt in the logs)
-  % Logs: logs/aes-sbox-a36-ad3-g161-gd14-xx125-57/
+  % Compiled by: xor-circuit-research (BoolFlux)
+  % Webpage: https://github.com/Joe-b-20/xor-circuit-research/blob/main/circuits/README.md
+  % Repository: https://github.com/Joe-b-20/xor-circuit-research/
 
 ## Index of circuits (circuitName numOutputs numInputs)
   % aes-sbox-a36-ad3-g161-gd14-xx125-57 8 8
 
+## Acknowledgment note
+  % The circuit in this file follows from transformations applied to the sbox/A35/AD3/G162/GD14 circuit found
+  % earlier by BoolFlux from NIST's aes-sbox-a35-ad3-g157-gd15-xx122-31 (start.circ.txt in the logs), using
+  % BoolFlux's cap oscillation (code at 97abda7):
+  % https://github.com/Joe-b-20/xor-circuit-research/blob/97abda77475b990ee0df77957807dfd718cb3c17/nonlinear/boolflux/hub/archive.py
+  % Compared with NIST's aes-sbox-a35-ad3-g172-gd14-xx137-30, the new circuit reduces #gates from 172 to 161 and
+  % increases #AND from 35 to 36.
+  % Logs: logs/aes-sbox-a36-ad3-g161-gd14-xx125-57/
+
 ## Circuit
 begin circuit aes-sbox-a36-ad3-g161-gd14-xx125-57
 
-  % Description: AES Sbox Forward, compatible with NIST-FIPS 197
-  % Interface: x0 is the most significant bit of the input byte and y0 of the output byte, as in NIST's files
+  % Description: AES Sbox, compatible with NIST-FIPS 197
   % Circuit-name syntax: <basename>-aA-adAD-gG-gdGD-xxX-Y
   % A = #AND; AD = AND-depth; G = #Gates; GD = Gate-depth; X = #XOR + #XNOR; Y = #XNOR
   % Tally of variables (169): 8 inputs; 8 outputs; 153 intermediates
@@ -23,37 +30,37 @@ begin circuit aes-sbox-a36-ad3-g161-gd14-xx125-57
   % Gates per gate level: 10 13 14 9 9 13 20 17 10 12 12 9 8 5
   % AND gates per AND level: 11 12 13
 
-Inputs: x0:x7
-Outputs: y0:y7
+Inputs: U0:U7
+Outputs: S0:S7
 Internal: a1:a36 t1:t117
 GateSyntax: GateName Output Inputs
 
 begin SLP
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
-XNOR t1 x2 x4
-XOR t2 x1 x5
-XNOR t3 x5 x6
-XNOR t4 x0 x3
-XOR t5 x3 x6
-XNOR t6 x0 x2
-XOR t7 x4 x7
-XOR t8 x3 x7
-XOR t9 x2 x5
-XOR t10 x1 x6
+XNOR t1 U2 U4
+XOR t2 U1 U5
+XNOR t3 U5 U6
+XNOR t4 U0 U3
+XOR t5 U3 U6
+XNOR t6 U0 U2
+XOR t7 U4 U7
+XOR t8 U3 U7
+XOR t9 U2 U5
+XOR t10 U1 U6
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
 AND a1 t1 t2
-XOR t11 x4 t4
-XOR t12 x0 t3
-XNOR t13 x0 t5
+XOR t11 U4 t4
+XOR t12 U0 t3
+XNOR t13 U0 t5
 XOR t14 t6 t7
-XOR t15 x6 t7
+XOR t15 U6 t7
 XOR t16 t8 t9
 XOR t17 t4 t7
-XOR t18 x6 t9
+XOR t18 U6 t9
 XNOR t19 t6 t10
-XOR t20 x7 t3
+XOR t20 U7 t3
 XNOR t21 t1 t5
-XNOR t22 x3 t2
+XNOR t22 U3 t2
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
 XOR t23 a1 t3
 AND a2 t11 t12
@@ -61,14 +68,14 @@ AND a3 t13 t14
 AND a4 t15 t16
 XOR t24 t10 t17
 XNOR t25 t11 t18
-XOR t26 x5 t17
-XOR t27 x1 t16
-XNOR t28 x7 t12
+XOR t26 U5 t17
+XOR t27 U1 t16
+XNOR t28 U7 t12
 XOR t29 t16 t10
 AND a5 t19 t20
 AND a6 t21 t22
-AND a7 x3 t18
-AND a8 x1 t17
+AND a7 U3 t18
+AND a8 U1 t17
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
 XOR t30 t23 a2
 XOR t31 a3 a4
@@ -98,10 +105,10 @@ XNOR t49 t41 t42
 XOR t50 t37 t25
 XNOR t51 t40 t42
 XNOR t52 t37 t35
-XOR t53 x6 t37
+XOR t53 U6 t37
 XNOR t54 t42 t43
 XOR t55 t37 t44
-XNOR t56 x1 t43
+XNOR t56 U1 t43
 XNOR t57 a5 a11
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 7
 XOR t58 t45 t24
@@ -181,7 +188,7 @@ XOR t107 t97 t99
 XOR t108 t94 t95
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 12
 XNOR t109 a24 a25
-XNOR y6 a26 a27
+XNOR S6 a26 a27
 AND a32 t98 t105
 AND a33 t96 t106
 XOR t110 t105 t106
@@ -190,19 +197,19 @@ XOR t112 a30 a31
 AND a34 t93 t107
 AND a35 t98 t108
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 13
-XNOR y2 t109 y6
+XNOR S2 t109 S6
 XNOR t113 a32 a33
 AND a36 t93 t110
 XOR t114 a33 t111
 XNOR t115 t112 a34
 XOR t116 t109 a27
 XOR t117 a25 a35
-XNOR y5 y6 t111
+XNOR S5 S6 t111
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 14
-XOR y0 y2 t113
-XNOR y1 a36 t114
-XOR y3 t115 t116
-XNOR y4 t113 t117
-XOR y7 a34 t116
+XOR S0 S2 t113
+XNOR S1 a36 t114
+XOR S3 t115 t116
+XNOR S4 t113 t117
+XOR S7 a34 t116
 end SLP
 end circuit

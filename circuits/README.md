@@ -43,8 +43,9 @@ checks NIST's own S-box circuits in [search/nonlinear/seeds/](../search/nonlinea
 - In `<map>.mat.txt`, the line `1`, then `rows cols`, then one 0/1 row per output: row `i` is
   `y_i`, column `j` is `x_j`, counting from 0. An optional last line of `rows` 0/1 values gives
   output constants (`y_i = row_i·x ⊕ c_i`).
-- Boolean circuits: gates AND, XOR, XNOR and NOT, counted as NIST counts them (below). Input
-  `x0` is the most significant bit of the input byte and `y0` of the output byte, as in NIST's files.
+- Boolean circuits: gates AND, XOR, XNOR and NOT, counted as NIST counts them (below). Inputs are
+  `U0:U7` and outputs `S0:S7`, as in NIST's files: `U0` is the most significant bit of the input byte
+  and `S0` of the output byte.
 - Each circuit's header names the search that found it (the XORFlux version, or the BoolFlux
   method), how its run started and where its logs are. XORFlux versions are listed in
   [search/linear/HISTORY.md](../search/linear/HISTORY.md#versions); the time each

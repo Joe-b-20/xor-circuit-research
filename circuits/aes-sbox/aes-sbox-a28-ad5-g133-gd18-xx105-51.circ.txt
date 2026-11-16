@@ -2,19 +2,26 @@
 
 ## File source
   % Timestamp (UTC): 2026-11-15T00:06:33Z
-  % Not a NIST-issued circuit
-  % Found by: BoolFlux, depth pull (hub operator pull)
-  % Started from: our 28/5/130/19 circuit (start.circ.txt in the logs)
-  % Logs: logs/aes-sbox-a28-ad5-g133-gd18-xx105-51/
+  % Compiled by: xor-circuit-research (BoolFlux)
+  % Webpage: https://github.com/Joe-b-20/xor-circuit-research/blob/main/circuits/README.md
+  % Repository: https://github.com/Joe-b-20/xor-circuit-research/
 
 ## Index of circuits (circuitName numOutputs numInputs)
   % aes-sbox-a28-ad5-g133-gd18-xx105-51 8 8
 
+## Acknowledgment note
+  % The circuit in this file follows from transformations applied to the sbox/A28/AD5/G130/GD19 circuit found
+  % earlier by BoolFlux from NIST's aes-sbox-a28-ad5-g128-gd20-xx100-27 (start.circ.txt in the logs), using
+  % BoolFlux's depth pull (code at 97abda7):
+  % https://github.com/Joe-b-20/xor-circuit-research/blob/97abda77475b990ee0df77957807dfd718cb3c17/nonlinear/boolflux/hub/op_pull.py
+  % Compared with NIST's aes-sbox-a28-ad4-g141-gd16-xx113-27, the new circuit reduces #gates from 141 to 133 and
+  % increases AND depth from 4 to 5 and gate depth from 16 to 18.
+  % Logs: logs/aes-sbox-a28-ad5-g133-gd18-xx105-51/
+
 ## Circuit
 begin circuit aes-sbox-a28-ad5-g133-gd18-xx105-51
 
-  % Description: AES Sbox Forward, compatible with NIST-FIPS 197
-  % Interface: x0 is the most significant bit of the input byte and y0 of the output byte, as in NIST's files
+  % Description: AES Sbox, compatible with NIST-FIPS 197
   % Circuit-name syntax: <basename>-aA-adAD-gG-gdGD-xxX-Y
   % A = #AND; AD = AND-depth; G = #Gates; GD = Gate-depth; X = #XOR + #XNOR; Y = #XNOR
   % Tally of variables (141): 8 inputs; 8 outputs; 125 intermediates
@@ -23,36 +30,36 @@ begin circuit aes-sbox-a28-ad5-g133-gd18-xx105-51
   % Gates per gate level: 6 6 7 11 7 6 5 3 3 3 8 8 7 10 15 12 9 7
   % AND gates per AND level: 10 1 2 2 13
 
-Inputs: x0:x7
-Outputs: y0:y7
+Inputs: U0:U7
+Outputs: S0:S7
 Internal: a1:a28 t1:t97
 GateSyntax: GateName Output Inputs
 
 begin SLP
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
-XOR t1 x3 x6
-XOR t2 x3 x4
-XNOR t3 x2 x3
-XOR t4 x0 x5
-XNOR t5 x1 x2
-XOR t6 x2 x7
+XOR t1 U3 U6
+XOR t2 U3 U4
+XNOR t3 U2 U3
+XOR t4 U0 U5
+XNOR t5 U1 U2
+XOR t6 U2 U7
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
-XOR t7 x7 t1
-XOR t8 x6 t2
-XOR t9 x0 t3
+XOR t7 U7 t1
+XOR t8 U6 t2
+XOR t9 U0 t3
 XOR t10 t4 t5
 XOR t11 t4 t6
-XOR t12 x5 t2
+XOR t12 U5 t2
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
-XNOR t13 x5 t7
-XNOR t14 x1 t8
+XNOR t13 U5 t7
+XNOR t14 U1 t8
 XOR t15 t8 t10
-XNOR t16 x6 t11
+XNOR t16 U6 t11
 XNOR t17 t1 t10
 XOR t18 t7 t6
-XNOR t19 x5 t11
+XNOR t19 U5 t11
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
-XOR t20 x4 t13
+XOR t20 U4 t13
 AND a1 t9 t15
 AND a2 t7 t16
 AND a3 t12 t17
@@ -70,7 +77,7 @@ XOR t25 a3 a4
 AND a9 t13 t21
 AND a10 t10 t22
 XOR t26 a6 a7
-XOR t27 x3 t23
+XOR t27 U3 t23
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 6
 XOR t28 a8 t24
 XNOR t29 t25 a9
@@ -102,7 +109,7 @@ XOR t46 t37 a13
 XOR t47 a12 t43
 XNOR t48 a12 t42
 XOR t49 t3 t44
-XNOR t50 x5 a12
+XNOR t50 U5 a12
 XNOR t51 t16 a12
 XNOR t52 t21 a12
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 12
@@ -121,7 +128,7 @@ XNOR t61 a15 t49
 XOR t62 a14 t50
 XOR t63 t2 t54
 XOR t64 t7 a14
-XOR t65 x0 t56
+XOR t65 U0 t56
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 14
 XNOR t66 t59 t60
 XOR t67 t53 t61
@@ -132,11 +139,11 @@ XNOR t69 t61 t27
 AND a18 t60 t51
 AND a19 t61 t58
 XOR t70 t2 t61
-XOR t71 x0 t61
+XOR t71 U0 t61
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 15
 XNOR t72 t66 t23
 XNOR t73 t10 t67
-XNOR t74 x5 a16
+XNOR t74 U5 a16
 AND a20 t66 t67
 AND a21 t68 t63
 XOR t75 t15 a17
@@ -170,15 +177,15 @@ XNOR t94 t85 a19
 XNOR t95 a21 t86
 AND a28 t87 t88
 XOR t96 a23 t89
-XNOR y6 a26 t90
+XNOR S6 a26 t90
 XNOR t97 t89 t90
 %%%%%%%%%%%%%%%%%%%%%%%% Gate level 18
-XOR y0 t91 t92
-XNOR y1 t83 t93
-XNOR y2 t26 t91
-XOR y3 a27 t94
-XOR y4 t95 a28
-XOR y5 t86 t96
-XNOR y7 t91 t97
+XOR S0 t91 t92
+XNOR S1 t83 t93
+XNOR S2 t26 t91
+XOR S3 a27 t94
+XOR S4 t95 a28
+XOR S5 t86 t96
+XNOR S7 t91 t97
 end SLP
 end circuit

@@ -1,6 +1,6 @@
 {
  "circuit": "aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt",
- "sha256": "3d6ae77cf712914f1caf9449af7ffd1018c3e5dd5f72fc55bbb0cf1a55544c27",
+ "sha256": "529c4311bbf24ac02999b47a909a152309568731fb04eef85f5304b7ea177434",
  "ok": true,
  "function": "AES S-box, forward (FIPS 197): inversion in GF(2^8) mod x^8+x^4+x^3+x+1, then the affine map with constant 0x63",
  "tuple_A_AD_G_GD": [
@@ -26,7 +26,7 @@
   "name_and_header_tallies_match": true,
   "problems": []
  },
- "bit_order": "x0 and y0 are the most significant bits (msb/msb), as in NIST's files",
+ "bit_order": "U0 and S0 are the most significant bits (msb/msb), as in NIST's files",
  "nist": {
   "pin": "3d807741f937d29d3bef4f32f142ccda0cda9070",
   "compared_with": "every forward AES S-box circuit of the pin: aes-sbox/, sbox/aes-sbox-fwd-*, old-2020/aes-sbox-fwd-*",
@@ -53,6 +53,6 @@
   }
  },
  "start_circuits": {},
- "checked_utc": "2026-11-16T14:24:11Z",
- "checker": "search/nonlinear/boolflux/aes_check.py and the boolcirc checks of circuits/check.py, as at commit e657298 (then nonlinear/boolflux/campaigns/aes_check.py and nonlinear/check.py)"
+ "checked_utc": "2026-11-16T16:31:59Z",
+ "checker": "search/nonlinear/boolflux/aes_check.py and the boolcirc checks of circuits/check.py, as at commit c0fb67d"
 }
