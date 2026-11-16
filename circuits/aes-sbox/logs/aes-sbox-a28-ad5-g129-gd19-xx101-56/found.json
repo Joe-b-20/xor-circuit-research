@@ -1,0 +1,71 @@
+{
+ "circuit": "aes-sbox-a28-ad5-g129-gd19-xx101-56.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  5,
+  129,
+  19
+ ],
+ "found_by": "BoolFlux",
+ "method": "SAT LNS",
+ "method_description": "span-pooled SAT large-neighbourhood search over circuit windows, then gate-kernel polish",
+ "operator": null,
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   28,
+   5,
+   130,
+   19
+  ],
+  "source_sha256": "e074f95080a8bf03c1ca51fb0c64fef738f20a73eafd9e8ff355a06533fa2c78",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a28-ad5-g130-gd19-xx102-53"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 5,
+   "A": 28
+  },
+  "D": 19,
+  "cap_ad": 5,
+  "seconds": 900,
+  "lns_sec": 20,
+  "outdir": "t03-d19-out"
+ },
+ "seed": 23,
+ "found_utc": "2026-11-15T17:28:49Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": "not logged per step by this version (run total 900 s; step 337 of 480)"
+ },
+ "code": {
+  "commit_at_run": "8922cacae4d4314968c5ce9baa740dea7aa38935",
+  "uncommitted_changes_at_run": false,
+  "files": [
+   "nonlinear/boolflux/strategies/P1/unionsat2.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "1427721b1afc6ee01f3d25fd90615113000ad44087b9edf5d49b02847cf63a50",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

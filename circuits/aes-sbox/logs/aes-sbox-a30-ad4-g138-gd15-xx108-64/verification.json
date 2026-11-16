@@ -1,0 +1,68 @@
+{
+ "circuit": "aes-sbox-a30-ad4-g138-gd15-xx108-64.circ.txt",
+ "sha256": "346670a15d99843af0af555ea5e0c019c5106072d95d27e219b245e787a0548a",
+ "ok": true,
+ "function": "AES S-box, forward (FIPS 197): inversion in GF(2^8) mod x^8+x^4+x^3+x+1, then the affine map with constant 0x63",
+ "tuple_A_AD_G_GD": [
+  30,
+  4,
+  138,
+  15
+ ],
+ "counts": {
+  "AND": 30,
+  "XNOR": 64,
+  "XOR": 44
+ },
+ "checks": {
+  "all_256_inputs_boolflux_reader": true,
+  "all_256_inputs_independent_verifier": true,
+  "metrics_agree": true,
+  "library_and_xor_xnor_not": true,
+  "boolcirc_gate_list_orders": [
+   "msb/msb"
+  ],
+  "boolcirc_skeleton_agrees": true,
+  "name_and_header_tallies_match": true,
+  "problems": []
+ },
+ "bit_order": "x0 and y0 are the most significant bits (msb/msb), as in NIST's files",
+ "nist": {
+  "pin": "3d807741f937d29d3bef4f32f142ccda0cda9070",
+  "compared_with": "every forward AES S-box circuit of the pin: aes-sbox/, sbox/aes-sbox-fwd-*, old-2020/aes-sbox-fwd-*",
+  "dominated_by": [],
+  "best_G_with_A_AD_GD_at_most_ours": {
+   "tuple": [
+    28,
+    4,
+    153,
+    15
+   ],
+   "file": "aes-sbox-a28-ad4-g153-gd15-xx125-29.circ.txt",
+   "gain": 15
+  },
+  "best_G_with_GD_at_most_ours": {
+   "tuple": [
+    33,
+    4,
+    116,
+    15
+   ],
+   "file": "aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt",
+   "gain": -22
+  }
+ },
+ "start_circuits": {
+  "start.circ.txt": {
+   "ok": true,
+   "tuple_A_AD_G_GD": [
+    30,
+    4,
+    139,
+    15
+   ]
+  }
+ },
+ "checked_utc": "2026-11-16T14:24:11Z",
+ "checker": "search/nonlinear/boolflux/aes_check.py and the boolcirc checks of circuits/check.py, as at commit e657298 (then nonlinear/boolflux/campaigns/aes_check.py and nonlinear/check.py)"
+}

@@ -1,0 +1,71 @@
+{
+ "circuit": "aes-sbox-a32-ad4-g117-gd17-xx85-35.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  32,
+  4,
+  117,
+  17
+ ],
+ "found_by": "BoolFlux",
+ "method": "conjugation",
+ "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "operator": "conjpull",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   32,
+   4,
+   114,
+   19
+  ],
+  "source_sha256": "319e88071e913664490173c2c8a80b44b434e8b0b4598bf6e88b7074051dff07",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a32-ad4-g114-gd19-xx82-33"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 4,
+   "A": 32
+  },
+  "seconds": 1260,
+  "conj": "id",
+  "schedule": "m:-1:600,m:-1:600",
+  "repair_keep": "alt"
+ },
+ "seed": 694475,
+ "found_utc": "2026-11-16T07:57:13Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": 687.3
+ },
+ "code": {
+  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "uncommitted_changes_at_run": true,
+  "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "files": [
+   "nonlinear/boolflux/campaigns/targets/ops/conjpull.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "30d302b4fd3f52d5f11640674f7740268a613f3e1e8023c01785397195c9076d",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

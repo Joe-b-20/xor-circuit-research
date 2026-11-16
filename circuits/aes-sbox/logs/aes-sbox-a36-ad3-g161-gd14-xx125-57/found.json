@@ -1,0 +1,66 @@
+{
+ "circuit": "aes-sbox-a36-ad3-g161-gd14-xx125-57.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  36,
+  3,
+  161,
+  14
+ ],
+ "found_by": "BoolFlux",
+ "method": "cap oscillation",
+ "method_description": "gate kernel with a cap relaxed, then restored",
+ "operator": "osc",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   35,
+   3,
+   162,
+   14
+  ],
+  "source_sha256": "d443c8abc63365f2d2f9c68c879ae8ce55721d47725f1582e634577019e80692",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a35-ad3-g162-gd14-xx127-56"
+ },
+ "chain_root": "NIST's aes-sbox-a35-ad3-g157-gd15-xx122-31",
+ "lineage": null,
+ "parameters": {
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "seed": 1029111798,
+ "found_utc": "2026-11-14T21:39:05Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 96.87,
+  "cpu_s": 99.5
+ },
+ "code": {
+  "commit_at_run": "97abda7",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/hub/archive.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): hub archive, circuit id 1aafd6c6e8de",
+  "sha256": "165940dd416d8b1ec51b98efac09b1d9f239a63dc1c8cc6a94f3b7224f43458d",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "circuit": "aes-sbox-a29-ad4-g131-gd17-xx102-64.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  29,
+  4,
+  131,
+  17
+ ],
+ "found_by": "BoolFlux",
+ "method": "depth pull",
+ "method_description": "gate kernel with one cap lowered below the start circuit's value",
+ "operator": "pull",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   29,
+   4,
+   129,
+   19
+  ],
+  "source_sha256": "56bde442c88b39bd5fb68dfa80e274977fd4458d1f2368f65da3153c8da483ad",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a29-ad4-g129-gd19-xx100-56"
+ },
+ "chain_root": "NIST's aes-sbox-a28-ad5-g128-gd20-xx100-27",
+ "lineage": null,
+ "parameters": {
+  "caps": {
+   "A": 29,
+   "AD": null,
+   "GD": 17
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "script_sha": "0501d3973e",
+  "scheduler_version": "924b4c0+1df9fcd2fb",
+  "lowered": "GD",
+  "t_last_improvement": 46.337,
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "seed": 674179076,
+ "found_utc": "2026-11-15T13:31:36Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 93.15,
+  "cpu_s": 94.36
+ },
+ "code": {
+  "commit_at_run": "8922cac",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/hub/op_pull.py",
+   "nonlinear/boolflux/hub/archive.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): hub archive, circuit id 647f62d01314",
+  "sha256": "98a6037a0fdf9ea7000fdfac180183c3216d05282c20cd8df63fbe001071c859",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

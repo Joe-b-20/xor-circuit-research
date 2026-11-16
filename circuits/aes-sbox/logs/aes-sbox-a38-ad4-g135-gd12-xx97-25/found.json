@@ -1,0 +1,73 @@
+{
+ "circuit": "aes-sbox-a38-ad4-g135-gd12-xx97-25.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  38,
+  4,
+  135,
+  12
+ ],
+ "found_by": "BoolFlux",
+ "method": "shared-bottom rebuild",
+ "method_description": "shared rank-1 bottom rebuilt under the kept front, then the gate kernel",
+ "operator": "bottom",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   39,
+   4,
+   138,
+   12
+  ],
+  "source_sha256": "09d79a36df06a5e98f5442638fd96eeae2255bfc2c8a4b999c49fc4569f4ffd3",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a39-ad4-g138-gd12-xx99-25"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 4,
+   "A": 45
+  },
+  "seconds": 900,
+  "init": "own",
+  "pw": 3,
+  "polish_seconds": 300,
+  "repair_keep": 1,
+  "cap": 12
+ },
+ "seed": 432999,
+ "found_utc": "2026-11-16T09:46:21Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": 514.4
+ },
+ "code": {
+  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "uncommitted_changes_at_run": true,
+  "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "files": [
+   "nonlinear/boolflux/campaigns/targets/ops/bottom.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "6a6e4bf201893f42763f53001de7c194dd2f5fc062f3f74432bbc215a1cbfd71",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

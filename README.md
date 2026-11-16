@@ -3,17 +3,21 @@
 [![checks](https://github.com/Joe-b-20/xor-circuit-research/actions/workflows/checks.yml/badge.svg)](https://github.com/Joe-b-20/xor-circuit-research/actions/workflows/checks.yml)
 [![lower-bound proofs](https://github.com/Joe-b-20/xor-circuit-research/actions/workflows/proofs.yml/badge.svg)](https://github.com/Joe-b-20/xor-circuit-research/actions/workflows/proofs.yml)
 
-Small, shallow XOR circuits for linear maps used in ciphers, the search that found them
-(XORFlux), how that search came to be, and two lower-bound proofs for AES MixColumns.
+Small, shallow circuits for parts of ciphers: XOR circuits for linear maps and Boolean circuits
+with AND gates for the AES S-box, the two searches that found them (XORFlux and BoolFlux), how
+those searches came to be, and two lower-bound proofs for AES MixColumns.
 
-**208 circuits for 59 maps.** A circuit is written **G@D**: G two-input XOR gates, with every
-output at depth at most D (inputs are at depth 0). Fewer gates is better, and so is a lower
-depth; a circuit at a lower depth also counts for every higher one.
+**208 XOR circuits for 59 linear maps, and 74 Boolean circuits for the AES S-box.** A circuit
+is written **G@D**: G two-input gates, with every output at depth at most D (inputs are at depth
+0). For the S-box, G counts every gate (AND, XOR, XNOR, NOT) and the number of AND gates and the
+AND depth are given with it: NIST's four metrics. Fewer gates is better, and so is a lower depth;
+a circuit at a lower depth also counts for every higher one.
 
 ## Selected results
 
-Each of these has fewer gates than NIST's circuit for the same map, at the same or a lower
-depth. NIST's circuits are those of its
+Each of these has fewer gates than NIST's circuit for the same map, at the same or a lower depth
+(for the S-box: with the same number of ANDs and the same AND depth, unless the row says
+otherwise), or reaches a depth NIST's circuits do not. NIST's circuits are those of its
 [circuit repository](https://github.com/usnistgov/Circuits) and
 [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits).
 
@@ -31,23 +35,35 @@ depth. NIST's circuits are those of its
 | JPST17 8×8 MDS over GF(2⁸), inverse | **493@11** | 528@11 |
 | KLSW17 8×8 MDS over GF(2⁸) | **347@6**, **321@10** | 364@11 |
 | KLSW17 4×4 MDS over GF(2⁸) | **64@6** | 72@7 |
+| AES S-box, 28 ANDs, AND depth 4 | **174@14**, **132@20**, **131@22** | 176@14, 134@20, 132@22 |
+| AES S-box, 32 ANDs, AND depth 4 | **114@19**, **111@25** | 117@19 |
+| AES S-box, 32 ANDs, AND depth 5 | **108@20**, **105@24** | 109@20, 107@22 |
+| AES S-box, 33 ANDs, AND depth 4 | **115@15**, **107@20** | 116@15, 108@20 |
+| AES S-box, 34 ANDs, AND depth 4 | **134@13** | 139@13 |
+| AES S-box, 35 ANDs, AND depth 3 | **165@13**, **162@14**, **155@15** | 183@13, 172@14, 157@15 |
+| AES S-box, AND depth 3, gate depth 12 | **181@12** with 35 ANDs | none (lowest gate depth at AND depth 3: 13) |
+| AES S-box, AND depth 4, gate depth 12 | **135@12** with 38 ANDs | 141@12 with 45 ANDs |
 
 For 46 of the 53 maps taken from NIST's repository, we have a circuit with fewer gates than
 NIST's at the same or a lower depth; on the other maps NIST is ahead at some depths. Our
 InvMixColumns 118@5 is at the lowest depth possible for InvMixColumns, whose heaviest row has
-19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. We
-don't claim any circuit is optimal or the best known. The complete comparison, map by map and
-depth by depth, is in [circuits/](circuits/README.md#circuits); the time and hardware behind
-each circuit are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).
+19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. Against NIST's 104 forward AES S-box circuits, each of our
+74 S-box circuits is a new point, and 22 of NIST's 33 Pareto points are dominated by one of ours
+(as good in all four metrics and better in at least one); at the other 11 we have only circuits
+equal to NIST's, which are not listed.
+None of ours has fewer than 28 ANDs (NIST's open target is 27) or fewer than 103 gates (we have
+103 at gate depth 29, NIST at 32), and all of them descend from NIST's circuits. We don't claim any circuit
+is optimal or the best known. The complete comparison, map by map and depth by depth, is in
+[circuits/](circuits/README.md#circuits) (the S-box in [its own section](circuits/README.md#aes-s-box)); the time and hardware behind each linear-map circuit
+are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).
 
 ## Contents
 
 | Section | What is in it |
 |---|---|
-| [circuits/](circuits/README.md) | the smallest circuit our search found at each depth, per map, in NIST's file format, each with its logs and the version that found it, next to NIST's circuits; an independent checker |
-| [search/](search/README.md) | XORFlux, an adaptive search for size- and depth-efficient XOR circuits: [how it works](search/HOW-IT-WORKS.md), [how to use it](search/USAGE.md) and [the path to the current version](search/HISTORY.md) |
+| [circuits/](circuits/README.md) | the smallest circuit our searches found at each depth, per linear map, and our AES S-box circuits, in NIST's file format, each with its logs, next to NIST's circuits; one independent checker for all of them |
+| [search/](search/README.md) | the two searches: [XORFlux](search/linear/README.md) for XOR circuits of linear maps and [BoolFlux](search/nonlinear/README.md) for Boolean circuits with AND gates, each with how it works, how to use it and how it came to be |
 | [lower-bound-proofs/](lower-bound-proofs/README.md) | two proofs: AES MixColumns needs at least 75 XOR gates, and at least 93 at depth 3; and the certified open cases of the 75 proof at G = 75 (no new bound) |
-| [nonlinear/](nonlinear/README.md) | beyond linear maps: NIST's AES S-box circuits imported verbatim and verified by truth table, their four NIST metrics, the AND skeleton, and the mathematical groundwork for the nonlinear extension of XORFlux |
 
 **Proof status:** the lower-bound proofs were developed with language-model assistance and
 have not been peer reviewed; their checkers replay the finite computations, not the
@@ -71,21 +87,25 @@ Maps (59): AES MixColumns and InvMixColumns, the AES S-box bottom linear layer, 
 MU8, and every linear map of NIST's
 [circuit repository](https://github.com/usnistgov/Circuits/tree/master/data/slp/2021-linearmaps)
 (ARIA, Twofish, Grøstl, CLEFIA, Khazad, Whirlpool, Joltik, Skinny, PRINCE, QARMA and 37 MDS
-matrices from the literature).
+matrices from the literature). S-box circuits are compared with every forward AES S-box circuit
+of NIST's repository at commit
+[3d80774](https://github.com/usnistgov/Circuits/tree/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes)
+(104 circuits), kept verbatim in [search/nonlinear/seeds/](search/nonlinear/seeds/).
 
 ## Checks
 
-Every push runs the independent circuit checker (`python3 circuits/check.py`), the XORFlux
-test suite and the S-box circuit checker and tests (`python3 nonlinear/check.py`) on GitHub
-([checks](.github/workflows/checks.yml)). The lower-bound checkers run
-separately ([proofs](.github/workflows/proofs.yml)): the quick checks on every change to
-`lower-bound-proofs/`, the full depth-3 replay (12 minutes on GitHub's runners) monthly and on
-request.
+Every push runs, on GitHub ([checks](.github/workflows/checks.yml)), the independent circuit
+checker, which checks every linear-map circuit against its matrix and every S-box circuit (ours
+and NIST's) by truth table, with the standard library only and none of the search code
+(`python3 circuits/check.py`), and the XORFlux and BoolFlux test suites. The lower-bound
+checkers run separately ([proofs](.github/workflows/proofs.yml)): the quick checks on every
+change to `lower-bound-proofs/`, the full depth-3 replay (12 minutes on GitHub's runners)
+monthly and on request.
 
 ## License
 
 [Apache License 2.0](LICENSE), except where a folder has its own license file:
 `lower-bound-proofs/mixcolumns-lb75/`, `lower-bound-proofs/mixcolumns-lb93-depth3/supplement/`,
-`search/versions/v1-mixcolumns-pipeline/` and the v2–v4 framework versions are MIT. Data from
-NIST's circuit repository and circuits from published work keep their own terms; see
+`search/linear/versions/v1-mixcolumns-pipeline/` and the v2–v4 framework versions are MIT. Data
+from NIST's circuit repository and circuits from published work keep their own terms; see
 [NOTICE](NOTICE).

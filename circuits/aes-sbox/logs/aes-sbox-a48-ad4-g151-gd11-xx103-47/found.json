@@ -1,0 +1,84 @@
+{
+ "circuit": "aes-sbox-a48-ad4-g151-gd11-xx103-47.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  48,
+  4,
+  151,
+  11
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   48,
+   4,
+   162,
+   11
+  ],
+  "source_sha256": "2358c8dacd464a5950e49c4417597781afa507fe11e5a5a4037a9b8d8be84503",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a48-ad4-g162-gd11-xx114-35"
+ },
+ "chain_root": null,
+ "lineage": [
+  {
+   "job": "polish",
+   "tuple_A_AD_G_GD": null
+  },
+  {
+   "job": "splice",
+   "tuple_A_AD_G_GD": [
+    48,
+    4,
+    162,
+    11
+   ]
+  }
+ ],
+ "parameters": {
+  "seconds": 120.0,
+  "caps": {
+   "A": 48,
+   "AD": 4,
+   "GD": 11
+  }
+ },
+ "seed": 1,
+ "found_utc": "2026-11-14T18:04:06Z",
+ "found_utc_source": "file time of the run's copy",
+ "time_to_result_s": {
+  "within_job_s": 3.209
+ },
+ "code": {
+  "commit_at_run": null,
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/strategies/E/memetic.py",
+   "nonlinear/boolflux/strategies/E/splice2.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "the memetic run recorded no code version; paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted kernel job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): memetic-run archive; later entered the hub archive as a seed",
+  "sha256": "a18545b65d423b92e93ba499b033ca4c509b403279b74c0cda73bc26960b3720",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

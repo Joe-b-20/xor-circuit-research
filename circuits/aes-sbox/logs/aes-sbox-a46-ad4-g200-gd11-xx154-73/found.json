@@ -1,0 +1,76 @@
+{
+ "circuit": "aes-sbox-a46-ad4-g200-gd11-xx154-73.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  46,
+  4,
+  200,
+  11
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   46,
+   4,
+   203,
+   11
+  ],
+  "source_sha256": "07194d4d4434e16e695c4c9dca9d5278a7da361fc4d85aeb5b02ec7126481a4c",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a46-ad4-g203-gd11-xx157-78"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "caps": {
+   "A": 46,
+   "AD": 4,
+   "GD": 11
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "script_sha": "192d2a0510",
+  "scheduler_version": "924b4c0+1df9fcd2fb",
+  "t_last_improvement": 79.028,
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "seed": 699826279,
+ "found_utc": "2026-11-15T07:32:40Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 97.35,
+  "cpu_s": 96.61
+ },
+ "code": {
+  "commit_at_run": "8922cac",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/hub/op_polish.py",
+   "nonlinear/boolflux/hub/archive.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): hub archive, circuit id 624a40f8d988",
+  "sha256": "2e3317c19aceceb52e23e2178d3cb0e184d22ad5d356b9c13500bbeda74c6cf2",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

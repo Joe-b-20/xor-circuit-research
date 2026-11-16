@@ -1,4 +1,4 @@
-# Independent circuit checker and XORFlux test suite, on every push and pull request.
+# Independent circuit checker and the XORFlux and BoolFlux test suites, on every push and pull request.
 name: checks
 
 on:
@@ -19,15 +19,29 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check every circuit against its map (standard library only, no search code)
+      - name: Check every circuit, linear and Boolean, and NIST's seeds (standard library only, no search code)
         run: python3 circuits/check.py
-      - name: Check every S-box circuit against FIPS-197 by truth table (standard library only)
-        run: python3 nonlinear/check.py
-      - name: Check every BoolFlux AES result in NIST format by truth table
-        run: python3 nonlinear/check.py nonlinear/boolflux/results/nist-format
+      - name: Checker library tests (circuits/boolcirc)
+        run: python3 -m unittest discover -s circuits/boolcirc/tests -t circuits
 
-  tests:
+  xorflux:
     name: XORFlux tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest   # 4 vCPUs
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit tests (includes the second verifier over every XOR-only circuit)
+        run: python3 -m unittest discover -s search/linear/xorflux/tests -t search/linear
+
+  boolflux:
+    name: BoolFlux tests (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
@@ -36,20 +50,12 @@ jobs:
         python: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0   # tests/test_review5_py.py reads commit 377b03f (git show)
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - name: Unit tests (includes the second verifier over every XOR-only circuit)
-        run: python3 -m unittest discover -s search/xorflux/tests -t search
-      - name: boolcirc tests (nonlinear/)
-        run: python3 -m unittest discover -s nonlinear/boolcirc/tests -t nonlinear
-      - name: BoolFlux independent verifier tests (nonlinear/boolflux/independent)
-        run: python3 -m unittest discover -s nonlinear/boolflux/independent
+      - name: Independent verifier tests
+        run: python3 -m unittest discover -s search/nonlinear/boolflux/independent
       - name: BoolFlux tests (builds the C kernels with gcc)
-        run: python3 -m unittest discover -s nonlinear/boolflux/tests -t nonlinear
-      - name: BoolFlux hub tests (nonlinear/boolflux/hub)
-        run: python3 -m unittest discover -s nonlinear/boolflux/hub/tests -t nonlinear
-      - name: BoolFlux targeted-campaign circuits (results/targets) by truth table, two verifiers
-        run: python3 nonlinear/boolflux/campaigns/aes_check.py nonlinear/boolflux/results/targets/*/*.circ.txt
+        run: python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear
+      - name: Hub tests
+        run: python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/nonlinear

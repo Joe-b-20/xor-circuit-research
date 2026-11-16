@@ -1,0 +1,67 @@
+{
+ "circuit": "aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  5,
+  127,
+  22
+ ],
+ "found_by": "BoolFlux",
+ "method": "skeleton kick",
+ "method_description": "AND-skeleton kick followed by a short gate-kernel polish",
+ "operator": "gen_skel",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   28,
+   5,
+   130,
+   19
+  ],
+  "source_sha256": "41055c78e8ac44b5724409cdccc5c2303d4c5426405cbdf0b84b50642404a53e",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a28-ad5-g130-gd19-xx102-53"
+ },
+ "chain_root": "NIST's aes-sbox-a28-ad5-g128-gd20-xx100-27",
+ "lineage": null,
+ "parameters": {
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "seed": 442068439,
+ "found_utc": "2026-11-14T22:05:13Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 53.26,
+  "cpu_s": 54.92
+ },
+ "code": {
+  "commit_at_run": "97abda7",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/hub/ops/gen_skel.py",
+   "nonlinear/boolflux/hub/archive.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): hub archive, circuit id 4d1642c45c7d",
+  "sha256": "061abdb3d301a01665db08d73ad83ff1674c3e7cb123f21d2ba947458b6f0a04",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

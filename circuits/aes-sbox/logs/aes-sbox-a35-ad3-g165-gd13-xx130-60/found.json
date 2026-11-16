@@ -1,0 +1,73 @@
+{
+ "circuit": "aes-sbox-a35-ad3-g165-gd13-xx130-60.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  35,
+  3,
+  165,
+  13
+ ],
+ "found_by": "BoolFlux",
+ "method": "re-basing",
+ "method_description": "re-basing of the last-level product classes, a hybrid rebuild, then the capped gate kernel",
+ "operator": "rebase",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   35,
+   3,
+   166,
+   13
+  ],
+  "source_sha256": "14aee760f9e3281b94f90c3dbdeaa530d21e0eec57503c8fe4341db59dfa53b1",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a35-ad3-g166-gd13-xx131-69"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 3,
+   "A": 35
+  },
+  "seconds": 900,
+  "cap": 13,
+  "stages": 1,
+  "stage_seconds": 200,
+  "repair_keep": 1,
+  "builds": 160
+ },
+ "seed": 17292,
+ "found_utc": "2026-11-16T09:10:54Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": 208.1
+ },
+ "code": {
+  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "uncommitted_changes_at_run": true,
+  "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "files": [
+   "nonlinear/boolflux/campaigns/targets/ops/rebase.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "e5b68672b0013f3adfc6bce59a66a0ecf9e53184c2764b5fff8a1b0aa81f300e",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

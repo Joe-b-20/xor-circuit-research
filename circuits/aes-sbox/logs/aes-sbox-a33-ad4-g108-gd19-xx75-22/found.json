@@ -1,0 +1,82 @@
+{
+ "circuit": "aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  33,
+  4,
+  108,
+  19
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": null,
+ "hub": false,
+ "start": {
+  "kind": "NIST circuit",
+  "file": "search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt",
+  "nist_path": "data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt",
+  "tuple_A_AD_G_GD": [
+   33,
+   4,
+   108,
+   20
+  ]
+ },
+ "chain_root": "NIST's aes-sbox-a33-ad4-g108-gd20-xx75-5",
+ "lineage": null,
+ "parameters": {
+  "caps": {
+   "GD": 20,
+   "AD": 4,
+   "A": 33
+  },
+  "objective": "cost,gd",
+  "model": "nist",
+  "cap_a": 33,
+  "cap_ad": 4,
+  "cap_gd": 20,
+  "iters": 100000
+ },
+ "seed": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "found_utc": "2026-11-13T19:01:56Z",
+ "found_utc_source": "file time of the run record",
+ "time_to_result_s": {
+  "within_job_s": 6.251,
+  "iteration": 16645,
+  "job_wall_s": 36.86,
+  "run_wall_s": 36.9
+ },
+ "code": {
+  "code_sha256_12": "b0e56ecb18fe",
+  "files": [
+   "nonlinear/boolflux/cli.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "deterministic",
+  "text": "deterministic: the recorded command gives this gate list with the code of the run"
+ },
+ "command": "python3 nonlinear/boolflux/cli.py run --target aes --model nist --start nonlinear/nist/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt --objective cost,gd --cap-a 33 --cap-ad 4 --cap-gd 20 --iters 100000 --seeds 1-8 --jobs 8 --out OUT",
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "cd4d0a532eb30da0a52720c800400cd4406023b91d339bff5c059e96c16f55e3",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json"
+ ]
+}

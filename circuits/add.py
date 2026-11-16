@@ -165,7 +165,7 @@ def write(rec, provenance, logs, found, force=False, prefer=None):
     return path
 
 
-def from_run(record_path, code="search/xorflux", version="latest", force=False):
+def from_run(record_path, code="search/linear/xorflux", version="latest", force=False):
     """Provenance and logs of a record written by xorflux inside a campaign run directory."""
     record_path = pathlib.Path(record_path).resolve()
     rec = json.loads(record_path.read_text())
@@ -185,7 +185,7 @@ def from_run(record_path, code="search/xorflux", version="latest", force=False):
     if seed.get("sha256"):
         info = plan.get("seeds", {}).get(seed["sha256"], {})
         full = str(info.get("source"))
-        nist = "nist" in full.lower() or "/targets/seeds/" in full    # search/seeds/ and the old catalog
+        nist = "nist" in full.lower() or "/targets/seeds/" in full    # search/linear/seeds/ and the old catalog
         seed = {"kind": "file", "point": f"{info.get('gates')}@{info.get('depth')}",
                 "by": "NIST" if nist else "us", "source": pathlib.Path(full).name}
         seed_file = run / info["snapshot"] if info.get("snapshot") else None
@@ -218,7 +218,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("record", help="a record JSON written by xorflux inside a run directory")
     ap.add_argument("--version", default="latest", help="version label written into the file")
-    ap.add_argument("--code", default="search/xorflux", help="where the code that found it lives")
+    ap.add_argument("--code", default="search/linear/xorflux", help="where the code that found it lives")
     ap.add_argument("--force", action="store_true", help="replace an existing file at that point")
     a = ap.parse_args()
     path = from_run(a.record, a.code, a.version, a.force)

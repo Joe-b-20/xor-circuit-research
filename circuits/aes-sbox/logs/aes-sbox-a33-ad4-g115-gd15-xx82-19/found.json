@@ -1,0 +1,100 @@
+{
+ "circuit": "aes-sbox-a33-ad4-g115-gd15-xx82-19.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  33,
+  4,
+  115,
+  15
+ ],
+ "found_by": "BoolFlux",
+ "method": "join",
+ "method_description": "join: the front of one circuit and the back of another, met at a shared interface function, then the gate kernel",
+ "operator": "join",
+ "hub": false,
+ "start": {
+  "front": {
+   "kind": "NIST circuit",
+   "file": "search/nonlinear/seeds/aes-sbox/aes-sbox-a32-ad4-g127-gd15-xx95-7.circ.txt",
+   "nist_path": "data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g127-gd15-xx95-7.circ.txt",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    127,
+    15
+   ]
+  },
+  "back": {
+   "kind": "our circuit",
+   "tuple_A_AD_G_GD": [
+    37,
+    4,
+    121,
+    14
+   ],
+   "source_sha256": "6c1ddb076aa2f5b6d2469b18c41b4f033ab0eab4f037123039a7abb57d8517f0",
+   "file": "back.circ.txt",
+   "circuit_name": "aes-sbox-a37-ad4-g121-gd14-xx84-36"
+  }
+ },
+ "chain_root": "NIST's aes-sbox-a32-ad4-g127-gd15-xx95-7",
+ "lineage": [
+  {
+   "job": "splice",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    115,
+    15
+   ]
+  },
+  {
+   "job": "input",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    127,
+    15
+   ]
+  }
+ ],
+ "parameters": {
+  "objective": "construction (admitted if Pareto-new vs pool + pinned set)",
+  "arm": "splice",
+  "amax": 31,
+  "gd_pull": 0.5,
+  "polish": 120
+ },
+ "seed": null,
+ "found_utc": "2026-11-14T15:48:52Z",
+ "found_utc_source": "file time of the run's copy",
+ "time_to_result_s": {
+  "since_run_start_s": 1132.4
+ },
+ "code": {
+  "commit_at_run": "0659eb9",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/kernel/bfx.c",
+   "nonlinear/boolflux/strategies/E/low.sh"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "construction",
+  "text": "deterministic construction from its two parent circuits"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "ef576f7e24a1e801bbd42dfcb47d4061381f8393793af15889557be404a3c9b7",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "back.circ.txt"
+ ]
+}

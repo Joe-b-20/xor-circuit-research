@@ -1,0 +1,73 @@
+{
+ "circuit": "aes-sbox-a31-ad5-g115-gd24-xx84-29.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  31,
+  5,
+  115,
+  24
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   31,
+   5,
+   115,
+   25
+  ],
+  "source_sha256": "ab149a59a86935d593a7bdd122b057b9cc7c80d5f621b66c19e1d3445aa8aef5",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a31-ad5-g115-gd25-xx84-14"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "caps": {
+   "A": 31,
+   "AD": 5,
+   "GD": 25
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "t_last_improvement": 7.066
+ },
+ "seed": 894781070,
+ "found_utc": "2026-11-14T23:42:14Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 99.42,
+  "cpu_s": 97.04
+ },
+ "code": {
+  "commit_at_run": "97abda7",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/hub/op_polish.py",
+   "nonlinear/boolflux/hub/archive.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): hub archive, circuit id 11f8b157b8fd",
+  "sha256": "73a3dd4c9b16b6f9f0a6ac6b249f2b14177d4949b8e947bd6f25504030232100",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

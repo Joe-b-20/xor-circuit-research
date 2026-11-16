@@ -1,0 +1,75 @@
+{
+ "circuit": "aes-sbox-a35-ad3-g181-gd12-xx146-80.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  35,
+  3,
+  181,
+  12
+ ],
+ "found_by": "BoolFlux",
+ "method": "re-basing",
+ "method_description": "re-basing of the last-level product classes, a hybrid rebuild, then the capped gate kernel",
+ "operator": "rebase",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   35,
+   3,
+   177,
+   13
+  ],
+  "source_sha256": "596a226f4a9f0325db5c4c6820dc53af1ee3c0b57d83b640afd073c057bb9c2d",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a35-ad3-g177-gd13-xx142-61"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 3,
+   "A": 35
+  },
+  "seconds": 1200,
+  "moves": true,
+  "move_budget": 0.4,
+  "stages": 1,
+  "stage_seconds": 240,
+  "repair_keep": 1,
+  "cap": null,
+  "builds": 160
+ },
+ "seed": 31,
+ "found_utc": "2026-11-16T01:10:10Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": 468.9
+ },
+ "code": {
+  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "uncommitted_changes_at_run": true,
+  "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "files": [
+   "nonlinear/boolflux/campaigns/targets/ops/rebase.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "8f46d04fc56d06b45b85057d20b33f400a9ec9a2518cb0cd88f1470c5853f448",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

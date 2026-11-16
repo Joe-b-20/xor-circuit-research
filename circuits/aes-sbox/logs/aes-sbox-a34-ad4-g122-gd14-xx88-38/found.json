@@ -1,0 +1,71 @@
+{
+ "circuit": "aes-sbox-a34-ad4-g122-gd14-xx88-38.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  34,
+  4,
+  122,
+  14
+ ],
+ "found_by": "BoolFlux",
+ "method": "conjugation",
+ "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "operator": "conjpull",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   34,
+   4,
+   123,
+   14
+  ],
+  "source_sha256": "f16a32f201754b907d4d0e5aaf5496fb9da57fded07be4b22bc1e1e96ee511a6",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a34-ad4-g123-gd14-xx89-39"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 4,
+   "A": 34
+  },
+  "seconds": 900,
+  "conj": "id",
+  "repair_keep": 0,
+  "schedule": "m:13:600"
+ },
+ "seed": 756285,
+ "found_utc": "2026-11-16T12:16:28Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": 39.3
+ },
+ "code": {
+  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "uncommitted_changes_at_run": true,
+  "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "files": [
+   "nonlinear/boolflux/campaigns/targets/ops/conjpull.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "4990a6e863089a29bef2bc36ad51873ad80b985d8ade12f7f72caaecbddd9c43",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "circuit": "aes-sbox-a33-ad4-g107-gd20-xx74-26.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  33,
+  4,
+  107,
+  20
+ ],
+ "found_by": "BoolFlux",
+ "method": "depth pull",
+ "method_description": "gate kernel with one cap lowered below the start circuit's value",
+ "operator": "pull",
+ "hub": true,
+ "start": {
+  "kind": "NIST circuit",
+  "file": "search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt",
+  "nist_path": "data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt",
+  "tuple_A_AD_G_GD": [
+   33,
+   4,
+   106,
+   22
+  ]
+ },
+ "chain_root": "NIST's aes-sbox-a33-ad4-g106-gd22-xx73-5",
+ "lineage": null,
+ "parameters": {
+  "caps": {
+   "A": 33,
+   "AD": null,
+   "GD": 21
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "lowered": "GD",
+  "t_last_improvement": 78.761
+ },
+ "seed": 119875672,
+ "found_utc": "2026-11-14T18:14:19Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 100.8,
+  "cpu_s": 100.05
+ },
+ "code": {
+  "commit_at_run": "377b03f",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/hub/op_pull.py",
+   "nonlinear/boolflux/hub/archive.py",
+   "nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "campaign archive (not published): hub archive, circuit id 370a9cca3c08",
+  "sha256": "370d0c65da876260e8936d05586797d6fb4267e7c803c00130b8b5c169e42d03",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json"
+ ]
+}

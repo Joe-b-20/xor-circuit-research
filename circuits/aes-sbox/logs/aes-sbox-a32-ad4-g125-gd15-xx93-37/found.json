@@ -1,0 +1,93 @@
+{
+ "circuit": "aes-sbox-a32-ad4-g125-gd15-xx93-37.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  32,
+  4,
+  125,
+  15
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   32,
+   4,
+   126,
+   15
+  ],
+  "source_sha256": "273a5486352d8215940507f818b3d04426134492c18270ffa2ed5c06ebe13510",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a32-ad4-g126-gd15-xx94-32"
+ },
+ "chain_root": null,
+ "lineage": [
+  {
+   "job": "polish",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    125,
+    15
+   ]
+  },
+  {
+   "job": "input",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    126,
+    15
+   ]
+  }
+ ],
+ "parameters": {
+  "caps": {
+   "GD": 15,
+   "AD": 4,
+   "A": 32
+  },
+  "objective": "cost,gd",
+  "arm": "control",
+  "hours": 9.3,
+  "polish": 120,
+  "seconds": 120.0
+ },
+ "seed": 2,
+ "found_utc": "2026-11-14T16:09:43Z",
+ "found_utc_source": "file time of the run's copy",
+ "time_to_result_s": {
+  "within_job_s": null,
+  "since_run_start_s": 3776.7
+ },
+ "code": {
+  "commit_at_run": "0659eb9",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "nonlinear/boolflux/kernel/bfx.c",
+   "nonlinear/boolflux/strategies/E/long.sh"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "fe7ba3c2dfc288e1a2ff80b5fa876ec38105d80b6ce5dd8692e7769f62b8b1d0",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt"
+ ]
+}

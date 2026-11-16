@@ -1,9 +1,0 @@
-# Track C interface (exact/algebraic side) -- for the heuristic nonlinear-basis agent
-
-Evidence: [C] exhaustive computation, [P] proved in NOTES.md, [V] verified on 256 points. Full math: NOTES.md (same dir).
-* Published A28 structure [V]: AD5 file 10|1|2|2|13 (10 level-1 products of x-forms, all needed to span N = x^17; 5 GF(16)-inversion ANDs whose operands are functions of N; 13 last-layer ANDs); AD4 file 9|2|4|13 (9 level-1, 6 inversion, 13).
-* Every last-layer AND is a GF(4) norm [V]: (Tr(Ax)+Tr_K(s w)) * (Tr(wAx)+Tr_K(w^2 s w)), w = N^-1 + gamma N (gamma = g^17 in AD5, g^34 in AD4; g = 3, w = g^85). Members indexed by (z = s^3 A s, zeta = s^3), 1275 of them per gamma.
-* Junk accounting [P]: total = l + i + k with l >= 4 + J + rho2, rho2 >= 1 (J = x-quadratic junk the outputs need from the level-1 span). Published last layer: J = 3 [C]; the real limit is the level-1 cover, not k + J.
-* Bounds: stage 1 as ONE AND level needs exactly 9 products [C, solver-free cover lemma, validated; 7 and 8 exhaustively impossible]; GF(16) inversion needs exactly 5 ANDs [C, SAT]; no 9-product stage 1 fits the published last layer or any of the 2321 valid 13-member layers of its member family [C] (so 9+5+13 is closed there). Not excluded: non-GF(4)-norm last layers, deeper stage 1, non-tower bases.
-* 12-member GF(4)-norm last layers over AD5 E (g^17), AD4 E (g^34), AD4-L + AD5-inv: none [C] (exact scope in NOTES.md section 9; STATUS.md has live runs).
-* Tools: build27.py (level-1 pairs + members -> NCFF, validated: rebuilds a 28-AND circuit that passes aes_check); structure.py (AND operands over [1,x,earlier ANDs]); spectral.py (fibre spectra / GF(4) check); cover_enum.py (exact "can l rank-2 forms span U" for l - dim U <= 2); zdfs.py / zdfs3.py (exact last-layer enumeration over a fixed E); qmc.py (SAT model of one AND layer; slow on these instances).

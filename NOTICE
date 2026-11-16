@@ -6,10 +6,10 @@ Licensed under the Apache License, Version 2.0 (LICENSE), except for the parts l
 
 Parts under their own license (MIT, same author)
 -------------------------------------------------
-- lower-bound-proofs/mixcolumns-lb75/                 (LICENSE in that folder)
-- lower-bound-proofs/mixcolumns-lb93-depth3/supplement/ (LICENSE in that folder)
-- search/versions/v1-mixcolumns-pipeline/             (LICENSE in that folder)
-- search/versions/v2-search-framework/, v3-..., v4-...  (licenses/legacy-v2-v3.txt and its
+- lower-bound-proofs/mixcolumns-lb75/                        (LICENSE in that folder)
+- lower-bound-proofs/mixcolumns-lb93-depth3/supplement/      (LICENSE in that folder)
+- search/linear/versions/v1-mixcolumns-pipeline/             (LICENSE in that folder)
+- search/linear/versions/v2-search-framework/, v3-..., v4-...  (licenses/legacy-v2-v3.txt and its
   scope note in each folder)
 
 
@@ -17,30 +17,35 @@ Data from NIST (usnistgov/Circuits)
 -----------------------------------
 This repository uses data from the circuit repository of the National Institute of Standards
 and Technology (NIST): https://github.com/usnistgov/Circuits, at commits
-8366158a4324ef902ce740f29ddc9f7ebb1018b2 (seeds of the first maps, 2026-10) and
-0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f (the 53 maps added 2026-10-30), and NIST's list of
-circuits,
-https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits. NIST is the source of
-that data. NIST's terms for its data are at https://www.nist.gov/open/license.
+8366158a4324ef902ce740f29ddc9f7ebb1018b2 (seeds of the first linear maps, 2026-10),
+0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f (the 53 linear maps added 2026-10-30) and
+3d807741f937d29d3bef4f32f142ccda0cda9070 (the AES S-box circuits, pinned 2026-11-14), and
+NIST's list of circuits, https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits.
+NIST is the source of that data. NIST's terms for its data are at
+https://www.nist.gov/open/license.
 
 Files derived from it, and how they were changed (2026-10-30 unless noted):
 - circuits/<map>/<map>.mat.txt for the 53 maps of data/slp/2021-linearmaps: the matrices,
   renamed to one folder per map; a few rewritten from NIST's "EQUAL" form into 0/1 rows.
-- search/seeds/<map>/nist-g<G>-d<D>.json: NIST's circuits for those maps and for AES
+- search/linear/seeds/<map>/nist-g<G>-d<D>.json: NIST's circuits for those maps and for AES
   InvMixColumns, the AES S-box bottom layer, FOX MU4/MU8 and Joltik, converted from NIST's
   circuit format into this repository's JSON format; each file names its NIST source. The
   S-box bottom seeds are the XOR-only tails of NIST S-box circuits, with XNOR constants moved
   into the map's affine constants and input wires permuted.
-- The NIST columns of circuits/README.md: gate counts and depths read from NIST's files and
-  its list of circuits.
-- nonlinear/nist/{aes-sbox,aes-invsbox,sbox,old-2020}/: byte-for-byte copies of the 124 AES
-  S-box and inverse S-box circuit files of data/slp/aes/ at commit
-  0876577bc2c9ce214a4c7f84b7f9b9eb02e5092f (2026-10-29), each folder's NIST README.md kept as
-  NIST-README.md; nonlinear/nist/MANIFEST.json lists every file with its NIST path, URL and
-  SHA-256. Several of those files are external contributions NIST credits in their headers
-  (28-AND and 35-AND circuits by Milad Nasr, 2026-09; circuits derived from the 29-AND circuit
-  of github.com/umizame/S-box_29-AND); they keep their authors' rights and terms.
-- search/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
+- The NIST columns of circuits/README.md: gate counts and depths (for the S-box, NIST's four
+  metrics) read from NIST's files and its list of circuits.
+- search/nonlinear/seeds/{aes-sbox,aes-invsbox,aes-sbox-sel,sbox,old-2020}/: byte-for-byte
+  copies of the 207 files of data/slp/aes/ in those folders at commit
+  3d807741f937d29d3bef4f32f142ccda0cda9070 (2026-11-14; first imported at 0876577 on
+  2026-10-29): 204 circuit files of the AES S-box, its inverse and a forward/inverse selector,
+  and 3 NIST README.md files kept as NIST-README.md. search/nonlinear/seeds/MANIFEST.json lists
+  every file with its NIST path, URL and SHA-256. Several of those files are external
+  contributions NIST credits in their headers (28-AND and 35-AND circuits by Milad Nasr,
+  2026-09; circuits derived from the 29-AND circuit of github.com/umizame/S-box_29-AND); they
+  keep their authors' rights and terms.
+- circuits/aes-sbox/: 74 circuits found by BoolFlux, all of them descended from NIST's circuits
+  above; each one's logs name the circuit it started from.
+- search/linear/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
   repository files (targets/nist/), as those versions used them (2026-10-24 to 10-28), and a
   saved copy of NIST's list-of-circuits web page (v4, targets/nist/invmixcolumns/).
 
@@ -54,10 +59,10 @@ They keep their authors' rights and terms; this repository's licenses do not cov
 
 Circuits from published work
 ----------------------------
-Some seed circuits and comparison circuits kept in search/versions/ were transcribed from
-published papers, including J. Jean (IACR ePrint 2026/1481) and the papers of Xiang et al.
-and Yuan et al. They are credited in the files that hold them, keep their
-authors' rights, and are not covered by this repository's licenses.
+Some seed circuits and comparison circuits kept in search/linear/versions/ were transcribed
+from published papers, including J. Jean (IACR ePrint 2026/1481) and the papers of Xiang et
+al. and Yuan et al. They are credited in the files that hold them, keep their authors' rights,
+and are not covered by this repository's licenses.
 
 
 Redactions
@@ -65,5 +70,5 @@ Redactions
 Before release, local home-directory paths, temporary paths and the machine's hostname were
 replaced in run logs and archived run state (by "~", "<tmp>" and "host"). Hashes that cover
 changed files were recomputed; the two rebuilt archives in
-search/versions/v4-search-framework/targets/local/invmixcolumns/repository/sources/ record
-their original hashes in their manifests.
+search/linear/versions/v4-search-framework/targets/local/invmixcolumns/repository/sources/
+record their original hashes in their manifests.

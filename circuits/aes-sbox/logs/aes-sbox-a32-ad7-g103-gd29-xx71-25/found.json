@@ -1,0 +1,69 @@
+{
+ "circuit": "aes-sbox-a32-ad7-g103-gd29-xx71-25.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  32,
+  7,
+  103,
+  29
+ ],
+ "found_by": "BoolFlux",
+ "method": "conjugation",
+ "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "operator": "conjpull",
+ "hub": false,
+ "start": {
+  "kind": "NIST circuit",
+  "file": "search/nonlinear/seeds/aes-sbox/aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt",
+  "nist_path": "data/slp/aes/aes-sbox/aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt",
+  "tuple_A_AD_G_GD": [
+   32,
+   7,
+   103,
+   32
+  ]
+ },
+ "chain_root": "NIST's aes-sbox-a32-ad7-g103-gd32-xx71-10",
+ "lineage": null,
+ "parameters": {
+  "limits": {
+   "AD": 7,
+   "A": 32
+  },
+  "seconds": 1000,
+  "schedule": "g:34:300,t:32:300,m:32:360",
+  "repair_keep": "alt",
+  "conj": "rank:7"
+ },
+ "seed": 775495,
+ "found_utc": "2026-11-16T03:03:13Z",
+ "found_utc_source": "recorded by the run",
+ "time_to_result_s": {
+  "elapsed_s": 598.3
+ },
+ "code": {
+  "commit_at_run": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "uncommitted_changes_at_run": true,
+  "kernel_binary_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "files": [
+   "nonlinear/boolflux/campaigns/targets/ops/conjpull.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "f22da9972e540c1368079b8e0a00c0b0219ba297078067a2e056bd22ea3f04b4",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json"
+ ]
+}

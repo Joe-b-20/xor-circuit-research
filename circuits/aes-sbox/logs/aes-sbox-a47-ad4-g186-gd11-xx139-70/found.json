@@ -1,0 +1,55 @@
+{
+ "circuit": "aes-sbox-a47-ad4-g186-gd11-xx139-70.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  47,
+  4,
+  186,
+  11
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": null,
+ "hub": false,
+ "start": {
+  "kind": "not kept (an intermediate circuit of the run)"
+ },
+ "chain_root": null,
+ "lineage": null,
+ "parameters": {
+  "cap": 11,
+  "cap_ad": 4,
+  "cap_a": 47,
+  "mode": "gate",
+  "seconds": 1800
+ },
+ "seed": 1,
+ "found_utc": "2026-11-15T02:50:28Z",
+ "found_utc_source": "file time of the run's copy",
+ "time_to_result_s": null,
+ "code": {
+  "commit_at_run": "d961083",
+  "uncommitted_changes_at_run": false,
+  "files": [
+   "nonlinear/boolflux/strategies/F/fdrive.py"
+  ],
+  "files_at": "e657298",
+  "note": "paths as at commit e657298, before the 2026-11-16 restructure (see circuits/README.md, Conventions)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run"
+ },
+ "command": null,
+ "record": {
+  "where": "nonlinear/boolflux/results/ at commit e657298 (MANIFEST.json entry with this sha256)",
+  "sha256": "52b6e6dcef522be9457b8da6888cdbe480b3555eb14a849425b9927a19739488",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": "campaign archive (not published)",
+ "logs": [
+  "found.json",
+  "verification.json"
+ ]
+}

@@ -1,41 +1,64 @@
 # circuits
 
-The smallest circuit our search found at each depth, for each map. We don't claim that any of
-them is optimal or the best known: they are what the search reached in the time it ran.
-Published or unpublished work may have smaller or shallower circuits for some of these maps,
-NIST's own list among them (see the NIST column), and more search time would likely improve
-many of them. The only lower bounds here are for AES MixColumns ([lower-bound-proofs/](../lower-bound-proofs/README.md)).
+XOR circuits for linear maps, found by XORFlux, and AND/XOR circuits for the AES S-box, found by
+BoolFlux ([search/](../search/README.md)). For each linear map: the smallest circuit our search
+found at each depth. For the S-box: every circuit of ours that no NIST circuit matches or beats.
+We don't claim that any of them is optimal or the best known: they are what the search reached
+in the time it ran. Published or unpublished work may have smaller or shallower circuits for some
+of these functions, NIST's own list among them (see the NIST column), and more search time would
+likely improve many of them. The only lower bounds here are for AES MixColumns ([lower-bound-proofs/](../lower-bound-proofs/README.md)).
 
-One folder per map:
+One folder per map or function:
 
 ```
 <map>/
   <map>.mat.txt                    the map: NIST matrix format
   <map>-xor<G>-depth<D>.circ.txt   a circuit with G gates and depth D: NIST circuit file format
   logs/<map>-xor<G>-depth<D>/      how it was found
+aes-sbox/
+  aes-sbox-a<A>-ad<AD>-g<G>-gd<GD>-xx<X>-<Y>.circ.txt
+                                   a Boolean circuit: NIST's circuit file format and file name
+  logs/aes-sbox-a<A>-...-<Y>/      how it was found
 ```
 
 ## Check
 
 ```bash
-python3 circuits/check.py                 # every circuit
-python3 circuits/check.py circuits/joltik # one map, or one file
+python3 circuits/check.py                   # every circuit, linear and Boolean
+python3 circuits/check.py circuits/joltik   # one map, or one file
+python3 circuits/check.py circuits/aes-sbox # the S-box circuits
 ```
 
-`check.py` uses the standard library only and none of the search code. It checks that each
-output equals its matrix row and that the gate count and depth match the file name.
+`check.py` uses the standard library only and none of the search code; its library for Boolean
+circuits is [boolcirc/](boolcirc/). For a linear map it
+checks that each output equals its matrix row and that the gate count and depth match the file
+name. For a Boolean circuit it computes the complete truth table twice, from the gate list and
+from its AND skeleton, compares it with the S-box computed from FIPS 197's definition, and checks
+A, AD, G, GD, X and Y against the file name and the tallies in the header. By default it also
+checks NIST's own S-box circuits in [search/nonlinear/seeds/](../search/nonlinear/seeds/).
 
 ## Conventions
 
-- Gates are 2-input XOR (XNOR only where a map has output constants). Inputs have depth 0.
+- Linear maps: gates are 2-input XOR (XNOR only where a map has output constants). Inputs have depth 0.
 - In `<map>.mat.txt`, the line `1`, then `rows cols`, then one 0/1 row per output: row `i` is
   `y_i`, column `j` is `x_j`, counting from 0. An optional last line of `rows` 0/1 values gives
   output constants (`y_i = row_i·x ⊕ c_i`).
-- Each circuit's header names the search version that found it, how its worker started and
-  where its logs are. Versions are listed in [search/HISTORY.md](../search/HISTORY.md#versions); the time each
-  search ran and the hardware are in [SEARCH-TIME.md](SEARCH-TIME.md).
+- Boolean circuits: gates AND, XOR, XNOR and NOT, counted as NIST counts them (below). Input
+  `x0` is the most significant bit of the input byte and `y0` of the output byte, as in NIST's files.
+- Each circuit's header names the search that found it (the XORFlux version, or the BoolFlux
+  method), how its run started and where its logs are. XORFlux versions are listed in
+  [search/linear/HISTORY.md](../search/linear/HISTORY.md#versions); the time each
+  XORFlux search ran and the hardware are in [SEARCH-TIME.md](SEARCH-TIME.md).
+- Paths in logs recorded before the restructure of 2026-11-16 are the old ones: `search/xorflux/`,
+  `search/campaigns/`, `search/seeds/` and `search/versions/` are now under `search/linear/`;
+  `nonlinear/boolflux/` is `search/nonlinear/boolflux/` (its `campaigns/targets/ops/` is `ops/`, and
+  `campaigns/aes_check.py` is `aes_check.py`), `nonlinear/nist/` is `search/nonlinear/seeds/` and
+  `nonlinear/boolcirc/` is `circuits/boolcirc/`. A BoolFlux path a log names that is no longer in the
+  tree (`nonlinear/boolflux/strategies/`, `nonlinear/boolflux/results/`) is in commit `e657298`.
 
 ## Logs
+
+Linear maps:
 
 | File | Content |
 |---|---|
@@ -49,9 +72,20 @@ output equals its matrix row and that the gate count and depth match the file na
 
 Older versions wrote fewer files; each `found.json` lists what is there.
 
+Boolean circuits:
+
+| File | Content |
+|---|---|
+| `found.json` | method and operator, start circuit, chain root, parameters, seed, time, code (commit of the run, file paths), reproducibility, where the circuit was first recorded |
+| `verification.json` | both truth-table checks, the metrics, and the comparison with every NIST circuit of the pin |
+| `start.circ.txt` | the circuit the run started from, when it is ours (`front.circ.txt` and `back.circ.txt` for a join) |
+
+The runs' own logs stay in the campaign archive (not published); most BoolFlux runs were
+time-budgeted and are not bit-reproducible, which each `found.json` says.
+
 ## Circuits
 
-208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128). Sizes are inputs × outputs; notes are [below the tables](#notes).
+208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128); and 74 circuits for the [AES S-box](#aes-s-box). Sizes are inputs × outputs; notes are [below the tables](#notes).
 
 ## AES
 
@@ -210,12 +244,12 @@ ours is covered by our circuits above it in the table.
 ¹ Recovered from a worker checkpoint: the run held this circuit but never wrote it as a
 record, so there is no dossier for it.
 
-² "+ polish": shrunk at its own depth by v8's polish (`search/xorflux/engine/polish.py`);
+² "+ polish": shrunk at its own depth by v8's polish (`search/linear/xorflux/engine/polish.py`);
 its logs keep the original circuit (`original-circuit.txt`) and `polish.json`.
 
 ³ Built by a constructor that starts a search chain, with no search move after it:
 `naive` builds balanced XOR trees; `anneal3` is the depth-3 partition annealer
-(`search/xorflux/moves/depth3.py`), a constructor made for depth 3 rather than part of the
+(`search/linear/xorflux/moves/depth3.py`), a constructor made for depth 3 rather than part of the
 general search. ⁴ Found by the search from an `anneal3` start.
 
 ⁵ Found on 2026-10-31 by a cap-6 worker that started from NIST's 107@6 (an earlier revision of
@@ -242,3 +276,155 @@ them. A map with "—" has no such point yet.
 Two pairs of maps have the same matrix: pride-l0 and fides-midori-mantis, and
 skop15-4x4-gf16-inv and joltik. Each folder lists what was searched under its own name, except
 pride-l0, whose 24@2 is the circuit found for fides-midori-mantis (⁶).
+
+## AES S-box
+
+[aes-sbox](aes-sbox/): 8 inputs, 8 outputs; circuits of AND, XOR, XNOR and NOT gates in NIST's
+file format and naming (`aes-sbox-aA-adAD-gG-gdGD-xxX-Y`). As NIST counts them: A is the number
+of AND gates, AD the AND depth (most ANDs on any input-to-output path), G the number of gates
+(every gate, a NOT included) and GD the gate depth (inputs at depth 0; a NOT counts a level);
+X = #XOR + #XNOR, Y = #XNOR.
+
+Which circuits are here: every circuit of ours for which no NIST circuit of the same function has
+A, AD, G and GD all at most ours, one per (A, AD, G, GD), and none that another of ours matches
+or beats. We compared with all 104 forward S-box circuits of NIST's repository at commit
+`3d807741` (its folders `aes-sbox/`, `sbox/` and `old-2020/`, mirrored in
+[search/nonlinear/seeds/](../search/nonlinear/seeds/)). Every AES S-box circuit on NIST's
+[list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits) (page
+updated 2026-11-05, checked 2026-11-16) is in the repository at that commit. **NIST**: NIST's fewest gates among its
+circuits with A, AD and GD at most ours, linked to that file; — where it has none. A row with —
+under G is a NIST circuit that no circuit here matches or beats. Rows are sorted by A, AD and GD,
+in groups close to those of NIST's own tables.
+
+We have no circuits for NIST's other S-box functions: the inverse S-box (`aes-invsbox/`) and the
+S-box with a direction bit that selects the S-box or its inverse (`aes-sbox-sel/`). NIST lists no small (4- and 5-bit) S-boxes;
+BoolFlux's runs on them found nothing better than the published circuits
+([search/nonlinear/](../search/nonlinear/README.md)) and are not listed here.
+
+### #AND = 28
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 28 | 4 | [174](aes-sbox/aes-sbox-a28-ad4-g174-gd14-xx146-80.circ.txt) | 14 | conjugation | [176](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g176-gd14-xx148-25.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g174-gd14-xx146-80/) |
+| 28 | 4 | — | 15 |  | [153](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g153-gd15-xx125-29.circ.txt) ⁸ |  |
+| 28 | 4 | — | 16 |  | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) ⁸ |  |
+| 28 | 4 | [138](aes-sbox/aes-sbox-a28-ad4-g138-gd17-xx110-61.circ.txt) | 17 | gate kernel | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g138-gd17-xx110-61/) |
+| 28 | 4 | [135](aes-sbox/aes-sbox-a28-ad4-g135-gd18-xx107-55.circ.txt) | 18 | gate kernel | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g135-gd18-xx107-55/) |
+| 28 | 4 | [133](aes-sbox/aes-sbox-a28-ad4-g133-gd19-xx105-55.circ.txt) | 19 | gate kernel | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g133-gd19-xx105-55/) |
+| 28 | 4 | [132](aes-sbox/aes-sbox-a28-ad4-g132-gd20-xx104-56.circ.txt) | 20 | gate kernel | [134](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g134-gd20-xx106-41.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g132-gd20-xx104-56/) |
+| 28 | 4 | [131](aes-sbox/aes-sbox-a28-ad4-g131-gd22-xx103-52.circ.txt) | 22 | gate kernel | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g131-gd22-xx103-52/) |
+| 28 | 4 | [130](aes-sbox/aes-sbox-a28-ad4-g130-gd24-xx102-45.circ.txt) | 24 | gate kernel | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g130-gd24-xx102-45/) |
+| 28 | 5 | — | 15 |  | [150](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g150-gd15-xx122-23.circ.txt) ⁸ |  |
+| 28 | 5 | [136](aes-sbox/aes-sbox-a28-ad5-g136-gd17-xx108-60.circ.txt) | 17 | depth pull | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g136-gd17-xx108-60/) |
+| 28 | 5 | [133](aes-sbox/aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt) | 18 | depth pull (hub) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g133-gd18-xx105-51/) |
+| 28 | 5 | [129](aes-sbox/aes-sbox-a28-ad5-g129-gd19-xx101-56.circ.txt) | 19 | SAT LNS | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g129-gd19-xx101-56/) |
+| 28 | 5 | — | 20 |  | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) ⁸ |  |
+| 28 | 5 | [127](aes-sbox/aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt) | 22 | skeleton kick (hub) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g127-gd22-xx99-48/) |
+| 28 | 5 | [126](aes-sbox/aes-sbox-a28-ad5-g126-gd23-xx98-58.circ.txt) | 23 | conjugation | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g126-gd23-xx98-58/) |
+| 28 | 5 | [125](aes-sbox/aes-sbox-a28-ad5-g125-gd24-xx97-50.circ.txt) | 24 | conjugation | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g125-gd24-xx97-50/) |
+| 28 | 5 | — | 27 |  | [124](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt) ⁸ |  |
+
+### 29 ≤ #AND ≤ 31
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 29 | 4 | [141](aes-sbox/aes-sbox-a29-ad4-g141-gd15-xx112-58.circ.txt) | 15 | gate kernel (hub) | [153](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g153-gd15-xx125-29.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a29-ad4-g141-gd15-xx112-58/) |
+| 29 | 4 | [135](aes-sbox/aes-sbox-a29-ad4-g135-gd16-xx106-51.circ.txt) | 16 | gate kernel (hub) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a29-ad4-g135-gd16-xx106-51/) |
+| 29 | 4 | [131](aes-sbox/aes-sbox-a29-ad4-g131-gd17-xx102-64.circ.txt) | 17 | depth pull (hub) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a29-ad4-g131-gd17-xx102-64/) |
+| 29 | 4 | [129](aes-sbox/aes-sbox-a29-ad4-g129-gd19-xx100-56.circ.txt) | 19 | depth pull (hub) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a29-ad4-g129-gd19-xx100-56/) |
+| 29 | 4 | [128](aes-sbox/aes-sbox-a29-ad4-g128-gd23-xx99-51.circ.txt) | 23 | gate kernel | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a29-ad4-g128-gd23-xx99-51/) |
+| 29 | 5 | [130](aes-sbox/aes-sbox-a29-ad5-g130-gd18-xx101-53.circ.txt) | 18 | gate kernel (hub) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a29-ad5-g130-gd18-xx101-53/) |
+| 30 | 4 | [138](aes-sbox/aes-sbox-a30-ad4-g138-gd15-xx108-64.circ.txt) | 15 | depth pull (hub) | [153](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g153-gd15-xx125-29.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a30-ad4-g138-gd15-xx108-64/) |
+| 31 | 5 | [124](aes-sbox/aes-sbox-a31-ad5-g124-gd17-xx93-35.circ.txt) | 17 | gate kernel | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g124-gd17-xx93-35/) |
+| 31 | 5 | [121](aes-sbox/aes-sbox-a31-ad5-g121-gd18-xx90-33.circ.txt) | 18 | gate kernel (hub) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g121-gd18-xx90-33/) |
+| 31 | 5 | [118](aes-sbox/aes-sbox-a31-ad5-g118-gd19-xx87-39.circ.txt) | 19 | join | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g118-gd19-xx87-39/) |
+| 31 | 5 | [117](aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt) | 20 | join | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g117-gd20-xx86-24/) |
+| 31 | 5 | [116](aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt) | 22 | join | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g116-gd22-xx85-6/) |
+| 31 | 5 | [115](aes-sbox/aes-sbox-a31-ad5-g115-gd24-xx84-29.circ.txt) | 24 | gate kernel (hub) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g115-gd24-xx84-29/) |
+| 31 | 5 | [114](aes-sbox/aes-sbox-a31-ad5-g114-gd28-xx83-18.circ.txt) | 28 | join (hub) | [124](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a31-ad5-g114-gd28-xx83-18/) |
+
+### 32 ≤ #AND ≤ 37, AND depth ≥ 4
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 32 | 4 | [125](aes-sbox/aes-sbox-a32-ad4-g125-gd15-xx93-37.circ.txt) | 15 | gate kernel | [127](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g127-gd15-xx95-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g125-gd15-xx93-37/) |
+| 32 | 4 | [119](aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt) | 16 | conjugation | [127](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g127-gd15-xx95-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g119-gd16-xx87-37/) |
+| 32 | 4 | [117](aes-sbox/aes-sbox-a32-ad4-g117-gd17-xx85-35.circ.txt) | 17 | conjugation | [127](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g127-gd15-xx95-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g117-gd17-xx85-35/) |
+| 32 | 4 | [115](aes-sbox/aes-sbox-a32-ad4-g115-gd18-xx83-35.circ.txt) | 18 | conjugation | [127](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g127-gd15-xx95-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g115-gd18-xx83-35/) |
+| 32 | 4 | [114](aes-sbox/aes-sbox-a32-ad4-g114-gd19-xx82-45.circ.txt) | 19 | conjugation | [117](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g114-gd19-xx82-45/) |
+| 32 | 4 | [113](aes-sbox/aes-sbox-a32-ad4-g113-gd20-xx81-36.circ.txt) | 20 | conjugation | [117](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g113-gd20-xx81-36/) |
+| 32 | 4 | [112](aes-sbox/aes-sbox-a32-ad4-g112-gd21-xx80-33.circ.txt) | 21 | SAT LNS | [117](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g112-gd21-xx80-33/) |
+| 32 | 4 | [111](aes-sbox/aes-sbox-a32-ad4-g111-gd25-xx79-30.circ.txt) | 25 | conjugation | [117](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad4-g111-gd25-xx79-30/) |
+| 32 | 5 | [115](aes-sbox/aes-sbox-a32-ad5-g115-gd17-xx83-31.circ.txt) | 17 | depth pull (hub) | [122](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g122-gd16-xx90-15.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g115-gd17-xx83-31/) |
+| 32 | 5 | [111](aes-sbox/aes-sbox-a32-ad5-g111-gd18-xx79-34.circ.txt) | 18 | conjugation | [122](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g122-gd16-xx90-15.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g111-gd18-xx79-34/) |
+| 32 | 5 | [110](aes-sbox/aes-sbox-a32-ad5-g110-gd19-xx78-31.circ.txt) | 19 | conjugation | [117](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g110-gd19-xx78-31/) |
+| 32 | 5 | [108](aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt) | 20 | gate kernel | [109](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g108-gd20-xx76-35/) |
+| 32 | 5 | [106](aes-sbox/aes-sbox-a32-ad5-g106-gd21-xx74-28.circ.txt) | 21 | conjugation | [109](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g106-gd21-xx74-28/) |
+| 32 | 5 | [105](aes-sbox/aes-sbox-a32-ad5-g105-gd24-xx73-24.circ.txt) | 24 | conjugation | [107](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g107-gd22-xx75-4.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g105-gd24-xx73-24/) |
+| 32 | 5 | [104](aes-sbox/aes-sbox-a32-ad5-g104-gd29-xx72-23.circ.txt) | 29 | gate kernel | [105](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g105-gd26-xx73-5.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad5-g104-gd29-xx72-23/) |
+| 32 | 7 | [104](aes-sbox/aes-sbox-a32-ad7-g104-gd26-xx72-31.circ.txt) | 26 | conjugation | [105](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g105-gd26-xx73-5.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad7-g104-gd26-xx72-31/) |
+| 32 | 7 | [103](aes-sbox/aes-sbox-a32-ad7-g103-gd29-xx71-25.circ.txt) | 29 | conjugation | [105](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a32-ad5-g105-gd26-xx73-5.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a32-ad7-g103-gd29-xx71-25/) |
+| 33 | 4 | — | 14 |  | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g125-gd14-xx92-18.circ.txt) ⁸ |  |
+| 33 | 4 | [115](aes-sbox/aes-sbox-a33-ad4-g115-gd15-xx82-19.circ.txt) | 15 | join | [116](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a33-ad4-g115-gd15-xx82-19/) |
+| 33 | 4 | [112](aes-sbox/aes-sbox-a33-ad4-g112-gd16-xx79-28.circ.txt) | 16 | gate kernel (hub) | [116](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a33-ad4-g112-gd16-xx79-28/) |
+| 33 | 4 | [110](aes-sbox/aes-sbox-a33-ad4-g110-gd18-xx77-26.circ.txt) | 18 | gate kernel | [116](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a33-ad4-g110-gd18-xx77-26/) |
+| 33 | 4 | [108](aes-sbox/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt) | 19 | gate kernel | [116](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a33-ad4-g108-gd19-xx75-22/) |
+| 33 | 4 | [107](aes-sbox/aes-sbox-a33-ad4-g107-gd20-xx74-26.circ.txt) | 20 | depth pull (hub) | [108](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a33-ad4-g107-gd20-xx74-26/) |
+| 33 | 4 | — | 22 |  | [106](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt) ⁸ |  |
+| 33 | 4 | — | 25 |  | [105](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g105-gd25-xx72-6.circ.txt) ⁸ |  |
+| 34 | 4 | [134](aes-sbox/aes-sbox-a34-ad4-g134-gd13-xx100-51.circ.txt) | 13 | gate kernel (hub) | [139](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a34-ad4-g139-gd13-xx105-22.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a34-ad4-g134-gd13-xx100-51/) |
+| 34 | 4 | [122](aes-sbox/aes-sbox-a34-ad4-g122-gd14-xx88-38.circ.txt) | 14 | conjugation | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g125-gd14-xx92-18.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a34-ad4-g122-gd14-xx88-38/) |
+| 35 | 4 | — | 13 |  | [133](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt) ⁸ |  |
+| 36 | 4 | [129](aes-sbox/aes-sbox-a36-ad4-g129-gd13-xx93-40.circ.txt) | 13 | gate kernel | [133](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a36-ad4-g129-gd13-xx93-40/) |
+| 37 | 4 | [127](aes-sbox/aes-sbox-a37-ad4-g127-gd13-xx90-41.circ.txt) | 13 | conjugation | [133](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a37-ad4-g127-gd13-xx90-41/) |
+| 37 | 4 | [121](aes-sbox/aes-sbox-a37-ad4-g121-gd14-xx84-36.circ.txt) | 14 | gate kernel | [125](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a33-ad4-g125-gd14-xx92-18.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a37-ad4-g121-gd14-xx84-36/) |
+
+### AND depth 3
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 35 | 3 | [181](aes-sbox/aes-sbox-a35-ad3-g181-gd12-xx146-80.circ.txt) | 12 | re-basing | — | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g181-gd12-xx146-80/) |
+| 35 | 3 | [165](aes-sbox/aes-sbox-a35-ad3-g165-gd13-xx130-60.circ.txt) | 13 | re-basing | [183](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g183-gd13-xx148-29.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g165-gd13-xx130-60/) |
+| 35 | 3 | [162](aes-sbox/aes-sbox-a35-ad3-g162-gd14-xx127-61.circ.txt) | 14 | region rebuild | [172](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g172-gd14-xx137-30.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g162-gd14-xx127-61/) |
+| 35 | 3 | [155](aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt) | 15 | depth pull (hub) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g155-gd15-xx120-56/) |
+| 35 | 3 | [147](aes-sbox/aes-sbox-a35-ad3-g147-gd16-xx112-60.circ.txt) | 16 | depth pull (hub) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g147-gd16-xx112-60/) |
+| 35 | 3 | [144](aes-sbox/aes-sbox-a35-ad3-g144-gd17-xx109-48.circ.txt) | 17 | depth pull (hub) | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g144-gd17-xx109-48/) |
+| 35 | 3 | [143](aes-sbox/aes-sbox-a35-ad3-g143-gd18-xx108-49.circ.txt) | 18 | product exchange | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g143-gd18-xx108-49/) |
+| 35 | 3 | [141](aes-sbox/aes-sbox-a35-ad3-g141-gd19-xx106-46.circ.txt) | 19 | product exchange | [157](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g141-gd19-xx106-46/) |
+| 35 | 3 | [139](aes-sbox/aes-sbox-a35-ad3-g139-gd21-xx104-50.circ.txt) | 21 | conjugation | [147](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g147-gd20-xx112-36.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g139-gd21-xx104-50/) |
+| 35 | 3 | [138](aes-sbox/aes-sbox-a35-ad3-g138-gd23-xx103-46.circ.txt) | 23 | conjugation | [147](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g147-gd20-xx112-36.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g138-gd23-xx103-46/) |
+| 35 | 3 | [137](aes-sbox/aes-sbox-a35-ad3-g137-gd28-xx102-47.circ.txt) | 28 | re-basing | [139](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g139-gd27-xx104-38.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a35-ad3-g137-gd28-xx102-47/) |
+| 36 | 3 | [161](aes-sbox/aes-sbox-a36-ad3-g161-gd14-xx125-57.circ.txt) | 14 | cap oscillation (hub) | [172](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g172-gd14-xx137-30.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a36-ad3-g161-gd14-xx125-57/) |
+| 37 | 3 | [160](aes-sbox/aes-sbox-a37-ad3-g160-gd14-xx123-52.circ.txt) | 14 | join (hub) | [172](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a35-ad3-g172-gd14-xx137-30.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a37-ad3-g160-gd14-xx123-52/) |
+
+### #AND ≥ 38
+
+| A | AD | G | GD | Found by | NIST | Logs |
+|---:|---:|---:|---:|---|---:|---|
+| 38 | 4 | [135](aes-sbox/aes-sbox-a38-ad4-g135-gd12-xx97-25.circ.txt) | 12 | shared-bottom rebuild | — | [logs](aes-sbox/logs/aes-sbox-a38-ad4-g135-gd12-xx97-25/) |
+| 42 | 4 | [284](aes-sbox/aes-sbox-a42-ad4-g284-gd11-xx242-114.circ.txt) | 11 | gate kernel | — | [logs](aes-sbox/logs/aes-sbox-a42-ad4-g284-gd11-xx242-114/) |
+| 43 | 4 | [278](aes-sbox/aes-sbox-a43-ad4-g278-gd11-xx235-123.circ.txt) | 11 | gate kernel | — | [logs](aes-sbox/logs/aes-sbox-a43-ad4-g278-gd11-xx235-123/) |
+| 44 | 4 | [254](aes-sbox/aes-sbox-a44-ad4-g254-gd11-xx210-122.circ.txt) | 11 | gate kernel | — | [logs](aes-sbox/logs/aes-sbox-a44-ad4-g254-gd11-xx210-122/) |
+| 46 | 4 | [200](aes-sbox/aes-sbox-a46-ad4-g200-gd11-xx154-73.circ.txt) | 11 | gate kernel (hub) | — | [logs](aes-sbox/logs/aes-sbox-a46-ad4-g200-gd11-xx154-73/) |
+| 47 | 4 | [186](aes-sbox/aes-sbox-a47-ad4-g186-gd11-xx139-70.circ.txt) | 11 | gate kernel | — | [logs](aes-sbox/logs/aes-sbox-a47-ad4-g186-gd11-xx139-70/) |
+| 48 | 4 | [151](aes-sbox/aes-sbox-a48-ad4-g151-gd11-xx103-47.circ.txt) | 11 | gate kernel | — | [logs](aes-sbox/logs/aes-sbox-a48-ad4-g151-gd11-xx103-47/) |
+| 49 | 4 | — | 11 |  | [148](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a49-ad4-g148-gd11-xx99-23.circ.txt) ⁸ |  |
+| 59 | 4 | — | 10 |  | [159](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a59-ad4-g159-gd10-xxn100-30-3.circ.txt) ⁸ |  |
+
+⁸ We have a different circuit with the same A, AD, G and GD. Equal points are not kept: as for
+the linear maps taken from NIST's repository, the S-box runs started from NIST's circuits.
+
+**Found by** (all BoolFlux; how the methods work is in
+[search/nonlinear/HOW-IT-WORKS.md](../search/nonlinear/HOW-IT-WORKS.md#moves-around-the-kernel)):
+*gate kernel*, the gate-replacement search under caps on A, AD and GD; *depth pull*, the kernel
+with one cap lowered; *cap oscillation*, a cap relaxed, then restored; *region rebuild*, a
+timing-driven rebuild of one XOR region; *skeleton kick*, a change of the AND skeleton followed
+by a short kernel polish; *join*, the front of one circuit and the back of another, met at a
+shared interface function; *conjugation*, a GF(2⁸) conjugate of the start followed by staged
+kernel pulls; *re-basing*, of the level-3 product classes (AND depth 3); *shared-bottom rebuild*;
+*SAT LNS*, the span-pooled SAT neighbourhood search; *product exchange*, level-1 AND products
+exchanged within their span, then the kernel. "(hub)": the operator ran in the
+[hub](../search/nonlinear/HOW-IT-WORKS.md#the-hub), the shared archive that schedules the
+operators. Each `found.json` names the start: 9 runs started from a NIST circuit and 2 joins had
+a NIST parent; 56 runs started from circuits of ours (in `logs/`), most of them descended from
+NIST's; for 7 the start was an intermediate circuit the run did not keep.
