@@ -1,0 +1,60 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "targets-P3",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+  "sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62"
+ },
+ "curated_utc": "2026-11-16T13:19:59Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+  "seed": 1011,
+  "metrics": {
+   "cost": 113.0,
+   "G": 113,
+   "A": 32,
+   "GD": 20,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "pdrive (strategies/F/fdrive.py + hard A/AD guard) mode mix, caps A32 AD4 GD21, kernel bfx-4dc199db, repair_keep 1 (targeted campaign 2026-11-15, agent P3, target T04; strategies/P3/NOTES.md)",
+ "command": "env F_BFX=/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/bin/bfx-4dc199db python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/P3/pdrive.py --start /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/starts/p5cert-112g22.circ.txt --cap 21 --cap-ad 4 --cap-a 32 --mode mix --seconds 360 --seed 1011 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/rkG1-s1-mix21-k1 ",
+ "run_record": "~/xs-campaigns/2026-11-15-targets/P3/found",
+ "parents": [
+  {
+   "file": "~/xs-campaigns/2026-11-15-targets/P3/starts/p5cert-112g22.circ.txt",
+   "sha256": "01d9a03df1bfd5584bf04c75322ace4a445b404073c6a38bf9d786b703cff144"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-15-targets/P3/starts/p5cert-112g22.circ.txt",
+ "objective": "target T04: G < 117 with GD <= 19",
+ "caps": {
+  "GD": null,
+  "AD": 4,
+  "A": 32
+ },
+ "seeds": [
+  1011
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "elapsed_s": 361.0,
+  "found_utc": "2026-11-15T19:42:02Z"
+ },
+ "code_version": {
+  "recorded in the campaign sidecar (at run time)": {
+   "git": "8922cacae4d4314968c5ce9baa740dea7aa38935",
+   "tree": "xcr-boolflux + uncommitted strategies/P3 (and F/T2 as used)",
+   "kernel": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/bin/bfx-4dc199db",
+   "kernel_sha256": "4dc199db6f226260b53cff84f4b441c93d39058f3b501cac24445a59822bf935"
+  }
+ },
+ "reproduction": "one-off: agent P3 (seed 1011, time-budgeted search; not bit-reproducible); not re-run",
+ "note": "search-path certification (informational): True",
+ "campaign_sidecar": "aes-nist-targets-P3-t04-g113-a32-gd20-ad4.campaign.json"
+}

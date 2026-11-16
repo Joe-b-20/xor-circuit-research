@@ -1,0 +1,131 @@
+%NCFF-0.1-2026 (NIST Circuit File Format), written by nonlinear/boolflux
+
+begin circuit satlns
+
+  % Not a NIST-issued circuit: a BoolFlux result (NIST circuit file format, NIST counting), target T05, curated 2026-11-16
+  % Found by: campaign 2026-11-15-targets, agent M4; strategies/M4/NOTES.md, 2026-11-16T00:38:13Z, seed 23
+  % Started from: ~/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt (sha256 6a349e2eb279), copy logs/aes-sbox-a32-ad4-g112-gd21-T05-M4-1/start.circ.txt
+  % Logs: nonlinear/boolflux/results/targets/T05/logs/aes-sbox-a32-ad4-g112-gd21-T05-M4-1/ (found.json, REPRODUCE.md, command.sh, aes_check.json)
+  % satlns job target T04 seed 23: step 1245 epoch 2 query F t=583.9 s
+  % Tally: G=112 A=32 GD=21 AD=4 AND=32 XNOR=31 XOR=49; cost 112.0 under model nist
+
+Inputs: x0 x1 x2 x3 x4 x5 x6 x7
+Outputs: y0 y1 y2 y3 y4 y5 y6 y7
+Internal: t1:t104
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR t1 x0 x5
+XNOR t2 x2 x3
+XNOR t3 x3 x4
+XOR t4 x1 x2
+XNOR t5 t2 t1
+XNOR t6 x0 t3
+XNOR t7 t5 x7
+XOR t8 t6 x6
+XOR t9 x1 t8
+XOR t10 t8 x7
+XOR t11 t4 t7
+XOR t12 x0 t9
+XOR t13 t3 t11
+AND t14 x0 t8
+XOR t15 x4 t10
+XNOR t16 t6 t11
+XOR t17 t12 t7
+AND t18 t13 t10
+AND t19 t2 t11
+AND t20 t5 t15
+XNOR t21 x5 t14
+XOR t22 x2 t15
+XNOR t23 t2 t13
+AND t24 x7 t16
+XOR t25 t2 t17
+XOR t26 t14 t19
+XOR t27 t18 t20
+AND t28 t23 t22
+XOR t29 t17 t24
+AND t30 t4 t12
+AND t31 x2 t9
+AND t32 t7 t25
+XNOR t33 t26 t18
+XOR t34 t8 t27
+XOR t35 t28 t21
+XOR t36 t29 t26
+XOR t37 t31 t29
+XOR t38 t33 t32
+XNOR t39 t35 t34
+XOR t40 t30 t36
+XOR t41 t37 t35
+AND t42 t39 t38
+XOR t43 t41 t39
+AND t44 t41 t40
+XOR t45 t40 t38
+XNOR t46 t40 t42
+XNOR t47 t44 t42
+XOR t48 t41 t42
+AND t49 t43 t46
+AND t50 t43 t47
+AND t51 t45 t48
+AND t52 t45 t47
+XOR t53 t39 t49
+XOR t54 t48 t50
+XOR t55 t40 t51
+XNOR t56 t46 t52
+XOR t57 t4 t53
+XOR t58 t53 t55
+XOR t59 t54 t56
+XOR t60 t59 t58
+XOR t61 t54 t53
+AND t62 t9 t56
+XNOR t63 t25 t57
+XNOR t64 t2 t57
+AND t65 t5 t55
+XNOR t66 t17 t54
+XOR t67 t61 t60
+XOR t68 t7 t61
+XOR t69 t11 t63
+AND t70 x7 t58
+AND t71 t10 t60
+AND t72 t54 t64
+AND t73 t13 t60
+XOR t74 t65 t62
+XNOR t75 t7 t66
+AND t76 t23 t67
+AND t77 t69 t68
+XOR t78 t71 t70
+XNOR t79 t73 t72
+AND t80 t22 t67
+AND t81 x0 t59
+AND t82 t15 t55
+AND t83 t75 t57
+XNOR t84 t62 t76
+XOR t85 t32 t77
+AND t86 t16 t58
+XOR t87 t74 t78
+XOR t88 t79 t81
+AND t89 x2 t56
+AND t90 t63 t61
+XOR t91 t30 t83
+XNOR t92 t85 t84
+AND t93 t8 t59
+XOR t94 t87 t85
+XNOR t95 t88 t80
+XNOR t96 t54 t90
+XOR t97 t78 t92
+AND t98 t66 t53
+XOR t99 t86 t91
+XNOR t100 t79 t84
+XOR t101 t94 t93
+XNOR t102 t95 t71
+XOR t103 t94 t82
+XOR t104 t95 t96
+XNOR y7 t97 t91
+XNOR y6 t92 t98
+XNOR y5 t100 t99
+XNOR y4 t102 t101
+XNOR y3 t88 t97
+XNOR y2 t72 t103
+XOR y1 t104 t89
+XNOR y0 t104 t87
+end SLP
+end circuit

@@ -22,5 +22,9 @@
  "aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/P2/runs/t02mix1/snap-g174.circ.txt  A AD G GD = 28 4 174 14  counts {'AND': 28, 'XNOR': 70, 'XOR': 76}",
  "utc": "2026-11-15T16:21:12Z",
  "path_certified": true,
- "path_certified_note": "lineage: start 28/4/175/14 inside all caps (A28 AD4 GD14) stayed the job best until stage 17; stage 17 = trb.rebuild of the bottom linear region of that best (result 28/4/175/14, inside caps), then one kernel run under cap.gd 14 cap.ad 4 cap.a 28 from that feasible state; the kernel never leaves the caps from a feasible start (COMPLIANCE-1820, bfx.c 1064-1077). Kernel bfx-593fa798f5 without repair_keep, which only matters for starts above a cap."
+ "path_certified_note": "lineage: start 28/4/175/14 inside all caps (A28 AD4 GD14) stayed the job best until stage 17; stage 17 = trb.rebuild of the bottom linear region of that best (result 28/4/175/14, inside caps), then one kernel run under cap.gd 14 cap.ad 4 cap.a 28 from that feasible state; the kernel never leaves the caps from a feasible start (COMPLIANCE-1820, bfx.c 1064-1077). Kernel bfx-593fa798f5 without repair_keep, which only matters for starts above a cap.",
+ "class": "other",
+ "class_kind": null,
+ "class_target": "T04",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json"
 }

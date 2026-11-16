@@ -1,0 +1,69 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "targets-M3",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-targets/M3/found/rebase-a35-ad3-g165-gd13-7e6507bb2b.circ.txt",
+  "sha256": "7e6507bb2b2309ff8bae36d018c92a77e5a83c51b783c207c423a99ab800419f"
+ },
+ "curated_utc": "2026-11-16T13:19:59Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-targets/M3/found/rebase-a35-ad3-g165-gd13-7e6507bb2b.circ.txt",
+  "seed": 52,
+  "metrics": {
+   "cost": 165.0,
+   "G": 165,
+   "A": 35,
+   "GD": 13,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "{\"engine\": \"ops/rebase.py: gbasis class re-basing + P6 hybrid build + capped gate kernel\", \"operator\": \"rebase\"} (targeted campaign 2026-11-15, agent M3, target T08; strategies/M3/NOTES.md)",
+ "command": "cd /home/joebachir20/xcr-boolflux && python3 nonlinear/boolflux/campaigns/targets/ops/rebase.py --in /home/joebachir20/xs-campaigns/2026-11-15-targets/P6/found/aes-sbox-a35-ad3-g168-gd13-94a02642b2d6.circ.txt --target T08 --seed 52 --seconds 900 --cap 13 --stages 1 --stage-seconds 200 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/M3/runs/screen/rb-t08c13c",
+ "run_record": "~/xs-campaigns/2026-11-15-targets/M3/found",
+ "parents": [
+  {
+   "file": "~/xs-campaigns/2026-11-15-targets/P6/found/aes-sbox-a35-ad3-g168-gd13-94a02642b2d6.circ.txt",
+   "sha256": "cb0edda7231ece31cb6adfc2c1eb6112010959a5877fbc65071b5be9a8f3795e"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-15-targets/P6/found/aes-sbox-a35-ad3-g168-gd13-94a02642b2d6.circ.txt",
+ "objective": "target T08: GD <= 12, preferably with G <= 183; secondary G much lower with GD <= 13",
+ "caps": {
+  "GD": null,
+  "AD": 3,
+  "A": 35
+ },
+ "seeds": [
+  52
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "elapsed_s": 413.7,
+  "found_utc": "2026-11-16T01:19:00Z"
+ },
+ "code_version": {
+  "recorded in the campaign sidecar (at run time)": {
+   "git": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+   "tree": "xcr-boolflux working tree incl. uncommitted campaigns/targets/ops",
+   "ops_sha256": {
+    "bottom.py": "cdd7c0ef1041cc61babfc6a9e20b5bb6bf0a885d97f699c16a1413afdcd946e7",
+    "common.py": "34274be7632c0df33d46fb33477dfe91a9ce445b7c538d2216209ddd53ea55cf",
+    "conjpull.py": "3e71a87052afb17ec5014eb088e0e994624ae70d730636a34cc19d992735329e",
+    "m3common.py": "cf043c3d649190967017da21c0be8642ee150f204affd361c17e60a90574c013",
+    "rebase.py": "311398ea41b1e7fac75e3f623a576c81dd1776d9139d12a5019827ad4a533b21",
+    "satlns.py": "ad843f391a2dfab788658928dd675c55c8399bc5ca6a47a62c8d78dd474f9c9a"
+   },
+   "kernel": "/home/joebachir20/xs-campaigns/2026-11-16-night/bin/bfx-94a75e2c18",
+   "kernel_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+   "kernel_src_sha256": "c8d293b6ee35e201e7e08d58d750c95ab14af249ee8de8013a3cd1309c244fe8"
+  }
+ },
+ "reproduction": "one-off: agent M3 (seed 52, time-budgeted search; not bit-reproducible); not re-run",
+ "note": "search-path certification (informational): unknown",
+ "campaign_sidecar": "aes-nist-targets-M3-t08-g165-a35-gd13-ad3.campaign.json"
+}

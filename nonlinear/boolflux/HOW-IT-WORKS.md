@@ -136,6 +136,192 @@ fewer than 28 ANDs, the only results below 32 that undercut both parents are the
 ones, and there is no valid join between the two published A28 families (AND depth 4 and 5)
 (`strategies/L2/WHAT-WORKED-BEFORE.md` section 1.3).
 
+## Methods added in the targeted campaigns (2026-11-15)
+
+The ten targeted campaigns ([results/targets/TARGETS.md](results/targets/TARGETS.md)) produced
+their new points with four methods that sit around the gate kernel rather than inside it. Each
+hands the kernel a start it has not seen (another linear basis, another bottom, another set of
+level-3 products), in line with the finding that the kernel is a good finisher and a poor
+explorer ([DESIGN.md](DESIGN.md) section 6.1). Labels as in DESIGN.md: [C] exact within the
+stated case, [H] heuristic or measured on few runs.
+
+### Conjugation and staged pulls
+
+GF(2^8) inversion commutes with the maps G(z) = lam z^(2^k) (lam nonzero, k = 0..7) up to
+another such map: inv(G z) = H^-1(inv z) with H(w) = (lam w)^(2^(8-k)). Both are GF(2)-linear on
+the 8 bits. With the AES affine map S(x) = A inv(x) + c, every circuit C for S gives 255 x 8 =
+2,040 circuits for S: feed G x to C and pass its outputs through the affine map
+w -> Mout (w + c) + c with Mout = A H A^-1 (`strategies/P3/conj.py`). The AND gates and the
+middle layers are unchanged, so A and AD are unchanged; only the top layer (every form f becomes
+f o G) and the output layer change. `strategies/P3/mkconj.py` then re-synthesises those two
+layers (a Boyar-Peralta style heuristic on the top, timing-driven `trb` passes on the bottom),
+and `strategies/P3/conj3.py` screens all 2,040 by a proxy cost (heuristic top plus Paar bottom).
+
+The conjugate is a start, not a result: it is usually 10-30 gates worse. The **staged pull**
+then runs the kernel in gate mode at a loose gate-depth cap (GD 24-31), and afterwards in `mix`
+mode (gate, `osc`, `trb` stages) at tighter caps, one or two levels at a time
+(`strategies/P3/pdrive.py`, a copy of `strategies/F/fdrive.py` with a hard A/AD guard on the
+retained stage results). On T04 this went from the archive's 32/4/116/20 through
+127@22 -> 114@24 (gate, cap 24, 240 s) -> 113@20 (mix, cap 21, 362 s) -> 114@19 (mix, cap 19,
+102 s), about 12 CPU-minutes. A lineage takes 15-40 CPU-minutes and then plateaus; seven
+certified lineages stopped at 113@20 / 114@19 [H].
+
+Why it helps [H]: the A32/AD4 circuits checked (the NIST-equivalent 117@19, 116@20, 114@26,
+119@18) all have the same function-level bottom [C, those four, `strategies/P3/NOTES.md`], and
+kernel walks from the family end at 117@19. The conjugate keeps the AND structure but puts the
+top and output layers in another linear basis, where the kernel finds cheaper XOR layers (in the
+T04 lineage the linear regions L1 and L4 have 15-16 and 28 gates instead of 17-18 and 30). Where it worked: T04 (P3), the AD4 half of T05 (P5: 111/25, 112/22), T07 (P6: 139@23,
+then 138@24). Where it did not, and why:
+
+| case | finding |
+|---|---|
+| A28 circuits (T01, T03) | the identity is the best basis of every A28 start by 4 proxy gates; 9 pipelines ended 5-9 gates above the archive [H] |
+| T08 at GD 12 | for all 2,040 conjugates of 181@12 the skeleton arrivals of the level-1/2 ANDs grow by >= 12 levels in sum [C, skeleton Huffman case]: a gate-count tool, not a depth tool |
+| T02, T06 depth | no conjugate of 28/4/174/14 has skeleton bound below 14; of 34/4/134/13 only the identity keeps 13 [C, those 2,040 circuits] |
+| T10 | N(lam x^(2^k)) = N(lam) N(x)^(2^k), so every conjugate has the same span of N-coordinates and the same stage 1 [C] |
+| T05 (G record) | 21 conjugate lineages settle at 104 [H]; the k = 0 conjugates are members of P4's exactly scored scaled-Frobenius family (no 102 there [C]) |
+
+### Re-basing the level-3 GF(4) classes (AND depth 3)
+
+In the AND-depth-3 circuits the 12 level-3 products are Q_w R_c in three classes of four
+(`strategies/T3/NOTES.md` section 1). Replacing a class's four R by any other basis of their span
+makes each new product an XOR of old products, so every output stays in the span; the class's
+bottom block M_w becomes M_w T^-1 and only the R operand forms change. When the products are
+fixed, an output that is an XOR of products arriving at gate levels l_i can be built at depth D
+exactly when sum 2^(l_i - D) <= 1 (Kraft, Huffman trees). `strategies/P6/botbasis.py` enumerates
+all 840 unordered bases of each class, prices every new product by its Huffman arrival (the
+best of the operand variants (Q, R), (Q, Q+R+1), (Q+R+1, R)), keeps the Pareto set of per-output
+Kraft vectors and finds the best triple exactly. In that case (lower levels fixed, products
+restricted to re-bases of the existing classes, outputs XOR trees of products) [C], re-basing
+alone lowers the skeleton bound of NIST 183@13 and our 177@13 from 13 to 12.
+
+A bound is not a circuit. `hybrid.py` builds a depth-feasible circuit at the cap: parent ANDs are
+kept when their real level still fits, the others are rebuilt at the latest feasible deadline,
+the re-based operands in one shared layer. The kernel then polishes at caps A35 AD3 GD12. From
+parents whose best re-basing just meets the budget (max Kraft 1.0) the builds plateaued at
+187@12. The step that worked was to look for slack: `l3scan.py` prices every one-point
+GF(4)-coordinate move of 177@13 (T3's `gf4build`) by its best re-basing; 8 of 765 variants reach
+max Kraft 0.75 [C, botbasis case], and one of them gave a 204@12 build and then **181@12**.
+Relaxing GD-12 circuits at cap 13 and re-basing again at cap 13 gave the T08 chain down to
+168@13 (`strategies/P6/NOTES.md` sections 2-3, 7-8, 11-12).
+
+### Shared-bottom rebuild (high A, low depth)
+
+In the A41-A59 circuits at GD 10-12 every output is an XOR of rank-1 products AND(Y_alpha, w),
+where Y_alpha is a sum of the four base Y-forms of the inversion and w a linear form of x. Writing
+output j as sum_i Y_i u_ij(x) gives a 4 x 8 matrix B_j of rank 4; a set of products and, per
+output, a subset whose sum is B_j is a simultaneous rank-1 decomposition, and the gate depth of
+each output is again a Kraft sum over its products. `strategies/P7/bopt.py` anneals over the
+per-output decompositions (random bases of what remains after subtracting 1-3 products already
+used by other outputs), with the exact depth check per output and a cost of products + Y-sums +
+new x-forms + output XORs - shared pairs. `bbuild.py` builds the circuit: the kept front (the
+cone of the base Y-forms), Y-sums, x-forms by a Boyar-Peralta distance heuristic, the products,
+depth-aware shared pairs and Huffman output trees, verified on 256 inputs; the gate kernel then
+polishes under cap A = the build's A. On NIST 45@12 this gave 39/4/138/12 with no kernel and
+41/4/136/12 after a 300 s polish (T09). [C] Minimal 4-product decompositions of different
+outputs can share a product only for the GF(16)-proportional pair (y5, y6), so sharing needs
+over-complete decompositions; the reference already uses some (`strategies/P7/NOTES.md`
+sections 2-3). The same annealer on the T06 front did not improve that circuit's own bottom
+(a local optimum of the model [H], `strategies/P2/NOTES.md` section 8).
+
+### Span-pooled SAT LNS
+
+Circuits with the same AND span share one basis [1, x, z1..zA], so every signal of every such
+circuit is a coordinate vector over it. `strategies/P1/unionsat2.py` pools the gates of all
+circuits in a span as templates (XOR, XNOR, NOT and AND templates with their ODC variants
+(L, L+R+1), (L+R+1, R)), adds a closure (XORs of two pooled forms that are themselves pooled
+forms), and encodes in SAT: a form is available at a gate level when some selected template
+builds it from available forms, every output is available by level D, at most A AND templates
+and at most K templates in all. Large-neighbourhood search: force the current circuit's
+templates outside a neighbourhood (random, a level window, fan-in cones, ANDs with their cones
+and readers), and ask for K = G - 1 (improving) or K = G with one freed template dropped
+(sideways). Every answer is decoded, verified on 256 inputs and accepted only inside the hard
+limits and GD <= D. An UNSAT answer is [C] for its query only: no circuit from the forced plus
+pooled templates has G <= K and GD <= D.
+
+The productive queries were the sideways ones: plateau walking inside the pooled templates. In
+26,719 queries the improving ones were 2 SAT, 11,419 UNSAT, 452 UNKNOWN; the one new point,
+28/5/129/19 (T03 frontier), came from a sideways query on a start nobody had walked (the hub's
+130/19). Restricting each query to templates that produce a freed form or read only current
+forms (`--restrict 1`) made queries 0.0-0.1 s (`strategies/P1/NOTES.md` section 4).
+
+### Exact negatives, and what they do not say
+
+Several agents settled questions exactly, each inside a stated case. The cases matter: the user
+does not accept a restricted search as a lower bound, and none of these is one.
+
+| result [C] | case | source |
+|---|---|---|
+| the 103-gate T05 reference is optimal: G >= 103 at any GD, and no 103 at GD < 32 | case S: the 103's 9 level-1 and 18 output ANDs (same operand functions), an inversion block reading any 4-input basis of span(t30..t33) with the 103's 9 output forms, x-signals injected from the top; also all 19,683 per-pair operand choices, complement patterns, the 2,040 scaled-Frobenius skeletons | `strategies/P4/NOTES.md` section 2, NEGATIVES.md N1-N16 |
+| no 5-AND GF(2^4) inversion middle of AND depth 2; with the 103's top and bottom, no 103-gate circuit at AD 6 or 5; with any inversion-input basis the middle costs >= 19, so G >= 104 at AD 5 and 6 | exactly 5 middle ANDs, the 103's 9 targets, P5's skeleton cost model; G bound in case S | `strategies/P5/NOTES.md` |
+| GD 13 at A28 and GD 12 at A34 need other AND functions | the skeleton bound of every archive circuit with A <= 28 (A <= 34), AD 4, and of all 2,040 conjugates of the 174 and 134 | `strategies/P2/NOTES.md` sections 1, 6 |
+| G at GD 10 is fixed in the 59@10 architecture | its stage-1 decompositions (Kraft-feasible level-4 sums of products of <= 2-variable operands), top targets, the bottom with Y at level 7 | `strategies/P7/NOTES.md` section 4 |
+| the 117's 5-product bottom block cannot be done with 4 ANDs | the 117's 12 standard products fixed, 4 ANDs of affine forms over (1, X, Y), the level-1 ANDs as corrections | `strategies/P3/NOTES.md`, gadget SAT |
+
+What none of them excludes: other AND sets or layouts (other GF(2^4) / GF(2^2) representations,
+non-tower skeletons, inversion blocks with more than 4 linear inputs, other fronts). P4's
+proposal for T05 is to enumerate exactly those other decompositions of x^17 and score each with
+the exact layer evaluators it built (`strategies/P4/NOTES.md` section 4).
+
+### The same methods as operators (2026-11-16)
+
+For the overnight runs the four methods were rewritten as general operators in
+`campaigns/targets/ops/` with one contract, so that one runner can mix them on any target:
+`conjpull.py` (conjugate selection by the screen, then a schedule of kernel stages with caps
+relative or absolute), `rebase.py` (re-basing of the last-level product classes of any circuit
+that has them, with the cap chosen by the re-basing bound, optional GF(4)-coordinate variants and
+relaxation), `bottom.py` (the shared rank-1 bottom under the kept front, for any cut level) and
+`satlns.py` (the SAT LNS with a span index of the archive). Commands are in
+[USAGE.md](USAGE.md), "Targeted campaigns". Since the user's decision of 2026-11-15 23:50 UTC an
+operator may pass through states above any cap; only what it writes must be inside the hard
+limits, and every written circuit is checked by both verifiers first.
+What M1's log analysis changed in the night's settings (`phase2/M1/RECOMMENDATIONS.md` section 7;
+the plan is `~/xs-campaigns/2026-11-16-night/plan.json`, built by `mkplan.py`):
+
+- order: not-yet-improved targets first (T05, T03, T01, T06, T10), then T07, T04, T08, T09, T02, so
+  that unused time rolls to the targets that were still producing;
+- budgets moved from targets without a gain on 11-15 to those with live rates (table below);
+- early stop: no new frontier point in the first 45 min (30 min for improved targets), or 40 min
+  without a new point after the first; unused minutes carried to later blocks;
+- conjugate pipelines get a drop rule (a start is dropped when its conjugates end more than 1 gate
+  outside the start's own box), every new frontier point is fed back as a start (rechain), and a
+  start is used by at most 2 jobs at once;
+- operators per target from the M3 / M4 screens: rebase for T08, bottom for T09 (and T06), satlns as
+  a finisher where the span pool is large (dropped below 30 pooled circuits).
+
+| target | asked (h) | M1 (h) | plan.json (min) | first / stall stop (min) |
+|---|---|---|---|---|
+| T05 | 2 | 1.5 | 90 | 45 / 40 |
+| T03 | 2 | 2 | 120 | 45 / 40 |
+| T01 | 1.5 | 1 | 60 | 45 / 40 |
+| T06 | 1 | 1 | 60 | 45 / 40 |
+| T10 | 0.5 | 0.25 | 15 | 45 / 40 |
+| T07 | 0.75 | 1.5 | 110 | 30 / 40 |
+| T04 | 0.75 | 1 | 75 | 30 / 40 |
+| T08 | 0.75 | 1 | 70 | 30 / 40 |
+| T09 | 0.5 | 0.75 | 45 | 30 / 40 |
+| T02 | 0.75 | 0.5 | 30 | 30 / 40 |
+
+Which operator produced which night result (frontier points of the morning ledger, 2026-11-16 13:19 UTC, first realised by the night runner; from each circuit's sidecar):
+
+| point | operator, block, start, stage, time | class per target (morning ledger) | file |
+|---|---|---|---|
+| 28/5/125/24 | conjpull, block T03 (pass 1), from 28/5/126/23, stage g24, 04:09 UTC | T03 other; T05 tradeoff:and_depth_for_gates on the (A, AD, G, GD) frontier only | `~/xs-campaigns/2026-11-16-night/T03/found/conjpull-a28-ad5-g125-gd24-f244b8aa4f.circ.txt` |
+| 32/4/119/16 | conjpull, block T04 (pass 1), from 32/4/117/17, stage o16-gate, 08:12 UTC | T04 other; T05 tradeoff:and_depth_for_gates; T06 other on the (A, AD, G, GD) frontier only; T09 other on the (A, AD, G, GD) frontier only; T10 other on the (A, AD, G, GD) frontier only | `~/xs-campaigns/2026-11-16-night/T04/found/conjpull-a32-ad4-g119-gd16-3acd9d4790.circ.txt` |
+| 32/5/105/24 | conjpull, block T05 (pass 1), from 32/5/104/29, stage o26-relaxed27, 02:11 UTC | T05 tradeoff:and_depth_for_gates | `~/xs-campaigns/2026-11-16-night/T05/found/conjpull-a32-ad5-g105-gd24-48b9e7a153.circ.txt` |
+| 32/5/106/21 | conjpull, block T05 (pass 1), from 32/5/106/23, stage o22-repair, 02:30 UTC | T05 tradeoff:and_depth_for_gates | `~/xs-campaigns/2026-11-16-night/T05/found/conjpull-a32-ad5-g106-gd21-31d6dc63b3.circ.txt` |
+| 32/5/110/19 | conjpull, block T05 (pass 1), from 32/5/108/20, stage o19-repair, 02:41 UTC | T05 tradeoff:and_depth_for_gates | `~/xs-campaigns/2026-11-16-night/T05/found/conjpull-a32-ad5-g110-gd19-1655161739.circ.txt` |
+| 32/5/111/18 | conjpull, block T05 (pass 1), from 32/5/114/18, stage g18, 03:04 UTC | T05 tradeoff:and_depth_for_gates | `~/xs-campaigns/2026-11-16-night/T05/found/conjpull-a32-ad5-g111-gd18-67697bc8dd.circ.txt` |
+| 32/7/103/29 | conjpull, block T05 (pass 1), from 32/7/103/32, stage t32-bottom, 03:03 UTC | T05 strict | `~/xs-campaigns/2026-11-16-night/T05/found/conjpull-a32-ad7-g103-gd29-8e51adc4e9.circ.txt` |
+| 32/7/104/26 | conjpull, block T05 (pass 1), from 32/7/104/27, stage g34, 02:10 UTC | T05 other | `~/xs-campaigns/2026-11-16-night/T05/found/conjpull-a32-ad7-g104-gd26-8da775ecfd.circ.txt` |
+| 34/4/122/14 | conjpull, block p2-T06 (pass 2), from 34/4/123/14, stage o13-relaxed14, 12:16 UTC | T06 other; T09 other on the (A, AD, G, GD) frontier only; T10 other on the (A, AD, G, GD) frontier only | `~/xs-campaigns/2026-11-16-night/T06/found/conjpull-a34-ad4-g122-gd14-621f73cda5.circ.txt` |
+| 35/3/138/23 | conjpull, block T07 (pass 1), from 35/3/138/24, stage k27, 07:05 UTC | T07 strict; T08 other; T09 other on the (A, AD, G, GD) frontier only; T10 other on the (A, AD, G, GD) frontier only | `~/xs-campaigns/2026-11-16-night/T07/found/conjpull-a35-ad3-g138-gd23-3ed8aa97bd.circ.txt` |
+| 35/3/139/21 | conjpull, block p2-T07 (pass 2), from 35/3/139/22, stage k23, 12:09 UTC | T07 strict; T08 other; T09 other on the (A, AD, G, GD) frontier only; T10 other on the (A, AD, G, GD) frontier only | `~/xs-campaigns/2026-11-16-night/T07/found/conjpull-a35-ad3-g139-gd21-f71f0d11d1.circ.txt` |
+| 37/4/127/13 | conjpull, block T09 (pass 1), from 36/4/129/13, stage o12-relaxed13, 09:34 UTC | T09 other; T10 other | `~/xs-campaigns/2026-11-16-night/T09/found/conjpull-a37-ad4-g127-gd13-00578f7482.circ.txt` |
+| 38/4/135/12 | bottom, block T09 (pass 1), from 39/4/138/12, stage build, 09:46 UTC | T09 strict; T10 other | `~/xs-campaigns/2026-11-16-night/T09/found/bottom-a38-ad4-g135-gd12-ff41a311d8.circ.txt` |
+
+Also new after 23:50 UTC but not from the night runner (screens of the phase-2 agents): 32/4/112/21 (new, M4: T04 tradeoff:gates_for_depth; T05 tradeoff:and_depth_for_gates; T06 other on the (A, AD, G, GD) frontier only; T09 other on the (A, AD, G, GD) frontier only; T10 other on the (A, AD, G, GD) frontier only); 35/3/165/13 (new, M3: T07 other; T08 strict; T09 other on the (A, AD, G, GD) frontier only; T10 other on the (A, AD, G, GD) frontier only).
+
 ## Verification
 
 The kernel's re-simulation guards the search. A result counts only after two independent

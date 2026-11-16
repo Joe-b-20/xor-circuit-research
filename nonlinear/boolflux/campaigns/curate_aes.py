@@ -43,6 +43,8 @@ C = BT.C
 HUB = Path.home() / 'xs-campaigns' / '2026-11-14-hub'
 STUDY = Path.home() / 'xs-campaigns' / '2026-11-15-study'          # 2026-11-15 study agents
 STRAT = Path(__file__).resolve().parents[1] / 'strategies'
+TARGETS = BT._TARGETS                                               # 2026-11-15 targeted campaigns (P1-P7, Z1)
+NIGHT = BT._NIGHT                                                   # 2026-11-16 night runs
 RES = PKG / 'results' / 'aes'
 MODEL = core.Model.load('nist')
 HOME = str(Path.home())
@@ -84,7 +86,14 @@ def track_of(f):
     s = str(f)
     if s.startswith(str(RES)):
         return 'results'
-    for root in (STUDY, STRAT):                         # study agents: track = agent id (T1, R1, H2, ...)
+    for root, pre in ((TARGETS, 'targets-'), (NIGHT, 'night-')):   # <root>/<agent or run>/found/...
+        try:
+            rel = Path(s).relative_to(root)
+        except ValueError:
+            continue
+        if len(rel.parts) > 2 and rel.parts[1] == 'found':
+            return pre + rel.parts[0]
+    for root in (STUDY, STRAT):                       # study agents: track = agent id (T1, R1, H2, ...)
         try:
             rel = Path(s).relative_to(root)
         except ValueError:
@@ -349,10 +358,90 @@ def describe(f, m):
              'time_to_result_s': sd.get('time_to_result_s'),
              'code_version': {'strategies/%s (sha256 at curation)' % agent: 'committed at d961083 (study snapshot)'},
              'reproduction': 'one-off: produced by study agent %s; method and seeds in the sidecar (not re-run)' % agent}
+    elif tr.startswith(('targets-', 'night-')):         # targeted campaigns 11-15 / night runs 11-16: BRIEF.md sidecar
+        s, side = describe_targets(f, tr, sd, side, m)
     else:
         raise ValueError('no provenance rule for %s' % f)
     s['campaign_sidecar_src'] = side if side and Path(side).exists() else None
     return s
+
+
+def certified(f):
+    """The campaign sidecar of f says path_certified true (informational since 2026-11-15 23:50 UTC)."""
+    for j in (Path(str(f)[:-len('.circ.txt')] + '.json') if str(f).endswith('.circ.txt') else Path(f).with_suffix('.json'),
+              Path(str(f) + '.json')):
+        if j.exists():
+            try:
+                return json.loads(j.read_text()).get('path_certified') is True
+            except ValueError:
+                return False
+    return False
+
+
+def corrected(sd, f):
+    """The sidecar with the corrections of campaigns/targets/corrections.json for source f (the
+    campaign's file itself is not changed; the copied .campaign.json stays verbatim)."""
+    cj = HERE / 'targets' / 'corrections.json'
+    if not cj.exists():
+        return sd
+    sd = dict(sd)
+    for c in json.loads(cj.read_text()).get('corrections', []):
+        m = c.get('match') or {}
+        if m and m.get('source_basename') in (None, Path(f).name) and m.get('source_sha256') in (None, file_sha(f)):
+            for k, v in (c.get('set') or {}).items():
+                sd.setdefault(k + '_original', sd.get(k)); sd[k] = v
+            sd['method_corrected_by'] = c.get('method_corrected_by')
+    return sd
+
+
+def describe_targets(f, tr, sd, side, m):
+    """Provenance of a circuit of the targeted campaign (2026-11-15, agents P1-P7, Z1) or of the
+    night runs (2026-11-16), from its sidecar (fields of the campaign BRIEF.md: target, start
+    {path, sha256}, method, command, seed, elapsed_s, code, aes_check, utc; night operators also
+    op, params, parent).  Hard limits of the target are recorded as the caps (A, AD); the search
+    may have gone above them on the way (user, 2026-11-15 23:50 UTC), the recorded circuit may not."""
+    camp, agent = tr.split('-', 1)
+    if not sd:
+        for cand in (Path(str(f) + '.json'), f.parent / (f.name.split('.')[0] + '.json')):
+            if cand.exists():
+                side = cand; sd = json.loads(cand.read_text()); break
+    if not sd:
+        raise ValueError('no sidecar for %s' % f)
+    sd = corrected(sd, f)
+    tid = sd.get('target'); tid = tid[0] if isinstance(tid, list) and tid else tid
+    lim = {}
+    tj = TARGETS / 'TARGETS.json'
+    if tj.exists():
+        lim = next((t for t in json.loads(tj.read_text())['targets'] if t['id'] == tid), {})
+    st = sd.get('start') or sd.get('parent')
+    sp = (st.get('path') or st.get('file')) if isinstance(st, dict) else st
+    ssha = (st.get('sha256') if isinstance(st, dict) else None) or sd.get('start_sha256') or sd.get('parent_sha256')
+    mech = sd.get('method') or sd.get('op') or sd.get('mechanism') or 'see campaign sidecar'
+    when = {'2026-11-15-targets': 'targeted campaign 2026-11-15', '2026-11-16-night': 'night run 2026-11-16'}
+    root = TARGETS if camp == 'targets' else NIGHT
+    s = {'mechanism': '%s (%s, %s %s, target %s%s)' % (
+            mech if isinstance(mech, str) else json.dumps(mech), when.get(root.name, root.name),
+            'agent' if camp == 'targets' else 'run', agent, tid,
+            '; strategies/%s/NOTES.md' % agent if camp == 'targets' else ''),
+         'mech_short': re.sub(r'[^a-z0-9]', '', str(tid or agent).lower()) or 'run',
+         'command': sd.get('command') or 'see campaign sidecar',
+         'run_record': tilde(f.parent), 'parents': [{'file': tilde(sp), 'sha256': ssha}] if sp else [],
+         'start': tilde(sp) if sp else None,
+         'objective': sd.get('objective') or (lim.get('primary') and 'target %s: %s' % (tid, lim['primary'])),
+         'caps': {'GD': None, 'AD': lim.get('AD'), 'A': lim.get('A')},
+         'seeds': [sd['seed']] if sd.get('seed') is not None else [], 'iters': None, 'rounds': None,
+         'time_to_result_s': {'elapsed_s': sd.get('elapsed_s'), 'found_utc': sd.get('utc')},
+         'code_version': {'recorded in the campaign sidecar (at run time)': sd.get('code')},
+         'reproduction': 'one-off: %s %s (seed %s, time-budgeted search; not bit-reproducible); not re-run' % (
+             'agent' if camp == 'targets' else 'night run', agent, sd.get('seed'))}
+    notes = []
+    if sd.get('path_certified') is not None:
+        notes.append('search-path certification (informational): %s' % sd.get('path_certified'))
+    if sd.get('method_corrected_by'):
+        notes.append('method corrected (%s; campaign sidecar: %s)' % (sd['method_corrected_by'], sd.get('method_original')))
+    if notes:
+        s['note'] = '; '.join(notes)
+    return s, side
 
 
 def main():
@@ -373,12 +462,16 @@ def main():
         have.add((m['A'], m['AD'], m['G'], m['GD']))
     pick = []
     for t in sorted(pareto - have):
-        done = set()
+        per_track = {}
         for ent in by_tuple[t]:                         # distinct circuits, candidate order
             tr = track_of(ent['file'])
-            if tr == 'results' or tr in done:
+            if tr == 'results':
                 continue
-            done.add(tr)                                # first circuit of that track at t
+            per_track.setdefault(tr, []).append(ent)
+        for tr, ents in per_track.items():
+            # first circuit of that track at t; for the targeted campaigns / night runs a circuit
+            # whose sidecar says path_certified true wins the tie (coordinator 2026-11-16, DOCS-TODO 32.1)
+            ent = min(ents, key=lambda e: (not (tr.startswith(('targets-', 'night-')) and certified(e['file'])), ents.index(e)))
             c = load_circuit(ent['file'])
             pick.append((ent['file'], c, c.metrics(MODEL)))
     now = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())

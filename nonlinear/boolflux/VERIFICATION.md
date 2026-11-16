@@ -12,6 +12,14 @@ taskset -c 0 python3 nonlinear/boolflux/campaigns/verify_all.py            # abo
 taskset -c 0 python3 nonlinear/boolflux/campaigns/verify_all.py --json OUT.json --no-campaigns
 ```
 
+For the targeted campaigns of 2026-11-15/16 (section 7):
+
+```bash
+python3 nonlinear/boolflux/campaigns/targets/ledger.py run      # verify, classify, compare, audit; seconds with a warm cache
+python3 nonlinear/boolflux/campaigns/aes_check.py nonlinear/boolflux/results/targets/*/*.circ.txt
+bash nonlinear/boolflux/campaigns/targets/morning.sh              # ledger, curation, manifest, BEST.md, verify_all, tests (USAGE.md)
+```
+
 [`campaigns/verify_all.py`](campaigns/verify_all.py) checks four groups and prints one summary
 table. It exits with status 1 if anything fails. It writes only a temporary folder and the
 optional JSON file.
@@ -38,8 +46,9 @@ Run on 2026-11-15 at 06:57 UTC, during the re-curation (150 s; log
 
 That run found **186 distinct AES tuples of ours, 139 of them not dominated by the pinned set,
 and 73 of those not dominated by another circuit of ours**. The `aes_pareto` field of
-MANIFEST.json lists the same 73. [results/BEST.md](results/BEST.md) has 73 rows, but one row is
-29/4/130/22 where the other two have 29/4/129/22 ([DOCS-TODO.md](DOCS-TODO.md) item 27). The
+MANIFEST.json lists the same 73. [results/BEST.md](results/BEST.md) was regenerated in 8922cac
+with the overnight hub archive included, so it has rows that are not in the manifest yet
+([DOCS-TODO.md](DOCS-TODO.md) item 27). The
 hub's and the study agents' circuits are counted through `results/aes`, where the re-curation put
 them; their campaign folders are not among the default `campaigns` roots.
 
@@ -47,9 +56,9 @@ The run came between two `manifest.py` runs. The first (06:54 UTC) stopped with 
 an entry without a start file, before writing the manifest. That is why 56 of the 194 result
 files were not in the manifest yet and `nist-format` had 124 files. The second (06:59 UTC) wrote
 the committed MANIFEST.json: 194 entries, 0 failing verification, and the boolcirc check of
-`results/nist-format/` passed on 142 circuit files with 0 failing (`best/manifest2.log`). No
-`verify_all.py` run after that one is recorded, so its sha256 check of the 56 new entries is
-still to do (DOCS-TODO.md item 28).
+`results/nist-format/` passed on 142 circuit files with 0 failing (`best/manifest2.log`).
+`verify_all.py` was rerun on that final manifest at about 07:30 UTC (commit message of 8922cac):
+194 of 194 manifest sha256 match, 142 nist-format files OK, all groups OK.
 
 The previous run (2026-11-14 18:07 UTC, before the hub and the study phase) checked 138 results,
 86 nist-format files and 237 campaign circuits and found 130 / 83 / 41 tuples. Campaign folders
@@ -228,3 +237,99 @@ taskset -c 0 python3 nonlinear/boolflux/campaigns/manifest.py               # MA
 Results that are found to be wrong, or that were made for a wrong target, move to
 `results/_superseded/` with a note in its README. Results that are only dominated stay in
 `results/<target>/`, and their manifest entries say what dominates them.
+
+## 7. Targeted campaigns (2026-11-15/16)
+
+The ten targeted campaigns ([results/targets/TARGETS.md](results/targets/TARGETS.md)) use the
+same verifiers and the same pinned set, and add a ledger that classifies every circuit against
+its target. The ledger is [`campaigns/targets/ledger.py`](campaigns/targets/ledger.py); what it
+does in detail is in [campaigns/targets/README.md](campaigns/targets/README.md). It does no search.
+
+**What is checked.** Every circuit file in every campaign `found/` folder
+(`~/xs-campaigns/2026-11-15-targets/<agent>/found/**`) and in the archive (best-1400, the hub
+archive, `results/aes/`, the study `found/` folders) goes through `aes_check.check`: `core` and
+`independent/verify.py` on all 256 inputs, the two metric computations equal, gates in {AND,
+XOR, XNOR, NOT}, NIST counting (section 3). Results are cached by the sha256 of the file bytes;
+the cache is dropped when any verifier file changes. Each campaign circuit also carries the
+`aes_check` OK line its agent recorded when saving it. Ledger of 2026-11-15 23:17 UTC: 4,162
+archive and 398 campaign files, 4,560 verified, 0 failing. Morning ledger (2026-11-16 13:19 UTC, code d9507dd): 4,162 archive and 614 campaign files (11-15 agents, phase-2 agents and the night's `found/` folders), 4,776 verified, 0 failing; issues 0 FAIL, 2 WARN, 3 NOTE.
+
+**How a circuit is classified** (per target, from TARGETS.json on every run, so a threshold the
+user changes takes effect on the next run):
+
+| class | condition (always inside the hard limits A <= ref A, AD <= ref AD) |
+|---|---|
+| strict | G <= ref G and GD <= ref GD, one strictly smaller |
+| tradeoff `gates_for_depth` | ref GD < GD <= GD_max and G <= ref G - 3 |
+| tradeoff `depth_for_gates` | GD <= GD_max < ref GD and ref G < G <= ref G + 8 |
+| tradeoff `and_depth_for_gates` (T05) | AD < ref AD, AD <= max(AD targets), G or GD above the reference |
+| other | anything else inside the limits; kept if it is on a frontier |
+
+A tradeoff that some strict circuit dominates is dropped from the tradeoff lists, and no
+tradeoff is called dominating. Per target the ledger keeps the (G, GD) Pareto frontier, the
+(A, AD, G, GD) Pareto frontier, and the strict and tradeoff Pareto sets; for T05 also the best G
+and the best GD per AND depth 7..1. The rules of 2026-11-15 23:50 UTC enter through
+TARGETS.json: T03 `gates_for_depth` with GD_max 22 (so 20 < GD <= 22 and G <= 125), and T05
+`gates_for_depth` with GD_max 999 (any GD above 32 with G <= 100, since the gain threshold is 3
+gates). The user's "any G <= 123" (T03) and "any G <= 102" (T05) are separate **notable** lines
+at any GD inside the hard limits, so a T05 circuit with 101 or 102 gates at GD > 32 is notable
+(a new overall gate record) without being a tradeoff in the ledger's sense. A circuit that
+matches several tradeoff kinds is listed under `gates_for_depth`.
+(Checked on 2026-11-16 against `ledger.py` sha256 be594f85360b..., `classify()`: the conditions above, gates_for_depth before depth_for_gates before and_depth_for_gates, thresholds from TARGETS.json; a tradeoff is dropped when a strict point dominates it in (G, GD), for the AND-depth kind in (AD, G, GD); T05's per-AD best G / best GD for AD 7..1.)
+
+**Comparison with the pinned set.** Each listed point is compared with its reference and with
+every forward AES S-box circuit of the pin (`aes_check.published()`, section 4): the ledger names
+the pinned circuits that dominate it (all four metrics <=, tuple different) and those with an
+equal tuple, and gives the pinned (G, GD) frontier inside the same hard limits. On every run it
+also checks the sha256 of all 207 pinned files against `nonlinear/nist/MANIFEST.json`.
+
+**Provenance.** The baseline is every archive file with mtime (hub: admission time) at or
+before 2026-11-15 15:20 UTC, frozen in `~/xs-campaigns/2026-11-15-targets/L0/baseline/` with
+sha256, tuple and structural key (`hub.common.structure_key`: the circuit as a DAG, invariant
+under gate order and the operand order of symmetric gates). *Known*: the tuple is realised by a
+baseline file. *Reproduced*: a campaign circuit structurally equal to, or with the tuple of, a
+baseline circuit. *New*: neither. From phase 2 (L1, 2026-11-16) a second snapshot,
+`L0/baseline/known-by-2350.json` (every archive and campaign `found/` file with mtime at or
+before 2026-11-15 23:50 UTC: 4,562 files, 400 of them campaign files), splits "new" by era: a
+point is `known` (the 15:20 archive), `known-by-23:50 (<agent>; new vs archive)` (a result of the
+2026-11-15 campaign day) or `new (<group>)` (the night runs); LEDGER.json field `era` =
+archive / campaign-11-15 / new. In the morning ledger the results of 2026-11-15 therefore show
+as `known-by-23:50`; they are still new against the archive and the pin. "New" and "dominated"
+are [C] relative to the scanned folders and the pinned set only; they say nothing about
+unpublished or other published work.
+
+**Sidecars.** Every campaign circuit has a JSON sidecar (`campaigns/targets/SIDECAR-TEMPLATE.json`)
+with target, A AD G GD, start (path and sha256), method, exact command, seed, elapsed time, code
+(git sha and kernel binary sha256), the aes_check line and the time. The ledger reports FAIL when
+a file fails verification, the sidecar's tuple differs from the verified one, or the target's
+hard limits are broken; WARN for a missing sidecar or field, or a start file that is missing or
+has another sha256. The sidecar's free-text `method` is not checked against the `command`; in
+at least one P6 sidecar (35/3/138/24) the two disagree, and the command is the right one.
+
+**Search-path certification (2026-11-15 18:20-23:50 UTC).** While the user's rule covered
+retained search states, each sidecar also carried `path_certified` (true when no kernel stage
+of its lineage started above a cap without `repair_keep 1`, or a traced replay showed every
+accepted state inside A/AD), and the ledger propagated it along lineages and `reproduces` links,
+flagged kernel stages that started above a cap, and handled construction donors outside the
+limits (the donor ruling, [results/targets/COMPLIANCE-1820.md](results/targets/COMPLIANCE-1820.md)).
+At 23:17 UTC every new strict and tradeoff point had a certified campaign file. Since 23:50 UTC
+certification is informational and does not decide whether a result counts
+([results/targets/TARGETS.md](results/targets/TARGETS.md) section 2.1).
+
+**Curation.** `ledger.py curate` (dry run) and `curate --apply` copy every campaign circuit on a
+target's strict, tradeoff or (G, GD) frontier list that is not "known" into
+`results/targets/<ID>/`, under the name `aes-sbox-a<A>-ad<AD>-g<G>-gd<GD>-<ID>-<agent>-<k>`, with
+its sidecar and `logs/<name>/` (`found.json`, `aes_check.json`, `REPRODUCE.md`). One circuit can
+be copied under several targets (28/4/174/14 is within the limits of T01-T05); its class for each
+target is in LEDGER.md. Each curated sidecar gets the class of its folder's target (`class`,
+`class_kind`, `class_target`, `class_rule`, and `notable` for T03 / T05); a different class the
+agent wrote stays as `class_agent`. A source circuit already curated for a target is not copied
+again. `morning.sh` then curates the same circuits into `results/aes/` and MANIFEST.json
+(`aes-nist-targets-<agent>-t<NN>-...`, caps = the target's A and AD). At the 23:17 UTC state they
+are not yet in `results/MANIFEST.json`.
+Morning run 2026-11-16 13:23 UTC: all steps OK, 199 s in total (log `~/xs-campaigns/2026-11-15-targets/L1/morning-20261116T131944Z/`). `ledger.py curate --apply`: 28 files planned (6 replace an entry of the same tuple); refreshed 57 curated entries (sidecar class fields and corrections, circuit header, logs); 0 failed verification. `curate_aes.py`: 74 Pareto tuples (best_table rule), 37 already in results/aes, 53 circuits to add; circuits written 53. `manifest.py`: 247 entries, 0 failing verification; nist-format check: 195 circuit file(s), 0 failing. BEST.md vs MANIFEST.json: BEST.md rows 74, MANIFEST aes_pareto 74, MANIFEST AES entries 170 tuples.
+
+**Reproduction** of the target results uses the vocabulary of section 6; every new result is a
+one-off time-budgeted run, with the exceptions listed in TARGETS.md section 8 (exact traced
+replays of four P3 kernel stages, deterministic constructions of P6 and P7, tuples reproduced by
+independent lineages).

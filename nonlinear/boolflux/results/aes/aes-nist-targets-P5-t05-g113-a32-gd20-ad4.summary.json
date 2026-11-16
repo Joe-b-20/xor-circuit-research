@@ -1,0 +1,58 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "targets-P5",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert112c-r2-mix22-a32-ad4-g113-gd20-80065eed92.circ.txt",
+  "sha256": "d72b29d194c04503c28f56acaaa587187233af828acf4187e8254f13238b3c89"
+ },
+ "curated_utc": "2026-11-16T13:19:59Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert112c-r2-mix22-a32-ad4-g113-gd20-80065eed92.circ.txt",
+  "seed": "54",
+  "metrics": {
+   "cost": 113.0,
+   "G": 113,
+   "A": 32,
+   "GD": 20,
+   "AD": 4
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "p3_pdrive.py (P3 copy of strategies/F/fdrive.py + hard A/AD guard) mode mix, caps A<=32 AD<=4 GD<=22, kernel bfx-94a75e2c18 repair_keep 1 (targeted campaign 2026-11-15, agent P5, target T05; strategies/P5/NOTES.md)",
+ "command": "env F_BFX=/home/joebachir20/xs-campaigns/2026-11-14-hub/long/bin/bfx-94a75e2c18 python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/P5/p3_pdrive.py --start /home/joebachir20/xs-campaigns/2026-11-15-targets/P5/runs/lin-cert112c-r2-gate26/next.circ.txt --cap 22 --cap-ad 4 --cap-a 32 --mode mix --seconds 400 --seed 54 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/P5/runs/lin-cert112c-r2-mix22",
+ "run_record": "~/xs-campaigns/2026-11-15-targets/P5/found",
+ "parents": [
+  {
+   "file": "~/xs-campaigns/2026-11-15-targets/P5/runs/lin-cert112c-r2-gate26/next.circ.txt",
+   "sha256": "ea55cdba8f1a199c4c2b157382ecef8103ab5170bc9a497f2ab3a194d551de38"
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-15-targets/P5/runs/lin-cert112c-r2-gate26/next.circ.txt",
+ "objective": "target T05: G < 103 with GD <= 32 (overall gate-count record); GD < 32 with G <= 103 also valued",
+ "caps": {
+  "GD": null,
+  "AD": 7,
+  "A": 32
+ },
+ "seeds": [
+  "54"
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "elapsed_s": "401",
+  "found_utc": "2026-11-15T19:33:24Z"
+ },
+ "code_version": {
+  "recorded in the campaign sidecar (at run time)": {
+   "git": "8922cac + uncommitted strategies/P5",
+   "kernel_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0"
+  }
+ },
+ "reproduction": "one-off: agent P5 (seed 54, time-budgeted search; not bit-reproducible); not re-run",
+ "note": "search-path certification (informational): True",
+ "campaign_sidecar": "aes-nist-targets-P5-t05-g113-a32-gd20-ad4.campaign.json"
+}

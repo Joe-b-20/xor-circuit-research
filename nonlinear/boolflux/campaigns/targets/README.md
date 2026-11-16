@@ -14,9 +14,51 @@ python3 nonlinear/boolflux/campaigns/targets/ledger.py curate --apply   # copy t
 ```
 
 `curate` reads the last LEDGER.json and copies every campaign circuit on a target's strict,
-tradeoff or (G, GD) frontier list whose status is not "known" (bfx written as NCFF), with its
-sidecar, `logs/<name>/found.json`, `aes_check.json` and a filled `REPRODUCE.md`; it never
-overwrites. The coordinator runs `--apply` at curation; L0 only runs the dry run.
+tradeoff, notable or (G, GD) frontier list that the 15:20 archive does not realise (era
+`campaign-11-15` or `new`; bfx written as NCFF), with its sidecar, `logs/<name>/found.json`,
+`aes_check.json` and a filled `REPRODUCE.md`. A source circuit already curated for that target
+(same sha256) is not copied again. The file copied for a tuple is the ledger's representative:
+among the campaign files of the tuple, one with a certified search path wins the tie, then the
+earliest (coordinator 2026-11-16, DOCS-TODO 32.1); a curated entry of the same tuple from another
+file is replaced (found.json `replaces`; git history keeps the old files).
+`--apply` then refreshes every curated entry (idempotent):
+- sidecar `results/targets/<ID>/*.json`: corrections from `corrections.json` (curated copy only;
+  the replaced value is kept as `<field>_original`; the agents' files are never changed), and the
+  class fields of the folder's target: `class` (strict / tradeoff / other), `class_kind` (the
+  tradeoff kind or null), `class_target`, `notable` (T03, T05) and `class_rule`; a different class
+  written by the agent is kept as `class_agent`;
+- circuit: header comments `Not a NIST-issued circuit` / `Found by` / `Started from` / `Logs`
+  (comments only; the file is re-verified with aes_check before it replaces the old one);
+- `logs/<name>/`: `start.circ.txt` (the start, copied when it is not a file of this repository;
+  .bfx converted to NCFF; verified), `command.sh` (the recorded command, repository paths as
+  `$REPO`, other paths `$HOME/...`), `REPRODUCE.md` (repository-relative paths, a reproduction
+  statement), `aes_check.json`, `found.json` (current ledger status, class, start record).
+
+### Phase 2 (2026-11-16, L1)
+
+```bash
+python3 nonlinear/boolflux/campaigns/targets/ledger.py snapshot   # once: "known-by-23:50" (built 23:56 UTC)
+bash nonlinear/boolflux/campaigns/targets/morning.sh              # 13:30-14:00 UTC: ledger, curate, record, manifest, BEST.md, verify, tests
+bash nonlinear/boolflux/campaigns/targets/morning.sh --dry-run    # the same on a copy of the worktree (nothing here changes)
+```
+
+- Night runs: `~/xs-campaigns/2026-11-16-night/<run>/found/` are scanned as campaign files
+  (group `night:<run>`), with the same sidecar audit.
+- Second snapshot `L0/baseline/known-by-2350.json`: every archive and campaign found/ file with
+  mtime <= 2026-11-15 23:50 UTC (4562 files, 400 of them campaign files). A point's status is
+  `known` (15:20 archive), `known-by-23:50 (<agent>; new vs archive)` (the 11-15 campaign) or
+  `new (<group>)` (after 23:50: the night); JSON field `era` = archive / campaign-11-15 / new.
+- Path certification is informational only (user 23:50 UTC): shown in the `path` columns, never
+  used to qualify or demote a result; the kernel-cap, start-outside-limits and donor items are
+  listed under "Search-path notes" (levels INFO / NOTE), not as warnings.
+- Notable lines (user 23:50 UTC): T03 any G <= 123, T05 any G <= 102, at any GD within the hard
+  limits (`NOTABLE_DEFAULT`; TARGETS.json `notable_G_max` overrides). T03 `gates_for_depth`
+  GD <= 22 and T05 `gates_for_depth` GD_max 999 come from TARGETS.json; with
+  `min_gate_gain_for_depth_cost` 3 the T05 tradeoff class needs G <= 100, so G 101-102 at GD > 32
+  shows as "notable" only (a tradeoff entry may set its own `min_gate_gain`). A circuit matching
+  several tradeoff kinds takes `gates_for_depth` first.
+- `LEDGER_OUT=DIR` writes LEDGER.md / LEDGER.json / history to DIR instead of the campaign folder
+  (used by the dry run); `run --strict` exits 1 when an issue has level FAIL.
 
 ## What a run does
 
@@ -75,7 +117,12 @@ the circuit as a DAG, invariant under gate order and operand order of symmetric 
 - **new**: neither. An archive file written after the cut-off that is not known is shown as
   "new (archive after cut-off: <folder>)".
 
-## Search-path certification (COMPLIANCE-1820.md, from 18:20 UTC)
+## Search-path certification (COMPLIANCE-1820.md, 18:20-23:50 UTC; informational only since)
+
+Kept as a record. Since 2026-11-15 23:50 UTC (user, BRIEF2 decision 2) search states may exceed
+the A, AD, G and GD caps as long as the recorded result is within the hard limits; the items
+below are computed and shown, but no longer qualify a result ("claim" is always empty) and are
+reported as INFO / NOTE.
 
 The hard A/AD limits hold for retained search states, not only results; a kernel stage that
 starts above a cap without `repair_keep 1` may pass through states outside A/AD.

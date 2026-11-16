@@ -40,5 +40,9 @@
  "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/c3-140/x-250-4-b/jobs/s1/best.bfx",
  "note": "job dir /home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/c3-140/x-250-4-b/jobs/s1 (start.bfx = stage start; stage 0 start = hybrid build of the parent in pull.jsonl)",
  "path_certified": true,
- "path_certified_note": "P6 drivers: every kernel stage starts inside A35/AD3 (and from 18:20 UTC runs with repair_keep 1); see strategies/P6/certify.py"
+ "path_certified_note": "P6 drivers: every kernel stage starts inside A35/AD3 (and from 18:20 UTC runs with repair_keep 1); see strategies/P6/certify.py",
+ "class": "strict",
+ "class_kind": null,
+ "class_target": "T07",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json"
 }

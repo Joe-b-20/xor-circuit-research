@@ -1,0 +1,232 @@
+#!/usr/bin/env python3
+"""Operator `rebase` (M3): exact re-basing of last-level product classes + depth-feasible hybrid rebuild
++ capped kernel (strategies/P6 botbasis/hybrid/l3scan/pullrun, generalised to any circuit with classes).
+
+    python3 nonlinear/boolflux/campaigns/targets/ops/rebase.py --in START --target Txx --seed S --seconds T
+        --out DIR [--cpus 1] [--cap D | --goal depth|gates] [--builds 160] [--top 3] [--stage-seconds 240]
+        [--stages 2] [--moves] [--move-budget 0.25] [--relax 0] [--slack3 0] [--no-paar] [--repair-keep 1]
+
+Validated (ops/NOTES.md, M3): archive 177@13 --target T08 --moves --stages 1 -> 35/3/181/12 after 469 s on
+one CPU (P6's result); NIST-lineage 168@13 --cap 13 -> 35/3/167/13 after 489 s.
+
+1. Classes (m3lib/gbasis.py): top products (feeding no AND) grouped by a common operand function Q;
+   each class can be re-based (new R' = sums of old R's, A unchanged).  If no class exists: status
+   "not-applicable" (result.json) and exit 0.
+2. Cap D: --cap, else --goal depth (default for depth-first targets T02 T06 T08 T09 T10): the lowest
+   cap D in [GD-3, GD-1] whose re-basing bound (exact in the case of gbasis) is <= 1;
+   --goal gates: D = min(target GD, start GD + 2) (re-basing moves at a gate-count cap).
+3. Rounds: parent (with --moves the start is first scanned for GF(4) coordinate moves (AD3 GF(4) circuits
+   only: T3 gf4build keep2, priced by the bound, sharded over --cpus workers); variants with strictly more
+   slack go first; then the start, then the run's own best results) -> feasible class
+   combos -> hybrid builds at D (P6 hybrid.py, --paar shared layer) -> the --top lowest-G distinct
+   builds -> --stages kernel stages (caps A <= ref A, AD <= ref AD, GD <= D; objective cost,gd);
+   optional --relax S: one more kernel stage at D+1 (S s), whose result re-enters the pool as a parent.
+4. Every verified circuit inside A/AD that is new in this run's (G, GD) front is recorded (m3common).
+"""
+import argparse
+import json
+import random
+import sys
+import time
+from pathlib import Path
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE / 'm3lib'))
+import m3common as MC                                 # noqa: E402
+from m3common import core, verify, metrics, clean, load, cid   # noqa: E402
+import gbasis as GB                                   # noqa: E402
+import hybrid as HY                                   # noqa: E402
+HY.new_skeleton = GB.new_skeleton                     # generalised skeleton (any classes, other output terms kept)
+
+DEPTH_FIRST = {'T02', 'T06', 'T08', 'T09', 'T10'}
+
+
+def gf4_moves(c, cap, rng, budget_s, limit, shard='0/1'):
+    """T3 one-point GF(4) coordinate moves (keep2) of c, priced by the re-basing bound at cap; returns
+    [(bound, G, circuit)] with bound <= limit, best first.  [] if c is not a GF(4)-tower AD3 circuit."""
+    try:
+        from nbscan import current_points
+        from gf4build import build
+        from pairs import Basis
+        from boolflux.hub.common import _gmul
+        pts0 = current_points(c)
+    except Exception:
+        return []
+    si, sk = [int(x) for x in shard.split('/')]
+    cand = [(i, p) for i in range(4) for p in range(1, 256) if (255 * i + p) % sk == si]
+    rng.shuffle(cand)
+    t0 = time.time(); seen = set(); out = []
+    for i, p in cand:
+        if time.time() - t0 > budget_s: break
+        pts = list(pts0); pts[i] = p
+        B = Basis([])
+        if not all(B.add(_gmul(s, q)) for q in pts for s in (1, 188)): continue
+        try:
+            nc = build(c, pts, keep2=True)
+        except Exception:
+            continue
+        k = cid(nc)
+        if k in seen: continue
+        seen.add(k)
+        try:
+            r = GB.analyse(nc, cap)
+        except Exception:
+            continue
+        if r is None or r['best'] > limit + 1e-9: continue
+        out.append((r['best'], metrics(nc)[2], nc, pts))
+    out.sort(key=lambda t: (t[0], t[1]))
+    return out, len(seen)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--in', dest='inp', required=True); ap.add_argument('--target', required=True)
+    ap.add_argument('--seed', type=int, default=1); ap.add_argument('--seconds', type=float, required=True)
+    ap.add_argument('--out', required=True); ap.add_argument('--cpus', type=int, default=1)
+    ap.add_argument('--cap', type=int); ap.add_argument('--goal', choices=['depth', 'gates'])
+    ap.add_argument('--builds', type=int, default=160); ap.add_argument('--top', type=int, default=3)
+    ap.add_argument('--stage-seconds', type=float, default=240); ap.add_argument('--stages', type=int, default=2)
+    ap.add_argument('--moves', action='store_true'); ap.add_argument('--move-top', type=int, default=4)
+    ap.add_argument('--move-budget', type=float, default=0.25, help='fraction of --seconds for one move scan')
+    ap.add_argument('--relax', type=float, default=0); ap.add_argument('--slack3', type=int, default=0)
+    ap.add_argument('--no-paar', action='store_true'); ap.add_argument('--repair-keep', type=int, default=1)
+    ap.add_argument('--max-build-over', type=int, default=40, help='skip builds with G > best build + this')
+    ap.add_argument('--shard', default=None, help='i/K: this worker scans move candidates with index = i mod K (set by --cpus)')
+    a = ap.parse_args()
+    if a.shard is None: a.shard = '0/%d' % max(1, a.cpus)
+    t0 = time.time(); deadline = t0 + a.seconds
+    rng = random.Random(a.seed)
+    HY.SLACK3 = bool(a.slack3)
+    out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    tl = MC.limits(a.target)
+    params = {k: v for k, v in vars(a).items() if k not in ('inp', 'out', 'target', 'seed', 'seconds', 'cpus')}
+    rec = MC.Recorder('rebase', a.target, out, a.inp, params, sys.argv, a.seed,
+                      'ops/rebase.py: gbasis class re-basing + P6 hybrid build + capped gate kernel')
+    log = open(out / 'rebase.jsonl', 'a')
+
+    def L(**kw):
+        kw['t'] = round(time.time() - t0, 1); log.write(json.dumps(kw, default=str) + '\n'); log.flush()
+        print(json.dumps(kw, default=str)[:300], flush=True)
+    procs = MC.spawn_workers(sys.argv, a.cpus, a.seed, out) if a.cpus > 1 else []
+
+    c0 = load(a.inp); m0 = metrics(c0)
+    goal = a.goal or ('depth' if a.target in DEPTH_FIRST else 'gates')
+    # applicability and the cap
+    r0 = GB.analyse(c0, m0[3])
+    if r0 is None:
+        rec.notes.append('no class of >= 2 top products with a common operand function')
+        L(event='not-applicable', reason=rec.notes[-1]); rec.write('not-applicable'); return
+    if a.cap:
+        D = a.cap; goal = 'cap'
+    elif goal == 'depth':
+        D = None
+        for d in range(m0[3] - 3, m0[3]):
+            r = GB.analyse(c0, d)
+            L(event='bound', cap=d, best=r['best'], current=r['current_max'], classes=r['class_sizes'])
+            if r['best'] <= 1 + 1e-9: D = d; break
+        if D is None:
+            D = m0[3] - 1
+            if not a.moves:
+                rec.notes.append('re-basing bound > 1 at every cap GD-3..GD-1 (best %.3f at %d) and no --moves' % (r['best'], D))
+                L(event='not-applicable', reason=rec.notes[-1]); rec.write('not-applicable'); return
+    else:
+        D = min(tl['GD'], m0[3] + 2)
+    caps = {'A': tl['A'], 'AD': tl['AD'], 'GD': D}
+    L(event='start', start=m0, cap=D, goal=goal, classes=r0['class_sizes'], top=r0['n_top'], caps=caps)
+    pool = {}          # id -> (G, GD, circuit, how)
+    queue = [(c0, 'start', str(Path(a.inp).resolve()))]
+    scanned = set(); rnd = 0; used = {}; nbuilt = 0
+    while time.time() < deadline - 60:
+        if not queue:
+            rnd += 1
+            mem = sorted(pool.items(), key=lambda kv: (used.get(kv[0], 0), kv[1][1] > D, kv[1][0], kv[1][1]))
+            for k, (g, gd, cc, how) in mem[:2]:
+                queue.append((cc, how, None)); used[k] = used.get(k, 0) + 1
+            if not queue: queue.append((c0, 'start', str(Path(a.inp).resolve())))
+            if rnd > 50 and not pool: break
+        par, how, ppath = queue.pop(0)
+        if ppath is None:
+            ppath = out / 'parents' / ('%s.bfx' % cid(par)); ppath.parent.mkdir(exist_ok=True); ppath.write_text(core.to_kernel(par))
+        res = GB.analyse(par, D)
+        if res is None: continue
+        pk = cid(par)
+        def scan_moves():
+            if a.moves and pk not in scanned and time.time() < deadline - 120:
+                scanned.add(pk)
+                mv = gf4_moves(par, D, rng, min(a.move_budget * a.seconds, deadline - 90 - time.time()), min(1.0, res['best']), a.shard)
+                if mv:
+                    mv, nseen = mv
+                    L(event='moves', parent=pk, scanned=nseen, kept=len(mv), best=[(round(x[0], 3), x[1]) for x in mv[:8]])
+                    strict = [x for x in mv if x[0] < res['best'] - 1e-9]
+                    for b, g, nc, pts in (strict or mv)[:a.move_top][::-1]:
+                        item = (nc, 'move %s of %s (bound %.3f)' % (pts, pk, b), None)
+                        if strict: queue.insert(0, item)      # strictly more slack: better parents, go first
+                        else: queue.append(item)
+                    return bool(strict)
+            return False
+        if a.moves and pk not in scanned and res['best'] <= 1 + 1e-9 and how == 'start':
+            # scan first: if a coordinate move gives strictly more slack, build those variants before this parent
+            if scan_moves():
+                queue.append((par, how, ppath)); continue
+        if res['best'] > 1 + 1e-9:
+            L(event='skip', parent=pk, how=how, bound=res['best'])
+            scan_moves()
+            if not queue and not pool:
+                rec.notes.append('no parent with re-basing bound <= 1 at cap %d' % D)
+                break
+            continue
+        combos = GB.feasible_combos(res, maxn=max(a.builds, 1) * 3, rng=rng)
+        builds = []; tb = time.time()
+        for it, combo in enumerate(combos[:a.builds]):
+            if time.time() > deadline - 60: break
+            try:
+                nc, st = HY.hybrid(par, res, list(combo), D, rng if it else None, not a.no_paar)
+            except Exception as e:
+                L(event='build-error', err=repr(e)[:200]); continue
+            ok, inf = verify(nc); m = metrics(nc)
+            if ok and m[3] <= D and m[1] <= tl['AD']:
+                builds.append((m[2], cid(nc), nc, combo))
+        builds.sort(key=lambda t: t[0]); nbuilt += len(builds)
+        seen = set(); pick = []
+        for b in builds:
+            if b[1] in seen or (pick and b[0] > pick[0][0] + a.max_build_over): continue
+            seen.add(b[1]); pick.append(b)
+            if len(pick) >= a.top: break
+        L(event='builds', parent=pk, how=how, bound=res['best'], n=len(builds), combos=len(combos),
+          picked=[p[0] for p in pick], secs=round(time.time() - tb, 1))
+        for g0, h, nc, combo in pick:
+            if time.time() > deadline - 30: break
+            meth = {'engine': 'ops/rebase.py (gbasis + P6 hybrid + kernel)', 'cap': D, 'parent_how': how,
+                    'combo': [list(B) for B in combo], 'build_G': g0}
+            bp = out / 'builds' / ('b-%s.bfx' % h); bp.parent.mkdir(exist_ok=True); bp.write_text(core.to_kernel(nc))
+            rec.offer(nc, ppath, dict(meth, stage='build'))
+            cur, cm = nc, metrics(nc)
+            for st in range(a.stages):
+                left = deadline - time.time() - 20
+                if left < 20: break
+                sd = rng.randrange(1, 10 ** 6)
+                k, info = MC.kernel_stage(cur, caps, sd, min(a.stage_seconds, left), out / 'jobs' / ('%s-%d-%d' % (h, rnd, st)),
+                                          repair_keep=a.repair_keep)
+                if k is not None:
+                    km = metrics(k)
+                    if (km[2], km[3]) < (cm[2], cm[3]): cur, cm = k, km
+                L(event='stage', build=h, G0=g0, stage=st, seed=sd, result=cm, err=info.get('error'))
+                rec.offer(cur, bp, dict(meth, stage='kernel', kernel_seed=sd, stage_index=st, caps=caps),
+                          kernel_bin=info.get('kernel_bin_path'))
+            pool[cid(cur)] = (cm[2], cm[3], cur, 'result of build %s' % h)
+            if a.relax > 0 and time.time() < deadline - 60:
+                sd = rng.randrange(1, 10 ** 6); rc = dict(caps, GD=D + 1)
+                k, info = MC.kernel_stage(cur, rc, sd, min(a.relax, deadline - time.time() - 30), out / 'jobs' / ('%s-%d-relax' % (h, rnd)),
+                                          repair_keep=a.repair_keep)
+                if k is not None:
+                    km = metrics(k)
+                    L(event='relax', build=h, result=km)
+                    rec.offer(k, bp, dict(meth, stage='relax', kernel_seed=sd, caps=rc), kernel_bin=info.get('kernel_bin_path'))
+                    pool[cid(k)] = (km[2], km[3], k, 'relaxed result of build %s' % h)
+        scan_moves()
+    if procs: MC.merge_workers(rec, procs, deadline + 30)
+    rec.write('ok' if nbuilt else 'not-applicable')
+    L(event='end', front=sorted(rec.front))
+
+
+if __name__ == '__main__':
+    main()

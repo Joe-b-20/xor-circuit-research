@@ -54,10 +54,17 @@ python3 nonlinear/boolflux/campaigns/targets/ledger.py run      # recompute clas
 - Evidence labels [C] / [H] as in VERIFICATION.md.
 
 ## Campaign record copied here (2026-11-15, coordinator)
-`LEDGER.md` / `LEDGER.json` (final ledger run 23:3x UTC: classes strict / tradeoff / other, path
+`LEDGER.md` / `LEDGER.json` (ledger run of 2026-11-15 23:17 UTC; replaced by the morning ledger of 11-16: classes strict / tradeoff / other, path
 certification, provenance, comparison with the pinned NIST set), `TARGETS.json` (rules and thresholds),
 `USER-REQUEST.md` (the request verbatim), `BRIEF.md` (agent brief), `COMPLIANCE-1820.md` (kernel repair
 rule and the donor ruling), `QUEUE.md` (overnight proposals). Each `T??/` folder holds the campaign
 circuits on that target's frontier within its hard limits, so one circuit can appear under several
 targets (for example 28/4/174/14 is within the limits of T01-T05); its class for each target is in
 `LEDGER.md`, not necessarily in the copied sidecar.
+
+From phase 2 (2026-11-16, `ledger.py` of agent L1) every curated sidecar carries the class of its
+folder's target: `class` (strict / tradeoff / other), `class_kind` (the tradeoff kind or null),
+`class_target`, `class_rule` and, for T03 and T05, `notable`; a class the agent wrote (often for
+another target) stays as `class_agent`. The campaign record also has `BRIEF2.md`, and
+`night-2026-11-16/` holds the night folder's top-level summaries. `Z/`, `T06/` and compressed
+logs exist only when a campaign point needs them, so the layout above shows them "when present".

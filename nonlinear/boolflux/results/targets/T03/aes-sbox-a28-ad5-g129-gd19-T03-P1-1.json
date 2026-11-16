@@ -41,5 +41,10 @@
  "aes_check_rc": 0,
  "utc": "2026-11-15T17:15:02Z",
  "reproduction": "Run t03-d19 (17:03:28-17:18:30 UTC, CPU 10, unit xs-P-P1-lns2seq2). Code = unionsat2.py as of 17:03 UTC (not snapshotted); logically identical to runs/code/unionsat2-f3f9ce6e.py with --restrict 0 --side 0.3 --closure-max 6000. Pool = starts_fam.json rows + DATA/shared/*.bfx whose .json t precedes 17:03:28 UTC (111 circuits in the span). Per-step log: runs/usat2/t03-d19.log (step number in the file name: ...-s23-<step>).",
- "class_vs_ref": "other"
+ "class_vs_ref": "other",
+ "class": "other",
+ "class_kind": null,
+ "class_target": "T03",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json",
+ "notable": false
 }

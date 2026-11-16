@@ -39,5 +39,9 @@
  "note": "job dir /home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/pull12c/jobs/9552bd8ad634-r0-s0 (start.bfx = stage start; stage 0 start = hybrid build of the parent in pull.jsonl)",
  "path_certified": true,
  "path_certified_note": "every P6 kernel stage in this lineage started inside all its caps (A35, AD3, GD cap); constructions verified and kept only inside the caps; see strategies/P6/certify.py",
- "parent_lineage": "archive/NIST parent used as a structure; its own search history not audited by P6"
+ "parent_lineage": "archive/NIST parent used as a structure; its own search history not audited by P6",
+ "class": "strict",
+ "class_kind": null,
+ "class_target": "T08",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json"
 }

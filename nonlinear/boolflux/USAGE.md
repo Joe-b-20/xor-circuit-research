@@ -196,6 +196,165 @@ CPU. To judge a hub directory use `strategies/L1/eval_run.py` (frontier admissio
 class and goal-near admissions), not the scheduler's own gain figures
 (`strategies/L1/WHAT-WORKS.md` finding 1).
 
+## Targeted campaigns: ledger, operators, runner, morning check
+
+The tools of the targeted campaigns of 2026-11-15/16
+([results/targets/TARGETS.md](results/targets/TARGETS.md)). They read the target definitions
+from a `TARGETS.json` (the campaign's copy is
+[results/targets/TARGETS.json](results/targets/TARGETS.json); the live one is
+`~/xs-campaigns/2026-11-15-targets/TARGETS.json`).
+
+### The ledger
+
+```bash
+python3 nonlinear/boolflux/campaigns/targets/ledger.py baseline        # once: freeze the archive; refuses to overwrite (--force)
+python3 nonlinear/boolflux/campaigns/targets/ledger.py run             # any time, idempotent: LEDGER.md + LEDGER.json
+python3 nonlinear/boolflux/campaigns/targets/ledger.py curate          # dry run: what would be copied to results/targets/<ID>/
+python3 nonlinear/boolflux/campaigns/targets/ledger.py curate --apply  # copy circuits, sidecars and logs/<name>/; never overwrites
+python3 nonlinear/boolflux/campaigns/targets/ledger.py snapshot        # once (done 23:56 UTC): the "known-by-23:50" snapshot
+```
+
+`LEDGER_OUT=DIR` writes the ledger to DIR instead of the campaign folder; `run --strict` exits 1
+when an issue has level FAIL. Night runs in `~/xs-campaigns/2026-11-16-night/<run>/found/` are
+scanned as campaign files.
+
+`run` verifies every new or changed file (cached by sha256), classifies each circuit per target,
+and prints a `CHANGE` line for every strict or tradeoff Pareto point that is new since the last
+run. The 2026-11-15 23:17 UTC run over 4,560 files took 3.6 s with a warm cache. A run with an
+empty cache verifies every file (under 1 s each); run it on one CPU (`taskset -c N`, or `~/xs-campaigns/2026-11-15-targets/L0/run_ledger.sh run`
+under the memory guard). Output: `LEDGER.md` (summary, per-target frontiers, sidecar audit) and
+`LEDGER.json` next to TARGETS.json, plus a copy in `L0/history/`. What every column means is in
+[campaigns/targets/README.md](campaigns/targets/README.md). Since the user's rules of 23:50 UTC
+the ledger also prints "notable" lines (T03 any G <= 123, T05 any G <= 102, at any GD inside the
+hard limits) and shows path certification for information only.
+
+Every circuit an agent saves goes to `~/xs-campaigns/2026-11-15-targets/<agent>/found/<name>.circ.txt`
+with a sidecar `<name>.json` in the form of
+[campaigns/targets/SIDECAR-TEMPLATE.json](campaigns/targets/SIDECAR-TEMPLATE.json).
+
+### Operators
+
+From 2026-11-16 the campaign methods are operators in `campaigns/targets/ops/`, one file each,
+with one contract so that the runner can mix them:
+
+```bash
+python3 nonlinear/boolflux/campaigns/targets/ops/<name>.py --in START.circ.txt --target Txx \
+    --seed S --seconds T --out DIR [--cpus 1] [operator flags]
+```
+
+- the target's limits are read from TARGETS.json; the operator may exceed the caps internally;
+- only circuits that pass `aes_check` and are inside the target's hard limits (A, AD) are
+  written to DIR, as `<name>-a..-ad..-g..-gd..-<hash>.circ.txt` with a full sidecar (plus `op`,
+  `params`, and the parent file with its sha256);
+- `DIR/result.json` holds the best per (G, GD), the wall time and the exit status; the process
+  exits within T + 60 s, uses one CPU unless `--cpus`, and stays under 2 GB (run it under
+  `~/xs-campaigns/guard/xsrun` with `XS_MEM`).
+
+The operators and their own flags, from their help text at 2026-11-16 00:10 UTC (method
+descriptions in [HOW-IT-WORKS.md](HOW-IT-WORKS.md), "Methods added in the targeted campaigns";
+design notes in `campaigns/targets/ops/NOTES.md`):
+
+| operator | method | own flags | agent |
+|---|---|---|---|
+| `ops/conjpull.py` | GF(2^8) conjugate + staged pulls | `--conj id\|L:K\|rank:R\|top:N\|all` (list, in order), `--schedule MODE:CAPGD:SECONDS[:rk0\|rk1],...` (modes g gate, m mix, o osc, t trb, k one kernel run; CAPGD may be +N / -N), `--beam B`, `--repair-keep 0\|1`, `--kcfg KEY=VAL` | M2 |
+| `ops/rebase.py` | exact re-basing of the last-level product classes, hybrid build at a GD cap, kernel | `--cap D` or `--goal depth\|gates`, `--builds`, `--top`, `--stage-seconds`, `--stages`, `--moves` (GF(4) coordinate variants, AD3), `--relax S` | M3 |
+| `ops/bottom.py` | shared rank-1 bottom rebuild under the kept front, A-capped polish | `--cut K`, `--cap D`, `--amax A`, `--iters`, `--pw`, `--T0`, `--polish-seconds`, `--polish-cap-a build\|target` | M3 |
+| `ops/satlns.py` | span-pooled SAT LNS (sideways, improving and focus queries) | `--gd D`, `--profile fast\|p1`, `--build-index` (span index of the archive) | M4 |
+
+`rebase.py` and `bottom.py` exit 0 with status `not-applicable` in `result.json` when the start
+has no re-basable classes, or no bottom of the required form.
+Tested commands from the night (the runner wrote each into the sidecar of every circuit it saved; START, DIR and the seed are per job). Wall time = the job's `wall_s` in the runner log:
+
+- `conjpull` (T05, job conjpull-54, `--seconds 1000`, ran 958 s, wrote 32/7/103/29 at 02:43 UTC):
+
+  ```bash
+  python3 nonlinear/boolflux/campaigns/targets/ops/conjpull.py --in ~/xs-campaigns/2026-11-15-targets/P4/found/p4-conj236-a32-ad7-g104-gd28.circ.txt --target T05 --seed 17104 --seconds 1000 --out ~/xs-campaigns/2026-11-16-night/T05/runs/T05/conjpull-54 --schedule g:34:300,t:32:300,m:32:360 --repair-keep alt --conj rank:6
+  ```
+- `bottom` (T09, job bottom-792, `--seconds 900`, ran 885 s, wrote 39/4/136/12 at 09:37 UTC):
+
+  ```bash
+  python3 nonlinear/boolflux/campaigns/targets/ops/bottom.py --in nonlinear/nist/aes-sbox/aes-sbox-a45-ad4-g141-gd12-xx96-25.circ.txt --target T09 --seed 750849 --seconds 900 --out ~/xs-campaigns/2026-11-16-night/T09/runs/T09/bottom-792 --pw 3 --polish-seconds 300
+  ```
+- `rebase` (T08, job rebase-732, `--seconds 900`, ran 877 s, wrote 35/3/166/13 at 08:56 UTC):
+
+  ```bash
+  python3 nonlinear/boolflux/campaigns/targets/ops/rebase.py --in ~/xs-campaigns/2026-11-15-targets/M3/found/rebase-a35-ad3-g167-gd13-6e861fc3c8.circ.txt --target T08 --seed 505694 --seconds 900 --out ~/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-732 --cap 13 --stages 1 --stage-seconds 200
+  ```
+- `satlns` (T03, job satlns-151, `--seconds 1200`, ran 1199 s, wrote 28/5/127/22 at 03:54 UTC):
+
+  ```bash
+  python3 nonlinear/boolflux/campaigns/targets/ops/satlns.py --in ~/xs-campaigns/2026-11-16-night/T03/found/conjpull-a28-ad5-g128-gd21-d20fd9235a.circ.txt --target T03 --seed 725371 --seconds 1200 --out ~/xs-campaigns/2026-11-16-night/T03/runs/T03/satlns-151 --polish-every 40 --polish-sec 10 --no-index-update --gd 22
+  ```
+
+Validation before the night (ops/NOTES.md): conjpull T04 smoke 70 s (126@26 -> 116@20); rebase 35/3/181/12 in 258 s from P6's coordinate variant; bottom 41/4/136/12 at 880 s from NIST 45@12; satlns 28/5/129/19 in 3 of 4 runs of 900 s.
+
+### The overnight runner
+
+`campaigns/targets/runner.py` (agent M2) runs a plan of sequential blocks, one target per block
+on all listed CPUs, one job per CPU, each job through `guard/xsrun`:
+
+```bash
+python3 nonlinear/boolflux/campaigns/targets/runner.py --plan PLAN.json --check          # validate the plan
+~/xs-campaigns/guard/xsrun P 0-19 night-runner ~/xs-campaigns/2026-11-16-night/runner.log -- \
+    python3 nonlinear/boolflux/campaigns/targets/runner.py --plan PLAN.json              # unattended, one unit
+systemctl --user stop xs-P-night-runner                                                  # stop; jobs end by their --seconds
+python3 nonlinear/boolflux/campaigns/targets/runner.py --plan PLAN.json --stop-jobs      # stop the jobs at once
+```
+
+A block names its target, minutes, starts (`ref`, `ledger:frontier_G_GD:N`, `found:N`, files or
+globs) and operators (CPUs, job seconds, flags, a grid of alternatives, rechaining of new frontier
+points), plus early-stop rules; the plan has a hard `deadline_utc`. Results go to
+`ROOT/<Txx>/found/` after a second `aes_check` and the hard-limit filter; the runner keeps
+`ROOT/STATUS.md` and `ROOT/STATE.json` (a restart resumes from it, `--fresh` ignores it) and
+runs `ledger.py run` after each block. The full plan format is the runner's docstring.
+
+The plans run on 2026-11-16:
+
+`~/xs-campaigns/2026-11-16-night/plan.json` (night-2026-11-16, deadline 2026-11-16T13:30:00Z, CPUs 0-19, carry `flagged`, at most 2 jobs per start; copied by morning.sh to `results/targets/night-2026-11-16/`):
+
+| block | target | minutes | early stop (first / stall min) | operators: CPUs x job seconds |
+|---|---|---|---|---|
+| T05 | T05 | 90 | 45 / 40 | conjpull 8 x 1500 s, conjpull 6 x 1100 s, conjpull 6 x 1000 s |
+| T03 | T03 | 120 | 45 / 40 | conjpull 5 x 1700 s, conjpull 4 x 960 s, conjpull 4 x 1300 s, conjpull 3 x 1000 s, satlns 4 x 1200 s |
+| T01 | T01 | 60 | 45 / 40 | conjpull 8 x 1500 s, conjpull 2 x 660 s, conjpull 6 x 1300 s, conjpull 4 x 1100 s |
+| T06 | T06 | 60 | 45 / 40 | conjpull 20 x 660 s |
+| T10 | T10 | 15 | 45 / 40 | conjpull 20 x 450 s |
+| T07 | T07 | 110 | 30 / 40 | conjpull 14 x 640 s, conjpull 6 x 280 s |
+| T04 | T04 | 75 | 30 / 40 | conjpull 8 x 1260 s, conjpull 8 x 1000 s, satlns 4 x 1200 s |
+| T08 | T08 | 70 | 30 / 40 | rebase 20 x 900 s |
+| T09 | T09 | 45 | 30 / 40 | bottom 16 x 900 s, conjpull 4 x 450 s |
+| T02 | T02 | 30 | 30 / 40 | conjpull 12 x 1300 s, conjpull 8 x 900 s |
+
+`~/xs-campaigns/2026-11-16-night/plan2.json` (night-2026-11-16-pass2, deadline 2026-11-16T13:20:00Z, CPUs 0-19, carry `next`, at most 2 jobs per start; copied by morning.sh to `results/targets/night-2026-11-16/`):
+
+| block | target | minutes | early stop (first / stall min) | operators: CPUs x job seconds |
+|---|---|---|---|---|
+| p2-T05 | T05 | 55 | 30 / 40 | conjpull 8 x 1000 s, conjpull 6 x 1300 s, conjpull 6 x 1100 s |
+| p2-T07 | T07 | 42 | 30 / 40 | conjpull 8 x 640 s, conjpull 12 x 280 s |
+| p2-T06 | T06 | 32 | 45 / 40 | conjpull 12 x 900 s, conjpull 8 x 700 s |
+| p2-T04 | T04 | 28 | 30 / 40 | conjpull 12 x 1000 s, conjpull 4 x 280 s, satlns 4 x 1200 s |
+| p2-T03 | T03 | 15 | 45 / 40 | conjpull 20 x 900 s |
+
+Generator scripts: `~/xs-campaigns/2026-11-16-night/mkplan.py` and `mkplan2.py`; the second pass was started by `chain2.sh` when the first runner unit exited.
+
+### The morning check
+
+One command (agent L1) after all runs have stopped; it never commits or pushes:
+
+```bash
+bash nonlinear/boolflux/campaigns/targets/morning.sh              # in this worktree
+bash nonlinear/boolflux/campaigns/targets/morning.sh --dry-run    # the same on a copy; nothing here changes
+```
+
+Steps, each logged and timed: `ledger.py run`; `ledger.py curate --apply`; copy the campaign
+record (LEDGER.md/json, briefs, TARGETS.json, the request, the night folder's summaries) into
+`results/targets/`; `curate_aes.py` and `manifest.py` (target and night circuits enter
+`results/aes/` as `aes-nist-targets-<agent>-t<NN>-...` / `aes-nist-night-<run>-t<NN>-...`, with
+the target's A and AD as caps); `best_table.py --md results/BEST.md`; `verify_all.py`;
+`aes_check.py results/targets/*/*.circ.txt`; the unit tests. Exit status 0 only if every step
+passed. Environment: `MORNING_CPU` (default 18), `XS_MEM` (default 4G), `MORNING_TESTS=0` skips
+the tests. Morning run 2026-11-16 13:23 UTC: all steps OK, 199 s in total (log `~/xs-campaigns/2026-11-15-targets/L1/morning-20261116T131944Z/`). Steps: a-ledger 4 s, b-curate 4 s, c-record 0 s, e1-curate-aes 9 s, e2-manifest 31 s, d-best-table 8 s, f1-verify-all 62 s, f2-best-vs-manifest 0 s, f3-tests 81 s.
+
 ## Output
 
 ```

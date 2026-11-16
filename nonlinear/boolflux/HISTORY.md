@@ -3,8 +3,8 @@
 BoolFlux was built on 2026-11-13 and 2026-11-14 on the local branch `boolflux-2026-11-13`. Nothing
 has been published or pushed. This page is a dated record of that work: what was built, what
 the reviews found and how it was fixed, which measurements changed the method, what the
-2026-11-14 AES push produced, failed experiments included, and the hub and the study phase of
-2026-11-15. Times are UTC. Commit times are
+2026-11-14 AES push produced, failed experiments included, the hub and the study phase of
+2026-11-15, and the ten targeted campaigns of 2026-11-15/16. Times are UTC. Commit times are
 converted from the repository's timestamps (-0500; -0400 for the October commit).
 
 **Corrections of 2026-11-15.** The text below was checked against the run records
@@ -53,9 +53,19 @@ after this page was first written. **[V]** marks a circuit that passed both veri
 | 11-14 ~23:55 | `C/STOPPED-gq.txt`, `C/logs/` | track C's gamma sweeps stopped to free CPUs: 10 of 16 gammas finished for the AD5 prefix and 11 of 16 for the AD4 prefix, 0 hits in each |
 | 11-15 00:10-06:45 | `~/xs-campaigns/2026-11-15-study/`, d961083 (06:10) | study phase (section below): structure and algebra (H1-H4), window redesigns (R1, R2), goal-directed runs (T1-T4), new moves, a goal scheduler and a red team (X1-X3), log analysis and this page's corrections (L1, L2). Agents X1b, X3b and L1b took over X1, X3 and L1 at about 03:00-03:05 UTC |
 | 11-15 01:44-03:19 (commits) | `boolflux-review5`, merged in 924b4c0 (06:44) | review 5 of the kernel (C1), the Python package (C2, finished by C23) and the hub (C3, finished by C23): `review5/KERNEL.md`, `PYTHON.md`, `HUB.md`, `X2-COMPAT.md` |
-| 11-15 03:19 | `strategies/X1/NOTES.md` section 8 | first circuit with the new 9 + 5 + 14 AND structure (X1b walk from NIST a28-ad5-g128-gd20, 28/5/158/27) |
+| 11-15 03:19 | `strategies/X1/NOTES.md` section 8 | first circuit with the new 9 + 5 + 14 AND structure (X1b walk from NIST a28-ad5-g128-gd20, 28/5/158/27). (Corrected 2026-11-15, Z1: up to a field symmetry this is H2's AD4-span 9 + 5 + 14 family, see the targeted campaigns) |
 | 11-15 06:47 | `launch-0700.sh`, `launch-0700.out` | overnight queue launched on all 20 CPUs (section below) |
 | 11-15 06:53-07:13 | `curated_utc` 06:53, cb8fd56 (07:13) | re-curation: 56 new entries, MANIFEST.json 194 entries, all verified; `verify_all.py` (06:57) 186 distinct AES tuples of ours, 139 not dominated by the pin, 73 Pareto among ours; [results/BEST.md](results/BEST.md) is the curated table |
+| 11-15 07:28 | 8922cac | BEST.md regenerated including the overnight hub archive (five A29 rows not yet in the manifest); `verify_all.py` on the final manifest: 194/194 sha256 match, all OK |
+| 11-15 ~15:10 | `results/targets/USER-REQUEST.md` | the user asks for ten targeted campaigns against named NIST circuits, hard limits on A and AD (section below) |
+| 11-15 15:20-15:35 | `L0/baseline/` | archive baseline frozen at 15:20 (4,162 files) for the known / new test; agents P1-P7 and Z1 start 15:22-15:30 |
+| 11-15 16:42-16:47 | P3, P6 found/ | P3's and P6's first strict results: T04 32/4/116/19 (conjugate + staged pull) and T08 35/3/181/12 (re-basing, slack variant); P2's T02 28/4/174/14 was reported by 16:45 |
+| 11-15 18:10-18:45 | `results/targets/COMPLIANCE-1820.md` | P1 finds that kernel repairs can pass through states above the A/AD caps; from 18:20 every kernel call runs with `repair_keep 1` and every result's search path is certified; 18:45 donor ruling |
+| 11-15 19:12-19:31 | `strategies/P3/NOTES.md` | traced exact replays certify three P3 kernel stages and show A = 33 states in a fourth; the affected tuples are re-derived on certified paths |
+| 11-15 22:53 | P6 found/ | T07 primary met: 35/3/138/24 |
+| 11-15 23:17-23:18 | LEDGER.md, d9507dd | final phase-1 ledger (every new strict and tradeoff point certified); campaign code, ledger and curated results committed |
+| 11-15 23:50 | BRIEF2.md | the user's decisions: search states may exceed caps (recorded results inside the limits), no 27-AND work, T03 and T05 may trade depth for gates, overnight one target at a time on all CPUs, ready for main by 14:00 UTC 11-16 |
+| 11-16 00:00-13:30 | `~/xs-campaigns/2026-11-15-targets/` (phase 2) | method improvements as operators (M1-M4), ledger update and morning check (L1), documentation (D1), repository clean-up (D2), then the overnight runs (runner pass 1 02:04-10:38 UTC, 10 blocks; pass 2 10:38-13:19 UTC, 5 blocks; all 20 CPUs; 9 new circuits that are strict or a permitted tradeoff for T05, T07, T09; morning ledger 13:19 UTC) |
 
 ## Building blocks (2026-11-13)
 
@@ -353,7 +363,11 @@ measured, [V] for a verified circuit.
 
 The 9 + 5 + 14 structure has 9 stage-1 ANDs, a 5-AND inversion and 14 last-layer ANDs. The
 published A28 families are 10 + 5 + 13 (AD5) and 9 + 6 + 13 (AD4). Its circuits so far have
-G >= 156, so none is on the frontier.
+G >= 156, so none is on the frontier. (Corrected 2026-11-15, agent Z1,
+`strategies/Z1/NOTES.md` section 2b.) X1b's and H2's 9 + 5 + 14 circuits are one family up to
+the field maps x -> c x^(2^i): X1b's two stage-1 spans are images of the AD4 9-spans of NIST
+g131, g141 and g176, which X1b's span registry did not detect because it does not identify spans
+under those maps. "New" means a new AND split among built circuits, not a new span class.
 
 **Review 5** ran alongside, on the branch `boolflux-review5` (merged in 924b4c0):
 
@@ -392,4 +406,150 @@ families are spread over track slices with their own memory caps. CPUs: 0-1 H3 w
 9 + 5 + 14 circuits, 2 H3 `g124w8`, 3-4 H2 layer search over H4 and Karatsuba covers, 5-6 X3b,
 7 H1 14 -> 13 tests, 8-9 X1b walks, 10-12 T1 (goal B), 13-14 R1, 15-17 the hub (`long5`, review-5
 code), 18 T4, 19 T3 (AD3 low-GD band). Its results are not on this page or in the manifest;
-`QUEUE-REVIEW.md` section 4 lists what has to be checked by hand afterwards.
+`QUEUE-REVIEW.md` section 4 lists what has to be checked by hand afterwards. (Its circuits up
+to 15:20 UTC are in the archive baseline of the targeted campaigns below, which treats them as
+"known".)
+
+## The targeted campaigns (2026-11-15 15:30 UTC - 11-16 13:30 UTC)
+
+At about 15:10 UTC the user asked for ten campaigns, each against one named circuit of the
+pinned NIST collection, with its own priorities, and with A and AD as hard limits that are never
+traded ([results/targets/USER-REQUEST.md](results/targets/USER-REQUEST.md), verbatim). Results
+are kept in two classes, strict and tradeoff, and never described as dominating when they are a
+tradeoff. The full record, per target, is [results/targets/TARGETS.md](results/targets/TARGETS.md).
+
+**Phase 1 (15:22-23:45 UTC).** Eight agents worked from `~/xs-campaigns/2026-11-15-targets/`
+(brief [results/targets/BRIEF.md](results/targets/BRIEF.md)), each with code, `NOTES.md` and
+`STATUS.md` in `strategies/<agent>/`, committed in d9507dd. Agent L0 wrote the ledger
+(`campaigns/targets/ledger.py`) before the first results arrived, and froze the archive of 15:20
+UTC as the baseline for "known".
+
+| agent | targets | outcome (ledger of 23:17 UTC) | what produced it | source |
+|---|---|---|---|---|
+| P1 | T01, T03 | nothing new for T01; T03 frontier point 28/5/129/19, not a T03 class | span-pooled SAT LNS, sideways queries | `P1/NOTES.md` sections 4, 7 |
+| P2 | T02, T06 | T02 strict 28/4/174/14; T06 nothing below the known 134/13 | fdrive mix, `trb` bottom stage; bottom resynthesis | `P2/NOTES.md` sections 5, 8 |
+| P3 | T04 | strict 114/19, 115/18, 117/17; tradeoff 113/20 | GF(2^8) conjugation + staged pulls | `P3/NOTES.md` |
+| P4 | T05 (G record) | no G < 103; new 32/7/104/27; the 103 is optimal in case S [C] | exact layer evaluators; conjugate lineages | `P4/NOTES.md`, `P4/NEGATIVES.md` |
+| P5 | T05 (AND depth) | AD4 111/25 (was 114/26); no 103 at AD6 or AD5 in case S [C] | conjugate lineages from NIST 117; exact inversion-middle search | `P5/NOTES.md` |
+| P6 | T07, T08 | T07 strict 138/24, 139/23; T08 strict 181/12, 168/13 | conjugation (T07); level-3 GF(4) re-basing with slack variants (T08) | `P6/NOTES.md` |
+| P7 | T09, T10 | T09 strict 41/4/136/12 (and 39/4/138/12); T10 nothing; G at GD 10 fixed in the 59@10 architecture [C] | shared rank-1 bottom rebuild | `P7/NOTES.md` |
+| Z1 | 27 ANDs | no circuit below 28; staircase lemma [P]; one span class for all A28 designs [C]; several exact cases closed [C] | exact layer and window searches (H2's gen13, H3's r1enum) | `Z1/NOTES.md` |
+
+**What worked** [H unless marked]. Four methods, each giving the kernel a start it had not seen:
+GF(2^8) conjugation followed by staged pulls (found by P3 at 16:11, passed to P1, P2, P4, P5,
+P6 and P7 by the coordinator between about 17:00 and 17:55; it paid on T04, T05 AD4 and T07, and on none of the
+A28 or depth targets), exact re-basing of the level-3 GF(4) classes priced by Kraft sums (T08),
+the shared rank-1 bottom rebuild (T09), and sideways SAT LNS queries (T03). They are described
+in [HOW-IT-WORKS.md](HOW-IT-WORKS.md), "Methods added in the targeted campaigns". Lineages took
+15-40 CPU-minutes and then plateaued; 7 certified T04 lineages all ended at 113/20 or 114/19.
+
+**What failed.** Plain kernel polish and kernel screens at the target caps (every A28 start,
+NIST 59@10, 43@12, the T05 103); conjugation on A28 starts (identity best by 4 proxy gates) and
+for depth (T02, T06, T08: every conjugate's skeleton bound is at least the identity's [C]);
+annealers over bottom decompositions where the builder is coarser than the gains sought (T04);
+generic SAT encodings of tensor rank, Brent equations and the 4-input inversion (no answers in
+2-18 minutes); an oscillation between GD 12 and 13 from parents without depth slack (T08). The
+table is in [results/targets/TARGETS.md](results/targets/TARGETS.md) section 5.
+
+**Exact negatives, each in its case only.** For T05: in case S (the 103's own 27 ANDs and an
+inversion interface of 4 linear inputs) the 103 is optimal at any GD and no 103 exists at
+GD < 32; with the 103's top and bottom no 103 exists at AD 6 or 5. T02 GD 13 and T06 GD 12 need
+other AND functions than any archive circuit has. G at GD 10 is fixed in the 59@10
+architecture. None of these is a lower bound for the AES S-box; the user does not accept
+restricted searches as general bounds, and these pages do not use them so.
+
+**The kernel-repair episode and its resolution.** At 18:10 UTC P1 found that a kernel stage
+started above its GD cap ranks moves by the sum of the cap excesses, so it can pass through
+states above the A or AD cap, and that `strategies/F/fdrive.py` then wrote such a state as its
+best (`strategies/P1/NOTES.md` section 6). Recorded results had always been checked, but the
+user's rule then covered retained search states too. The coordinator's note of 18:20 UTC
+([results/targets/COMPLIANCE-1820.md](results/targets/COMPLIANCE-1820.md)) required
+`repair_keep 1` in every kernel call, a `path_certified` field on every result, and the
+re-derivation of every uncertified result; at 18:45 UTC it ruled that a construction may use
+part of a circuit outside the limits as material (the donor ruling). P3 replayed four kernel
+stages exactly with a trace of every accepted state: three stayed inside A32/AD4, the fourth
+accepted A = 33 states, so the first 113/20, 113/21 and 114/19 were withdrawn as "not
+certified" and re-derived on certified paths from P5's certified circuits (19:37-20:10 UTC). The
+ledger propagated certification along lineages. At 23:17 UTC every new strict and tradeoff
+point had a certified campaign file. At 23:50 UTC the user decided that search states may
+exceed the caps if the recorded result is inside the limits, which made certification
+informational.
+
+**Decisions of 23:50 UTC** (the user, `~/xs-campaigns/2026-11-15-targets/BRIEF2.md`): search
+states may exceed caps; no 27-AND work until further notice; improve the method from the day's
+logs before launching anything; T03 may trade depth for gates (GD <= 22 with at least 3 gates
+saved; report any G <= 123), and any T05 circuit with G <= 102 at any GD is a record; overnight
+runs one target at a time on all 20 CPUs, not-yet-improved targets first, all stopped by 13:30
+UTC; the branch ready for main by 14:00 UTC on 11-16.
+
+**Phase 2 (2026-11-16).** From 00:00 UTC: M1 analyses the day's logs for the night's settings;
+M2 turns conjugation and staged pulls into a general operator and writes the sequential
+overnight runner; M3 does the same for re-basing and the shared-bottom rebuild; M4 for the SAT
+LNS; L1 updates the ledger for the new rules and writes a one-command morning check; D1 writes
+these pages; D2 prepares the repository for main.
+- **M1** (`~/xs-campaigns/2026-11-15-targets/phase2/M1/RECOMMENDATIONS.md`; analysis only, no search):
+  counted 718 kernel runs and 392 sidecars of 2026-11-15 [C]: three methods gave every target-class
+  gain (conjugation + staged pulls, re-basing, shared-bottom rebuild); proposed the block order, the
+  budgets, the early-stop rules and the start / lineage drop rules for the night [H].
+- **M2** (`campaigns/targets/ops/conjpull.py`, `ops/common.py`, `campaigns/targets/runner.py`;
+  `ops/NOTES.md`): the conjugate + staged-pull operator, the shared `Recorder`, and the sequential
+  runner (blocks, grids, rechaining, stall stop with carry, restart from `STATE.json`, a ledger run
+  after each block). Validation reproduced T04 32/4/114/19 from NIST 117@19 in 3 of 6 jobs (about
+  45 CPU-min per lineage) and P6's T07 139@23 and 138@24 with P6's stage seeds [C, those runs].
+- **M3** (`ops/rebase.py`, `ops/bottom.py`): P6's class re-basing and P7's shared-bottom rebuild for
+  any start; reproduced 35/3/181/12 (258-469 s) and 41/4/136/12 (880 s); its screen found T08
+  35/3/167/13 and **35/3/165/13** (new) and found both operators not applicable or without gain on
+  T01, T03-T07 and T10 [C / H as marked in ops/NOTES.md].
+- **M4** (`ops/satlns.py`): P1's SAT LNS with a span index of the archive (4,827 files, 552 spans at
+  00:12 UTC); reproduced P1's 28/5/129/19 in 3 of 4 runs of 15 min; its screen found T04
+  **32/4/112/21** (a `gates_for_depth` tradeoff, new); recommended only as a finisher on points whose
+  span holds at least ~50 circuits [H].
+- **L1** (`ledger.py`, `morning.sh`, `curate_aes.py`, `best_table.py`): the `known-by-23:50`
+  snapshot, the rules of 23:50 UTC (T03 / T05 tradeoffs, notable lines, certification informational),
+  the curation fixes of DOCS-TODO 32.1-32.5 and the one-command morning check (dry run at 00:36 UTC:
+  every step OK in 364 s).
+
+**The night runs (2026-11-16).** Two sequential passes of `runner.py`, one target at a time on all 20 CPUs: pass 1 (`plan.json`, 10 blocks, 02:04-10:38 UTC, 6 early-stopped by the stall rule) and pass 2 (`plan2.json`, 5 blocks planned, 5 run, from 10:38 UTC, finished 13:19, 1 early-stopped), each block followed by a ledger run. Block order and outcome (runner logs `runner.events.log`, `runner2.events.log`; the night folder's summaries are copied to `results/targets/night-2026-11-16/`):
+
+| pass | block | CPUs | start | end | state | files | beyond the known front (class) |
+|---|---|---|---|---|---|---|---|
+| 1 | T05 | 20 | 02:04 | 03:34 | done | 64 | 32/7/103/29 (strict), 32/7/104/26 (other), 32/5/105/24 (tradeoff:and_depth_for_gates), 32/5/106/21 (tradeoff:and_depth_for_gates) |
+| 1 | T03 | 20 | 03:34 | 04:48 | early-stopped | 30 | 28/5/125/24 (other) |
+| 1 | T01 | 20 | 04:48 | 05:33 | early-stopped | 18 | - |
+| 1 | T06 | 20 | 05:33 | 06:27 | early-stopped | 6 | 34/4/122/14 (other), 34/4/123/14 (other), 34/4/124/14 (other) |
+| 1 | T10 | 20 | 06:27 | 06:42 | done | 4 | - |
+| 1 | T07 | 20 | 06:42 | 07:45 | early-stopped | 14 | 35/3/138/23 (strict) |
+| 1 | T04 | 20 | 07:45 | 08:52 | early-stopped | 24 | 32/4/119/16 (other) |
+| 1 | T08 | 20 | 08:52 | 09:22 | early-stopped | 8 | - |
+| 1 | T09 | 20 | 09:22 | 10:08 | done | 16 | 37/4/127/13 (other), 37/4/128/13 (other), 39/4/135/12 (strict), 38/4/135/12 (strict) |
+| 1 | T02 | 20 | 10:08 | 10:38 | done | 11 | - |
+| 2 | p2-T05 | 20 | 10:38 | 11:09 | early-stopped | 0 | - |
+| 2 | p2-T07 | 20 | 11:09 | 12:15 | done | 6 | 35/3/139/21 (strict), 35/3/139/22 (strict), 35/3/140/21 (other) |
+| 2 | p2-T06 | 20 | 12:15 | 12:47 | done | 5 | - |
+| 2 | p2-T04 | 20 | 12:47 | 13:15 | done | 0 | - |
+| 2 | p2-T03 | 20 | 13:15 | 13:19 | done | 0 | - |
+
+Results per target (frontier points of the morning ledger first realised by the night):
+
+- T01: no new frontier point from the night runs.
+- T02: no new frontier point from the night runs.
+- T03: 28/5/125/24 (other).
+- T04: 32/4/119/16 (other); also 32/4/112/21 (new, M4).
+- T05: **32/4/119/16** (tradeoff:and_depth_for_gates), **32/5/105/24** (tradeoff:and_depth_for_gates), **32/5/106/21** (tradeoff:and_depth_for_gates), **32/5/110/19** (tradeoff:and_depth_for_gates), **32/5/111/18** (tradeoff:and_depth_for_gates), **32/7/103/29** (strict), 32/7/104/26 (other); also 32/4/112/21 (new, M4).
+- T06: 34/4/122/14 (other).
+- T07: **35/3/138/23** (strict), **35/3/139/21** (strict); also 35/3/165/13 (new, M3).
+- T08: 35/3/138/23 (other), 35/3/139/21 (other); also 35/3/165/13 (new, M3).
+- T09: 37/4/127/13 (other), **38/4/135/12** (strict).
+- T10: 37/4/127/13 (other), 38/4/135/12 (other).
+
+What found nothing is in [results/targets/TARGETS.md](results/targets/TARGETS.md) section 5 (night table); operators per result are in [HOW-IT-WORKS.md](HOW-IT-WORKS.md), "The same methods as operators". Morning run 2026-11-16 13:23 UTC: all steps OK, 199 s in total (log `~/xs-campaigns/2026-11-15-targets/L1/morning-20261116T131944Z/`).
+
+**Z1 and the 27-AND objective.** Z1 proved that for circuits whose last layer is a sink layer
+over a common core, the output staircase follows from the generalized Hamming weights of the
+layer's output-usage code, so it is not an independent lever [P]; every circuit examined is of
+that kind [C]. It found that all A28 stage-1 spans form one class under the field maps
+x -> c x^(2^i), which merges X1b's 9 + 5 + 14 family with H2's (correction above, study phase).
+It closed several exact cases (no 13-member layer over that class with a 5-AND middle, no
+12-member layer with the 6-AND middle, no single AND for the parallel last-layer pair of 150 A28
+spans, nor for NIST g124 and g128 with the full operand space), each [C] in its model and none a
+bound outside it (`strategies/Z1/NOTES.md`; TARGETS.md section 9).

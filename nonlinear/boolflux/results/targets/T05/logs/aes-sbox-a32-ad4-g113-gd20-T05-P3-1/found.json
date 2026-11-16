@@ -8,11 +8,13 @@
   20
  ],
  "class": "tradeoff:and_depth_for_gates",
- "status": "new (P3)",
+ "status": "known-by-23:50 (P3; new vs archive); reproduced by night:T04, night:T05",
+ "era": "campaign-11-15",
  "ledger_list": "tradeoff_frontier",
- "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-pipe-conj-116g20-l188-k0-m21-a32-ad4-g113-gd20-db41c24e64.circ.txt",
- "source_sha256": "db41c24e6409175ca4b1a7bd53c98a21971d060860ff2360bb3158e802451d35",
- "curated_utc": "2026-11-15T23:17:53Z",
+ "source_file": "~/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+ "source_sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62",
+ "source_path_certified": "certified (~/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt)",
+ "curated_utc": "2026-11-16T13:19:48Z",
  "sidecar": {
   "target": "T04",
   "A": 32,
@@ -22,25 +24,26 @@
   "class": "tradeoff:gates_for_depth",
   "reference": "aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt",
   "start": {
-   "path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/pipe-conj-116g20-l188-k0-g24/stage1.circ.txt",
-   "sha256": "26e4e09ee8bbc9cd5ab49f0f7ebaa5fc5d8aacf49c24785f4ee2ebed5e2f112b"
+   "path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/starts/p5cert-112g22.circ.txt",
+   "sha256": "01d9a03df1bfd5584bf04c75322ace4a445b404073c6a38bf9d786b703cff144"
   },
-  "method": "pdrive (strategies/F/fdrive.py + hard A/AD guard) mode mix, caps A32 AD4 GD21, kernel bfx-593fa798f5",
-  "command": "env F_BFX=/home/joebachir20/xs-campaigns/2026-11-14-hub/long/bin/bfx-593fa798f5 python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/P3/pdrive.py --start /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/pipe-conj-116g20-l188-k0-g24/stage1.circ.txt --cap 21 --cap-ad 4 --cap-a 32 --mode mix --seconds 360 --seed 2 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/pipe-conj-116g20-l188-k0-m21 ",
-  "seed": 2,
-  "elapsed_s": 362.0,
+  "method": "pdrive (strategies/F/fdrive.py + hard A/AD guard) mode mix, caps A32 AD4 GD21, kernel bfx-4dc199db, repair_keep 1",
+  "command": "env F_BFX=/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/bin/bfx-4dc199db python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/P3/pdrive.py --start /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/starts/p5cert-112g22.circ.txt --cap 21 --cap-ad 4 --cap-a 32 --mode mix --seconds 360 --seed 1011 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/rkG1-s1-mix21-k1 ",
+  "seed": 1011,
+  "elapsed_s": 361.0,
   "code": {
    "git": "8922cacae4d4314968c5ce9baa740dea7aa38935",
    "tree": "xcr-boolflux + uncommitted strategies/P3 (and F/T2 as used)",
-   "kernel": "/home/joebachir20/xs-campaigns/2026-11-14-hub/long/bin/bfx-593fa798f5",
-   "kernel_sha256": "e67fefc016decaf325f411c6302a03a8d04f2e6c0e9b9ad6ea068458751198b7"
+   "kernel": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/bin/bfx-4dc199db",
+   "kernel_sha256": "4dc199db6f226260b53cff84f4b441c93d39058f3b501cac24445a59822bf935"
   },
-  "aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/pipe-conj-116g20-l188-k0-m21/best.circ.txt  A AD G GD = 32 4 113 20  counts {'AND': 32, 'XNOR': 38, 'XOR': 43}",
-  "aes_check_full": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/pipe-conj-116g20-l188-k0-m21/best.circ.txt  A AD G GD = 32 4 113 20  counts {'AND': 32, 'XNOR': 38, 'XOR': 43}\n     new Pareto point on pinned set: YES\n     published best G at GD<=20: 33 4 108 20 (aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt, gain -5)\n     published best G at A<=32: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -10)\n     published best G at A<=32, GD<=20: 32 5 109 20 (aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt, gain -4)\n",
-  "circuit_sha256": "db41c24e6409175ca4b1a7bd53c98a21971d060860ff2360bb3158e802451d35",
-  "utc": "2026-11-15T17:48:11Z",
-  "path_certified": false,
-  "path_note": "same run as the 113@21 (audit replay L3: A = 33 states in its stage 1). Search path NOT certified; re-derivation under repair_keep 1 running. runs/audit (strategies/P3/pdrive_replay.py with the original kernel bfx-593fa798f5, stage kernels given an unlimited time budget, full move traces; strategies/P3/audit_check.py)"
+  "aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/rkG1-s1-mix21-k1/best.circ.txt  A AD G GD = 32 4 113 20  counts {'AND': 32, 'XNOR': 35, 'XOR': 46}",
+  "aes_check_full": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/rkG1-s1-mix21-k1/best.circ.txt  A AD G GD = 32 4 113 20  counts {'AND': 32, 'XNOR': 35, 'XOR': 46}\n     new Pareto point on pinned set: YES\n     published best G at GD<=20: 33 4 108 20 (aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt, gain -5)\n     published best G at A<=32: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -10)\n     published best G at A<=32, GD<=20: 32 5 109 20 (aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt, gain -4)\n",
+  "circuit_sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62",
+  "path_certified": true,
+  "reproduces": "found/p3-pipe-conj-116g20-l188-k0-m21-a32-ad4-g113-gd20-db41c24e64.circ.txt (same tuple, different circuit; certified path)",
+  "utc": "2026-11-15T19:42:02Z",
+  "start_lineage": "starts/p5cert-112g22.circ.txt is a byte copy of ~/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert112c-r1-mix22-a32-ad4-g112-gd22-125223cf3b.circ.txt (P5 sidecar path_certified true: NIST 117 -> conjugate lam 188 -> P5 gate/mix stages with repair_keep 1); every later stage here ran with repair_keep 1 (P3/bin/bfx-4dc199db)"
  },
  "nist": {
   "dominated_by": [],
@@ -52,8 +55,28 @@
    "dAD": -3
   }
  },
+ "replaces": [
+  {
+   "name": "aes-sbox-a32-ad4-g113-gd20-T05-P3-1",
+   "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-pipe-conj-116g20-l188-k0-m21-a32-ad4-g113-gd20-db41c24e64.circ.txt",
+   "source_sha256": "db41c24e6409175ca4b1a7bd53c98a21971d060860ff2360bb3158e802451d35",
+   "reason": "same tuple; the ledger representative (certified search path first, then earliest) is ~/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt"
+  }
+ ],
+ "class_target": "T05",
+ "start": {
+  "recorded_path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/starts/p5cert-112g22.circ.txt",
+  "recorded_sha256": "01d9a03df1bfd5584bf04c75322ace4a445b404073c6a38bf9d786b703cff144",
+  "copy": "start.circ.txt",
+  "copy_of_sha256": "01d9a03df1bfd5584bf04c75322ace4a445b404073c6a38bf9d786b703cff144",
+  "sha256_matches_recorded": true,
+  "converted_from_bfx": false,
+  "aes_check": "OK 32/4/112/22"
+ },
  "logs": [
+  "REPRODUCE.md",
   "aes_check.json",
-  "REPRODUCE.md"
+  "command.sh",
+  "start.circ.txt"
  ]
 }

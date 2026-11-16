@@ -8,7 +8,7 @@
   "path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/polish139c/c27-sd20378/jobs/s0/start.bfx",
   "sha256": "ce9dd41997e709d803e366a5c07ce7397119290547b31ced5881b5e4328b208e"
  },
- "method": "P6 pullrun depth pull (botbasis class re-basing + hybrid build) then gate kernel hub.ops._kernel caps A35 AD3 GD27 objective cost,gd, 240.0 s stage",
+ "method": "P6 polish139c: gate kernel (strategies/P6/kern.py -> hub.ops._kernel, repair_keep 1, caps A35 AD3 GD27, objective cost,gd, 240 s, seed 20378) from 35/3/139/23 (P6/found/aes-sbox-a35-ad3-g139-gd23-703f7ce121a7.circ.txt). Lineage: best-1400 140@25 -> P3 conj3 screen + mkconj, lam 250 k 4 (152@26) -> kernel GD31 200 s (140@27) -> kernel GD27 2 x 200 s (139@23) -> kernel GD27 240 s seed 20378 (138@24).",
  "command": "cd /home/joebachir20/xcr-boolflux/nonlinear/boolflux/strategies/P6 && python3 kern.py /home/joebachir20/xs-campaigns/2026-11-15-targets/P6/found/aes-sbox-a35-ad3-g139-gd23-703f7ce121a7.circ.txt --caps 35,3,27 --seed 20378 --seconds 240 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/polish139c/c27-sd20378/jobs",
  "seed": "20378",
  "elapsed_s": 240.0,
@@ -40,5 +40,12 @@
  "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/polish139c/c27-sd20378/jobs/s0/best.bfx",
  "note": "job dir /home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/polish139c/c27-sd20378/jobs/s0 (start.bfx = stage start; stage 0 start = hybrid build of the parent in pull.jsonl)",
  "path_certified": true,
- "path_certified_note": "P6 drivers: every kernel stage starts inside A35/AD3 (and from 18:20 UTC runs with repair_keep 1); see strategies/P6/certify.py"
+ "path_certified_note": "P6 drivers: every kernel stage starts inside A35/AD3 (and from 18:20 UTC runs with repair_keep 1); see strategies/P6/certify.py",
+ "method_original": "P6 pullrun depth pull (botbasis class re-basing + hybrid build) then gate kernel hub.ops._kernel caps A35 AD3 GD27 objective cost,gd, 240.0 s stage",
+ "method_corrected_by": "coordinator 2026-11-16, per P6 NOTES s.13",
+ "correction_reason": "the agent's method field was boilerplate (\"pullrun depth pull (botbasis class re-basing + hybrid build)\"); its command and strategies/P6/NOTES.md section 13 show the conjugate lineage and a kern.py stage (DOCS-TODO 32.2)",
+ "class": "other",
+ "class_kind": null,
+ "class_target": "T08",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json"
 }

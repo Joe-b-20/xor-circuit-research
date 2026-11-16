@@ -1,0 +1,76 @@
+{
+ "target": "aes",
+ "target_description": "AES S-box, FIPS-197 (computed: inversion mod 0x11B, affine 0x63)",
+ "model": "nist",
+ "track": "hub",
+ "campaign_source": {
+  "file": "~/xs-campaigns/2026-11-14-hub/long/archive/2093cd9fe4f4.bfx",
+  "sha256": "62b43eb4876484e325ecf89473cfe2bd4a2380f95c900f516d42ac8466bf074b"
+ },
+ "curated_utc": "2026-11-16T13:19:59Z",
+ "wall_s": null,
+ "best": {
+  "job": "~/xs-campaigns/2026-11-14-hub/long/archive/2093cd9fe4f4.bfx",
+  "seed": 546577385,
+  "metrics": {
+   "cost": 141.0,
+   "G": 141,
+   "A": 35,
+   "GD": 19,
+   "AD": 3
+  }
+ },
+ "code_sha256_12": null,
+ "mechanism": "hub operator trb (shared archive with (A, AD, GD) cells and a bandit scheduler, hub/SPEC.md); campaign ~/xs-campaigns/2026-11-14-hub/long",
+ "command": "taskset -c 17 /usr/bin/python3 ~/xcr-boolflux/nonlinear/boolflux/hub/op_trb.py --archive ~/xs-campaigns/2026-11-14-hub/long --in f105e9458a35 --seed 546577385 --seconds 30 --out ~/xs-campaigns/2026-11-14-hub/long/jobs/long-4b689e.r06296-trb",
+ "run_record": "~/xs-campaigns/2026-11-14-hub/long/runs/long-4b689e.r06296-trb.json",
+ "parents": [
+  {
+   "id": "f105e9458a35",
+   "metrics_A_AD_G_GD": [
+    35,
+    3,
+    141,
+    19
+   ],
+   "operator": "polish",
+   "parents": [
+    {
+     "id": "724d37c6a122",
+     "metrics_A_AD_G_GD": [
+      35,
+      3,
+      142,
+      19
+     ],
+     "operator": "ingest",
+     "file": "~/xs-campaigns/2026-11-15-study/T3/found/aes-sbox-a35-ad3-g142-gd19-724d37c6a122.circ.txt"
+    }
+   ]
+  }
+ ],
+ "start": "~/xs-campaigns/2026-11-14-hub/long/archive/f105e9458a35.bfx",
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": null,
+  "AD": null,
+  "A": null
+ },
+ "seeds": [
+  546577385
+ ],
+ "iters": null,
+ "rounds": null,
+ "time_to_result_s": {
+  "job_wall_s": 30.08,
+  "job_cpu_s": 29.71,
+  "within_job_s": null,
+  "job_budget_s": 30.0,
+  "admitted_unix_time": 1794728770.621275
+ },
+ "code_version": {
+  "hub (git commit + hash of uncommitted changes)": "8922cac+1df9fcd2fb"
+ },
+ "reproduction": "one-off: hub job (operator trb, seed 546577385, 30.0 s budget; not bit-reproducible); not re-run",
+ "campaign_sidecar": "aes-nist-hub-trb-g141-a35-gd19-ad3.campaign.json"
+}

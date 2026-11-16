@@ -27,5 +27,10 @@
   "runs/cp4-nist117-l188k0-m26: p3_pdrive mix cap GD26, seed 2, 400 s, repair_keep 1 -> pareto g113-gd23 = starts/ad4-113-23-cert.circ.txt",
   "runs/lin-cert113-r1-gate30: gate cap GD30, seed 31, 300 s, repair_keep 1 (112/25)",
   "runs/lin-cert113-r1-mix26: mix cap GD26, seed 32, 400 s, repair_keep 1 (112/24, 112/22)"
- ]
+ ],
+ "class": "tradeoff",
+ "class_kind": "and_depth_for_gates",
+ "class_target": "T05",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json",
+ "notable": false
 }

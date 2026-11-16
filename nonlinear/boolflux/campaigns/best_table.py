@@ -40,7 +40,13 @@ GLOBS = ['D/found/*.circ.txt', 'E/found/*.circ.txt', 'F/found/*.circ.txt', 'main
 # 2026-11-15 study phase first (every agent's found/, any depth), so that a circuit later ingested
 # by the hub is credited to the agent that made it; then the hub archives and track G
 _STUDY = Path.home() / 'xs-campaigns' / '2026-11-15-study'
+# 2026-11-15 targeted campaigns (agents P1-P7, Z1: <campaign>/<agent>/found/) and the 2026-11-16 night
+# runs (<night>/<run>/found/), after the study phase and before the hub archives (same reason)
+_TARGETS = Path.home() / 'xs-campaigns' / '2026-11-15-targets'
+_NIGHT = Path.home() / 'xs-campaigns' / '2026-11-16-night'
 EXTRA = [(_STUDY, '**/found/**/*.circ.txt'), (_STUDY, '**/found/**/*.bfx'),
+         (_TARGETS, '*/found/**/*.circ.txt'), (_TARGETS, '*/found/**/*.bfx'),
+         (_NIGHT, '*/found/**/*.circ.txt'), (_NIGHT, '*/found/**/*.bfx'),
          (HERE.parent / 'strategies', '*/found/*.circ.txt'),
          (Path.home() / 'xs-campaigns' / '2026-11-14-hub', '*/archive/*.bfx'),
          (Path.home() / 'xs-campaigns' / '2026-11-14-G', 'found/*.circ.txt')]

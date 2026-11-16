@@ -8,7 +8,7 @@
   17
  ],
  "class": "strict",
- "status": "new (P3)",
+ "status": "known-by-23:50 (P3; new vs archive); reproduced by night:T04, night:T05",
  "ledger_list": "strict_frontier",
  "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkN1-s1-mix17-k2-a32-ad4-g117-gd17-99c3bf2a3e.circ.txt",
  "source_sha256": "99c3bf2a3e36fea46efa04f22ce505c4464f7c6f9f2d15d034b2c2f67cf478e0",
@@ -53,7 +53,20 @@
   }
  },
  "logs": [
+  "REPRODUCE.md",
   "aes_check.json",
-  "REPRODUCE.md"
- ]
+  "command.sh",
+  "start.circ.txt"
+ ],
+ "era": "campaign-11-15",
+ "class_target": "T04",
+ "start": {
+  "recorded_path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/rkK1-s2-mix17-k1/pareto/g118-gd17.circ.txt",
+  "recorded_sha256": "dddd01b7ade8eb876f87160ffd8e66b07eccf486e73cc3bdac21c5383d7f7d26",
+  "copy": "start.circ.txt",
+  "copy_of_sha256": "dddd01b7ade8eb876f87160ffd8e66b07eccf486e73cc3bdac21c5383d7f7d26",
+  "sha256_matches_recorded": true,
+  "converted_from_bfx": false,
+  "aes_check": "OK 32/4/118/17"
+ }
 }

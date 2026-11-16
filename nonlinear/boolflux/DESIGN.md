@@ -1,7 +1,8 @@
 # BoolFlux design: the architecture as built
 
 State of 2026-11-15, commit f9fe6f7 plus the uncommitted study directories. This page replaces
-the design notes of 2026-11-13. It describes what exists, in the order kernel, Python layer,
+the design notes of 2026-11-13. The targeted campaigns of 2026-11-15/16 added rows to sections
+2, 5 and 6 (marked by their date); their methods are in [HOW-IT-WORKS.md](HOW-IT-WORKS.md). It describes what exists, in the order kernel, Python layer,
 workflows, hub, campaign tools, and then what was measured to work and what was not.
 
 Marks: **[C]** = counted from run records or exhaustive within the case stated;
@@ -96,6 +97,16 @@ sections 1.2 and 1.4, `strategies/L1/WHAT-WORKS.md` finding 5):
 - **[C]** A run that never becomes feasible still writes its best infeasible circuit. `cli.py`
   marks it `CAPS NOT MET`. The track E drivers and the hub admit any correct circuit by its own
   metrics, and several frontier points arose this way.
+- **[C]** The first point means that a stage started above one cap (a pull: start GD above the
+  GD cap) may pass through states above the A or AD cap, and `strategies/F/fdrive.py` wrote such
+  a state as `best.circ.txt` when it had fewer gates (found by agent P1 on 2026-11-15,
+  `strategies/P1/NOTES.md` section 6; `bfx.c` lines 285-292, 1064-1077). The option
+  `repair_keep 1` (review 5, off by default) forbids any move that raises the excess of a single
+  cap, so from a start inside A/AD no state leaves them. From a start inside all caps the kernel
+  never leaves them in either setting. The targeted campaigns ran every kernel call with
+  `repair_keep 1` from 18:20 UTC on 2026-11-15; since the user's decision of 23:50 UTC, search
+  states may exceed the caps and only the recorded result must be inside the hard limits
+  ([results/targets/TARGETS.md](results/targets/TARGETS.md) section 2.1).
 
 **Skeleton kernel `skel.c`** (427 lines). Moves on the AND skeleton that one-gate replacements
 cannot make, each verified by Gaussian elimination on complete truth tables: *swap* a leaf
@@ -173,6 +184,10 @@ admissions by AND class, goal-near admissions) to judge a run.
 | `nonlinear/nist/refresh.py` | check or move the NIST pin ([../nist/PIN.md](../nist/PIN.md)) |
 | `~/xs-campaigns/guard/` | `xsrun` (detached job as a systemd user unit, CPU-pinned, memory-capped), `xsfg` (foreground, capped), `xsps`, `memguard` (watchdog). Added after the out-of-memory outage of 2026-11-14 05:09 UTC; every campaign job goes through them |
 | `strategies/<ID>/` | one directory per track or agent with its code, NOTES and STATUS; campaign data stays outside the repository ([runs/INDEX.md](runs/INDEX.md)) |
+| `campaigns/targets/ledger.py` | the result book of the targeted campaigns: verifies every campaign and archive circuit, classifies strict / tradeoff / other per target from TARGETS.json, keeps the (G, GD) and (A, AD, G, GD) frontiers, compares with the pinned set, records provenance (known / reproduced / new) and audits sidecars ([campaigns/targets/README.md](campaigns/targets/README.md)) |
+| `campaigns/targets/ops/` (2026-11-16) | operators with one contract (`--in START --target Txx --seed S --seconds T --out DIR`; limits from TARGETS.json; search states may exceed caps; only verified circuits inside the hard limits are written, each with a sidecar, plus `result.json`): `conjpull.py` (conjugate + staged pulls, M2), `rebase.py` and `bottom.py` (class re-basing; shared rank-1 bottom, M3), `satlns.py` (SAT LNS, M4); shared helpers `common.py` (limits, classification copy, `Recorder` that checks and writes candidates at once) ([ops/NOTES.md](campaigns/targets/ops/NOTES.md)) (final list; `m3common.py` and `m3lib/` are M3's adapter and verbatim copies of the P6 / T3 / P7 code; night jobs per operator: conjpull 1188, rebase 60, bottom 48, satlns 40) |
+| `campaigns/targets/runner.py` (2026-11-16) | sequential overnight runner (M2): blocks of one target on all listed CPUs, one `xsrun` job per CPU, rechaining of new frontier points, early stop, ledger after each block, restart from `STATE.json` |
+| `campaigns/targets/morning.sh` (2026-11-16) | one command for the morning (L1): ledger, curation into `results/targets/` and `results/aes/`, manifest, BEST.md, `verify_all.py`, `aes_check` of the curated targets, unit tests; `--dry-run` on a copy |
 
 ## 6. What was measured
 
@@ -194,6 +209,16 @@ A/AD/G/GD.
 | a constructed stage as a join donor | track F's depth-3 inversion block: 122@GD14 with no search, then in the lineage of 5 of 17 frontier points (L2 section 1.5) **[C]** |
 | two verifiers, then `aes_check` against a pinned set | no review or audit found a saved circuit computing the wrong function; the pin correction of 2026-11-13 withdrew 13 of 18 early claims ([HISTORY.md](HISTORY.md)) **[C]** |
 
+Added by the targeted campaigns of 2026-11-15 ([results/targets/TARGETS.md](results/targets/TARGETS.md);
+methods in [HOW-IT-WORKS.md](HOW-IT-WORKS.md), "Methods added in the targeted campaigns"):
+
+| mechanism | evidence |
+|---|---|
+| GF(2^8) conjugation of a start, then staged pulls (gate at a loose GD cap, then mix one or two levels at a time) | T04 32/4/117/19 -> 114/19, 115/18, 117/17 and 113/20; T05 AD4 111/25, 112/22; T07 139/27 -> 139/23, then 138/24 by one more kernel stage **[C]** for the circuits; the lineages plateau after 15-40 CPU-min (7 certified T04 lineages end at 113/20 or 114/19) **[H]** |
+| exact level-3 GF(4) class re-basing priced by Kraft sums, depth-feasible hybrid build, kernel | T08 GD 12 reached (181/12) only from a GF(4)-coordinate variant with depth slack; then 168/13 by relax-and-re-base at cap 13 **[C]** for the circuits, **[H]** one success from 8 slack variants |
+| shared rank-1 bottom rebuild (annealing with an exact per-output depth check) under a kept front, then polish under cap A | T09 45/4/141/12 -> 39/4/138/12 (no kernel) and 41/4/136/12 **[C]** for the circuits |
+| span-pooled SAT LNS, sideways queries | the only T01/T03 gain: 28/5/129/19 from the hub's 130/19; improving queries 2 SAT, 11,419 UNSAT, 452 UNKNOWN **[C]** counts |
+
 **[H]** One pattern runs through the rows from the pull downward: the kernel is a good finisher
 and a poor explorer. It pays when it is handed a start that is new (another cap, another
 combination of stages, a kicked skeleton) and not when it is handed a published circuit or its
@@ -214,6 +239,11 @@ own converged output.
 | repeat joins on the same target in the hub | 3,471 jobs, 3 frontier admissions; 1,135 of 1,526 join admissions are equal-tuple copies | **[C]** |
 | generic basis search for a product set (track G `nlb`) | solves 4-bit cases at once; 0 of 7 on 8-bit 9-product covers | decisive **[C]** |
 | no-op filter as a quality gain | median 133 in both arms, sign test p = 1 | decisive: no effect **[C]** |
+| GF(2^8) conjugation on A28 starts (T01, T03) | the identity is the best basis of every A28 start by 4 proxy gates; 9 pipelines 5-9 gates above the archive (`strategies/P1/NOTES.md` section 6) | **[H]** proxy and 9 runs |
+| conjugation for depth (T02, T06, T08) | skeleton bound of every conjugate >= the identity's (all 2,040 each) | **[C]** for those circuits |
+| kernel polish and conjugates for T05 G < 103 | 21 conjugate lineages settle at 104 (~5 CPU-h) | **[H]**; the exact negatives in case S are listed in HOW-IT-WORKS.md |
+| generic SAT for bottom tensor rank / Brent equations / inversion synthesis (P2, P3, P7) | no answer in 2-18 min, not even for known solutions | as encoded, too slow **[C]** run counts |
+| oscillating GD12 <-> GD13 with re-basing from parents without depth slack (P6) | plateau 187-188 at GD 12 | **[H]** |
 
 ### 6.3 Fewer than 28 ANDs
 
@@ -233,8 +263,19 @@ Nothing reached 27. What exists is of two kinds.
   jobs that ended infeasible, and every one of the 80 frontier admissions is "fewer gates under
   the same caps" (L1 findings 1, 5). Joins cannot do it with a linear interface: no join of the
   150-circuit sweep has fewer than 28 ANDs and none exists between the two published A28
-  families (L2 section 1.3). AND-removing windows and AND merge moves are under test in the
-  2026-11-15 study (H3, R1, X1) and are not results yet.
+  families (L2 section 1.3). AND-removing windows and AND merge moves were tested in the
+  2026-11-15 study (H3, R1, X1): no 27 [H] ([HISTORY.md](HISTORY.md), study phase).
+- **Agent Z1 (2026-11-15 targeted campaign, `strategies/Z1/NOTES.md`).** [P] For circuits whose
+  last layer is a sink layer over a common core E, the output staircase is m_k = |E| + d_k(code
+  of the layer's output-usage matrix), so it adds no constraint beyond |E| + K = A and the image
+  arrangement; [C] every file examined (111 staircase files, the hub archive up to A30) is of
+  that kind. [C] Under the field maps x -> c x^(2^i) all A28 stage-1 spans fall into one class S9
+  (AD5: S9 plus one product), so X1b's 9 + 5 + 14 circuits are H2's AD4-span 9 | 5 | 14 family up
+  to symmetry (correction 9 below). [C, each in its member or semi-member model] no 13-member
+  layer over S9 with a 5-AND middle, no 12-member layer over S9 with the 6-AND middle, and no
+  single AND replacing the parallel last-layer pair of 150 A28 spans or (full operand space,
+  2^33 each) of NIST g124 and g128. None of these is a bound outside its model. The user stopped
+  27-AND work at 23:50 UTC that day.
 
 ### 6.4 Corrections to earlier conclusions
 
@@ -262,6 +303,18 @@ Nothing reached 27. What exists is of two kinds.
    (section 3 above).
 8. **Timings across CPUs are not comparable [H].** CPUs 12-19 of the machine are probably
    efficiency cores; time-budgeted jobs there do fewer iterations (DOC-AUDIT U8).
+9. **X1b's "new A28 family 9 + 5 + 14" is not independent of H2's [C].** `strategies/X1/NOTES.md`
+   section 8 calls it new because its span hash and U subspace were not in X1b's registry; that
+   registry does not identify spans under the maps x -> c x^(2^i). Under those maps both X1b
+   prefixes are images of the AD4 9-spans of NIST g131, g141 and g176, and gen13 over them at
+   K = 14 gives exactly H2's AD4 numbers (4,676 candidates, 69 covering layers)
+   (`strategies/Z1/NOTES.md` section 2b). What stays true: no published circuit has the
+   9 + 5 + 14 split, and X1b's walk reached such circuits by search from the AD5 circuits NIST
+   g128 and g124.
+10. **Kernel repairs can leave the A and AD caps [C]** (section 2): a recorded circuit inside the
+    caps does not mean its search path stayed inside them. The targeted campaigns certified
+    the path of every new strict and tradeoff result until the user's decision of 2026-11-15 23:50 UTC made the
+    hard limits apply to recorded results only.
 
 ## 7. Verification
 

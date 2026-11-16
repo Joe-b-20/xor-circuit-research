@@ -1,0 +1,88 @@
+{
+ "target": "T03",
+ "A": 28,
+ "AD": 5,
+ "G": 126,
+ "GD": 23,
+ "class": "other",
+ "reference": "aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt",
+ "start": {
+  "path": "/home/joebachir20/xs-campaigns/2026-11-16-night/starts/104c1eda4172-a28-ad5-g124-gd27.circ.txt",
+  "sha256": "ce5bc3c30704dd0297573395edf6f25211762d45a1d084f9d5ea5c9ebeb04e1b",
+  "tuple": [
+   28,
+   5,
+   124,
+   27
+  ]
+ },
+ "parent": {
+  "path": "/home/joebachir20/xs-campaigns/2026-11-16-night/starts/104c1eda4172-a28-ad5-g124-gd27.circ.txt",
+  "sha256": "ce5bc3c30704dd0297573395edf6f25211762d45a1d084f9d5ea5c9ebeb04e1b"
+ },
+ "op": "conjpull",
+ "params": {
+  "conj": "id",
+  "schedule": "g:28:300,m:25:360,m:23:360,m:22:600",
+  "beam": 1,
+  "repair_keep": 0,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 28,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-94a75e2c18"
+ },
+ "how": "g23",
+ "lineage": [
+  "start",
+  "stage 1 g:28 best 28/5/124/27",
+  "stage 2 m:25 best 28/5/127/23",
+  "stage 3 m:23:360 seed 256244020 rk 0",
+  "g23"
+ ],
+ "method": "ops/conjpull.py: GF(2^8) conjugate (P3 conj3 screen + mkconj build) then staged kernel pulls g:28:300,m:25:360,m:23:360,m:22:600 (fdrive semantics; kernel bfx-94a75e2c18, repair_keep 0 unless a stage says rk0/rk1); search states may exceed caps, recorded circuits inside A<=28 AD<=5",
+ "command": "/usr/bin/python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/campaigns/targets/ops/conjpull.py --in /home/joebachir20/xs-campaigns/2026-11-16-night/starts/104c1eda4172-a28-ad5-g124-gd27.circ.txt --target T03 --seed 256244 --seconds 1700 --out /home/joebachir20/xs-campaigns/2026-11-16-night/T03/runs/T03/conjpull-122 --conj id --schedule g:28:300,m:25:360,m:23:360,m:22:600 --repair-keep alt",
+ "seed": 256244,
+ "elapsed_s": 1015.3,
+ "code": {
+  "git": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "tree": "xcr-boolflux working tree incl. uncommitted campaigns/targets/ops",
+  "ops_sha256": {
+   "bottom.py": "cdd7c0ef1041cc61babfc6a9e20b5bb6bf0a885d97f699c16a1413afdcd946e7",
+   "common.py": "34274be7632c0df33d46fb33477dfe91a9ce445b7c538d2216209ddd53ea55cf",
+   "conjpull.py": "3e71a87052afb17ec5014eb088e0e994624ae70d730636a34cc19d992735329e",
+   "m3common.py": "cf043c3d649190967017da21c0be8642ee150f204affd361c17e60a90574c013",
+   "rebase.py": "311398ea41b1e7fac75e3f623a576c81dd1776d9139d12a5019827ad4a533b21",
+   "satlns.py": "afff86f40d1bee2d152da428202198a041530e41baa4353ec0e55071f25b25d9"
+  },
+  "kernel": "/home/joebachir20/xs-campaigns/2026-11-16-night/bin/bfx-94a75e2c18",
+  "kernel_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "kernel_src_sha256": "c8d293b6ee35e201e7e08d58d750c95ab14af249ee8de8013a3cd1309c244fe8"
+ },
+ "aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-16-night/T03/found/conjpull-a28-ad5-g126-gd23-14b498119b.circ.txt  A AD G GD = 28 5 126 23  counts {'AND': 28, 'XNOR': 58, 'XOR': 40}",
+ "aes_check_full": "OK   /home/joebachir20/xs-campaigns/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g126-gd23-14b498119b.circ.txt  A AD G GD = 28 5 126 23  counts {'AND': 28, 'XNOR': 58, 'XOR': 40}\n     new Pareto point on pinned set: YES\n     published best G at GD<=23: 33 4 106 22 (aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt, gain -20)\n     published best G at A<=28: 28 5 124 27 (aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt, gain -2)\n     published best G at A<=28, GD<=23: 28 5 128 20 (aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt, gain +2)\n",
+ "circuit_sha256": "14b498119b6753648cc6a6faecef0a497085bdb2f53a5d2ee0ddb6597c4066da",
+ "path_certified": false,
+ "path_note": "informational only from 2026-11-15 23:50 UTC (user); search states may exceed caps",
+ "utc": "2026-11-16T03:51:35Z",
+ "night": {
+  "runner": "/home/joebachir20/xcr-boolflux/nonlinear/boolflux/campaigns/targets/runner.py",
+  "plan": "/home/joebachir20/xs-campaigns/2026-11-16-night/plan.json",
+  "block": "T03",
+  "job": "conjpull-122",
+  "unit": "xs-P-night-T03-122",
+  "job_dir": "/home/joebachir20/xs-campaigns/2026-11-16-night/T03/runs/T03/conjpull-122",
+  "source_file": "/home/joebachir20/xs-campaigns/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g126-gd23-14b498119b.circ.txt",
+  "skey": "dc18f742d8ce83c198054cdc",
+  "runner_aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-16-night/T03/runs/T03/conjpull-122/conjpull-a28-ad5-g126-gd23-14b498119b.circ.txt  A AD G GD = 28 5 126 23  counts {'AND': 28, 'XNOR': 58, 'XOR': 40}",
+  "harvest_utc": "2026-11-16T03:51:36Z"
+ }
+}

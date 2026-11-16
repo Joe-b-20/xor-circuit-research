@@ -1,0 +1,198 @@
+{
+ "circuit": "aes-sbox-a32-ad4-g112-gd21-T05-M4-1.circ.txt",
+ "target": "T05",
+ "tuple": [
+  32,
+  4,
+  112,
+  21
+ ],
+ "class": "tradeoff:and_depth_for_gates",
+ "status": "new (M4)",
+ "era": "new",
+ "ledger_list": "tradeoff_frontier",
+ "source_file": "~/xs-campaigns/2026-11-15-targets/M4/found/satlns-a32-ad4-g112-gd21-efda23263f.circ.txt",
+ "source_sha256": "efda23263f0149214beefe34c1ceb1d79e8381feeec8a127e56bb8d32c999c7d",
+ "source_path_certified": "unknown",
+ "curated_utc": "2026-11-16T13:19:48Z",
+ "sidecar": {
+  "target": "T04",
+  "A": 32,
+  "AD": 4,
+  "G": 112,
+  "GD": 21,
+  "class": "tradeoff:gates_for_depth",
+  "reference": "aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt",
+  "start": {
+   "path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+   "sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62",
+   "tuple": [
+    32,
+    4,
+    113,
+    20
+   ]
+  },
+  "parent": {
+   "path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+   "sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62"
+  },
+  "op": "satlns",
+  "params": {
+   "target": "T04",
+   "seed": 23,
+   "seconds": 780.0,
+   "cpus": 1,
+   "gd": 21,
+   "profile": "fast",
+   "qsec": 2.0,
+   "lns_sec": 20.0,
+   "side": 0.6,
+   "restrict": 3,
+   "focus": 1.0,
+   "focus_max": 60,
+   "index": "/home/joebachir20/xs-campaigns/2026-11-15-targets/M4/spanindex.json",
+   "pool_extra": [],
+   "no_index_update": true,
+   "pool_before": null,
+   "pool_exclude_better": false,
+   "maxcirc": 600,
+   "closure": 1,
+   "closure_max": 6000,
+   "rot": 1,
+   "solver": "glucose4",
+   "epoch": 0,
+   "polish_every": 40,
+   "polish_sec": 10.0,
+   "kernel": "/home/joebachir20/xs-campaigns/2026-11-14-hub/long/bin/bfx-94a75e2c18",
+   "walk_ad_free": false,
+   "save_walk": 0,
+   "final": false,
+   "qlog": 1,
+   "build_index": false,
+   "selftest_record": false
+  },
+  "how": "step 1245 epoch 2 query F",
+  "lineage": [
+   {
+    "file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+    "sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62",
+    "tuple": [
+     32,
+     4,
+     113,
+     20
+    ],
+    "method": "satlns walk"
+   }
+  ],
+  "method": {
+   "engine": "campaigns/targets/ops/satlns.py (span-pooled SAT LNS, pysat glucose4; from strategies/P1/unionsat2.py v2.4)",
+   "mode": "fast",
+   "operators": [
+    "satlns",
+    "kernel-polish"
+   ],
+   "caps": {
+    "A": 32,
+    "AD": 4,
+    "GD": 21
+   },
+   "objective": "G under GD <= D (walk), A <= A cap in the model",
+   "how": "step 1245 epoch 2 query F",
+   "model": {
+    "circuits": 95,
+    "forms": 774,
+    "templates_pooled": 1612,
+    "templates": 7489,
+    "and_templates": 171,
+    "rot_templates": 309,
+    "D": 21,
+    "vars": 191046,
+    "clauses": 347005,
+    "sel": 7144,
+    "t_build": 1.9,
+    "epoch": 2
+   },
+   "pool": {
+    "span": "41-05b52913981bcf81",
+    "n_same_span_files": 96,
+    "n_pooled": 94,
+    "files_sample": [
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert111-r1-gate30-a32-ad4-g111-gd25-5c9bbcf3c4.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert113-r3-gate30-a32-ad4-g111-gd25-56b90bc378.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-certB-r2-gate30-a32-ad4-g111-gd25-5b118266a0.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-certB-r3-gate30-a32-ad4-g111-gd25-c682c9518b.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s1-a32-ad4-g111-gd26-74604ea2c6.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s2-a32-ad4-g111-gd26-67fd53ccb7.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s3-a32-ad4-g111-gd26-a4d6a2dde1.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s4-a32-ad4-g111-gd26-9b6a27c5d9.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s5-a32-ad4-g111-gd26-60baa8d4ac.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert112c-r1-gate26-a32-ad4-g111-gd26-99fb8b899e.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert113-r2-gate30-a32-ad4-g111-gd26-162638ccbf.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert113-r2-mix26-a32-ad4-g111-gd26-05cc8d2448.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s1-a32-ad4-g111-gd27-e32dbde99e.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s4-a32-ad4-g111-gd28-27b136ee8c.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-112-g32-s2-a32-ad4-g111-gd30-cb4d8cf4e2.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkH1-s1-mix23-k1-a32-ad4-g112-gd22-b8095ec160.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-111-c24-s1-a32-ad4-g112-gd22-db1394c64b.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-111-c24-s2-a32-ad4-g112-gd22-e9aef8c1c8.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-ad4rep-111-c24-s5-a32-ad4-g112-gd22-2af2254f9b.circ.txt",
+     "/home/joebachir20/xs-campaigns/2026-11-15-targets/P5/found/p5-lin-cert112c-r1-mix22-a32-ad4-g112-gd22-125223cf3b.circ.txt"
+    ],
+    "before": null,
+    "exclude_better": false
+   }
+  },
+  "command": "cd /home/joebachir20/xcr-boolflux && python3 nonlinear/boolflux/campaigns/targets/ops/satlns.py --in /home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt --target T04 --gd 21 --seconds 780 --out /home/joebachir20/xs-campaigns/2026-11-15-targets/M4/runs/screen/r2-t04-d21 --no-index-update --seed 23 --polish-every 40 --polish-sec 10",
+  "seed": 23,
+  "elapsed_s": 584.2,
+  "code": {
+   "git": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+   "tree": "xcr-boolflux working tree incl. uncommitted campaigns/targets/ops",
+   "ops_sha256": {
+    "bottom.py": "4968a41a3b93b79a799507943511d1669bd28d30279c875aa5e5f3572c2be8ad",
+    "common.py": "34274be7632c0df33d46fb33477dfe91a9ce445b7c538d2216209ddd53ea55cf",
+    "conjpull.py": "28470066ab00dc6d26ae4443a25b7a9af04ef93f33ddc7572cfd1050b2d44ba3",
+    "m3common.py": "cf043c3d649190967017da21c0be8642ee150f204affd361c17e60a90574c013",
+    "rebase.py": "bcdcd25712c965ce7135e3654c089feca41fc1c436ff5d708e561c05b78b250f",
+    "satlns.py": "e87755493499b8af968d2c6050a7e162e0c473220c5b55914f57865c4934d74f"
+   },
+   "kernel": "/home/joebachir20/xs-campaigns/2026-11-14-hub/long/bin/bfx-94a75e2c18",
+   "kernel_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+   "kernel_src_sha256": "c8d293b6ee35e201e7e08d58d750c95ab14af249ee8de8013a3cd1309c244fe8"
+  },
+  "aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/M4/runs/screen/r2-t04-d21/satlns-a32-ad4-g112-gd21-efda23263f.circ.txt  A AD G GD = 32 4 112 21  counts {'AND': 32, 'XNOR': 31, 'XOR': 49}",
+  "aes_check_full": "OK   /home/joebachir20/xs-campaigns/2026-11-15-targets/M4/runs/screen/r2-t04-d21/satlns-a32-ad4-g112-gd21-efda23263f.circ.txt  A AD G GD = 32 4 112 21  counts {'AND': 32, 'XNOR': 31, 'XOR': 49}\n     new Pareto point on pinned set: YES\n     published best G at GD<=21: 33 4 108 20 (aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt, gain -4)\n     published best G at A<=32: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -9)\n     published best G at A<=32, GD<=21: 32 5 109 20 (aes-sbox-a32-ad5-g109-gd20-xx77-4.circ.txt, gain -3)\n",
+  "circuit_sha256": "efda23263f0149214beefe34c1ceb1d79e8381feeec8a127e56bb8d32c999c7d",
+  "path_certified": "unknown",
+  "path_note": "informational only from 2026-11-15 23:50 UTC (user); search states may exceed caps",
+  "utc": "2026-11-16T00:38:13Z"
+ },
+ "nist": {
+  "dominated_by": [],
+  "equal_tuple": [],
+  "vs_ref": {
+   "dG": 9,
+   "dGD": -11,
+   "dA": 0,
+   "dAD": -3
+  }
+ },
+ "class_target": "T05",
+ "start": {
+  "recorded_path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/found/p3-rkG1-s1-mix21-k1-a32-ad4-g113-gd20-6a349e2eb2.circ.txt",
+  "recorded_sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62",
+  "copy": "start.circ.txt",
+  "copy_of_sha256": "6a349e2eb279971fda65f1e49d7bb2b41eeccd95caa470e1f27a8838689ace62",
+  "sha256_matches_recorded": true,
+  "converted_from_bfx": false,
+  "aes_check": "OK 32/4/113/20"
+ },
+ "logs": [
+  "REPRODUCE.md",
+  "aes_check.json",
+  "command.sh",
+  "start.circ.txt"
+ ]
+}

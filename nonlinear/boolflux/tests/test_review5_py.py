@@ -537,10 +537,14 @@ class TestCuration(unittest.TestCase):
         self.assertEqual(CU.track_of(Path('/somewhere/else/x.circ.txt')), 'other')
         for base, g in BT.EXTRA:                             # every source best_table lists has a track
             tr = CU.track_of(base / g.replace('*', 'x'))
-            self.assertTrue(tr in ('hub', 'other') or tr.startswith('study-'), tr)
+            self.assertTrue(tr in ('hub', 'other') or tr.startswith(('study-', 'targets-', 'night-')), tr)
         # 2026-11-15 study agents: the track is the agent id of the found/ folder
         self.assertEqual(CU.track_of(CU.STUDY / 'T1' / 'found' / 'front' / 'x.bfx'), 'study-T1')
         self.assertEqual(CU.track_of(CU.STRAT / 'H2' / 'found' / 'x.circ.txt'), 'study-H2')
+        # 2026-11-15 targeted campaigns and 2026-11-16 night runs: <root>/<agent or run>/found/
+        self.assertEqual(CU.track_of(CU.TARGETS / 'P3' / 'found' / 'x.circ.txt'), 'targets-P3')
+        self.assertEqual(CU.track_of(CU.NIGHT / 'b01-T04' / 'found' / 'sub' / 'x.circ.txt'), 'night-b01-T04')
+        self.assertEqual(CU.track_of(CU.TARGETS / 'P3' / 'runs' / 'x.circ.txt'), 'other')     # only found/ is a result
 
     def test_p12_hub_provenance_and_lineage(self):
         CU = self.CU

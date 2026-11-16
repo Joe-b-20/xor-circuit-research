@@ -88,7 +88,7 @@
 - Command: as P6-q12 with `pull_job.sh q13-<k> 13 8 <1500+k> .../P6/queue/parents13.txt <k> <N>`.
 - CPUs: 1. Length 8 h. Memory < 300 MB.  Success: G <= 170 at GD <= 13 (today's best 171@13).
 
-## Z1-A (target Z, 27 ANDs): class-seeded semi-member gen13 over the A28 span classes
+## DISABLED by user 23:50 UTC (no 27-AND work): Z1-A (target Z, 27 ANDs): class-seeded semi-member gen13 over the A28 span classes
 - What: H2 real-model gen13 with members + X3's 107,100 semi-members, class-seeded (gen13c), over the
   three E + K = 27 shapes that all A28 share (Z1 NOTES 2b): S9 (g131 9-span, BMP middle) K = 13;
   S10 (g124 10-span) K = 12; S9 + AD4's own 6-AND middle K = 12; gamma reps 0 1 4 5 6 7.
@@ -106,7 +106,7 @@
   complete case [C, that pool]; rc 124/143 = capped, [H] only. Positive control of this pipeline:
   ctl-s9m6-semi-g1 (member-seeded) finds exactly the AD4 layer (cases.log 19:22 UTC).
 
-## Z1-B (target Z): full-operand pair -> 1 AND windows of the AD5-type A28 layers
+## DISABLED by user 23:50 UTC (no 27-AND work): Z1-B (target Z): full-operand pair -> 1 AND windows of the AD5-type A28 layers
 - What: for each distinct-span 10+5+13 A28 layer with a parallel (equal-usage) last-layer pair: one
   new AND with operands anywhere in span(x, all 26 kept ANDs) replacing the pair (= 27 ANDs).
   Exhaustive over 2^33 first operands with H3's r1enum_v5. The prefix-operand version of all 150

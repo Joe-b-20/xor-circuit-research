@@ -1,0 +1,13 @@
+{
+ "about": "Corrections applied to CURATED copies of campaign sidecars (results/targets/<ID>/*.json, and the mechanism of results/aes entries) by ledger.py curate --apply and curate_aes.py. The agents' original files in ~/xs-campaigns/ are never changed. match: source circuit basename or sha256. set: fields replaced; the replaced value is kept as <field>_original.",
+ "corrections": [
+  {
+   "match": {"source_basename": "aes-sbox-a35-ad3-g138-gd24-d6946cbba230.circ.txt"},
+   "set": {
+    "method": "P6 polish139c: gate kernel (strategies/P6/kern.py -> hub.ops._kernel, repair_keep 1, caps A35 AD3 GD27, objective cost,gd, 240 s, seed 20378) from 35/3/139/23 (P6/found/aes-sbox-a35-ad3-g139-gd23-703f7ce121a7.circ.txt). Lineage: best-1400 140@25 -> P3 conj3 screen + mkconj, lam 250 k 4 (152@26) -> kernel GD31 200 s (140@27) -> kernel GD27 2 x 200 s (139@23) -> kernel GD27 240 s seed 20378 (138@24)."
+   },
+   "method_corrected_by": "coordinator 2026-11-16, per P6 NOTES s.13",
+   "reason": "the agent's method field was boilerplate (\"pullrun depth pull (botbasis class re-basing + hybrid build)\"); its command and strategies/P6/NOTES.md section 13 show the conjugate lineage and a kern.py stage (DOCS-TODO 32.2)"
+  }
+ ]
+}

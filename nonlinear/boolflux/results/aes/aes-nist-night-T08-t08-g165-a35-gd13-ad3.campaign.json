@@ -1,0 +1,128 @@
+{
+ "target": "T08",
+ "A": 35,
+ "AD": 3,
+ "G": 165,
+ "GD": 13,
+ "class": "strict",
+ "reference": "aes-sbox-a35-ad3-g183-gd13-xx148-29.circ.txt",
+ "start": {
+  "path": "/home/joebachir20/xs-campaigns/2026-11-16-night/T08/found/rebase-a35-ad3-g166-gd13-14aee760f9.circ.txt",
+  "sha256": "14aee760f9e3281b94f90c3dbdeaa530d21e0eec57503c8fe4341db59dfa53b1",
+  "tuple": [
+   35,
+   3,
+   166,
+   13
+  ]
+ },
+ "parent": {
+  "path": "/home/joebachir20/xs-campaigns/2026-11-16-night/T08/found/rebase-a35-ad3-g166-gd13-14aee760f9.circ.txt",
+  "sha256": "14aee760f9e3281b94f90c3dbdeaa530d21e0eec57503c8fe4341db59dfa53b1"
+ },
+ "op": "rebase",
+ "params": {
+  "cap": 13,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 200.0,
+  "stages": 1,
+  "moves": false,
+  "move_top": 4,
+  "move_budget": 0.25,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "shard": "0/1"
+ },
+ "how": "kernel {\"cap\": 13, \"parent_how\": \"start\", \"build_G\": 170, \"kernel_seed\": 21499, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 13}}",
+ "lineage": [
+  {
+   "parent": "/home/joebachir20/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-760/builds/b-925ef601cda9.bfx",
+   "parent_sha256": "40149396957529df2d09a24d8181c2b177a8fd51a099aa72461e94d4bf5cfdaa",
+   "parent_tuple": [
+    35,
+    3,
+    170,
+    13
+   ],
+   "method": {
+    "engine": "ops/rebase.py (gbasis + P6 hybrid + kernel)",
+    "cap": 13,
+    "parent_how": "start",
+    "combo": [
+     [
+      1,
+      2,
+      4,
+      8
+     ],
+     [
+      1,
+      2,
+      4,
+      8
+     ],
+     [
+      1,
+      2,
+      4,
+      8
+     ]
+    ],
+    "build_G": 170,
+    "stage": "kernel",
+    "kernel_seed": 21499,
+    "stage_index": 0,
+    "caps": {
+     "A": 35,
+     "AD": 3,
+     "GD": 13
+    }
+   }
+  }
+ ],
+ "method": {
+  "engine": "ops/rebase.py: gbasis class re-basing + P6 hybrid build + capped gate kernel",
+  "operator": "rebase"
+ },
+ "command": "cd /home/joebachir20/xcr-boolflux && python3 /home/joebachir20/xcr-boolflux/nonlinear/boolflux/campaigns/targets/ops/rebase.py --in /home/joebachir20/xs-campaigns/2026-11-16-night/T08/found/rebase-a35-ad3-g166-gd13-14aee760f9.circ.txt --target T08 --seed 17292 --seconds 900 --out /home/joebachir20/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-760 --cap 13 --stages 1 --stage-seconds 200",
+ "seed": 17292,
+ "elapsed_s": 208.1,
+ "code": {
+  "git": "d9507dda7bcc83055879fefbfafb7e729e62b22f",
+  "tree": "xcr-boolflux working tree incl. uncommitted campaigns/targets/ops",
+  "ops_sha256": {
+   "bottom.py": "cdd7c0ef1041cc61babfc6a9e20b5bb6bf0a885d97f699c16a1413afdcd946e7",
+   "common.py": "34274be7632c0df33d46fb33477dfe91a9ce445b7c538d2216209ddd53ea55cf",
+   "conjpull.py": "3e71a87052afb17ec5014eb088e0e994624ae70d730636a34cc19d992735329e",
+   "m3common.py": "cf043c3d649190967017da21c0be8642ee150f204affd361c17e60a90574c013",
+   "rebase.py": "311398ea41b1e7fac75e3f623a576c81dd1776d9139d12a5019827ad4a533b21",
+   "satlns.py": "afff86f40d1bee2d152da428202198a041530e41baa4353ec0e55071f25b25d9"
+  },
+  "kernel": "/home/joebachir20/xs-campaigns/2026-11-16-night/bin/bfx-94a75e2c18",
+  "kernel_sha256": "e4f373f70f9698878db48476337876b68a02935d850117816faf0c561aa467a0",
+  "kernel_src_sha256": "c8d293b6ee35e201e7e08d58d750c95ab14af249ee8de8013a3cd1309c244fe8"
+ },
+ "aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-16-night/T08/found/rebase-a35-ad3-g165-gd13-c1848d8fa7.circ.txt  A AD G GD = 35 3 165 13  counts {'AND': 35, 'XNOR': 60, 'XOR': 70}",
+ "aes_check_full": "OK   /home/joebachir20/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-760/rebase-a35-ad3-g165-gd13-c1848d8fa7.circ.txt  A AD G GD = 35 3 165 13  counts {'AND': 35, 'XNOR': 60, 'XOR': 70}\n     new Pareto point on pinned set: YES\n     published best G at GD<=13: 35 4 133 13 (aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt, gain -32)\n     published best G at A<=35: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -62)\n     published best G at A<=35, GD<=13: 35 4 133 13 (aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt, gain -32)\n",
+ "circuit_sha256": "c1848d8fa746288415667f70a4ff9624b4500e6191a0945d7a5e348ee9168c6e",
+ "path_certified": "unknown",
+ "path_note": "informational only from 2026-11-15 23:50 UTC (user); search states may exceed caps",
+ "utc": "2026-11-16T09:10:54Z",
+ "night": {
+  "runner": "/home/joebachir20/xcr-boolflux/nonlinear/boolflux/campaigns/targets/runner.py",
+  "plan": "/home/joebachir20/xs-campaigns/2026-11-16-night/plan.json",
+  "block": "T08",
+  "job": "rebase-760",
+  "unit": "xs-P-night-T08-760",
+  "job_dir": "/home/joebachir20/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-760",
+  "source_file": "/home/joebachir20/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-760/rebase-a35-ad3-g165-gd13-c1848d8fa7.circ.txt",
+  "skey": "9c677d9e8e47f9128259705e",
+  "runner_aes_check": "OK   /home/joebachir20/xs-campaigns/2026-11-16-night/T08/runs/T08/rebase-760/rebase-a35-ad3-g165-gd13-c1848d8fa7.circ.txt  A AD G GD = 35 3 165 13  counts {'AND': 35, 'XNOR': 60, 'XOR': 70}",
+  "harvest_utc": "2026-11-16T09:10:58Z"
+ }
+}

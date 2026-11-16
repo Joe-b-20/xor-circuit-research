@@ -8,7 +8,7 @@
   12
  ],
  "class": "other",
- "status": "new (P6)",
+ "status": "known-by-23:50 (P6; new vs archive); reproduced by M3",
  "ledger_list": "frontier_G_GD",
  "source_file": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P6/found/aes-sbox-a35-ad3-g181-gd12-d32fa4ac436b.circ.txt",
  "source_sha256": "2adedf9e5cd9a580d0bdb7267ea03196241efcc1281a0bbbd3d227ce8fd3bd71",
@@ -67,7 +67,20 @@
   }
  },
  "logs": [
+  "REPRODUCE.md",
   "aes_check.json",
-  "REPRODUCE.md"
- ]
+  "command.sh",
+  "start.circ.txt"
+ ],
+ "era": "campaign-11-15",
+ "class_target": "T07",
+ "start": {
+  "recorded_path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P6/runs/pull12c/jobs/9552bd8ad634-r0-s0/start.bfx",
+  "recorded_sha256": "5eb67aab692c903e07a1c9b64e3c936eb6ce16a221d7f074686eaed6b1c166e0",
+  "copy": "start.circ.txt",
+  "copy_of_sha256": "5eb67aab692c903e07a1c9b64e3c936eb6ce16a221d7f074686eaed6b1c166e0",
+  "sha256_matches_recorded": true,
+  "converted_from_bfx": true,
+  "aes_check": "OK 35/3/204/12"
+ }
 }

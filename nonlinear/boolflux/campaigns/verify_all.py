@@ -14,6 +14,8 @@ Sections (each circuit is checked independently; nothing is trusted from file na
   nist-format  results/nist-format/*.circ.txt (explicit NOT gates): aes_check.check (both verifiers,
                NIST library {AND, XOR, XNOR, NOT}) and nonlinear/check.py (boolcirc, a third
                implementation, which also recomputes the metrics in the file name).
+  targets      results/targets/<ID>/*.circ.txt (curated circuits of the targeted campaigns, 2026-11-15/16):
+               aes_check.check (both verifiers, NIST library).
   campaigns    every circuit under DIR/*/found/ (recursively) and DIR/best/ for each campaign DIR
                (default ~/xs-campaigns/2026-11-13-aes), plus the other candidate sources of
                best_table.py (main/**/best.circ.txt, track E's admitted/ pools): *.circ.txt (except
@@ -156,6 +158,10 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         for f in sorted(nf.glob('*.circ.txt')):
             check_aes_file(f, short(f), 'nist-format', rows, [], tmp)
+        # results/targets/<ID>/*.circ.txt: curated copies of the targeted-campaign circuits (no
+        # summary.json, not in MANIFEST.json, names without the NIST xx field, so not boolcirc)
+        for f in sorted((PKG / 'results' / 'targets').glob('*/*.circ.txt')):
+            check_aes_file(f, short(f), 'targets', rows, [], tmp)
         if nf.exists():
             ok, last = run_boolcirc(nf)
             extra['nist-format boolcirc'] = {'ok': ok, 'result': last}
@@ -192,7 +198,7 @@ def main():
     pareto = sorted((t for t in new if not any(u != t and le(u, t) for u in new)), key=lambda t: (t[3], t[2], t))
 
     # report
-    secs = ['results', 'nist-format', 'campaigns']
+    secs = ['results', 'nist-format', 'targets', 'campaigns']
     fails = [r for r in rows if not r['ok']]
     print('BoolFlux verify_all  (%s, %.0f s)' % (time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime()), time.time() - t0))
     print('%-12s %8s %8s %8s %s' % ('section', 'checked', 'passed', 'failed', 'notes'))

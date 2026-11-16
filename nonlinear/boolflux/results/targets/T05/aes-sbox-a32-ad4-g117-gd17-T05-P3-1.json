@@ -4,7 +4,7 @@
  "AD": 4,
  "G": 117,
  "GD": 17,
- "class": "strict",
+ "class": "tradeoff",
  "reference": "aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt",
  "start": {
   "path": "/home/joebachir20/xs-campaigns/2026-11-15-targets/P3/runs/rkK1-s2-mix17-k1/pareto/g118-gd17.circ.txt",
@@ -25,5 +25,10 @@
  "circuit_sha256": "99c3bf2a3e36fea46efa04f22ce505c4464f7c6f9f2d15d034b2c2f67cf478e0",
  "path_certified": true,
  "reproduces": null,
- "utc": "2026-11-15T22:13:09Z"
+ "utc": "2026-11-15T22:13:09Z",
+ "class_agent": "strict",
+ "class_kind": "and_depth_for_gates",
+ "class_target": "T05",
+ "class_rule": "ledger.py classify(): TARGETS.json targets and definitions as recorded in LEDGER.json",
+ "notable": false
 }
