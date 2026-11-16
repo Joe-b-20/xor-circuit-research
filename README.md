@@ -7,7 +7,7 @@ Small, shallow circuits for parts of ciphers: XOR circuits for linear maps and B
 with AND gates for the AES S-box and its inverse, the two searches that found them (XORFlux and
 BoolFlux), how those searches came to be, and two lower-bound proofs for AES MixColumns.
 
-**208 XOR circuits for 59 linear maps, 74 Boolean circuits for the AES S-box and 44 for its
+**208 XOR circuits for 59 linear maps, 74 Boolean circuits for the AES S-box and 45 for its
 inverse.** A circuit
 is written **G@D**: G two-input gates, with every output at depth at most D (inputs are at depth
 0). For the S-box, G counts every gate (AND, XOR, XNOR, NOT) and the number of AND gates and the
@@ -56,10 +56,9 @@ InvMixColumns 118@5 is at the lowest depth possible for InvMixColumns, whose hea
 19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. Against NIST's 104 forward AES S-box circuits, each of our
 74 S-box circuits is a new point, and 22 of NIST's 33 Pareto points are dominated by one of ours
 (as good in all four metrics and better in at least one); at the other 11 we have only circuits
-equal to NIST's, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 44
-inverse circuits is a new point, and 20 of NIST's 33 inverse Pareto points are dominated by one of
-ours; these are a snapshot (2026-11-16 20:43 UTC) of a search that was still running, published
-with its logs.
+equal to NIST's, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 45
+inverse circuits is a new point, and 21 of NIST's 33 inverse Pareto points are dominated by one of
+ours; they come from one run (2026-11-16 16:14-21:03 UTC), published with its logs.
 None of ours has fewer than 28 ANDs (NIST's open target is 27) or fewer than 103 gates (we have
 103 at gate depth 29, NIST at 32), and all of them descend from NIST's circuits. We don't claim any circuit
 is optimal or the best known. The complete comparison, map by map and depth by depth, is in
