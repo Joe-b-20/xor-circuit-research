@@ -36,6 +36,8 @@ jobs:
         python: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # tests/test_review5_py.py reads commit 377b03f (git show)
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
@@ -47,3 +49,7 @@ jobs:
         run: python3 -m unittest discover -s nonlinear/boolflux/independent
       - name: BoolFlux tests (builds the C kernels with gcc)
         run: python3 -m unittest discover -s nonlinear/boolflux/tests -t nonlinear
+      - name: BoolFlux hub tests (nonlinear/boolflux/hub)
+        run: python3 -m unittest discover -s nonlinear/boolflux/hub/tests -t nonlinear
+      - name: BoolFlux targeted-campaign circuits (results/targets) by truth table, two verifiers
+        run: python3 nonlinear/boolflux/campaigns/aes_check.py nonlinear/boolflux/results/targets/*/*.circ.txt

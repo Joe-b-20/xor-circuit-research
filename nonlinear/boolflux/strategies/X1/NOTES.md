@@ -100,6 +100,8 @@ process per CPU); kept x1-spangen (it is task 2 directly, ~15 min left).
 
 ## 8. X1b: AND-space registries, U filter, x1b_camp (03:00-06:30 UTC)
 
+> Correction (2026-11-16, before the merge into main): the "new A28 family 9+5+14" of this section is not an AND structure independent of the published ones. Agent Z1 showed (`strategies/Z1/NOTES.md` section 2b, [C] by `spaneq.py` under the field maps x -> c x^(2^i)) that both X1b stage-1 spans are images of the AD4 9-spans of NIST a28-ad4-g131, g141 and g176, so X1b's 9 + 5 + 14 circuits are H2's AD4-span 9 | 5 | 14 family up to a field symmetry; "new" here means a new AND split among built circuits. The text below is unchanged from 2026-11-15.
+
 Tools (this directory):
 - `x1b_family.py [--ref F]... FILES`: span = span{1, x, AND tables} (canonical hash), per-level-prefix spans,
   H3's product-multiset key, shared product dimensions with references.

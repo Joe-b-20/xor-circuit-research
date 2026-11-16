@@ -32,3 +32,16 @@ strategies/H3/r1enum_v3
 strategies/H3/r1enum_v4
 strategies/H3/r1enum_v5
 strategies/T2/bfx_dl
+
+# --- added by the 2026-11-16 cleanup ---
+# compiled helpers are built from the .c file next to them (gcc -O2 -o NAME SOURCE.c); the
+# copies that were committed are in history (P4/P5: d9507dd, review2/bin: 154ded8)
+review2/bin/
+strategies/P4/minh_c
+strategies/P4/topenum_c
+strategies/P5/invskel_c
+strategies/P5/invskel_c2
+# raw kernel move traces (multi-MB; the review-2 replays are in commit 154ded8)
+*.moves
+# output folder left by a tool run with --help as its argument
+/--help/

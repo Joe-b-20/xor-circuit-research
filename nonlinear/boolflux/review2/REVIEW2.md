@@ -365,3 +365,5 @@ built-in defaults differ (dmax 200, w.lin 0.001, seconds-based schedules).
 - `review2/audit_bench.py`, `review2/analyze_penalty.py`, `review2/time_paar.py`, `review2/time_paar2.py`
 - `review2/old/`: the 9f4c8df / 3a71f0f sources used for the comparisons; `review2/bin/`: binaries built from them and from HEAD
 - `review2/tmp/replay/`: the AES and maj3 replays
+
+> Note (2026-11-16, before the merge into main): `review2/bin/` (four binaries) and the four raw move traces `review2/tmp/replay/{def,sn0,mdef,msn0}.moves` (20.7 MB) are no longer in the tree. They are in history at commit 154ded8, for example `git show 154ded8:nonlinear/boolflux/review2/tmp/replay/def.moves > def.moves`; the binaries can be rebuilt from `review2/old/` and `kernel/`. The other logs under `review2/tmp/` are unchanged.
