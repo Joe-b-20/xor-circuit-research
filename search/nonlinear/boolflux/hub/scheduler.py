@@ -126,6 +126,9 @@ class Scheduler:
         self.end = time.time() + args.hours * 3600; self.pending_cpus = None
         self.last_admit = max((r['t_admit'] for r in self.ar.rec.values()), default=0.0)
         self.last_fb_save = time.time()
+        # instrumentation: per-operator counters of the current summary window, idle CPU time, last idle state
+        self.win = {}; self.idle_cpu_s = 0.0; self.free_since = {}; self._idle_state = None; self._idle_why = None
+        self.t_summary = time.time(); self._dec = {}; self._tdec = {}; self._fdec = None; self._launch_dec = None
         for e in self.ar.load_errors: self.log(ev='archive-load-error', what=e)
         if self.ar.cells_repaired:
             self.log(ev='cells-repaired', cells=len(self.ar.cells)); self.ar._save_cells()
@@ -233,6 +236,7 @@ class Scheduler:
                              '--cpus disagree; fix one of them, or pass --cpu-allow to confirm' % (outside, sorted(mask)))
         self.allow = {c for c in allow if c < online}
         self.cpus = list(cpus); self.free = list(cpus)
+        self.free_since = {c: time.time() for c in self.free}
         self.save_cpus('start')
         if self.pending_cpus is not None:                  # control.json was read before the CPUs were set up
             self.set_cpus(self.pending_cpus); self.pending_cpus = None
@@ -249,6 +253,7 @@ class Scheduler:
         busy = {j['cpu'] for j in self.running}
         dropped = [c for c in self.cpus if c not in new]
         self.free = [c for c in self.free if c in new] + [c for c in new if c not in self.cpus and c not in busy]
+        self.free_since = {c: self.free_since.get(c, time.time()) for c in self.free}
         self.cpus = new
         self.save_cpus(why, dropped=dropped)
 
@@ -391,9 +396,23 @@ class Scheduler:
         return n
 
     # ---- choice -----------------------------------------------------------------------------
+    # Instrumentation (2026-11-16): every choice leaves its inputs in self._dec (operator choice: bandit
+    # state of every operator, the epsilon draw, the mode, ties) and self._tdec (target choice: which pool,
+    # how many candidates survived each filter, attempts of the chosen tuple, ties).  start_job() puts them
+    # in the 'job' event of the session run record and in runs/<run_id>.json ('decision').  Recording draws
+    # no random number: the choices are the same as without it.
     def score(self, op):
         h = self.hist[op][-WINDOW:]
         return (sum(g for c, g in h) + 0.5) / (sum(c for c, g in h) + 120.0)
+
+    def bandit_state(self):
+        """op -> score and the window it comes from (jobs, gain, CPU s): the bandit's inputs"""
+        out = {}
+        for o in self.ops:
+            h = self.hist.get(o, [])[-WINDOW:]
+            out[o] = {'score': round(self.score(o), 6), 'n': len(h), 'gain': round(sum(g for c, g in h), 4),
+                      'cpu_s': round(sum(c for c, g in h), 1)}
+        return out
 
     def active_ops(self):
         now = time.time()
@@ -401,9 +420,17 @@ class Scheduler:
 
     def choose_op(self):
         ops = self.active_ops()
-        if not ops: return None, 'none'
-        if self.rng.random() < self.args.eps: return self.rng.choice(ops), 'explore'
-        return max(ops, key=lambda o: (self.score(o), self.rng.random())), 'exploit'
+        self._dec = d = {'bandit': self.bandit_state(), 'eps': self.args.eps,
+                         'suspended': sorted(o for o in self.ops if o not in ops)}
+        if not ops:
+            d['mode'] = 'none'; return None, 'none'
+        u = self.rng.random(); d['u'] = round(u, 4)
+        if u < self.args.eps:
+            op = self.rng.choice(ops); d.update(mode='explore', op=op); return op, 'explore'
+        op = max(ops, key=lambda o: (self.score(o), self.rng.random()))
+        top = max(self.score(o) for o in ops)
+        d.update(mode='exploit', op=op, tied=sum(1 for o in ops if self.score(o) == top))
+        return op, 'exploit'
 
     def near_ids(self):
         """cell minima that are not on the front but within NEAR_GAP gates of a dominating front point"""
@@ -459,58 +486,95 @@ class Scheduler:
         """a front tuple that has not had its first polish / pull yet: (op, id) or None.  A <= 31 first,
         then the newest.  New tuples get their first jobs at once instead of waiting behind old ones."""
         ops = [o for o in self.active_ops() if o in self.tuple_caps and self.tuple_caps[o] > 0]
+        self._fdec = None
         if not ops or self.args.target_mode == 'id': return None
-        best = None
+        best = None; nfresh = 0
         for i in self.ar.front_ids():
             k = self.target_key(i)
             if k in busy: continue
             todo = [o for o in ops if self.attempts.get((o, k), 0) == 0]
             if not todo: continue
+            nfresh += 1
             r = self.ar.rec[i]; rank = (0 if r['A'] <= 31 else 1, -r['t_admit'])
             if best is None or rank < best[0]: best = (rank, todo[0], i)
+        if best:
+            self._fdec = {'mode': 'fresh', 'op': best[1], 'fresh_targets': nfresh, 'rule': 'A<=31 first, then newest',
+                          'bandit': self.bandit_state()}
         return (best[1], best[2]) if best else None
 
     def choose_target(self, op, busy, ignore_caps=False):
         pool = self.ar.front_ids()
+        d = {'op': op, 'pool': 'front', 'front': len(pool)}
+        if ignore_caps: d['ignore_caps'] = True
+        self._tdec = d
         if op in ('polish', 'pull', 'trb') and self.args.nursery > 0 and self.rng.random() < self.args.nursery:
             nu = [i for i in self.nursery_ids(op) if self.target_key(i) not in busy]
-            if nu: return nu[0]
+            d['nursery_draw'] = len(nu)
+            if nu:
+                d.update(pool='nursery', attempts=self.attempts.get((op, self.target_key(nu[0])), 0), rule='newest generator cell minimum')
+                return nu[0]
         ad3 = self.ad3_share > 0 and self.rng.random() < self.ad3_share
         if op in ('polish', 'pull', 'trb') and self.args.near > 0 and self.rng.random() < self.args.near:
-            pool = self.near_ids() or pool
+            nids = self.near_ids(); d['near_draw'] = len(nids)
+            if nids: d['pool'] = 'near'
+            pool = nids or pool
         if ad3:                                            # after the near choice, so that the share holds for both pools
             p3 = [i for i in pool if self.ar.rec[i]['AD'] <= 3]
-            if p3: pool = p3
+            d['ad3_draw'] = len(p3)
+            if p3: pool = p3; d['pool'] += '+ad3'
+        d['n_pool'] = len(pool)
         ids = [i for i in pool if self.target_key(i) not in busy]
-        if not ignore_caps: ids = [i for i in ids if not self.capped(op, self.target_key(i))]
+        d['n_not_busy'] = len(ids)
+        if not ignore_caps:
+            ids = [i for i in ids if not self.capped(op, self.target_key(i))]; d['n_under_cap'] = len(ids)
         if op == 'join' and self.args.join_mode == 'incremental':
             # a join of X with partners it has already met is the same computation: one pass per (target, archive state)
-            ids = [i for i in ids if self.join_mark.get(i, 0.0) < self.last_admit]
-        if not ids: return None
+            ids = [i for i in ids if self.join_mark.get(i, 0.0) < self.last_admit]; d['n_unjoined'] = len(ids)
+        if not ids:
+            d['empty'] = True; return None
         self.rng.shuffle(ids)                              # ties random (also which of a tuple's circuits is used)
         if self.args.target_mode == 'id':
-            return min(ids, key=lambda i: self.attempts.get((op, i), 0))
-        return min(ids, key=lambda i: (self.eff_attempts(op, self.target_key(i)), 0 if self.ar.rec[i]['A'] <= 31 else 1))
+            t = min(ids, key=lambda i: self.attempts.get((op, i), 0))
+            a0 = self.attempts.get((op, t), 0)
+            d.update(attempts=a0, tied=sum(1 for i in ids if self.attempts.get((op, i), 0) == a0), rule='fewest attempts (id)')
+            return t
+        kf = lambda i: (self.eff_attempts(op, self.target_key(i)), 0 if self.ar.rec[i]['A'] <= 31 else 1)
+        t = min(ids, key=kf); k0 = kf(t)
+        d.update(attempts=k0[0], tied=sum(1 for i in ids if kf(i) == k0), rule='fewest attempts on the tuple, A<=31 first, ties random')
+        return t
 
     # ---- jobs -------------------------------------------------------------------------------
     def launch(self, cpu, busy):
+        self._idle_why = None
         fresh = self.fresh_target(busy)
         if fresh is not None:
-            op, tid = fresh; why = 'fresh'
+            op, tid = fresh; why = 'fresh'; dec = dict(self._fdec or {})
         else:
             op, why = self.choose_op()
-            if op is None: return None
-            tid = self.choose_target(op, busy)
+            dec = dict(self._dec)
+            if op is None:
+                self._idle_why = 'no active operator (suspended: %s)' % dec.get('suspended'); return None
+            tid = self.choose_target(op, busy); tried = [self._tdec]
             if tid is None:                                # e.g. nothing new to join, or every tuple at its cap: try the other operators
                 for o in sorted((o for o in self.active_ops() if o != op), key=lambda o: -self.score(o)):
-                    tid = self.choose_target(o, busy)
+                    tid = self.choose_target(o, busy); tried.append(self._tdec)
                     if tid is not None: op, why = o, why + '-fallback'; break
             if tid is None:                                # everything capped: a CPU must not idle, least-attempted tuple first
                 for o in sorted(self.active_ops(), key=lambda o: -self.score(o)):
-                    tid = self.choose_target(o, busy, ignore_caps=True)
+                    tid = self.choose_target(o, busy, ignore_caps=True); tried.append(self._tdec)
                     if tid is not None: op, why = o, 'over-cap'; break
-            if tid is None: return None
-        return self.start_job(cpu, op, why, tid)
+            dec['target_choice'] = tried[-1]
+            if len(tried) > 1: dec['targets_tried'] = [{k: t.get(k) for k in ('op', 'pool', 'n_pool', 'n_not_busy', 'n_under_cap', 'n_unjoined', 'ignore_caps')} for t in tried[:-1]]
+            if tid is None:
+                self._idle_why = 'no target for any operator'; return None
+        dec['why'] = why
+        if op == 'join' and self.args.join_mode == 'incremental':     # partners the job will get (ops.join_partners)
+            mk = self.join_mark.get(tid, 0.0)
+            dec['join_partners'] = sum(1 for ids in self.ar.cells.values() for i in ids if i != tid and self.ar.rec[i]['t_admit'] > mk)
+        self._launch_dec = dec
+        j = self.start_job(cpu, op, why, tid)
+        if j is None: self._idle_why = 'less than %.0f s left' % MIN_JOB_S
+        return j
 
     def start_job(self, cpu, op, why, tid, extra=(), env=None):
         """Start operator `op` on archive member `tid`, pinned to `cpu`; returns the job dict, or None when
@@ -538,12 +602,35 @@ class Scheduler:
         cmd, pre = runlog.pin(cmd, cpu)                    # taskset -c CPU, else os.sched_setaffinity in the child
         if env is not None: env = dict(env, **{k: v for k, v in os.environ.items() if k in (aesfn.ENV, 'BOOLFLUX_RUNLOG_STORE')})
         lf = open(self.dir / 'jobs' / (run_id + '.log'), 'w')
+        t_spawn = time.time()
         p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env, preexec_fn=pre)
+        dec = getattr(self, '_launch_dec', None); self._launch_dec = None      # None: a subclass chose (op, target) itself
+        tr = self.ar.rec.get(tid) or {}
         self.runlog.event('job', run_id=run_id, op=op, why=why, target=tid, seed=seed, cpu=cpu, seconds=round(secs, 1),
-                          pinning=runlog.pinning())
+                          pinning=runlog.pinning(), target_metrics=[tr.get('A'), tr.get('AD'), tr.get('G'), tr.get('GD')],
+                          target_attempts=self.attempts.get((op, key)), spawn_s=round(time.time() - t_spawn, 4),
+                          running=len(self.running), decision=dec)
         return {'p': p, 'lf': lf, 'op': op, 'why': why, 'target': tid, 'run_id': run_id, 'jd': jd, 'seed': seed,
                 'cpu': cpu, 't0': time.time(), 'cmd': cmd, 'key': key, 'secs': secs, 'script': str(script), 'script_sha': file_sha(script),
-                'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since, 'pinning': runlog.pinning()}
+                'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since, 'pinning': runlog.pinning(), 'decision': dec,
+                'm0': time.monotonic(), 'spawn_s': round(time.time() - t_spawn, 4)}
+
+    @staticmethod
+    def reap(job):
+        """Popen.poll() with the child's resource use: os.wait4(WNOHANG) reaps the operator and keeps its
+        rusage (CPU of the operator and every child it waited for, peak RSS) and the time the exit was
+        seen (wall and monotonic) in the job dict; the return code is the same as poll()'s."""
+        p = job['p']
+        if p.returncode is not None: return p.returncode
+        try:
+            pid, status, ru = os.wait4(p.pid, os.WNOHANG)
+        except ChildProcessError:                  # already reaped elsewhere
+            return p.poll()
+        if pid == 0: return None
+        p.returncode = os.waitstatus_to_exitcode(status)
+        job['t_exit'] = time.time(); job['mono_exit'] = time.monotonic()
+        job['proc_cpu_s'] = round(ru.ru_utime + ru.ru_stime, 3); job['proc_maxrss_kb'] = ru.ru_maxrss
+        return p.returncode
 
     @staticmethod
     def kill(job, why):
@@ -557,6 +644,7 @@ class Scheduler:
             pass
 
     def finish(self, job):
+        t_fin0 = time.monotonic(); admit_s = 0.0
         job['lf'].close()
         jd = job['jd']; op = job['op']; tm = self.ar.rec[job['target']]; rc = job['p'].returncode
         # (a subclass may build its own job dict: everything beyond the 2026-11-14 keys has a default)
@@ -587,9 +675,10 @@ class Scheduler:
                'code_version': version, 'scheduler_version': self.version, 't_start': round(job['t0'], 2),
                'settings': {'caps': rec.get('caps'), 'objective': rec.get('objective'), 'seconds': rec.get('seconds', job['secs'])},
                'op_info': rec.get('info'), 'parents': [job['target']], 'wall_s': wall, 'cpu_s': cpu,
+               'applicable': info.get('applicable'), 'na_reason': info.get('na_reason'),
                'candidates': 0, 'admitted': 0, 'gain': 0.0, 'outcome': outcome,
                'run_record': str(jd / 'run.json') if (jd / 'run.json').exists() else None,
-               'function': self.function, 'pinning': job.get('pinning')}
+               'function': self.function, 'pinning': job.get('pinning'), 'decision': job.get('decision')}
         try:
             joins = info.get('joins') if isinstance(info.get('joins'), list) else []
             cand_ids = rec.get('cand_ids') if isinstance(rec.get('cand_ids'), list) else None
@@ -613,18 +702,27 @@ class Scheduler:
                     parents = [joins[k]['front'], joins[k]['back']]; settings.update(joins[k])
                 for k2 in ('caps', 'lowered', 't_last_improvement', 'kernel_bin', 'relaxed_caps'):
                     if info.get(k2) is not None: settings[k2] = info[k2]
+                ta = time.monotonic()
                 st, r, g = self.ar.admit(c, parents=parents, operator=op, settings=settings, seed=job['seed'],
                                          run_id=job['run_id'], code_version=version, cpu_s=cpu,
                                          wall_s=rec.get('wall_s', wall), slack=GEN_SLACK if nurs else None)
+                admit_s += time.monotonic() - ta
                 o = {'cand': f.name, 'metrics': m, 'status': st, 'id': r['id'] if r else None, 'gain': g}
                 if r is not None and rec_metrics(r) != m: o['cleaned_metrics'] = rec_metrics(r)   # stored cleaned (archive.admit)
+                # instrumentation: why (archive.explain / gain_reason); never changes the decision
+                if st == 'not-better': o['reason'] = self.ar.explain(self.ar.last_metrics or m, GEN_SLACK if nurs else None)
+                elif st == 'duplicate': o['reason'] = 'same circuit text as %s' % (r['id'] if r else '?')
+                elif st == 'duplicate-structure': o['reason'] = 'same structure as %s' % (r['id'] if r else '?')
+                elif st == 'admitted': o['reason'] = self.ar.last_gain_reason
                 outcome.append(o)
                 if st == 'admitted':
                     gain += g; self.fb.add_circuit(self.ar.circuit(r['id']), r['id']); self.last_admit = r['t_admit']
                     if g > 0: self.renew_caps(rec_metrics(r))
-                    self.log(ev='admit', run_id=job['run_id'], op=op, id=r['id'], m=rec_metrics(r), gain=g, parents=parents)
+                    self.log(ev='admit', run_id=job['run_id'], op=op, id=r['id'], m=rec_metrics(r), gain=g, parents=parents,
+                             gain_reason=self.ar.last_gain_reason)
                     self.runlog.improvement(dict(zip(('A', 'AD', 'G', 'GD'), rec_metrics(r))), op, run_id=job['run_id'],
-                                            id=r['id'], gain=g, pub_new=r.get('pub_new'), parents=parents)
+                                            id=r['id'], gain=g, pub_new=r.get('pub_new'), parents=parents,
+                                            gain_reason=self.ar.last_gain_reason)
         except Exception as e:                              # the run file is written whatever happens
             run['finish_error'] = repr(e); self.log(ev='finish-error', run_id=job['run_id'], error=repr(e))
         if self.fb.dirty and time.time() - self.last_fb_save > FB_SAVE_S:
@@ -643,12 +741,90 @@ class Scheduler:
         if op == 'join' and status == 'ok' and isinstance(info.get('joined_through'), (int, float)):
             mark = max(self.join_mark.get(job['target'], 0.0), float(info['joined_through'])); self.join_mark[job['target']] = mark
         run.update({'candidates': len(outcome), 'admitted': sum(1 for o in outcome if o['status'] == 'admitted'), 'gain': gain})
+        # instrumentation: admission outcome by status, time spent verifying/admitting, the whole finish()
+        counts = {}
+        for o in outcome:
+            s = o['status'] if not str(o['status']).startswith('rejected') else 'rejected'
+            counts[s] = counts.get(s, 0) + 1
+        adm = {'counts': counts, 'admit_s': round(admit_s, 3), 'finish_s': round(time.monotonic() - t_fin0, 3),
+               'job_wall_s': wall, 'op_wall_s': rec.get('wall_s'), 'killed': job.get('killed')}
+        run['admission'] = adm
+        # instrumentation: monotonic process timing (U2-2): scheduler spawn, process start -> operator main, operator
+        # setup and run (record.json 'timing'), operator end -> exit seen by the scheduler, rusage from os.wait4
+        ot = rec.get('timing') if isinstance(rec.get('timing'), dict) else {}
+        m0 = job.get('m0'); mx = job.get('mono_exit')
+        rnd = lambda x: round(x, 3) if isinstance(x, (int, float)) else None
+        timing = {'spawn_s': job.get('spawn_s'), 'mono_wall_s': rnd(mx - m0) if m0 and mx else None,
+                  'start_to_main_s': rnd(ot['mono_main'] - m0) if m0 and 'mono_main' in ot else None,
+                  'setup_s': ot.get('setup_s'), 'op_s': ot.get('op_s'),
+                  'end_to_exit_seen_s': rnd(mx - ot['mono_end']) if mx and 'mono_end' in ot else None,
+                  'exit_seen_to_finish_s': rnd(t_fin0 - mx) if mx else None,
+                  'proc_cpu_s': job.get('proc_cpu_s'), 'proc_maxrss_kb': job.get('proc_maxrss_kb'), 't_exit': job.get('t_exit')}
+        run['timing'] = timing
+        try:
+            self.runlog.event('admission', run_id=job['run_id'], op=op, status=status, gain=gain, cpu_s=cpu, **adm)
+        except Exception:
+            pass
+        w = self.win.setdefault(op, {})
+        for k2, v in (('jobs', 1), ('cpu_s', cpu or 0.0), ('wall_s', wall), ('cands', len(outcome)), ('admitted', run['admitted']),
+                      ('gain', gain), ('admit_s', admit_s), ('finish_s', adm['finish_s']), (status, 1)):
+            w[k2] = w.get(k2, 0) + v
         atomic_write(self.dir / 'runs' / (job['run_id'] + '.json'), json.dumps(run, indent=1, default=str))
         with open(self.dir / 'stats.jsonl', 'a') as f:
             f.write(json.dumps({'run_id': job['run_id'], 'op': op, 'cls': acls(tm['A']), 'cpu_s': cpu, 'target': job['target'],
                                 'tm': [tm['A'], tm['AD'], tm['G'], tm['GD']],
                                 'seed': job['seed'], 'status': status, 'join_mark': mark,
-                                'admitted': run['admitted'], 'gain': gain, 'ts': round(time.time(), 1)}) + '\n')
+                                'admitted': run['admitted'], 'gain': gain, 'ts': round(time.time(), 1),
+                                'proc_cpu_s': timing.get('proc_cpu_s'), 'mono_wall_s': timing.get('mono_wall_s'),
+                                'finish_s': adm['finish_s'], 't_exit': timing.get('t_exit')}) + '\n')
+
+    def host_sample(self):
+        """Host occupancy sampler (instrumentation, every 60 s): DIR/host.jsonl {ts, busy fraction of every CPU
+        since the last sample (/proc/stat), loadavg, MemAvailable kB, cur_khz per CPU if readable, our CPUs}.
+        Linux only; silently off elsewhere."""
+        try:
+            now = time.time(); cur = {}
+            with open('/proc/stat') as f:
+                for ln in f:
+                    if ln.startswith('cpu') and ln[3:4].isdigit():
+                        t = ln.split(); v = [int(x) for x in t[1:]]
+                        cur[int(t[0][3:])] = (sum(v), v[3] + (v[4] if len(v) > 4 else 0))   # total, idle + iowait
+            prev = getattr(self, '_host_prev', None); self._host_prev = cur
+            if prev is None: return
+            busy = {c: round(1 - (cur[c][1] - prev[c][1]) / max(1, cur[c][0] - prev[c][0]), 3) for c in cur if c in prev}
+            d = {'ts': round(now, 1), 'busy': busy, 'ours': sorted(self.cpus), 'running': len(self.running)}
+            rd = lambda f: Path(f).read_text()
+            try: d['loadavg'] = [float(x) for x in rd('/proc/loadavg').split()[:3]]
+            except OSError: pass
+            try:
+                for ln in rd('/proc/meminfo').splitlines():
+                    if ln.startswith('MemAvailable'): d['mem_available_kb'] = int(ln.split()[1]); break
+            except OSError: pass
+            fr = {}
+            for c in cur:
+                try: fr[c] = int(rd('/sys/devices/system/cpu/cpu%d/cpufreq/scaling_cur_freq' % c))
+                except (OSError, ValueError): break
+            if fr: d['cur_khz'] = fr
+            with open(self.dir / 'host.jsonl', 'a') as f: f.write(json.dumps(d) + '\n')
+        except Exception:
+            pass
+
+    def summary(self, final=False):
+        """Periodic summary event (instrumentation; every 5 min with front.json, and at the end): per operator
+        jobs, statuses, CPU and wall seconds, candidates, admissions, gain, admission and finish time in the
+        window; idle CPU seconds (a CPU counted from the moment its job was seen to end until it gets the
+        next job); the bandit state; archive, cell and front sizes.  Counters restart after each summary."""
+        try:
+            now = time.time()
+            idle_open = sum(now - t for t in self.free_since.values())
+            self.log(ev='summary', final=final, window_s=round(now - self.t_summary, 1), per_op=self.win,
+                     idle_cpu_s=round(self.idle_cpu_s + idle_open, 1), cpus=len(self.cpus), running=len(self.running),
+                     free=len(self.free), bandit=self.bandit_state(), archive=len(self.ar.rec), cells=len(self.ar.cells),
+                     front=len(self.ar.front()), suspended=sorted(o for o, t in self.suspended.items() if t > now))
+            self.win = {}; self.idle_cpu_s = 0.0; self.t_summary = now
+            self.free_since = {c: now for c in self.free_since}
+        except Exception as e:
+            self.log(ev='summary-error', error=repr(e))
 
     def write_front(self):
         fr = []
@@ -677,12 +853,16 @@ class Scheduler:
                 except Exception as e:
                     self.log(ev='control-error', error='control(): %r' % (e,))
             for j in list(running):
-                if j['p'].poll() is None:
+                if self.reap(j) is None:
                     if self.stop: self.kill(j, 'stopped')
-                    elif now - j['t0'] > j.get('limit', self.secs.get(j['op'], 90.0) * KILL_FACTOR + KILL_GRACE): self.kill(j, 'timeout')
+                    elif now - j['t0'] > j.get('limit', self.secs.get(j['op'], 90.0) * KILL_FACTOR + KILL_GRACE):
+                        self.kill(j, 'timeout')
+                        self.log(ev='job-kill', run_id=j['run_id'], op=j['op'], reason='timeout', elapsed_s=round(now - j['t0'], 1),
+                                 limit_s=j.get('limit'))
                     continue
                 running.remove(j)
-                if j['cpu'] in self.cpus and j['cpu'] not in self.free: self.free.append(j['cpu'])
+                if j['cpu'] in self.cpus and j['cpu'] not in self.free:
+                    self.free.append(j['cpu']); self.free_since[j['cpu']] = time.time()
                 try:
                     self.finish(j)
                 except Exception as e:     # never lose the loop; the job dir stays as evidence
@@ -691,15 +871,27 @@ class Scheduler:
                 # busy: tuple keys and ids (a subclass that overrides launch may test ids)
                 busy = {x.get('key', x['target']) for x in running} | {x['target'] for x in running}
                 j = self.launch(self.free[0], busy)
-                if j is None: break
-                self.free.pop(0); running.append(j)
+                if j is None:
+                    st = (self._idle_why, len(self.free))
+                    if st != self._idle_state:          # logged when the idle reason or the number of idle CPUs changes
+                        self.log(ev='idle', reason=st[0], free=sorted(self.free), running=len(running),
+                                 decision=dict(self._dec or {}, target_choice=self._tdec)); self._idle_state = st
+                    break
+                self._idle_state = None
+                c0 = self.free.pop(0); running.append(j)
+                t_free = self.free_since.pop(c0, None)
+                if t_free is not None: self.idle_cpu_s += time.time() - t_free
+            if time.time() - getattr(self, '_host_t', 0) >= 60:
+                self._host_t = time.time(); self.host_sample()
             if time.time() - last_front > 300:
                 try:
                     self.write_front()
                 except Exception as e:
                     self.log(ev='front-error', error=repr(e))
+                self.summary()
                 last_front = time.time()
             time.sleep(0.5 if not self.stop else 0.1)
+        self.summary(final=True)
         self.fb.save(); self.write_front()
         self.log(ev='end', reason=self.stop or 'time', archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()))
         self.runlog.finish(self.stop or 'time', archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()),

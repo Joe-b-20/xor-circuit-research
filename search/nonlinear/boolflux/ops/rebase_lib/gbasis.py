@@ -95,6 +95,8 @@ def analyse(c, cap, rng=None, min_size=2):
     """returns res dict: classes (_pc), base Kraft per output, best (min max Kraft), best combo, or None
     if no class exists (structure not applicable)."""
     rng = rng or random.Random(0)
+    import time as _t
+    t_a0 = _t.time()
     sk, arr, alv = anatomy(c)
     n = c.n
     tab, ft, ones = skeleton._form_tables(sk)
@@ -146,17 +148,24 @@ def analyse(c, cap, rng=None, min_size=2):
     cur = [base[j] + sum(pc['current'][j] for pc in cls) for j in range(m)]
     # exact min-max over combos: Pareto merge of partial sums (dominance is preserved under addition)
     states = [(tuple(base), ())]
+    merge = []                  # instrumentation: per class step, (states in, distinct sums, Pareto out, truncated)
+    t_m0 = _t.time()
     for pc in cls:
         nxt = {}
         for v, ch in states:
             for kv, B in pc['pareto']:
                 s = tuple(round(a + b, 9) for a, b in zip(v, kv))
                 if s not in nxt: nxt[s] = ch + (B,)
-        states = pareto(list(nxt.items()))[:20000]
+        par = pareto(list(nxt.items()))
+        merge.append((len(states), len(nxt), len(par), len(par) > 20000))
+        states = par[:20000]
     bv, bch = min(states, key=lambda t: (max(t[0]), sum(t[0])))
     return {'sk': sk, 'arr': arr, 'farr': farr, '_pc': cls, 'base': base, 'current_kraft': cur,
             'current_max': max(cur), 'best': max(bv), 'best_kraft': list(bv), 'best_combo': bch,
-            'n_top': len(top), 'class_sizes': [len(pc['ands']) for pc in cls]}
+            'n_top': len(top), 'class_sizes': [len(pc['ands']) for pc in cls],
+            'diag': {'classes': [{'d': pc['d'], 'nbases': pc['nbases'], 'pareto': len(pc['pareto'])} for pc in cls],
+                     'merge': merge, 'truncated': any(x[3] for x in merge), 'secs': round(_t.time() - t_a0, 3),
+                     'merge_s': round(_t.time() - t_m0, 3)}}
 
 
 def feasible_combos(res, limit=1.0 + EPS, maxn=500, rng=None):

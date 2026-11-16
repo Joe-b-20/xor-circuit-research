@@ -95,8 +95,10 @@ def anneal(M, B, opts, rng, iters, T0, deadline, init=None):
     """bopt.py main loop, unchanged except the deadline and an optional initial choice"""
     choice = [list(S) for S in init] if init else [rng.choice(o) for o in opts]
     cur = M.cost(choice); best = (cur, [list(S) for S in choice])
+    SA.clear(); SA.update(initial=cur, iters_run=0, accepted=0, last_best_it=-1, stop='iters')   # instrumentation
     for it in range(iters):
-        if (it & 255) == 0 and time.time() > deadline: break
+        if (it & 255) == 0 and time.time() > deadline: SA['stop'] = 'deadline'; break
+        SA['iters_run'] = it + 1
         Tt = T0 * (1 - it / iters) + 0.05
         j = rng.randrange(8)
         others = Counter(p for k, S in enumerate(choice) if k != j for p in S)
@@ -125,11 +127,15 @@ def anneal(M, B, opts, rng, iters, T0, deadline, init=None):
             if bestc is None or cc < bestc[0]: bestc = (cc, S)
         cc, S = bestc
         if cc[0] <= cur[0] or rng.random() < math.exp(-(cc[0] - cur[0]) / Tt):
-            choice[j] = S; cur = cc
-            if cc < best[0]: best = (cc, [list(x) for x in choice])
+            choice[j] = S; cur = cc; SA['accepted'] += 1
+            if cc < best[0]: best = (cc, [list(x) for x in choice]); SA['last_best_it'] = it
         else:
             choice[j] = old
+    SA['final'] = best[0]
     return best
+
+
+SA = {}          # instrumentation: summary of the last anneal() (initial / final cost, iterations, accepted, last best)
 
 
 def main():
@@ -188,16 +194,25 @@ def main():
         tb = time.time()
         use_own = info['own'] is not None and (a.init == 'own' or (a.init == 'mix' and (it - len(fixed)) % 2 == 1)) and it > len(fixed)
         cc, ch = anneal(M, B, opts, random.Random(sd), a.iters, a.T0, deadline - 15, info['own'] if use_own else None)
+        sa_s = time.time() - tb
+        try:      # instrumentation: is the plan the start's own bottom (as multisets)?
+            same_own = info['own'] is not None and sorted(map(repr, ch)) == sorted(map(repr, info['own']))
+        except Exception:
+            same_own = None
         plan = {'circuit': str(sp), 'cap': cap, 'amax': amax, 'Lb': info['Lb'], 'cost': cc,
                 'choice': [[list(p) for p in S] for S in ch], 'C': info['C']}
         pj = out / 'plans' / ('plan-s%d.json' % sd); pj.parent.mkdir(exist_ok=True); json.dump(plan, open(pj, 'w'))
+        t1 = time.time()
         try:
             BU.RNG = None
             nc = BU.build(plan)
         except Exception as e:
             LG(event='build-error', seed=sd, err=repr(e)[:200]); continue
+        build_s = time.time() - t1; t2 = time.time()
         nc = clean(nc); ok, inf = verify(nc); bm = metrics(nc)
-        LG(event='build', seed=sd, pw=pw, init='own' if use_own else 'random', cost=cc, ok=ok, build=bm, secs=round(time.time() - tb, 1))
+        LG(event='build', seed=sd, pw=pw, init='own' if use_own else 'random', cost=cc, ok=ok, build=bm, secs=round(time.time() - tb, 1),
+           sa_s=round(sa_s, 2), build_s=round(build_s, 2), verify_s=round(time.time() - t2, 2), plan_equals_own=same_own,
+           build_equals_start=cid(nc) == cid(clean(c0)), sa=dict(SA), phases=getattr(BU, 'LAST_PHASES', None))
         if not ok or bm[3] > cap or bm[1] > tl['AD']: continue
         meth = {'engine': 'ops/bottom.py (bopt SA + bbuild, any cut)', 'cut': cut, 'cap': cap,
                 'pw': pw, 'plan': str(pj), 'plan_cost': cc, 'plan_seed': sd}
@@ -211,7 +226,8 @@ def main():
         k, kinfo = MC.kernel_stage(nc, caps, sd, min(a.polish_seconds, left), out / 'jobs' / ('s%d' % sd), repair_keep=a.repair_keep)
         if k is not None:
             km = metrics(k)
-            LG(event='polish', seed=sd, build=bm, result=km)
+            LG(event='polish', seed=sd, build=bm, result=km, t_last_improvement=kinfo.get('t_last_improvement'),
+               kernel_stop=(kinfo.get('kernel_stats') or {}).get('stop'), kernel_stats=kinfo.get('kernel_stats'))
             rec.offer(k, bp, dict(meth, stage='kernel', kernel_seed=sd, caps=caps), kernel_bin=kinfo.get('kernel_bin_path'))
         else:
             LG(event='polish', seed=sd, build=bm, result=None, err=kinfo.get('error'))

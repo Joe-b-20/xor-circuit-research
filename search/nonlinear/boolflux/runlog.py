@@ -261,6 +261,20 @@ def host():
             'python_executable': sys.executable}
 
 
+def interpreter():
+    """what else shapes this Python process (2026-11-16): sys.path, PYTHON* / XS_* variables, and every
+    sitecustomize / usercustomize module that was imported (file and sha256), so a run that ran with a
+    shim on PYTHONPATH says so"""
+    mods = {}
+    for name in ('sitecustomize', 'usercustomize'):
+        m = sys.modules.get(name); f = getattr(m, '__file__', None) if m else None
+        if f:
+            try: mods[name] = {'file': f, 'sha256': sha256_file(f)}
+            except OSError: mods[name] = {'file': f}
+    return {'sys_path': list(sys.path), 'customize': mods,
+            'env': {k: v for k, v in sorted(os.environ.items()) if k.startswith(('PYTHON', 'XS_'))}}
+
+
 def _cpu():
     s = resource.getrusage(resource.RUSAGE_SELF); c = resource.getrusage(resource.RUSAGE_CHILDREN)
     return s.ru_utime + s.ru_stime + c.ru_utime + c.ru_stime, c.ru_maxrss
@@ -279,6 +293,7 @@ class RunLog:
         self.path = self.out / (name + '.json')
         self.events_path = self.out / ('events.jsonl.gz' if name == 'run' else name + '.events.jsonl.gz')
         self.t0 = t0 or time.time(); self.cpu0 = _cpu()[0]
+        self.m0 = time.monotonic() - (time.time() - self.t0)     # monotonic clock at t0 (finish: mono_s next to wall_s)
         argv = list(sys.argv if argv is None else argv)
         gi, diff = git_state()
         gi = dict(gi)
@@ -298,6 +313,7 @@ class RunLog:
             'function': function, 'seeds': seeds or {}, 'config': config or {}, 'starts': [],
             'budget_s': budget_s, 'kernels': [], 'host': host(), 'tools': tools(),
             'env': {k: v for k, v in sorted(os.environ.items()) if k.startswith('BOOLFLUX_')},
+            'interpreter': interpreter(),
             't_start_utc': utc(self.t0), 'events': self.events_path.name, 'result': None}
         self.done = False
         self.write()
@@ -340,7 +356,11 @@ class RunLog:
         d = {'t': round(time.time() - self.t0 if t is None else t, 3), 'ev': ev}
         d.update(kw)
         data = gzip.compress((json.dumps(d, default=str) + '\n').encode(), mtime=0)
-        fd = os.open(str(self.events_path), os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+        try:
+            fd = os.open(str(self.events_path), os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+        except OSError as e:          # a log that cannot be written never stops a search (warned once)
+            warn('event-' + str(self.events_path), 'cannot write %s: %r (event %s dropped)' % (self.events_path, e, ev))
+            return
         try:
             os.write(fd, data)
         finally:
@@ -354,6 +374,7 @@ class RunLog:
         cpu, rss = _cpu()
         t1 = time.time()
         self.rec.update({'status': status, 't_end_utc': utc(t1), 'wall_s': round(t1 - self.t0, 3),
+                         'mono_s': round(time.monotonic() - self.m0, 3),
                          'cpu_s': round(cpu - self.cpu0, 3), 'max_rss_kb': rss,
                          'result': result or self.rec.get('result')})
         self.done = True
@@ -374,6 +395,156 @@ class RunLog:
                 'sources_sha256': r['sources_sha256'], 'seeds': r['seeds'], 'function': r['function'],
                 'kernels': [{k: x.get(k) for k in ('path', 'sha256', 'compiler')} for x in r['kernels']],
                 'host': {k: r['host'][k] for k in ('cpu_count', 'os', 'python')}}
+
+
+def _num(x):
+    try:
+        f = float(x)
+    except ValueError:
+        return x
+    return int(f) if f.is_integer() and 'e' not in x.lower() and '.' not in x else f
+
+
+def kernel_stats(text, periodic=False):
+    """The gate kernel's own summary of one run, from its stdout (kernel/bfx.c): final metrics, stop
+    reason and timing ('kstat stop'), accepted moves by kind ('kstat accept'), candidate counters
+    ('kstat cands'), per move kind the old 'move' counters merged with 'kstat move', the start metrics
+    (after the kernel's cleanup), the number of 'best' lines; with periodic=True also every 'kstat
+    periodic' row.  A kernel built before 2026-11-16 has no kstat lines: those keys are then missing.
+    Returns {} for empty text.  Cheap (one pass over the lines)."""
+    out = {}; moves = {}; rows = []; nbest = 0; bests = []
+    for ln in (text or '').splitlines():
+        t = ln.split()
+        if not t: continue
+        if t[0] == 'best':
+            nbest += 1
+            d = {t[i]: t[i + 1] for i in range(1, len(t) - 1, 2)}
+            try:
+                bests.append([float(d['t']), int(d['it']), d.get('mv'), int(d['A']), int(d['AD']), int(d['G']), int(d['GD'])])
+            except (KeyError, ValueError):
+                pass
+        elif t[0] in ('final', 'start') and len(t) > 2:
+            out[t[0]] = {t[i]: _num(t[i + 1]) for i in range(1, len(t) - 1, 2)}
+        elif t[0] == 'move' and len(t) > 2:
+            moves.setdefault(t[1], {}).update({t[i]: _num(t[i + 1]) for i in range(2, len(t) - 1, 2)})
+        elif t[0] == 'noop_candidates_skipped':
+            out['noop'] = _num(t[1])
+        elif t[0] == 'kstat' and len(t) > 2:
+            if t[1] == 'stop':
+                d = {'reason': t[2]}; d.update({t[i]: _num(t[i + 1]) for i in range(3, len(t) - 1, 2)}); out['stop'] = d
+            elif t[1] == 'move':
+                moves.setdefault(t[2], {}).update({t[i]: _num(t[i + 1]) for i in range(3, len(t) - 1, 2)})
+            elif t[1] in ('movex', 'time'):          # per move kind; movex form vectors L0,L1,L2x,L2n,L3,XS -> lists
+                out.setdefault(t[1], {})[t[2]] = {t[i]: ([_num(x) for x in t[i + 1].split(',')] if ',' in t[i + 1] else _num(t[i + 1]))
+                                                  for i in range(3, len(t) - 1, 2)}
+            elif t[1] == 'tgt' and len(t) > 4:      # kstat tgt STRATUM BUCKET prop P acc A imp I best B
+                out.setdefault('tgt', {}).setdefault(t[2], {})[t[3]] = {t[i]: _num(t[i + 1]) for i in range(4, len(t) - 1, 2)}
+            elif t[1] == 'dcost' and len(t) > 2:   # kstat dcost SET n<nominal>a<actual> COUNT ... (cheapest-gate units, clipped +-3)
+                out.setdefault('dcost', {})[t[2]] = {t[i]: _num(t[i + 1]) for i in range(3, len(t) - 1, 2)}
+            elif t[1] == 'best':                     # kstat best it N treal R cpu C: realtime / CPU of the best line above
+                d = {t[i]: _num(t[i + 1]) for i in range(2, len(t) - 1, 2)}
+                if bests and bests[-1][1] == d.get('it'): bests[-1] += [d.get('treal'), d.get('cpu')]
+            elif t[1] == 'walk':
+                d = {t[i]: _num(t[i + 1]) for i in range(2, len(t) - 1, 2)}
+                ra = d.get('restarts_at')
+                d['restarts_at'] = [] if ra in ('-', None) else [_num(x) for x in str(ra).split(',')]
+                out['walk'] = d
+            elif t[1] == 'periodic':
+                if periodic: rows.append({t[i]: _num(t[i + 1]) for i in range(2, len(t) - 1, 2)})
+                out['periodic_rows'] = out.get('periodic_rows', 0) + 1
+            else:
+                out[t[1]] = {t[i]: _num(t[i + 1]) for i in range(2, len(t) - 1, 2)}
+    if not out and not moves: return {}
+    out['moves'] = moves; out['best_lines'] = nbest; out['bests'] = bests
+    if periodic: out['periodic'] = rows
+    return out
+
+
+def kernel_summary(text):
+    """The few fields of kernel_stats() that a per-call event carries (kept small: one line per call)."""
+    s = kernel_stats(text)
+    if not s: return None
+    st = s.get('stop') or {}; ac = s.get('accept') or {}; ca = s.get('cands') or {}; fi = s.get('final') or {}
+    d = {'stop': st.get('reason'), 'iters': st.get('it', fi.get('iters')), 'restarts': st.get('restarts', fi.get('restarts')),
+         'last_improve_it': st.get('last_improve_it'), 'last_improve_t': st.get('last_improve_t'),
+         'first_feasible_it': st.get('first_feasible_it'), 'repair_it': st.get('repair_it'),
+         'best_lines': s.get('best_lines'),
+         'last_bests': s['bests'][-3:] or None,     # [t, it, move, A, AD, G, GD(, treal, cpu)] of the last 3 new bests
+         'clock': s.get('clock'),                   # mono_s / real_s / cpu_s of the whole kernel run
+         'first_best': s['bests'][0] if s['bests'] else None,
+         'accept': {k: ac[k] for k in ('improve', 'neutral', 'uphill', 'uphill_refused', 'no_accept') if k in ac} or None,
+         'cands': {k: ca[k] for k in ('evaluated', 'noop', 'nocand_moves', 'repair_keep_refused') if k in ca} or None,
+         'moves': {m: {k: v[k] for k in ('prop', 'acc', 'imp', 'nocand', 'time') if k in v} for m, v in s['moves'].items()},
+         'final': {k: fi[k] for k in ('G', 'A', 'GD', 'AD', 'feas') if k in fi} or None,
+         'walk': {k: (s.get('walk') or {})[k] for k in ('distinct_struct', 'distinct_metrics') if k in (s.get('walk') or {})} or None,
+         'bestform': {m: v.get('bestform') for m, v in (s.get('movex') or {}).items() if any(v.get('bestform') or [])} or None}
+    return {k: v for k, v in d.items() if v is not None}
+
+
+def proc_age_s():
+    """seconds since this process started (/proc/self/stat starttime against /proc/uptime), or None: the
+    interpreter start + imports before any code of ours ran is proc_age_s() at the top of main()"""
+    try:
+        st = Path('/proc/self/stat').read_text(); start = int(st.rsplit(')', 1)[1].split()[19])
+        up = float(Path('/proc/uptime').read_text().split()[0])
+        return round(up - start / os.sysconf('SC_CLK_TCK'), 3)
+    except Exception:
+        return None
+
+
+LINEAGE_ENV = 'BOOLFLUX_LINEAGE'
+
+
+def lineage_path():
+    """the shared append-only lineage file ($BOOLFLUX_LINEAGE; unset = off)"""
+    p = os.environ.get(LINEAGE_ENV)
+    return Path(p).expanduser() if p else None
+
+
+def lineage_lookup(sha):
+    """the record of a circuit (file sha256 or archive id) in the lineage file, or None.  The file is read
+    whole: fine for 1e5 lines; an index is a phase-2 matter."""
+    p = lineage_path()
+    if not p or not sha or not p.is_file(): return None
+    hit = None
+    with open(p) as f:
+        for ln in f:
+            if sha in ln:
+                try:
+                    d = json.loads(ln)
+                except ValueError:
+                    continue
+                if d.get('sha256') == sha or d.get('id') == sha: hit = d
+    return hit
+
+
+def lineage_roots(parent_keys, own_paths=()):
+    """roots and step count from the parents' lineage records; a parent that is a NIST seed file is a root"""
+    roots = set(); steps = 0
+    for p in own_paths:
+        if p and '/seeds/' in str(p): roots.add(Path(str(p)).name)
+    for k in parent_keys:
+        d = lineage_lookup(k)
+        if d:
+            roots.update(d.get('roots') or []); steps = max(steps, (d.get('steps') or 0) + 1)
+    return sorted(roots), steps
+
+
+def lineage_append(**rec):
+    """one line {utc, sha256 / id, structure_key, tuple, op, params_digest, seed, parent keys, run_id, campaign,
+    job_cpu_s, t_in_job_s, roots, steps} to the lineage file (one O_APPEND write; never fatal)"""
+    p = lineage_path()
+    if not p: return
+    rec = dict({'utc': utc()}, **rec)
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(str(p), os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+        try:
+            os.write(fd, (json.dumps(rec, default=str) + '\n').encode())
+        finally:
+            os.close(fd)
+    except OSError as e:
+        warn('lineage', 'cannot append to %s: %r' % (p, e))
 
 
 def read_events(path):

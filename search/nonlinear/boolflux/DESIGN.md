@@ -140,6 +140,15 @@ Every accepted circuit is re-simulated on all inputs; a mismatch aborts the kern
 | `repair_keep` | 0 | 1: during a repair, no move may raise the excess of any single cap |
 | `neutral`, `odc`, `linear` | | ablation switches; `linear` is the exact mode for XOR-only libraries |
 | `tracemoves` | | file: every accepted move, with circuits before and after each improvement |
+| `stats_every_it`, `stats_every_s` | 0 | a `kstat periodic` line every N iterations / S seconds |
+| `kstat_time` | 0 | 1: `kstat time` lines, seconds per phase of a move |
+| `keep_bests` | | directory: every new best also written to `best-<k>.bfx` (the hub's polish / pull pass `JOBDIR/bests`) |
+
+After its old end lines the kernel always prints `kstat` lines (counters only; the search is identical with
+or without them, `tests/test_instrumentation.py`): stop reason and timing, acceptance branches, candidate forms
+and fates per move kind, target strata, nominal vs actual cost change, plateau walk size, three clocks.
+`runlog.kernel_stats()` / `kernel_summary()` read them; the full list is in the 2026-11-16 instrumentation notes
+(`INSTRUMENTATION.md` of that campaign) and in the comments above each counter in `bfx.c`.
 | `cap.gd`, `cap.ad`, `cap.a`, `cost.<op>`, `w.*`, `lex` | | caps, model costs and the objective (written by `workflow.py`) |
 
 The defaults are `workflow.DEFAULTS`; `--set key=value` changes them.
@@ -178,6 +187,13 @@ the file and a killed run keeps what it wrote. Overhead: about 0.3 s per process
 package sources, tool versions), one write per event. `runlog.measured` and `runlog.pin` replace GNU time
 (`os.wait4` `ru_maxrss`) and taskset (`os.sched_setaffinity`) when they are missing; the record
 says which was used. Fields: [USAGE.md](../USAGE.md#run-logs).
+
+Decision logs (2026-11-16): the scheduler records every launch decision (bandit state, epsilon draw, target
+pool sizes after each filter), idle CPUs with the reason, admission reasons, process timing from `os.wait4`,
+5-minute summaries and `host.jsonl`; operators record kernel summaries, join / trb outcome counters, the archive
+state they loaded and monotonic timing; conjpull records the screen, every stage with its improvements and AND
+profile, and why loops ended. `$BOOLFLUX_LINEAGE` (a file) turns on a shared lineage log with NIST roots;
+`$BOOLFLUX_FILTER_AUDIT=1` compares the operators' raw placement filter with the cleaned circuits.
 
 ### 4.6 Hub (`hub/`)
 

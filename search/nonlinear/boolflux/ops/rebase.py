@@ -40,6 +40,9 @@ HY.new_skeleton = GB.new_skeleton                     # generalised skeleton (an
 
 
 
+SCAN = {}       # instrumentation: summary of the last gf4_moves scan (counts, build / analyse seconds, stop reason)
+
+
 def gf4_moves(c, cap, rng, budget_s, limit, shard='0/1'):
     """One-point GF(4) coordinate moves (keep2) of c, priced by the re-basing bound at cap; returns
     [(bound, G, circuit)] with bound <= limit, best first.  [] if c is not a GF(4)-tower AD3 circuit."""
@@ -55,23 +58,35 @@ def gf4_moves(c, cap, rng, budget_s, limit, shard='0/1'):
     cand = [(i, p) for i in range(4) for p in range(1, 256) if (255 * i + p) % sk == si]
     rng.shuffle(cand)
     t0 = time.time(); seen = set(); out = []
+    SCAN.clear(); SCAN.update(n=0, build_s=0.0, build_max=0.0, analyse_s=0.0, analyse_max=0.0, build_fail=0, basis_fail=0,
+                              analyse_none=0, over_limit=0, candidates=len(cand), stop='exhausted')
     for i, p in cand:
-        if time.time() - t0 > budget_s: break
+        if time.time() - t0 > budget_s: SCAN['stop'] = 'budget'; break
         pts = list(pts0); pts[i] = p
         B = Basis([])
-        if not all(B.add(_gmul(s, q)) for q in pts for s in (1, 188)): continue
+        if not all(B.add(_gmul(s, q)) for q in pts for s in (1, 188)): SCAN['basis_fail'] += 1; continue
+        tb = time.time()
         try:
             nc = build(c, pts, keep2=True)
         except Exception:
-            continue
+            SCAN['build_fail'] += 1; continue
+        finally:
+            dtb = time.time() - tb; SCAN['build_s'] += dtb; SCAN['build_max'] = max(SCAN['build_max'], dtb)
         k = cid(nc)
         if k in seen: continue
         seen.add(k)
+        ta = time.time(); SCAN['n'] += 1
         try:
             r = GB.analyse(nc, cap)
         except Exception:
             continue
-        if r is None or r['best'] > limit + 1e-9: continue
+        finally:
+            dta = time.time() - ta; SCAN['analyse_s'] += dta; SCAN['analyse_max'] = max(SCAN['analyse_max'], dta)
+        if r is None: SCAN['analyse_none'] += 1; continue
+        dg = r.get('diag') or {}
+        SCAN['max_merge_out'] = max(SCAN.get('max_merge_out', 0), max((x[2] for x in dg.get('merge', [])), default=0))
+        SCAN['truncated'] = SCAN.get('truncated', 0) + bool(dg.get('truncated'))
+        if r['best'] > limit + 1e-9: SCAN['over_limit'] += 1; continue
         out.append((r['best'], metrics(nc)[2], nc, pts))
     out.sort(key=lambda t: (t[0], t[1]))
     return out, len(seen)
@@ -133,7 +148,7 @@ def main():
     else:
         D = min(tl['GD'], m0[3] + 2)
     caps = {'A': tl['A'], 'AD': tl['AD'], 'GD': D}
-    L(event='start', start=m0, cap=D, goal=goal, classes=r0['class_sizes'], top=r0['n_top'], caps=caps)
+    L(event='start', start=m0, cap=D, goal=goal, classes=r0['class_sizes'], top=r0['n_top'], caps=caps, analyse_diag=r0.get('diag'))
     pool = {}          # id -> (G, GD, circuit, how)
     queue = [(c0, 'start', str(Path(a.inp).resolve()))]
     scanned = set(); rnd = 0; used = {}; nbuilt = 0
@@ -148,8 +163,8 @@ def main():
         par, how, ppath = queue.pop(0)
         if ppath is None:
             ppath = out / 'parents' / ('%s.bfx' % cid(par)); ppath.parent.mkdir(exist_ok=True); ppath.write_text(core.to_kernel(par))
-        res = GB.analyse(par, D)
-        if res is None: continue
+        ta = time.time(); res = GB.analyse(par, D); ta = time.time() - ta
+        if res is None: L(event='analyse-none', parent=cid(par), how=how, secs=round(ta, 2)); continue
         pk = cid(par)
         def scan_moves():
             if a.moves and pk not in scanned and time.time() < deadline - 120:
@@ -157,7 +172,8 @@ def main():
                 mv = gf4_moves(par, D, rng, min(a.move_budget * a.seconds, deadline - 90 - time.time()), min(1.0, res['best']), a.shard)
                 if mv:
                     mv, nseen = mv
-                    L(event='moves', parent=pk, scanned=nseen, kept=len(mv), best=[(round(x[0], 3), x[1]) for x in mv[:8]])
+                    L(event='moves', parent=pk, scanned=nseen, kept=len(mv), best=[(round(x[0], 3), x[1]) for x in mv[:8]],
+                      scan={k: (round(v, 3) if isinstance(v, float) else v) for k, v in SCAN.items()})
                     strict = [x for x in mv if x[0] < res['best'] - 1e-9]
                     for b, g, nc, pts in (strict or mv)[:a.move_top][::-1]:
                         item = (nc, 'move %s of %s (bound %.3f)' % (pts, pk, b), None)
@@ -177,7 +193,7 @@ def main():
                 break
             continue
         combos = GB.feasible_combos(res, maxn=max(a.builds, 1) * 3, rng=rng)
-        builds = []; tb = time.time()
+        builds = []; tb = time.time(); allg = []; hst = {}
         for it, combo in enumerate(combos[:a.builds]):
             if time.time() > deadline - 60: break
             try:
@@ -185,8 +201,9 @@ def main():
             except Exception as e:
                 L(event='build-error', err=repr(e)[:200]); continue
             ok, inf = verify(nc); m = metrics(nc)
+            allg.append((m[2], m[3], bool(ok), m[3] <= D and m[1] <= tl['AD']))
             if ok and m[3] <= D and m[1] <= tl['AD']:
-                builds.append((m[2], cid(nc), nc, combo))
+                builds.append((m[2], cid(nc), nc, combo)); hst[cid(nc)] = st
         builds.sort(key=lambda t: t[0]); nbuilt += len(builds)
         seen = set(); pick = []
         for b in builds:
@@ -194,7 +211,8 @@ def main():
             seen.add(b[1]); pick.append(b)
             if len(pick) >= a.top: break
         L(event='builds', parent=pk, how=how, bound=res['best'], n=len(builds), combos=len(combos),
-          picked=[p[0] for p in pick], secs=round(time.time() - tb, 1))
+          picked=[p[0] for p in pick], secs=round(time.time() - tb, 1), analyse_s=round(ta, 2), analyse_diag=res.get('diag'),
+          all_builds=sorted(allg), picked_hybrid=[{'G': p[0], 'combo': [list(B) for B in p[3]], 'stats': hst.get(p[1])} for p in pick])
         for g0, h, nc, combo in pick:
             if time.time() > deadline - 30: break
             meth = {'engine': 'ops/rebase.py (gbasis + hybrid + kernel)', 'cap': D, 'parent_how': how,
@@ -211,7 +229,8 @@ def main():
                 if k is not None:
                     km = metrics(k)
                     if (km[2], km[3]) < (cm[2], cm[3]): cur, cm = k, km
-                L(event='stage', build=h, G0=g0, stage=st, seed=sd, result=cm, err=info.get('error'))
+                L(event='stage', build=h, G0=g0, stage=st, seed=sd, result=cm, err=info.get('error'),
+                  t_last_improvement=info.get('t_last_improvement'), kernel_stats=info.get('kernel_stats'))
                 rec.offer(cur, bp, dict(meth, stage='kernel', kernel_seed=sd, stage_index=st, caps=caps),
                           kernel_bin=info.get('kernel_bin_path'))
             pool[cid(cur)] = (cm[2], cm[3], cur, 'result of build %s' % h)

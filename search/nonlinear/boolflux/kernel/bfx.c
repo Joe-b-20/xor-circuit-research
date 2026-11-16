@@ -302,7 +302,14 @@ static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches
 static int skip_noop = 1;    /* v2: a candidate whose rebuilt circuit equals the current one is no move */
 static long st_noop;
 static char cfg_tracemoves[1024];
+static char cfg_keep_bests[1024];   /* keep_bests DIR: every new best also written to DIR/best-<k>.bfx (instrumentation) */
+static long n_kept_bests;
 static long max_iters = -1;
+/* Instrumentation (2026-11-16): `kstat` lines.  The final summary (stop reason, acceptance kinds, empty
+ * moves, evaluations, repair phase) is always printed after the old final lines; `stats_every_it N` /
+ * `stats_every_s S` (default 0 = off) add a periodic `kstat periodic` line.  None of this draws a random
+ * number or changes a decision: the search trajectory is the same with or without it. */
+static long stats_every_it = 0; static double stats_every_s = 0; static int kst_time = 0;   /* kstat_time 1: phase times */
 
 static void die(const char *m) { fprintf(stderr, "bfx: %s\n", m); exit(2); }
 
@@ -323,7 +330,7 @@ static void parse_config(const char *path) {
         char *p = line + strspn(line, " \t\r\n");
         if (!*p || *p == '#') continue;
         if (sscanf(p, "%255s %1023s", k, v) != 2) { fprintf(stderr, "bfx: config key %s has no value\n", k); exit(2); }
-        if (!strcmp(k, "in") || !strcmp(k, "out") || !strcmp(k, "trace") || !strcmp(k, "tracemoves")) {
+        if (!strcmp(k, "in") || !strcmp(k, "out") || !strcmp(k, "trace") || !strcmp(k, "tracemoves") || !strcmp(k, "keep_bests")) {
             char *q = p + strlen(k); q += strspn(q, " \t");
             size_t L = strlen(q); while (L && strchr(" \t\r\n", q[L - 1])) L--;
             if (L > 1023) die("config: path too long");
@@ -382,6 +389,10 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "xspan_any")) xspan_any = atoi(v);
         else if (!strcmp(k, "linear")) linear_mode = atoi(v);
         else if (!strcmp(k, "tracemoves")) strcpy(cfg_tracemoves, v);
+        else if (!strcmp(k, "stats_every_it")) stats_every_it = atol(v);
+        else if (!strcmp(k, "stats_every_s")) stats_every_s = atof(v);
+        else if (!strcmp(k, "kstat_time")) kst_time = atoi(v);
+        else if (!strcmp(k, "keep_bests")) strcpy(cfg_keep_bests, v);
         else { fprintf(stderr, "bfx: unknown key %s\n", k); exit(2); }
     }
     fclose(f);
@@ -541,14 +552,28 @@ static inline void pair_val(int op, const u64 *a, const u64 *b, const u64 *c, u6
 }
 
 /* candidates */
-typedef struct { int k; Gate g[3]; int root; double ncost; const Gate *ext; } Cand;   /* ext: gate list of an xspan candidate (k may exceed 3) */
+/* form (kstat only): 0 level 0, 1 level 1, 2 level-2 XOR/XNOR root, 3 level-2 sampled root, 4 level 3, 5 xspan */
+#define NFORM 6
+static const char *FORMNAME[NFORM] = {"L0", "L1", "L2x", "L2n", "L3", "XS"};
+typedef struct { int k; Gate g[3]; int root; double ncost; const Gate *ext; unsigned char form; } Cand;   /* ext: gate list of an xspan candidate (k may exceed 3) */
 static inline const Gate *cand_gates(const Cand *c) { return c->ext ? c->ext : c->g; }
 static Cand *CAND; static int ncand, nseen;
+static long mv_seen[NFORM];      /* candidates of each form seen by the current move (reservoir input) */
 static void add_cand(const Cand *c) {
-    nseen++;
+    nseen++; mv_seen[c->form]++;
     if (ncand < cand_cap) CAND[ncand++] = *c;
     else { int i = rndint(nseen); if (i < cand_cap) CAND[i] = *c; }
 }
+
+/* kstat_time 1 (default 0): time of each phase of a move, per move kind (clock reads only, no other effect) */
+static double now_s(void);
+static int cur_mv = 0;
+#define NPH 12
+static const char *PHNAME[NPH] = {"care_div", "l0_pairs", "l2x", "l2n", "l3", "xspan", "rebuild", "sim", "fraig", "metrics",
+                                  "noop_check", "accept"};
+static double st_ph[NMOVES][NPH], ph_last; static int ph_hold;
+static inline void ph_mark(int p) { if (kst_time && !ph_hold) { double x = now_s(); st_ph[cur_mv][p] += x - ph_last; ph_last = x; } }
+static long mv_probes;           /* hash probe steps of lookup() and of the level-3 loop in the current move */
 
 static int lib2[16], nlib2;   /* binary ops in library, canonical orientation */
 static int libnl[16], nlibnl; /* the AND-like ones among them */
@@ -603,7 +628,7 @@ static void build_pairs(int want_table) {
 static int lookup(u64 d, const u64 *v, int *hits, int lim) {
     int nh = 0; unsigned h = dslot(d);
     while (PHT[h].gen == pgen && nh < lim) {
-        int i = PHT[h].idx;
+        int i = PHT[h].idx; mv_probes++;
         if (PD[i] == d && eqw(PV + (size_t)i * W, v)) hits[nh++] = i;
         h = (h + 1) & phmask;
     }
@@ -614,8 +639,9 @@ static int lookup(u64 d, const u64 *v, int *hits, int lim) {
 static void find_cands(int lev) {
     int base = N + cur.ng;
     Cand c; c.ext = 0;
-    ncand = 0; nseen = 0;
+    ncand = 0; nseen = 0; memset(mv_seen, 0, sizeof mv_seen);
     /* level 0: an existing divisor */
+    c.form = 0;
     for (int i = 0; i < ndiv; i++) {
         int d = DIV[i];
         if (LGc[d] > req_g || LAc[d] > req_a) continue;
@@ -623,7 +649,9 @@ static void find_cands(int lev) {
     }
     if (lev < 1) return;
     build_pairs(lev >= 2);
+    ph_mark(1);
     /* level 1 */
+    c.form = 1;
     for (int q = 0; q < nl1; q++) {
         PEnt *e = &PE[L1[q]]; c.k = 1; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
         c.root = base; c.ncost = op_cost[e->op]; add_cand(&c);
@@ -631,6 +659,7 @@ static void find_cands(int lev) {
     if (lev < 2) return;
     int hits[8];
     /* level 2, XOR/XNOR root:  s = X ^ d3  (or ~) */
+    c.form = 2;
     for (int r = 6; r <= 9; r += 3) {
         if (!op_ok[r]) continue;
         for (int i = 0; i < ndiv; i++) {
@@ -647,7 +676,9 @@ static void find_cands(int lev) {
             }
         }
     }
+    ph_mark(2);
     /* level 2, any library root (sampled):  s = op2(X, d3) or op2(d3, X) */
+    c.form = 3;
     long nsmp = nl_root == 2 ? (long)ndiv * nlibnl * 2 : nl_samples;
     for (long smp = 0; smp < nsmp && (nl_root ? nlibnl : nlib2) > 0; smp++) {
         int d3, op2, xfirst;
@@ -694,8 +725,10 @@ static void find_cands(int lev) {
             c.root = base + 1; c.ncost = op_cost[e->op] + nc0; add_cand(&c);
         }
     }
+    ph_mark(3);
     if (lev < 3) return;
     /* level 3, XOR/XNOR root of two pair values:  s = X1 ^ X2 */
+    c.form = 4;
     for (int r = 6; r <= 9; r += 3) {
         if (!op_ok[r]) continue;
         int lim = np < 30000 ? np : 30000;
@@ -709,7 +742,7 @@ static void find_cands(int lev) {
             u64 d = dgx ^ PD[i];
             int nh = 0; unsigned hh = dslot(d);
             while (PHT[hh].gen == pgen && nh < 2) {
-                int j = PHT[hh].idx;
+                int j = PHT[hh].idx; mv_probes++;
                 if (PD[j] == d) {
                     const u64 *pj = PV + (size_t)j * W; int eq = 1;
                     for (int w = 0; w < W; w++) if (pj[w] != (CC[w] ^ pv[w])) { eq = 0; break; }
@@ -783,7 +816,7 @@ static int xspan_solve(const int *ord, int nd, int use_const, int *sel, int *cst
     return ns;
 }
 static void xspan_cands(void) {
-    ncand = 0; nseen = 0;
+    ncand = 0; nseen = 0; memset(mv_seen, 0, sizeof mv_seen);
     if (linear_mode || !op_ok[6] || (mffc_a < 1 && !xspan_any)) return;
     int base = N + cur.ng, nd = 0, use_const = op_ok[9] || op_ok[3];
     for (int i = 0; i < ndiv && nd < XMAX - 1; i++)
@@ -811,7 +844,7 @@ static void xspan_cands(void) {
             XSEL[lo] = base + nx; XLV[lo] = lv; XSEL[hi] = XSEL[n - 1]; XLV[hi] = XLV[n - 1]; n--; nx++;
         }
         if (cst) { xg[nx].op = 3; xg[nx].a = xg[nx].b = XSEL[0]; nc += op_cost[3]; XSEL[0] = base + nx; nx++; }
-        Cand c; c.k = nx; c.ext = xg; c.root = XSEL[0]; c.ncost = nc; add_cand(&c);
+        Cand c; c.k = nx; c.ext = xg; c.root = XSEL[0]; c.ncost = nc; c.form = 5; add_cand(&c);
     }
 }
 
@@ -903,14 +936,20 @@ static int same_structure(const Circ *x, const Circ *y) {
 }
 
 /* evaluate candidate: build into cand_c, return obj (or +inf if invalid) */
+static int ev_fraig_n;      /* kstat: fraig passes that merged something in the last eval_cand */
 static int eval_cand(int s, const Cand *k, Metrics *m) {
-    if (rebuild(&cur, s, k->root, cand_gates(k), k->k, 0, &cand_c, 1) < 0) return 0;
+    ev_fraig_n = 0;
+    if (rebuild(&cur, s, k->root, cand_gates(k), k->k, 0, &cand_c, 1) < 0) { ph_mark(6); return 0; }
+    ph_mark(6);
     sim(&cand_c, Vcand);
     if (!outputs_ok(&cand_c, Vcand)) {
         fprintf(stderr, "INTERNAL: candidate breaks the function (s=%d k=%d)\n", s, k->k); exit(3);
     }
-    if (use_fraig) for (int it = 0; it < 3 && fraig(&cand_c, Vcand); it++);
+    ph_mark(7);
+    if (use_fraig) for (int it = 0; it < 3 && fraig(&cand_c, Vcand); it++) ev_fraig_n++;
+    ph_mark(8);
     metrics(&cand_c, m);
+    ph_mark(9);
     return 1;
 }
 
@@ -923,8 +962,82 @@ static int patterns(void) { int c = 0; for (int w = 0; w < W; w++) c += __builti
 
 /* ------------------------------------------------------------------ main loop */
 static double now_s(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t); return t.tv_sec + t.tv_nsec * 1e-9; }
+static double clk_s(clockid_t c) { struct timespec t; clock_gettime(c, &t); return t.tv_sec + t.tv_nsec * 1e-9; }
 static long st_prop[NMOVES], st_acc[NMOVES], st_imp[NMOVES], st_cands[NMOVES];
 static double st_time[NMOVES];
+/* kstat counters: moves without candidates, accepted moves by kind (strict improvement of the current
+ * state / neutral / uphill), uphill steps refused by Metropolis, moves with candidates but nothing
+ * accepted, candidates rebuilt (evaluated) or failing the rebuild, repair_keep refusals, moves with no
+ * divisor, iterations spent in repair (current state outside a cap) */
+static long st_nocand[NMOVES], st_aimp[NMOVES], st_aneu[NMOVES], st_aup[NMOVES];
+static long st_uprej, st_noacc, st_eval, st_rbfail, st_rkskip, st_ndiv0, st_repair_it, st_neu_avail, st_up_avail;
+static void kstat_periodic(long it, double t, double T, long restarts, const Metrics *c, const Metrics *b) {
+    long ai = 0, an = 0, au = 0, nc = 0;
+    for (int i = 0; i < NMOVES; i++) { ai += st_aimp[i]; an += st_aneu[i]; au += st_aup[i]; nc += st_nocand[i]; }
+    printf("kstat periodic it %ld t %.3f T %.6g cur_cost %.10g cur_G %d cur_A %d cur_GD %d cur_AD %d cur_feas %d "
+           "best_cost %.10g best_G %d best_A %d best_GD %d best_AD %d best_feas %d acc_improve %ld acc_neutral %ld "
+           "acc_uphill %ld uphill_refused %ld no_accept %ld nocand %ld evaluated %ld noop %ld restarts %ld repair_it %ld\n",
+           it, t, T, c->cost, c->g, c->a, c->gd, c->ad, c->feas, b->cost, b->g, b->a, b->gd, b->ad, b->feas,
+           ai, an, au, st_uprej, st_noacc, nc, st_eval, st_noop, restarts, st_repair_it);
+    fflush(stdout);
+}
+
+/* kstat movex (per move kind): candidate forms seen by / kept in the reservoir, moves whose reservoir was
+ * full (nseen > cand_cap), moves where a level-0/1 candidate was seen but not kept, the fate of every
+ * evaluated candidate (rebuild fail, no-op, repair_keep, would leave feasibility, better / equal / uphill
+ * within max_excess / uphill beyond it, all against the current state), Metropolis draws, the form of
+ * accepted / strictly improving / new-best candidates, pair-table entries and hash probes per move. */
+static long sx_seen[NMOVES][NFORM], sx_kept[NMOVES][NFORM], sx_full[NMOVES], sx_drop01[NMOVES];
+static long sx_eval[NMOVES], sx_rbfail[NMOVES], sx_noop[NMOVES], sx_rkeep[NMOVES], sx_infeas[NMOVES];
+static long sx_better[NMOVES], sx_equal[NMOVES], sx_upok[NMOVES], sx_upfar[NMOVES], sx_uptry[NMOVES];
+static long sx_accf[NMOVES][NFORM], sx_impf[NMOVES][NFORM], sx_bestf[NMOVES][NFORM];
+static long sx_np_sum[NMOVES], sx_np_max[NMOVES], sx_pr_sum[NMOVES], sx_pr_max[NMOVES];
+/* kstat dcost: nominal cost change (new gates' cost - MFFC cost of s) against the actual change after
+ * rebuild/strash/fraig (candidate cost - current cost), in units of the cheapest gate, clipped to -3..+3,
+ * over evaluated (0), accepted (1) and strictly improving accepted (2) candidates; fraig passes that merged
+ * (0 / 1 / 2+) per evaluated candidate; resub3 proposals whose budget is below 3 cheapest gates */
+static long sx_dc[3][7][7], sx_fr[NMOVES][3], st_r3low; static double st_r3low_t, cheap_cost = 1;
+static inline int dcb(double x) { long v = lround(x / cheap_cost); return v < -3 ? 0 : v > 3 ? 6 : (int)v + 3; }
+/* kstat tgt: proposals / accepts / strict improvements / new bests by strata of the target signal s */
+#define NSTRAT 6
+static const char *STRNAME[NSTRAT] = {"s_andlike", "mffc_and", "mffc_cost", "care", "on_violating_path", "ndiv"};
+static const char *STRB[NSTRAT][6] = {{"no", "yes"}, {"0", ">=1"}, {"<=1", "2", "3-4", ">=5"},
+                                      {"0", "<=1/4", "<=1/2", "<=200/256", "<all", "all"}, {"no", "yes"}, {"<=45", "46-90", ">90"}};
+static const int STRN[NSTRAT] = {2, 2, 4, 6, 2, 3};
+static long sx_tgt[NSTRAT][6][4];
+static long sx_viol_prop;        /* proposals made while the current state violates a cap (stratum 4 counts only those) */
+static void put_vec(const char *name, const long *v) {
+    printf(" %s ", name);
+    for (int f = 0; f < NFORM; f++) printf(f ? ",%ld" : "%ld", v[f]);
+}
+/* kstat walk: distinct structures (structural hash, as in same_structure) and distinct (G, A, GD, AD)
+ * of the accepted states, in saturating hash sets; the iterations of the first 64 restarts */
+#define WSET_BITS 18
+#define MSET_SIZE 4096
+static u64 *WSET, MSET[MSET_SIZE]; static long walk_n, walk_m, walk_acc; static int walk_sat, mset_sat;
+static long restarts_at[64]; static int nrestarts_at;
+static void shash(const Circ *c, u64 *h);
+static u64 shash_mix(u64 h);
+static void walk_note(void) {
+    if (!WSET) WSET = calloc((size_t)1 << WSET_BITS, sizeof(u64));
+    walk_acc++;
+    if (!walk_sat) {
+        shash(&cur, SH_x);
+        u64 h = 0x5bd1e995ULL;
+        for (int j = 0; j < cur.ng; j++) h += SH_x[N + j];
+        for (int k = 0; k < M; k++) h ^= shash_mix(SH_x[cur.out[k]] + 0x9E3779B97F4A7C15ULL * (u64)(k + 1));
+        h = shash_mix(h) | 1;
+        u64 mask = ((u64)1 << WSET_BITS) - 1, i = h & mask;
+        while (WSET[i] && WSET[i] != h) i = (i + 1) & mask;
+        if (!WSET[i]) { WSET[i] = h; if (++walk_n * 10 > (long)(mask + 1) * 7) walk_sat = 1; }
+    }
+    if (!mset_sat) {
+        u64 k = ((u64)mcur.g << 40) | ((u64)mcur.a << 24) | ((u64)mcur.gd << 12) | (u64)mcur.ad | ((u64)1 << 62);
+        unsigned i = (unsigned)(shash_mix(k) & (MSET_SIZE - 1));
+        while (MSET[i] && MSET[i] != k) i = (i + 1) & (MSET_SIZE - 1);
+        if (!MSET[i]) { MSET[i] = k; if (++walk_m * 10 > MSET_SIZE * 7) mset_sat = 1; }
+    }
+}
 
 int main(int argc, char **argv) {
     if (argc < 2) die("usage: bfx CONFIG");
@@ -953,6 +1066,7 @@ int main(int argc, char **argv) {
         double u = 0;
         for (int op = 0; op < 16; op++) if (op_ok[op] && op_cost[op] > 0 && (u == 0 || op_cost[op] < u)) u = op_cost[op];
         cost_unit_v = cost_first && u > 0 ? u : 1;
+        cheap_cost = u > 0 ? u : 1;      /* kstat dcost unit */
         if (!scale_abs) { T0 *= cost_unit_v; uphill *= cost_unit_v; if (max_excess < 1e17) max_excess *= cost_unit_v; }
         if (cost_unit_v != 1) printf("scale unit %.10g (T0, uphill, max_excess in units of the cheapest gate)\n", cost_unit_v);
     }
@@ -1009,26 +1123,40 @@ int main(int argc, char **argv) {
     tmv = cfg_tracemoves[0] ? fopen(cfg_tracemoves, "w") : 0;
     if (tmv) circ_alloc(&tmp_before);
     double t0 = now_s(), last_best = 0, mvsum = 0;
+    double treal0 = clk_s(CLOCK_REALTIME), tcpu0 = clk_s(CLOCK_PROCESS_CPUTIME_ID);   /* kstat clock: the WSL monotonic clock drifts */
     for (int i = 0; i < NMOVES; i++) mvsum += mv_w[i];
     printf("start cost %.10g G %d A %d GD %d AD %d feas %d obj %.17g\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad, mcur.feas, mcur.obj);
     if (!mcur.feas) printf("note: start circuit violates a cap; the search first repairs it (penalised objective)\n");
     write_circuit(cfg_out, &best, &mbest, "start");
+    walk_note(); walk_acc = 0;          /* kstat walk: the start is a visited state */
     long it = 0, restarts = 0, last_best_it = 0;
+    /* kstat: why the loop ended, when the best was last improved (not reset by a restart), when the
+     * current state first met every cap (0: the start did), the last restart */
+    const char *stop_reason = "?"; long imp_it = 0, feas_it = mcur.feas ? 0 : -1, last_restart_it = -1;
+    double imp_t = 0, feas_t = mcur.feas ? 0 : -1, next_stats_t = stats_every_s > 0 ? stats_every_s : 0;
     while (1) {
         double t = now_s() - t0;
-        if (t >= cfg_seconds || (max_iters >= 0 && it >= max_iters)) break;
+        if (t >= cfg_seconds) { stop_reason = "time"; break; }
+        if (max_iters >= 0 && it >= max_iters) { stop_reason = "iters"; break; }
         it++;
         double ph = Tperiod_it > 0 ? fmod((double)it, Tperiod_it) / Tperiod_it : fmod(t, Tperiod) / Tperiod;
         double T = T0 > 0 ? T0 * (1.0 - ph) : 0;
+        if ((stats_every_it > 0 && it % stats_every_it == 0) || (stats_every_s > 0 && t >= next_stats_t)) {
+            kstat_periodic(it, t, T, restarts, &mcur, &mbest);
+            if (stats_every_s > 0) while (next_stats_t <= t) next_stats_t += stats_every_s;
+        }
         int stalled = stall_it > 0 ? (it - last_best_it > stall_it) : (t - last_best > stall);
         if (stalled && mcmp(&mcur, &mbest) > 0) {
-            circ_copy(&cur, &best); state_refresh(); last_best = t; last_best_it = it; restarts++;
+            circ_copy(&cur, &best); state_refresh(); last_best = t; last_best_it = it; restarts++; last_restart_it = it;
+            if (nrestarts_at < 64) restarts_at[nrestarts_at++] = it;
         }
-        if (cur.ng == 0) break;
+        if (cur.ng == 0) { stop_reason = "empty"; break; }
+        if (!mcur.feas) st_repair_it++;
         double r = rnd01() * mvsum; int mv = 0;
         while (mv < NMOVES - 1 && r >= mv_w[mv]) { r -= mv_w[mv]; mv++; }
         while (mv > 0 && mv_w[mv] <= 0) mv--;          /* a move with weight 0 is never chosen (rounding) */
         double tm = now_s();
+        cur_mv = mv; ph_last = tm; mv_probes = 0;
         st_prop[mv]++;
         int s = sweep ? N + (int)((it - 1) % cur.ng) : N + rndint(cur.ng);
         tfo_care(s);
@@ -1040,9 +1168,34 @@ int main(int argc, char **argv) {
         for (int v = 0; v < N + cur.ng; v++) if (!TFO[v]) DIV[ndiv++] = v;
         for (int i = ndiv - 1; i > 0; i--) { int j = rndint(i + 1); int x = DIV[i]; DIV[i] = DIV[j]; DIV[j] = x; }
         if (ndiv > dmax && dmax > 0) ndiv = dmax;
-        if (ndiv == 0) continue;
+        if (ndiv == 0) { st_ndiv0++; continue; }
+        ph_mark(0);
+        double l3_before = st_ph[mv][4];
         if (mv == MV_XSPAN) xspan_cands(); else find_cands(mv + 1);
+        ph_mark(mv == MV_XSPAN ? 5 : 4);
+        if (mv == 2 && budget < 3 * cheap_cost - 1e-9) { st_r3low++; st_r3low_t += st_ph[mv][4] - l3_before; }
         st_cands[mv] += ncand;
+        if (ncand == 0) st_nocand[mv]++;
+        /* kstat: forms seen / kept, reservoir, pair table; strata of s (counters only) */
+        {
+            long k01 = 0;
+            for (int f = 0; f < NFORM; f++) sx_seen[mv][f] += mv_seen[f];
+            for (int i = 0; i < ncand; i++) { sx_kept[mv][CAND[i].form]++; if (CAND[i].form <= 1) k01++; }
+            if (nseen > cand_cap) sx_full[mv]++;
+            if (mv_seen[0] + mv_seen[1] > k01) sx_drop01[mv]++;
+            if (mv != MV_XSPAN) { sx_np_sum[mv] += np; if (np > sx_np_max[mv]) sx_np_max[mv] = np; }
+        }
+        int sb[NSTRAT];
+        {
+            int pc = popc_care(), P = patterns();
+            sb[0] = op_nl(cur.g[s - N].op); sb[1] = mffc_a > 0;
+            sb[2] = mc <= 1 + 1e-9 ? 0 : mc <= 2 + 1e-9 ? 1 : mc <= 4 + 1e-9 ? 2 : 3;
+            sb[3] = pc == 0 ? 0 : 4 * pc <= P ? 1 : 2 * pc <= P ? 2 : 256 * pc <= 200 * P ? 3 : pc < P ? 4 : 5;
+            sb[4] = mcur.feas ? -1 : ((cap_gd >= 0 && LGc[s] > RGc[s]) || (cap_ad >= 0 && LAc[s] > RAc[s]));
+            sb[5] = ndiv <= 45 ? 0 : ndiv <= 90 ? 1 : 2;
+            if (!mcur.feas) sx_viol_prop++;
+            for (int q = 0; q < NSTRAT; q++) if (sb[q] >= 0) sx_tgt[q][sb[q]][0]++;
+        }
         /* evaluate all candidates; take the best improvement, else a random one under Metropolis */
         int bi = -1, bfeas = 0; Metrics m, bm;
         /* sized by cand_cap (fixed 1024-entry arrays would leave candidates past the first 1024
@@ -1057,21 +1210,39 @@ int main(int argc, char **argv) {
         for (int i = no - 1; i > 0; i--) { int j = rndint(i + 1); int x = order[i]; order[i] = order[j]; order[j] = x; }
         for (int q = 0; q < no; q++) {
             int i = order[q];
-            if (!eval_cand(s, &CAND[i], &m)) continue;
+            sx_eval[mv]++;
+            if (!eval_cand(s, &CAND[i], &m)) { st_rbfail++; sx_rbfail[mv]++; continue; }
+            st_eval++;
+            sx_dc[0][dcb(CAND[i].ncost - mc)][dcb(m.cost - mcur.cost)]++;
+            sx_fr[mv][ev_fraig_n < 2 ? ev_fraig_n : 2]++;
             if (skip_noop && m.g == mcur.g && m.a == mcur.a && m.gd == mcur.gd && m.ad == mcur.ad
-                && same_structure(&cand_c, &cur)) { st_noop++; continue; }
-            if (repair_keep && !mcur.feas && (m.xa > mcur.xa || m.xad > mcur.xad || m.xgd > mcur.xgd)) continue;
+                && same_structure(&cand_c, &cur)) { st_noop++; sx_noop[mv]++; ph_mark(10); continue; }
+            if (repair_keep && !mcur.feas && (m.xa > mcur.xa || m.xad > mcur.xad || m.xgd > mcur.xgd)) { st_rkskip++; sx_rkeep[mv]++; ph_mark(10); continue; }
             double d = ldelta(&m, &mcur); int cc = mcmp(&m, &mcur);
+            if (m.feas < mcur.feas) sx_infeas[mv]++;
+            else if (cc < 0) sx_better[mv]++;
+            else if (cc == 0) sx_equal[mv]++;
+            else if (ldelta(&m, &mbest) <= max_excess) sx_upok[mv]++;
+            else sx_upfar[mv]++;
+            ph_mark(10);
             if ((m.feas || !mcur.feas) && (bi < 0 || mcmp(&m, &bm) < 0)) { bm = m; bi = i; bfeas = m.feas; }
             if (cc == 0 && m.feas >= mcur.feas) neu[nneu++] = i;
             else if (cc > 0 && ldelta(&m, &mbest) <= max_excess && m.feas >= mcur.feas) { upd[nup] = d > 1e-12 ? d : 1e-12; up[nup++] = i; }
         }
-        int accept = -1;
+        int accept = -1, akind = 0;      /* akind (kstat only): 1 improvement, 2 neutral, 3 uphill */
+        if (nneu) st_neu_avail++;
+        if (nup) st_up_avail++;
         /* feasibility first: a feasible state is never left for an infeasible one */
-        if (bi >= 0 && mcmp(&bm, &mcur) < 0 && (bfeas || !mcur.feas)) accept = bi;
-        else if (use_neutral && nneu && (nup == 0 || T <= 0 || rnd01() < 0.75)) accept = neu[rndint(nneu)];
-        else if (nup && T > 0) { int q = rndint(nup); if (rnd01() < exp(-upd[q] / T)) accept = up[q]; }
+        if (bi >= 0 && mcmp(&bm, &mcur) < 0 && (bfeas || !mcur.feas)) { accept = bi; akind = 1; }
+        else if (use_neutral && nneu && (nup == 0 || T <= 0 || rnd01() < 0.75)) { accept = neu[rndint(nneu)]; akind = 2; }
+        else if (nup && T > 0) { int q = rndint(nup); sx_uptry[mv]++; if (rnd01() < exp(-upd[q] / T)) { accept = up[q]; akind = 3; } else st_uprej++; }
+        if (accept < 0 && no > 0) st_noacc++;
+        if (akind == 1) st_aimp[mv]++; else if (akind == 2) st_aneu[mv]++; else if (akind == 3) st_aup[mv]++;
         if (accept >= 0) {
+            int fm = CAND[accept].form;
+            sx_accf[mv][fm]++; if (akind == 1) sx_impf[mv][fm]++;
+            for (int q = 0; q < NSTRAT; q++) if (sb[q] >= 0) { sx_tgt[q][sb[q]][1]++; if (akind == 1) sx_tgt[q][sb[q]][2]++; }
+            ph_hold = 1;
             if (tmv) {
                 Cand *k = &CAND[accept]; Gate *gs = &cur.g[s - N];
                 fprintf(tmv, "it %ld t %.4f mv %s target s%d=%s(s%d,s%d) mffc_cost %.10g care %d/%d cands %d | new %d gate(s):",
@@ -1086,8 +1257,18 @@ int main(int argc, char **argv) {
             Circ *before = tmv ? &tmp_before : 0;
             if (before) { circ_copy(before, &cur); mprev = mcur; }
             eval_cand(s, &CAND[accept], &m);
+            {
+                int nb = dcb(CAND[accept].ncost - mc), ab = dcb(m.cost - mcur.cost);
+                sx_dc[1][nb][ab]++; if (akind == 1) sx_dc[2][nb][ab]++;
+            }
             circ_copy(&cur, &cand_c); state_refresh();
+            if (feas_it < 0 && mcur.feas) { feas_it = it; feas_t = t; }
             int newbest = (mcur.feas || !mbest.feas) && (mcmp(&mcur, &mbest) < 0 || (mcur.feas && !mbest.feas));
+            if (newbest) {
+                imp_it = it; imp_t = t; sx_bestf[mv][fm]++;
+                for (int q = 0; q < NSTRAT; q++) if (sb[q] >= 0) sx_tgt[q][sb[q]][3]++;
+            }
+            walk_note();
             if (tmv) {
                 fprintf(tmv, " -> after cost %.10g G %d A %d GD %d AD %d\n", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
                 if (newbest) {
@@ -1102,12 +1283,21 @@ int main(int argc, char **argv) {
                 st_imp[mv]++;
                 circ_copy(&best, &cur); mbest = mcur; last_best = t; last_best_it = it;
                 write_circuit(cfg_out, &best, &mbest, "best");
+                if (cfg_keep_bests[0]) {
+                    char fn[1200], note[160];
+                    snprintf(fn, sizeof fn, "%s/best-%ld.bfx", cfg_keep_bests, n_kept_bests);
+                    snprintf(note, sizeof note, "best %ld t %.3f it %ld mv %s", n_kept_bests, t, it, MVNAME[mv]);
+                    write_circuit(fn, &best, &mbest, note); n_kept_bests++;
+                }
                 printf("best t %.3f it %ld mv %s cost %.10g G %d A %d GD %d AD %d obj %.17g\n", t, it, MVNAME[mv],
                        mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj);
+                printf("kstat best it %ld treal %.3f cpu %.3f\n", it, clk_s(CLOCK_REALTIME) - treal0, clk_s(CLOCK_PROCESS_CPUTIME_ID) - tcpu0);
                 fflush(stdout);
             }
             if (trace) fprintf(trace, "%.3f %ld %s %.10g %d %d %d %d\n", t, it, MVNAME[mv], mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
+            ph_hold = 0; ph_mark(11);
         }
+        sx_pr_sum[mv] += mv_probes; if (mv_probes > sx_pr_max[mv]) sx_pr_max[mv] = mv_probes;
         st_time[mv] += now_s() - tm;
     }
     if (trace) fclose(trace);
@@ -1122,5 +1312,65 @@ int main(int argc, char **argv) {
     printf("noop_candidates_skipped %ld\n", st_noop);
     if (use_fraig >= 2) printf("fraig_reverse_merges %ld\n", st_fraig_rev);
     if (mv_w[MV_XSPAN] > 0) printf("xspan_solutions %ld\n", st_xspan_solved);
+    /* kstat summary (after every older line, so parsers of those see the same text) */
+    {
+        double tf = now_s() - t0;
+        printf("kstat clock mono_s %.3f real_s %.3f cpu_s %.3f\n", tf, clk_s(CLOCK_REALTIME) - treal0, clk_s(CLOCK_PROCESS_CPUTIME_ID) - tcpu0);
+        printf("kstat stop %s it %ld t %.3f last_improve_it %ld last_improve_t %.3f restarts %ld last_restart_it %ld "
+               "first_feasible_it %ld first_feasible_t %.3f repair_it %ld best_feas %d\n",
+               stop_reason, it, tf, imp_it, imp_t, restarts, last_restart_it, feas_it, feas_t, st_repair_it, mbest.feas);
+        long ai = 0, an = 0, au = 0, nc = 0;
+        for (int i = 0; i < NMOVES; i++) { ai += st_aimp[i]; an += st_aneu[i]; au += st_aup[i]; nc += st_nocand[i]; }
+        printf("kstat accept improve %ld neutral %ld uphill %ld uphill_refused %ld no_accept %ld neutral_available %ld "
+               "uphill_available %ld\n", ai, an, au, st_uprej, st_noacc, st_neu_avail, st_up_avail);
+        printf("kstat cands evaluated %ld rebuild_fail %ld noop %ld repair_keep_refused %ld nocand_moves %ld no_divisor_moves %ld\n",
+               st_eval, st_rbfail, st_noop, st_rkskip, nc, st_ndiv0);
+        for (int i = 0; i < NMOVES; i++)
+            if (i < 3 || mv_w[i] > 0) printf("kstat move %s nocand %ld acc_improve %ld acc_neutral %ld acc_uphill %ld new_best %ld\n",
+                                             MVNAME[i], st_nocand[i], st_aimp[i], st_aneu[i], st_aup[i], st_imp[i]);
+        /* form vectors are L0,L1,L2x,L2n,L3,XS (FORMNAME) */
+        printf("kstat forms");
+        for (int f = 0; f < NFORM; f++) printf(f ? ",%s" : " %s", FORMNAME[f]);
+        printf("\n");
+        for (int i = 0; i < NMOVES; i++) {
+            if (!(i < 3 || mv_w[i] > 0)) continue;
+            printf("kstat movex %s", MVNAME[i]);
+            put_vec("seen", sx_seen[i]); put_vec("kept", sx_kept[i]);
+            printf(" full_res %ld drop01 %ld zero_cand %ld eval %ld rbfail %ld noop %ld rkeep %ld infeas %ld better %ld equal %ld"
+                   " up_ok %ld up_far %ld acc_imp %ld acc_neu %ld acc_up %ld up_tried %ld",
+                   sx_full[i], sx_drop01[i], st_nocand[i], sx_eval[i], sx_rbfail[i], sx_noop[i], sx_rkeep[i], sx_infeas[i],
+                   sx_better[i], sx_equal[i], sx_upok[i], sx_upfar[i], st_aimp[i], st_aneu[i], st_aup[i], sx_uptry[i]);
+            put_vec("accform", sx_accf[i]); put_vec("impform", sx_impf[i]); put_vec("bestform", sx_bestf[i]);
+            printf(" np_sum %ld np_max %ld probe_sum %ld probe_max %ld fraig0 %ld fraig1 %ld fraig2p %ld\n", sx_np_sum[i], sx_np_max[i],
+                   sx_pr_sum[i], sx_pr_max[i], sx_fr[i][0], sx_fr[i][1], sx_fr[i][2]);
+        }
+        {
+            static const char *DCS[3] = {"evaluated", "accepted", "improving"};
+            for (int q = 0; q < 3; q++) {
+                printf("kstat dcost %s", DCS[q]);
+                for (int a = 0; a < 7; a++) for (int b = 0; b < 7; b++)
+                    if (sx_dc[q][a][b]) printf(" n%da%d %ld", a - 3, b - 3, sx_dc[q][a][b]);
+                printf("\n");
+            }
+            if (cfg_keep_bests[0]) printf("kstat keep_bests files %ld dir %s\n", n_kept_bests, cfg_keep_bests);
+            printf("kstat r3_lowbudget moves %ld l3_s %.4f unit %.10g\n", st_r3low, st_r3low_t, cheap_cost);
+        }
+        for (int q = 0; q < NSTRAT; q++)
+            for (int b = 0; b < STRN[q]; b++)
+                printf("kstat tgt %s %s prop %ld acc %ld imp %ld best %ld\n", STRNAME[q], STRB[q][b],
+                       sx_tgt[q][b][0], sx_tgt[q][b][1], sx_tgt[q][b][2], sx_tgt[q][b][3]);
+        printf("kstat walk distinct_struct %ld distinct_metrics %ld acc %ld struct_saturated %d metrics_saturated %d restarts_at ",
+               walk_n, walk_m, walk_acc, walk_sat, mset_sat);
+        if (!nrestarts_at) printf("-");
+        for (int i = 0; i < nrestarts_at; i++) printf(i ? ",%ld" : "%ld", restarts_at[i]);
+        printf("\n");
+        if (kst_time)
+            for (int i = 0; i < NMOVES; i++) {
+                if (!(i < 3 || mv_w[i] > 0)) continue;
+                printf("kstat time %s", MVNAME[i]);
+                for (int p = 0; p < NPH; p++) printf(" %s %.4f", PHNAME[p], st_ph[i][p]);
+                printf("\n");
+            }
+    }
     return 0;
 }

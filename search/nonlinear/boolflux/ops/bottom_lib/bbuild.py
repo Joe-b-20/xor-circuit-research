@@ -208,6 +208,8 @@ def build(plan):
         outs.append(s)
     k3 = net.nid
     print('phases: ysum %d, xforms %d, ands+pairs %d, out trees %d' % (k0 - 100000, k1 - k0, k2 - k1, k3 - k2))
+    global LAST_PHASES
+    LAST_PHASES = {'ysum': k0 - 100000, 'xforms': k1 - k0, 'ands_pairs': k2 - k1, 'out_trees': k3 - k2}   # instrumentation
     return net.emit(outs)
 
 

@@ -74,19 +74,27 @@ def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
     for k, key in (('A', 'cap.a'), ('AD', 'cap.ad'), ('GD', 'cap.gd')):
         if caps.get(k) is not None: cfg[key] = caps[k]
     cfg.update({'in': sp, 'out': bp, 'seed': seed, 'seconds': seconds})
+    kd = out / 'bests'; kd.mkdir(exist_ok=True)
+    cfg['keep_bests'] = kd                 # instrumentation: every new best of the run (kernel writes best-<k>.bfx), not only the last
     cp.write_text(''.join('%s %s\n' % kv for kv in cfg.items()))
     kb = kernel_bin(archive_dir)
     if RUN is not None: RUN.add_kernel(kb, **kernel_record(kb))
+    tk = time.monotonic()
     with open(out / 'kernel.log', 'w') as lf:
         try:
             rc = subprocess.run([str(kb), str(cp)], stdout=lf, stderr=subprocess.STDOUT,
                                 timeout=float(seconds) * 1.5 + 30).returncode
         except subprocess.TimeoutExpired:
             rc = 'timeout'
+    KTIME[0] += time.monotonic() - tk; KTIME[1] += 1
     if rc != 0:      # a kernel that dies (bad config key, internal check, signal) is a failed job, not "no candidate"
         raise OpError('kernel %s exit %s: %s' % (kb.name, rc, (out / 'kernel.log').read_text()[-300:].strip()))
     t_imp = None
-    for ln in (out / 'kernel.log').read_text().splitlines():
+    ktext = (out / 'kernel.log').read_text()
+    ks = runlog.kernel_summary(ktext)            # stop reason, acceptance kinds, move counters (kstat lines)
+    if RUN is not None:
+        RUN.event('kernel-end', kernel_seed=seed, caps=caps, seconds=seconds, rc=rc, stats=ks)
+    for ln in ktext.splitlines():
         if ln.startswith('best t '):
             t_imp = float(ln.split()[2])
             if RUN is not None:
@@ -97,14 +105,59 @@ def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
     if bp.exists():
         cands.append(core.from_kernel(bp.read_text(), 'best'))
     # kernel binary name = bfx-<sha1(kernel/bfx.c)[:10]>
-    return cands, {'kernel_settings': cfg, 't_last_improvement': t_imp, 'kernel_bin': kb.name}
+    kept = sorted(kd.glob('best-*.bfx'), key=lambda p: int(p.stem.split('-')[1]))
+    return cands, {'kernel_settings': cfg, 't_last_improvement': t_imp, 'kernel_bin': kb.name, 'kernel_stats': ks,
+                   'bests_kept': len(kept), 'bests_dir': str(kd)}
 
 
 class OpError(Exception):
     pass
 
 
+class FilterAudit:
+    """$BOOLFLUX_FILTER_AUDIT=1 (default off: it cleans every candidate an operator tries, which costs CPU):
+    how the operator's raw would_place filter compares with the cleaned circuit that admission would judge.
+    Counts tried, raw_places, clean_places, lost_by_raw (cleaned places, raw does not), raw_only, dup_id
+    (cleaned circuit already archived), dup_skey (its structure already archived).  Never changes a decision."""
+    def __init__(self, ar):
+        self.on = os.environ.get('BOOLFLUX_FILTER_AUDIT') == '1'; self.ar = ar
+        self.n = dict.fromkeys(('tried', 'raw_places', 'clean_places', 'lost_by_raw', 'raw_only', 'dup_id', 'dup_skey'), 0)
+
+    def see(self, c, m, raw_ok):
+        if not self.on: return
+        from .common import clean, structure_key
+        n = self.n; n['tried'] += 1
+        cc = clean(c); mc = metrics(cc) if cc is not c else m
+        ok = self.ar.would_place(mc)
+        n['raw_places'] += raw_ok; n['clean_places'] += ok
+        n['lost_by_raw'] += ok and not raw_ok; n['raw_only'] += raw_ok and not ok
+        if ok or raw_ok:
+            if cid(cc) in self.ar.rec: n['dup_id'] += 1
+            elif structure_key(cc) in self.ar.skeys(): n['dup_skey'] += 1
+
+    def info(self):
+        return dict(self.n) if self.on else None
+
+
+def applicability(info):
+    """instrumentation (no candidates): {'applicable': False, 'na_reason': ...} when the operator said it does not
+    apply (info 'skip') or every try failed with an error (info 'tried' entries 'error...'); else applicable True"""
+    if info.get('skip'): return {'applicable': False, 'na_reason': str(info['skip'])}
+    tr = info.get('tried')
+    if isinstance(tr, list) and tr:
+        errs = [x[1] for x in tr if isinstance(x, (list, tuple)) and len(x) > 1 and isinstance(x[1], str) and x[1].startswith('error')]
+        if len(errs) == len(tr): return {'applicable': False, 'na_reason': errs[0][:120], 'na_count': len(errs)}
+    return {'applicable': True}
+
+
+def archive_state(ar):
+    """the archive state an operator loaded (to replay its filter decisions)"""
+    return {'records': len(ar.rec), 'cells': len(ar.cells), 'front': len(ar.front()),
+            'max_t_admit': max((r['t_admit'] for r in ar.rec.values()), default=None)}
+
+
 RUN = None                                 # the job's runlog.RunLog (set by main)
+KTIME = [0.0, 0]                           # instrumentation: kernel wall seconds and calls of this process
 
 
 def op_polish(ar, args, rng, out):
@@ -152,33 +205,71 @@ def op_join(ar, args, rng, out):
     t_load = max((r['t_admit'] for r in ar.rec.values()), default=0.0)
     partners = join_partners(ar, args.inp, args.since, rng, args.partners)
     t0 = time.time(); tried = 0; kept = []; done = 0; through = args.since
-    seen = set()
+    seen = set(); not_placed = 0; dup = 0; stop = 'partners done'; pair_hits = {}   # (instrumentation counters)
+    fa = FilterAudit(ar); pstat = []; t_x = ar.rec[args.inp]['t_admit']; marks = join_marks(getattr(args, 'archive', None)); repeated = 0
     for pid in partners:
-        if time.time() - t0 > args.seconds: break
+        if time.time() - t0 > args.seconds: stop = 'time'; break
+        tp = time.time(); y0 = tried; k0 = len(kept)
         P = J.Prepared(ar.circuit(pid), pid)
         for F, B in ((X, P), (P, X)):
             for c, LX, LY, nint in J.join_all(F, B):
                 tried += 1
-                m = metrics(c)
-                if not ar.would_place(m): continue
+                m = metrics(c); ok = ar.would_place(m); fa.see(c, m, ok)
+                if not ok: not_placed += 1; continue
                 k = core.to_kernel(c)
-                if k in seen: continue
-                seen.add(k)
+                if k in seen: dup += 1; continue
+                seen.add(k); pair_hits[pid] = pair_hits.get(pid, 0) + 1
                 kept.append((ar.gain(m), c, {'front': F.id, 'back': B.id, 'LX': LX, 'LY': LY, 'interface_gates': nint}))
         done += 1
+        if marks.get(pid, -1.0) >= t_x: repeated += 1         # pid's own join passes already met the input
+        pstat.append((time.time() - tp, tried - y0, len(kept) - k0))
         if args.since is not None: through = ar.rec[pid]['t_admit']
     if args.since is not None and done == len(partners): through = max(t_load, args.since)
     kept.sort(key=lambda x: -x[0])
     dropped = max(0, len(kept) - args.max_cands)
     kept = kept[:args.max_cands]
+    import hashlib
+    pacc = {'partner_hash': hashlib.sha1(','.join(sorted(partners)).encode()).hexdigest()[:16],
+            'repeated_pairs': repeated, 'partner_s_sum': round(sum(x[0] for x in pstat), 3),
+            'partner_s_max': round(max((x[0] for x in pstat), default=0.0), 3),
+            'yields_max': max((x[1] for x in pstat), default=0), 'kept_max': max((x[2] for x in pstat), default=0),
+            'partners_with_yields': sum(1 for x in pstat if x[1])}
+    if RUN is not None:
+        RUN.event('join-end', stop=stop, partners=len(partners), partners_done=done, tried=tried, not_placed=not_placed,
+                  duplicate=dup, kept=len(kept), kept_over_limit=dropped, partners_with_hits=len(pair_hits),
+                  seconds=round(time.time() - t0, 2), **pacc)
     return [c for g, c, d in kept], {'partners': len(partners), 'partners_done': done, 'tried': tried, 'kept_over_limit': dropped,
-                                    'since': args.since, 'joined_through': through, 'joins': [d for g, c, d in kept]}
+                                    'since': args.since, 'joined_through': through, 'joins': [d for g, c, d in kept],
+                                    'stop': stop, 'not_placed': not_placed, 'duplicate': dup,
+                                    'partners_with_hits': len(pair_hits), 'pair_accounting': pacc,
+                                    'filter': dict(fa.info() or {}, kept=len(kept), dropped_over_max_cands=dropped) if fa.on else None}
+
+
+def join_marks(archive_dir):
+    """target id -> latest join mark (DIR/stats.jsonl, written by the scheduler): every circuit admitted up to the
+    mark has been joined with that target (instrumentation: repeated (target, partner) pair computations)"""
+    out = {}
+    if archive_dir is None: return out
+    try:
+        with open(Path(archive_dir) / 'stats.jsonl') as f:
+            for ln in f:
+                if '"join_mark": null' in ln or '"join"' not in ln: continue
+                try:
+                    x = json.loads(ln)
+                except ValueError:
+                    continue
+                if x.get('op') == 'join' and isinstance(x.get('join_mark'), (int, float)):
+                    out[x['target']] = max(out.get(x['target'], 0.0), x['join_mark'])
+    except OSError:
+        pass
+    return out
 
 
 def op_trb(ar, args, rng, out):
     from . import trb_impl
     c = ar.circuit(args.inp); A, AD, G, GD = metrics(c)
     t0 = time.time(); best = {}; reps = 0; errors = {}
+    fa = FilterAudit(ar); c_m = (A, AD, G, GD); by = {}; hg = {}; hgd = {}                 # instrumentation: per (region, GD cap offset) outcome counts; dG, dGD of built circuits
     while time.time() - t0 < args.seconds:
         D = GD - rng.choice([0, 0, 1])
         kind = rng.choice(['bottom', 'top', 'mid', 'random', 'random'])
@@ -188,11 +279,29 @@ def op_trb(ar, args, rng, out):
             k = type(e).__name__; errors[k] = errors.get(k, 0) + 1
             continue
         reps += 1
-        m = metrics(nc)
-        if nc is c or not ar.would_place(m): continue
+        b = by.setdefault('%s/-%d' % (kind, GD - D), {})
+        if nc is c:
+            k = 'skip: ' + (info.get('why') or ('region < 2 gates' if info.get('region_gates', 2) < 2 else 'unchanged'))
+            b[k] = b.get(k, 0) + 1; continue
+        m = metrics(nc); m0 = c_m; ok = ar.would_place(m); fa.see(nc, m, ok)
+        dg = m[2] - m0[2]; dgd = m[3] - m0[3]
+        hg['%+d' % max(-6, min(6, dg))] = hg.get('%+d' % max(-6, min(6, dg)), 0) + 1
+        hgd['%+d' % max(-6, min(6, dgd))] = hgd.get('%+d' % max(-6, min(6, dgd)), 0) + 1
+        if not ok:
+            k = 'built: same tuple' if m == m0 else ('built: worse G' if dg > 0 else ('built: better G' if dg < 0 else 'built: same G'))
+            k += ', not placed'
+            b[k] = b.get(k, 0) + 1; continue
+        b['built: would_place'] = b.get('built: would_place', 0) + 1
         best[core.to_kernel(nc)] = nc
-        if rng.random() < 0.5: c = nc          # chain rebuilds sometimes
-    return list(best.values())[:args.max_cands], {'reps': reps, 'rebuild_errors': errors}
+        if rng.random() < 0.5: c = nc; c_m = m          # chain rebuilds sometimes
+    el = time.time() - t0
+    stats = {k: dict(sorted(v.items())) for k, v in sorted(by.items())}
+    if RUN is not None:
+        RUN.event('trb-end', reps=reps, distinct=len(best), errors=errors, by_region=stats, dG=hg, dGD=hgd,
+                  reps_per_s=round(reps / el, 1) if el > 0 else None, seconds=round(el, 2))
+    return list(best.values())[:args.max_cands], {'reps': reps, 'rebuild_errors': errors, 'by_region': stats, 'dG': hg, 'dGD': hgd,
+                                                  'reps_per_s': round(reps / el, 1) if el > 0 else None,
+                                                  'filter': dict(fa.info() or {}, kept=len(best)) if fa.on else None}
 
 
 OPS = {'polish': op_polish, 'pull': op_pull, 'join': op_join, 'trb': op_trb}
@@ -214,6 +323,8 @@ def main(name, argv=None):
     """Exit code 0: record.json written, candidates listed in it.  Exit code 1: the operator failed;
     record.json still written, with 'error' (and the traceback in the job log).  Exit code 2: bad
     command line (no record)."""
+    mono_main = time.monotonic()            # instrumentation: process start -> main, setup, operator, record (record.json 'timing')
+    age_main = runlog.proc_age_s()          # interpreter start + imports
     ap = argparse.ArgumentParser(prog='op_' + name)
     ap.add_argument('--archive', required=True); ap.add_argument('--in', dest='inp', required=True)
     ap.add_argument('--in2'); ap.add_argument('--caps')
@@ -243,12 +354,17 @@ def main(name, argv=None):
     RUN.write()
     rng = random.Random(args.seed)
     t0 = time.time(); r0 = resource.getrusage(resource.RUSAGE_SELF); c0 = resource.getrusage(resource.RUSAGE_CHILDREN)
-    cands, info, error = [], {}, None
+    mono_t0 = time.monotonic()
+    cands, info, error = [], {}, None; archive_load_s = None
     try:
-        ar = Archive(args.archive)
+        ta = time.monotonic(); ar = Archive(args.archive); archive_load_s = time.monotonic() - ta
         if args.inp not in ar.rec: raise OpError('--in %s is not in the archive' % args.inp)
         if args.in2 and args.in2 not in ar.rec: raise OpError('--in2 %s is not in the archive' % args.in2)
+        loaded = archive_state(ar)
         cands, info = OPS[name](ar, args, rng, out)
+        if isinstance(info, dict):
+            info.setdefault('archive_loaded', loaded)
+            if not cands: info.update(applicability(info))
     except Exception as e:
         import traceback
         traceback.print_exc(); error = '%s: %s' % (type(e).__name__, e); cands = []
@@ -263,6 +379,10 @@ def main(name, argv=None):
            'cpu_s': round(cpu, 2), 'candidates': len(cands), 'cand_ids': ids, 'code_version': code_version(), 'info': info,
            'function': aesfn.name(), 'run': RUN.summary()}
     if error: rec['error'] = error
+    rec['timing'] = {'mono_main': round(mono_main, 4), 'mono_t0': round(mono_t0, 4), 'mono_end': round(time.monotonic(), 4),
+                     'setup_s': round(mono_t0 - mono_main, 3), 'op_s': round(time.monotonic() - mono_t0, 3),
+                     'proc_start_to_main_s': age_main, 'archive_load_s': round(archive_load_s, 3) if archive_load_s is not None else None,
+                     'kernel_s': round(KTIME[0], 3), 'kernel_calls': KTIME[1]}
     (out / 'record.json').write_text(json.dumps(rec, indent=1, default=str))
     RUN.finish('error' if error else 'ok', candidates=len(cands), error=error)
     return 1 if error else 0

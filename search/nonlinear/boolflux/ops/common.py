@@ -280,6 +280,8 @@ class Recorder:
         self.points = {}          # (A, AD, G, GD) -> record
         self.bodies = set()
         self.rejected = {'outside': 0, 'dominated': 0, 'aes_check_fail': 0, 'duplicate': 0}
+        self.by_how = {}          # instrumentation: how -> {offered, outside, dominated, aes_check_fail, duplicate, written}
+        self.timing = {'proc_start_to_recorder_s': runlog.proc_age_s(), 'verify_s': 0.0, 'verify_calls': 0}   # result.json 'timing'
         self.status = 'running'; self.notes = []
         self.skip_start_tuple = True      # a result weakly dominated by the start's own tuple is not recorded
         self._code = None
@@ -302,36 +304,55 @@ class Recorder:
             from boolflux.hub.ops import kernel_record
             self.log.add_kernel(kernel, write=False, **kernel_record(kernel))
         self.log.write()
+        self.write_result()       # result.json from the start (status running), so a killed job keeps a record
+        # lineage across runs ($BOOLFLUX_LINEAGE): the start's roots (NIST files) and steps, from the shared file
+        self.roots, self.steps = runlog.lineage_roots([self.start_sha], [self.start]) if runlog.lineage_path() else (None, None)
 
     def code(self):
         if self._code is None: self._code = code_info(self.kernel)
         return self._code
 
     def offer(self, c, how='', lineage=None, path_certified='unknown'):
-        """c: core circuit (already checked to compute the S-box by the caller or not; checked here)."""
+        """c: core circuit (already checked to compute the S-box by the caller or not; checked here).
+        The outcome is counted per `how` (self.by_how, in result.json as offers_by_how)."""
+        r = self._offer(c, how, lineage, path_certified)
+        b = self.by_how.setdefault(str(how), {'offered': 0, 'written': 0})
+        b['offered'] += 1
+        k = 'written' if r is not None else self._last_reject
+        b[k] = b.get(k, 0) + 1
+        return r
+
+    def _reject(self, why):
+        self.rejected[why] += 1; self._last_reject = why
+        return None
+
+    def _offer(self, c, how, lineage, path_certified):
         import time
+        self._last_reject = None
         t = metrics(c)
         if not in_limits(t, self.tid, self.lim):
-            self.rejected['outside'] += 1; return None
+            return self._reject('outside')
         known = list(self.points) + ([tuple(self.start_tuple)] if self.start_tuple and self.skip_start_tuple else [])
         if any(all(a <= b for a, b in zip(p, t)) for p in known):
             # weakly dominated in (A, AD, G, GD) (hence also in (G, GD)) by a point already written or the start
-            self.rejected['dominated'] += 1; return None
+            return self._reject('dominated')
         if tuple(c.value_table()) != aesfn.table():
-            self.rejected['aes_check_fail'] += 1; return None
+            return self._reject('aes_check_fail')
         text = core.write_ncff(c, MODEL, comments=['%s job target %s seed %s: %s t=%.1f s' % (
             self.op, self.tid, self.seed, how, time.time() - self.t0)])
         b = body(text)
         if b in self.bodies:
-            self.rejected['duplicate'] += 1; return None
+            return self._reject('duplicate')
         h = hashlib.sha256(text.encode()).hexdigest()
         name = '%s-a%d-ad%d-g%d-gd%d-%s' % (self.op, t[0], t[1], t[2], t[3], h[:10])
         p = self.out / (name + '.circ.txt')
         p.write_text(text)
+        tv = time.monotonic()
         ok, vt, line, full = check(p)
+        self.timing['verify_s'] = round(self.timing['verify_s'] + time.monotonic() - tv, 3); self.timing['verify_calls'] += 1
         if not ok or tuple(vt) != tuple(t):
-            self.rejected['aes_check_fail'] += 1; self.notes.append('aes_check failed: %s' % line)
-            p.unlink(); return None
+            self.notes.append('aes_check failed: %s' % line)
+            p.unlink(); return self._reject('aes_check_fail')
         self.bodies.add(b)
         side = {'target': self.tid, 'A': t[0], 'AD': t[1], 'G': t[2], 'GD': t[3],
                 'class': classify(t, self.tid, self.tgt, self.defs),
@@ -346,6 +367,12 @@ class Recorder:
                 'path_note': 'informational; search states may exceed the caps, recorded circuits never exceed A and AD',
                 'function': aesfn.name(), 'run': self.log.summary(),
                 'utc': utc()}
+        if self.roots is not None:
+            side['roots'] = self.roots; side['steps'] = self.steps + 1
+            runlog.lineage_append(sha256=side['circuit_sha256'], structure_key=structure_key(c), tuple=list(t), op=self.op,
+                                  params_digest=hashlib.sha256(json.dumps(self.params, sort_keys=True, default=str).encode()).hexdigest()[:16],
+                                  seed=self.seed, parents=[self.start_sha], run=str(self.out), t_in_job_s=side['elapsed_s'],
+                                  file=str(p), roots=self.roots, steps=self.steps + 1)
         write_json(self.out / (name + '.json'), side)
         self.points[t] = {'tuple': list(t), 'file': str(p), 'how': how, 't': side['elapsed_s'], 'class': side['class']}
         self.log.improvement({'A': t[0], 'AD': t[1], 'G': t[2], 'GD': t[3]}, self.op, how=how, file=p.name,
@@ -363,7 +390,7 @@ class Recorder:
         r = {'op': self.op, 'target': self.tid, 'seed': self.seed, 'status': self.status,
              'start': str(self.start), 'start_tuple': self.start_tuple, 'params': self.params,
              'wall_s': round(time.time() - self.t0, 1), 'n_written': len(self.points),
-             'rejected': self.rejected, 'notes': self.notes[-20:], 'utc': utc()}
+             'rejected': self.rejected, 'offers_by_how': self.by_how, 'timing': self.timing, 'notes': self.notes[-20:], 'utc': utc()}
         r.update(self.best_points())
         if extra: r.update(extra)
         write_json(self.out / 'result.json', r)
@@ -371,7 +398,7 @@ class Recorder:
     def finish(self, status='ok', extra=None):
         self.status = status
         self.write_result(extra)
-        self.log.finish(status, n_written=len(self.points), rejected=self.rejected,
+        self.log.finish(status, n_written=len(self.points), rejected=self.rejected, offers_by_how=self.by_how,
                         pareto_A_AD_G_GD=[p['tuple'] for p in self.best_points()['pareto_A_AD_G_GD']])
 
 

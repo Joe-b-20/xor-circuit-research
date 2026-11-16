@@ -51,6 +51,8 @@ class Archive:
         self.cells_repaired = False   # cells.json on disk differed from the replay of the records
         self.index_missing = 0        # records not in index.jsonl (the owner calls write_index())
         self._front = None; self._skeys = None
+        self.last_gain_reason = None  # rule of gain() for the last admitted circuit (instrumentation)
+        self.last_metrics = None      # (cleaned) tuple of the last circuit offered to admit() (instrumentation)
         if load: self._load()
 
     # ---- persistence ------------------------------------------------------------------------
@@ -195,6 +197,37 @@ class Archive:
         doms = [q[2] for q in self.front() if leq(q, m)]
         return not doms or m[2] <= min(doms) + slack
 
+    def explain(self, m, slack=None):
+        """Why would_place(m, slack) decides as it does (instrumentation; no side effect): the cell's
+        minimum G and member count, the fewest G of a dominating front point and the slack."""
+        slack = NEAR_SLACK if slack is None else slack
+        k = self.key(m); g = self.cell_min(k); n = len(self.cells.get(k, []))
+        d = {'cell': list(k), 'cell_min_G': g, 'cell_members': n}
+        if not (g is None or m[2] < g or (m[2] == g and n < K_PER_CELL)):
+            d['reason'] = 'cell full at G %d' % g if m[2] == g else 'cell has G %d < %d' % (g, m[2])
+            return d
+        doms = [q[2] for q in self.front() if leq(q, m)]
+        if doms:
+            d.update(dominating_front_min_G=min(doms), slack=slack)
+            if m[2] > min(doms) + slack:
+                d['reason'] = 'G %d > dominating front G %d + slack %d' % (m[2], min(doms), slack); return d
+        d['reason'] = 'would place'
+        return d
+
+    def gain_reason(self, m):
+        """which rule of gain() ('value' mode) applies to tuple m: 'dominated', 'new (A, AD) at a known AD'
+        (8), 'new AND depth' (4), 'GD reach' (1), 'fewer G in the cap box by d' (0.5 min(d, 6)); for
+        'legacy' mode just 'legacy'.  Instrumentation; same front scan as gain()."""
+        if self.gain_mode == 'legacy': return 'legacy'
+        pts = self.front()
+        if any(leq(q, m) for q in pts): return 'dominated'
+        A, AD, G, GD = m
+        if not any(q[0] <= A and q[1] <= AD for q in pts):
+            return 'new (A, AD) at a known AD' if any(q[1] <= AD for q in pts) else 'new AND depth'
+        box = [q[2] for q in pts if q[0] <= A and q[1] <= AD and q[3] <= GD]
+        if not box: return 'GD reach'
+        return 'fewer G in the cap box by %d' % (min(box) - G)
+
     def gain(self, m):
         """frontier gain of tuple m against the current front (before admission).
 
@@ -265,6 +298,7 @@ class Archive:
                 if c is not raw:
                     settings = dict(settings or {}, cleaned_from=cid(raw), raw_metrics=list(metrics(raw)))
             i = cid(c); m = metrics(c)
+            self.last_metrics = m          # instrumentation: the (cleaned) tuple the decision used
         except Exception as e:
             return 'rejected: malformed circuit: %r' % (e,), None, 0.0
         if i in self.rec: return 'duplicate', self.rec[i], 0.0
@@ -274,6 +308,7 @@ class Archive:
         sk = structure_key(c); j = self.skeys().get(sk)
         if j is not None: return 'duplicate-structure', self.rec[j], 0.0
         g = self.gain(m)
+        self.last_gain_reason = self.gain_reason(m)       # instrumentation: read by the scheduler, not stored in the record
         r = {'id': i, 'A': m[0], 'AD': m[1], 'G': m[2], 'GD': m[3], 'counts': info.get('counts'),
              'parents': list(parents), 'operator': operator, 'operator_settings': settings or {}, 'seed': seed,
              'run_id': run_id, 'code_version': code_version, 'cpu_s': cpu_s, 'wall_s': wall_s,
@@ -284,4 +319,18 @@ class Archive:
         with open(self.dir / 'index.jsonl', 'a') as f: f.write(json.dumps(r, default=str) + '\n')
         self.rec[i] = r; self._skeys[sk] = i; self._remember(i, c)
         self._place(r); self._save_cells()
+        self._lineage(r, settings)
         return 'admitted', r, g
+
+    def _lineage(self, r, settings):
+        """instrumentation ($BOOLFLUX_LINEAGE): one line in the shared lineage file per admission; parents are
+        archive ids, or the source file's sha256 for a seed / ingest (its roots come from the file's own record)"""
+        from .. import runlog
+        if not runlog.lineage_path(): return
+        s = settings or {}
+        keys = list(r['parents']) + ([s['file_sha']] if s.get('file_sha') else [])
+        roots, steps = runlog.lineage_roots(keys, [s.get('file')])
+        if r['operator'] == 'seed' and s.get('file') and '/seeds/' in str(s.get('file')): steps = 0
+        runlog.lineage_append(id=r['id'], structure_key=r['skey'], tuple=[r['A'], r['AD'], r['G'], r['GD']], op=r['operator'],
+                              seed=r['seed'], parents=keys, run_id=r['run_id'], campaign=str(self.dir.parent), job_cpu_s=r['cpu_s'],
+                              roots=roots, steps=steps)

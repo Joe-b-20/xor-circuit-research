@@ -53,7 +53,7 @@ sys.path.insert(0, str(HERE))
 import common as CM                                  # noqa: E402
 
 sys.path.append(str(HERE / 'conj_lib'))           # conjugates, Boyar-Peralta / SAT regions, trb
-from boolflux import core                            # noqa: E402
+from boolflux import core, runlog                    # noqa: E402
 from boolflux.hub.common import clean                # noqa: E402
 
 OP = 'conjpull'
@@ -75,6 +75,9 @@ def left():
 
 # ---- conjugate screen (conj3) and build (build_conj) --------------------------------------------
 
+SCREEN_T = {'compute_s': 0.0, 'wait_s': 0.0, 'slices_computed': 0}
+
+
 def screen(c, start_sha, cache_dir, top_runs=4, log=print, offset=0):
     """conj3 score of all 2040 (lam, k); cached per start sha256.  The 8 k-slices are cached separately,
     each under its own lock: concurrent jobs on the same start share the work (a job takes the free
@@ -91,12 +94,16 @@ def screen(c, start_sha, cache_dir, top_runs=4, log=print, offset=0):
         for k in order:
             if sl(k).exists(): continue
             with open(str(sl(k)) + '.lock', 'w') as lk:
+                tw = now()
                 try:
                     fcntl.flock(lk, fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB))
                 except BlockingIOError:
                     continue
+                SCREEN_T['wait_s'] += now() - tw          # instrumentation: time waiting for slices other jobs compute
                 if sl(k).exists(): continue
+                tc = now()
                 CM.write_json(sl(k), {'rows': screen_slice(c, k, top_runs)})
+                SCREEN_T['compute_s'] += now() - tc; SCREEN_T['slices_computed'] += 1
     rows = []
     for k in range(8):
         rows += json.loads(sl(k).read_text())['rows']
@@ -141,13 +148,18 @@ def screen_slice(c, k, top_runs):
         return rows
 
 
+LAST_BUILD = {}           # instrumentation: the intermediate circuits of the last build_conj (naive, BP top)
+
+
 def build_conj(c, lam, k, top_runs=12):
     """Naive conjugate circuit, BP top resynthesis, trb top/bottom passes; verified."""
     import conj as CJ
     import bp
     cc = CJ.conj_circuit(c, lam, k)
+    LAST_BUILD.clear(); LAST_BUILD.update(lam=lam, k=k, naive=cc)
     best, info = bp.optimise(cc, 99, 'top', random.Random(lam * 8 + k), top_runs, log=lambda *x: None)
     if best is not None: cc = best
+    LAST_BUILD['bp'] = cc
     cc = CJ.resynth(cc, random.Random(1), 2)
     assert cc.value_table() == CM.AES, 'conjugate %d:%d wrong function' % (lam, k)
     return cc
@@ -159,8 +171,21 @@ def conj_list(spec, c, start_sha, a, log):
     def get_rows():
         nonlocal rows
         if rows is None:
-            rows = [r for r in screen(c, start_sha, a.screen_cache, a.screen_runs, log, offset=a.seed % 8)
-                    if not (r['lam'] == 1 and r['k'] == 0)]
+            t1 = now()
+            cached = (Path(a.screen_cache) / ('%s-r%d.json' % (start_sha[:20], a.screen_runs))).exists()
+            allrows = screen(c, start_sha, a.screen_cache, a.screen_runs, log, offset=a.seed % 8)
+            rows = [r for r in allrows if not (r['lam'] == 1 and r['k'] == 0)]
+            a._rows = rows
+            # instrumentation: the screen the conjugates are chosen from (score = BP top proxy + Paar bottom proxy)
+            ident = next((r for r in allrows if r['lam'] == 1 and r['k'] == 0), None)
+            ss = sorted(r['sum'] for r in rows)
+            if hasattr(a, '_rec') and a._rec is not None:
+                a._rec.log.event('screen', cached=cached, seconds=round(now() - t1, 2), rows=len(rows),
+                                 identity=ident, best=ss[0] if ss else None, median=ss[len(ss) // 2] if ss else None,
+                                 worst=ss[-1] if ss else None, top10=rows[:10],
+                                 n_at_best=sum(1 for x in ss if x == ss[0]) if ss else 0,
+                                 compute_s=round(SCREEN_T['compute_s'], 2), wait_s=round(SCREEN_T['wait_s'], 2),
+                                 slices_computed=SCREEN_T['slices_computed'])
         return rows
     for it in spec.split(','):
         it = it.strip()
@@ -216,6 +241,10 @@ def kernel(ctx, c, capgd, iters, seed, seconds, rk, style='f'):
     except subprocess.TimeoutExpired:
         rc = 'timeout'
     out = None
+    kstats = runlog.kernel_summary(r.stdout) if rc != 'timeout' else None      # instrumentation (kstat lines)
+    if rc != 'timeout' and getattr(ctx, 'stage_impr', None) is not None:      # every new best of the call, job time
+        for b in runlog.kernel_stats(r.stdout).get('bests', []):
+            ctx.stage_impr.append([round(t_call - ctx.T0 + b[0], 1), b[3], b[4], b[5], b[6]])
     if rc == 0 and op_.exists():
         out = core.from_kernel(op_.read_text())
         if out.value_table() != CM.AES:
@@ -225,11 +254,90 @@ def kernel(ctx, c, capgd, iters, seed, seconds, rk, style='f'):
     ctx.rec.log.event('kernel', call=ctx.ncall, seed=seed, cap_gd=capgd, cap_a=ctx.cap['A'], cap_ad=ctx.cap['AD'],
                       repair_keep=rk, style=style, iters=iters, seconds=max(1, int(seconds)), rc=rc,
                       wall_s=round(now() - t_call, 2), start=list(m0), best=list(CM.metrics(out)) if out is not None else None,
-                      lineage=list(ctx.lineage))
+                      lineage=list(ctx.lineage), step=getattr(ctx, 'step', None), stats=kstats)
     for p in (sp, op_, cp):
         try: p.unlink()
         except OSError: pass
     return out
+
+
+def _alevels(c):
+    la = [0] * c.n
+    for op, a, b in c.gates:
+        la.append((1 if op in core.NONLINEAR_OPS else 0) + max(la[a], la[b]))
+    return la
+
+
+def profile(c):
+    """instrumentation: [ANDs per AND level], [linear gates per AND level] (level 0 = top, AD = bottom)"""
+    la = _alevels(c); AD = max(la[o] for o in c.outputs)
+    ands = [0] * (AD + 1); lin = [0] * (AD + 1)
+    for j, (op, a, b) in enumerate(c.gates):
+        L = min(la[c.n + j], AD)
+        if op in core.NONLINEAR_OPS: ands[L] += 1
+        else: lin[L] += 1
+    return [ands, lin]
+
+
+def and_tables(c):
+    """(AND level, output table up to complement) of every AND-like gate"""
+    T = c.tables(); la = _alevels(c); ones = (1 << (1 << c.n)) - 1
+    return [(la[c.n + j], min(T[c.n + j], T[c.n + j] ^ ones)) for j, (op, a, b) in enumerate(c.gates) if op in core.NONLINEAR_OPS]
+
+
+def _rank(vecs):
+    rows = []
+    for v in vecs:
+        for r in rows: v = min(v, v ^ r)
+        if v: rows.append(v); rows.sort(reverse=True)
+    return len(rows)
+
+
+def and_kept(c, ref):
+    """ANDs of c whose function (up to complement) is an AND of ref"""
+    sr = {t for l, t in and_tables(ref)}
+    return sum(1 for l, t in and_tables(c) if t in sr)
+
+
+def l1_span_kept(c, ref):
+    """dimension of the level-1 AND span (modulo affine functions) that c shares with ref"""
+    T = c.tables(); ones = (1 << (1 << c.n)) - 1; aff = [ones] + [T[i] for i in range(c.n)]
+    f = [t for l, t in and_tables(c) if l == 1]; g = [t for l, t in and_tables(ref) if l == 1]
+    ra, rf, rg, rfg = _rank(aff), _rank(aff + f), _rank(aff + g), _rank(aff + f + g)
+    return (rf - ra) + (rg - ra) - (rfg - ra)
+
+
+def conj_mech(start, cc, lam, k):
+    """instrumentation (U3-2): profiles of the start, the naive conjugate, after BP top, the built conjugate; the
+    built conjugate's ANDs kept from the naive conjugate and from the start; shared level-1 span with the start"""
+    try:
+        nv = LAST_BUILD.get('naive') if LAST_BUILD.get('lam') == lam and LAST_BUILD.get('k') == k else None
+        d = {'profile': {'start': profile(start), 'built': profile(cc)}, 'and_kept_start': and_kept(cc, start),
+             'l1_span_kept': l1_span_kept(cc, start)}
+        if nv is not None:
+            d['profile']['naive'] = profile(nv); d['profile']['bp_top'] = profile(LAST_BUILD['bp'])
+            d['and_kept_conj'] = and_kept(cc, nv)
+        return d
+    except Exception as e:
+        return {'mech_error': repr(e)}
+
+
+def stage_mech(b, start, naive):
+    try:
+        d = {'profile': profile(b), 'and_kept_start': and_kept(b, start)}
+        if naive is not None: d['and_kept_conj'] = and_kept(b, naive)
+        return d
+    except Exception as e:
+        return {'mech_error': repr(e)}
+
+
+def keep_circuit(out, name, c):
+    """instrumentation: write circuit c (kernel text) to OUT/circuits/NAME; returns the file name (None on failure)"""
+    try:
+        d = Path(out) / 'circuits'; d.mkdir(exist_ok=True)
+        (d / name).write_text(core.to_kernel(c)); return 'circuits/' + name
+    except Exception:
+        return None
 
 
 def offer(ctx, c, how):
@@ -259,9 +367,12 @@ def run_stage(ctx, base, mode, D, secs, seed, rk):
         offer(ctx, c, how)
         if hard(c) and key(c) < key(best): best = c
     sub = 0
+    ctx.stage_info = si = {'substeps': {}, 'stop': None}        # instrumentation: sub-steps by kind, why the stage ended
     if mode == 'k':
+        ctx.step = 'k'
         c = kernel(ctx, base, D, None, seed, max(1, t_end - now()), rk, style='h')
         take(c, 'k%d' % D)
+        si.update(substeps={'k': 1}, stop='single kernel run')
         return best
     while t_end - now() > 2:
         sub += 1
@@ -269,6 +380,7 @@ def run_stage(ctx, base, mode, D, secs, seed, rk):
         kseed = seed * 100000 + sub
         m = mode
         if m == 'm': m = ['g', 'o', 't'][sub % 3]
+        ctx.step = '%s%d' % (m, sub); si['substeps'][m] = si['substeps'].get(m, 0) + 1
         b = best if feas(best) else cur
         if m == 'g':
             c = kernel(ctx, b, D, ctx.a.stage_iters, kseed, rem, rk)
@@ -298,6 +410,7 @@ def run_stage(ctx, base, mode, D, secs, seed, rk):
             c2 = kernel(ctx, c1, D, ctx.a.stage_iters, kseed, max(1, t_end - now()), rk)
             take(c2, 't%d-%s' % (D, reg))
             if c2 is not None and hard(c2): cur = c2
+    si['stop'] = 'stage time (%.0f s left of the job)' % left()
     return best
 
 
@@ -370,7 +483,7 @@ def main(argv=None):
     logf = open(out / 'conjpull.log', 'a')
     def log(*x):
         logf.write('%s %7.1f %s\n' % (time.strftime('%H:%M:%S', time.gmtime()), now() - T0, ' '.join(map(str, x)))); logf.flush()
-    ctx = Ctx(); ctx.a = a; ctx.log = log; ctx.ncall = 0
+    ctx = Ctx(); ctx.a = a; ctx.log = log; ctx.ncall = 0; ctx.T0 = T0; ctx.stage_impr = []
     ctx.lim = CM.limits(a.target)
     ctx.cap = {'A': min(ctx.lim['A'], a.cap_a or 999), 'AD': min(ctx.lim['AD'], a.cap_ad or 999)}
     ctx.kcfg = {}
@@ -399,23 +512,31 @@ def main(argv=None):
                                             'every stage and kernel seed is an event in events.jsonl.gz',
                              'kernel_seed': 'stage seed x 100000 + sub-step (+7, +13 within an osc step)',
                              'trb_rng': 'random.Random(stage seed)'})
-    ctx.rec = rec
+    ctx.rec = rec; a._rec = rec                       # a._rec: conj_list's screen event
     stages_log = []
 
     def on_alarm(sig, frm):
+        try:                                  # instrumentation: which signal ended the job, and when
+            nm = signal.Signals(sig).name
+            rec.log.event('signal', signal=sig, name=nm, elapsed_s=round(now() - T0, 1), left_s=round(left(), 1))
+            rec.notes.append('ended by %s at %.1f s' % (nm, now() - T0))
+        except Exception:
+            pass
         rec.finish('timeout', {'stages': stages_log})
         os._exit(3)
     signal.signal(signal.SIGALRM, on_alarm); signal.alarm(int(a.seconds + 45))
     signal.signal(signal.SIGTERM, on_alarm)
 
-    status = 'ok'
+    status = 'ok'; items_all = []; fates_all = {}; skipped_all = []
+    budget_need = sum(x[2] for x in sched)
     try:
         start = CM.load(a.inp)
         assert start.value_table() == CM.AES, 'start does not compute the %s' % CM.aesfn.label(function)
         log('start', CM.metrics(start), a.inp, 'kernel', ctx.bfx)
-        items = conj_list(a.conj, start, rec.start_sha, a, log)
+        items = conj_list(a.conj, start, rec.start_sha, a, log); items_all[:] = items
+        skipped_conj = []
         if is_conjugated(a.inp) and not a.allow_reconj:
-            skipped = [x[0] for x in items if x[1] is not None]
+            skipped = [x[0] for x in items if x[1] is not None]; skipped_conj = list(skipped); skipped_all[:] = skipped
             items = [x for x in items if x[1] is None]
             if skipped:
                 rec.notes.append('start is already a conjugate (sidecar lineage); conjugates %s skipped (a conjugate '
@@ -423,24 +544,39 @@ def main(argv=None):
                 log(rec.notes[-1])
             if not items:
                 items = [('id', None, None, None)]
-        for (name, lam, k, score) in items:
-            if left() < 30: break
-            ctx.cert = True; ctx.lin_front = []; ctx.lin_changed = False; quiet = 0
+        if budget_need * max(1, sum(1 for x in items if x[1] is not None)) > a.seconds:
+            rec.notes.append('schedule %.0f s x %d conjugates > --seconds %.0f: later conjugates will not be reached' % (
+                budget_need, sum(1 for x in items if x[1] is not None), a.seconds)); log(rec.notes[-1])
+        rec.log.event('items', items=[list(x) for x in items], n=len(items))     # instrumentation: the conjugates chosen, in order
+        fates = fates_all
+        for ii, (name, lam, k, score) in enumerate(items):
+            if left() < 30:
+                for x in items[ii:]: fates[x[0]] = 'skipped: less than 30 s left'
+                rec.log.event('stop', what='conjugate loop', reason='less than 30 s left', done=ii, of=len(items)); break
+            ctx.cert = True; ctx.lin_front = []; ctx.lin_changed = False; quiet = 0; fates[name] = 'run: 0 stages'
             if lam is None:
                 cc = start; ctx.lineage = ['start']
             else:
                 t1 = now()
                 cc = build_conj(start, lam, k, a.top_runs)
                 rec.log.event('conjugate', name=name, lam=lam, k=k, score=score, metrics=list(CM.metrics(cc)),
-                              build_rng='random.Random(%d) (BP top), random.Random(1) (resynth)' % (lam * 8 + k))
+                              build_rng='random.Random(%d) (BP top), random.Random(1) (resynth)' % (lam * 8 + k),
+                              build_s=round(now() - t1, 2), start_metrics=list(CM.metrics(start)),
+                              n_tied=sum(1 for r in (getattr(a, '_rows', None) or []) if score is not None and r['sum'] == score),
+                              n_within1=sum(1 for r in (getattr(a, '_rows', None) or []) if score is not None and r['sum'] <= score + 1),
+                              file=keep_circuit(out, 'conj-%d-%d.bfx' % (lam, k), cc), **conj_mech(start, cc, lam, k))
                 ctx.lineage = ['conj lam %d k %d (%s, score %s)' % (lam, k, name, score)]
                 log('conjugate', name, lam, k, 'score', score, '->', CM.metrics(cc), '%.1fs' % (now() - t1))
             cur = cc
             ctx.lin_front = [CM.metrics(cc)]          # the lineage's own set starts at its input (not recorded)
             for si, (mode, cap, secs, rk, sseed) in enumerate(sched):
-                if left() < 20: break
+                if left() < 20:
+                    rec.log.event('stop', what='stage loop', conj=name, reason='less than 20 s left', stage=si + 1); break
                 if a.stall_stages and quiet >= a.stall_stages:
                     log('lineage dropped: %d stages without a change in its (A, AD, G, GD) set' % quiet)
+                    rec.log.event('stop', what='stage loop', conj=name, reason='lineage dropped: %d stages without a change in '
+                                  'its (A, AD, G, GD) set (--stall-stages %d)' % (quiet, a.stall_stages), stage=si + 1,
+                                  lineage_front=[list(p) for p in ctx.lin_front])
                     stages_log.append({'conj': name, 'dropped_after_stage': si}); break
                 ctx.lin_changed = False
                 gd_in = CM.metrics(cur)[3]
@@ -451,14 +587,20 @@ def main(argv=None):
                     rkk = rk if rk is not None else (beam_rk[j % len(beam_rk)] if beam_rk else a.repair_keep)
                     sd = (sseed + j) if sseed is not None else a.seed * 1000 + si * 10 + j
                     ctx.lineage.append('stage %d %s:%d:%g seed %d rk %d' % (si + 1, mode, D, secs, sd, rkk))
-                    t1 = now()
-                    b = run_stage(ctx, cur, mode, D, min(secs, left() - 15), sd, rkk)
+                    t1 = now(); nw0 = len(rec.points); nk0 = ctx.ncall; bud = min(secs, left() - 15); ctx.stage_impr = []
+                    b = run_stage(ctx, cur, mode, D, bud, sd, rkk)
                     ctx.lineage.pop()
                     bests.append(b)
                     stages_log.append({'conj': name, 'lam': lam, 'k': k, 'stage': si + 1, 'mode': mode, 'cap': D,
                                        'seed': sd, 'in': list(CM.metrics(cur)), 'best': list(CM.metrics(b)),
-                                       'seconds': round(now() - t1, 1)})
-                    rec.log.event('stage', **stages_log[-1], repair_keep=rkk)
+                                       'seconds': round(now() - t1, 1), 'repair_keep': rkk,
+                                       'improvements': list(ctx.stage_impr)})      # [job s, A, AD, G, GD] of every kernel best
+                    si_ = getattr(ctx, 'stage_info', None) or {}
+                    sbf = keep_circuit(out, 'stage-%s-%d-%d-best.bfx' % (name.replace(':', '_'), si + 1, j), b)
+                    rec.log.event('stage', **stages_log[-1], budget_s=round(bud, 1),
+                                  written=len(rec.points) - nw0, kernel_calls=ctx.ncall - nk0, lineage_changed=ctx.lin_changed,
+                                  substeps=si_.get('substeps'), stop=si_.get('stop'), file=sbf,
+                                  **stage_mech(b, start, LAST_BUILD.get('naive') if lam is not None and LAST_BUILD.get('lam') == lam and LAST_BUILD.get('k') == k else None))
                     log('stage', si + 1, mode, D, 'seed', sd, CM.metrics(cur), '->', CM.metrics(b), '%.0fs' % (now() - t1))
                 feasD = lambda c: CM.metrics(c)[3] <= D
                 bests.sort(key=lambda c: (0 if feasD(c) else 1, CM.metrics(c)[2], CM.metrics(c)[3]))
@@ -467,12 +609,22 @@ def main(argv=None):
                     ctx.lineage.append('stage %d %s:%d best %s' % (si + 1, mode, D, '/'.join(map(str, CM.metrics(nxt)))))
                     cur = nxt
                 quiet = 0 if ctx.lin_changed else quiet + 1
+                fates[name] = 'run: %d stages' % (si + 1)
                 rec.write_result({'stages': stages_log})
+        rec.log.event('item-fates', fates=fates, skipped_conjugated=skipped_conj)
     except Exception as e:
         import traceback
         status = 'error'; rec.notes.append(traceback.format_exc()[-1500:]); log('ERROR', repr(e))
     signal.alarm(0)
-    rec.finish(status, {'stages': stages_log, 'kernel_calls': ctx.ncall})
+    planned = [x[0] for x in items_all] if items_all else None
+    run_ = [{'label': x[0], 'lam': x[1], 'k': x[2], 'screen_score': x[3],
+             'screen_rank': int(x[0][5:]) if str(x[0]).startswith('rank:') else None,
+             'stages_done': sum(1 for st in stages_log if st.get('conj') == x[0] and 'stage' in st),
+             'stages_planned': len(sched), 'seconds': round(sum(st.get('seconds', 0) for st in stages_log if st.get('conj') == x[0]), 1)}
+            for x in (items_all or []) if x[0] in fates_all and fates_all[x[0]].startswith('run')]
+    rec.finish(status, {'stages': stages_log, 'kernel_calls': ctx.ncall, 'conj_planned': planned, 'conj_run': run_,
+                        'conj_not_reached': [x for x in (planned or []) if not fates_all.get(x, '').startswith('run')],
+                        'conj_replaced': [{'label': x, 'reason': 'start is already a conjugate'} for x in skipped_all]})
     log('end', status, 'written', len(rec.points), 'pareto', [p['tuple'] for p in rec.best_points()['pareto_G_GD']])
     return 0 if status == 'ok' else 1
 
