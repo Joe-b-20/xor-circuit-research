@@ -63,10 +63,10 @@ def _build(n, f, gates, have):
     if f in have: return have[f]
     parts = []; rest = f
     while rest:
-        best = None; bg = 0
+        best = None; bg = 0; rc = rest.bit_count()          # int.bit_count (2026-11-16; was bin().count, same values)
         for fm, s in have.items():
             if fm & 1: continue
-            g = bin(rest).count('1') - bin(rest ^ fm).count('1')
+            g = rc - (rest ^ fm).bit_count()
             if g > bg: best, bg = (fm, s), g
         if best is None: return None
         parts.append(best); rest ^= best[0]

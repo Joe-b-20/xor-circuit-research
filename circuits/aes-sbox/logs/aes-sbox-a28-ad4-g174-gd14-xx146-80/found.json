@@ -8,9 +8,23 @@
   14
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +40,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: our 28/4/175/14 from the 2026-11-14 hub archive (circuit 66868125efb4); no conjugate in this job",
  "parameters": {
   "limits": {
    "AD": 4,
@@ -41,6 +56,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 348.8
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find: the tuple was first found on 2026-11-15 by campaign P2 (<campaign archive>/2026-11-15-targets/P2/found/t02-a28-ad4-g174-gd14-t02mix1-s17.circ.txt, recorded 2026-11-15T16:21:12Z; fdrive stage 17, a timing-driven rebuild of the bottom region and the kernel); the ledger lists it as known, reproduced by night:T02",
+  "evidence": "the 2026-11-15 targets ledger (LEDGER.json, built 2026-11-16T13:19Z)"
  },
  "code": {
   "commit_at_run": "d9507dd",

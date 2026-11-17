@@ -8,9 +8,23 @@
   26
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given; the run was asked for a conjugate, but conjpull.py skipped it because the start is already a conjugate and ran the identity instead (result.json notes)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run was asked for conjugate rank:1 and replaced it by the identity (start already a conjugate)"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "rank:1",
+  "applied": null,
+  "evidence": "result.json notes: \"start is already a conjugate (sidecar lineage); conjugates ['rank:1'] skipped ... identity pull instead\"; stages: conj 'id', lam null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +40,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: P4's 32/7/104/27 (2026-11-15, <campaign archive>/2026-11-15-targets/P4/found/p4-deep236-a32-ad7-g104-gd27.circ.txt): the conjugate lambda 236, k 0 of NIST's 32/7/103/32, then kernel stages",
  "parameters": {
   "limits": {
    "AD": 7,
@@ -41,6 +56,10 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 346.2
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "the 2026-11-16 night runner logs (NEW lines): first circuit of this tuple, flagged beyond-known, 2026-11-16T02:10:25Z"
  },
  "code": {
   "commit_at_run": "d9507dd",

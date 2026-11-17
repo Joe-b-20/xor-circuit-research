@@ -311,7 +311,7 @@ Read from each `logs/<name>/found.json`:
 
 | Circuit (A/AD/G/GD) | Method | Found (UTC) | Found after | Measured from | Job | Note |
 |---|---|---|---:|---|---|---|
-| [aes-sbox 28/4/174/14](aes-sbox/aes-sbox-a28-ad4-g174-gd14-xx146-80.circ.txt) | conjugation | 2026-11-16 10:13 | 6 min | job start | job 15 min | from our 28/4/175/14 |
+| [aes-sbox 28/4/174/14](aes-sbox/aes-sbox-a28-ad4-g174-gd14-xx146-80.circ.txt) | staged pull | 2026-11-16 10:13 | 6 min | job start | job 15 min | from our 28/4/175/14 |
 | [aes-sbox 28/4/138/17](aes-sbox/aes-sbox-a28-ad4-g138-gd17-xx110-61.circ.txt) | gate kernel | 2026-11-14 16:02 ¹ | 32 min | run start | job 2 min | from our 28/4/139/17; 67 s into its job |
 | [aes-sbox 28/4/135/18](aes-sbox/aes-sbox-a28-ad4-g135-gd18-xx107-55.circ.txt) | gate kernel | 2026-11-14 16:35 ¹ | 1.1 h | run start | job 2 min | from our 28/4/136/18; < 1 s into its job |
 | [aes-sbox 28/4/133/19](aes-sbox/aes-sbox-a28-ad4-g133-gd19-xx105-55.circ.txt) | gate kernel | 2026-11-15 05:14 ¹ | not logged | — | — | from our 28/4/134/19 |
@@ -322,8 +322,8 @@ Read from each `logs/<name>/found.json`:
 | [aes-sbox 28/5/133/18](aes-sbox/aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt) | depth pull (hub) | 2026-11-15 00:06 | 48 s | kernel start in the hub job | wall 100 s, CPU 99 s | from our 28/5/130/19 |
 | [aes-sbox 28/5/129/19](aes-sbox/aes-sbox-a28-ad5-g129-gd19-xx101-56.circ.txt) | SAT LNS | 2026-11-15 17:28 | not logged | — | job 15 min | from our 28/5/130/19; time not logged per step by this version (run total 900 s; step 337 of 480) |
 | [aes-sbox 28/5/127/22](aes-sbox/aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt) | skeleton kick (hub) | 2026-11-14 22:05 | 53 s | hub job start (whole job) | wall 53 s, CPU 55 s | from our 28/5/130/19 |
-| [aes-sbox 28/5/126/23](aes-sbox/aes-sbox-a28-ad5-g126-gd23-xx98-58.circ.txt) | conjugation | 2026-11-16 03:51 | 17 min | job start | job 28 min | from NIST 28/5/124/27 |
-| [aes-sbox 28/5/125/24](aes-sbox/aes-sbox-a28-ad5-g125-gd24-xx97-50.circ.txt) | conjugation | 2026-11-16 04:07 | 6 min | job start | job 28 min | from our 28/5/125/25 |
+| [aes-sbox 28/5/126/23](aes-sbox/aes-sbox-a28-ad5-g126-gd23-xx98-58.circ.txt) | staged pull | 2026-11-16 03:51 | 17 min | job start | job 28 min | from NIST 28/5/124/27 |
+| [aes-sbox 28/5/125/24](aes-sbox/aes-sbox-a28-ad5-g125-gd24-xx97-50.circ.txt) | staged pull | 2026-11-16 04:07 | 6 min | job start | job 28 min | from our 28/5/125/25 |
 | [aes-sbox 29/4/141/15](aes-sbox/aes-sbox-a29-ad4-g141-gd15-xx112-58.circ.txt) | gate kernel (hub) | 2026-11-15 07:07 | 16 s | kernel start in the hub job | wall 95 s, CPU 94 s | from our 29/4/145/15 |
 | [aes-sbox 29/4/135/16](aes-sbox/aes-sbox-a29-ad4-g135-gd16-xx106-51.circ.txt) | gate kernel (hub) | 2026-11-15 13:10 | 73 s | kernel start in the hub job | wall 95 s, CPU 94 s | from our 29/4/136/16 |
 | [aes-sbox 29/4/131/17](aes-sbox/aes-sbox-a29-ad4-g131-gd17-xx102-64.circ.txt) | depth pull (hub) | 2026-11-15 13:31 | 46 s | kernel start in the hub job | wall 93 s, CPU 94 s | from our 29/4/129/19 |
@@ -339,21 +339,21 @@ Read from each `logs/<name>/found.json`:
 | [aes-sbox 31/5/115/24](aes-sbox/aes-sbox-a31-ad5-g115-gd24-xx84-29.circ.txt) | gate kernel (hub) | 2026-11-14 23:42 | 7 s | kernel start in the hub job | wall 99 s, CPU 97 s | from our 31/5/115/25 |
 | [aes-sbox 31/5/114/28](aes-sbox/aes-sbox-a31-ad5-g114-gd28-xx83-18.circ.txt) | join (hub) | 2026-11-14 21:24 | 3 s | hub job start (whole job) | wall 3 s, CPU 4 s | join: front of our 31/5/116/22, back of our 32/4/114/26 |
 | [aes-sbox 32/4/125/15](aes-sbox/aes-sbox-a32-ad4-g125-gd15-xx93-37.circ.txt) | gate kernel | 2026-11-14 16:09 ¹ | 1.0 h | run start | job 2 min | from our 32/4/126/15 |
-| [aes-sbox 32/4/119/16](aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt) | conjugation | 2026-11-16 08:12 | 6 min | job start | job 21 min | from our 32/4/117/17 |
-| [aes-sbox 32/4/117/17](aes-sbox/aes-sbox-a32-ad4-g117-gd17-xx85-35.circ.txt) | conjugation | 2026-11-16 07:57 | 11 min | job start | job 21 min | from our 32/4/114/19 |
-| [aes-sbox 32/4/115/18](aes-sbox/aes-sbox-a32-ad4-g115-gd18-xx83-35.circ.txt) | conjugation | 2026-11-16 07:48 | 2 min | job start | job 21 min | from our 32/4/114/19 |
+| [aes-sbox 32/4/119/16](aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt) | staged pull | 2026-11-16 08:12 | 6 min | job start | job 21 min | from our 32/4/117/17 |
+| [aes-sbox 32/4/117/17](aes-sbox/aes-sbox-a32-ad4-g117-gd17-xx85-35.circ.txt) | staged pull | 2026-11-16 07:57 | 11 min | job start | job 21 min | from our 32/4/114/19 |
+| [aes-sbox 32/4/115/18](aes-sbox/aes-sbox-a32-ad4-g115-gd18-xx83-35.circ.txt) | staged pull | 2026-11-16 07:48 | 2 min | job start | job 21 min | from our 32/4/114/19 |
 | [aes-sbox 32/4/114/19](aes-sbox/aes-sbox-a32-ad4-g114-gd19-xx82-45.circ.txt) | conjugation | 2026-11-16 07:58 | 13 min | job start | job 17 min | from our 32/4/119/18 |
-| [aes-sbox 32/4/113/20](aes-sbox/aes-sbox-a32-ad4-g113-gd20-xx81-36.circ.txt) | conjugation | 2026-11-16 08:22 | 4 min | job start | job 17 min | from our 32/4/112/22 |
+| [aes-sbox 32/4/113/20](aes-sbox/aes-sbox-a32-ad4-g113-gd20-xx81-36.circ.txt) | staged pull | 2026-11-16 08:22 | 4 min | job start | job 17 min | from our 32/4/112/22 |
 | [aes-sbox 32/4/112/21](aes-sbox/aes-sbox-a32-ad4-g112-gd21-xx80-33.circ.txt) | SAT LNS | 2026-11-16 07:57 | 12 min | job start | job 20 min | from our 32/4/113/20 |
 | [aes-sbox 32/4/111/25](aes-sbox/aes-sbox-a32-ad4-g111-gd25-xx79-30.circ.txt) | conjugation | 2026-11-16 02:10 | 6 min | job start | job 25 min | from NIST 32/4/117/19 |
 | [aes-sbox 32/5/115/17](aes-sbox/aes-sbox-a32-ad5-g115-gd17-xx83-31.circ.txt) | depth pull (hub) | 2026-11-14 20:28 | 69 s | kernel start in the hub job | wall 101 s, CPU 100 s | from our 32/5/116/17 |
-| [aes-sbox 32/5/111/18](aes-sbox/aes-sbox-a32-ad5-g111-gd18-xx79-34.circ.txt) | conjugation | 2026-11-16 03:29 | 7 min | job start | job 11 min | from our 32/5/112/18 |
-| [aes-sbox 32/5/110/19](aes-sbox/aes-sbox-a32-ad5-g110-gd19-xx78-31.circ.txt) | conjugation | 2026-11-16 02:41 | 7 min | job start | job 18 min | from our 32/5/108/20 |
+| [aes-sbox 32/5/111/18](aes-sbox/aes-sbox-a32-ad5-g111-gd18-xx79-34.circ.txt) | staged pull | 2026-11-16 03:29 | 7 min | job start | job 11 min | from our 32/5/112/18 |
+| [aes-sbox 32/5/110/19](aes-sbox/aes-sbox-a32-ad5-g110-gd19-xx78-31.circ.txt) | staged pull | 2026-11-16 02:41 | 7 min | job start | job 18 min | from our 32/5/108/20 |
 | [aes-sbox 32/5/108/20](aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt) | gate kernel | 2026-11-13 18:57 | 7 s | job start | — | from NIST 32/5/109/20; iteration 19189 of a deterministic job |
-| [aes-sbox 32/5/106/21](aes-sbox/aes-sbox-a32-ad5-g106-gd21-xx74-28.circ.txt) | conjugation | 2026-11-16 02:36 | 100 s | job start | job 18 min | from our 32/5/106/22 |
+| [aes-sbox 32/5/106/21](aes-sbox/aes-sbox-a32-ad5-g106-gd21-xx74-28.circ.txt) | staged pull | 2026-11-16 02:36 | 100 s | job start | job 18 min | from our 32/5/106/22 |
 | [aes-sbox 32/5/105/24](aes-sbox/aes-sbox-a32-ad5-g105-gd24-xx73-24.circ.txt) | conjugation | 2026-11-16 02:11 | 7 min | job start | job 18 min | from our 32/5/104/29 |
 | [aes-sbox 32/5/104/29](aes-sbox/aes-sbox-a32-ad5-g104-gd29-xx72-23.circ.txt) | gate kernel | 2026-11-14 15:07 ¹ | 4 min | job start | job 4 min | from NIST 32/5/107/22 |
-| [aes-sbox 32/7/104/26](aes-sbox/aes-sbox-a32-ad7-g104-gd26-xx72-31.circ.txt) | conjugation | 2026-11-16 02:10 | 6 min | job start | job 17 min | from our 32/7/104/27 |
+| [aes-sbox 32/7/104/26](aes-sbox/aes-sbox-a32-ad7-g104-gd26-xx72-31.circ.txt) | staged pull | 2026-11-16 02:10 | 6 min | job start | job 17 min | from our 32/7/104/27 |
 | [aes-sbox 32/7/103/29](aes-sbox/aes-sbox-a32-ad7-g103-gd29-xx71-25.circ.txt) | conjugation | 2026-11-16 03:03 | 10 min | job start | job 17 min | from NIST 32/7/103/32 |
 | [aes-sbox 33/4/115/15](aes-sbox/aes-sbox-a33-ad4-g115-gd15-xx82-19.circ.txt) | join | 2026-11-14 15:48 ¹ | 19 min | run start | — | join: front of NIST 32/4/127/15, back of our 37/4/121/14 |
 | [aes-sbox 33/4/112/16](aes-sbox/aes-sbox-a33-ad4-g112-gd16-xx79-28.circ.txt) | gate kernel (hub) | 2026-11-14 18:30 | 17 s | kernel start in the hub job | wall 101 s, CPU 100 s | from our 33/4/113/16 |
@@ -361,7 +361,7 @@ Read from each `logs/<name>/found.json`:
 | [aes-sbox 33/4/108/19](aes-sbox/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt) | gate kernel | 2026-11-13 19:01 | 6 s | job start | — | from NIST 33/4/108/20; iteration 16645 of a deterministic job |
 | [aes-sbox 33/4/107/20](aes-sbox/aes-sbox-a33-ad4-g107-gd20-xx74-26.circ.txt) | depth pull (hub) | 2026-11-14 18:14 | 79 s | kernel start in the hub job | wall 101 s, CPU 100 s | from NIST 33/4/106/22 |
 | [aes-sbox 34/4/134/13](aes-sbox/aes-sbox-a34-ad4-g134-gd13-xx100-51.circ.txt) | gate kernel (hub) | 2026-11-14 19:42 | 45 s | kernel start in the hub job | wall 101 s, CPU 100 s | from NIST 35/4/133/13 |
-| [aes-sbox 34/4/122/14](aes-sbox/aes-sbox-a34-ad4-g122-gd14-xx88-38.circ.txt) | conjugation | 2026-11-16 12:16 | 39 s | job start | job 15 min | from our 34/4/123/14 |
+| [aes-sbox 34/4/122/14](aes-sbox/aes-sbox-a34-ad4-g122-gd14-xx88-38.circ.txt) | staged pull | 2026-11-16 12:16 | 39 s | job start | job 15 min | from our 34/4/123/14 |
 | [aes-sbox 35/3/181/12](aes-sbox/aes-sbox-a35-ad3-g181-gd12-xx146-80.circ.txt) | re-basing | 2026-11-16 01:10 | 8 min | job start | job 20 min | from our 35/3/177/13 |
 | [aes-sbox 35/3/165/13](aes-sbox/aes-sbox-a35-ad3-g165-gd13-xx130-60.circ.txt) | re-basing | 2026-11-16 09:10 | 3 min | job start | job 15 min | from our 35/3/166/13 |
 | [aes-sbox 35/3/162/14](aes-sbox/aes-sbox-a35-ad3-g162-gd14-xx127-61.circ.txt) | region rebuild | 2026-11-14 18:19 ¹ | not logged | — | job 45 min | from our 35/3/163/14 |
@@ -370,13 +370,13 @@ Read from each `logs/<name>/found.json`:
 | [aes-sbox 35/3/144/17](aes-sbox/aes-sbox-a35-ad3-g144-gd17-xx109-48.circ.txt) | depth pull (hub) | 2026-11-15 11:02 | 73 s | kernel start in the hub job | wall 96 s, CPU 96 s | from our 35/3/143/18 |
 | [aes-sbox 35/3/143/18](aes-sbox/aes-sbox-a35-ad3-g143-gd18-xx108-49.circ.txt) | product exchange | 2026-11-15 06:06 ¹ | not logged | — | — | start not kept |
 | [aes-sbox 35/3/141/19](aes-sbox/aes-sbox-a35-ad3-g141-gd19-xx106-46.circ.txt) | product exchange | 2026-11-15 11:40 ¹ | not logged | — | — | from our 35/3/142/19 |
-| [aes-sbox 35/3/139/21](aes-sbox/aes-sbox-a35-ad3-g139-gd21-xx104-50.circ.txt) | conjugation | 2026-11-16 12:09 | 4 min | job start | job 5 min | from our 35/3/139/22 |
-| [aes-sbox 35/3/138/23](aes-sbox/aes-sbox-a35-ad3-g138-gd23-xx103-46.circ.txt) | conjugation | 2026-11-16 07:05 | 4 min | job start | job 5 min | from our 35/3/138/24 |
+| [aes-sbox 35/3/139/21](aes-sbox/aes-sbox-a35-ad3-g139-gd21-xx104-50.circ.txt) | staged pull | 2026-11-16 12:09 | 4 min | job start | job 5 min | from our 35/3/139/22 |
+| [aes-sbox 35/3/138/23](aes-sbox/aes-sbox-a35-ad3-g138-gd23-xx103-46.circ.txt) | staged pull | 2026-11-16 07:05 | 4 min | job start | job 5 min | from our 35/3/138/24 |
 | [aes-sbox 35/3/137/28](aes-sbox/aes-sbox-a35-ad3-g137-gd28-xx102-47.circ.txt) | re-basing | 2026-11-15 23:08 | 3 min | job start | — | from our 35/3/152/34 |
 | [aes-sbox 36/3/161/14](aes-sbox/aes-sbox-a36-ad3-g161-gd14-xx125-57.circ.txt) | cap oscillation (hub) | 2026-11-14 21:39 | 97 s | hub job start (whole job) | wall 97 s, CPU 100 s | from our 35/3/162/14 |
 | [aes-sbox 36/4/129/13](aes-sbox/aes-sbox-a36-ad4-g129-gd13-xx93-40.circ.txt) | gate kernel | 2026-11-14 15:52 ¹ | 11 min | run start | job 2 min | from our 36/4/130/13 |
 | [aes-sbox 37/3/160/14](aes-sbox/aes-sbox-a37-ad3-g160-gd14-xx123-52.circ.txt) | join (hub) | 2026-11-14 23:49 | 8 s | hub job start (whole job) | wall 8 s, CPU 5 s | join: front of our 36/3/161/14, back of our 37/3/149/20 |
-| [aes-sbox 37/4/127/13](aes-sbox/aes-sbox-a37-ad4-g127-gd13-xx90-41.circ.txt) | conjugation | 2026-11-16 09:34 | 5 min | job start | job 8 min | from our 36/4/129/13 |
+| [aes-sbox 37/4/127/13](aes-sbox/aes-sbox-a37-ad4-g127-gd13-xx90-41.circ.txt) | staged pull | 2026-11-16 09:34 | 5 min | job start | job 8 min | from our 36/4/129/13 |
 | [aes-sbox 37/4/121/14](aes-sbox/aes-sbox-a37-ad4-g121-gd14-xx84-36.circ.txt) | gate kernel | 2026-11-14 14:56 ¹ | 4 min | job start | run 16 min | from our 38/4/124/14 |
 | [aes-sbox 38/4/135/12](aes-sbox/aes-sbox-a38-ad4-g135-gd12-xx97-25.circ.txt) | shared-bottom rebuild | 2026-11-16 09:46 | 9 min | job start | job 15 min | from our 39/4/138/12 |
 | [aes-sbox 42/4/284/11](aes-sbox/aes-sbox-a42-ad4-g284-gd11-xx242-114.circ.txt) | gate kernel | 2026-11-15 06:35 ¹ | not logged | — | — | from our 42/4/301/11 |

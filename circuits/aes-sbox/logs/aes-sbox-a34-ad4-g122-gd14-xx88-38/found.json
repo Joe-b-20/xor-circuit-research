@@ -8,9 +8,30 @@
   14
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  },
+  {
+   "date": "2026-11-16",
+   "field": "logs: runner.log, plan.json.gz",
+   "was": "the runner lines of pass-1 job T06/conjpull-303 (same job name) and the pass-1 plan (plan.json)",
+   "now": "the runner lines of this job, p2-T06/conjpull-303 (runner2.events.log), and the pass-2 plan (plan2.json), paths rewritten as elsewhere",
+   "why": "job names restart in the second runner pass; the logs were matched by name only"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +47,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: our 34/4/123/14 from night job T06/conjpull-316 (pass 1), an identity pull of 33/4/125/14 from the 2026-11-14 hub archive (circuit 1317ec0f73e9); no conjugate in the night jobs of the lineage",
  "parameters": {
   "limits": {
    "AD": 4,
@@ -41,6 +63,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 39.3
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find: night job T06/conjpull-316 (pass 1) wrote a 34/4/122/14 circuit (file conjpull-a34-ad4-g122-gd14-713123129a) at 05:46:47; this circuit is from pass 2 (p2-T06/conjpull-303, 12:16:28), started from that job's 34/4/123/14",
+  "evidence": "the 2026-11-16 night runner logs (NEW lines) (the first is flagged beyond-known) and the night job folders"
  },
  "code": {
   "commit_at_run": "d9507dd",
@@ -61,7 +88,7 @@
  "reproducibility": {
   "class": "one-off",
   "text": "one-off: a time-budgeted run (not bit-reproducible); re-run on 2026-11-16 (replay)",
-  "replay": "replayed on 2026-11-16 at public commit d72204c: the same gate list as the circuit first recorded, reached at 75 s (the original at 39 s) of a 600 s stage (circuits/REPRODUCE.md#2-conjugation-and-staged-pull)"
+  "replay": "replayed on 2026-11-16 at public commit d72204c: the same gate list as the circuit first recorded, reached at 75 s (the original at 39 s) of a 600 s stage (circuits/REPRODUCE.md#2-staged-pull)"
  },
  "command": "/usr/bin/python3 <checkout>/nonlinear/boolflux/campaigns/targets/ops/conjpull.py --in <campaign archive>/2026-11-16-night/T06/found/conjpull-a34-ad4-g123-gd14-f16a32f201.circ.txt --target T06 --seed 756285 --seconds 900 --out <campaign archive>/2026-11-16-night/T06/runs/p2-T06/conjpull-303 --conj id --repair-keep 0 --schedule m:13:600",
  "command_source": "historical manifest (nonlinear/boolflux/results/MANIFEST.json at commit e657298) and the run's sidecar",

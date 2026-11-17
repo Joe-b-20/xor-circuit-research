@@ -8,9 +8,23 @@
   23
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "NIST circuit",
@@ -25,6 +39,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: NIST's 28/5/124/27 (hub archive circuit 104c1eda4172); no conjugate",
  "parameters": {
   "limits": {
    "AD": 5,
@@ -40,6 +55,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 1015.3
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find: the tuple was already in the archive before the night (2026-11-15 study, <campaign archive>/2026-11-15-study/T1/overnight/run/found/front/aes-sbox-a28-ad5-g126-gd23-0c61a5821a27.bfx, file time 2026-11-15T14:57Z); the ledger lists it as known, reproduced by night:T03",
+  "evidence": "the 2026-11-15 targets ledger (LEDGER.json, built 2026-11-16T13:19Z)"
  },
  "code": {
   "commit_at_run": "d9507dd",

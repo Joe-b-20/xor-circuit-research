@@ -8,9 +8,23 @@
   24
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +40,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: our 28/5/125/25 from night job T03/conjpull-124, an identity pull of NIST's 28/5/124/27 (hub archive circuit 104c1eda4172); no conjugate in the lineage",
  "parameters": {
   "limits": {
    "AD": 5,
@@ -41,6 +56,10 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 358.5
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "the 2026-11-16 night runner logs (NEW lines): first circuit of this tuple, flagged beyond-known, 2026-11-16T04:07:49Z"
  },
  "code": {
   "commit_at_run": "d9507dd",

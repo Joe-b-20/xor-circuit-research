@@ -4,7 +4,7 @@
 
     python3 search/nonlinear/boolflux/ops/bottom.py --in START --target REF --seed S --seconds T
         --out DIR [--cpus 1] [--cut K] [--cap D] [--amax A] [--iters 30000] [--pw 0,3] [--T0 2.0]
-        [--polish-seconds 300] [--polish-cap-a build|target] [--repair-keep 1]
+        [--polish-seconds 90] [--polish-dup] [--polish-cap-a build|target] [--repair-keep 1]
 
 Model.  Cut K (default: the start's AND depth): the products at AND level K are the
 bottom; the front is everything feeding their non-linear operands.  Four base Y-forms (independent
@@ -14,9 +14,16 @@ products AND(Y_alpha, w) and per output a subset summing to B_j with an exact Kr
 (product level = Y level + 1 (+1 / +2 for 2- / 3,4-sums of base Ys)), at most amax - front ANDs products.
 Simulated annealing over per-output decompositions (bopt), build (bbuild: front cone + Y-sums +
 Boyar-Peralta x-forms + products + shared pairs + Huffman output trees), then kernel polish with caps
-A <= build A (default; keeps the A frontier), AD <= ref AD, GD <= D.
+A <= build A (default; keeps the A frontier), AD <= ref AD, GD <= D.  A build equal to the start, or to a build
+already polished in this job, is not polished again (--polish-dup to polish them anyway; night T09: 36 of 112
+--init own builds were the start, each polished 300 s).  --polish-seconds 90 (was 300: 93 % of polishes reached
+their final G within 25 % of the stage, FINDINGS-U4 section 3).
+Affine junk (--junk terms, default): outputs of the form y_j = c_j + sum_i Y_i u_ij(x) + lin(v_j) + sum_{i in t_j} Y_i
+(complemented operands: the inverse S-box inverts the affine A^-1 y + 0x05, so every NIST inverse circuit has
+them) keep v_j (an x-form) and the Y-sum of t_j as fixed extra terms of output j: priced in its Kraft sum
+(Y-sum at its level, x-form at ceil(log2 |v|) + 1) and built into its XOR tree; --junk reject: not applicable.
 Not applicable (status "not-applicable", exit 0) when there are not four independent base Y-forms,
-an output is not of the form above (linear junk), or some output has no Kraft-feasible decomposition at D.
+an output is not in the span above, or some output has no Kraft-feasible decomposition at D.
 """
 import argparse
 import json
@@ -36,7 +43,7 @@ import bbuild as BU                                   # noqa: E402
 L = BO.L
 
 
-def setup(c, cut, cap, amax):
+def setup(c, cut, cap, amax, junk='terms'):
     """model of the start's bottom; returns (Model, B, opts, info) or (None, reason)"""
     BO.CUT = cut
     n = c.n
@@ -48,24 +55,35 @@ def setup(c, cut, cap, amax):
         U, C = bsel.decompose_outputs(c, T, Ys)
     except AssertionError as e:
         return None, 'outputs not in span(Y_i x_l, Y_i, x_l, 1): %s' % e
-    junk = [j for j, (cst, v, yt) in enumerate(C) if v or yt]
-    if junk:
-        return None, 'outputs %s carry linear / Y-form junk terms' % junk
+    jk = [j for j, (cst, v, yt) in enumerate(C) if v or yt]
+    if jk and junk == 'reject':
+        return None, 'outputs %s carry linear / Y-form junk terms' % jk
     B = [tuple(U[j][i] for i in range(4)) for j in range(8)]
     nfront = sum(1 for j, g in enumerate(c.gates) if g[0] in core.NONLINEAR_OPS and la[n + j] < cut)
     nbottom = sum(1 for j, g in enumerate(c.gates) if g[0] in core.NONLINEAR_OPS and la[n + j] >= cut)
     free = BO.front_free_forms(c, T, la)
     M = BO.Model(B, Lb, cap, free, amax - nfront)
+    if jk:
+        M.xlev = [junk_levels(M, v, yt) for (cst, v, yt) in C]
     opts = []
     for j in range(8):
-        oj = [S for A in BO.bases_of(BO.colspace(B[j])) for S in [BO.decompose(B[j], A)] if M.kraft(S)]
+        oj = [S for A in BO.bases_of(BO.colspace(B[j])) for S in [BO.decompose(B[j], A)] if M.kraft(S, j)]
         if not oj:
             return None, 'output %d has no Kraft-feasible 4-product decomposition at GD %d (base Y levels %s)' % (j, cap, Lb)
         opts.append(oj)
     own = own_choice(c, cut, Ys)
     if own is not None and not all(BO.sum_t(S) == B[j] for j, S in enumerate(own)): own = None
     return (M, B, opts, {'Lb': Lb, 'nfront': nfront, 'nbottom': nbottom, 'C': C, 'own': own,
-                         'own_kraft': [M.kraft(S) for S in own] if own else None}), None
+                         'own_kraft': [M.kraft(S, j) for j, S in enumerate(own)] if own else None,
+                         'junk_outputs': jk, 'junk_levels': M.xlev}), None
+
+
+def junk_levels(M, v, yt):
+    """levels of output j's fixed extra terms: the Y-sum of yt (model Y level) and the x-form v (ceil(log2 |v|) + 1)"""
+    out = []
+    if yt: out.append(M.ylev(yt))
+    if v: out.append(max(1, (bin(v).count('1') - 1).bit_length() + 1))
+    return out
 
 
 def own_choice(c, cut, Ys):
@@ -118,7 +136,7 @@ def anneal(M, B, opts, rng, iters, T0, deadline, init=None):
                 if len(bs) > 60: bs = rng.sample(bs, 60)
                 for A in bs:
                     S = list(R) + BO.decompose(Mx, A)
-                    if len(set(S)) == len(S) and M.kraft(S): cand.append(S)
+                    if len(set(S)) == len(S) and M.kraft(S, j): cand.append(S)
         if not cand: continue
         old = choice[j]; bestc = None
         for S in cand:
@@ -145,9 +163,12 @@ def main():
     ap.add_argument('--out', required=True); ap.add_argument('--cpus', type=int, default=1)
     ap.add_argument('--cut', type=int); ap.add_argument('--cap', type=int); ap.add_argument('--amax', type=int)
     ap.add_argument('--iters', type=int, default=30000); ap.add_argument('--pw', default='0,3')
-    ap.add_argument('--T0', type=float, default=2.0); ap.add_argument('--polish-seconds', type=float, default=300)
+    ap.add_argument('--T0', type=float, default=2.0); ap.add_argument('--polish-seconds', type=float, default=90)
     ap.add_argument('--polish-cap-a', choices=['build', 'target'], default='build')
     ap.add_argument('--repair-keep', type=int, default=1)
+    ap.add_argument('--junk', choices=['terms', 'reject'], default='terms',
+                    help='outputs with affine junk (complemented operands): fixed extra terms (default) or not applicable')
+    ap.add_argument('--polish-dup', action='store_true', help='also polish builds equal to the start or to a build already polished')
     ap.add_argument('--shard', default=None, help='set by --cpus for worker processes (unused here)')
     ap.add_argument('--plan-seeds', default='', help='comma list of exact SA seeds to use first (bopt.py --seed S gives the same plan)')
     ap.add_argument('--init', choices=['random', 'own', 'mix'], default='mix',
@@ -175,7 +196,7 @@ def main():
     # the builder reads the front from a circuit file: give it an NCFF copy of the start
     sp = out / 'start.ncff.txt'
     if not sp.exists(): sp.write_text(core.write_ncff(c0, MC.MODEL))
-    st, why = setup(c0, cut, cap, amax)
+    st, why = setup(c0, cut, cap, amax, a.junk)
     if st is None:
         rec.notes.append(why); LG(event='not-applicable', reason=why, start=m0, cut=cut, cap=cap)
         rec.write('not-applicable'); return
@@ -183,9 +204,9 @@ def main():
     procs = MC.spawn_workers(sys.argv, a.cpus, a.seed, out) if a.cpus > 1 else []
     LG(event='start', start=m0, cut=cut, cap=cap, amax=amax, Lb=info['Lb'], nfront=info['nfront'], nbottom=info['nbottom'],
        opts=[len(o) for o in opts], own=info['own'] is not None, own_kraft=info['own_kraft'],
-       own_cost=M.cost(info['own']) if info['own'] else None)
+       own_cost=M.cost(info['own']) if info['own'] else None, junk_outputs=info['junk_outputs'], junk_levels=info['junk_levels'])
     pws = [float(x) for x in a.pw.split(',')]
-    it = 0
+    it = 0; start_id = cid(clean(c0)); polished = set()
     fixed = [int(x) for x in a.plan_seeds.split(',') if x.strip()]
     while time.time() < deadline - 20:
         pw = pws[it % len(pws)]
@@ -212,7 +233,7 @@ def main():
         nc = clean(nc); ok, inf = verify(nc); bm = metrics(nc)
         LG(event='build', seed=sd, pw=pw, init='own' if use_own else 'random', cost=cc, ok=ok, build=bm, secs=round(time.time() - tb, 1),
            sa_s=round(sa_s, 2), build_s=round(build_s, 2), verify_s=round(time.time() - t2, 2), plan_equals_own=same_own,
-           build_equals_start=cid(nc) == cid(clean(c0)), sa=dict(SA), phases=getattr(BU, 'LAST_PHASES', None))
+           build_equals_start=cid(nc) == start_id, sa=dict(SA), phases=getattr(BU, 'LAST_PHASES', None))
         if not ok or bm[3] > cap or bm[1] > tl['AD']: continue
         meth = {'engine': 'ops/bottom.py (bopt SA + bbuild, any cut)', 'cut': cut, 'cap': cap,
                 'pw': pw, 'plan': str(pj), 'plan_cost': cc, 'plan_seed': sd}
@@ -222,6 +243,11 @@ def main():
             continue      # polish only from builds inside the hard A limit
         left = deadline - time.time() - 20
         if left < 20 or a.polish_seconds <= 0: continue
+        bid = cid(nc)
+        if not a.polish_dup and (bid == start_id or bid in polished):
+            LG(event='polish-skip', seed=sd, build=bm, reason='build equals the start' if bid == start_id else 'build already polished')
+            continue
+        polished.add(bid)
         caps = {'A': bm[0] if a.polish_cap_a == 'build' else tl['A'], 'AD': tl['AD'], 'GD': cap}
         k, kinfo = MC.kernel_stage(nc, caps, sd, min(a.polish_seconds, left), out / 'jobs' / ('s%d' % sd), repair_keep=a.repair_keep)
         if k is not None:
@@ -229,6 +255,8 @@ def main():
             LG(event='polish', seed=sd, build=bm, result=km, t_last_improvement=kinfo.get('t_last_improvement'),
                kernel_stop=(kinfo.get('kernel_stats') or {}).get('stop'), kernel_stats=kinfo.get('kernel_stats'))
             rec.offer(k, bp, dict(meth, stage='kernel', kernel_seed=sd, caps=caps), kernel_bin=kinfo.get('kernel_bin_path'))
+            for o in kinfo.get('others') or []:      # other 4-D non-dominated kernel candidates (if the kernel returns several)
+                rec.offer(o, bp, dict(meth, stage='kernel-other', kernel_seed=sd, caps=caps), kernel_bin=kinfo.get('kernel_bin_path'))
         else:
             LG(event='polish', seed=sd, build=bm, result=None, err=kinfo.get('error'))
     if procs: MC.merge_workers(rec, procs, deadline + 30)

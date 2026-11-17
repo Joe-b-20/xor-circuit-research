@@ -8,9 +8,13 @@ seed, timing, candidate count, code version), and the run record JOBDIR/run.json
 Operators never admit; the scheduler verifies and admits.  The function (aes-sbox or aes-invsbox)
 is the process's ($BOOLFLUX_FUNCTION, set by the scheduler, or --function).
   polish  gate kernel (bfx, strict lexicographic objective) under the given caps (default: the input's own)
-  pull    the same with one cap lowered (GD by 1-3, AD by 1 or A by 1; repair mode of the kernel)
-  join    transplants of the input with archive partners in both roles (join.py)
-  trb     timing-aware XOR-region rebuilds (trb_impl.py)
+  pull    the same with one cap lowered (--lower: GD by 1-3 by default; AD or A by 1 on request; repair mode)
+  join    transplants of the input (and of the --batch targets) with archive partners in both roles (join.py)
+  trb     timing-aware XOR-region rebuilds (trb_impl.py) under the input's GD (--gd-offsets)
+polish and pull return the kernel's final best and, with --bests N (default 8), up to N of its intermediate
+bests (keep_bests): cleaned, placeable in the archive, not archived (id or structure), 4-D Pareto among
+themselves and the final, best value first.  join, trb (and linres) judge every candidate after cleaning
+(placeable()), as admission does.
 """
 from __future__ import annotations
 
@@ -23,10 +27,10 @@ import subprocess
 import time
 from pathlib import Path
 
-from .common import aesfn, core, metrics, code_version, cid, HUB, PKG
+from .common import aesfn, core, metrics, code_version, cid, clean, structure_key, HUB, PKG
 from .. import objective as OBJ
 from .. import runlog
-from .archive import Archive
+from .archive import Archive, pareto
 from . import join as J
 
 KDEFAULTS = {'T0': 0.6, 'Tperiod_it': 20000, 'stall_it': 60000, 'uphill': 1.0, 'max_excess': 8,
@@ -114,6 +118,48 @@ class OpError(Exception):
     pass
 
 
+def placeable(ar, c, slack=None):
+    """(cleaned circuit, its metrics, status) as admission will judge c: status 'ok' (would be placed),
+    'not placed', 'archived' (the cleaned circuit is an archive member) or 'archived structure' (same DAG
+    as a member).  Before 2026-11-16 the operators filtered on the raw metrics and offered exact copies (U7 #2)."""
+    cc = clean(c); m = metrics(cc)
+    if not ar.would_place(m, slack): return cc, m, 'not placed'
+    if cid(cc) in ar.rec: return cc, m, 'archived'
+    if structure_key(cc) in ar.skeys(): return cc, m, 'archived structure'
+    return cc, m, 'ok'
+
+
+def _best_no(p):
+    t = p.stem.split('-')[-1]
+    return int(t) if t.isdigit() else 0
+
+
+def with_bests(ar, cands, info, limit):
+    """the kernel's final best (cands, unchanged) + up to `limit` intermediate bests of the run (info
+    bests_dir, the kernel's keep_bests files): placeable, distinct tuples, non-dominated among themselves and the
+    final (4-D), highest archive gain first.  The kernel ranks lexicographically under caps, the archive keeps
+    4-D cells without caps, so passed bests can be new cells or front points (U7 #1: 41 placeable, 7 with front
+    gain in 541 inverse jobs).  info['bests']: counts."""
+    d = info.get('bests_dir')
+    st = {'files': 0, 'ok': 0, 'not placed': 0, 'archived': 0, 'archived structure': 0, 'unreadable': 0, 'returned': 0}
+    info['bests'] = st
+    if not limit or not d or not Path(d).is_dir(): return cands
+    fm = metrics(clean(cands[0])) if cands else None
+    by_m = {}
+    for f in sorted(Path(d).glob('best-*.bfx'), key=_best_no):
+        st['files'] += 1
+        try:
+            c = core.from_kernel(f.read_text(), f.stem)
+        except Exception:
+            st['unreadable'] += 1; continue
+        cc, m, why = placeable(ar, c); st[why] += 1
+        if why == 'ok' and m != fm and m not in by_m: by_m[m] = (cc, f.name)
+    fr = set(pareto(list(by_m) + ([fm] if fm else [])))
+    keep = sorted((m for m in by_m if m in fr), key=lambda m: (-ar.gain(m), m))[:limit]
+    st['returned'] = len(keep); st['returned_metrics'] = [list(m) + [by_m[m][1]] for m in keep]
+    return list(cands) + [by_m[m][0] for m in keep]
+
+
 class FilterAudit:
     """$BOOLFLUX_FILTER_AUDIT=1 (default off: it cleans every candidate an operator tries, which costs CPU):
     how the operator's raw would_place filter compares with the cleaned circuit that admission would judge.
@@ -165,19 +211,25 @@ def op_polish(ar, args, rng, out):
     caps = args.caps or {'A': A, 'AD': AD, 'GD': GD}
     cands, info = _kernel(c, caps, args.objective, args.seed, args.seconds, out, args.archive)
     info['caps'] = caps
-    return cands, info
+    return with_bests(ar, cands, info, getattr(args, 'bests', 0)), info
+
+
+PULL_LOWER = 'GD'       # default draw of op_pull (until 2026-11-16 'GD,GD,GD,AD,A': the A and AD draws met their
+                        # lowered cap in 0 of 105 inverse jobs, U2 section 6)
 
 
 def op_pull(ar, args, rng, out):
     c = ar.circuit(args.inp); A, AD, G, GD = metrics(c)
     caps = dict(args.caps or {'A': A, 'AD': AD, 'GD': GD})
-    which = rng.choice(['GD', 'GD', 'GD', 'AD', 'A'])
+    modes = [x.strip() for x in (getattr(args, 'lower', None) or PULL_LOWER).split(',') if x.strip()]
+    if not modes or any(x not in ('GD', 'AD', 'A') for x in modes): raise OpError('--lower wants GD, AD, A: %r' % (args.lower,))
+    which = modes[0] if len(modes) == 1 else rng.choice(modes)
     if which == 'GD': caps['GD'] = max(1, GD - rng.choice([1, 1, 2, 3])); caps['AD'] = None
     elif which == 'AD': caps['AD'] = max(1, AD - 1)
     else: caps['A'] = max(1, A - 1)
     cands, info = _kernel(c, caps, args.objective, args.seed, args.seconds, out, args.archive)
     info.update({'caps': caps, 'lowered': which})
-    return cands, info
+    return with_bests(ar, cands, info, getattr(args, 'bests', 0)), info
 
 
 def join_partners(ar, inp, since, rng, limit=None):
@@ -196,51 +248,80 @@ def join_partners(ar, inp, since, rng, limit=None):
     return sorted(ids, key=lambda i: (ar.rec[i]['t_admit'], i))
 
 
+def parse_batch(text):
+    """--batch 'ID:SINCE,ID:SINCE' -> [(id, since)]"""
+    out = []
+    for part in (text or '').split(','):
+        if part.strip():
+            i, t = part.strip().split(':', 1); out.append((i, float(t)))
+    return out
+
+
 def op_join(ar, args, rng, out):
-    """the input against archive partners in both roles (join_partners); keeps candidates that the
-    archive would place (lower or tie G in their cell).  info['joined_through']: every partner
-    admitted up to this time has been joined with the input (the scheduler passes it back as
-    --since, so no (target, partner) pair is computed twice by this target's jobs)."""
-    X = J.Prepared(ar.circuit(args.inp), args.inp)
+    """The input (and every --batch target, in order, while time lasts) against archive partners in both roles
+    (join_partners); keeps candidates that admission would place after cleaning (placeable), not archived.
+    info['joined_through'] (the input) and info['joined_through_by'] {target: t}: every partner admitted up
+    to t has been joined with that target (the scheduler passes it back as --since).  --max-cands is met at a
+    partner boundary: a partner whose candidates would overflow it is left for the next job (the mark stops at
+    the last partner kept in full; until 2026-11-16 the mark advanced past dropped candidates, U7 #3)."""
+    targets = [(args.inp, args.since)] + parse_batch(getattr(args, 'batch', None))
+    for i, t in targets[1:]:
+        if i not in ar.rec: raise OpError('--batch %s is not in the archive' % i)
     t_load = max((r['t_admit'] for r in ar.rec.values()), default=0.0)
-    partners = join_partners(ar, args.inp, args.since, rng, args.partners)
-    t0 = time.time(); tried = 0; kept = []; done = 0; through = args.since
-    seen = set(); not_placed = 0; dup = 0; stop = 'partners done'; pair_hits = {}   # (instrumentation counters)
-    fa = FilterAudit(ar); pstat = []; t_x = ar.rec[args.inp]['t_admit']; marks = join_marks(getattr(args, 'archive', None)); repeated = 0
-    for pid in partners:
-        if time.time() - t0 > args.seconds: stop = 'time'; break
-        tp = time.time(); y0 = tried; k0 = len(kept)
-        P = J.Prepared(ar.circuit(pid), pid)
-        for F, B in ((X, P), (P, X)):
-            for c, LX, LY, nint in J.join_all(F, B):
-                tried += 1
-                m = metrics(c); ok = ar.would_place(m); fa.see(c, m, ok)
-                if not ok: not_placed += 1; continue
-                k = core.to_kernel(c)
-                if k in seen: dup += 1; continue
-                seen.add(k); pair_hits[pid] = pair_hits.get(pid, 0) + 1
-                kept.append((ar.gain(m), c, {'front': F.id, 'back': B.id, 'LX': LX, 'LY': LY, 'interface_gates': nint}))
-        done += 1
-        if marks.get(pid, -1.0) >= t_x: repeated += 1         # pid's own join passes already met the input
-        pstat.append((time.time() - tp, tried - y0, len(kept) - k0))
-        if args.since is not None: through = ar.rec[pid]['t_admit']
-    if args.since is not None and done == len(partners): through = max(t_load, args.since)
+    t0 = time.time(); tried = 0; kept = []; seen = set(); stop = 'partners done'
+    not_placed = 0; dup = 0; archived = 0; dropped = 0; deferred = 0; pair_hits = {}     # (instrumentation counters)
+    fa = FilterAudit(ar); pstat = []; marks = join_marks(getattr(args, 'archive', None)); repeated = 0
+    per = []; all_partners = []
+    for ti, (tid, since) in enumerate(targets):
+        if ti and (stop != 'partners done' or time.time() - t0 > args.seconds): break
+        X = J.Prepared(ar.circuit(tid), tid); t_x = ar.rec[tid]['t_admit']
+        partners = join_partners(ar, tid, since, rng, args.partners); all_partners += partners
+        through = since; done = 0
+        for pid in partners:
+            if time.time() - t0 > args.seconds: stop = 'time'; break
+            tp = time.time(); y0 = tried; new = []
+            P = J.Prepared(ar.circuit(pid), pid)
+            for F, B in ((X, P), (P, X)):
+                for c, LX, LY, nint in J.join_all(F, B):
+                    tried += 1
+                    if fa.on: fa.see(c, metrics(c), ar.would_place(metrics(c)))
+                    cc, m, why = placeable(ar, c)
+                    if why == 'not placed': not_placed += 1; continue
+                    if why != 'ok': archived += 1; continue
+                    k = structure_key(cc)                 # same structure within the job (also across --batch targets)
+                    if k in seen: dup += 1; continue
+                    seen.add(k)
+                    new.append((ar.gain(m), cc, {'front': F.id, 'back': B.id, 'LX': LX, 'LY': LY, 'interface_gates': nint}))
+            if kept and len(kept) + len(new) > args.max_cands:
+                stop = 'max_cands'; deferred += len(new); break      # this partner goes to the next job
+            if len(new) > args.max_cands:                                # one partner alone: its best are kept
+                new.sort(key=lambda x: -x[0]); dropped += len(new) - args.max_cands; new = new[:args.max_cands]
+            kept += new; done += 1
+            if new: pair_hits[(tid, pid)] = len(new)
+            if marks.get(pid, -1.0) >= t_x: repeated += 1         # pid's own join passes already met this target
+            pstat.append((time.time() - tp, tried - y0, len(new)))
+            if since is not None: through = ar.rec[pid]['t_admit']
+        if since is not None and done == len(partners): through = max(t_load, since)
+        per.append({'target': tid, 'since': since, 'partners': len(partners), 'partners_done': done, 'joined_through': through})
     kept.sort(key=lambda x: -x[0])
-    dropped = max(0, len(kept) - args.max_cands)
-    kept = kept[:args.max_cands]
     import hashlib
-    pacc = {'partner_hash': hashlib.sha1(','.join(sorted(partners)).encode()).hexdigest()[:16],
+    pacc = {'partner_hash': hashlib.sha1(','.join(sorted(all_partners)).encode()).hexdigest()[:16],
             'repeated_pairs': repeated, 'partner_s_sum': round(sum(x[0] for x in pstat), 3),
             'partner_s_max': round(max((x[0] for x in pstat), default=0.0), 3),
             'yields_max': max((x[1] for x in pstat), default=0), 'kept_max': max((x[2] for x in pstat), default=0),
             'partners_with_yields': sum(1 for x in pstat if x[1])}
+    p0 = per[0]
     if RUN is not None:
-        RUN.event('join-end', stop=stop, partners=len(partners), partners_done=done, tried=tried, not_placed=not_placed,
-                  duplicate=dup, kept=len(kept), kept_over_limit=dropped, partners_with_hits=len(pair_hits),
-                  seconds=round(time.time() - t0, 2), **pacc)
-    return [c for g, c, d in kept], {'partners': len(partners), 'partners_done': done, 'tried': tried, 'kept_over_limit': dropped,
-                                    'since': args.since, 'joined_through': through, 'joins': [d for g, c, d in kept],
-                                    'stop': stop, 'not_placed': not_placed, 'duplicate': dup,
+        RUN.event('join-end', stop=stop, targets=len(per), partners=sum(x['partners'] for x in per),
+                  partners_done=sum(x['partners_done'] for x in per), tried=tried, not_placed=not_placed,
+                  duplicate=dup, archived=archived, kept=len(kept), kept_over_limit=dropped, deferred=deferred,
+                  partners_with_hits=len(pair_hits), seconds=round(time.time() - t0, 2), **pacc)
+    return [c for g, c, d in kept], {'partners': p0['partners'], 'partners_done': p0['partners_done'], 'tried': tried,
+                                    'kept_over_limit': dropped, 'deferred': deferred, 'since': args.since,
+                                    'joined_through': p0['joined_through'],
+                                    'joined_through_by': {x['target']: x['joined_through'] for x in per if x['since'] is not None},
+                                    'batch': per, 'joins': [d for g, c, d in kept],
+                                    'stop': stop, 'not_placed': not_placed, 'duplicate': dup, 'archived': archived,
                                     'partners_with_hits': len(pair_hits), 'pair_accounting': pacc,
                                     'filter': dict(fa.info() or {}, kept=len(kept), dropped_over_max_cands=dropped) if fa.on else None}
 
@@ -253,13 +334,15 @@ def join_marks(archive_dir):
     try:
         with open(Path(archive_dir) / 'stats.jsonl') as f:
             for ln in f:
-                if '"join_mark": null' in ln or '"join"' not in ln: continue
+                if ('"join_mark": null' in ln and '"join_marks": {' not in ln) or '"join"' not in ln: continue
                 try:
                     x = json.loads(ln)
                 except ValueError:
                     continue
                 if x.get('op') == 'join' and isinstance(x.get('join_mark'), (int, float)):
                     out[x['target']] = max(out.get(x['target'], 0.0), x['join_mark'])
+                for t, v in (x.get('join_marks') or {}).items():         # batch join jobs (2026-11-16)
+                    if isinstance(v, (int, float)): out[t] = max(out.get(t, 0.0), v)
     except OSError:
         pass
     return out
@@ -270,8 +353,11 @@ def op_trb(ar, args, rng, out):
     c = ar.circuit(args.inp); A, AD, G, GD = metrics(c)
     t0 = time.time(); best = {}; reps = 0; errors = {}
     fa = FilterAudit(ar); c_m = (A, AD, G, GD); by = {}; hg = {}; hgd = {}                 # instrumentation: per (region, GD cap offset) outcome counts; dG, dGD of built circuits
+    # GD cap offsets (--gd-offsets, default '0' = the input's GD; until 2026-11-16 '0,0,1': the D = GD-1 draws were an
+    # infeasible start in 98% of the reps on mature fronts, U2 section 4)
+    offs = [int(x) for x in str(getattr(args, 'gd_offsets', None) or TRB_GD_OFFSETS).split(',') if x.strip()]
     while time.time() - t0 < args.seconds:
-        D = GD - rng.choice([0, 0, 1])
+        D = GD - (offs[0] if len(offs) == 1 else rng.choice(offs))
         kind = rng.choice(['bottom', 'top', 'mid', 'random', 'random'])
         try:
             nc, info = trb_impl.rebuild(c, D, kind, rng)
@@ -283,27 +369,32 @@ def op_trb(ar, args, rng, out):
         if nc is c:
             k = 'skip: ' + (info.get('why') or ('region < 2 gates' if info.get('region_gates', 2) < 2 else 'unchanged'))
             b[k] = b.get(k, 0) + 1; continue
-        m = metrics(nc); m0 = c_m; ok = ar.would_place(m); fa.see(nc, m, ok)
+        if fa.on: fa.see(nc, metrics(nc), ar.would_place(metrics(nc)))
+        nc, m, why = placeable(ar, nc); m0 = c_m; ok = why == 'ok'
         dg = m[2] - m0[2]; dgd = m[3] - m0[3]
         hg['%+d' % max(-6, min(6, dg))] = hg.get('%+d' % max(-6, min(6, dg)), 0) + 1
         hgd['%+d' % max(-6, min(6, dgd))] = hgd.get('%+d' % max(-6, min(6, dgd)), 0) + 1
+        if why.startswith('archived'):
+            b['built: ' + why] = b.get('built: ' + why, 0) + 1; continue
         if not ok:
             k = 'built: same tuple' if m == m0 else ('built: worse G' if dg > 0 else ('built: better G' if dg < 0 else 'built: same G'))
             k += ', not placed'
             b[k] = b.get(k, 0) + 1; continue
         b['built: would_place'] = b.get('built: would_place', 0) + 1
-        best[core.to_kernel(nc)] = nc
+        best[structure_key(nc)] = (nc, m)
         if rng.random() < 0.5: c = nc; c_m = m          # chain rebuilds sometimes
     el = time.time() - t0
     stats = {k: dict(sorted(v.items())) for k, v in sorted(by.items())}
     if RUN is not None:
         RUN.event('trb-end', reps=reps, distinct=len(best), errors=errors, by_region=stats, dG=hg, dGD=hgd,
                   reps_per_s=round(reps / el, 1) if el > 0 else None, seconds=round(el, 2))
-    return list(best.values())[:args.max_cands], {'reps': reps, 'rebuild_errors': errors, 'by_region': stats, 'dG': hg, 'dGD': hgd,
+    out_c = [c2 for c2, m2 in sorted(best.values(), key=lambda cm: (-ar.gain(cm[1]), cm[1]))[:args.max_cands]]   # best first (was: first found)
+    return out_c, {'reps': reps, 'rebuild_errors': errors, 'by_region': stats, 'dG': hg, 'dGD': hgd,
                                                   'reps_per_s': round(reps / el, 1) if el > 0 else None,
                                                   'filter': dict(fa.info() or {}, kept=len(best)) if fa.on else None}
 
 
+TRB_GD_OFFSETS = '0'
 OPS = {'polish': op_polish, 'pull': op_pull, 'join': op_join, 'trb': op_trb}
 
 
@@ -334,6 +425,10 @@ def main(name, argv=None):
     ap.add_argument('--since', type=float, default=None,
                     help='join: partners = every cell member admitted after this time (0 = all); omit for the legacy pool')
     ap.add_argument('--max-cands', type=int, default=40)
+    ap.add_argument('--batch', help="join: more targets 'ID:SINCE,...' joined after --in in the same job (scheduler batches)")
+    ap.add_argument('--lower', help="pull: cap(s) to lower, drawn uniformly: 'GD' (default) or 'GD,GD,GD,AD,A' (until 2026-11-16)")
+    ap.add_argument('--gd-offsets', help="trb: GD cap offsets below the input's GD, drawn uniformly (default '0'; until 2026-11-16 '0,0,1')")
+    ap.add_argument('--bests', type=int, default=8, help='polish/pull: intermediate kernel bests returned besides the final (0: final only)')
     ap.add_argument('--function', choices=aesfn.NAMES, default=None,
                     help='aes-sbox or aes-invsbox (default: $BOOLFLUX_FUNCTION, which the scheduler sets, else aes-sbox)')
     ap.add_argument('--out', required=True)

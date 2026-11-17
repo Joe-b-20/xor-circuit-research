@@ -40,6 +40,55 @@ def dist_table(S, m):
 
 
 def bp_run(m, tl, rng, p_norm=0.5, max_steps=200):
+    """One randomised BP run over GF(2)^m: the gate list (pairs of base indices), None past max_steps.
+    Same gates and same rng draws as bp_run_ref (U5 prototype u5/prof/screenfast.py): the distance table
+    is updated per new base element c by d'(x) = min(d(x), 1 + d(x ^ c)) (exact: a shortest sum uses c at
+    most once) instead of a BFS per step; the pair scan is one numpy expression; the two rng.random() per
+    candidate of bp_run_ref (their values never decide anything) are drawn as one getrandbits(128 n)
+    (CPython: random() takes two 32-bit words, getrandbits(k) ceil(k / 32) words, in the same order)."""
+    S = [1 << i for i in range(m)]; inS = set(S)
+    gates = []
+    T = list(tl)
+    idx_all = np.arange(1 << m, dtype=np.int64)
+    d = dist_table(S, m).astype(np.int64)
+    while True:
+        rest = [t for t in T if t not in inS]
+        if not rest: return gates
+        if len(gates) > max_steps: return None
+        quick = [t for t in rest if d[t] == 2]
+        if quick:
+            t = rng.choice(quick)
+            idx = {v: i for i, v in enumerate(S)}
+            pr = None
+            for i, v in enumerate(S):
+                w = t ^ v
+                if w in idx and idx[w] != i: pr = (min(i, idx[w]), max(i, idx[w])); break
+            S.append(t); inS.add(t); gates.append(pr)
+            d = np.minimum(d, d[idx_all ^ t] + 1); continue
+        n = len(S)
+        D0 = np.array([int(d[t]) - 1 for t in rest], dtype=np.int64)
+        Tr = np.array(rest, dtype=np.int64)
+        Sa = np.array(S, dtype=np.int64)
+        ii, jj = np.triu_indices(n, 1)
+        C = Sa[ii] ^ Sa[jj]
+        keep = ~np.isin(C, Sa)
+        ii, jj, C = ii[keep], jj[keep], C[keep]
+        if C.size == 0: return None
+        dn = np.minimum(D0[None, :], d[Tr[None, :] ^ C[:, None]])
+        s1 = dn.sum(axis=1); s2 = -(dn * dn).sum(axis=1)
+        rng.getrandbits(128 * int(C.size))
+        cs = np.flatnonzero(s1 == s1.min())
+        if rng.random() < p_norm:
+            m2 = s2[cs].min(); cs = cs[s2[cs] == m2]
+        x = int(cs[rng.choice(range(len(cs)))])
+        c = int(C[x])
+        S.append(c); inS.add(c); gates.append((int(ii[x]), int(jj[x])))
+        d = np.minimum(d, d[idx_all ^ c] + 1)
+
+
+def bp_run_ref(m, tl, rng, p_norm=0.5, max_steps=200):
+    """The BP run before 2026-11-17 (BFS distance table per step, Python pair loop); bp_run gives the same
+    gates and leaves rng in the same state (tests/test_conjpull.py)."""
     S = [1 << i for i in range(m)]; inS = set(S)
     gates = []
     T = list(tl)
@@ -81,7 +130,10 @@ def bp_run(m, tl, rng, p_norm=0.5, max_steps=200):
         S.append(x[5]); inS.add(x[5]); gates.append((x[3], x[4]))
 
 
-def optimise(c, D, region, rng, runs, p_norm=0.5, log=print, region_seed=None):
+def optimise(c, D, region, rng, runs, p_norm=0.5, log=print, region_seed=None, fallback=False):
+    """Best of `runs` BP re-syntheses of the region: fewest G (then GD) among those with GD <= D and A, AD
+    not above c's and G below c's.  fallback: if no run meets GD <= D, the best run regardless of GD
+    (info['fallback'] True).  The runs and rng draws do not depend on D or fallback."""
     rd = slp.region_data(c, D, region, random.Random(region_seed if region_seed is not None else rng.random()))
     R, leaves, form, tg = rd['R'], rd['leaves'], rd['form'], rd['tg']
     m = len(leaves)
@@ -92,7 +144,7 @@ def optimise(c, D, region, rng, runs, p_norm=0.5, log=print, region_seed=None):
     tl = [f for f in lin if bin(f).count('1') >= 2]
     m0 = metrics(c)
     info = {'region': region, 'R': len(R), 'xor_gates': nx, 'leaves': m, 'xor_targets': len(tl), 'runs': []}
-    best = None; bm = m0
+    best = None; bm = m0; anyb = None; am = m0
     for r in range(runs):
         gates = bp_run(m, tl, rng, p_norm)
         if gates is None: continue
@@ -109,6 +161,11 @@ def optimise(c, D, region, rng, runs, p_norm=0.5, log=print, region_seed=None):
         info['runs'].append((len(gates), mm[2], mm[3]))
         if mm[3] <= D and mm[0] <= m0[0] and mm[1] <= m0[1] and (mm[2] < bm[2] or (mm[2] == bm[2] and mm[3] < bm[3])):
             best = nc; bm = mm
+        if fallback and mm[0] <= m0[0] and mm[1] <= m0[1] and (mm[2] < am[2] or (mm[2] == am[2] and mm[3] < am[3])):
+            anyb = nc; am = mm
+    if best is None and fallback and anyb is not None:
+        info['fallback'] = True
+        return anyb, info
     return best, info
 
 

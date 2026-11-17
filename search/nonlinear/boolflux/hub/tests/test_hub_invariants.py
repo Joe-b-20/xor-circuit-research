@@ -187,16 +187,16 @@ class TestArchive(unittest.TestCase):
             self.assertEqual(ar.gain((34, 3, 150, 25)), 8.0)        # fewer ANDs than anything at AD <= 3
             self.assertEqual(ar.gain((30, 4, 140, 25)), 8.0)        # AD <= 4 existed (35/3): its AND count drops to 30
             self.assertEqual(ar.gain((60, 2, 200, 12)), 4.0)        # nothing at AD <= 2 before: a new AND depth
-            self.assertEqual(ar.gain((28, 5, 127, 21)), 1.0)        # only the gate depth is new
-            self.assertEqual(ar.gain((32, 5, 103, 29)), 0.5)        # one gate fewer under the same caps
-            self.assertEqual(ar.gain((32, 5, 100, 29)), 2.0)
-            self.assertEqual(ar.gain((32, 5, 80, 29)), 3.0)         # the gate credit is capped below an AD reach
+            self.assertEqual(ar.gain((28, 5, 127, 21)), 0.5)        # only the gate depth is new: below one gate (G >> GD)
+            self.assertEqual(ar.gain((32, 5, 103, 29)), 1.0)        # one gate fewer under the same caps
+            self.assertEqual(ar.gain((32, 5, 100, 29)), 2.5)
+            self.assertEqual(ar.gain((32, 5, 80, 29)), 3.5)         # the gate credit is capped below an AD reach
             self.assertEqual(ar.gain((32, 5, 110, 29)), 0.0)        # dominated
             self.assertEqual(ar.gain((32, 5, 104, 29)), 0.0)        # equal to a front point
             old = Archive(d, gain_mode='legacy'); old._front = ar._front + [(40, 5, 90, 29)]
             self.assertEqual(old.gain((32, 5, 103, 29)), 8.0)       # 2026-11-14: "lowers A", because a 40-AND circuit has fewer gates
             ar._front = list(old._front)
-            self.assertEqual(ar.gain((32, 5, 103, 29)), 0.5)        # what it is: one gate fewer at A <= 32
+            self.assertEqual(ar.gain((32, 5, 103, 29)), 1.0)        # what it is: one gate fewer at A <= 32
             self.assertRaises(ValueError, Archive, d, True, 8, 'other')
 
     def test_pub_new_matches_aes_check(self):
@@ -462,7 +462,7 @@ class TestScheduler(unittest.TestCase):
         """An operator without a target does not idle the CPU; a job is cut to the time left; job
         directories are new"""
         with tempfile.TemporaryDirectory() as d:
-            s = sched(d, '--ops', 'join,trb', '--eps', '0'); s.seed([str(P104), str(P107)])
+            s = sched(d, '--ops', 'join,trb', '--eps', '0', '--policy', 'bandit'); s.seed([str(P104), str(P107)])
             for i in s.ar.rec: s.join_mark[i] = s.last_admit           # join has nothing new to do
             s.hist['join'] = [(1.0, 100.0)]                             # ... although the bandit prefers it
             started = []

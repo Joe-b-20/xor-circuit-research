@@ -11,7 +11,7 @@ commit that has the code of the run, or that it is unknown.
 | Example | Circuits (A/AD/G/GD) | Method | Commit | Time | Outcome |
 |---|---|---|---|---|---|
 | [1](#1-gate-kernel-iteration-budget) | 33/4/110/18, 33/4/108/19, 32/5/108/20 | gate kernel, `cli.py run` | `e5bab59` | 3.5 min each | the same file, byte for byte, except the output path in its `% command:` line |
-| [2](#2-conjugation-and-staged-pull) | 34/4/122/14 | conjugation and staged pull | `d72204c` | 10 min | the same gate list |
+| [2](#2-staged-pull) | 34/4/122/14 | staged pull (`conjpull.py --conj id`) | `d72204c` | 10 min | the same gate list |
 | [3](#3-re-basing) | 35/3/165/13 | re-basing | `d72204c` | 15 min | the same gate list |
 | [4](#4-hub-depth-pull) | 35/3/155/15 | hub depth pull | `8922cac` | 1.5 min | the same file, byte for byte |
 
@@ -59,10 +59,11 @@ grep -v '% command:' OUT/g110/best.circ.txt | sha256sum
 Each took 200–210 s for 8 jobs on 2 threads. The replay also gave each seed's best circuit
 (`r0-s<S>.best.bfx`) unchanged, and the run's per-seed logs are in the circuit's logs.
 
-## 2. Conjugation and staged pull
+## 2. Staged pull
 
 [34/4/122/14](aes-sbox/aes-sbox-a34-ad4-g122-gd14-xx88-38.circ.txt), from a 34/4/123/14 circuit
-of an earlier job. The night run recorded commit `d9507dd` plus the `sha256` of its operator
+of an earlier job. The job is `conjpull.py` with `--conj id`: no conjugate, only the staged
+kernel pull (it was published as conjugation until 2026-11-16). The night run recorded commit `d9507dd` plus the `sha256` of its operator
 scripts and kernel source; all of them are identical at `d72204c`. The targets file and the
 kernel folder are set by environment variables:
 

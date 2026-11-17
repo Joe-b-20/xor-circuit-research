@@ -297,6 +297,20 @@ static int repair_keep = 0;
  * one-pass feasibility test before the pair table is scanned). */
 static int nl_root = 0;
 static int sweep = 0;     /* 1 = target gates in index order instead of at random (exact scans) */
+/* Options added 2026-11-16 (phase 2, W1), all off by default (the defaults keep the old trajectory):
+ * tgt_w.mffc1 / tgt_w.and / tgt_w.viol: target weights (U1 B1).  The target s is drawn with weight
+ *   (mffc1 ? tgt_w.mffc1 : 1) * (AND-like ? tgt_w.and : 1) * (on a violating path ? tgt_w.viol : 1), where
+ *   mffc1 = the fanout-free cone of s is s alone and "violating path" counts only while the current state
+ *   violates a GD/AD cap; all 1 = uniform (the old draw).
+ * uphill.resub2 / uphill.resub3: new-gate budget slack of that move kind (U1 B2; default = uphill; same units).
+ * repair_uphill R: while the current state violates a cap, a candidate with the same violation and at most R more
+ *   summed path excess (or equal path excess, worse keys within max_excess) is an uphill step (Metropolis, R in
+ *   path-excess units, each priced as one cheapest gate) instead of being out of reach (U1 B4).
+ * stop_stall_it N: stop when N iterations passed without a new best (U1 F7; stop reason "stall"). */
+static double tw_mffc1 = 1, tw_and = 1, tw_viol = 1, uphill_mv[3] = {-1, -1, -1}, repair_uphill = 0;
+static long stop_stall_it = 0;
+static int pair_xor = 0, pxor = 0;   /* pair_xor option / in effect (see build_pairs) */
+static int l1_fast = 1;   /* resub1 through l1_direct (same result; config `l1_direct 0` = the old scan, for tests) */
 static int dmax = 200, pdiv = 90, nl_samples = 12, cand_cap = 40, use_fraig = 1;
 static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches; linear: see main */
 static int skip_noop = 1;    /* v2: a candidate whose rebuilt circuit equals the current one is no move */
@@ -310,6 +324,7 @@ static long max_iters = -1;
  * `stats_every_s S` (default 0 = off) add a periodic `kstat periodic` line.  None of this draws a random
  * number or changes a decision: the search trajectory is the same with or without it. */
 static long stats_every_it = 0; static double stats_every_s = 0; static int kst_time = 0;   /* kstat_time 1: phase times */
+static int cfg_clock = 0;     /* clock: 0 real (default), 1 cpu, 2 mono; see now_s */
 
 static void die(const char *m) { fprintf(stderr, "bfx: %s\n", m); exit(2); }
 
@@ -369,6 +384,15 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "stall_it")) stall_it = atof(v);
         else if (!strcmp(k, "max_excess")) max_excess = atof(v);
         else if (!strcmp(k, "uphill")) uphill = atof(v);
+        else if (!strcmp(k, "uphill.resub2")) uphill_mv[1] = atof(v);
+        else if (!strcmp(k, "uphill.resub3")) uphill_mv[2] = atof(v);
+        else if (!strcmp(k, "tgt_w.mffc1")) tw_mffc1 = atof(v);
+        else if (!strcmp(k, "tgt_w.and")) tw_and = atof(v);
+        else if (!strcmp(k, "tgt_w.viol")) tw_viol = atof(v);
+        else if (!strcmp(k, "repair_uphill")) repair_uphill = atof(v);
+        else if (!strcmp(k, "stop_stall_it")) stop_stall_it = atol(v);
+        else if (!strcmp(k, "pair_xor")) pair_xor = atoi(v);
+        else if (!strcmp(k, "l1_direct")) l1_fast = atoi(v);
         else if (!strncmp(k, "mv.", 3)) {
             int hit = 0;
             for (int i = 0; i < NMOVES; i++) if (!strcmp(k + 3, MVNAME[i])) { mv_w[i] = atof(v); hit = 1; }
@@ -393,6 +417,10 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "stats_every_s")) stats_every_s = atof(v);
         else if (!strcmp(k, "kstat_time")) kst_time = atoi(v);
         else if (!strcmp(k, "keep_bests")) strcpy(cfg_keep_bests, v);
+        else if (!strcmp(k, "clock")) {
+            if (!strcmp(v, "real")) cfg_clock = 0; else if (!strcmp(v, "cpu")) cfg_clock = 1; else if (!strcmp(v, "mono")) cfg_clock = 2;
+            else die("clock must be real, cpu or mono");
+        }
         else { fprintf(stderr, "bfx: unknown key %s\n", k); exit(2); }
     }
     fclose(f);
@@ -431,7 +459,7 @@ static void write_circuit(const char *path, const Circ *c, const Metrics *m, con
 }
 
 /* ------------------------------------------------------------------ search state */
-static Circ cur, best, cand_c, tmp_c;
+static Circ cur, best, tmp_c;
 static u64 *Vcur, *Vcand, *ALT;
 static int *LGc, *LAc, *RGc, *RAc, *REF;
 static unsigned char *TFO;
@@ -440,8 +468,9 @@ static int *DIV; static int ndiv;
 static u64 CARE[1024], GT[1024], TT[1024], CC[1024];
 
 static int SH_ycached;   /* same_structure's cache of the current circuit */
+static unsigned NO_gen;   /* state number (bumped by state_refresh; the no-op pre-check's tables follow it) */
 static void state_refresh(void) {
-    SH_ycached = 0;
+    SH_ycached = 0; NO_gen++;
     sim(&cur, Vcur);
     if (!outputs_ok(&cur, Vcur)) die("INTERNAL: current circuit does not match target");
     metrics(&cur, &mcur);
@@ -578,22 +607,134 @@ static long mv_probes;           /* hash probe steps of lookup() and of the leve
 static int lib2[16], nlib2;   /* binary ops in library, canonical orientation */
 static int libnl[16], nlibnl; /* the AND-like ones among them */
 static double budget;          /* max new-gate cost for this move */
+static double pmin_cost = 0;   /* cheapest op that a pair-table entry can have (binary library ops, NOT) */
 static int req_g, req_a;       /* required levels at s */
+/* pair_xor 1 (U1 F1, U5 #3; default 0): the pair table keeps XOR entries but no XNOR ones; an XOR entry also
+ * stands for its XNOR (its masked value XOR CARE, digest XOR ldig(CARE)), found by a second, complemented
+ * lookup.  Same candidate set (same costs and gate-depth weights of XOR and XNOR required, else off), ~1/3
+ * fewer entries to build; candidates come in another order, so the trajectory changes. */
+static u64 dcare;   /* ldig(CARE) of the current move (pair_xor) */
 
 static inline int arr_g(int op, int la_, int lb_) { return (la_ > lb_ ? la_ : lb_) + op_gdw[op]; }
 static inline int arr_a(int op, int la_, int lb_) { return (la_ > lb_ ? la_ : lb_) + op_adw(op); }
 
+/* word 0 of op(a, b) (unmasked): the level-1 early reject of resub1 */
+static inline u64 pair_w0(int op, u64 a, u64 b) {
+    switch (op) {
+    case 8: return a & b; case 6: return a ^ b; case 9: return ~(a ^ b); case 14: return a | b; case 3: return ~a;
+    default: return apply(op, a, b);
+    }
+}
+/* resub1 without the pair scan (U1 F4): the level-1 entries op(d1, d2) == GT on the care set are found directly.
+ * XOR/XNOR: d2's masked value is d1's XOR GT (or XOR ~GT): hash lookups.  NOT: one compare per divisor.  Every
+ * other library op is AND-like: one input combination (x*, y*) gives the odd output o*, so on S = {care, GT = o*}
+ * the operands must equal x* and y*: only divisors passing that filter are paired, then checked exactly.  The hits
+ * are put in the order of the old enumeration (i, j, t) and pass the same cost and level filters, so L1 is
+ * the same list.  Returns 0 (caller enumerates as before) when S is empty for an op (GT constant on the care
+ * set), when the table could reach PCAP, or for more than 512 pair divisors. */
+typedef struct { long key; int op, a, b; } L1Hit;
+static long st_l1_direct, st_l1_scan;   /* kstat l1: resub1 moves served by l1_direct / that fell back to the scan */
+static int l1_direct(int nd) {
+    long T = 2L * nlib2;
+    if (nd > 512 || (long)nd * (nd + 1) / 2 * T + nd + 16 > PCAP) return 0;
+    static u64 MVd[512 * 16], MDg[512]; static int HT[1024]; static L1Hit H[4096];
+    if (W > 16) return 0;
+    int nh = 0, hs = 64; while (hs < 2 * nd) hs <<= 1;
+    for (int i = 0; i < nd; i++) {
+        const u64 *v = Vcur + (size_t)DIV[i] * W; u64 *m = MVd + (size_t)i * W;
+        for (int w = 0; w < W; w++) m[w] = v[w] & CARE[w];
+        MDg[i] = ldig(m);
+    }
+#define L1ADD(K, OP, A, B) do { if (nh >= 4096) return 0; H[nh].key = (K); H[nh].op = (OP); H[nh].a = (A); H[nh].b = (B); nh++; } while (0)
+    /* NOT d (i == j, t = 0) */
+    if (op_ok[3] && op_cost[3] <= budget)
+        for (int i = 0; i < nd; i++) {
+            const u64 *m = MVd + (size_t)i * W; int eq = 1;
+            for (int w = 0; w < W; w++) if ((m[w] ^ CARE[w]) != GT[w]) { eq = 0; break; }
+            if (eq) L1ADD(((long)i * nd + i) * T, 3, DIV[i], DIV[i]);
+        }
+    int built = 0;
+    for (int k = 0; k < nlib2; k++) {
+        int op = lib2[k];
+        if (op_cost[op] > budget) continue;
+        if (op == 6 || op == 9) {
+            if (!built) {
+                for (int q = 0; q < hs; q++) HT[q] = -1;
+                for (int i = 0; i < nd; i++) { unsigned h = dslot(MDg[i]) & (hs - 1); while (HT[h] >= 0) h = (h + 1) & (hs - 1); HT[h] = i; }
+                built = 1;
+            }
+            u64 want[16], dg = ldig(GT) ^ (op == 9 ? ldig(CARE) : 0);
+            for (int i = 0; i < nd; i++) {
+                const u64 *m = MVd + (size_t)i * W;
+                for (int w = 0; w < W; w++) want[w] = m[w] ^ GT[w] ^ (op == 9 ? CARE[w] : 0);
+                u64 d = MDg[i] ^ dg;
+                for (unsigned h = dslot(d) & (hs - 1); HT[h] >= 0; h = (h + 1) & (hs - 1)) {
+                    int j = HT[h];
+                    if (j <= i || MDg[j] != d || !eqw(MVd + (size_t)j * W, want)) continue;
+                    L1ADD(((long)i * nd + j) * T + 2 * k, op, DIV[i], DIV[j]);
+                }
+            }
+            continue;
+        }
+        if (!op_nl(op)) return 0;                     /* not expected in the canonical library */
+        int xs = -1, ys = -1, os = -1;
+        for (int x = 0; x < 2; x++) for (int y = 0; y < 2; y++) {
+            int o = (op >> ((x << 1) | y)) & 1, n1 = 0;
+            for (int x2 = 0; x2 < 2; x2++) for (int y2 = 0; y2 < 2; y2++) n1 += ((op >> ((x2 << 1) | y2)) & 1) == o;
+            if (n1 == 1) { xs = x; ys = y; os = o; }
+        }
+        u64 S[16]; int any = 0;
+        for (int w = 0; w < W; w++) { S[w] = CARE[w] & (os ? GT[w] : ~GT[w]); any |= S[w] != 0; }
+        if (!any) return 0;
+        /* operand masks: divisor i fits as the first operand (agrees with xs on S) / as the second (ys) */
+        static int LA_[512], LB_[512]; int na = 0, nb = 0;
+        for (int i = 0; i < nd; i++) {
+            const u64 *v = MVd + (size_t)i * W; int fa = 1, fb = 1;
+            for (int w = 0; w < W; w++) {
+                u64 x = v[w] & S[w];
+                if (x != (xs ? S[w] : 0)) fa = 0;
+                if (x != (ys ? S[w] : 0)) fb = 0;
+            }
+            if (fa) LA_[na++] = i;
+            if (fb) LB_[nb++] = i;
+        }
+        u64 pv[16];
+        /* t = 2k: a = DIV[i], b = DIV[j], i < j; t = 2k+1 (asymmetric ops): a = DIV[j], b = DIV[i] */
+        for (int p = 0; p < na; p++) {
+            int ia = LA_[p];
+            for (int q = 0; q < nb; q++) {
+                int ib = LB_[q];
+                if (ia == ib) continue;
+                int i, j, t;
+                if (ia < ib) { i = ia; j = ib; t = 2 * k; }
+                else { if (op_sym(op)) continue; i = ib; j = ia; t = 2 * k + 1; }
+                int a = DIV[ia], b = DIV[ib];
+                pair_val(op, Vcur + (size_t)a * W, Vcur + (size_t)b * W, CARE, pv);
+                if (!eqw(pv, GT)) continue;
+                L1ADD(((long)i * nd + j) * T + t, op, a, b);
+            }
+        }
+    }
+#undef L1ADD
+    /* old order, then the cost (done per op above) and level filters of the scan */
+    for (int x = 1; x < nh; x++) { L1Hit h = H[x]; int y = x; while (y > 0 && H[y - 1].key > h.key) { H[y] = H[y - 1]; y--; } H[y] = h; }
+    np = 0; nl1 = 0;
+    for (int x = 0; x < nh; x++) {
+        int op = H[x].op, a = H[x].a, b = H[x].b;
+        PEnt *e = &PE[np]; e->op = op; e->a = a; e->b = b;
+        e->lg = arr_g(op, LGc[a], LGc[b]); e->la = arr_a(op, LAc[a], LAc[b]);
+        if (e->lg > req_g || e->la > req_a) continue;
+        L1[nl1++] = np << 1; np++;
+    }
+    return 1;
+}
 static void build_pairs(int want_table) {
     np = 0; nl1 = 0;
     int nd = ndiv < pdiv ? ndiv : pdiv;   /* DIV is shuffled: first nd are the pair divisors */
-    if (want_table) {
-        long bound = (long)nd * (nd + 1) / 2 * (2 * nlib2) + nd + 16;
-        if (bound > PCAP) bound = PCAP;
-        int hs = 64; while (hs < 2 * bound) hs <<= 1;
-        phmask = hs - 1;
-        if (++pgen == 0) { memset(PHT, 0, sizeof(PSlot) * phts); pgen = 1; }
-    }
-    u64 dgt = ldig(GT);
+    if (!want_table && l1_fast) { if (l1_direct(nd)) { st_l1_direct++; return; } st_l1_scan++; }
+    np = 0; nl1 = 0;
+    u64 dgt = ldig(GT), care0 = CARE[0], gt0 = GT[0];
+    if (pxor) dcare = ldig(CARE);
     for (int i = 0; i < nd; i++) {
         int d1 = DIV[i];
         for (int j = (op_ok[3] ? i : i + 1); j < nd; j++) {
@@ -606,21 +747,38 @@ static void build_pairs(int want_table) {
                     if (t & 1) { if (op_sym(op)) continue; a = d2; b = d1; } else { a = d1; b = d2; }
                 }
                 if (op_cost[op] > budget) continue;
-                if (np >= PCAP) return;
+                if (pxor && want_table && op == 9) continue;       /* pair_xor: XNOR stands behind its XOR entry */
+                if (np >= PCAP) goto table;
                 PEnt *e = &PE[np]; e->op = op; e->a = a; e->b = b;
                 e->lg = arr_g(op, LGc[a], LGc[b]); e->la = arr_a(op, LAc[a], LAc[b]);
                 if (e->lg > req_g || e->la > req_a) continue;
+                /* resub1 (no table) needs only the entries equal to GT: reject on word 0 before the full value
+                 * (np still counts the entry, so the PCAP limit and the kstat counts are those of the full build) */
+                if (!want_table && ((pair_w0(op, Vcur[(size_t)a * W], Vcur[(size_t)b * W]) & care0) != gt0)) { np++; continue; }
                 u64 *pv = PV + (size_t)np * W;
                 pair_val(op, Vcur + (size_t)a * W, Vcur + (size_t)b * W, CARE, pv);
                 u64 d = ldig(pv); PD[np] = d; PV0[np] = pv[0];
-                if (d == dgt && eqw(pv, GT)) L1[nl1++] = np;
-                if (want_table) {
-                    unsigned h = dslot(d);
-                    while (PHT[h].gen == pgen) h = (h + 1) & phmask;
-                    PHT[h].gen = pgen; PHT[h].idx = np;
+                if (d == dgt && eqw(pv, GT)) L1[nl1++] = np << 1;
+                else if (pxor && want_table && op == 6 && (d ^ dcare) == dgt) {     /* XNOR form equals GT */
+                    int eq = 1; for (int w = 0; w < W; w++) if ((pv[w] ^ CARE[w]) != GT[w]) { eq = 0; break; }
+                    if (eq) L1[nl1++] = (np << 1) | 1;
                 }
                 np++;
             }
+        }
+    }
+table:
+    /* hash table sized by the entries actually built (linear probing in index order; entries with equal
+     * digests keep their insertion order for any table size, so every lookup returns the same entries
+     * in the same order as with the old size bound, and the smaller table stays in cache) */
+    if (want_table) {
+        int hs = 64; while (hs < 2 * np) hs <<= 1;
+        phmask = hs - 1;
+        if (++pgen == 0) { memset(PHT, 0, sizeof(PSlot) * phts); pgen = 1; }
+        for (int q = 0; q < np; q++) {
+            unsigned h = dslot(PD[q]);
+            while (PHT[h].gen == pgen) h = (h + 1) & phmask;
+            PHT[h].gen = pgen; PHT[h].idx = q;
         }
     }
 }
@@ -633,6 +791,47 @@ static int lookup(u64 d, const u64 *v, int *hits, int lim) {
         h = (h + 1) & phmask;
     }
     return nh;
+}
+
+/* level 3 under pair_xor: X1 ^ X2 = GX (CC) where each of X1, X2 is a stored entry or, for an XOR entry, its
+ * XNOR form; every (entry, form) pair once (form key 2*index + complemented, partner key larger) */
+static void l3_pxor(int r, int lim, u64 dgx, int base) {
+    Cand c; c.ext = 0; c.form = 4;
+    u64 X2[1024];
+    for (int q = 0; q < lim; q++) {
+        int i = np <= 30000 ? q : rndint(np);
+        PEnt *e = &PE[i];
+        const u64 *pv = PV + (size_t)i * W;
+        for (int ci = 0; ci <= (e->op == 6); ci++) {
+            int o1 = ci ? 9 : e->op;
+            for (int w = 0; w < W; w++) X2[w] = CC[w] ^ pv[w] ^ (ci ? CARE[w] : 0);
+            u64 dw = dgx ^ PD[i] ^ (ci ? dcare : 0);
+            for (int cj = 0; cj < 2; cj++) {
+                u64 d = dw ^ (cj ? dcare : 0);     /* stored digest of the wanted partner entry */
+                int hits[2], nh = 0; unsigned hh = dslot(d);
+                while (PHT[hh].gen == pgen && nh < 2) {
+                    int j = PHT[hh].idx; mv_probes++;
+                    if (PD[j] == d && (!cj || PE[j].op == 6)) {
+                        const u64 *pj = PV + (size_t)j * W; int eq = 1;
+                        for (int w = 0; w < W; w++) if (pj[w] != (X2[w] ^ (cj ? CARE[w] : 0))) { eq = 0; break; }
+                        if (eq) hits[nh++] = j;
+                    }
+                    hh = (hh + 1) & phmask;
+                }
+                for (int h = 0; h < nh; h++) {
+                    int j = hits[h];
+                    if (2 * j + cj <= 2 * i + ci) continue;
+                    PEnt *e2 = &PE[j]; int o2 = cj ? 9 : e2->op;
+                    double nc = op_cost[o1] + op_cost[o2] + op_cost[r];
+                    if (nc > budget) continue;
+                    if (arr_g(r, e->lg, e2->lg) > req_g || arr_a(r, e->la, e2->la) > req_a) continue;
+                    c.k = 3; c.g[0].op = o1; c.g[0].a = e->a; c.g[0].b = e->b;
+                    c.g[1].op = o2; c.g[1].a = e2->a; c.g[1].b = e2->b;
+                    c.g[2].op = r; c.g[2].a = base; c.g[2].b = base + 1; c.root = base + 2; c.ncost = nc; add_cand(&c);
+                }
+            }
+        }
+    }
 }
 
 /* enumerate candidates for signal s up to `lev` new gates */
@@ -653,8 +852,9 @@ static void find_cands(int lev) {
     /* level 1 */
     c.form = 1;
     for (int q = 0; q < nl1; q++) {
-        PEnt *e = &PE[L1[q]]; c.k = 1; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
-        c.root = base; c.ncost = op_cost[e->op]; add_cand(&c);
+        PEnt *e = &PE[L1[q] >> 1]; int op = (L1[q] & 1) ? 9 : e->op;
+        c.k = 1; c.g[0].op = op; c.g[0].a = e->a; c.g[0].b = e->b;
+        c.root = base; c.ncost = op_cost[op]; add_cand(&c);
     }
     if (lev < 2) return;
     int hits[8];
@@ -662,17 +862,27 @@ static void find_cands(int lev) {
     c.form = 2;
     for (int r = 6; r <= 9; r += 3) {
         if (!op_ok[r]) continue;
+        /* no pair entry fits the budget with this root (pmin_cost = cheapest op of the pair table; the
+         * same left-to-right sum as below, and rounded addition is monotone): nothing to look up */
+        if (pmin_cost + op_cost[r] > budget) continue;
         for (int i = 0; i < ndiv; i++) {
             int d3 = DIV[i];
             for (int w = 0; w < W; w++) TT[w] = ((r == 6 ? GT[w] : ~GT[w]) ^ Vcur[(size_t)d3 * W + w]) & CARE[w];
-            int nh = lookup(ldig(TT), TT, hits, 4);
-            for (int h = 0; h < nh; h++) {
-                PEnt *e = &PE[hits[h]];
-                double nc = op_cost[e->op] + op_cost[r];
-                if (nc > budget) continue;
-                if (arr_g(r, e->lg, LGc[d3]) > req_g || arr_a(r, e->la, LAc[d3]) > req_a) continue;
-                c.k = 2; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
-                c.g[1].op = r; c.g[1].a = base; c.g[1].b = d3; c.root = base + 1; c.ncost = nc; add_cand(&c);
+            u64 dtt = ldig(TT);
+            for (int cx = 0; cx <= pxor; cx++) {        /* cx 1 (pair_xor): XNOR forms of XOR entries */
+                int nh;
+                if (!cx) nh = lookup(dtt, TT, hits, 4);
+                else { for (int w = 0; w < W; w++) CC[w] = TT[w] ^ CARE[w]; nh = lookup(dtt ^ dcare, CC, hits, 4); }
+                for (int h = 0; h < nh; h++) {
+                    PEnt *e = &PE[hits[h]];
+                    if (cx && e->op != 6) continue;
+                    int op = cx ? 9 : e->op;
+                    double nc = op_cost[op] + op_cost[r];
+                    if (nc > budget) continue;
+                    if (arr_g(r, e->lg, LGc[d3]) > req_g || arr_a(r, e->la, LAc[d3]) > req_a) continue;
+                    c.k = 2; c.g[0].op = op; c.g[0].a = e->a; c.g[0].b = e->b;
+                    c.g[1].op = r; c.g[1].a = base; c.g[1].b = d3; c.root = base + 1; c.ncost = nc; add_cand(&c);
+                }
             }
         }
     }
@@ -713,16 +923,32 @@ static void find_cands(int lev) {
         }
         if (bad) continue;
         double nc0 = op_cost[op2];
+        if (pmin_cost + nc0 > budget) continue;       /* no entry can fit (no random draw below) */
         u64 t0 = TT[0], c0 = CC[0];
         for (int i = 0; i < np; i++) {
-            if ((PV0[i] ^ t0) & c0) continue;          /* first word, from a dense array */
+            int op;
+            if (!((PV0[i] ^ t0) & c0)) {               /* first word, from a dense array */
+                op = PE[i].op;
+                if (!eqc(PV + (size_t)i * W, TT, CC)) {
+                    if (!pxor || op != 6) continue;
+                    goto compl;
+                }
+            } else {
+                if (!pxor || PE[i].op != 6 || ((PV0[i] ^ CARE[0] ^ t0) & c0)) continue;
+            compl:                                      /* pair_xor: the XNOR form of an XOR entry */
+                {
+                    const u64 *pv = PV + (size_t)i * W; int ok = 1;
+                    for (int w = 0; w < W; w++) if ((pv[w] ^ CARE[w] ^ TT[w]) & CC[w]) { ok = 0; break; }
+                    if (!ok) continue;
+                    op = 9;
+                }
+            }
             PEnt *e = &PE[i];
-            if (op_cost[e->op] + nc0 > budget) continue;
-            if (!eqc(PV + (size_t)i * W, TT, CC)) continue;
+            if (op_cost[op] + nc0 > budget) continue;
             if (arr_g(op2, e->lg, LGc[d3]) > req_g || arr_a(op2, e->la, LAc[d3]) > req_a) continue;
-            c.k = 2; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
+            c.k = 2; c.g[0].op = op; c.g[0].a = e->a; c.g[0].b = e->b;
             c.g[1].op = op2; c.g[1].a = xfirst ? base : d3; c.g[1].b = xfirst ? d3 : base;
-            c.root = base + 1; c.ncost = op_cost[e->op] + nc0; add_cand(&c);
+            c.root = base + 1; c.ncost = op_cost[op] + nc0; add_cand(&c);
         }
     }
     ph_mark(3);
@@ -732,9 +958,17 @@ static void find_cands(int lev) {
     for (int r = 6; r <= 9; r += 3) {
         if (!op_ok[r]) continue;
         int lim = np < 30000 ? np : 30000;
+        /* budget below the cheapest three-gate form (U1 F2: e.g. every MFFC-1 target with unit costs):
+         * every candidate would fail the cost test below, so skip the probing; the random partner
+         * draws of a large table are still made, so the random stream is the same */
+        if (pmin_cost + pmin_cost + op_cost[r] > budget) {
+            if (np > 30000) for (int q = 0; q < lim; q++) (void)rndint(np);
+            continue;
+        }
         /* wanted partner value = GX ^ pv with GX = GT (XOR) or ~GT on the care set (XNOR) */
         for (int w = 0; w < W; w++) CC[w] = (r == 6 ? GT[w] : ~GT[w]) & CARE[w];
         u64 dgx = ldig(CC);
+        if (pxor) { l3_pxor(r, lim, dgx, base); continue; }
         for (int q = 0; q < lim; q++) {
             int i = np <= 30000 ? q : rndint(np);
             PEnt *e = &PE[i];
@@ -935,22 +1169,93 @@ static int same_structure(const Circ *x, const Circ *y) {
     return 1;
 }
 
-/* evaluate candidate: build into cand_c, return obj (or +inf if invalid) */
+/* evaluate candidate: build into o (rebuild, simulate, fraig, metrics); 0 if the rebuild fails */
 static int ev_fraig_n;      /* kstat: fraig passes that merged something in the last eval_cand */
-static int eval_cand(int s, const Cand *k, Metrics *m) {
+static int eval_cand(int s, const Cand *k, Metrics *m, Circ *o) {
     ev_fraig_n = 0;
-    if (rebuild(&cur, s, k->root, cand_gates(k), k->k, 0, &cand_c, 1) < 0) { ph_mark(6); return 0; }
+    if (rebuild(&cur, s, k->root, cand_gates(k), k->k, 0, o, 1) < 0) { ph_mark(6); return 0; }
     ph_mark(6);
-    sim(&cand_c, Vcand);
-    if (!outputs_ok(&cand_c, Vcand)) {
+    sim(o, Vcand);
+    if (!outputs_ok(o, Vcand)) {
         fprintf(stderr, "INTERNAL: candidate breaks the function (s=%d k=%d)\n", s, k->k); exit(3);
     }
     ph_mark(7);
-    if (use_fraig) for (int it = 0; it < 3 && fraig(&cand_c, Vcand); it++) ev_fraig_n++;
+    if (use_fraig) for (int it = 0; it < 3 && fraig(o, Vcand); it++) ev_fraig_n++;
     ph_mark(8);
-    metrics(&cand_c, m);
+    metrics(o, m);
     ph_mark(9);
     return 1;
+}
+
+/* Exact no-op test before the evaluation (U1 F3).  A candidate is a no-op when its rebuilt circuit is
+ * the current one up to gate numbering.  Sufficient condition checked here: resolving the new gates
+ * against the current circuit's own gates (exact (op, operands) match, as strash does; operands sorted
+ * for symmetric ops, which is how rebuild stores them) maps the root to s itself.  The rebuild then
+ * gives a circuit isomorphic to the current one (s is replaced by a gate of the same structure; the
+ * current circuit is already reachable-only and strashed), and when no two signals of the current
+ * circuit have the same complete function (`dupfree`, checked once per state), fraig finds nothing to
+ * merge in it either, so the full evaluation would have counted exactly this no-op.  Anything else
+ * (a new gate with equal operands, a current circuit with equal functions) goes the old way. */
+static int NO_state = -1, NO_dupfree, NO_hts, NO_hts_cur; static int *NO_ht; static u64 *NO_hv; static long st_noop_pre;
+static void noop_prepare(void) {
+    if (NO_state == (int)NO_gen) return;
+    NO_state = (int)NO_gen;
+    int tot = N + cur.ng;
+    if (!NO_ht) { NO_hts = 1 << 16; NO_ht = malloc(sizeof(int) * NO_hts); NO_hv = malloc(sizeof(u64) * NO_hts); }
+    int hs = 64; while (hs < 2 * tot) hs <<= 1;
+    if (hs > NO_hts) { NO_dupfree = 0; return; }
+    /* duplicate complete functions (masked, as fraig compares them) */
+    for (int i = 0; i < hs; i++) NO_ht[i] = -1;
+    NO_dupfree = 1;
+    for (int v = 0; v < tot && NO_dupfree; v++) {
+        const u64 *pv = Vcur + (size_t)v * W;
+        u64 h = 0x777; for (int w = 0; w < W; w++) { h ^= pv[w] & wmask(w); h *= 0x9E3779B97F4A7C15ULL; h ^= h >> 29; }
+        unsigned q = (unsigned)(h >> 20) & (hs - 1);
+        while (NO_ht[q] >= 0) {
+            if (NO_hv[q] == h) {
+                const u64 *pu = Vcur + (size_t)NO_ht[q] * W; int eq = 1;
+                for (int w = 0; w < W; w++) if ((pu[w] ^ pv[w]) & wmask(w)) { eq = 0; break; }
+                if (eq) { NO_dupfree = 0; break; }
+            }
+            q = (q + 1) & (hs - 1);
+        }
+        NO_ht[q] = v; NO_hv[q] = h;
+    }
+    if (!NO_dupfree) return;
+    /* structural table of the current gates: (op, a, b) -> signal */
+    NO_hts_cur = hs;
+    for (int i = 0; i < hs; i++) NO_ht[i] = -1;
+    for (int j = 0; j < cur.ng; j++) {
+        const Gate *g = &cur.g[j];
+        unsigned q = (unsigned)((gkey(g->op, g->a, g->b) * 0x9E3779B97F4A7C15ULL) >> 36) & (hs - 1);
+        while (NO_ht[q] >= 0) q = (q + 1) & (hs - 1);
+        NO_ht[q] = N + j;
+    }
+}
+static int noop_pre(int s, const Cand *k) {
+    if (k->k == 0 || k->k > XMAX + 2) return 0;
+    noop_prepare();
+    if (!NO_dupfree) return 0;
+    static int res[XMAX + 4];
+    const Gate *g = cand_gates(k); int base = N + cur.ng, hs = NO_hts_cur;
+    for (int t = 0; t < k->k; t++) {
+        int op = g[t].op, a = g[t].a, b = g[t].b;
+        if (a >= base) a = res[a - base];
+        if (b >= base) b = res[b - base];
+        res[t] = -1;
+        if (a < 0 || b < 0) continue;                 /* reads a genuinely new gate: new itself */
+        if (op_unary(op)) b = a;
+        else if (a == b) return 0;                    /* f(x,x): rebuild simplifies it; not handled here */
+        else if (op_sym(op) && a > b) { int x = a; a = b; b = x; }
+        unsigned q = (unsigned)((gkey(op, a, b) * 0x9E3779B97F4A7C15ULL) >> 36) & (hs - 1);
+        while (NO_ht[q] >= 0) {
+            const Gate *e = &cur.g[NO_ht[q] - N];
+            if (e->op == op && e->a == a && e->b == b) { res[t] = NO_ht[q]; break; }
+            q = (q + 1) & (hs - 1);
+        }
+    }
+    int r = k->root >= base ? res[k->root - base] : k->root;
+    return r == s;
 }
 
 /* ------------------------------------------------------------------ move trace */
@@ -961,7 +1266,18 @@ static int popc_care(void) { int c = 0; for (int w = 0; w < W; w++) c += __built
 static int patterns(void) { int c = 0; for (int w = 0; w < W; w++) c += __builtin_popcountll(wmask(w)); return c; }
 
 /* ------------------------------------------------------------------ main loop */
-static double now_s(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t); return t.tv_sec + t.tv_nsec * 1e-9; }
+/* The kernel's own clock (seconds budget, time-based Tperiod/stall, the t of best lines): `clock real` (default
+ * since 2026-11-16; never allowed to run backwards), `clock cpu` (process CPU time: equal budgets for paired
+ * runs on a busy host) or `clock mono` (CLOCK_MONOTONIC, the old clock, which runs 3-6 % fast on WSL, U5). */
+
+static double now_s(void) {
+    static double last = -1e300;
+    struct timespec t;
+    clock_gettime(cfg_clock == 1 ? CLOCK_PROCESS_CPUTIME_ID : cfg_clock == 2 ? CLOCK_MONOTONIC : CLOCK_REALTIME, &t);
+    double x = t.tv_sec + t.tv_nsec * 1e-9;
+    if (x < last) x = last;
+    return last = x;
+}
 static double clk_s(clockid_t c) { struct timespec t; clock_gettime(c, &t); return t.tv_sec + t.tv_nsec * 1e-9; }
 static long st_prop[NMOVES], st_acc[NMOVES], st_imp[NMOVES], st_cands[NMOVES];
 static double st_time[NMOVES];
@@ -1039,9 +1355,31 @@ static void walk_note(void) {
     }
 }
 
+/* weighted target draw (tgt_w.*): weights of the current state's gates, rebuilt when the state changes */
+static int weighted_tgt = 0; static double *TW_cum; static unsigned TW_gen = ~0u;
+static int pick_target(void) {
+    if (!TW_cum) TW_cum = malloc(sizeof(double) * (GCAP + 1));
+    if (TW_gen != NO_gen) {
+        TW_gen = NO_gen;
+        double acc = 0;
+        for (int j = 0; j < cur.ng; j++) {
+            const Gate *g = &cur.g[j]; int v = N + j;
+            int m1 = (g->a < N || REF[g->a] > 1) && (op_unary(g->op) || g->b < N || REF[g->b] > 1);
+            double w = (m1 ? tw_mffc1 : 1) * (op_nl(g->op) ? tw_and : 1);
+            if (!mcur.feas && ((cap_gd >= 0 && LGc[v] > RGc[v]) || (cap_ad >= 0 && LAc[v] > RAc[v]))) w *= tw_viol;
+            acc += w; TW_cum[j] = acc;
+        }
+        if (acc <= 0) for (int j = 0; j < cur.ng; j++) TW_cum[j] = j + 1;   /* every weight 0: uniform */
+    }
+    double u = rnd01() * TW_cum[cur.ng - 1];
+    int lo = 0, hi = cur.ng - 1;
+    while (lo < hi) { int mid = (lo + hi) / 2; if (TW_cum[mid] > u) hi = mid; else lo = mid + 1; }
+    return N + lo;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) die("usage: bfx CONFIG");
-    circ_alloc(&cur); circ_alloc(&best); circ_alloc(&cand_c); circ_alloc(&tmp_c);
+    circ_alloc(&cur); circ_alloc(&best); circ_alloc(&tmp_c);
     int S = MAXN + GCAP + 16;
     RB_g = malloc(sizeof(Gate) * S); RB_map = malloc(sizeof(int) * S); RB_mark = malloc(sizeof(int) * S);
     RB_new = malloc(sizeof(int) * S); RB_stk = malloc(sizeof(int) * S * 2);
@@ -1068,6 +1406,9 @@ int main(int argc, char **argv) {
         cost_unit_v = cost_first && u > 0 ? u : 1;
         cheap_cost = u > 0 ? u : 1;      /* kstat dcost unit */
         if (!scale_abs) { T0 *= cost_unit_v; uphill *= cost_unit_v; if (max_excess < 1e17) max_excess *= cost_unit_v; }
+        for (int q = 0; q < 3; q++) uphill_mv[q] = uphill_mv[q] < 0 ? uphill : scale_abs ? uphill_mv[q] : uphill_mv[q] * cost_unit_v;
+        if (tw_mffc1 < 0 || tw_and < 0 || tw_viol < 0) die("tgt_w.* must be >= 0");
+        weighted_tgt = tw_mffc1 != 1 || tw_and != 1 || tw_viol != 1;
         if (cost_unit_v != 1) printf("scale unit %.10g (T0, uphill, max_excess in units of the cheapest gate)\n", cost_unit_v);
     }
     read_circuit(cfg_in, &cur);
@@ -1107,6 +1448,11 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 8; i++) if (op_ok[canon[i]]) lib2[nlib2++] = canon[i];
     nlibnl = 0;
     for (int i = 0; i < nlib2; i++) if (op_nl(lib2[i])) libnl[nlibnl++] = lib2[i];
+    pxor = pair_xor && op_ok[6] && op_ok[9] && op_cost[6] == op_cost[9] && op_gdw[6] == op_gdw[9];
+    if (pair_xor && !pxor) printf("note: pair_xor off (needs XOR and XNOR with equal cost and gate-depth weight)\n");
+    pmin_cost = 1e300;
+    for (int i = 0; i < nlib2; i++) if (op_cost[lib2[i]] < pmin_cost) pmin_cost = op_cost[lib2[i]];
+    if (op_ok[3] && op_cost[3] < pmin_cost) pmin_cost = op_cost[3];
     PCAP = 200000; if ((size_t)PCAP * W > 16000000) PCAP = 16000000 / W;
     PE = malloc(sizeof(PEnt) * PCAP); PV = malloc(sizeof(u64) * (size_t)PCAP * W);
     PD = malloc(sizeof(u64) * PCAP); PV0 = malloc(sizeof(u64) * PCAP); L1 = malloc(sizeof(int) * PCAP);
@@ -1138,6 +1484,7 @@ int main(int argc, char **argv) {
         double t = now_s() - t0;
         if (t >= cfg_seconds) { stop_reason = "time"; break; }
         if (max_iters >= 0 && it >= max_iters) { stop_reason = "iters"; break; }
+        if (stop_stall_it > 0 && it - imp_it >= stop_stall_it) { stop_reason = "stall"; break; }
         it++;
         double ph = Tperiod_it > 0 ? fmod((double)it, Tperiod_it) / Tperiod_it : fmod(t, Tperiod) / Tperiod;
         double T = T0 > 0 ? T0 * (1.0 - ph) : 0;
@@ -1158,12 +1505,12 @@ int main(int argc, char **argv) {
         double tm = now_s();
         cur_mv = mv; ph_last = tm; mv_probes = 0;
         st_prop[mv]++;
-        int s = sweep ? N + (int)((it - 1) % cur.ng) : N + rndint(cur.ng);
+        int s = sweep ? N + (int)((it - 1) % cur.ng) : weighted_tgt ? pick_target() : N + rndint(cur.ng);
         tfo_care(s);
         /* required levels; in repair mode (current state violates a cap) never deeper than s */
         req_g = RGc[s] > LGc[s] ? RGc[s] : LGc[s]; req_a = RAc[s] > LAc[s] ? RAc[s] : LAc[s];
         double mc = mffc_cost(s);
-        budget = mc + uphill;
+        budget = mc + (mv < 3 ? uphill_mv[mv] : uphill);
         ndiv = 0;
         for (int v = 0; v < N + cur.ng; v++) if (!TFO[v]) DIV[ndiv++] = v;
         for (int i = ndiv - 1; i > 0; i--) { int j = rndint(i + 1); int x = DIV[i]; DIV[i] = DIV[j]; DIV[j] = x; }
@@ -1201,9 +1548,14 @@ int main(int argc, char **argv) {
         /* sized by cand_cap (fixed 1024-entry arrays would leave candidates past the first 1024
          * kept but never evaluated) */
         static int *order, *neu, *up; static double *upd;
+        /* every evaluated candidate keeps its circuit and metrics (CPOOL[i], CMET[i]), so the accepted one is
+         * not rebuilt a second time (same circuit: the evaluation is deterministic) */
+        static Circ *CPOOL; static Metrics *CMET; static unsigned char *CPOK; static long *CREV;
         if (!order) {
             order = malloc(sizeof(int) * (cand_cap + 1)); neu = malloc(sizeof(int) * (cand_cap + 1));
             up = malloc(sizeof(int) * (cand_cap + 1)); upd = malloc(sizeof(double) * (cand_cap + 1));
+            CPOOL = calloc(cand_cap + 1, sizeof(Circ)); CMET = malloc(sizeof(Metrics) * (cand_cap + 1));
+            CPOK = calloc(cand_cap + 1, 1); CREV = calloc(cand_cap + 1, sizeof(long));
         }
         int no = ncand, nneu = 0, nup = 0;
         for (int i = 0; i < no; i++) order[i] = i;
@@ -1211,12 +1563,20 @@ int main(int argc, char **argv) {
         for (int q = 0; q < no; q++) {
             int i = order[q];
             sx_eval[mv]++;
-            if (!eval_cand(s, &CAND[i], &m)) { st_rbfail++; sx_rbfail[mv]++; continue; }
+            if (skip_noop && noop_pre(s, &CAND[i])) {      /* exact no-op, known without the evaluation */
+                st_eval++; st_noop_pre++;
+                sx_dc[0][dcb(CAND[i].ncost - mc)][3]++; sx_fr[mv][0]++;
+                st_noop++; sx_noop[mv]++; ph_mark(10); continue;
+            }
+            if (!CPOK[i]) { circ_alloc(&CPOOL[i]); CPOK[i] = 1; }
+            long rev0 = st_fraig_rev;
+            if (!eval_cand(s, &CAND[i], &m, &CPOOL[i])) { st_rbfail++; sx_rbfail[mv]++; continue; }
+            CMET[i] = m; CREV[i] = st_fraig_rev - rev0;
             st_eval++;
             sx_dc[0][dcb(CAND[i].ncost - mc)][dcb(m.cost - mcur.cost)]++;
             sx_fr[mv][ev_fraig_n < 2 ? ev_fraig_n : 2]++;
             if (skip_noop && m.g == mcur.g && m.a == mcur.a && m.gd == mcur.gd && m.ad == mcur.ad
-                && same_structure(&cand_c, &cur)) { st_noop++; sx_noop[mv]++; ph_mark(10); continue; }
+                && same_structure(&CPOOL[i], &cur)) { st_noop++; sx_noop[mv]++; ph_mark(10); continue; }
             if (repair_keep && !mcur.feas && (m.xa > mcur.xa || m.xad > mcur.xad || m.xgd > mcur.xgd)) { st_rkskip++; sx_rkeep[mv]++; ph_mark(10); continue; }
             double d = ldelta(&m, &mcur); int cc = mcmp(&m, &mcur);
             if (m.feas < mcur.feas) sx_infeas[mv]++;
@@ -1227,6 +1587,12 @@ int main(int argc, char **argv) {
             ph_mark(10);
             if ((m.feas || !mcur.feas) && (bi < 0 || mcmp(&m, &bm) < 0)) { bm = m; bi = i; bfeas = m.feas; }
             if (cc == 0 && m.feas >= mcur.feas) neu[nneu++] = i;
+            else if (repair_uphill > 0 && !mcur.feas) {      /* bounded uphill in path excess while repairing */
+                if (cc > 0 && m.viol == mcur.viol) {
+                    double dv = m.vsum - mcur.vsum, du = dv > 1e-9 ? dv * cost_unit_v : ldelta(&m, &mcur);
+                    if (dv <= repair_uphill + 1e-9 && du <= max_excess) { upd[nup] = du > 1e-12 ? du : 1e-12; up[nup++] = i; }
+                }
+            }
             else if (cc > 0 && ldelta(&m, &mbest) <= max_excess && m.feas >= mcur.feas) { upd[nup] = d > 1e-12 ? d : 1e-12; up[nup++] = i; }
         }
         int accept = -1, akind = 0;      /* akind (kstat only): 1 improvement, 2 neutral, 3 uphill */
@@ -1256,12 +1622,13 @@ int main(int argc, char **argv) {
             }
             Circ *before = tmv ? &tmp_before : 0;
             if (before) { circ_copy(before, &cur); mprev = mcur; }
-            eval_cand(s, &CAND[accept], &m);
+            m = CMET[accept];               /* evaluated above; its circuit is CPOOL[accept] */
+            st_fraig_rev += CREV[accept];   /* fraig_reverse_merges keeps counting the accepted candidate twice, as before */
             {
                 int nb = dcb(CAND[accept].ncost - mc), ab = dcb(m.cost - mcur.cost);
                 sx_dc[1][nb][ab]++; if (akind == 1) sx_dc[2][nb][ab]++;
             }
-            circ_copy(&cur, &cand_c); state_refresh();
+            circ_copy(&cur, &CPOOL[accept]); state_refresh();
             if (feas_it < 0 && mcur.feas) { feas_it = it; feas_t = t; }
             int newbest = (mcur.feas || !mbest.feas) && (mcmp(&mcur, &mbest) < 0 || (mcur.feas && !mbest.feas));
             if (newbest) {
@@ -1323,8 +1690,8 @@ int main(int argc, char **argv) {
         for (int i = 0; i < NMOVES; i++) { ai += st_aimp[i]; an += st_aneu[i]; au += st_aup[i]; nc += st_nocand[i]; }
         printf("kstat accept improve %ld neutral %ld uphill %ld uphill_refused %ld no_accept %ld neutral_available %ld "
                "uphill_available %ld\n", ai, an, au, st_uprej, st_noacc, st_neu_avail, st_up_avail);
-        printf("kstat cands evaluated %ld rebuild_fail %ld noop %ld repair_keep_refused %ld nocand_moves %ld no_divisor_moves %ld\n",
-               st_eval, st_rbfail, st_noop, st_rkskip, nc, st_ndiv0);
+        printf("kstat cands evaluated %ld rebuild_fail %ld noop %ld repair_keep_refused %ld nocand_moves %ld no_divisor_moves %ld"
+               " noop_pre %ld\n", st_eval, st_rbfail, st_noop, st_rkskip, nc, st_ndiv0, st_noop_pre);
         for (int i = 0; i < NMOVES; i++)
             if (i < 3 || mv_w[i] > 0) printf("kstat move %s nocand %ld acc_improve %ld acc_neutral %ld acc_uphill %ld new_best %ld\n",
                                              MVNAME[i], st_nocand[i], st_aimp[i], st_aneu[i], st_aup[i], st_imp[i]);
@@ -1353,6 +1720,7 @@ int main(int argc, char **argv) {
                 printf("\n");
             }
             if (cfg_keep_bests[0]) printf("kstat keep_bests files %ld dir %s\n", n_kept_bests, cfg_keep_bests);
+            printf("kstat l1 direct %ld scan %ld", st_l1_direct, st_l1_scan); putchar(10);
             printf("kstat r3_lowbudget moves %ld l3_s %.4f unit %.10g\n", st_r3low, st_r3low_t, cheap_cost);
         }
         for (int q = 0; q < NSTRAT; q++)

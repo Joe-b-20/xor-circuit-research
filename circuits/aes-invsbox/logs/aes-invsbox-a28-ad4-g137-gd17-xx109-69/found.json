@@ -11,6 +11,15 @@
  "method": "conjugation",
  "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "rank:1,rank:2,rank:3",
+  "applied": {
+   "lambda": 72,
+   "k": 1,
+   "rank": "rank:1"
+  },
+  "evidence": "conj-job.json.gz result.json stages: conj 'rank:1', lam 72, k 1 produced this circuit (sidecar lineage: 'conj lam 72 k 1')"
+ },
  "hub": false,
  "start": {
   "kind": "NIST circuit",
@@ -58,6 +67,10 @@
  "found_utc_source": "written by the conjugation job (its sidecar)",
  "time_to_result_s": {
   "since_job_start_s": 843.9
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "the run's README rule (the first circuit of each tuple) and U6's first-finder count for this run (FINDINGS-U6: polish 14, conjugation jobs 12, pull 10, join 7, trb 2 = the 45 published)"
  },
  "campaign": {
   "name": "2026-11-16-invsbox",

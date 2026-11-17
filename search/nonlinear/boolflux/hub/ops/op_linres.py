@@ -173,8 +173,8 @@ def op_linres(ar, args, rng, out):
         except Exception as e:
             tried.append((k, 'error %s' % str(e)[:60])); continue
         if nc is None: tried.append((k, None)); continue
-        m = metrics(nc); tried.append((k, m))
-        if ar.would_place(m): cands[core.to_kernel(nc)] = nc
+        nc, m, why = HO.placeable(ar, nc); tried.append((k, m))      # judged cleaned, archived copies skipped (2026-11-16)
+        if why == 'ok': cands[core.to_kernel(nc)] = nc
     cl = sorted(cands.values(), key=lambda x: (-ar.gain(metrics(x)), metrics(x)))
     return cl[:args.max_cands], {'tried': tried[:60], 'bank_size': len(bank)}
 

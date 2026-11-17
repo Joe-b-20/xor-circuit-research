@@ -18,8 +18,9 @@
  * count without sharing), optional cap on AND depth; optional cap.k adds a penalty of 10^6 per AND
  * above K = cap.k, and max_acc > 0 stops the run after that many accepted moves.
  *
- * Usage: skel CONFIG    (keys: in out seconds iters seed w.a w.lin cap.ad cap.k max_acc T0 Tperiod_it
- *                        mv.swap mv.merge mv.split mv.perturb pairs fext)
+ * Usage: skel CONFIG    (one "key value" per line; keys: in out seconds iters seed w.a w.lin cap.ad cap.k max_acc
+ *                        T0 Tperiod_it mv.swap mv.merge mv.split mv.perturb pairs fext emit_current clock;
+ *                        unknown keys are errors)
  * Skeleton file: "n N m M k K mw MW w W" then K lines "L R" (MW hex words each, word 0 first),
  * then M lines of output tables (W hex words), all words as 16-digit hex.
  */
@@ -371,14 +372,36 @@ static void write_skel(const char *path, const char *note) {
     fclose(f); rename(tmp, path);
 }
 
-static double now_s(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t); return t.tv_sec + t.tv_nsec * 1e-9; }
+/* seconds budget clock, as in bfx.c: `clock real` (default; never runs backwards), `clock cpu`, `clock mono` (old) */
+static int cfg_clock = 0;
+static double now_s(void) {
+    static double last = -1e300;
+    struct timespec t;
+    clock_gettime(cfg_clock == 1 ? CLOCK_PROCESS_CPUTIME_ID : cfg_clock == 2 ? CLOCK_MONOTONIC : CLOCK_REALTIME, &t);
+    double x = t.tv_sec + t.tv_nsec * 1e-9;
+    if (x < last) x = last;
+    return last = x;
+}
 
 int main(int argc, char **argv) {
     if (argc < 2) { fprintf(stderr, "usage: skel CONFIG\n"); return 2; }
     char in[1024] = "", out[1024] = "", k[256], v[1024];
     double seconds = 10; long iters = -1; u64 seed = 1;
-    FILE *cf = fopen(argv[1], "r"); if (!cf) return 2;
-    while (fscanf(cf, "%255s %1023s", k, v) == 2) {
+    FILE *cf = fopen(argv[1], "r"); if (!cf) { fprintf(stderr, "skel: cannot open config %s\n", argv[1]); return 2; }
+    /* one "key value" per line, as in bfx.c (the old token reader took tokens in pairs, so a stray token
+     * shifted every later key, and an unknown mv.* key was silently ignored).  Blank lines and lines
+     * starting with # are skipped; in/out take the rest of the line (paths may contain spaces). */
+    char line[2048];
+    while (fgets(line, sizeof line, cf)) {
+        char *p = line + strspn(line, " \t\r\n");
+        if (!*p || *p == '#') continue;
+        if (sscanf(p, "%255s %1023s", k, v) != 2) { fprintf(stderr, "skel: config key %s has no value\n", k); return 2; }
+        if (!strcmp(k, "in") || !strcmp(k, "out")) {
+            char *q = p + strlen(k); q += strspn(q, " \t");
+            size_t L = strlen(q); while (L && strchr(" \t\r\n", q[L - 1])) L--;
+            if (L > 1023) { fprintf(stderr, "skel: path too long\n"); return 2; }
+            memcpy(v, q, L); v[L] = 0;
+        }
         if (!strcmp(k, "in")) strcpy(in, v); else if (!strcmp(k, "out")) strcpy(out, v);
         else if (!strcmp(k, "seconds")) seconds = atof(v); else if (!strcmp(k, "iters")) iters = atol(v);
         else if (!strcmp(k, "seed")) seed = strtoull(v, 0, 10);
@@ -387,7 +410,15 @@ int main(int argc, char **argv) {
         else if (!strcmp(k, "T0")) T0 = atof(v); else if (!strcmp(k, "Tperiod_it")) Tperiod_it = atof(v);
         else if (!strcmp(k, "emit_current")) emit_current = atoi(v);
         else if (!strcmp(k, "pairs")) pairs_cap = atoi(v); else if (!strcmp(k, "fext")) fext = atoi(v);
-        else if (!strncmp(k, "mv.", 3)) { for (int i = 0; i < 4; i++) if (!strcmp(k + 3, MVN[i])) mvw[i] = atof(v); }
+        else if (!strcmp(k, "clock")) {
+            if (!strcmp(v, "real")) cfg_clock = 0; else if (!strcmp(v, "cpu")) cfg_clock = 1; else if (!strcmp(v, "mono")) cfg_clock = 2;
+            else { fprintf(stderr, "skel: clock must be real, cpu or mono\n"); return 2; }
+        }
+        else if (!strncmp(k, "mv.", 3)) {
+            int hit = 0;
+            for (int i = 0; i < 4; i++) if (!strcmp(k + 3, MVN[i])) { mvw[i] = atof(v); hit = 1; }
+            if (!hit) { fprintf(stderr, "skel: unknown move %s\n", k); return 2; }
+        }
         else { fprintf(stderr, "skel: unknown key %s\n", k); return 2; }
     }
     fclose(cf);

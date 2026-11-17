@@ -123,8 +123,10 @@ def build(plan):
         Ysig[1 << i] = s
     choice = [[tuple(p) for p in S] for S in plan['choice']]
     P = sorted({p for S in choice for p in S})
+    junk = [(cj[1], cj[2]) for cj in plan['C']]        # per output (v: x-form, yt: Y-sum) fixed extra terms (affine junk)
     # Y-sums
-    need = sorted({a for a, w in P if a not in Ysig}, key=lambda a: bin(a).count('1'))
+    need = sorted({a for a, w in P if a not in Ysig} | {yt for v, yt in junk if yt and yt not in Ysig},
+                  key=lambda a: bin(a).count('1'))
     for a in need:
         best = None
         for b1 in list(Ysig):
@@ -156,10 +158,10 @@ def build(plan):
             if m is not None and (m not in avail or (T[s] & 1 == 0 and net.tab[avail[m]] & 1)):
                 avail[m] = s
     k0 = net.nid
-    needx = {w for a, w in P if w not in avail}
+    needx = {w for a, w in P if w not in avail} | {v for v, yt in junk if v and v not in avail}
     bp_synth(net, avail, needx)
     k1 = net.nid
-    for w in {w for a, w in P}:
+    for w in {w for a, w in P} | {v for v, yt in junk if v}:
         sg = avail[w]
         if net.tab[sg] & 1:            # complemented form: positive twin
             op, a, b = net.nodes[sg]
@@ -167,7 +169,8 @@ def build(plan):
     Psig = {p: net.add(AND, Ysig[p[0]], avail[p[1]]) for p in P}
     # outputs: shared pairs first
     items = [list(S) for S in choice]
-    terms = [[Psig[p] for p in S] for S in choice]
+    terms = [[Psig[p] for p in S] + ([Ysig[yt]] if yt else []) + ([avail[v]] if v else [])
+             for S, (v, yt) in zip(choice, junk)]
     while True:
         cnt = Counter()
         for tl in terms:

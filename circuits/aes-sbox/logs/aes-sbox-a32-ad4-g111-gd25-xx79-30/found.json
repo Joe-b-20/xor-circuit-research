@@ -11,6 +11,14 @@
  "method": "conjugation",
  "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "rank:2",
+  "applied": {
+   "lambda": 188,
+   "k": 0
+  },
+  "evidence": "result.json stages: conj 'rank:2', lam 188, k 0"
+ },
  "hub": false,
  "start": {
   "kind": "NIST circuit",
@@ -41,6 +49,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 347.1
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find: the tuple was first found on 2026-11-15 by campaign P5 (<campaign archive>/2026-11-15-targets/P5/found/p5-lin-cert111-r1-gate30-a32-ad4-g111-gd25-5c9bbcf3c4.circ.txt, recorded 2026-11-15T19:50:15Z); in the night, T05/conjpull-6 (identity pull of a P3 circuit) wrote one at 02:05:53, before this one (02:10:16)",
+  "evidence": "the 2026-11-15 targets ledger (LEDGER.json, built 2026-11-16T13:19Z) and the 2026-11-16 night runner logs (NEW lines)"
  },
  "code": {
   "commit_at_run": "d9507dd",

@@ -22,8 +22,11 @@ from pathlib import Path
 from .common import core, metrics, verify, cid, leq, atomic_write, published, structure_key, clean
 
 K_PER_CELL = 4
-# gain weights: lexicographic research priorities (AND count, AND depth first; then G, GD)
+# gain weights: lexicographic research priorities (AND count, AND depth first; then G, GD).  GAIN_W is the
+# legacy rule's; VALUE_W the value rule's (2026-11-16: a gate drop scores above a gate-depth reach, as G >> GD)
 GAIN_W = {0: 8.0, 1: 4.0, 2: 2.0, 3: 1.0}
+VALUE_W = {'A': 8.0, 'AD': 4.0, 'G1': 1.0, 'Gstep': 0.5, 'Gmax': 6, 'GD': 0.5}
+GAIN_RULE = {'value': 'value-2026-11-16', 'legacy': 'legacy'}   # tag of the gain rule in stats.jsonl (scheduler.restore)
 CELL_ONLY_GAIN = 0.01          # a better circuit in its (A, AD, GD) cell that is dominated elsewhere
 GEN_SLACK = 40                 # nursery: new structures from generators may enter their cell this far above the front
 NEAR_SLACK = 6                 # a dominated circuit enters its cell only if G <= (G of a dominating front point) + slack
@@ -65,7 +68,7 @@ class Archive:
                 except Exception:
                     self.load_errors.append('index.jsonl line %d' % (n + 1))
         for f in self.dir.glob('*.json'):
-            if f.name == 'cells.json' or f.stem in self.rec: continue
+            if f.name in ('cells.json', 'cleaned.json') or f.stem in self.rec: continue   # caches, not records
             try:
                 r = json.loads(f.read_text()); r['id'], r['G'], r['t_admit']
             except Exception as e:
@@ -217,7 +220,7 @@ class Archive:
     def gain_reason(self, m):
         """which rule of gain() ('value' mode) applies to tuple m: 'dominated', 'new (A, AD) at a known AD'
         (8), 'new AND depth' (4), 'GD reach' (1), 'fewer G in the cap box by d' (0.5 min(d, 6)); for
-        'legacy' mode just 'legacy'.  Instrumentation; same front scan as gain()."""
+        'legacy' mode just 'legacy'.  Same front scan as gain()."""
         if self.gain_mode == 'legacy': return 'legacy'
         pts = self.front()
         if any(leq(q, m) for q in pts): return 'dominated'
@@ -236,9 +239,10 @@ class Archive:
           (A, AD) reach: no archived circuit has A <= m.A and AD <= m.AD (any G, GD):
                     some circuit meets the AD cap, so the AND count at that depth drops            -> 8
                     none does: a new AND depth                                                     -> 4
-          GD reach: lower gate depth than every archived circuit with A <= m.A and AD <= m.AD       -> 1
-          fewer gates: the best G inside the cap box A <= m.A, AD <= m.AD, GD <= m.GD drops by d     -> 0.5 * min(d, 6)
-        (the first that applies); dominated tuples score 0.
+          fewer gates: the best G inside the cap box A <= m.A, AD <= m.AD, GD <= m.GD drops by d     -> 1 + 0.5 (min(d, 6) - 1)
+          GD reach: lower gate depth than every archived circuit with A <= m.A and AD <= m.AD       -> 0.5
+        (the first that applies); dominated tuples score 0.  Until 2026-11-16 a GD reach scored 1 and a gate
+        drop 0.5 d, so one gate of depth outranked one gate (against the value order G >> GD).
         'legacy': the rule used until 2026-11-14, which asked only for some archived point no worse
         on the other three coordinates and therefore scored almost every front admission as
         "lowers A" (a higher-A circuit with fewer gates nearly always exists)."""
@@ -254,10 +258,11 @@ class Archive:
         if any(leq(q, m) for q in pts): return 0.0
         A, AD, G, GD = m
         if not any(q[0] <= A and q[1] <= AD for q in pts):
-            return GAIN_W[0] if any(q[1] <= AD for q in pts) else GAIN_W[1]
+            return VALUE_W['A'] if any(q[1] <= AD for q in pts) else VALUE_W['AD']
         box = [q[2] for q in pts if q[0] <= A and q[1] <= AD and q[3] <= GD]
-        if not box: return GAIN_W[3]
-        return 0.5 * min(min(box) - G, 6)      # min(box) > G because m is not dominated
+        if not box: return VALUE_W['GD']
+        d = min(min(box) - G, VALUE_W['Gmax'])       # >= 1 because m is not dominated
+        return VALUE_W['G1'] + VALUE_W['Gstep'] * (d - 1)
 
     def _place(self, r):
         m = (r['A'], r['AD'], r['G'], r['GD']); k = self.key(m)
@@ -303,10 +308,16 @@ class Archive:
             return 'rejected: malformed circuit: %r' % (e,), None, 0.0
         if i in self.rec: return 'duplicate', self.rec[i], 0.0
         if not force_keep and not self.would_place(m, slack): return 'not-better', None, 0.0
+        # the structure check before the verifiers (2026-11-16): the same DAG computes the same function, and the
+        # structure key costs far less than two verifications
+        try:
+            sk = structure_key(c)
+        except Exception as e:
+            return 'rejected: malformed circuit: %r' % (e,), None, 0.0
+        j = self.skeys().get(sk)
+        if j is not None: return 'duplicate-structure', self.rec[j], 0.0
         ok, info = verify(c)
         if not ok: return 'rejected: ' + info.get('error', '?'), None, 0.0
-        sk = structure_key(c); j = self.skeys().get(sk)
-        if j is not None: return 'duplicate-structure', self.rec[j], 0.0
         g = self.gain(m)
         self.last_gain_reason = self.gain_reason(m)       # instrumentation: read by the scheduler, not stored in the record
         r = {'id': i, 'A': m[0], 'AD': m[1], 'G': m[2], 'GD': m[3], 'counts': info.get('counts'),

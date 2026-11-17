@@ -8,9 +8,23 @@
   18
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +40,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: our 32/5/112/18 from night job T05/conjpull-80; its lineage: 32/5/114/18 (conjpull-63), 32/5/111/19 (conjpull-41), 32/5/108/20 (conjpull-30), 32/5/108/21 (T05/conjpull-12: the conjugate lambda 236, k 0 of 32/5/105/26 from the 2026-11-15 study), all later steps identity pulls",
  "parameters": {
   "limits": {
    "AD": 7,
@@ -42,6 +57,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 404.2
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find: night job T05/conjpull-80 wrote a 32/5/111/18 circuit (file conjpull-a32-ad5-g111-gd18-67697bc8dd) at 03:04:19, 25 minutes before this one (03:29:43); this job started from that job's 32/5/112/18",
+  "evidence": "the 2026-11-16 night runner logs (NEW lines) (the first is flagged beyond-known) and the night job folders"
  },
  "code": {
   "commit_at_run": "d9507dd",

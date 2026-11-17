@@ -3,7 +3,7 @@
 operator contract of ops/common.py:
 
     python3 search/nonlinear/boolflux/ops/satlns.py --in START.circ.txt --target REF \
-        --seed S --seconds T --out DIR [--cpus 1] [--gd D] [--profile fast|basic] [...]
+        --seed S --seconds T --out DIR [--cpus 1] [--gd D] [--profile fast|tuned|basic] [...]
 
 Method (each SAT query is exact; the search around them is a heuristic):
   * span pool: every indexed circuit (span index, see --build-index) whose 1 + 8 inputs + AND
@@ -24,7 +24,8 @@ Method (each SAT query is exact; the search around them is a heuristic):
   * every SAT answer is decoded, checked on all 256 inputs and accepted as the new walk state only
     if A <= A_cap, GD <= D and (unless --walk-ad-free) AD <= AD_cap.  Circuits recorded in DIR must
     pass aes_check.py and be inside the target's hard limits (A <= ref A, AD <= ref AD) and be
-    Pareto-new in (G, GD) for this run (start tuple included).
+    Pareto-new in (A, AD, G, GD) for this run (start tuple included; was (G, GD)); every accepted walk
+    state is offered (was: only G drops), so same-G lower-GD / lower-A walk states are kept.
   * optional short kernel polish (bfx, repair_keep 1, caps A/AD/D) every --polish-every accepted
     sideways moves; an improving polish result starts a new epoch (model rebuilt around it).
   * epochs: every --epoch seconds the model is rebuilt around the current walk state (new
@@ -40,7 +41,8 @@ Method (each SAT query is exact; the search around them is a heuristic):
   * plan time budgets (--budget): a query plan above its share of the SAT time is re-drawn.
 
 Profile fast (default): weighted query plans (PLANS below; S = sideways, I = improving, the digit = the
-restriction level), tuned on about 27,000 logged queries of earlier runs.  Profile basic: the earlier
+restriction level), tuned on about 27,000 logged queries of earlier runs.  Profile tuned: fast without I2
+and with lower limits on I1, S2, S0 (from 293k logged queries; PLANS; lost its A/B to fast).  Profile basic: the earlier
 fixed mix (--side share of sideways queries, --restrict, --lns-sec per query), kept for comparisons.
 Span index: --build-index (incremental; also refreshed at every start unless --no-index-update).
 Needs python-sat (pysat).
@@ -375,6 +377,18 @@ PLANS = {
              (('S0', True, 0, (1,), 0, 30, 4.0), 0.04),
              (('I1', False, 1, (2, 3, 4), 30, 10 ** 6, 1.5), 0.05),
              (('I2', False, 2, (1, 2), 15, 60, 2.0), 0.03)],
+    # tuned (W4, phase 2): 80 logged runs (night + targets, 293k queries, 42.6 k SAT-s; phase2/W4/satlim.py) [C]:
+    # I2 1 improvement in 2,177 queries / 2,059 s -> dropped (its weight to S1); I1 7 in 6,892 / 2,480 s, all
+    # answered within 1.48 s -> limit 1.5 s (was 3 s; same 7, 64 % of the time); S2 limit 2 s (was 4 s; 0 of 3
+    # improvements lost, 65 % of the time), S0 3 s (was 8 s; 1 of 3 lost, 35 % of the time); S1 and F kept
+    # (every F improvement within 1.6 s at the 2 s limit, F = 57 of the 115 improvements).
+    # A/B (phase2/W4, 4 paired simultaneous 600 s runs from night T03/T04 starts): fast ended lower in G on
+    # all 4 (117/118/130/116 vs 119/119/131/117) although tuned ran 11 % more queries, so fast stays the
+    # default [C for these starts; H: the long S0/S2 moves carry the walk, which a per-query replay misses].
+    'tuned': [(('S1', True, 1, (1, 1, 2, 3), 0, 10 ** 6, 1.0), 0.83),
+              (('S2', True, 2, (1, 1, 2), 0, 40, 1.0), 0.08),
+              (('S0', True, 0, (1,), 0, 30, 1.5), 0.04),
+              (('I1', False, 1, (2, 3, 4), 30, 10 ** 6, 0.75), 0.05)],
 }
 
 
@@ -460,7 +474,7 @@ def main():
     ap.add_argument('--in', dest='inp'); ap.add_argument('--target'); ap.add_argument('--seed', type=int, default=1)
     ap.add_argument('--seconds', type=float, default=600); ap.add_argument('--out'); ap.add_argument('--cpus', type=int, default=1)
     ap.add_argument('--gd', type=int, help='GD cap of the walk (default: the target reference GD)')
-    ap.add_argument('--profile', default='fast', choices=['fast', 'basic'])
+    ap.add_argument('--profile', default='fast', choices=['fast', 'tuned', 'basic'])
     ap.add_argument('--qsec', type=float, default=2.0, help='base SAT time limit per query (fast profile)')
     ap.add_argument('--lns-sec', type=float, default=20.0, help='time limit per query (basic profile)')
     ap.add_argument('--side', type=float, default=0.6, help='sideways share (basic profile)')
@@ -605,18 +619,18 @@ def main():
     log({'event': 'pool', 'span': skey, 'same_span_files': len(rows), 'pooled': len(pool_c)})
 
     # ---- recording
-    rec_pts = [(st[2], st[3])]              # (G, GD) already known in this run (start included)
+    rec_pts = [tuple(st)]                   # (A, AD, G, GD) already known in this run (start included); was (G, GD)
     hard = lambda t: t[0] <= TG['A'] and t[1] <= TG['AD']
 
     def record(c, how, extra=None):
         t = tup(c)
         if not hard(t) or tuple(c.value_table()) != TAB: return None
-        if any(g <= t[2] and gd <= t[3] for g, gd in rec_pts): return None
+        if any(all(x <= y for x, y in zip(p_, t)) for p_ in rec_pts): return None
         rc.method = dict(method, how=how, model=model_info, pool=result['pool'])
         p = rc.offer(c, how=how, lineage=[{'file': start_path, 'sha256': start_sha, 'tuple': list(st), 'method': 'satlns walk'}])
         if p is None:
             log({'event': 'offer_rejected', 'tuple': t, 'rejected': dict(rc.rejected)}); return None
-        rec_pts.append((t[2], t[3]))
+        rec_pts.append(tuple(t))
         result['recorded'].append({'file': str(p), 'tuple': t, 'how': how, 'el': round(time.time() - T0, 1)})
         log({'event': 'recorded', 'file': str(p), 'tuple': t, 'how': how})
         return p
@@ -629,7 +643,7 @@ def main():
 
     # ---- walk
     if a.selftest_record:
-        rec_pts.clear(); record(start, 'selftest-record: the start itself'); rec_pts.append((st[2], st[3]))
+        rec_pts.clear(); record(start, 'selftest-record: the start itself'); rec_pts.append(tuple(st))
     cur = start; epoch = 0; nside_acc = 0; nacc = 0; visited = set(); steps = 0
     model_info = None; mdl = None; t_epoch = time.time()
     plan = PLANS.get(a.profile)
@@ -757,6 +771,8 @@ def main():
                     if hard(t): note_best(t)
                     if t[2] < G_cur:
                         q['IMPROVED'] = True; record(c, 'step %d epoch %d query %s' % (steps, epoch, qname))
+                    elif hard(t):     # same G: recorded if 4-D new (lower GD, A or AD than every recorded point)
+                        if record(c, 'walk state, step %d epoch %d query %s' % (steps, epoch, qname)): q['RECORDED'] = True
                     if pull:
                         exc_stats['pulled_back'] += 1; phase = 'main'; saved = None
                         if t[2] < saved_G: exc_stats['pull_better'] += 1
@@ -767,7 +783,7 @@ def main():
                         nside_acc += 1
                         if a.save_walk and nside_acc % a.save_walk == 0 and hard(t):
                             walk_dir.mkdir(exist_ok=True); (walk_dir / ('w-a%d-ad%d-g%d-gd%d-%s.bfx' % (t + (h[:10],)))).write_text(core.to_kernel(c))
-                    if a.profile == 'fast' and t[2] == G_cur and rng.random() < a.focus:
+                    if a.profile in ('fast', 'tuned') and t[2] == G_cur and rng.random() < a.focus:
                         old = {tt for tt, _, _ in prev_ts}
                         seeds = [i for i, (tt, l, sgi) in enumerate(cur_ts) if tt not in old]
                         if seeds:
@@ -785,7 +801,7 @@ def main():
                             ev = {'event': 'polish', 'from': t, 'to': kt, 'rc': krc, 's': round(time.time() - tk, 1)}
                             stats.setdefault('t:polish', {'n': 0, 's': 0.0}); stats['t:polish']['n'] += 1; stats['t:polish']['s'] += time.time() - tk
                             if kc is not None and tuple(kc.value_table()) == TAB and kt[0] <= capA and kt[1] <= capAD and kt[3] <= D \
-                                    and (kt[2], kt[3]) < (t[2], t[3]):
+                                    and tuple(kt) < tuple(t):      # value order (A, AD, G, GD); was (G, GD)
                                 ev['adopt'] = True; note_best(kt)
                                 record(kc, 'kernel polish after step %d epoch %d' % (steps, epoch))
                                 cur = kc; mdl_old = mdl; mdl = None; epoch += 1

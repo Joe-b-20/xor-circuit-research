@@ -4,7 +4,7 @@
 
     python3 search/nonlinear/boolflux/ops/rebase.py --in START --target REF --seed S --seconds T
         --out DIR [--cpus 1] [--cap D | --goal depth|gates] [--builds 160] [--top 3] [--stage-seconds 240]
-        [--stages 2] [--moves] [--move-budget 0.25] [--relax 0] [--slack3 0] [--no-paar] [--repair-keep 1]
+        [--stages 2] [--moves [--descend]] [--move-budget 0.25] [--relax 0] [--slack3 0] [--no-paar] [--repair-keep 1]
 
 Validated: a 177@13 archive circuit with --moves --stages 1 -> 35/3/181/12 after 469 s on one CPU;
 a 168@13 circuit of NIST lineage with --cap 13 -> 35/3/167/13 after 489 s.
@@ -16,7 +16,9 @@ a 168@13 circuit of NIST lineage with --cap 13 -> 35/3/167/13 after 489 s.
    the case of gbasis) is <= 1; --goal gates (default): D = min(target GD, start GD + 2) (re-basing
    moves at a gate-count cap).
 3. Rounds: parent (with --moves the start is first scanned for GF(4) coordinate moves (AD3 GF(4) circuits
-   only: hub/ops/gf4_lib gf4build keep2, priced by the bound, sharded over --cpus workers); variants with
+   of the forward or inverse S-box (rebase_lib/gf4fn.py: tables over the inversion input): hub/ops/gf4_lib
+   gf4build keep2, priced by the bound, sharded over --cpus workers; --descend: a parent whose bound is
+   above 1 keeps the moves with a strictly lower bound, so a chain of moves can descend to 1); variants with
    strictly more slack go first; then the start, then the run's own best results) -> feasible class
    combos -> hybrid builds at D (rebase_lib/hybrid.py, --paar shared layer) -> the --top lowest-G distinct
    builds -> --stages kernel stages (caps A <= ref A, AD <= ref AD, GD <= D; objective cost,gd);
@@ -47,6 +49,8 @@ def gf4_moves(c, cap, rng, budget_s, limit, shard='0/1'):
     """One-point GF(4) coordinate moves (keep2) of c, priced by the re-basing bound at cap; returns
     [(bound, G, circuit)] with bound <= limit, best first.  [] if c is not a GF(4)-tower AD3 circuit."""
     try:
+        import gf4fn
+        gf4fn.install()                 # GF(4) tables over the process's function's inversion input
         from nbscan import current_points
         from gf4build import build
         from pairs import Basis
@@ -77,7 +81,7 @@ def gf4_moves(c, cap, rng, budget_s, limit, shard='0/1'):
         seen.add(k)
         ta = time.time(); SCAN['n'] += 1
         try:
-            r = GB.analyse(nc, cap)
+            r = GB.analyse(nc, cap, ub=limit, value_only=True)   # bound exact when <= limit (gbasis docstring); only the bound is used
         except Exception:
             continue
         finally:
@@ -101,6 +105,7 @@ def main():
     ap.add_argument('--builds', type=int, default=160); ap.add_argument('--top', type=int, default=3)
     ap.add_argument('--stage-seconds', type=float, default=240); ap.add_argument('--stages', type=int, default=2)
     ap.add_argument('--moves', action='store_true'); ap.add_argument('--move-top', type=int, default=4)
+    ap.add_argument('--descend', action='store_true', help='with --moves: parents with bound > 1 keep strictly lower-bound moves')
     ap.add_argument('--move-budget', type=float, default=0.25, help='fraction of --seconds for one move scan')
     ap.add_argument('--relax', type=float, default=0); ap.add_argument('--slack3', type=int, default=0)
     ap.add_argument('--no-paar', action='store_true'); ap.add_argument('--repair-keep', type=int, default=1)
@@ -128,7 +133,7 @@ def main():
     c0 = load(a.inp); m0 = metrics(c0)
     goal = a.goal or 'gates'
     # applicability and the cap
-    r0 = GB.analyse(c0, m0[3])
+    r0 = GB.analyse(c0, m0[3], ub=1.0)
     if r0 is None:
         rec.notes.append('no class of >= 2 top products with a common operand function')
         L(event='not-applicable', reason=rec.notes[-1]); rec.write('not-applicable'); return
@@ -137,8 +142,8 @@ def main():
     elif goal == 'depth':
         D = None
         for d in range(m0[3] - 3, m0[3]):
-            r = GB.analyse(c0, d)
-            L(event='bound', cap=d, best=r['best'], current=r['current_max'], classes=r['class_sizes'])
+            r = GB.analyse(c0, d, ub=1.0)
+            L(event='bound', cap=d, best=r['best'], exact=r['exact'], current=r['current_max'], classes=r['class_sizes'])
             if r['best'] <= 1 + 1e-9: D = d; break
         if D is None:
             D = m0[3] - 1
@@ -163,18 +168,23 @@ def main():
         par, how, ppath = queue.pop(0)
         if ppath is None:
             ppath = out / 'parents' / ('%s.bfx' % cid(par)); ppath.parent.mkdir(exist_ok=True); ppath.write_text(core.to_kernel(par))
-        ta = time.time(); res = GB.analyse(par, D); ta = time.time() - ta
+        ta = time.time(); res = GB.analyse(par, D, ub=1.0); ta = time.time() - ta
         if res is None: L(event='analyse-none', parent=cid(par), how=how, secs=round(ta, 2)); continue
         pk = cid(par)
         def scan_moves():
             if a.moves and pk not in scanned and time.time() < deadline - 120:
                 scanned.add(pk)
-                mv = gf4_moves(par, D, rng, min(a.move_budget * a.seconds, deadline - 90 - time.time()), min(1.0, res['best']), a.shard)
+                lim = min(1.0, res['best']); pv = res['best']
+                if a.descend and res['best'] > 1 + 1e-9:
+                    # res (ub 1.0) only bounds the parent's value from above when it is above 1: take the exact one
+                    pb = res['best'] if res.get('exact') else GB.analyse(par, D, ub=99.0, value_only=True)['best']
+                    lim = pb - 1e-6; pv = pb
+                mv = gf4_moves(par, D, rng, min(a.move_budget * a.seconds, deadline - 90 - time.time()), lim, a.shard)
                 if mv:
                     mv, nseen = mv
                     L(event='moves', parent=pk, scanned=nseen, kept=len(mv), best=[(round(x[0], 3), x[1]) for x in mv[:8]],
                       scan={k: (round(v, 3) if isinstance(v, float) else v) for k, v in SCAN.items()})
-                    strict = [x for x in mv if x[0] < res['best'] - 1e-9]
+                    strict = [x for x in mv if x[0] < pv - 1e-9]
                     for b, g, nc, pts in (strict or mv)[:a.move_top][::-1]:
                         item = (nc, 'move %s of %s (bound %.3f)' % (pts, pk, b), None)
                         if strict: queue.insert(0, item)      # strictly more slack: better parents, go first
@@ -228,11 +238,14 @@ def main():
                                           repair_keep=a.repair_keep)
                 if k is not None:
                     km = metrics(k)
-                    if (km[2], km[3]) < (cm[2], cm[3]): cur, cm = k, km
+                    if tuple(km) < tuple(cm): cur, cm = k, km     # value order (A, AD, G, GD); was (G, GD) only
                 L(event='stage', build=h, G0=g0, stage=st, seed=sd, result=cm, err=info.get('error'),
                   t_last_improvement=info.get('t_last_improvement'), kernel_stats=info.get('kernel_stats'))
                 rec.offer(cur, bp, dict(meth, stage='kernel', kernel_seed=sd, stage_index=st, caps=caps),
                           kernel_bin=info.get('kernel_bin_path'))
+                for o in info.get('others') or []:       # other 4-D non-dominated kernel candidates (if the kernel returns several)
+                    rec.offer(o, bp, dict(meth, stage='kernel-other', kernel_seed=sd, stage_index=st, caps=caps),
+                              kernel_bin=info.get('kernel_bin_path'))
             pool[cid(cur)] = (cm[2], cm[3], cur, 'result of build %s' % h)
             if a.relax > 0 and time.time() < deadline - 60:
                 sd = rng.randrange(1, 10 ** 6); rc = dict(caps, GD=D + 1)

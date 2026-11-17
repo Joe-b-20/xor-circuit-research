@@ -8,9 +8,30 @@
   21
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  },
+  {
+   "date": "2026-11-16",
+   "field": "logs: runner.log, plan.json.gz",
+   "was": "the runner lines of pass-1 job T01/conjpull-277 (same job name) and the pass-1 plan (plan.json)",
+   "now": "the runner lines of this job, p2-T07/conjpull-277 (runner2.events.log), and the pass-2 plan (plan2.json), paths rewritten as elsewhere",
+   "why": "job names restart in the second runner pass; the logs were matched by name only"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +47,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: our 35/3/139/22 from night job p2-T07/conjpull-66; its lineage: 35/3/140/22 (T07/conjpull-499), 35/3/140/23 (conjpull-465), 35/3/138/27 (conjpull-458), P6's 35/3/139/23 (2026-11-15: the conjugate lambda 250, k 4 of our 35/3/140/25, then re-basing, a hybrid build and the kernel); the night steps are identity pulls",
  "parameters": {
   "limits": {
    "AD": 3,
@@ -41,6 +63,10 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 226.5
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "the 2026-11-16 night runner logs (NEW lines): first circuit of this tuple, flagged beyond-known, 2026-11-16T12:09:49Z (pass 2)"
  },
  "code": {
   "commit_at_run": "d9507dd",

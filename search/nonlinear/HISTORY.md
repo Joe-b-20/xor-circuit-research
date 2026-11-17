@@ -36,6 +36,7 @@ NIST's counting unless stated.
 | Nov 14–15 | the hub: shared archive, operators, scheduler | 33/4/112/16, 33/4/107/20; the 29/4 and 30/4 families |
 | Nov 15 | structure study: algebra of the low-AND circuits, window redesigns, goal-directed runs | 28/4/131/22, 28/4/132/20; 42–47 ANDs at GD 11; 35/3/142/19 |
 | Nov 15–16 | runs against ten named NIST circuits; four methods around the kernel | 32/4/114/19, 32/7/103/29, 35/3/138/23, 35/3/181/12, 38/4/135/12, 28/4/174/14 |
+| Nov 16–17 | the logs read line by line; a faster kernel, a priority hub, faster conjugation and rebuilds, transport between the S-box and its inverse | new inverse circuits: our first at GD ≤ 12 and at AD 3 with GD 13; the inverse 29/4 and 30/4 families |
 
 ## Groundwork (October 31)
 
@@ -131,11 +132,66 @@ seen, made the new points ([HOW-IT-WORKS.md](HOW-IT-WORKS.md#moves-around-the-ke
 | 35/3/183/13 | 35/3/165/13, 35/3/181/12 | re-basing of the level-3 product classes |
 | 45/4/141/12 | 38/4/135/12 | shared-bottom rebuild |
 
+The conjugation rows describe lineages: each starts with one conjugate, made on Nov 15 or early
+in the night, and most later jobs of a lineage were staged pulls without a conjugate
+(`conjpull.py --conj id`). Of the 19 published S-box circuits from `conjpull.py` jobs, 4 came
+from a job that applied a conjugate and 15 from staged pulls, and 12 are re-finds of a tuple an
+earlier job had already reached (on Nov 15, or earlier the same night); until 2026-11-16 all 19
+were labelled conjugation. Of the inverse run's 12, 8 applied a conjugate and 4 were staged pulls
+of NIST circuits. Each `found.json` in [circuits/](../../circuits/README.md#aes-s-box) records the
+conjugate asked for and applied, the start's lineage and the first find.
+
 Conjugate lineages took 15–40 CPU-minutes and then stopped improving †. For the references
 28/4/132/22, 28/5/128/20, 34/4/139/13 and 59/4/159/10 nothing better inside their limits was
 found than what the archive already held; the span-pooled SAT LNS gave one new point near the
 second, 28/5/129/19. In the second day the four methods became operators with one interface
 and ran for 11 hours, one reference at a time on 20 CPUs.
+
+**Nov 16–17: reading the logs, then a faster search.** After the inverse S-box run, the logs and
+code of every run were read line by line, and what was not logged was added. The changes that
+followed were each checked by identical outputs or by paired, simultaneous runs †:
+
+- *Kernel.* About 16 % faster per iteration (geometric mean over 8 paired configurations,
+  11–31 %) with output identical to the old kernel on 26 configurations: resub1 by hash lookup,
+  levels skipped when nothing fits the budget, no-ops caught before evaluation, no second
+  evaluation of the accepted candidate; budgets on the real-time clock (`clock`). New options, off
+  by default: an XOR-only pair table (better in 51 and worse in 33 of 118 pairs, p = 0.06; 7–12 %
+  faster), target weighting by MFFC and AND-ness (first improvement of a fresh descent at a median
+  0.10 CPU-s instead of 0.53) and a stall exit. A non-linear root rule and extra uphill at level 3
+  or in repair lost; a smaller `max_excess` changed nothing.
+- *Hub.* A fixed priority replaced the bandit (`--policy bandit` keeps it): joins of new front
+  circuits, then the first polish and pull of each new front tuple, then repeats under the tuple
+  caps, then other structures. Polishes and pulls also return up to 8 intermediate kernel bests,
+  duplicates are dropped before verification, and finished jobs are noticed in 0.024 s instead of
+  0.37 s. Two hubs of 4 CPUs each from the same seeds: the first improvement came after 5 s
+  instead of 88 s on the inverse (87 front additions against 73 in 80 minutes) and 21 s instead
+  of 175 s on the forward S-box (64 against 57 in 70 minutes, final fronts tied). Neither arm
+  lowered A or AD.
+- *Conjugation.* The screen of the 2,040 conjugates went from 92 s to 8 s and a build from
+  0.7–1.9 s to 0.1 s, with identical rows and gates. Identity-pull outputs had been taken for
+  conjugates, so no conjugate of them was ever tried; that is fixed, and a real-time watchdog
+  replaces the timer that ended jobs 3.5 % early. Successive halving over conjugates
+  (`--conj sh:K`) tied the old schedule (19 against 21 front points over 8 paired starts, within
+  the run-to-run spread) and is opt-in.
+- *Rebuild methods.* The basis search's upper-bound prune made re-basing analyses 34 times
+  faster with all 274 decisions identical, and the shared-bottom annealer 1.7 times faster. The
+  shared bottom polishes 90 s instead of 300 and skips duplicate builds: 13–15 plans instead of 6
+  per run from NIST's 45/4/141/12, the first A39 circuit at 366 s instead of 894 s. An affine
+  extension lets it run on the inverse S-box. A tuned SAT LNS profile lost all 4 paired runs and
+  stayed off.
+- *Transport* ([boolflux/ops/transport.py](boolflux/ops/transport.py)). A circuit for one
+  direction becomes a start for the other, `S⁻¹ = G′ ∘ Aff⁻¹ ∘ F ∘ G ∘ Aff⁻¹` for any of the 2,040
+  conjugate maps, with the same ANDs, AND depth and middle layers, then a staged pull. Forward
+  circuits gave the inverse its first 29/4 and 30/4 families; inverse to forward gave nothing
+  (3–15 gates worse), and for the low-GD forward circuits the best map gained at most one level
+  of the transported layers (a restricted negative).
+- *Records.* The published method labels were checked against each job's logs: 19 circuits
+  labelled conjugation were staged pulls without a conjugate, and 12 forward circuits re-find a
+  tuple an earlier job had reached (above; each `found.json` says which).
+
+The result was new inverse S-box circuits, among them our first at GD 12 and below, at AD 3 with
+GD 13, and in the 29/4 and 30/4 families ([circuits/](../../circuits/README.md#aes-inverse-s-box));
+nothing new for the forward S-box, and no lower A or AD in either direction.
 
 ## Three NIST pins
 

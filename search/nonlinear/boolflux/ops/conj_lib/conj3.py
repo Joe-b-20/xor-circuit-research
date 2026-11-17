@@ -47,6 +47,9 @@ def layers(c):
     R = [n + j for j, (op, a, b) in enumerate(c.gates) if op not in BT.NL and la[n + j] == AD]
     Rs = set(R)
     leaves = sorted({x for s in R for x in c.gates[s - n][1:] if x not in Rs})
+    # an output outside the bottom region that no region gate reads is a leaf of its own (before 2026-11-17:
+    # KeyError); appended after the others, so the leaf numbering of every circuit that worked is unchanged
+    leaves += sorted({o for o in c.outputs if o not in Rs and o not in set(leaves)})
     li = {x: i for i, x in enumerate(leaves)}
     bf = {}
     for s in R:
@@ -68,8 +71,10 @@ def bp_cost(m, tl, runs, rng):
 
 
 def paar(rows):
-    rows = [set(i for i in range(64) if r >> i & 1) for r in rows]
-    nxt = 64; cost = 0
+    # every leaf bit (before 2026-11-17 only bits 0-63 were read; NIST circuits have at most 32 leaves)
+    nb = max([64] + [r.bit_length() for r in rows])
+    rows = [set(i for i in range(nb) if r >> i & 1) for r in rows]
+    nxt = nb; cost = 0
     while True:
         cnt = {}
         for r in rows:

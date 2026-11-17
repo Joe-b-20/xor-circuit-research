@@ -87,7 +87,7 @@ class TestDecisions(unittest.TestCase):
 
     def test_launch_records_the_decision(self):
         with tempfile.TemporaryDirectory() as d:
-            s = sched(d, '--ops', 'join,trb', '--eps', '0'); s.seed([str(P104), str(P107)])
+            s = sched(d, '--ops', 'join,trb', '--eps', '0', '--policy', 'bandit'); s.seed([str(P104), str(P107)])
             for i in s.ar.rec: s.join_mark[i] = s.last_admit             # join has nothing to do
             s.hist['join'] = [(1.0, 100.0)]                              # the bandit prefers it
             real = SCH.subprocess.Popen; SCH.subprocess.Popen = FakePopen
@@ -197,9 +197,9 @@ class TestArchiveExplain(unittest.TestCase):
                 for slack in (None, 40):
                     self.assertEqual(ar.explain(m, slack)['reason'] == 'would place', ar.would_place(m, slack), m)
                 g = ar.gain(m); r = ar.gain_reason(m)
-                want = {'dominated': 0.0, 'new (A, AD) at a known AD': 8.0, 'new AND depth': 4.0, 'GD reach': 1.0}
+                want = {'dominated': 0.0, 'new (A, AD) at a known AD': 8.0, 'new AND depth': 4.0, 'GD reach': 0.5}
                 if r in want: self.assertEqual(g, want[r], (m, r))
-                else: self.assertEqual(g, 0.5 * min(int(r.split()[-1]), 6), (m, r))
+                else: self.assertEqual(g, 1.0 + 0.5 * (min(int(r.split()[-1]), 6) - 1), (m, r))
 
 
 class TestOperatorCounters(unittest.TestCase):
@@ -212,7 +212,8 @@ class TestOperatorCounters(unittest.TestCase):
             cands, info = HO.op_join(s.ar, args, random.Random(1), None)
             pa = info['pair_accounting']
             self.assertEqual(len(pa['partner_hash']), 16); self.assertEqual(pa['repeated_pairs'], 1)
-            self.assertEqual(info['stop'], 'partners done'); self.assertEqual(info['tried'], info['not_placed'] + info['duplicate'] + len(cands) + info['kept_over_limit'])
+            self.assertEqual(info['stop'], 'partners done')
+            self.assertEqual(info['tried'], info['not_placed'] + info['duplicate'] + info['archived'] + len(cands) + info['kept_over_limit'] + info['deferred'])
             args = types.SimpleNamespace(inp=x, seconds=1.0, max_cands=40)
             cands, info = HO.op_trb(s.ar, args, random.Random(2), None)
             tot = sum(sum(v.values()) for v in info['by_region'].values())

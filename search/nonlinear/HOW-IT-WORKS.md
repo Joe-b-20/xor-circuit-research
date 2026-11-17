@@ -94,15 +94,23 @@ finds nothing. The other methods hand it a start it has not seen.
   circuits for S: G on the inputs, an affine correction on the outputs. ANDs and middle layers
   are unchanged; only the top and output layers are re-synthesised. The conjugate is a start,
   usually 10-30 gates worse; staged pulls then run the kernel at a loose GD cap and tighten it
-  one or two levels at a time.
+  one or two levels at a time. The screen's proxy predicts the outcome weakly (within-start Spearman 0.20 against 0.53 for the
+  first stage's result); the opt-in `sh:K` lets the first stage choose, but in a paired A/B on 2026-11-17
+  at 0.75 h per job it did not beat the screen's rank 1 (21 against 19 union-front points over 8 pairs,
+  inside the noise of the old code against itself).
 - **Re-basing level-3 product classes (AND depth 3).** The 12 level-3 products of the AD3
   circuits form three classes of four. Any other basis of a class's operand span keeps every
   output in the span. All 840 bases per class are priced exactly by the Kraft sums of the output
-  XOR trees, a depth-feasible circuit is built for the best, and the kernel polishes it.
+  XOR trees, a depth-feasible circuit is built for the best, and the kernel polishes it. The
+  inverse S-box's AD3 circuits have the same classes (its GF(4) coordinates are taken over the
+  inversion input A⁻¹y + 0x05); re-basing NIST's 35/3/157/15 at cap 13 gave 35/3/171/13.
 - **Shared-bottom rebuild (many ANDs, low depth).** In the circuits with 41-59 ANDs at GD 10-12
   every output is an XOR of rank-1 products. An annealer chooses per-output decompositions that
   share products, with an exact depth check per output; a builder makes the circuit under the
-  kept front, and the kernel polishes it under the same AND count.
+  kept front, and the kernel polishes it under the same AND count. On the inverse every output
+  also carries complemented-operand terms (a Y-sum and an x-form, from the affine inversion
+  input); they are kept as fixed terms of the output's XOR tree. From NIST's inverse 45/4/141/12
+  this gave 42/4/162/12 and 43/4/159/12, from 55/4/148/10 at cap 11 49/4/168/11.
 - **Product exchange.** One AND product is replaced by another that is equal to it modulo the
   span of the other products of its level and the signals below, so every output stays in the
   span; the logic that read it is compensated and the kernel polishes the result
@@ -124,15 +132,18 @@ every operator reads and writes: an **archive** of verified circuits, kept per c
 `(A, AD, GD)` with the fewest G, so AND count and AND depth are coordinates of their own; a
 **function bank** of every signal's truth table; **operators** that own no circuit (`polish`,
 `pull`, `join`, `trb` a timing-driven rebuild of one XOR region, `osc` a cap relaxed then
-restored, `gen_skel` a skeleton kick then a polish); and a **bandit scheduler** that gives CPU
-to the operators with recent frontier gain per CPU second. Nothing enters the archive unverified.
+restored, `gen_skel` a skeleton kick then a polish); and a **scheduler** that gives each free CPU
+the first new piece of work in a fixed order: joins with circuits not yet met, the first polish and pull
+of every new front point, the repeats under the per-point caps, then the first jobs of every other
+structure on or near the front, one `trb` per front point, further repeats last (until 2026-11-16 a bandit on recent frontier gain per CPU second, which favoured
+short jobs). Nothing enters the archive unverified.
 
 ```mermaid
 flowchart LR
     A[("archive: cells per (A, AD, GD),<br/>function bank")] -- "inputs" --> O["operators:<br/>polish, pull, join, trb, ..."]
     O -- "candidates" --> V["verify:<br/>both verifiers, model library"]
     V -- "admit" --> A
-    S["scheduler:<br/>bandit on frontier gain / CPU s"] -- "pick operator and cell" --> O
+    S["scheduler:<br/>new work first (join, fresh, repeats under caps, variants, near, repeats)"] -- "pick operator and cell" --> O
 ```
 
 ## Verification

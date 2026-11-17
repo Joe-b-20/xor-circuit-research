@@ -8,7 +8,10 @@ for cap D (from the unchanged consumers).  Every target is an affine form over t
 targets are re-synthesised by a randomised Paar-style pair merging that keeps, for every
 target, Kraft's condition sum 2^(level - required) <= 1 over its current cover (so the final
 depth-optimal XOR tree of every target meets its deadline), then each cover is finished by a
-Huffman tree (earliest two first).  The result meets cap D by construction.
+Huffman tree (earliest two first).  Every rebuilt target meets its required level for cap D (Kraft's
+condition holds throughout); gates outside R are unchanged, so the circuit meets cap D only if every path
+that avoids R already does: always for D >= the circuit's GD, often not for D < GD (U4, 2026-11-16: 170 of
+241 random-region builds at D = GD - 1 exceeded D).  Callers check GD (op_trb uses D = GD by default).
 
 Regions: 'bottom' (linear gates after the last AND level), 'top' (no AND in the fan-in),
 'mid' (one AND level k chosen at random among the middle ones), 'random' (fan-in cone of a

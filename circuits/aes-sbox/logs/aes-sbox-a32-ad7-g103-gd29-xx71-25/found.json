@@ -11,6 +11,14 @@
  "method": "conjugation",
  "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "rank:7",
+  "applied": {
+   "lambda": 151,
+   "k": 3
+  },
+  "evidence": "result.json stages: conj 'rank:7', lam 151, k 3"
+ },
  "hub": false,
  "start": {
   "kind": "NIST circuit",
@@ -40,6 +48,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 598.3
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find: night job T05/conjpull-54 wrote a 32/7/103/29 circuit (file conjpull-a32-ad7-g103-gd29-a5a3b45c24) at 02:43:50, 20 minutes before this one (03:03:13); asked for rank:6, it skipped the conjugate (its start was already one) and ran an identity pull of P4's 32/7/104/28, the conjugate lambda 236, k 0 of NIST's 32/7/103/32 after kernel stages (2026-11-15)",
+  "evidence": "the 2026-11-16 night runner logs (NEW lines) (the first is flagged beyond-known) and the night job folders"
  },
  "code": {
   "commit_at_run": "d9507dd",

@@ -9,8 +9,15 @@ unchanged.  Classes are chosen greedily (largest common-Q group first, size >= 2
 Depth bound [C for the stated case: non-class ANDs fixed at their Huffman-earliest arrivals, products
 restricted to re-bases of the classes, outputs = XOR trees]: Kraft sum per output at the cap D,
 sum 2^(arr - D) over the output's terms (class products after re-basing + fixed other terms) <= 1.
-Bases: all unordered bases for d <= MAX_ENUM (d = 4: 840, d = 5: 9999), otherwise the identity, all
+Bases: all unordered bases for d <= MAX_ENUM (d = 4: 840, d = 5: 83,328), otherwise the identity, all
 transvections of it and random bases (sampled, heuristic).
+Class merge (analyse): Pareto merge of the partial Kraft sums over the classes.  With ub (callers pass their
+decision limit: 1.0, or a move scan's limit; a beam pass first lowers it to the max of an achievable combo)
+partial states whose max Kraft already exceeds ub are dropped.
+Exact for every best <= ub: Kraft sums only grow, and a state with max <= ub is only dominated by states
+with max <= ub, so best, best_kraft and best_combo equal the unpruned merge's; when no state reaches ub one
+state above it is kept, 'exact' is False and best is that combo's max (> ub).  No silent cut: a merge
+above MAX_STATES Pareto states is cut and reported ('exact' False, diag 'truncated').
 """
 import itertools
 import random
@@ -25,6 +32,8 @@ from botbasis import solve, gf2_rank, load   # noqa: E402
 MAX_ENUM = 5
 SAMPLES = 3000
 EPS = 1e-9
+BEAM = 64                   # beam width of the upper-bound pass (analyse with ub)
+MAX_STATES = 200000         # safety cut of the class merge, reported ('exact', diag 'truncated'); was a silent 20000
 
 
 def top_products(sk, n):
@@ -91,9 +100,42 @@ def pareto(items):
     return P
 
 
-def analyse(c, cap, rng=None, min_size=2):
-    """returns res dict: classes (_pc), base Kraft per output, best (min max Kraft), best combo, or None
-    if no class exists (structure not applicable)."""
+def _merge(base, cls, ub, beam):
+    """Pareto merge of partial Kraft sums over the classes (exact min-max: dominance is preserved under
+    addition).  ub: drop states with max > ub (exact for results <= ub; when nothing reaches ub one state
+    above it is carried); beam: keep only the beam lowest (max, sum) states per step (heuristic upper bound).
+    Returns (states, per-step diag (in, distinct sums, Pareto out, cut, pruned), exact, above_ub)."""
+    states = [(tuple(base), ())]
+    merge = []; exact = True; above = False
+    for pc in cls:
+        nxt = {}
+        for v, ch in states:
+            for kv, B in pc['pareto']:
+                s = tuple(round(a + b, 9) for a, b in zip(v, kv))
+                if s not in nxt: nxt[s] = ch + (B,)
+        items = list(nxt.items()); npr = 0
+        if ub is not None:
+            kept = [t for t in items if max(t[0]) <= ub + EPS]
+            npr = len(items) - len(kept)
+            if not kept and items:          # nothing reaches ub: carry one state above it (best > ub, not exact)
+                kept = [min(items, key=lambda t: (max(t[0]), sum(t[0])))]
+                above = True; exact = False
+            items = kept
+        if beam is not None:
+            items = sorted(items, key=lambda t: (max(t[0]), sum(t[0])))[:beam]
+        par = pareto(items)
+        cut = len(par) > MAX_STATES
+        if cut: exact = False
+        merge.append((len(states), len(nxt), len(par), cut, npr))
+        states = par[:MAX_STATES]
+    return states, merge, exact, above
+
+
+def analyse(c, cap, rng=None, min_size=2, ub=None, value_only=False):
+    """returns res dict: classes (_pc), base Kraft per output, best (min max Kraft), best combo, exact, or
+    None if no class exists (structure not applicable).  ub: upper-bound prune of the class merge (exact
+    for every best <= ub, module docstring); None: no prune.  value_only (with ub): best exact, but
+    best_combo / best_kraft may be another combo of the same max (callers that only rank by the bound)."""
     rng = rng or random.Random(0)
     import time as _t
     t_a0 = _t.time()
@@ -147,24 +189,29 @@ def analyse(c, cap, rng=None, min_size=2):
         pc['blk'] = blk; pc['nbases'] = len(opts); pc['d'] = d
     cur = [base[j] + sum(pc['current'][j] for pc in cls) for j in range(m)]
     # exact min-max over combos: Pareto merge of partial sums (dominance is preserved under addition)
-    states = [(tuple(base), ())]
-    merge = []                  # instrumentation: per class step, (states in, distinct sums, Pareto out, truncated)
     t_m0 = _t.time()
-    for pc in cls:
-        nxt = {}
-        for v, ch in states:
-            for kv, B in pc['pareto']:
-                s = tuple(round(a + b, 9) for a, b in zip(v, kv))
-                if s not in nxt: nxt[s] = ch + (B,)
-        par = pareto(list(nxt.items()))
-        merge.append((len(states), len(nxt), len(par), len(par) > 20000))
-        states = par[:20000]
+    U = ub; u0 = None
+    if ub is not None:
+        # a beam pass (BEAM lowest (max, sum) states per step) gives an achievable combo; its max u0 >= the true
+        # min-max, so the exact pass may prune at min(ub, u0) (same rounded sums per combo in both passes)
+        bs, _m, _e, _a = _merge(base, cls, None, BEAM)
+        bstate = min(bs, key=lambda t: (max(t[0]), sum(t[0])))
+        u0 = max(bstate[0])
+        U = min(ub, u0)
+    probe = value_only and ub is not None and u0 <= ub
+    if probe:
+        # only the min-max value is needed: prune just below u0; if no state gets there, the min is u0 itself
+        # (Kraft sums are dyadic, far coarser than 1e-6), and the beam's combo attains it
+        U = u0 - 1e-6
+    states, merge, exact, above = _merge(base, cls, U, None)
+    if probe and above:
+        states, exact, above = [bstate], True, False
     bv, bch = min(states, key=lambda t: (max(t[0]), sum(t[0])))
     return {'sk': sk, 'arr': arr, 'farr': farr, '_pc': cls, 'base': base, 'current_kraft': cur,
             'current_max': max(cur), 'best': max(bv), 'best_kraft': list(bv), 'best_combo': bch,
-            'n_top': len(top), 'class_sizes': [len(pc['ands']) for pc in cls],
+            'exact': exact, 'n_top': len(top), 'class_sizes': [len(pc['ands']) for pc in cls],
             'diag': {'classes': [{'d': pc['d'], 'nbases': pc['nbases'], 'pareto': len(pc['pareto'])} for pc in cls],
-                     'merge': merge, 'truncated': any(x[3] for x in merge), 'secs': round(_t.time() - t_a0, 3),
+                     'merge': merge, 'truncated': any(x[3] for x in merge), 'ub': ub, 'beam_ub': u0, 'above_ub': above, 'secs': round(_t.time() - t_a0, 3),
                      'merge_s': round(_t.time() - t_m0, 3)}}
 
 

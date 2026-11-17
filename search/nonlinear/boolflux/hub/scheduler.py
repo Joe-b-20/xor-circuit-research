@@ -1,18 +1,34 @@
 #!/usr/bin/env python3
-"""Hub scheduler: one shared archive, operator jobs chosen by a bandit on frontier gain per CPU second.
+"""Hub scheduler: one shared archive, operator jobs chosen by a fixed priority on new work (default) or by a bandit.
 
     python3 search/nonlinear/boolflux/hub/scheduler.py --dir CAMPAIGN [--cpus 4,5,6,7] --hours H [--seed-list FILES]
-        [--ops polish,pull,join,trb] [--seconds polish=90,pull=90,join=60,trb=30] [--eps 0.25] [--seed 1]
-        [--cpu-allow 4-11]
+        [--ops polish,pull,join,trb] [--seconds polish=90,pull=90,join=60,trb=30] [--policy priority|bandit]
+        [--seed 1] [--cpu-allow 4-11] [--ingest-every 60] [--join-batch 8] [--join-cpus 1]
 
-Loop: for every free CPU choose an operator (epsilon-greedy on the recent gain / CPU-s of each
-operator, epsilon = uniform floor) and a target (a Pareto-front circuit, fewest attempts by that
-operator first, ties random), run op_<name>.py pinned to that CPU, then verify and admit its
-candidates (archive.Archive.admit: two verifiers, cell rule).  Gain of an admission
-(archive.Archive.gain): 8 if it lowers A at no worse other coordinates, 4 for AD, 2 for G, 1 for GD
-(lexicographic research priorities), 0.01 for a better circuit of its (A, AD, GD) cell that is
-dominated elsewhere.  Every job: DIR/runs/<run_id>.json (code version, seed, settings, parents,
-timing, status, outcome); DIR/stats.jsonl one line per job; DIR/front.json every 5 minutes.
+Loop: for every free CPU choose an operator and a target, run op_<name>.py pinned to that CPU, then verify
+and admit its candidates (archive.Archive.admit: cell rule, structure check, two verifiers).  The loop
+sleeps until a job exits (SIGCHLD) or 1 s passes.
+
+--policy priority (default since 2026-11-16; FINDINGS-U2 sections 2, 5): the first level with a target wins
+  1 join     front circuits with archive members they have not been joined with (incremental marks), A, AD
+             ascending, newest first, up to --join-batch targets per job, at most --join-cpus join jobs at once
+             and at most --join-share of the CPU time over the last 10 minutes (every admission reopens every
+             target, so join would otherwise hold a CPU without pause)
+  2 fresh    the first polish, then the first pull, of a front tuple (A, AD ascending, newest first)
+  2b repeat  polish / pull on front tuples under the tuple caps (fewest jobs first; --variants-first: after level 5)
+  3 variant  the first polish / pull of each structure (circuit) of a front tuple that has had its first jobs
+  4 near     the first polish / pull of each member of a cell within --near-gap gates of a dominating front point
+  5 other    the first job of every other operator on a front tuple (trb at most once per tuple), and the first
+             polish / pull of generator-made cell minima
+  6 repeat   polish / pull (and other operators except join and trb) on front tuples: fewest jobs on the tuple
+             first, under the tuple caps before over them, A, AD ascending (no CPU idles while a front exists)
+  The levels' sizes and the rule are in each job's decision record.
+--policy bandit (until 2026-11-16): epsilon-greedy on the recent gain / CPU-s of each operator, fresh tuples
+  first, fallback to the other operators and finally to any tuple over its caps.
+Gain of an admission (archive.Archive.gain, value rule): 8 for a lower A at a known AD, 4 for a new AND depth,
+1 + 0.5 (d - 1) for d fewer gates in the cap box (d <= 6), 0.5 for a new gate depth; 0 when dominated.
+Every job: DIR/runs/<run_id>.json (code version, seed, settings, parents, timing, status, outcome);
+DIR/stats.jsonl one line per job; DIR/front.json every 5 minutes.
 
 CPUs.  One job per CPU.  --cpus defaults to the CPU affinity mask of the scheduler process (e.g. set
 with taskset), so the list is written once.  An explicit --cpus outside that
@@ -35,6 +51,7 @@ import argparse
 import json
 import os
 import random
+import select
 import signal
 import subprocess
 import sys
@@ -45,7 +62,7 @@ HUBDIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(HUBDIR.parents[1]))
 from boolflux import aesfn, core, runlog   # noqa: E402
 from boolflux.hub.common import load, code_version, metrics, cid, file_sha, atomic_write   # noqa: E402
-from boolflux.hub.archive import Archive, GEN_SLACK   # noqa: E402
+from boolflux.hub.archive import Archive, GEN_SLACK, GAIN_RULE   # noqa: E402
 from boolflux.hub.funcbank import FuncBank   # noqa: E402
 from boolflux.hub.ops import kernel_bin, kernel_record   # noqa: E402
 
@@ -62,6 +79,9 @@ KILL_FACTOR = 2.0; KILL_GRACE = 120.0    # a job is killed after seconds * KILL_
 MIN_JOB_S = 5.0                          # no job is started with less than this left before the end
 FAIL_LIMIT = 5; SUSPEND_S = 600.0        # an operator failing FAIL_LIMIT times in a row is suspended
 FB_SAVE_S = 60.0                         # function bank written at most this often
+KERNEL_OPS = ('polish', 'pull')          # the operators of the fresh / variant / near levels (--policy priority)
+WAIT_S = 1.0                             # longest sleep of the main loop (a job exit wakes it at once)
+JOIN_WINDOW_S = 600.0                    # window of --join-share
 
 
 def acls(A):
@@ -101,6 +121,9 @@ class Scheduler:
             if kv: k, v = kv.split('='); self.secs[k] = float(v)
         self.hist = {o: [] for o in self.ops}            # recent (cpu_s, gain)
         self.attempts = {}                                 # (op, target key) -> n; key = (A, AD, G, GD), or the id with --target-mode id
+        self.sattempts = {}                                # (op, structure key) -> n (--policy priority: first job per structure)
+        self._recent = []; self._mono0 = time.monotonic()  # (monotonic end, op, CPU s) of the jobs of the last JOIN_WINDOW_S
+        self._near_cache = (None, [])
         self.tuple_caps = parse_caps_arg(args.tuple_caps)  # op -> jobs per tuple before it stops being chosen
         self.cap_base = {}; self.renewals = {}             # (op, tuple) -> attempts at the last renewal / renewals so far
         self.join_mark = {}                                # target id -> t_admit through which it was joined with every partner
@@ -196,17 +219,19 @@ class Scheduler:
         return n
 
     def restore(self):
-        """bandit history, attempt counts and join marks from stats.jsonl, so a restart neither
-        starts the bandit cold nor repeats work the previous run already did"""
+        """bandit history, attempt counts (per tuple and per structure), join marks (incl. batch join jobs) from
+        stats.jsonl and cap renewals from events.jsonl, so a restart neither starts the bandit cold nor repeats work
+        the previous run already did.  The bandit history keeps only jobs whose gain was computed by the current
+        gain rule (stats 'gain_rule'; lines written before 2026-11-16 have none and count for attempts only)."""
         sf = self.dir / 'stats.jsonl'
-        if not sf.exists(): return
-        n = 0
-        for ln in sf.read_text().splitlines():
+        n = 0; rule = GAIN_RULE[self.ar.gain_mode]
+        for ln in (sf.read_text().splitlines() if sf.exists() else []):
             try:
                 x = json.loads(ln); op = x['op']
             except Exception:
                 continue
-            self.hist.setdefault(op, []).append((x.get('cpu_s') or 0.0, x.get('gain') or 0.0))
+            if x.get('gain_rule') == rule: self.hist.setdefault(op, []).append((x.get('cpu_s') or 0.0, x.get('gain') or 0.0))
+            else: self.hist.setdefault(op, [])
             tid = x.get('target'); tm = x.get('tm')
             if tid is None or tm is None:                   # line written before 2026-11-14: target is in the run file
                 try:
@@ -216,9 +241,25 @@ class Scheduler:
                     continue
             key = tuple(tm) if self.args.target_mode == 'tuple' else tid
             self.attempts[(op, key)] = self.attempts.get((op, key), 0) + 1; n += 1
+            sk = (self.ar.rec.get(tid) or {}).get('skey') or tid
+            self.sattempts[(op, sk)] = self.sattempts.get((op, sk), 0) + 1
             if x.get('join_mark') is not None: self.join_mark[tid] = max(self.join_mark.get(tid, 0.0), x['join_mark'])
+            for t, v in (x.get('join_marks') or {}).items():
+                if isinstance(v, (int, float)): self.join_mark[t] = max(self.join_mark.get(t, 0.0), v)
         for o in self.hist: self.hist[o] = self.hist[o][-WINDOW:]
-        self.log(ev='restored', jobs=n, join_marks=len(self.join_mark))
+        nr = 0
+        ef = self.dir / 'events.jsonl'
+        if ef.exists() and self.args.cap_renew != 'never':   # cap renewals (logged with their keys since 2026-11-16)
+            with open(ef) as f:
+                for ln in f:
+                    if '"cap-renew"' not in ln: continue
+                    try:
+                        e = json.loads(ln)
+                    except ValueError:
+                        continue
+                    for op, t, base in e.get('keys') or []:
+                        k = (op, tuple(t)); self.cap_base[k] = base; self.renewals[k] = self.renewals.get(k, 0) + 1; nr += 1
+        if sf.exists() or nr: self.log(ev='restored', jobs=n, join_marks=len(self.join_mark), cap_renewals=nr)
 
     # ---- CPUs ----------------------------------------------------------------------------------
     def init_cpus(self):
@@ -286,7 +327,12 @@ class Scheduler:
                 self.ctl_bad = (mt, err)
             else:
                 self.ctl_mtime = mt; self.ctl_bad = None; self.last_ingest = 0
-        if self.ingest_globs and time.time() - self.last_ingest > 1800:
+        self.maybe_ingest()
+
+    def maybe_ingest(self):
+        """ingest every --ingest-every seconds (control.json "ingest_every"; until 2026-11-16 a fixed 1800 s, so
+        conjugation circuits waited 944 s on average, U2 section 5)"""
+        if self.ingest_globs and time.time() - self.last_ingest > self.args.ingest_every:
             self.last_ingest = time.time(); self.ingest()
 
     def apply_control(self, c):
@@ -308,12 +354,14 @@ class Scheduler:
         try:
             secs = {k: float(v) for k, v in (c.get('seconds') or {}).items()}
             num = {k: float(c[k]) for k in ('eps', 'near', 'nursery', 'ad3_share') if k in c}
+            every = float(c['ingest_every']) if 'ingest_every' in c else None
             tcaps = {str(k): int(v) for k, v in c['tuple_caps'].items()} if 'tuple_caps' in c else None
             gap = int(c['near_gap']) if 'near_gap' in c else None
             cpus = parse_cpus(c['cpus']) if 'cpus' in c else None
         except (TypeError, ValueError) as e:
             return 'bad value: %r' % (e,)
         if any(v <= 0 for v in secs.values()): return 'seconds must be positive'
+        if every is not None and every <= 0: return 'ingest_every must be positive'
         if any(not (0.0 <= v <= 1.0) for v in num.values()): return 'eps, near, nursery, ad3_share must be in [0, 1]'
         ing = c.get('ingest', self.ingest_globs)
         if not isinstance(ing, list): return 'ingest must be a list of globs'
@@ -329,6 +377,7 @@ class Scheduler:
         if 'nursery' in num: self.args.nursery = num['nursery']
         if 'ad3_share' in num: self.ad3_share = num['ad3_share']
         if gap is not None: self.args.near_gap = gap
+        if every is not None: self.args.ingest_every = every
         if tcaps is not None: self.tuple_caps = tcaps
         if cpus is not None:
             if self.allow: self.set_cpus(cpus)
@@ -472,14 +521,15 @@ class Scheduler:
         (q.A <= t.A, q.AD <= t.AD, q.GD <= t.GD; q then has more gates than t): something moved under t's caps,
         so t gets its jobs again.  At most --cap-renew-max renewals per (operator, tuple)."""
         if self.args.cap_renew != 'box' or self.args.target_mode != 'tuple': return 0
-        n = 0
+        n = 0; keys = []
         for t in self.ar.front():
             if t == q or not (q[0] <= t[0] and q[1] <= t[1] and q[3] <= t[3]): continue
             for op in self.tuple_caps:
                 k = (op, t)
                 if self.eff_attempts(op, t) > 0 and self.renewals.get(k, 0) < self.args.cap_renew_max:
                     self.cap_base[k] = self.attempts.get(k, 0); self.renewals[k] = self.renewals.get(k, 0) + 1; n += 1
-        if n: self.log(ev='cap-renew', by=list(q), renewed=n)
+                    keys.append([op, list(t), self.cap_base[k]])
+        if n: self.log(ev='cap-renew', by=list(q), renewed=n, keys=keys)     # keys: restored on a restart
         return n
 
     def fresh_target(self, busy):
@@ -543,9 +593,161 @@ class Scheduler:
         d.update(attempts=k0[0], tied=sum(1 for i in ids if kf(i) == k0), rule='fewest attempts on the tuple, A<=31 first, ties random')
         return t
 
+    # ---- --policy priority (2026-11-16) ----------------------------------------------------------
+    def skey(self, i):
+        return (self.ar.rec.get(i) or {}).get('skey') or i
+
+    def near_members(self):
+        """(G above the dominating front point, id) of every member of a cell that is not on the front and lies
+        within --near-gap gates of a dominating front point (cached per archive state)"""
+        st = (len(self.ar.rec), self.last_admit, self.args.near_gap)
+        if self._near_cache[0] == st: return self._near_cache[1]
+        fr = self.ar.front(); frs = set(fr); out = []
+        for k, ids in self.ar.cells.items():
+            if not ids: continue
+            m = (k[0], k[1], self.ar.rec[ids[0]]['G'], k[2])
+            if m in frs: continue
+            doms = [q[2] for q in fr if all(a <= b for a, b in zip(q, m))]
+            if doms and m[2] - min(doms) <= self.args.near_gap: out += [(m[2] - min(doms), i) for i in ids]
+        self._near_cache = (st, out)
+        return out
+
+    def busy_set(self):
+        """tuple keys, ids (a subclass that overrides launch may test ids) and structure keys of the running jobs'
+        targets.  --policy priority leaves join jobs out (priority_choice keeps its own set of join targets: a join
+        does not keep a kernel job off its targets); --policy bandit counts them, as before."""
+        pr = getattr(self.args, 'policy', 'priority') == 'priority'
+        jobs = [x for x in self.running if not (pr and x.get('op') == 'join')]
+        return ({x.get('key', x['target']) for x in jobs} | {x['target'] for x in jobs}
+                | {b for x in jobs for b in (x.get('batch') or ())} | {x['skey'] for x in jobs if x.get('skey')})
+
+    def join_share(self):
+        """join's share of the CPU time of the last JOIN_WINDOW_S (finished jobs + elapsed time of running join jobs),
+        over at least 120 s of all active CPUs"""
+        now = time.monotonic()
+        self._recent = [x for x in self._recent if x[0] >= now - JOIN_WINDOW_S]
+        used = sum(c for t, o, c in self._recent if o == 'join') + sum(now - j['m0'] for j in self.running if j.get('op') == 'join' and j.get('m0'))
+        span = max(120.0, min(JOIN_WINDOW_S, now - self._mono0))
+        return used / (max(1, len(self.cpus)) * span)
+
+    def priority_choice(self, busy):
+        """(op, target id, level, batch ids) of the first level with work (module docstring), or None.  The
+        decision (level sizes counted so far, rule, attempts) is left in self._dec."""
+        ops = self.active_ops(); rec = self.ar.rec
+        d = self._dec = {'policy': 'priority', 'levels': {}, 'suspended': sorted(o for o in self.ops if o not in ops)}
+        if not ops:
+            d['mode'] = 'none'; return None
+        lv = d['levels']; fr = self.ar.front_ids(); sk = self.skey
+        kops = [o for o in ops if o in KERNEL_OPS]
+        vr = lambda i: (rec[i]['A'], rec[i]['AD'], -rec[i]['t_admit'], i)
+        free_t = lambda i: i not in busy and self.target_key(i) not in busy and sk(i) not in busy   # tuple not running
+        free_i = lambda i: i not in busy and sk(i) not in busy                                      # circuit not running
+
+        def pick(level, op, i, rule, n, batch=()):
+            d.update(mode='priority', level=level, op=op, rule=rule, n_level=n,
+                     attempts=self.attempts.get((op, self.target_key(i)), 0), struct_attempts=self.sattempts.get((op, sk(i)), 0))
+            return op, i, level, list(batch)
+        # 1 join
+        if 'join' in ops and self.args.join_mode == 'incremental':
+            jbusy = {t for j in self.running if j['op'] == 'join' for t in [j['target']] + list(j.get('batch') or [])}
+            todo = sorted((i for i in fr if self.join_mark.get(i, 0.0) < self.last_admit and i not in jbusy), key=vr)
+            lv['join'] = len(todo)
+            share = self.join_share(); d['join_share'] = round(share, 4)
+            if todo and len([j for j in self.running if j['op'] == 'join']) < max(1, self.args.join_cpus) and share <= self.args.join_share:
+                b = todo[:max(1, self.args.join_batch)]
+                return pick('join', 'join', b[0], 'front circuits with unmet partners; A, AD ascending, newest first; batched', len(todo), b[1:])
+        # 2 fresh
+        best = None; n = 0
+        for i in fr:
+            if not free_t(i): continue
+            k = self.target_key(i); todo = [o for o in kops if self.attempts.get((o, k), 0) == 0]
+            if not todo: continue
+            n += 1
+            if best is None or vr(i) < best[0]: best = (vr(i), todo[0], i)
+        lv['fresh'] = n
+        if best: return pick('fresh', best[1], best[2], 'first polish / pull of a front tuple; A, AD ascending, newest first', n)
+        def repeat(under_only):
+            best = None; n = 0
+            rops = [o for o in ops if o not in ('join', 'trb')]
+            for i in fr:
+                if not free_t(i): continue
+                k = self.target_key(i)
+                for o in rops:
+                    e = self.eff_attempts(o, k); cap = self.tuple_caps.get(o)
+                    over = cap is not None and e >= cap
+                    if over and (under_only or (self.args.repeat_max is not None and self.attempts.get((o, k), 0) >= self.args.repeat_max)): continue
+                    n += 1; r = (over, e, rec[i]['A'], rec[i]['AD'], self.sattempts.get((o, sk(i)), 0), -rec[i]['t_admit'], i, o)
+                    if best is None or r < best[0]: best = (r, o, i)
+            lv['repeat-under-cap' if under_only else 'repeat'] = n
+            if best:
+                lvl = 'repeat-over-cap' if best[0][0] else 'repeat'
+                return pick(lvl, best[1], best[2], 'fewest jobs on the tuple (under the caps first); A, AD ascending', n)
+            return None
+        # 2b repeats under the tuple caps (second polish, second and third pull of a front tuple) before the
+        # structure variants (2026-11-17: in the inverse late phase variants-first gave 6 front adds in 2.98 CPU-h,
+        # the old scheduler's repeats 17 in 2.95)
+        if not self.args.variants_first:
+            ch = repeat(True)
+            if ch: return ch
+        # 3 variant, 4 near: first polish / pull per structure
+        for level, pool, rule in (('variant', [(0, i) for i in fr], 'first polish / pull of each structure of a front tuple'),
+                                  ('near', None, 'first polish / pull of each member of a near-front cell (within --near-gap)')):
+            if pool is None: pool = self.near_members()
+            best = None; n = 0
+            for gap, i in pool:
+                if not free_i(i): continue
+                todo = [o for o in kops if self.sattempts.get((o, sk(i)), 0) == 0]
+                if not todo: continue
+                n += 1; r = (rec[i]['A'], rec[i]['AD'], gap, -rec[i]['t_admit'], i)
+                if best is None or r < best[0]: best = (r, todo[0], i)
+            lv[level] = n
+            if best: return pick(level, best[1], best[2], rule + '; A, AD ascending, newest first', n)
+        # 5 other: first job of the other operators per front tuple (trb once), first polish / pull of nursery minima
+        best = None; n = 0
+        oops = [o for o in ops if o not in KERNEL_OPS and o != 'join']
+        for i in fr:
+            if not free_t(i): continue
+            k = self.target_key(i)
+            for o in oops:
+                if self.attempts.get((o, k), 0) == 0:
+                    n += 1; r = vr(i) + (o,)
+                    if best is None or r < best[0]: best = (r, o, i)
+        if kops and (self.generators & set(ops) or self.args.nursery > 0):
+            frs = set(fr)
+            for k, ids in self.ar.cells.items():
+                if not ids or ids[0] in frs or not free_i(ids[0]): continue
+                r0 = rec[ids[0]]
+                if r0['operator'] not in self.generators and not (r0.get('operator_settings') or {}).get('nursery'): continue
+                todo = [o for o in kops if self.sattempts.get((o, sk(ids[0])), 0) == 0]
+                if todo:
+                    n += 1; r = vr(ids[0]) + (todo[0],)
+                    if best is None or r < best[0]: best = (r, todo[0], ids[0])
+        lv['other'] = n
+        if best: return pick('other', best[1], best[2], 'first job of the other operators per front tuple; first polish / pull of nursery minima', n)
+        # 6 repeat (over the caps; the repeats under the caps came after fresh unless --variants-first)
+        ch = repeat(False)
+        if ch: return ch
+        d['mode'] = 'empty'
+        return None
+
     # ---- jobs -------------------------------------------------------------------------------
     def launch(self, cpu, busy):
         self._idle_why = None
+        if getattr(self.args, 'policy', 'priority') == 'priority':
+            ch = self.priority_choice(busy); dec = dict(self._dec)
+            if ch is None:
+                self._idle_why = ('no active operator (suspended: %s)' % dec.get('suspended') if dec.get('mode') == 'none'
+                                  else 'no target for any operator'); return None
+            op, tid, why, batch = ch
+            dec['why'] = why
+            if op == 'join' and self.args.join_mode == 'incremental':
+                dec['batch'] = len(batch)
+                dec['join_partners'] = sum(1 for t in [tid] + batch for ids in self.ar.cells.values() for i in ids
+                                           if i != t and self.ar.rec[i]['t_admit'] > self.join_mark.get(t, 0.0))
+            self._launch_dec = dec
+            j = self.start_job(cpu, op, why, tid, batch=batch)
+            if j is None: self._idle_why = 'less than %.0f s left' % MIN_JOB_S
+            return j
         fresh = self.fresh_target(busy)
         if fresh is not None:
             op, tid = fresh; why = 'fresh'; dec = dict(self._fdec or {})
@@ -576,16 +778,20 @@ class Scheduler:
         if j is None: self._idle_why = 'less than %.0f s left' % MIN_JOB_S
         return j
 
-    def start_job(self, cpu, op, why, tid, extra=(), env=None):
+    def start_job(self, cpu, op, why, tid, extra=(), env=None, batch=()):
         """Start operator `op` on archive member `tid`, pinned to `cpu`; returns the job dict, or None when
         too little time is left.  Everything a job needs for its run record is set here (unique run id, fresh job
         directory, seconds cut to the end of the campaign, own process group, kill limit, script hash, join
         mark), so a subclass that chooses (op, target) its own way should call this instead of building the
-        command itself.  extra: more command-line arguments (e.g. ['--caps', '28,4,22']); env: environment."""
+        command itself.  extra: more command-line arguments (e.g. ['--caps', '28,4,22']); env: environment;
+        batch: more join targets (--batch, each with its own join mark)."""
         end = self.end
         secs = min(self.secs[op], end - time.time())       # a job never runs past the end of the campaign
         if secs < MIN_JOB_S: return None
-        key = self.target_key(tid); self.attempts[(op, key)] = self.attempts.get((op, key), 0) + 1
+        key = self.target_key(tid); batch = [b for b in batch if b != tid and b in self.ar.rec]
+        for t in [tid] + batch:
+            k = self.target_key(t); self.attempts[(op, k)] = self.attempts.get((op, k), 0) + 1
+            k = (op, self.skey(t)); self.sattempts[k] = self.sattempts.get(k, 0) + 1
         while True:                                        # a job directory is never reused
             self.nrun += 1
             run_id = '%s.r%05d-%s' % (self.uid, self.nrun, op)
@@ -598,6 +804,7 @@ class Scheduler:
         since = None
         if op == 'join' and self.args.join_mode == 'incremental':
             since = self.join_mark.get(tid, 0.0); cmd += ['--since', repr(since)]
+            if batch: cmd += ['--batch', ','.join('%s:%r' % (b, self.join_mark.get(b, 0.0)) for b in batch)]
         cmd += [str(x) for x in extra]
         cmd, pre = runlog.pin(cmd, cpu)                    # taskset -c CPU, else os.sched_setaffinity in the child
         if env is not None: env = dict(env, **{k: v for k, v in os.environ.items() if k in (aesfn.ENV, 'BOOLFLUX_RUNLOG_STORE')})
@@ -613,7 +820,7 @@ class Scheduler:
         return {'p': p, 'lf': lf, 'op': op, 'why': why, 'target': tid, 'run_id': run_id, 'jd': jd, 'seed': seed,
                 'cpu': cpu, 't0': time.time(), 'cmd': cmd, 'key': key, 'secs': secs, 'script': str(script), 'script_sha': file_sha(script),
                 'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since, 'pinning': runlog.pinning(), 'decision': dec,
-                'm0': time.monotonic(), 'spawn_s': round(time.time() - t_spawn, 4)}
+                'm0': time.monotonic(), 'spawn_s': round(time.time() - t_spawn, 4), 'batch': batch, 'skey': self.skey(tid)}
 
     @staticmethod
     def reap(job):
@@ -650,7 +857,8 @@ class Scheduler:
         # (a subclass may build its own job dict: everything beyond the 2026-11-14 keys has a default)
         job.setdefault('secs', self.secs.get(op)); job.setdefault('script', str(self.scripts.get(op, SCRIPTS.get(op))))
         job.setdefault('script_sha', file_sha(job['script']))
-        wall = round(time.time() - job['t0'], 2)
+        # durations on the monotonic clock (time.time() stepped back up to 68 s on this host, U2 section 7)
+        wall = round(time.monotonic() - job['m0'], 2) if job.get('m0') else round(time.time() - job['t0'], 2)
         rec = {}; rec_error = None
         try:
             if (jd / 'record.json').exists():
@@ -682,7 +890,9 @@ class Scheduler:
         try:
             joins = info.get('joins') if isinstance(info.get('joins'), list) else []
             cand_ids = rec.get('cand_ids') if isinstance(rec.get('cand_ids'), list) else None
-            nurs = op in self.generators or tm['operator'] in self.generators or bool((tm.get('operator_settings') or {}).get('nursery'))
+            # nursery slack for one generation (2026-11-16): a generator's output and the jobs on it, not their
+            # descendants (the flag was inherited without end: 516 records in the 11-14 long run, U2 section 6)
+            nurs = op in self.generators or tm['operator'] in self.generators
             files = sorted(jd.glob('cand-*.bfx')) if jd.is_dir() else []
             for k, f in enumerate(files):
                 try:
@@ -727,6 +937,7 @@ class Scheduler:
             run['finish_error'] = repr(e); self.log(ev='finish-error', run_id=job['run_id'], error=repr(e))
         if self.fb.dirty and time.time() - self.last_fb_save > FB_SAVE_S:
             self.fb.save(); self.last_fb_save = time.time()
+        self._recent.append((time.monotonic(), op, float(job.get('proc_cpu_s') or cpu or 0.0)))
         # ---- bandit and failure accounting ----
         h = self.hist.setdefault(op, []); h.append((cpu, gain)); del h[:-WINDOW]
         if status in ('failed', 'timeout'):
@@ -737,9 +948,15 @@ class Scheduler:
                 self.log(ev='op-suspended', op=op, seconds=SUSPEND_S, reason='%d failures in a row' % FAIL_LIMIT)
         elif status == 'ok':
             self.fail[op] = 0
-        mark = None
-        if op == 'join' and status == 'ok' and isinstance(info.get('joined_through'), (int, float)):
-            mark = max(self.join_mark.get(job['target'], 0.0), float(info['joined_through'])); self.join_mark[job['target']] = mark
+        mark = None; marks = {}
+        if op == 'join' and status == 'ok':
+            by = info.get('joined_through_by')
+            if not isinstance(by, dict) or not by:
+                by = {job['target']: info.get('joined_through')}
+            for t, v in by.items():
+                if t in self.ar.rec and isinstance(v, (int, float)):
+                    marks[t] = max(self.join_mark.get(t, 0.0), float(v)); self.join_mark[t] = marks[t]
+            mark = marks.get(job['target'])
         run.update({'candidates': len(outcome), 'admitted': sum(1 for o in outcome if o['status'] == 'admitted'), 'gain': gain})
         # instrumentation: admission outcome by status, time spent verifying/admitting, the whole finish()
         counts = {}
@@ -774,6 +991,8 @@ class Scheduler:
             f.write(json.dumps({'run_id': job['run_id'], 'op': op, 'cls': acls(tm['A']), 'cpu_s': cpu, 'target': job['target'],
                                 'tm': [tm['A'], tm['AD'], tm['G'], tm['GD']],
                                 'seed': job['seed'], 'status': status, 'join_mark': mark,
+                                'join_marks': marks if len(marks) > 1 else None, 'why': job['why'],
+                                'gain_rule': GAIN_RULE[self.ar.gain_mode],
                                 'admitted': run['admitted'], 'gain': gain, 'ts': round(time.time(), 1),
                                 'proc_cpu_s': timing.get('proc_cpu_s'), 'mono_wall_s': timing.get('mono_wall_s'),
                                 'finish_s': adm['finish_s'], 't_exit': timing.get('t_exit')}) + '\n')
@@ -841,6 +1060,7 @@ class Scheduler:
         running = self.running; last_front = 0; last_ctl = 0
         signal.signal(signal.SIGTERM, lambda s, f: setattr(self, 'stop', 'SIGTERM'))
         signal.signal(signal.SIGINT, lambda s, f: setattr(self, 'stop', 'SIGINT'))
+        wake = self._wake_setup()
         self.log(ev='start', gain=self.args.gain, target_mode=self.args.target_mode, join_mode=self.args.join_mode,
                  tuple_caps=self.tuple_caps, campaign=self.uid, cpus=self.cpus, ops=self.ops, seconds=self.secs, eps=self.args.eps, version=self.version,
                  archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()), last_run=self.nrun)
@@ -855,7 +1075,7 @@ class Scheduler:
             for j in list(running):
                 if self.reap(j) is None:
                     if self.stop: self.kill(j, 'stopped')
-                    elif now - j['t0'] > j.get('limit', self.secs.get(j['op'], 90.0) * KILL_FACTOR + KILL_GRACE):
+                    elif (time.monotonic() - j['m0'] if j.get('m0') else now - j['t0']) > j.get('limit', self.secs.get(j['op'], 90.0) * KILL_FACTOR + KILL_GRACE):
                         self.kill(j, 'timeout')
                         self.log(ev='job-kill', run_id=j['run_id'], op=j['op'], reason='timeout', elapsed_s=round(now - j['t0'], 1),
                                  limit_s=j.get('limit'))
@@ -868,9 +1088,7 @@ class Scheduler:
                 except Exception as e:     # never lose the loop; the job dir stays as evidence
                     self.log(ev='finish-error', run_id=j['run_id'], error=repr(e))
             while self.free and time.time() < end and not self.stop:
-                # busy: tuple keys and ids (a subclass that overrides launch may test ids)
-                busy = {x.get('key', x['target']) for x in running} | {x['target'] for x in running}
-                j = self.launch(self.free[0], busy)
+                j = self.launch(self.free[0], self.busy_set())
                 if j is None:
                     st = (self._idle_why, len(self.free))
                     if st != self._idle_state:          # logged when the idle reason or the number of idle CPUs changes
@@ -881,6 +1099,7 @@ class Scheduler:
                 c0 = self.free.pop(0); running.append(j)
                 t_free = self.free_since.pop(c0, None)
                 if t_free is not None: self.idle_cpu_s += time.time() - t_free
+            self.maybe_ingest()
             if time.time() - getattr(self, '_host_t', 0) >= 60:
                 self._host_t = time.time(); self.host_sample()
             if time.time() - last_front > 300:
@@ -890,12 +1109,59 @@ class Scheduler:
                     self.log(ev='front-error', error=repr(e))
                 self.summary()
                 last_front = time.time()
-            time.sleep(0.5 if not self.stop else 0.1)
+            self._wait(wake, WAIT_S if not self.stop else 0.1)
+        self._wake_close(wake)
         self.summary(final=True)
         self.fb.save(); self.write_front()
         self.log(ev='end', reason=self.stop or 'time', archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()))
         self.runlog.finish(self.stop or 'time', archive=len(self.ar.rec), cells=len(self.ar.cells), front=len(self.ar.front()),
                            jobs=self.nrun)
+
+
+def _noop_handler(signum, frame):
+    pass
+
+
+def _wake_setup_fn():
+    """a pipe that SIGCHLD (and every other handled signal) writes to (signal.set_wakeup_fd), so the loop sleeps
+    until a job exits instead of polling every 0.5 s (U5 section 1).  None when not possible (not the main thread)."""
+    try:
+        r, w = os.pipe(); os.set_blocking(r, False); os.set_blocking(w, False)
+        old = signal.set_wakeup_fd(w, warn_on_full_buffer=False)
+        prev = signal.signal(signal.SIGCHLD, _noop_handler)
+        return (r, w, old, prev)
+    except (ValueError, OSError, AttributeError):
+        return None
+
+
+def _wait_fn(wake, timeout):
+    if wake is None:
+        time.sleep(timeout); return
+    try:
+        select.select([wake[0]], [], [], timeout)
+    except (InterruptedError, OSError, ValueError):
+        pass
+    try:
+        while os.read(wake[0], 4096): pass
+    except (BlockingIOError, OSError):
+        pass
+
+
+def _wake_close_fn(wake):
+    if wake is None: return
+    try:
+        signal.set_wakeup_fd(wake[2] if wake[2] is not None else -1)
+        signal.signal(signal.SIGCHLD, wake[3] if wake[3] is not None else signal.SIG_DFL)
+    except (ValueError, OSError, TypeError):
+        pass
+    for fd in wake[:2]:
+        try: os.close(fd)
+        except OSError: pass
+
+
+Scheduler._wake_setup = staticmethod(_wake_setup_fn)
+Scheduler._wait = staticmethod(_wait_fn)
+Scheduler._wake_close = staticmethod(_wake_close_fn)
 
 
 def parse_caps_arg(text):
@@ -929,6 +1195,14 @@ def parser():
     ap.add_argument('--cap-renew', choices=('never', 'box'), default='never',
                     help='box: a new front tuple inside the cap box (A, AD, GD) of a front tuple renews that tuple\'s caps')
     ap.add_argument('--cap-renew-max', type=int, default=3, help='renewals per (operator, tuple) with --cap-renew box')
+    ap.add_argument('--policy', choices=('priority', 'bandit'), default='priority',
+                    help='priority (default, 2026-11-16): fixed levels join, fresh, variant, near, other, repeat; bandit: the earlier rule')
+    ap.add_argument('--ingest-every', type=float, default=60.0, help='seconds between ingest passes of control.json "ingest" (was 1800)')
+    ap.add_argument('--join-batch', type=int, default=8, help='--policy priority: join targets per join job')
+    ap.add_argument('--join-cpus', type=int, default=1, help='--policy priority: join jobs running at once at most')
+    ap.add_argument('--join-share', type=float, default=0.10, help='--policy priority: join CPU share over the last 10 min at most')
+    ap.add_argument('--variants-first', action='store_true', help='--policy priority: structure variants and near members before the repeats under the tuple caps (order of 2026-11-16)')
+    ap.add_argument('--repeat-max', type=int, default=None, help='--policy priority: jobs per (operator, tuple) beyond which no repeat is run')
     ap.add_argument('--function', choices=aesfn.NAMES, default=None,
                     help='aes-sbox or aes-invsbox (default: the campaign\'s, from campaign.json; aes-sbox for a new one)')
     return ap

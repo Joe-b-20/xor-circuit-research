@@ -42,7 +42,7 @@ def kernel_stage(c, caps, seed, seconds, wd, objective='cost,gd', repair_keep=1,
         return None, {'error': repr(e)[:300]}
     finally:
         O.KDEFAULTS.clear(); O.KDEFAULTS.update(old)
-    best = None
+    best = None; ok_all = []
     for k in cands:
         k = clean(k); ok, inf = verify(k)
         if not ok: continue
@@ -50,7 +50,12 @@ def kernel_stage(c, caps, seed, seconds, wd, objective='cost,gd', repair_keep=1,
         if caps.get('A') is not None and m[0] > caps['A']: continue
         if caps.get('AD') is not None and m[1] > caps['AD']: continue
         if caps.get('GD') is not None and m[3] > caps['GD']: continue
-        if best is None or (m[2], m[3]) < (best[1][2], best[1][3]): best = (k, m)
+        ok_all.append((k, m))
+        if best is None or tuple(m) < tuple(best[1]): best = (k, m)     # value order (A, AD, G, GD); was (G, GD)
+    # every other verified in-cap candidate that is 4-D non-dominated (when the kernel returns several, e.g.
+    # its intermediate bests): callers offer them to the Recorder (which keeps 4-D Pareto points)
+    info['others'] = [k for k, m in ok_all if best is not None and k is not best[0]
+                      and not any(C.dominates(m2, m) for _, m2 in ok_all)]
     info['kernel_bin_path'] = str(KDIR / 'bin' / info.get('kernel_bin', ''))
     return (best[0] if best else None), info
 
@@ -73,7 +78,11 @@ class Recorder:
         return pts
 
     def dominated(self, m):
-        return any(g <= m[2] and d <= m[3] for g, d in self.front)
+        """weakly dominated in (A, AD, G, GD) by a recorded point or the start (in limits); was (G, GD) only,
+        which dropped lower-A / lower-AD worker results in merge_workers (U7 #4)"""
+        pts = list(self.R.points)
+        if self.start_m and C.in_limits(self.start_m, self.tid): pts.append(tuple(self.start_m))
+        return any(all(a <= b for a, b in zip(p, m)) for p in pts)
 
     def offer(self, c, parent, method, extra=None, kernel_bin=None):
         c = clean(c)

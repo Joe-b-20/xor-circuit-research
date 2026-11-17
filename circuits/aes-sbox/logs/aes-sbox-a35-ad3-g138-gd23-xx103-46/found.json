@@ -8,9 +8,23 @@
   23
  ],
  "found_by": "BoolFlux",
- "method": "conjugation",
- "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "corrected": [
+  {
+   "date": "2026-11-16",
+   "field": "method",
+   "was": "conjugation",
+   "now": "staged pull",
+   "why": "the run applied no conjugate (--conj id; result.json stages have lam null); the old label named the operator, conjpull.py"
+  }
+ ],
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "id",
+  "applied": null,
+  "evidence": "result.json stages: every stage has conj 'id', lam null, k null"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -26,6 +40,7 @@
  },
  "chain_root": null,
  "lineage": null,
+ "lineage_note": "start: our 35/3/138/24 from night job T07/conjpull-497; its lineage: 35/3/138/25 (T07/conjpull-461), P6's 35/3/139/23 (2026-11-15: the conjugate lambda 250, k 4 of our 35/3/140/25, then re-basing of the level-3 classes, a hybrid build and the kernel); the night steps are identity pulls",
  "parameters": {
   "limits": {
    "AD": 3,
@@ -41,6 +56,11 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 231.0
+ },
+ "first_find": {
+  "first": false,
+  "note": "re-find by one second: night job T07/conjpull-505 wrote another 35/3/138/23 circuit (file conjpull-a35-ad3-g138-gd23-d35585217b) at 07:05:27, this job at 07:05:28; both lineages start at the same P6 circuit",
+  "evidence": "the 2026-11-16 night runner logs (NEW lines) and the night job folders (sidecar utc)"
  },
  "code": {
   "commit_at_run": "d9507dd",

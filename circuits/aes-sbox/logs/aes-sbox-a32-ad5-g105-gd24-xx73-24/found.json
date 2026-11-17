@@ -11,6 +11,14 @@
  "method": "conjugation",
  "method_description": "conjugation: the start rewritten through a GF(2^8) conjugate map, then staged gate-kernel pulls",
  "operator": "conjpull",
+ "conjugate": {
+  "asked": "rank:1",
+  "applied": {
+   "lambda": 43,
+   "k": 4
+  },
+  "evidence": "result.json stages: conj 'rank:1', lam 43, k 4"
+ },
  "hub": false,
  "start": {
   "kind": "our circuit",
@@ -42,6 +50,10 @@
  "found_utc_source": "recorded by the run",
  "time_to_result_s": {
   "elapsed_s": 405.2
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "the 2026-11-16 night runner logs (NEW lines): first circuit of this tuple, flagged beyond-known, 2026-11-16T02:11:16Z"
  },
  "code": {
   "commit_at_run": "d9507dd",

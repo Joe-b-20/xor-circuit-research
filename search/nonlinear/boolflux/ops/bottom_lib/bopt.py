@@ -89,8 +89,21 @@ def bases_of(space):
     return out
 
 
+_DEC = {}
+
+
 def decompose(M, A):
-    """M (4 row masks) = sum_k alpha_k w_k^T with alphas A (basis of colspace(M))."""
+    """M (4 row masks) = sum_k alpha_k w_k^T with alphas A (basis of colspace(M)).  Memoised (pure function;
+    a fresh list per call; the memo is cleared at 200,000 entries)."""
+    key = (tuple(M), tuple(A))
+    r = _DEC.get(key)
+    if r is None:
+        if len(_DEC) >= 200000: _DEC.clear()
+        r = _DEC[key] = _decompose(M, A)
+    return list(r)
+
+
+def _decompose(M, A):
     r = len(A)
     # express each column in basis A
     # build lookup: combination -> coefficients
@@ -122,6 +135,8 @@ def tsub(M, p):
 class Model:
     def __init__(self, B, Lb, D, free, amax_bottom, ycost=None):
         self.B = B; self.Lb = Lb; self.D = D; self.free = free; self.amax = amax_bottom; self.pairs = True; self.pw = 0
+        self._kkey = None; self._kw = {}      # memo of 2^(plev(a) - D) per alpha (pure in Lb, D; reset when they change)
+        self.xlev = None      # per output: levels of its fixed extra terms (affine junk, ops/bottom.py --junk terms), or None
 
     def ylev(self, a):
         k = bin(a).count('1')
@@ -130,8 +145,19 @@ class Model:
     def plev(self, p):
         return self.ylev(p[0]) + 1
 
-    def kraft(self, S):
-        return sum(2.0 ** (self.plev(p) - self.D) for p in S) <= 1 + 1e-9
+    def kraft(self, S, j=None):
+        """exact Kraft check at D of output j's products S (plus output j's fixed extra terms, if any)"""
+        key = (tuple(self.Lb), self.D)
+        if key != self._kkey: self._kkey = key; self._kw = {}
+        kw = self._kw; terms = []
+        for p in S:
+            a = p[0]
+            t = kw.get(a)
+            if t is None: t = kw[a] = 2.0 ** (self.plev(p) - self.D)
+            terms.append(t)
+        if j is not None and self.xlev and self.xlev[j]:
+            terms.extend(2.0 ** (l - self.D) for l in self.xlev[j])
+        return sum(terms) <= 1 + 1e-9         # the same terms in the same order as sum(2.0 ** (plev - D) for p in S)
 
     def cost(self, choice):
         P = set();
@@ -154,6 +180,53 @@ class Model:
         xf = range(xc)
         out = sum(len(S) - 1 for S in choice)
         if self.pairs:
+            # greedy shared pairs, on integer ids (was: the terms themselves, oriented by str(); 49 % of the SA
+            # time).  Same result: an unordered pair's count, its first occurrence (max() tie-break) and every
+            # list operation depend only on element equality, which the id map preserves.
+            ids = {}
+            terms = [[ids.setdefault(p, len(ids)) for p in S] for S in choice]
+            while True:
+                cnt = {}
+                for tl in terms:
+                    nt = len(tl)
+                    for i1 in range(nt):
+                        x = tl[i1]
+                        for i2 in range(i1 + 1, nt):
+                            y = tl[i2]
+                            kk = (x, y) if x < y else (y, x)
+                            cnt[kk] = cnt.get(kk, 0) + 1
+                k, v = max(cnt.items(), key=lambda kv: kv[1], default=(None, 0))
+                if v < 2: break
+                out -= v - 1
+                nk = ids.setdefault(('pair',) + k, len(ids))
+                for tl in terms:
+                    if k[0] in tl and k[1] in tl:
+                        tl.remove(k[0]); tl.remove(k[1]); tl.append(nk)
+        g = len(P) + yc + len(xf) + out
+        over = max(0, len(P) - self.amax)
+        return g + self.pw * len(P) + 1000 * over, len(P), yc, len(xf), out
+
+    def cost_reference(self, choice):
+        """the earlier cost() (pairs oriented by str()), kept for the identity test (tests/test_rebuild_ops.py)"""
+        P = set()
+        for S in choice: P.update(S)
+        al = {a for a, w in P if bin(a).count('1') >= 2}
+        yc = 0
+        for a in al:
+            k = bin(a).count('1')
+            if k == 2: yc += 1
+            else:
+                yc += 1 if any((a ^ (1 << i)) in al for i in range(4) if (a >> i) & 1) else 2
+        xf0 = {w for a, w in P if bin(w).count('1') >= 2 and w not in self.free}
+        av = set(self.free) | {1 << i for i in range(8)}
+        rem = set(xf0); xc = 0
+        while rem:
+            got = [w for w in rem if any((w ^ a) in av for a in av)]
+            if not got:
+                w = min(rem); xc += 2; av.add(w); rem.discard(w); continue
+            for w in got: av.add(w); rem.discard(w); xc += 1
+        out = sum(len(S) - 1 for S in choice)
+        if self.pairs:
             terms = [list(S) for S in choice]
             while True:
                 cnt = Counter()
@@ -168,9 +241,9 @@ class Model:
                 for tl in terms:
                     if k[0] in tl and k[1] in tl:
                         tl.remove(k[0]); tl.remove(k[1]); tl.append(nk)
-        g = len(P) + yc + len(xf) + out
+        g = len(P) + yc + xc + out
         over = max(0, len(P) - self.amax)
-        return g + self.pw * len(P) + 1000 * over, len(P), yc, len(xf), out
+        return g + self.pw * len(P) + 1000 * over, len(P), yc, xc, out
 
 
 def main():
