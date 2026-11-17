@@ -86,6 +86,7 @@ xorflux/
     profiles/*.toml            default, quick, large, depth
   core/
     valueset.py                ValueSet: incremental triple-index state (the hot kernel)
+    timed.py                   TimedValueSet: a ValueSet with per-input arrival levels and per-row deadlines (a target's `timing` entry)
     target.py                  Target model; maps from circuits/<map>/<map>.mat.txt, matrix text io, generators
     circuit.py                 Circuit model, independent verifier, normalise, DAG hash, JSON/NCFF io
     objective.py               Objective: score keys, caps, gate limits, soft slack, feasibility

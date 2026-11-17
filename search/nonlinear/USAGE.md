@@ -14,9 +14,9 @@ on one CPU of the machine in [HISTORY.md](HISTORY.md#compute).
 | gcc | the C kernels, compiled on first use (each `run`/`pipe`/`flow` compiles a private copy into its output folder) | nothing runs a search |
 | GNU time (`time -v` on `PATH`) | wall time and peak RSS of each kernel process in `flow`, `bench/bench.py` | Python measures both (wall clock, `os.wait4` `ru_maxrss`); the run record says which |
 | `taskset` (util-linux) | pinning: `flow --cpus`, the hub's workers | pinned with `os.sched_setaffinity` (unpinned, with a warning, where that is missing too) |
-| `numpy` and `python-sat` | `ops/conjpull.py` (both), `ops/selbuild.py`, the builds of `ops/transport.py` (`conj_lib/bp.py`) | that script stops at import (their tests are skipped) |
-| `python-sat` | `ops/winsat.py` (SAT windows; its AND removal and the hub's `andrm` need neither) | that script stops at the first SAT query |
-| `python-sat` | `ops/satlns.py` | that script stops at import |
+| `numpy` and `python-sat` | `ops/conjpull.py`, and `ops/transport.py` (its builds and pulls) | that script stops (their tests are skipped) |
+| `numpy` | `ops/selbuild.py`; refitting the hub's learned model | that script stops at import (its tests are skipped) |
+| `python-sat` | `ops/satlns.py`; `ops/winsat.py` SAT windows (its AND removal and the hub's `andrm` need neither) | `satlns.py` stops at import, `winsat.py` at the first SAT query |
 
 `python3 search/nonlinear/boolflux/cli.py tools` prints what this machine has; `run`, `pipe`,
 `flow` and the hub print the same line on stderr when they start.
@@ -29,9 +29,9 @@ python3 search/nonlinear/boolflux/cli.py run --target maj3 --model xag --objecti
     --iters 3000 --seeds 1 --jobs 1 --out OUT/maj3                           # 2 s: 4 gates, 1 AND
 python3 search/nonlinear/boolflux/cli.py verify OUT/maj3/best.circ.txt --target maj3 --model xag
 
-python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear       # 83 tests, 3 minutes
+python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear       # 143 tests, 6 minutes
 python3 -m unittest discover -s search/nonlinear/boolflux/independent                     # 36 tests, 4 s
-python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/nonlinear   # 36 tests, 1 minute
+python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/nonlinear   # 68 tests, 40 s
 ```
 
 ## Commands
@@ -88,9 +88,11 @@ python3 search/nonlinear/boolflux/cli.py verify search/nonlinear/seeds/aes-sbox/
   `gf16-inv`; every S-box with a table in
   [boolflux/benchmarks/sboxes.json](boolflux/benchmarks/sboxes.json) (present, gift, skinny64,
   prince, midori_sb0, piccolo, rectangle, serpent_s0..s7, ascon, keccak_chi5, sm4, camellia_s1,
-  ...); and `map:<name>`, a linear map of [circuits/](../../circuits/README.md) with at most 16
-  inputs. To add a function, add `{"name", "n", "m", "table", "source"}` to `sboxes.json`. Bit
-  order is msb/msb: `x0` is the most significant input bit, `y0` the most significant output bit.
+  ...); `aes-sbox-sel`, NIST's S-box with a direction bit (inputs `c x0..x7`: the S-box for
+  `c = 0`, its inverse for `c = 1`); and `map:<name>`, a linear map of
+  [circuits/](../../circuits/README.md) with at most 16 inputs. To add a function, add
+  `{"name", "n", "m", "table", "source"}` to `sboxes.json`. Bit order is msb/msb: `x0` is the
+  most significant input bit, `y0` the most significant output bit.
 - **Models** ([boolflux/models/](boolflux/models/)): `nist` (AND, XOR, XNOR, NOT; NIST's
   counting), `bgc` (AND, OR, XOR, NOT), `gc6` (AND, OR, XOR, XNOR, NAND, NOR, NOT), `gc` (every
   two-input gate and NOT), `xag` (AND, XOR, NOT), `xor` (XOR only; the exact linear mode). A model
@@ -106,8 +108,9 @@ python3 search/nonlinear/boolflux/cli.py verify search/nonlinear/seeds/aes-sbox/
 
 | Setting | What it does |
 |---|---|
-| `T0`, `Tperiod_it`, `max_excess` | the sawtooth temperature and the largest step above the best |
+| `T0`, `Tperiod_it`, `max_excess` | the sawtooth temperature (`T0=0`: no uphill steps, a plateau walk only) and the largest step above the best |
 | `stall_it` | iterations without a new best before the chain returns to it |
+| `stop_stall_it` | N > 0: the job stops N iterations after its last new best (default 0, off) |
 | `clock` | clock of `seconds`: `real` (default since 2026-11-16), `cpu` (CPU time, for paired comparisons), `mono` (the old clock, 3-6 % fast on WSL) |
 | `skip_noop` | skip structural no-ops (default 1); runs recorded before it was the default replay with `skip_noop=0` |
 | `tracemoves=FILE` | every accepted move, with circuits before and after each improvement; `search/nonlinear/boolflux/bench/show_trace.py FILE` prints it |
@@ -129,6 +132,11 @@ circuit equal to NIST's is not new) and the published best G at the circuit's ca
 `sbox/*-fwd-*`), `aes-invsbox` (91: `seeds/aes-invsbox/`, `old-2020/*-rev-*`, `sbox/*-inv-*`) or
 `auto` (the function each file computes). The same choice is `$BOOLFLUX_FUNCTION` for the hub and
 the method scripts ([boolflux/aesfn.py](boolflux/aesfn.py)).
+
+`aes_check.py` does not place `aes-sbox-sel` circuits. Check them with
+`cli.py verify FILE --target aes-sbox-sel --model nist` (both verifiers, all 512 inputs) and
+`circuits/check.py`, and compare them with NIST's 9 in
+[seeds/aes-sbox-sel/](seeds/aes-sbox-sel/).
 
 ## The hub
 
@@ -154,34 +162,35 @@ CPU time of the last 10 minutes), fresh (first polish, then first pull, of a fro
 (first polish / pull of each structure of a front tuple, then of each member of a cell within `--near-gap`
 gates of the front), other (one job of every other operator per front tuple: `trb` once), repeat (fewest
 jobs per tuple over the caps, `--repeat-max` to stop); `--policy bandit --eps 0.25` is the
-rule used until 2026-11-16 (`--near`, `--nursery` and `ad3_share` apply to it only). `--policy learned`
-(opt-in, 2026-11-17) keeps the join level and otherwise launches the (operator, target) with the highest predicted
-front adds per CPU second (`hub/learned.py`, model `hub/learned_model.json` fitted on the logged hub campaigns;
-`--learned-noise 0.3` exploration, `--learned-k 2` online calibration, `--learned-max-att 6`). Each job's decision
+rule used until 2026-11-16 (`--near`, `--nursery` and `ad3_share` apply to it only). Each job's decision
 (level, level sizes, rule) is in `runs/<run_id>.json`. `control.json` `"ingest"` globs are read every
 `--ingest-every 60` s (was 1800). polish and pull also return up to `--bests 8` of the kernel's intermediate
 bests (placeable, non-dominated); pull lowers GD by default (`--lower GD,GD,GD,AD,A` is the old draw), trb
-keeps the input's GD (`--gd-offsets 0,0,1` the old). `--ops ...,andrm` (opt-in, 2026-11-17, idea 09;
-`hub/ops/op_andrm.py`, default 120 s, once per front tuple, not under `--policy learned`, which has no model for it):
-exact window AND removal (`ops/winsat_andrm.py`), then a kernel polish of the A - 1 hit at its own caps and
-a pull back to the source's GD. `hub/status.py OUT/hub` prints
+keeps the input's GD (`--gd-offsets 0,0,1` the old). `hub/status.py OUT/hub` prints
 the operators' jobs, admissions and CPU time and the front points the run produced.
+
+Opt-in (2026-11-17; the defaults above are unchanged):
+
+| Option | What it does |
+|---|---|
+| `--ops ...,andrm` | operator `andrm` (`hub/ops/op_andrm.py`, 120 s, once per front tuple): exact window AND removal, a kernel polish of the hit with one AND fewer at its own caps, then a pull back to the source's GD |
+| `--policy learned` | join as in `priority`; otherwise the (operator, target) with the most predicted front additions per CPU second (`hub/learned.py`, model `hub/learned_model.json` fitted on logged hub campaigns), weighted by `--learned-a-decay 0.7` per AND above the front's lowest A, with online calibration (`--learned-k 2`), exploration noise (`--learned-noise 0.3`) and at most `--learned-max-att 3` jobs per (operator, tuple); operators the model does not know (`andrm`) are not launched |
+| `--kopt 'polish,pull:KEY=VAL,...'` | kernel settings for every job of those operators (keys `pair_xor`, `tgt_w.mffc1`, `tgt_w.and`, `tgt_w.viol`, `stop_stall_it`, `T0`) |
+| `--kopt-first 'polish:KEY=VAL,...'` | the same for first jobs only (levels `--kopt-first-levels fresh,variant,near,other`), over `--kopt` |
 
 ## Method scripts
 
-The four methods of [HOW-IT-WORKS.md](HOW-IT-WORKS.md#moves-around-the-kernel) are scripts in
-[boolflux/ops/](boolflux/ops/) with one interface. `--target` is a reference circuit (a path, or a
-file name in `seeds/aes-sbox/` or `seeds/aes-invsbox/`): its A and AD are hard limits on every
-circuit written, its G and GD the point to beat. Search states may pass above the limits.
-`--function` (default `auto`: the function the `--in` circuit computes) selects the AES S-box or
-its inverse for every check and for the NIST set; `conjpull.py` builds the inverse's conjugates
-(S⁻¹(y) = G′(S⁻¹(Lin y + c_L)), Lin = A G A⁻¹), `satlns.py` pools `circuits/aes-invsbox/` and
-`seeds/aes-invsbox/`. `bottom.py` keeps the inverse's complemented-operand (affine) output terms as
-fixed extra terms (`--junk terms`, the forward default; `--junk reject` restores `not-applicable`), so it
-runs on inverse circuits too; on the inverse the default is `--junk absorb5` (the junk absorbed into
-complemented product operands, idea 05: fewer gates on every paired seed); `rebase.py` runs on them, and its `--moves` use GF(4) tables over the inversion
-input z = S⁻¹(y)²⁵⁴ (`rebase_lib/gf4fn.py`); its class analysis prunes the merge at the decision
-limit (exact; 0.1-1 s per circuit, was up to 150 s).
+The methods of [HOW-IT-WORKS.md](HOW-IT-WORKS.md#moves-around-the-kernel) are scripts in
+[boolflux/ops/](boolflux/ops/). All but `selbuild.py` share one interface:
+`--in START --target REF --seed S --seconds T --out DIR [--cpus N] [--function F]`. `--target` is a
+reference circuit (a path, or a file name in `seeds/aes-sbox/` or `seeds/aes-invsbox/`): its A and
+AD are hard limits on every circuit written, its G and GD the point to beat. Search states may pass
+above the limits. `--function` (default `auto`: the function the `--in` circuit computes; for
+`transport.py` the other one) selects the AES S-box or its inverse for every check and for the NIST
+set. Every script runs on inverse circuits too: `conjpull.py` builds the inverse's conjugates
+(S⁻¹(y) = G′(S⁻¹(Lin y + c_L)), Lin = A G A⁻¹), `rebase.py --moves` uses GF(4) tables over the
+inversion input z = S⁻¹(y)²⁵⁴ (`rebase_lib/gf4fn.py`), and `satlns.py` pools `circuits/aes-invsbox/`
+and `seeds/aes-invsbox/`.
 
 ```bash
 S=search/nonlinear/seeds/aes-sbox
@@ -200,23 +209,40 @@ On one CPU these two-minute runs wrote 35/3/180/13 (re-basing, from NIST's 35/3/
 lineages. `OUT` gets only circuits that pass both verifiers inside the limits, each with a
 sidecar `.json` (start and its sha256, method, command, seed, time, code, function and the run
 record's main fields), `result.json` (best per (G, GD), wall time, status), and the run record
-`run.json` + `events.jsonl.gz` ([Run logs](#run-logs)). Main options: `conjpull.py --conj` (`id`, `L:K`, `rank:R`, `top:N`, or the opt-in `sh:K` = successive
-halving: the first stage on K conjugates — 188:0, 189:0 and other conjugates that keep the level-1 AND
-span first — the rest on the best `--sh-keep` by (A, AD, G + max(0, GD − d), GD)) and `--schedule
-MODE:CAP:SECONDS,...` (CAP `N`, `+N`/`-N` from the stage input, `d+N` from the start's GD; opt-in
-`--caps lineage` makes every later stage pull, at most `--max-pull` levels); a schedule longer than
-`--seconds` is scaled (`--overrun refuse` refuses it); `--registry FILE` never repeats a (start,
-conjugate, schedule); conjugates of a conjugate are refused (status `refused`). `transport.py` turns a
-circuit into one for the other function (S⁻¹ = G′∘Aff⁻¹∘F∘G∘Aff⁻¹, or back) with the same ANDs and
-middle layers: it folds the affine maps into the first and last linear layers (BP-shared or
-depth-optimal trb builds; `--maps id,L:K,screen:N,depth:N`, `--ladder`), then runs `conjpull --conj id`
-stages (`--pull`, `--pull-deep`; caps `s±N` relative to the start's GD); `rebase.py --cap D`
-and `--moves` (`--descend`: moves that lower a bound above 1 step by step); `bottom.py --cut K` (AND
-level of the kept front) and `--polish-seconds` (default 90; builds equal to the start or to a build
-already polished are not polished again unless `--polish-dup`); `satlns.py --gd D` and `--profile
-fast|tuned|basic` (it pools
-the circuits in `circuits/aes-sbox/`, `seeds/aes-sbox/` and `$BOOLFLUX_POOL_DIRS`). Kernel
-builds and caches go to `$BOOLFLUX_CACHE` (default `~/.cache/boolflux`).
+`run.json` + `events.jsonl.gz` ([Run logs](#run-logs)). Kernel builds and caches go to
+`$BOOLFLUX_CACHE` (default `~/.cache/boolflux`).
+
+| Script | Main options (defaults) |
+|---|---|
+| `conjpull.py` | `--conj` items in order: `id`, `L:K`, `rank:R` (default `rank:1`), `top:N`, `all`; opt-in `sh:K`, successive halving: K conjugates (188:0, 189:0 and those that keep the level-1 AND span first) run the first stage, the best `--sh-keep 2` by (A, AD, G + max(0, GD − d), GD) the rest, or with `--sh-probe S` a probe of S seconds instead of the first stage. `--schedule MODE:CAP:SECONDS,...` (default `g:31:200,m:27:200,m:25:200`; CAP `N`, `+N`/`-N` from the stage input, `d+N` from the start's GD); opt-in `--caps lineage` makes every later stage pull, at most `--max-pull 2` levels. A schedule longer than `--seconds` is scaled (`--overrun refuse` refuses it); `--registry FILE` never repeats a (start, conjugate, schedule); conjugates of a conjugate are refused (status `refused`) unless `--allow-reconj` |
+| `transport.py` | `--maps` (default `id,188:0,189:0,screen:3`; also `L:K`, `depth:N`), the GD caps of the build `--ladder -1,0,1,2` relative to the start's GD, then staged pulls of the best `--pull-n 2` builds by `conjpull --conj id` (`--pull g:+0:150,m:+0:150,m:-1:170`; builds deeper than the start's GD + 1 `--pull-deep g:+0:120,m:s+2:150,m:s:200`, `s±N` relative to the start's GD) |
+| `rebase.py` | `--cap D` or `--goal depth\|gates`; `--moves` (`--descend`: moves that lower a bound above 1, step by step); opt-in `--price gates` (`--pool 3000` combinations priced, `--builds 160` built), with it `--deep` and `--patch` |
+| `bottom.py` | `--cut K` (AND level of the kept front; default the start's AD), `--cap D` (default the lower of the target's and the start's GD), `--amax A` (ANDs of a plan, default the target's A), `--pw 0,3` (weight per AND in the annealer's cost, one value per plan in turn; `--pw 8` gave the inverse 39/4/140/12, `--pw 6` 45/4/143/11), `--junk` (`absorb5` on the inverse, `terms` on the forward S-box; also `absorb`, and `reject`: not applicable), `--polish-seconds 90` (builds equal to the start or to a build already polished are not polished again unless `--polish-dup`) |
+| `satlns.py` | `--gd D`, `--profile fast\|tuned\|basic` (default `fast`); it pools the circuits in `circuits/aes-sbox/`, `seeds/aes-sbox/` and `$BOOLFLUX_POOL_DIRS` |
+| `winsat.py` | SAT resynthesis of windows (`--modes cost:0.6,gd:0.25,slack:0.15`, `--K 8` inputs, `--maxg 10` gates, `--budget 20000` conflicts per call); `--modes andrm:1` is exact AND removal alone, whose hits become the walk state when their AD is at most the current AD + `--andrm-ad 1` |
+
+```bash
+# 4 s: eight builds, 40/6/219/23 to 40/6/224/22, from our forward 32/4/125/15
+python3 search/nonlinear/boolflux/ops/selbuild.py --in circuits/aes-sbox/aes-sbox-a32-ad4-g125-gd15-xx93-37.circ.txt \
+    --top-mode xdelta --bottom-mode leafg --seed 2 --out OUT/sel
+# 23 s: 40/6/224/22 -> 40/6/169/22
+python3 search/nonlinear/boolflux/cli.py run --target aes-sbox-sel --model nist \
+    --start OUT/sel/aes-sbox-sel-a40-ad6-g224-gd22-xx184-38.circ.txt --objective a,ad,cost,gd \
+    --cap-a 40 --cap-ad 6 --cap-gd 22 --iters 100000 --seeds 1 --jobs 1 --out OUT/sel-polish
+```
+
+`selbuild.py --in F` turns a forward or inverse circuit F into an `aes-sbox-sel` circuit
+([HOW-IT-WORKS.md](HOW-IT-WORKS.md#moves-around-the-kernel)) for each map of `--maps` (default
+`best`: the 3 maps whose muxes need 4 + 4 ANDs; or `L:K,...`). It scores every basis of each side
+with one build and builds the `--top 3` best of each side with `--runs 8` Boyar–Peralta runs per
+region. `--top-mode` is `bp` (default; F's top forms re-synthesised over x, c and the products with
+c), `wrap` (the muxed inputs first, then F's own top), `flat` (one balanced tree per form) or
+`xdelta` (F's own top, plus one XOR per changed form); `--bottom-mode` is `wrap` (default), `flat`
+or `leafg` (F's own bottom kept, the muxes in parallel over its leaves). `flat`, `xdelta` and `leafg`
+are depth-aware and scored by (GD, G); the others by G. It writes the distinct
+(A, AD, G, GD) builds that compute `aes-sbox-sel` on all 512 inputs and `result.json`, and no run
+record; the builds are then polished by `cli.py run` under GD caps. From inverse circuits it gave
+builds about 8 levels deeper and 100 gates larger than from forward ones.
 
 ## Output
 

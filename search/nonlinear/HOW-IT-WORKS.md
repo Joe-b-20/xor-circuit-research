@@ -94,23 +94,52 @@ finds nothing. The other methods hand it a start it has not seen.
   circuits for S: G on the inputs, an affine correction on the outputs. ANDs and middle layers
   are unchanged; only the top and output layers are re-synthesised. The conjugate is a start,
   usually 10-30 gates worse; staged pulls then run the kernel at a loose GD cap and tighten it
-  one or two levels at a time. The screen's proxy predicts the outcome weakly (within-start Spearman 0.20 against 0.53 for the
-  first stage's result); the opt-in `sh:K` lets the first stage choose, but in a paired A/B on 2026-11-17
-  at 0.75 h per job it did not beat the screen's rank 1 (21 against 19 union-front points over 8 pairs,
-  inside the noise of the old code against itself).
+  one or two levels at a time. The screen's proxy predicts the outcome weakly (within-start
+  Spearman 0.20, against 0.53 for the first stage's result). Two opt-in alternatives, letting the
+  first stage choose (`sh:K`) or a short kernel probe per conjugate (`--sh-probe`), were not
+  clearly better than the screen's first choice in paired runs.
+- **Transport between the S-box and its inverse.** `S⁻¹ = G′ ∘ Aff⁻¹ ∘ S ∘ G ∘ Aff⁻¹` for each of
+  the 2,040 maps G above (Aff the S-box's affine output map), so a circuit for one direction, with
+  the maps folded into its first and last linear layers, computes the other with the same ANDs,
+  AND depth and middle layers. Staged pulls then remove the gates the folded maps cost. Forward
+  circuits gave the inverse its 29/4 and 30/4 families and, from new forward circuits, its 31/5,
+  32/5 and 33/4 points; inverse to forward has given nothing (3-15 gates worse).
 - **Re-basing level-3 product classes (AND depth 3).** The 12 level-3 products of the AD3
   circuits form three classes of four. Any other basis of a class's operand span keeps every
   output in the span. All 840 bases per class are priced exactly by the Kraft sums of the output
   XOR trees, a depth-feasible circuit is built for the best, and the kernel polishes it. The
   inverse S-box's AD3 circuits have the same classes (its GF(4) coordinates are taken over the
   inversion input A⁻¹y + 0x05); re-basing NIST's 35/3/157/15 at cap 13 gave 35/3/171/13.
+  Opt-in options price the bases by an estimate of the built circuit's gate count instead
+  (`--price gates`), re-base classes below the top AND level too (`--deep`), which brings
+  circuits of AND depth 4 and 5 into reach, and keep every parent gate, redirecting only the
+  replaced products (`--patch`); with them re-basing gave the inverse 28/4/131/21 and
+  28/4/134/19.
 - **Shared-bottom rebuild (many ANDs, low depth).** In the circuits with 41-59 ANDs at GD 10-12
   every output is an XOR of rank-1 products. An annealer chooses per-output decompositions that
   share products, with an exact depth check per output; a builder makes the circuit under the
   kept front, and the kernel polishes it under the same AND count. On the inverse every output
   also carries complemented-operand terms (a Y-sum and an x-form, from the affine inversion
-  input); they are kept as fixed terms of the output's XOR tree. From NIST's inverse 45/4/141/12
-  this gave 42/4/162/12 and 43/4/159/12, from 55/4/148/10 at cap 11 49/4/168/11.
+  input). By default they are absorbed into the products, `Y(w + 1) = Yw + Y` and
+  `(Y + 1)w = Yw + w`, so they cost no product and no extra term (the forward default keeps such
+  terms as fixed terms of the output's XOR tree). From NIST's inverse 45/4/141/12 this gave
+  40/4/136/12, better than NIST's in all four metrics, and with a higher weight on ANDs in the
+  annealer 39/4/140/12; from NIST's 55/4/148/10 at cap 11, 45/4/143/11.
+- **AND removal.** A window of 2-4 ANDs (at most 10 inputs) has a rebuild with one AND fewer only
+  if its outputs, modulo the affine functions of its inputs on its care set, span at most
+  aW − 1 dimensions. When they do and products of two affine forms span them, the window is
+  rebuilt with one AND fewer, exactly; AD and GD may rise. The kernel then polishes the result at
+  its own caps and pulls it back to the source's GD. It lowers A at any depth (the shared bottom does so only at GD 11-13): our
+  forward 32/4/111/25 became 31/5/112/25, which started the forward 31/5 family (31/5/111/24 to
+  31/5/123/17), and our 37/4/127/13 became 36/4/128/13.
+- **Direction-select build.** NIST's `aes-sbox-sel` computes the S-box for `c = 0` and the inverse
+  for `c = 1`. With the maps of a transport, `S⁻¹(v) = Out(S(In v + c_in)) + c_out`, one forward
+  circuit F serves both: `u = v + c·((In + I)v + c_in)`, `w = F(u)`, `y = w + c·((Out + I)w + c_out)`.
+  Each product with `c` costs one AND per dimension of the row space of `In + I` and `Out + I`;
+  the best maps need 4 + 4, so A = A(F) + 8 and AD = AD(F) + 2 (fewer is not possible in this
+  construction). The muxed layers are built gate-cheap (Boyar–Peralta) or depth-aware (balanced
+  trees), and kernel polishes under GD caps follow; from our forward circuits this beat 8 of
+  NIST's 9 `aes-sbox-sel` Pareto points.
 - **Product exchange.** One AND product is replaced by another that is equal to it modulo the
   span of the other products of its level and the signals below, so every output stays in the
   span; the logic that read it is compensated and the kernel polishes the result
@@ -120,9 +149,12 @@ finds nothing. The other methods hand it a start it has not seen.
   templates for each other. A SAT query fixes the current circuit outside a neighbourhood and
   asks for the same gate count (sideways) or one fewer from the pooled templates.
 
-Pull, join and product exchange are hub operators ([below](#the-hub)); the other four are the scripts in
-[boolflux/ops/](boolflux/ops/). Each works by GF(2)-linear algebra over complete truth tables,
-and every circuit it writes is checked by both verifiers first.
+Pull, join, product exchange and AND removal are hub operators ([below](#the-hub)); conjugation,
+transport, re-basing, the shared bottom, AND removal, the SAT LNS and the direction-select build
+are scripts in [boolflux/ops/](boolflux/ops/). Each works by GF(2)-linear algebra over complete
+truth tables. Every circuit the hub admits or a script records is checked by both verifiers
+first; the direction-select builder checks its builds on all 512 inputs, and its circuits are
+then checked by both verifiers ([USAGE.md](USAGE.md#checking-and-placing-aes-circuits)).
 
 ## The hub
 
@@ -136,7 +168,10 @@ restored, `gen_skel` a skeleton kick then a polish); and a **scheduler** that gi
 the first new piece of work in a fixed order: joins with circuits not yet met, the first polish and pull
 of every new front point, the repeats under the per-point caps, then the first jobs of every other
 structure on or near the front, one `trb` per front point, further repeats last (until 2026-11-16 a bandit on recent frontier gain per CPU second, which favoured
-short jobs). Nothing enters the archive unverified.
+short jobs). Nothing enters the archive unverified. Opt-in: the `andrm` operator (AND removal,
+polish, pull), a learned scheduler that launches the job with the most predicted front additions
+per CPU second, and kernel settings per operator. A hub exhausts the classes it can reach by
+recombination in about 1-1.5 hours; after that it pays only when fed new starts.
 
 ```mermaid
 flowchart LR

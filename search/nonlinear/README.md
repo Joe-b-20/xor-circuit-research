@@ -8,7 +8,7 @@ layers around them. It needs Python 3.11 or newer (standard library only) and gc
 
 The code is in [`boolflux/`](boolflux/). It has no version numbers yet and is still being
 developed. Its circuits are in [circuits/](../../circuits/README.md), next to NIST's. Each is
-verified independently; [REPRODUCE.md](../../circuits/REPRODUCE.md) replays six of them from
+verified independently; [REPRODUCE.md](../../circuits/REPRODUCE.md) replays six circuits from
 public commits, and each circuit's `found.json` says what its run recorded.
 
 | Page | What is in it |

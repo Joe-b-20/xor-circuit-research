@@ -9,7 +9,7 @@ contract it follows. Read it before editing code; the user guide is
 ## 1. What the evidence says
 
 The decisions below rest on the benchmark study, the AES runs and the hub runs of 2026-11-13 to
-11-16 ([HISTORY.md](../HISTORY.md)). Tuples are A/AD/G/GD for the AES S-box, NIST model.
+11-17 ([HISTORY.md](../HISTORY.md)). Tuples are A/AD/G/GD for the AES S-box, NIST model.
 
 | Finding | Number | Decision |
 |---|---|---|
@@ -21,6 +21,9 @@ The decisions below rest on the benchmark study, the AES runs and the hub runs o
 | joins pay in new starts, not steady yield | 17 against 3 frontier points in 4.7 CPU-h; all 26 join admissions in the first 8.6 min | join is an operator; repeat joins on one target are not scheduled heavily |
 | the hub's gain is not a value signal | 51 of 75 admissions scored "lowers A", none lowered a class minimum | judge runs by frontier admissions per AND class |
 | an old command does not replay under a new default | the no-op filter changes the trajectory | every run folder keeps settings, sources and binaries |
+| complemented operands of the inverse cost gates as fixed terms | absorbed into the products: fewer gates on every paired seed (11 of 11 at cap 12, 7 of 7 at cap 11) | `bottom.py --junk absorb5` is the inverse's default |
+| no operator lowered A | exact window AND removal, then polish and pull: about 1.1 new circuits per CPU-h, as many as kernel jobs, and the forward 31/5 family from a 32-AND circuit | `andrm` operator and `winsat.py --modes andrm:P`, opt-in |
+| most other changes of 2026-11-17 were inside the noise of short paired runs | e.g. `stop_stall_it 90000`: first front addition about 2x sooner in 7 of 7 hub pairs of 15 min; `--policy learned`: 103 against 79 front additions in 4 pairs | opt-in until a paired run of at least 2 h on several CPUs |
 
 ## 2. The method
 
@@ -41,7 +44,9 @@ start (anf | NIST | own) ─► repair if a cap is broken ─► chain
 
 Around the kernel: `pipe` alternates skeleton search, seeded synthesis and gate search; `flow`
 runs time-sliced workflows; the hub keeps a shared archive and schedules operators; the method
-scripts (conjugation, re-basing, shared bottom, SAT LNS) build new starts and call the kernel.
+scripts (conjugation, transport, re-basing, shared bottom, SAT LNS, window SAT and AND removal)
+build new starts and call the kernel; `selbuild.py` builds `aes-sbox-sel` circuits for the CLI to
+polish.
 
 ## 3. Package layout
 
@@ -66,9 +71,9 @@ boolflux/
   models/*.json               nist, bgc, gc6, gc, xag, xor
   benchmarks/                 sboxes.json (S-box tables with sources); LITERATURE.md (published sizes, by gate library)
   independent/                verify.py, the second verifier (no shared code), and its tests
-  hub/                        archive, function bank, operators, scheduler, A/B tools, tests
-  hub/ops/                    further hub operators (osc, gen_skel, gen_inv3, gen_bottom, gen_joinplus, linres, and_merge, gf4move) and their libraries (depth_lib/, and_merge_lib/, gf4_lib/)
-  ops/                        method scripts: conjpull, rebase, bottom, satlns; common.py (the shared contract), rebuild_common.py (rebase and bottom); conj_lib/, rebase_lib/, bottom_lib/ (their libraries)
+  hub/                        archive, function bank, operators, scheduler, learned.py and learned_model.json (--policy learned), stageplan.py and planexec.py (stage accounting and planned joins, a library), A/B tools, tests
+  hub/ops/                    further hub operators (osc, gen_skel, gen_inv3, gen_bottom, gen_joinplus, linres, and_merge, gf4move, andrm) and their libraries (depth_lib/, and_merge_lib/, gf4_lib/)
+  ops/                        method scripts: conjpull, transport, rebase, bottom, satlns, winsat (winsat_lib.py, winsat_andrm.py), selbuild; common.py (the shared contract), rebuild_common.py (rebase and bottom); conj_lib/, rebase_lib/, bottom_lib/ (their libraries)
   bench/                      the 2026-11-13 benchmark study: driver, plans, analysis, ABC comparison, REPORT.md
   tests/                      tests: core and skeleton, kernel, formats and CLI, costs and models, objectives and workflows, every Boolean circuit of circuits/
 ```
@@ -130,7 +135,7 @@ Every accepted circuit is re-simulated on all inputs; a mismatch aborts the kern
 
 | Key | Default | Meaning |
 |---|---|---|
-| `T0`, `Tperiod_it` | 0.6, 20000 | sawtooth temperature: start value and period in iterations |
+| `T0`, `Tperiod_it` | 0.6, 20000 | sawtooth temperature: start value and period in iterations (`T0 0`: no Metropolis steps, a plateau walk only) |
 | `stall_it` | 60000 | iterations without a new best before returning to it |
 | `uphill` | 1.0 | new-gate budget of a move: the cost of the gates removed with `s` (its fanout-free cone) plus `uphill`, in cheapest-gate units (not a Metropolis scale: the temperature is `T0`) |
 | `uphill.resub2`, `uphill.resub3` | = `uphill` | the same slack for the level-2 / level-3 searches only |
@@ -150,14 +155,17 @@ Every accepted circuit is re-simulated on all inputs; a mismatch aborts the kern
 | `tgt_w.mffc1`, `tgt_w.and`, `tgt_w.viol` | 1 | weights of the target draw: gates whose fanout-free cone is the gate alone, AND-like gates, gates on a cap-violating path during a repair (all 1: uniform) |
 | `repair_uphill` | 0 | R > 0: during a repair a candidate with the same cap excess and up to R more summed path excess is an uphill (Metropolis) step |
 | `pair_xor` | 0 | 1: the pair table keeps XOR but not XNOR entries; an XOR entry also stands for its XNOR via a complemented lookup (same candidates, other order; needs equal XOR/XNOR cost and depth weight; ~11 % less CPU per iteration) |
-| `chain_p` | 0 | P > 0 (idea 04, experimental): with probability P per iteration (feasible states only) a two-step compound move: step 1 replaces a random s1 (`chain.lev1` 2 new gates, budget mffc + `chain.up1` 2); up to `chain.k1` 4 of these circuits are expanded by step 2 on `chain.k2` 8 targets (signals whose fanout dropped, their fanouts, `chain.rand2` 2 random gates; `chain.freed 0`: random only) with the ordinary generator (`chain.lev2` 3); the best strict improvement over the current state is taken, else (`chain.accept 1`) a neutral one. ~7-9 ms per compound move. Off: no draw, identical run |
-| `l3n` | 0 | N > 0 (idea 04, experimental): resub3 also tries s = r(X1, X2), r an AND-like library op, X1, X2 pair-table values (3 new gates, e.g. AND(a^b, c^d)), at most N pair checks per root op and move (candidate form `L3n`; the forms vectors get a 7th field). Costs < 1 % CPU per iteration; not with `pair_xor` XNOR forms |
+| `chain_p` | 0 | P > 0 (experimental, 2026-11-17): with probability P per iteration (feasible states only) a two-step compound move: step 1 replaces a random s1 (`chain.lev1` 2 new gates, budget mffc + `chain.up1` 2); up to `chain.k1` 4 of these circuits are expanded by step 2 on `chain.k2` 8 targets (signals whose fanout dropped, their fanouts, `chain.rand2` 2 random gates; `chain.freed 0`: random only) with the ordinary generator (`chain.lev2` 3); intermediate circuits more than `chain.maxup` (default -1 = `chain.up1`) above the current one are dropped; the best strict improvement over the current state is taken, else (`chain.accept 1`) a neutral one. ~7-9 ms per compound move. Off: no draw, identical run. On mature circuits 26,912 compound moves gave 1 improvement, from step 1 alone |
+| `l3n` | 0 | N > 0 (experimental, 2026-11-17): resub3 also tries s = r(X1, X2), r an AND-like library op, X1, X2 pair-table values (3 new gates, e.g. AND(a^b, c^d)), at most N pair checks per root op and move (candidate form `L3n`; the forms vectors get a 7th field). Costs < 1 % CPU per iteration; not with `pair_xor` XNOR forms |
+| `cap.gd`, `cap.ad`, `cap.a`, `cost.<op>`, `w.*`, `lex` | | caps, model costs and the objective (written by `workflow.py`) |
+
+The defaults are `workflow.DEFAULTS`; `--set key=value` changes them.
 
 After its old end lines the kernel always prints `kstat` lines (counters only; the search is identical with
 or without them, `tests/test_instrumentation.py`): stop reason and timing, acceptance branches, candidate forms
 and fates per move kind, target strata, nominal vs actual cost change, plateau walk size, three clocks.
-`runlog.kernel_stats()` / `kernel_summary()` read them; the full list is in the 2026-11-16 instrumentation notes
-(`INSTRUMENTATION.md` of that campaign) and in the comments above each counter in `bfx.c`.
+`runlog.kernel_stats()` / `kernel_summary()` read them; the full list is in the comments above each counter in
+`bfx.c`.
 
 Speedups of 2026-11-16 that keep the search bit-identical (same lines, `out.bfx`, traces and non-timing `kstat`
 counters as the e87c34a kernel on 26 configs; golden trajectories in `tests/test_kernel.py`): `resub1` finds its
@@ -169,9 +177,6 @@ of a large table are kept); a candidate whose new gates resolve onto `s`'s own s
 without rebuilding it when no two signals of the state have the same function (`kstat cands noop_pre`); the
 accepted candidate's circuit is kept from its evaluation instead of being rebuilt. 11-31 % less CPU per
 iteration (geometric mean 16 %, paired simultaneous runs on 8 configs).
-| `cap.gd`, `cap.ad`, `cap.a`, `cost.<op>`, `w.*`, `lex` | | caps, model costs and the objective (written by `workflow.py`) |
-
-The defaults are `workflow.DEFAULTS`; `--set key=value` changes them.
 
 ### 4.4 Skeleton kernel (`kernel/skel.c`, `skeleton.py`)
 
@@ -223,8 +228,9 @@ profile, and why loops ended. `$BOOLFLUX_LINEAGE` (a file) turns on a shared lin
 | archive | `archive.py` | `archive/<id>.bfx` and `<id>.json` (id, metrics, counts, parents, operator, settings, seed, run id, code version, CPU and wall time, admission time); kept per cell (A, AD, GD) with the fewest G, up to 4 distinct circuits; `cells.json`, `front.json`. A dominated circuit enters its cell only within 6 gates of a dominating front point (40 for a generator's product) |
 | admission | `common.py` | both verifiers on all inputs, model library, metrics agree; nothing unverified enters |
 | function bank | `funcbank.py` | every distinct signal truth table with its cheapest known levels and cone AND count, tagged with interface functions (N, N^-1, N + N^-1, the outputs) |
-| operators | `op_*.py`, `ops.py`, `join.py`, `trb_impl.py`, `ops/` | separate programs: `--archive --in ID [--in2 ID] --caps A,AD,GD --objective KEYS --seed S --seconds T --out DIR`; they write candidates and `record.json` and never admit. Candidates are judged as admission will (`ops.placeable`: cleaned, placeable, not an archived id or structure); polish / pull add up to 8 intermediate kernel bests (non-dominated, placeable); join takes `--batch` targets and stops `--max-cands` at a partner boundary |
-| scheduler | `scheduler.py` | one pinned worker per CPU; `--policy priority` (default): first non-empty level of join (CPU share capped), fresh tuple, repeats under the tuple caps, structure variant, near-front member, other operators once per tuple, repeats over the caps; `--policy learned` (opt-in, 2026-11-17): join level kept, otherwise the launch with the highest predicted front adds per CPU second (`learned.py`: per-operator logistic model on launch features, online calibration, log-normal exploration); `--policy bandit`: epsilon-greedy on recent frontier gain per CPU second (until 2026-11-16); sleeps until a job exits (SIGCHLD); durations on the monotonic clock; `control.json` re-read while running, every change logged in `events.jsonl` |
+| operators | `op_*.py`, `ops.py`, `join.py`, `trb_impl.py`, `ops/` | separate programs: `--archive --in ID [--in2 ID] --caps A,AD,GD --objective KEYS --seed S --seconds T --out DIR`; they write candidates and `record.json` and never admit. Candidates are judged as admission will (`ops.placeable`: cleaned, placeable, not an archived id or structure); polish / pull add up to 8 intermediate kernel bests (non-dominated, placeable) and take `--kopt KEY=VAL,...` (`ops.KOPT_KEYS`: `pair_xor`, `tgt_w.*`, `stop_stall_it`, `T0`) over the kernel defaults; join takes `--batch` targets and stops `--max-cands` at a partner boundary; `andrm` (opt-in) spends 0.3 of its time on window AND removal (at most 3 hits), then polishes the best hit at its own caps and, when it is deeper than the source, pulls it back to the source's GD |
+| scheduler | `scheduler.py` | one pinned worker per CPU; `--policy priority` (default): first non-empty level of join (CPU share capped), fresh tuple, repeats under the tuple caps, structure variant, near-front member, other operators once per tuple, repeats over the caps; `--policy learned` (opt-in, 2026-11-17): join level kept, otherwise the launch with the highest predicted front adds per CPU second (`learned.py`: per-operator logistic model on launch features, online calibration, log-normal exploration); `--policy bandit`: epsilon-greedy on recent frontier gain per CPU second (until 2026-11-16); `--kopt` / `--kopt-first` (opt-in) pass kernel options to the polish / pull jobs, all of them or first jobs only, recorded in each job event; sleeps until a job exits (SIGCHLD); durations on the monotonic clock; `control.json` re-read while running, every change logged in `events.jsonl` |
+| planner | `stageplan.py`, `planexec.py` | library, not called by the scheduler: stage split A = s1 + s2 + s3 (level-1 non-terminal ANDs, the middle, terminal ANDs); for a front circuit X and a back circuit Y cut above an AND level, the exact A and AD of their join by linear algebra on the truth tables (exact for 98.5 % of 3,317 built joins) and a minimal-support build (never more ANDs than the hub's join); `stageplan.py tag\|plan POOL...`, `planexec.py` runs one planned or blind arm |
 | gain | `archive.py` | value rule: 8 lower A at a known AD, 4 new AND depth, 1 + 0.5 (d - 1) for d <= 6 fewer gates in the cap box, 0.5 new GD (until 2026-11-16: GD 1, gates 0.5 d); the structure check runs before the verifiers |
 | records | `runs/<run_id>.json`, `stats.jsonl` | one record per job: code version, kernel hash, seed, settings, parents, timing, outcome, the job's run record (`jobs/<run_id>/run.json`); `sessions/<UTC>-<pid>/run.json` per scheduler start |
 | function | `--function`, `campaign.json` | `aes-sbox` or `aes-invsbox` (aesfn.py), inherited by the operators through `$BOOLFLUX_FUNCTION` |
@@ -242,11 +248,14 @@ T + 60 s.
 
 | Script | Method | Libraries |
 |---|---|---|
-| `conjpull.py` | screen the 2,040 conjugates `x -> λ x^(2^k)` by a proxy cost (heuristic top, Paar bottom), build the chosen ones (Boyar–Peralta top, timing-driven bottom), then a schedule of kernel stages at loosening-then-tightening GD caps; for the inverse S-box the input map is `Lin y + c_L` (Lin = A G A⁻¹) and the output map G′ (`conj.maps`); per-item time shares and a campaign registry; the kernel's intermediate bests are offered to the recorder; opt-in successive halving `sh:K`, lineage-relative caps and 4-D stage choice; the BP screen is vectorised (same rows, ~12x) | `conj_lib/` (conj, conj3, bottom, bp, slp, trb) |
-| `rebase.py` | enumerate the 840 bases of each last-level product class, price each output by its Kraft sum, keep the per-output Pareto sets, pick the best combination exactly (Pareto merge of partial sums, pruned at the decision limit after a beam pass: exact for every bound <= the limit), build a depth-feasible hybrid circuit, polish under the cap; forward and inverse | `rebase_lib/` (botbasis, gbasis, hybrid, gf4fn: GF(4) tables over the inversion input, ...), `hub/ops/gf4_lib/` for `--moves` |
-| `bottom.py` | anneal per-output rank-1 decompositions of the last AND level with an exact depth check, affine junk (complemented operands, every inverse circuit) kept as fixed output terms in the Kraft check and the build; build (kept front, Y-sums, x-forms, products, shared pairs, Huffman output trees), polish under cap A (90 s; not for builds equal to the start or already polished) | `bottom_lib/` (bopt, bbuild, bsel, botclass) |
+| `conjpull.py` | screen the 2,040 conjugates `x -> λ x^(2^k)` by a proxy cost (heuristic top, Paar bottom), build the chosen ones (Boyar–Peralta top, timing-driven bottom), then a schedule of kernel stages at loosening-then-tightening GD caps; for the inverse S-box the input map is `Lin y + c_L` (Lin = A G A⁻¹) and the output map G′ (`conj.maps`); per-item time shares and a campaign registry; the kernel's intermediate bests are offered to the recorder; opt-in successive halving `sh:K` (with `--sh-probe S`: an S-second kernel probe per conjugate is the halving stage), lineage-relative caps and 4-D stage choice; the BP screen is vectorised (same rows, ~12x) | `conj_lib/` (conj, conj3, bottom, bp, slp, trb) |
+| `rebase.py` | enumerate the 840 bases of each last-level product class, price each output by its Kraft sum, keep the per-output Pareto sets, pick the best combination exactly (Pareto merge of partial sums, pruned at the decision limit after a beam pass: exact for every bound <= the limit), build a depth-feasible hybrid circuit, polish under the cap; forward and inverse. Opt-in `--price gates`: Kraft-feasible combinations (up to `--pool`) ranked by an estimate of the built gate count and built with `gprice.gbuild`; `--deep` adds classes below the top AND level, `--patch` builds that keep every parent gate and redirect each replaced product to the XOR of its new ones | `rebase_lib/` (botbasis, gbasis, hybrid, gprice, gf4fn: GF(4) tables over the inversion input, ...), `hub/ops/gf4_lib/` for `--moves` |
+| `bottom.py` | anneal per-output rank-1 decompositions of the last AND level with an exact depth check; affine junk (complemented operands, every inverse circuit): `--junk absorb5` (inverse default) absorbs it into the products, `Y(w + 1)` and `(Y + 1)w` (a fifth tensor row for the constant Y-form; a NOT of a base Y-form priced one level), `absorb` only the Y-form junk, `terms` (forward default) keeps it as fixed output terms in the Kraft check and the build; build (kept front, Y-sums, x-forms, products, shared pairs, Huffman output trees), polish under cap A (90 s; not for builds equal to the start or already polished) | `bottom_lib/` (bopt, bbuild, bsel, botclass) |
 | `satlns.py` | pool the gates of every indexed circuit with the start's AND span as templates, encode availability by level in SAT (glucose4), LNS with sideways (K = G), improving (K = G − 1) and focus queries (profiles fast, tuned: no I2, lower limits on I1/S2/S0); every accepted walk state that is 4-D Pareto-new is recorded | `python-sat` |
 | `transport.py` | forward↔inverse transport over the 2,040 (λ, k) maps (same ANDs, AND depth and middle layers), flat depth-optimal or BP-cheap synthesis of the first and last linear layers, then a staged pull through `conjpull --conj id` | `conj_lib/` (conj, conj3, bp), `hub/trb_impl` |
+| `winsat.py` | windows of `--ming 4` to `--maxg 10` gates (≤ `--K 8` inputs, 1-4 outputs, strategies that span AND levels) resynthesised exactly by SAT over {AND, XOR, XNOR, NOT} with at most the window's ANDs, at arrival and required times from the circuit (modes `cost`, `gd`, `slack`, `relax`); mode `andrm`: `winsat_andrm.py` | `winsat_lib.py`, `python-sat` |
+| `winsat_andrm.py` | library: a window of 2-4 ANDs (≤ 10 inputs, ≤ 16 gates) on its controllability care set; rank r of its outputs modulo span(1, inputs): r > aW − 1 rules out an (aW − 1)-AND rebuild of the window (status `rank`); else all flat products `a·b` of affine input forms are tried and a spanning set of at most aW − 1 is rebuilt (balanced XOR trees by arrival), spliced and checked on all inputs (`removed`; `no_flat` when none: sequential products are not covered) | `winsat_lib.py` |
+| `selbuild.py` | not the operator contract (`--in F --out DIR`, no `--target`, `--seconds` or run record): an `aes-sbox-sel` circuit from one forward or inverse circuit F, `u = v + c((In + I)v + c_in)`, `w = F(u)`, `y = w + c((Out + I)w + c_out)` with A = A(F) + rank(In + I) + rank(Out + I) (8 at best over all 2,040 maps) and AD = AD(F) + 2; every basis of each row space scored by one build, the `--top` best of each side built (`--top-mode bp\|wrap\|flat\|xdelta`, `--bottom-mode wrap\|flat\|leafg`), each build checked on all 512 inputs (core evaluation) | `transport.py` (maps), numpy |
 
 ## 5. Verification
 
@@ -263,8 +272,9 @@ T + 60 s.
 
 ## 6. Code rules
 
-- Python ≥ 3.11, standard library only (`ops/conjpull.py` also needs `numpy` and `python-sat`,
-  `ops/satlns.py` `python-sat`); the C kernels are built with gcc on first use, one private copy
+- Python ≥ 3.11, standard library only (`ops/conjpull.py` and `ops/transport.py` also need
+  `numpy` and `python-sat`, `ops/selbuild.py` `numpy`, `ops/satlns.py` and the SAT modes of
+  `ops/winsat.py` `python-sat`); the C kernels are built with gcc on first use, one private copy
   per run folder. GNU time and taskset are optional (`runlog.measured`, `runlog.pin`).
 - Every search run writes a run record (`runlog.RunLog`); a new entry point makes one too.
 - Correctness is exact: complete truth tables everywhere; nothing is admitted, written as a

@@ -1,6 +1,6 @@
 # How BoolFlux came to be
 
-BoolFlux was written on 2026-11-13 and developed over the following three days, on top of
+BoolFlux was written on 2026-11-13 and developed over the following four days, on top of
 groundwork laid on 2026-10-31. This page tells that path: what each stage tried, what failed and
 with what numbers, and which decisions the failures led to. BoolFlux has no version numbers yet;
 the code in [boolflux/](boolflux/) is the current state.
@@ -8,9 +8,11 @@ the code in [boolflux/](boolflux/) is the current state.
 **Sources.** Unmarked claims can be checked in this repository: the circuits and their logs in
 [circuits/](../../circuits/README.md), NIST's circuits in [seeds/](seeds/), and the code. Claims
 marked † come from run records and development notes that are not part of this repository.
-Circuits named here are in [circuits/aes-sbox/](../../circuits/aes-sbox/) unless a later
-circuit of ours dominates them (38/4/124/14, 28/4/175/14, 31/5/119/20, 28/5/126/24,
-35/3/142/19); those are in the campaign archive (not published).
+Circuits named here are in [circuits/aes-sbox/](../../circuits/aes-sbox/) (inverse:
+[circuits/aes-invsbox/](../../circuits/aes-invsbox/)) unless a later circuit of ours dominates
+them: 38/4/124/14, 28/4/175/14, 31/5/119/20, 28/5/126/24, 35/3/142/19 and 31/5/112/25 are in
+the campaign archive (not published), the inverse 40/4/136/12 is in the history of
+`circuits/aes-invsbox/` (commit `8377e78`).
 Tuples are written A/AD/G/GD (ANDs, AND depth, gates, gate depth), all for the AES S-box under
 NIST's counting unless stated.
 
@@ -37,6 +39,7 @@ NIST's counting unless stated.
 | Nov 15 | structure study: algebra of the low-AND circuits, window redesigns, goal-directed runs | 28/4/131/22, 28/4/132/20; 42–47 ANDs at GD 11; 35/3/142/19 |
 | Nov 15–16 | runs against ten named NIST circuits; four methods around the kernel | 32/4/114/19, 32/7/103/29, 35/3/138/23, 35/3/181/12, 38/4/135/12, 28/4/174/14 |
 | Nov 16–17 | the logs read line by line; a faster kernel, a priority hub, faster conjugation and rebuilds, transport between the S-box and its inverse | new inverse circuits: our first at GD ≤ 12 and at AD 3 with GD 13; the inverse 29/4 family; one forward circuit |
+| Nov 17 | ten method changes tested in paired runs, then five hours on 20 CPUs with those that paid: absorbed junk in the shared bottom, AND removal, the direction-select build | inverse 40/4/136/12, 39/4/140/12, 45/4/143/11; the forward 31/5 family; inverse 31/5, 32/5 and 33/4 fronts; 31 circuits for the S-box with a direction bit |
 
 ## Groundwork (October 31)
 
@@ -194,6 +197,32 @@ with GD 13, and in the 29/4 family (the 30/4 ones are beaten by 29/4 circuits of
 ([circuits/](../../circuits/README.md#aes-inverse-s-box)); for the forward S-box one, 33/4/109/18,
 from the old arm of the hub A/B; no lower A or AD in either direction.
 
+**Nov 17: ten method changes, then a push.** Ten changes were each built and tested in paired
+runs against the code of the day before, two CPUs each for about three hours †. Then five hours
+on 20 CPUs ran what had paid, from the published circuits and the day's finds: a hub per
+direction fed by transports, AND removal and re-basing, shared-bottom rebuilds at GD 11-12, and
+direction-select builds with GD-capped polishes †.
+
+| Change | Measured † | Status |
+|---|---|---|
+| shared bottom: complemented operands absorbed into the products (`bottom.py --junk absorb5`) | fewer gates than with fixed terms on every paired seed (11 of 11 from NIST's inverse 45/4/141/12 at cap 12; 7 of 7 from 55/4/148/10 at cap 11, fewer ANDs on 6); inverse 40/4/136/12, better than NIST's 45/4/141/12 in all four metrics; with more weight on ANDs (`--pw 8`, `--pw 6`) 39/4/140/12 and 45/4/143/11 | default on the inverse |
+| exact window AND removal, then polish and pull (`andrm`) | about 1.1 new circuits per CPU-h, as many as kernel jobs; our forward 32/4/111/25 became 31/5/112/25, the start of the forward 31/5 family (31/5/111/24 to 31/5/123/17, 7 hits in about 360 runs on A32 circuits); our 37/4/127/13 became 36/4/128/13 | opt-in |
+| direction-select build (`ops/selbuild.py`) | 146 builds and 312 GD-capped polishes in 19.6 CPU-h: 8 of NIST's 9 `aes-sbox-sel` Pareto points dominated (not 40/7/153/28), and circuits at AND depth 5 and at GD 19, where NIST has none | opt-in tool |
+| transport of the day's new forward circuits, then staged pulls | the inverse's 31/5, 32/5 and 33/4 points of the day, with the hub's follow-ups | method of Nov 16 |
+| re-basing priced by gates (`--price gates --deep --patch`) | builds of 118-121 gates from 32/4/117/17 instead of 127-129; no clear gain in paired 6-minute runs; the inverse 28/4/131/21 and 28/4/134/19 (2 of 9 runs on A28 circuits) | opt-in |
+| learned hub scheduling (`--policy learned`) | held-out AUC 0.887 (0.817 for a baseline); 103 against 79 front additions in 4 pairs of 1-CPU hubs of 2.3 CPU-h, ahead in 4 of 4 (p = 0.06) | opt-in |
+| kernel settings per hub operator (`--kopt`) | `stop_stall_it 90000`: a kernel job's first front addition about 2x sooner in 7 of 7 pairs of 15-minute hubs (p ≈ 0.016); `pair_xor 1`: 11 % more iterations per CPU second, no hub-level effect in 2 pairs | opt-in |
+| probe screen for conjugates (`--sh-probe`) | 5 against 2 wins over the screen's first choice in 9 pairs of 10-minute jobs (p ≈ 0.45) | opt-in |
+| stage-accounting joins (`hub/stageplan.py`) | A and AD of a join predicted exactly for 98.5 % of 3,317 built joins; 3 against 0 front additions in one paired forward run, 0 against 0 in two others | library |
+| larger kernel neighbourhoods (`chain_p`, `l3n`) | 1 improvement in 26,912 two-step moves on mature circuits, from the first step; `l3n` no gain | opt-in, experimental |
+
+The rest did not pay ([below](#failed-experiments-and-dead-ends)). Both hubs exhausted the new
+tuples they could reach in about 1.5 hours; after that, admissions came from the starts they were
+fed. At the end of the day [circuits/](../../circuits/README.md) held 73 forward, 48 inverse and
+31 direction-select circuits, dominating 23 of NIST's 33 forward Pareto points, 22 of its 33
+inverse points and 8 of its 9 direction-select points; no run lowered the smallest A or AD of
+either direction.
+
 ## Three NIST pins
 
 Every comparison is against one pinned commit of NIST's repository, with metrics recomputed from
@@ -232,6 +261,15 @@ is reported, and why [seeds/](seeds/) records the pin.
 | Nov 15–16 | kernel and conjugates for fewer than 103 gates | 21 lineages settle at 104 |
 | Nov 15–16 | generic SAT for bottom tensor rank, Brent equations, 4-input inversion | no answer in 2–18 minutes, not even for known solutions |
 | Nov 16 | the 11-hour runs on the A28 and GD-10 references | no point beyond the archive |
+| Nov 16–17 | transport from the inverse to the forward S-box | 3–15 gates worse; published forward A28 circuits transported to the inverse ended about 20 gates above the inverse's own A28 circuits |
+| Nov 17 | SAT resynthesis of windows on mature fronts | 0 gates removed in 3,744 windows over all 89 fronts with A ≥ 30; windows of 4–6 gates always UNSAT, larger ones mostly undecided |
+| Nov 17 | XORFlux on the whole XOR part of an S-box circuit, with arrival times and deadlines | 0 gates saved in 10 of 10 published circuits at their own GD; without timing 81 → 79 XORs, but at GD 30–38 |
+| Nov 17 | the probe screen on NIST starts | 0 of 4 runs |
+| Nov 17 | AND removal on 31/5 circuits | 0 of 30 runs |
+| Nov 17 | kernel polishes at `T0 0` (a plateau walk) | 2 of about 40 paid on the inverse, 0 of 20 on the forward S-box |
+| Nov 17 | the forward GD-11 staircase of rank-2 products with shared junk, on the inverse | each of 67 rebuilds at least 1 GD deeper (Kraft sum ≥ 1.125) |
+| Nov 17 | shared bottom on the forward S-box at GD 11–12 | best 39/4/143/12 (our 38/4/135/12 dominates it) and 51/4/152/11 from NIST's 59/4/159/10 |
+| Nov 17 | direction-select builds from inverse circuits | about 8 levels deeper and 100 gates more than from forward circuits |
 
 All † except the Nov 13–14 rows ([boolflux/bench/REPORT.md](boolflux/bench/REPORT.md)) and where a circuit is named.
 
@@ -264,9 +302,10 @@ All † (the computations are in development notes not part of this repository).
 | skeleton rebuild seeded with the parent | 31–72-gate penalty → 0 | Nov 13 |
 | skeleton moves for AND reduction on small functions only | GF(2⁴) multiplication needs them; on AES they cost gates | Nov 14 |
 | joins as an operator; their value is new starts, not steady yield | 17 against 3 frontier points, all join admissions in the first minutes | Nov 14 |
-| give the kernel new starts rather than more time | mature circuits are fixed points; conjugates, re-based classes and rebuilt bottoms made every new point of Nov 15–16 | Nov 15 |
+| give the kernel new starts rather than more time | mature circuits are fixed points; conjugates, re-based classes and rebuilt bottoms made every new point of Nov 15–16; on Nov 17 transports, AND removals and direction-select builds were the new starts | Nov 15 |
 | A/B arms of at least 8 CPU-hours, judged by frontier admissions per AND class | 1-CPU-hour blocks of one configuration gave 0 to 4 admissions | Nov 15 |
 | restricted exhaustive results are never stated as bounds | every exact negative above holds only in its case | Nov 15 |
+| a new method is opt-in until a paired run of at least 2 hours on several CPUs shows a gain; the only default changed on Nov 17 is the absorbed junk on the inverse | most changes of Nov 17 were measured in 1-CPU arms of 15 minutes to 2.3 hours, inside or near the noise; the absorbed junk won on every paired seed | Nov 17 |
 
 ## Compute
 
@@ -275,6 +314,8 @@ All † (the computations are in development notes not part of this repository).
 | Nov 13–14 benchmark study | 1,056 runs of 60–300 s on pinned CPUs † |
 | Nov 14 hub | 65.9 CPU-h, 7,231 jobs † |
 | Nov 16 runs on the references | 20 CPUs, 02:04–13:19 UTC (≈ 225 CPU-h) † |
+| Nov 17 tests of ten changes | 10 × 2 CPUs, about 3 hours (≈ 60 CPU-h) † |
+| Nov 17 push | 20 CPUs, 06:27–11:45 UTC: inverse ≈ 30, forward ≈ 30, low GD 21.1, direction select 19.6 CPU-h † |
 
 The machine is the laptop of [search/linear/HISTORY.md](../linear/HISTORY.md#compute): an Intel
 Core i7-13700H (14 cores, 20 hardware threads, 64 GB) under WSL2. Time-budgeted jobs on its

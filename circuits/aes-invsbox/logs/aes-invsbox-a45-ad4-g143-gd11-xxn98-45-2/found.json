@@ -12,20 +12,19 @@
  "method_description": "shared rank-1 bottom rebuilt under the kept front, then the gate kernel",
  "hub": false,
  "start": {
-  "kind": "our circuit",
-  "function": "aes-invsbox",
+  "kind": "NIST circuit",
   "tuple_A_AD_G_GD": [
    55,
    4,
    148,
    10
   ],
-  "file": "start.circ.txt",
-  "circuit_name": "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2",
-  "source": "<campaign archive>/2026-11-17-push/G3/starts/NIST-aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "file": "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "nist_path": "data/slp/aes/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "copy": "start.circ.txt",
   "source_sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2"
  },
- "chain_root": "NIST's circuits, through our published circuits and earlier circuits of these runs (the campaign's records in the logs)",
+ "chain_root": "NIST's circuit aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2",
  "lineage": [
   "shared-bottom rebuild (ops/bottom.py), then the A-capped gate kernel: kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 502188, \"kernel_seed\": 502188, \"caps\": {\"A\": 45, \"AD\": 4, \"GD\": 11}}"
  ],

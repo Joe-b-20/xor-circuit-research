@@ -130,6 +130,12 @@ significant first) of input element `b`, and the same for outputs. A map file us
 matrix format, with one extension for affine maps: an optional extra line of one 0/1 constant
 per output row (`y_i = row_i·x ⊕ c_i`; the search works on the linear part).
 
+A target JSON (a path in place of a map name) may carry
+`"timing": {"arrival": [...], "deadline": [...]}`: input `i` is then available at level
+`arrival[i]` and row `r` must be computed by level `deadline[r]`, in the search and in the polish
+(`core/timed.py`). It is for the XOR part of a circuit with fixed AND gates, where AND outputs
+arrive late and AND inputs are due early.
+
 For a campaign, copy a file from `search/linear/campaigns/` and change `target`. To start from known
 circuits, put their JSON files in `search/linear/seeds/NAME/` (`seeds = ["target"]`) or list their
 paths. `python3 circuits/add.py RUN_DIR/workers/WORKER/records/gG-dD-HASH.json` adds a
