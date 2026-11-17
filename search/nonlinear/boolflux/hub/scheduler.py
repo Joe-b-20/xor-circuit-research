@@ -2,7 +2,7 @@
 """Hub scheduler: one shared archive, operator jobs chosen by a fixed priority on new work (default) or by a bandit.
 
     python3 search/nonlinear/boolflux/hub/scheduler.py --dir CAMPAIGN [--cpus 4,5,6,7] --hours H [--seed-list FILES]
-        [--ops polish,pull,join,trb] [--seconds polish=90,pull=90,join=60,trb=30] [--policy priority|bandit]
+        [--ops polish,pull,join,trb] [--seconds polish=90,pull=90,join=60,trb=30] [--policy priority|learned|bandit]
         [--seed 1] [--cpu-allow 4-11] [--ingest-every 60] [--join-batch 8] [--join-cpus 1]
 
 Loop: for every free CPU choose an operator and a target, run op_<name>.py pinned to that CPU, then verify
@@ -23,6 +23,12 @@ sleeps until a job exits (SIGCHLD) or 1 s passes.
   6 repeat   polish / pull (and other operators except join and trb) on front tuples: fewest jobs on the tuple
              first, under the tuple caps before over them, A, AD ascending (no CPU idles while a front exists)
   The levels' sizes and the rule are in each job's decision record.
+--policy learned (idea 07, 2026-11-17; opt-in): join as level 1 of priority; otherwise every (operator, target) of the
+  front (and the first polish / pull of each structure variant / near member) is scored by the learned model
+  (hub/learned.py: P(front add) per operator from the launch features, times adds per adding job, over the mean
+  process CPU seconds of that operator's training jobs), times an online per-operator calibration (observed / predicted front adds of this campaign's
+  finished jobs, pseudo-count --learned-k), times --learned-a-decay^(A - lowest front A) (value order), with
+  log-normal exploration noise (--learned-noise); best wins.
 --policy bandit (until 2026-11-16): epsilon-greedy on the recent gain / CPU-s of each operator, fresh tuples
   first, fallback to the other operators and finally to any tuple over its caps.
 Gain of an admission (archive.Archive.gain, value rule): 8 for a lower A at a known AD, 4 for a new AND depth,
@@ -49,6 +55,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import random
 import select
@@ -616,7 +623,7 @@ class Scheduler:
         """tuple keys, ids (a subclass that overrides launch may test ids) and structure keys of the running jobs'
         targets.  --policy priority leaves join jobs out (priority_choice keeps its own set of join targets: a join
         does not keep a kernel job off its targets); --policy bandit counts them, as before."""
-        pr = getattr(self.args, 'policy', 'priority') == 'priority'
+        pr = getattr(self.args, 'policy', 'priority') in ('priority', 'learned')
         jobs = [x for x in self.running if not (pr and x.get('op') == 'join')]
         return ({x.get('key', x['target']) for x in jobs} | {x['target'] for x in jobs}
                 | {b for x in jobs for b in (x.get('batch') or ())} | {x['skey'] for x in jobs if x.get('skey')})
@@ -730,11 +737,112 @@ class Scheduler:
         d['mode'] = 'empty'
         return None
 
+    # ---- --policy learned (idea 07, 2026-11-17) ---------------------------------------------------
+    def _learned_setup(self):
+        from boolflux.hub import learned as LM
+        mp = Path(self.args.learned_model) if self.args.learned_model else HUBDIR / 'learned_model.json'
+        self._lm = LM.Model.load(mp); self._lm_path = str(mp)
+        self._ls = LM.State(self.function, LM.ref_points(HUBDIR.parents[3] / 'circuits', self.function), newcode=True)
+        self._ls_n = 0; self._ls_adds = {}; self._ls_pred = {}; self._ls_done = set()
+        self._learned_sync()
+        sf = self.dir / 'stats.jsonl'           # a restart: earlier launches count (after all records; approximate order)
+        for ln in (sf.read_text().splitlines() if sf.exists() else []):
+            try:
+                x = json.loads(ln); self._ls.add_launch(x['op'], x['target'], x.get('ts') or 0.0)
+            except Exception:
+                continue
+
+    def _learned_sync(self):
+        """feed the archive records admitted since the last call (self.ar.rec keeps admission order) to the state;
+        front adds counted per run id (the online calibration)"""
+        import itertools
+        n = len(self.ar.rec)
+        if n == self._ls_n: return
+        for r in itertools.islice(self.ar.rec.values(), self._ls_n, None):
+            c = self._ls.add_record(r)
+            if c and r.get('run_id'): self._ls_adds[r['run_id']] = self._ls_adds.get(r['run_id'], 0) + 1
+        self._ls_n = n
+
+    def learned_calib(self):
+        """op -> (observed front adds + k) / (predicted + k) over this campaign's finished jobs of op"""
+        k = self.args.learned_k; obs = {}; pred = {}
+        for rid in self._ls_done:
+            op, pr = self._ls_pred.get(rid, (None, 0.0))
+            if op is None: continue
+            obs[op] = obs.get(op, 0) + self._ls_adds.get(rid, 0); pred[op] = pred.get(op, 0.0) + pr
+        return {op: (obs.get(op, 0) + k) / (pred.get(op, 0.0) + k) for op in set(obs) | set(pred)}, obs, pred
+
+    def learned_choice(self, busy):
+        """(op, target id, level, batch ids) or None: join as in priority_choice, else the best-scored launch"""
+        if getattr(self, '_lm', None) is None: self._learned_setup()
+        self._learned_sync()
+        ops = self.active_ops()
+        if 'join' in ops and self.args.join_mode == 'incremental':
+            ch = self.priority_choice(busy)            # its level 1 only: keep it when it is a join
+            if ch is not None and ch[2] == 'join':
+                self._dec['policy'] = 'learned'; return ch
+        d = self._dec = {'policy': 'learned', 'suspended': sorted(o for o in self.ops if o not in ops)}
+        if not ops:
+            d['mode'] = 'none'; return None
+        sops = [o for o in ops if o != 'join' and o in self._lm.d]
+        fr = self.ar.front_ids(); sk = self.skey; now = time.time()
+        amin = min((self.ar.rec[i]['A'] for i in fr), default=0); rec = self.ar.rec
+        free_t = lambda i: i not in busy and self.target_key(i) not in busy and sk(i) not in busy
+        free_i = lambda i: i not in busy and sk(i) not in busy
+        cands = {}
+        for i in fr:
+            if not free_t(i): continue
+            k = self.target_key(i)
+            for o in sops:
+                if o == 'trb' and self.attempts.get((o, k), 0) >= 1: continue          # trb at most once per tuple (U2)
+                if self.attempts.get((o, k), 0) >= self.args.learned_max_att: continue
+                cands[(o, i)] = 'front'
+        ftk = {self.target_key(j) for j in fr}
+        for gap, i in [(0, i) for i in fr] + self.near_members():
+            if not free_i(i): continue
+            for o in sops:
+                if o in KERNEL_OPS and self.sattempts.get((o, sk(i)), 0) == 0 and (o, i) not in cands:
+                    cands[(o, i)] = 'variant' if self.target_key(i) in ftk else 'near'
+        cal, obs, pred = self.learned_calib()
+        scored = []
+        for (o, i), lvl in cands.items():
+            x = self._ls.features(o, i, now)
+            if x is None: continue
+            # per CPU s of the job length the model was trained on (its p is for that length; yield taken as
+            # proportional to time), not --seconds: shorter jobs of one operator must not inflate its score
+            # value order (AND count first): a front add at A counts decay^(A - lowest front A)
+            s0 = self._lm.score(o, x) * cal.get(o, 1.0) * self.args.learned_a_decay ** max(0, rec[i]['A'] - amin)
+            s = s0 * math.exp(self.args.learned_noise * self.rng.gauss(0.0, 1.0)) if self.args.learned_noise > 0 else s0
+            scored.append((s, s0, o, i, lvl, self._lm.prob(o, x)))
+        if not scored:
+            d['mode'] = 'empty'; return None
+        scored.sort(key=lambda t: (-t[0], t[2], t[3]))
+        s, s0, op, tid, lvl, p = scored[0]
+        d.update(mode='learned', level='learned-' + lvl, op=op, rule='max predicted front adds per CPU s x calibration x noise',
+                 n_cands=len(scored), score_h=round(s0 * 3600, 5), noisy_h=round(s * 3600, 5), p=round(p, 4),
+                 calib={o: round(v, 3) for o, v in cal.items()}, obs=obs, pred={o: round(v, 3) for o, v in pred.items()},
+                 model=self._lm_path, top=[[t[2], t[3], t[4], round(t[1] * 3600, 4)] for t in scored[:5]],
+                 attempts=self.attempts.get((op, self.target_key(tid)), 0), struct_attempts=self.sattempts.get((op, sk(tid)), 0))
+        return op, tid, 'learned-' + lvl, []
+
+    def learned_launched(self, j, dec):
+        """the launch counts in the model state; its predicted front adds are kept for the calibration"""
+        self._ls.add_launch(j['op'], j['target'], j['t0'])
+        for b in j.get('batch') or (): self._ls.add_launch(j['op'], b, j['t0'])
+        e = self._lm.d.get(j['op'])
+        p = dec.get('p') if dec.get('mode') == 'learned' else None
+        if e is not None and p is not None: self._ls_pred[j['run_id']] = (j['op'], p * e['adds_per_hit'])
+
+    def finish(self, job):
+        self._finish(job)
+        if getattr(self, '_lm', None) is not None: self._ls_done.add(job['run_id'])
+
     # ---- jobs -------------------------------------------------------------------------------
     def launch(self, cpu, busy):
         self._idle_why = None
-        if getattr(self.args, 'policy', 'priority') == 'priority':
-            ch = self.priority_choice(busy); dec = dict(self._dec)
+        pol = getattr(self.args, 'policy', 'priority')
+        if pol in ('priority', 'learned'):
+            ch = (self.learned_choice(busy) if pol == 'learned' else self.priority_choice(busy)); dec = dict(self._dec)
             if ch is None:
                 self._idle_why = ('no active operator (suspended: %s)' % dec.get('suspended') if dec.get('mode') == 'none'
                                   else 'no target for any operator'); return None
@@ -747,6 +855,7 @@ class Scheduler:
             self._launch_dec = dec
             j = self.start_job(cpu, op, why, tid, batch=batch)
             if j is None: self._idle_why = 'less than %.0f s left' % MIN_JOB_S
+            elif pol == 'learned': self.learned_launched(j, dec)
             return j
         fresh = self.fresh_target(busy)
         if fresh is not None:
@@ -850,7 +959,7 @@ class Scheduler:
         except OSError:
             pass
 
-    def finish(self, job):
+    def _finish(self, job):
         t_fin0 = time.monotonic(); admit_s = 0.0
         job['lf'].close()
         jd = job['jd']; op = job['op']; tm = self.ar.rec[job['target']]; rc = job['p'].returncode
@@ -1195,8 +1304,15 @@ def parser():
     ap.add_argument('--cap-renew', choices=('never', 'box'), default='never',
                     help='box: a new front tuple inside the cap box (A, AD, GD) of a front tuple renews that tuple\'s caps')
     ap.add_argument('--cap-renew-max', type=int, default=3, help='renewals per (operator, tuple) with --cap-renew box')
-    ap.add_argument('--policy', choices=('priority', 'bandit'), default='priority',
-                    help='priority (default, 2026-11-16): fixed levels join, fresh, variant, near, other, repeat; bandit: the earlier rule')
+    ap.add_argument('--policy', choices=('priority', 'learned', 'bandit'), default='priority',
+                    help='priority (default, 2026-11-16): fixed levels join, fresh, variant, near, other, repeat; learned: join, then the '
+                         'best launch by the learned model (hub/learned.py); bandit: the earlier rule')
+    ap.add_argument('--learned-model', default=None, help='--policy learned: model JSON (default hub/learned_model.json)')
+    ap.add_argument('--learned-noise', type=float, default=0.3, help='--policy learned: sigma of the log-normal exploration noise')
+    ap.add_argument('--learned-k', type=float, default=2.0, help='--policy learned: pseudo-count (front adds) of the online calibration')
+    ap.add_argument('--learned-max-att', type=int, default=3, help='--policy learned: jobs per (operator, tuple) at most')
+    ap.add_argument('--learned-a-decay', type=float, default=0.7,
+                    help='--policy learned: weight of a launch on a target with A ANDs = decay^(A - lowest A on the front); 1 = adds only')
     ap.add_argument('--ingest-every', type=float, default=60.0, help='seconds between ingest passes of control.json "ingest" (was 1800)')
     ap.add_argument('--join-batch', type=int, default=8, help='--policy priority: join targets per join job')
     ap.add_argument('--join-cpus', type=int, default=1, help='--policy priority: join jobs running at once at most')

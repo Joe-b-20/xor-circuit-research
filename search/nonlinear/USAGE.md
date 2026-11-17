@@ -153,7 +153,10 @@ CPU time of the last 10 minutes), fresh (first polish, then first pull, of a fro
 (first polish / pull of each structure of a front tuple, then of each member of a cell within `--near-gap`
 gates of the front), other (one job of every other operator per front tuple: `trb` once), repeat (fewest
 jobs per tuple over the caps, `--repeat-max` to stop); `--policy bandit --eps 0.25` is the
-rule used until 2026-11-16 (`--near`, `--nursery` and `ad3_share` apply to it only). Each job's decision
+rule used until 2026-11-16 (`--near`, `--nursery` and `ad3_share` apply to it only). `--policy learned`
+(opt-in, 2026-11-17) keeps the join level and otherwise launches the (operator, target) with the highest predicted
+front adds per CPU second (`hub/learned.py`, model `hub/learned_model.json` fitted on the logged hub campaigns;
+`--learned-noise 0.3` exploration, `--learned-k 2` online calibration, `--learned-max-att 6`). Each job's decision
 (level, level sizes, rule) is in `runs/<run_id>.json`. `control.json` `"ingest"` globs are read every
 `--ingest-every 60` s (was 1800). polish and pull also return up to `--bests 8` of the kernel's intermediate
 bests (placeable, non-dominated); pull lowers GD by default (`--lower GD,GD,GD,AD,A` is the old draw), trb
