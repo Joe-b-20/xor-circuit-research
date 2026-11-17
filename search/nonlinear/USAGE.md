@@ -240,8 +240,9 @@ c), `wrap` (the muxed inputs first, then F's own top), `flat` (one balanced tree
 `xdelta` (F's own top, plus one XOR per changed form); `--bottom-mode` is `wrap` (default), `flat`
 or `leafg` (F's own bottom kept, the muxes in parallel over its leaves). `flat`, `xdelta` and `leafg`
 are depth-aware and scored by (GD, G); the others by G. It writes the distinct
-(A, AD, G, GD) builds that compute `aes-sbox-sel` on all 512 inputs and `result.json`, and no run
-record; the builds are then polished by `cli.py run` under GD caps. From inverse circuits it gave
+(A, AD, G, GD) builds that compute `aes-sbox-sel` on all 512 inputs by both verifiers, a record
+beside each (start, map, bases, modes, seed, checks), `result.json` and the run record (`run.json`,
+`events.jsonl.gz`); the builds are then polished by `cli.py run` under GD caps. From inverse circuits it gave
 builds about 8 levels deeper and 100 gates larger than from forward ones.
 
 ## Output

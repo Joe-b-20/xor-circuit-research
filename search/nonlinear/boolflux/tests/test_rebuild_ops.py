@@ -1,4 +1,4 @@
-"""Rebuild operators ops/rebase.py and ops/bottom.py and their libraries (phase 2, W4).
+"""Rebuild operators ops/rebase.py and ops/bottom.py and their libraries.
 
     python3 -m unittest boolflux.tests.test_rebuild_ops      (from search/nonlinear/)
 
@@ -152,7 +152,7 @@ class TestBoptCost(_Fn):
 
 
 class TestJunkAbsorb(_Fn):
-    """bottom --junk absorb (idea 05): Y-form junk as bit 8 of affine x-forms"""
+    """bottom --junk absorb: Y-form junk as bit 8 of affine x-forms"""
     def test_default_junk(self):
         """default --junk: absorb5 for the inverse S-box only; the forward S-box keeps terms"""
         BT = ops_bottom()

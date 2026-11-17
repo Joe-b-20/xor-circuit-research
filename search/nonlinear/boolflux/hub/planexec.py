@@ -1,4 +1,4 @@
-"""planexec: one arm of the planned-join A/B on one CPU (idea 03).
+"""planexec: one arm of the planned-join A/B on one CPU (2026-11-17).
 
     python3 -m boolflux.hub.planexec --function F --pool POOL.pkl --out DIR --seed S --budget SECONDS
         (--plan PLAN.jsonl | --blind --join-seconds T)  [--polish S] [--pull S] [--per-class N]

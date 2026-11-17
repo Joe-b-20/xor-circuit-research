@@ -5,7 +5,7 @@ Q_w = Tr(w z^170), R_c = Tr(c z^84) as functions of the circuit input, z = x: tr
 whose inversion input is x itself (S(x) = A x^254 + 0x63).  The inverse S-box inverts z = A^-1 y + 0x05;
 since inversion is an involution (0 -> 0), z(y) = S^-1(y)^254 exactly, independent of bit conventions.
 install(function) rebuilds the two table sets over z(input) and installs them in the gf4_lib modules
-(their module globals RT, QT), so current_points / build work unchanged on inverse circuits (U4 #1 port;
+(their module globals RT, QT), so current_points / build work unchanged on inverse circuits (port;
 the field-intrinsic parts, point admissibility and rho, do not depend on the input map).
 """
 import sys

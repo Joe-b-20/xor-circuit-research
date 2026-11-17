@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Hub operator andrm (opt-in: --ops ...,andrm; idea 09's recommendation, 2026-11-17): exact window AND
+"""Hub operator andrm (opt-in: --ops ...,andrm; 2026-11-17): exact window AND
 removal, then a kernel polish of the hit and a pull back to the source's gate depth.
 
     python3 hub/ops/op_andrm.py --archive DIR --in ID --seed S --seconds T --out JOBDIR [--bests 8]
 
-1. AND removal (ops/winsat.py andrm_window = ops/winsat_andrm.py, R1's mc1): random windows of 2-4 ANDs
+1. AND removal (ops/winsat.py andrm_window = ops/winsat_andrm.py): random windows of 2-4 ANDs
    (<= 10 inputs, <= 16 gates) of the input; a window whose outputs, mod span(1, window inputs) on the care
    set, have rank <= aW - 1 and are spanned by flat products is rebuilt with one AND fewer, spliced, merged
    and checked on all 256 inputs (exact per window).  AD and GD may rise.  Runs for ANDRM_SHARE of T, or
@@ -15,7 +15,7 @@ removal, then a kernel polish of the hit and a pull back to the source's gate de
    when the hit is deeper), the rest of the time.  When the hit is not deeper than the source, step 3 is
    skipped and step 2 gets the whole time.
 Candidates: every placeable hit, the kernel finals and up to --bests intermediate bests of each kernel run,
-highest archive gain first, at most --max-cands.  Measured by idea 09 (outside the hub): ~1.1 new circuits
+highest archive gain first, at most --max-cands.  Measured outside the hub (2026-11-17): ~1.1 new circuits
 per CPU-h, the only operator that lowers A (published inverse 32/4/118/19 -> 31/5/127/21 -> 31/5/118/21;
 forward 37/4/127/13 -> 36/4/128/14 -> pull 36/4/128/13).
 """

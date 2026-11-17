@@ -9,7 +9,7 @@ Loop: for every free CPU choose an operator and a target, run op_<name>.py pinne
 and admit its candidates (archive.Archive.admit: cell rule, structure check, two verifiers).  The loop
 sleeps until a job exits (SIGCHLD) or 1 s passes.
 
---policy priority (default since 2026-11-16; FINDINGS-U2 sections 2, 5): the first level with a target wins
+--policy priority (default since 2026-11-16): the first level with a target wins
   1 join     front circuits with archive members they have not been joined with (incremental marks), A, AD
              ascending, newest first, up to --join-batch targets per job, at most --join-cpus join jobs at once
              and at most --join-share of the CPU time over the last 10 minutes (every admission reopens every
@@ -23,7 +23,7 @@ sleeps until a job exits (SIGCHLD) or 1 s passes.
   6 repeat   polish / pull (and other operators except join, trb and andrm) on front tuples: fewest jobs on the tuple
              first, under the tuple caps before over them, A, AD ascending (no CPU idles while a front exists)
   The levels' sizes and the rule are in each job's decision record.
---policy learned (idea 07, 2026-11-17; opt-in): join as level 1 of priority; otherwise every (operator, target) of the
+--policy learned (2026-11-17; opt-in): join as level 1 of priority; otherwise every (operator, target) of the
   front (and the first polish / pull of each structure variant / near member) is scored by the learned model
   (hub/learned.py: P(front add) per operator from the launch features, times adds per adding job, over the mean
   process CPU seconds of that operator's training jobs), times an online per-operator calibration (observed / predicted front adds of this campaign's
@@ -345,7 +345,7 @@ class Scheduler:
 
     def maybe_ingest(self):
         """ingest every --ingest-every seconds (control.json "ingest_every"; until 2026-11-16 a fixed 1800 s, so
-        conjugation circuits waited 944 s on average, U2 section 5)"""
+        conjugation circuits waited 944 s on average)"""
         if self.ingest_globs and time.time() - self.last_ingest > self.args.ingest_every:
             self.last_ingest = time.time(); self.ingest()
 
@@ -744,7 +744,7 @@ class Scheduler:
         d['mode'] = 'empty'
         return None
 
-    # ---- --policy learned (idea 07, 2026-11-17) ---------------------------------------------------
+    # ---- --policy learned (2026-11-17) ------------------------------------------------------------
     def _learned_setup(self):
         from boolflux.hub import learned as LM
         mp = Path(self.args.learned_model) if self.args.learned_model else HUBDIR / 'learned_model.json'
@@ -801,7 +801,7 @@ class Scheduler:
             if not free_t(i): continue
             k = self.target_key(i)
             for o in sops:
-                if o == 'trb' and self.attempts.get((o, k), 0) >= 1: continue          # trb at most once per tuple (U2)
+                if o == 'trb' and self.attempts.get((o, k), 0) >= 1: continue          # trb at most once per tuple
                 if self.attempts.get((o, k), 0) >= self.args.learned_max_att: continue
                 cands[(o, i)] = 'front'
         ftk = {self.target_key(j) for j in fr}
@@ -982,7 +982,7 @@ class Scheduler:
         # (a subclass may build its own job dict: everything beyond the 2026-11-14 keys has a default)
         job.setdefault('secs', self.secs.get(op)); job.setdefault('script', str(self.scripts.get(op, SCRIPTS.get(op))))
         job.setdefault('script_sha', file_sha(job['script']))
-        # durations on the monotonic clock (time.time() stepped back up to 68 s on this host, U2 section 7)
+        # durations on the monotonic clock (time.time() stepped back up to 68 s on the development host)
         wall = round(time.monotonic() - job['m0'], 2) if job.get('m0') else round(time.time() - job['t0'], 2)
         rec = {}; rec_error = None
         try:
@@ -1016,7 +1016,7 @@ class Scheduler:
             joins = info.get('joins') if isinstance(info.get('joins'), list) else []
             cand_ids = rec.get('cand_ids') if isinstance(rec.get('cand_ids'), list) else None
             # nursery slack for one generation (2026-11-16): a generator's output and the jobs on it, not their
-            # descendants (the flag was inherited without end: 516 records in the 11-14 long run, U2 section 6)
+            # descendants (the flag was inherited without end: 516 records in a 2026-11-14 run)
             nurs = op in self.generators or tm['operator'] in self.generators
             files = sorted(jd.glob('cand-*.bfx')) if jd.is_dir() else []
             for k, f in enumerate(files):
@@ -1091,7 +1091,7 @@ class Scheduler:
         adm = {'counts': counts, 'admit_s': round(admit_s, 3), 'finish_s': round(time.monotonic() - t_fin0, 3),
                'job_wall_s': wall, 'op_wall_s': rec.get('wall_s'), 'killed': job.get('killed')}
         run['admission'] = adm
-        # instrumentation: monotonic process timing (U2-2): scheduler spawn, process start -> operator main, operator
+        # instrumentation: monotonic process timing: scheduler spawn, process start -> operator main, operator
         # setup and run (record.json 'timing'), operator end -> exit seen by the scheduler, rusage from os.wait4
         ot = rec.get('timing') if isinstance(rec.get('timing'), dict) else {}
         m0 = job.get('m0'); mx = job.get('mono_exit')
@@ -1249,7 +1249,7 @@ def _noop_handler(signum, frame):
 
 def _wake_setup_fn():
     """a pipe that SIGCHLD (and every other handled signal) writes to (signal.set_wakeup_fd), so the loop sleeps
-    until a job exits instead of polling every 0.5 s (U5 section 1).  None when not possible (not the main thread)."""
+    until a job exits instead of polling every 0.5 s.  None when not possible (not the main thread)."""
     try:
         r, w = os.pipe(); os.set_blocking(r, False); os.set_blocking(w, False)
         old = signal.set_wakeup_fd(w, warn_on_full_buffer=False)

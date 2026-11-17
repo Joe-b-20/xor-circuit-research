@@ -10,7 +10,7 @@ target, Kraft's condition sum 2^(level - required) <= 1 over its current cover (
 depth-optimal XOR tree of every target meets its deadline), then each cover is finished by a
 Huffman tree (earliest two first).  Every rebuilt target meets its required level for cap D (Kraft's
 condition holds throughout); gates outside R are unchanged, so the circuit meets cap D only if every path
-that avoids R already does: always for D >= the circuit's GD, often not for D < GD (U4, 2026-11-16: 170 of
+that avoids R already does: always for D >= the circuit's GD, often not for D < GD (2026-11-16: 170 of
 241 random-region builds at D = GD - 1 exceeded D).  Callers check GD (op_trb uses D = GD by default).
 
 Regions: 'bottom' (linear gates after the last AND level), 'top' (no AND in the fan-in),

@@ -32,10 +32,10 @@
         [--overrun scale|refuse]  when the plan (items x schedule seconds) exceeds --seconds: scale every stage of
                                   the not yet started items (default; a note and a `plan` event), or refuse the job
                                   (status refused).  Each item's stages get the time left / the remaining plan
-        [--sh-probe S]            sh:K with a probe screen (idea 08, 2026-11-17; default 0 = off): each of the K
+        [--sh-probe S]            sh:K with a probe screen (2026-11-17; default 0 = off): each of the K
                                   conjugates gets ONE short stage of S seconds (stage 1's cap, mode k if stage 1 is
                                   k, else g) instead of stage 1; the best --sh-keep by the same key run the WHOLE
-                                  schedule from their probe best.  On U3's 22 groups a 10-20k-iteration probe
+                                  schedule from their probe best.  On 22 measured groups a 10-20k-iteration probe
                                   (~5-10 s) ranks conjugates only a little better than the conj3 screen (within-group
                                   Spearman 0.24-0.27 vs 0.20, pick regret 2.1-2.2 vs 2.44 gates; stage 1: 0.53, 1.17)
         [--identity-first auto|yes|no]  default no.  auto: an identity staged pull (dropped after one stage without a new point)
@@ -105,7 +105,7 @@ FDEF = {'T0': 0.6, 'Tperiod_it': 20000, 'stall_it': 60000, 'uphill': 1.0, 'max_e
         'w.gd': 1e-4, 'w.ad': 0.0}
 T_END = None
 RESERVE_S = 20.0          # seconds of the job kept free of stages (builds, result writing)
-SPAN_KEEPERS_ALWAYS = [(188, 0), (189, 0)]       # GF(4) scalars: keep the whole level-1 span on every start seen (U3)
+SPAN_KEEPERS_ALWAYS = [(188, 0), (189, 0)]       # GF(4) scalars: keep the whole level-1 span on every start seen
 
 
 def now():
@@ -220,7 +220,7 @@ def build_conj(c, lam, k, top_runs=12, bp_cap=None):
 
 def span_keepers(start, ks=(0, 4)):
     """(lam, k) with k in ks whose naive conjugate keeps the start's whole level-1 AND span (modulo affine
-    functions): the conjugates that re-coordinatise the first AND layer (U3: 188:0, 189:0 on every start
+    functions): the conjugates that re-coordinatise the first AND layer (188:0, 189:0 on every start
     seen, some k=4 ones on AD5 tower circuits)"""
     import conj as CJ
     T = start.tables(); ones = (1 << (1 << start.n)) - 1; aff = [ones] + [T[i] for i in range(start.n)]
@@ -469,7 +469,7 @@ def l1_span_kept(c, ref):
 
 
 def conj_mech(start, cc, lam, k):
-    """instrumentation (U3-2): profiles of the start, the naive conjugate, after BP top, the built conjugate; the
+    """instrumentation: profiles of the start, the naive conjugate, after BP top, the built conjugate; the
     built conjugate's ANDs kept from the naive conjugate and from the start; shared level-1 span with the start"""
     try:
         nv = LAST_BUILD.get('naive') if LAST_BUILD.get('lam') == lam and LAST_BUILD.get('k') == k else None
@@ -687,7 +687,7 @@ def main(argv=None):
     ap.add_argument('--beam', type=int, default=1)
     ap.add_argument('--repair-keep', type=int, choices=(0, 1), default=1,
                     help='kernel repair_keep of stages without an rk flag (default 1; the seed-parity alt split and '
-                         '--beam-rk were removed 2026-11-17: no visible effect, U3)')
+                         '--beam-rk were removed 2026-11-17: no visible effect)')
     ap.add_argument('--cap-a', type=int, default=None, help='search A cap below the target A (kernel cap.a, stage choice)')
     ap.add_argument('--cap-ad', type=int, default=None, help='search AD cap below the target AD (e.g. 4 for an AD5 reference)')
     ap.add_argument('--stall-stages', type=int, default=2,
@@ -779,7 +779,7 @@ def main(argv=None):
         os._exit(3)
     signal.signal(signal.SIGALRM, on_signal)
     signal.signal(signal.SIGTERM, on_signal)
-    # the job's hard end, on the realtime clock: signal.alarm runs on WSL's timer clock, 3-6 % fast (U5-1), and
+    # the job's hard end, on the realtime clock: signal.alarm runs on WSL's timer clock, 3-6 % fast, and
     # ended 2700 s jobs at 2649 s real (2026-11-17 A/B)
     import threading
     def watchdog():

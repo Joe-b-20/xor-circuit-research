@@ -15,9 +15,9 @@ products AND(Y_alpha, w) and per output a subset summing to B_j with an exact Kr
 Simulated annealing over per-output decompositions (bopt), build (bbuild: front cone + Y-sums +
 Boyar-Peralta x-forms + products + shared pairs + Huffman output trees), then kernel polish with caps
 A <= build A (default; keeps the A frontier), AD <= ref AD, GD <= D.  A build equal to the start, or to a build
-already polished in this job, is not polished again (--polish-dup to polish them anyway; night T09: 36 of 112
+already polished in this job, is not polished again (--polish-dup to polish them anyway; in a 2026-11-16 run 36 of 112
 --init own builds were the start, each polished 300 s).  --polish-seconds 90 (was 300: 93 % of polishes reached
-their final G within 25 % of the stage, FINDINGS-U4 section 3).
+their final G within 25 % of the stage).
 Affine junk (--junk terms, default for the forward S-box): outputs of the form y_j = c_j + sum_i Y_i u_ij(x) + lin(v_j) + sum_{i in t_j} Y_i
 (complemented operands: the inverse S-box inverts the affine A^-1 y + 0x05, so every NIST inverse circuit has
 them) keep v_j (an x-form) and the Y-sum of t_j as fixed extra terms of output j: priced in its Kraft sum
@@ -27,7 +27,7 @@ the Y-form junk costs no product and no Kraft term (rank unchanged); products AN
 v_j, as row 4 (the constant Y-form): (Y_alpha + 1) w = Y_alpha w + w, products AND(NOT Y_alpha, w); v_j lies in the row
 space of output j for every NIST inverse circuit probed, so no junk term is left and the rank stays 4; a single base
 Y-form's NOT (when its signal is not an XOR) is priced one level; Y-sums take either polarity free (plan 'nat').
-Idea 05 (2026-11-17): paired runs from NIST inverse 45/4/141/12 (cap 12) and 55/4/148/10 (cap 11), same seeds:
+2026-11-17: paired runs from NIST inverse 45/4/141/12 (cap 12) and 55/4/148/10 (cap 11), same seeds:
 every absorb / absorb5 build had fewer gates than its terms twin, best A 42 -> 41 at GD 12 and 49 -> 47 at GD 11.
 Default --junk: absorb5 for the inverse S-box (--function aes-invsbox, or auto from --in), terms otherwise (forward
 behaviour unchanged).
@@ -199,7 +199,7 @@ def anneal(M, B, opts, rng, iters, T0, deadline, init=None):
 
 
 def default_junk(function):
-    """--junk default: absorb5 for the AES inverse S-box (idea 05: fewer gates on every paired seed, fewer ANDs on
+    """--junk default: absorb5 for the AES inverse S-box (2026-11-17: fewer gates on every paired seed, fewer ANDs on
     most), terms (unchanged) for every other function."""
     return 'absorb5' if function == 'aes-invsbox' else 'terms'
 

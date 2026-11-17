@@ -259,7 +259,7 @@ def interface_spaces():
 def _interface_spaces(f):
     """Spans of the inversion's intrinsic intermediate functions, as functions of the circuit's input: the S-box
     inverts its input (S = Aff o inv), the inverse S-box inverts Aff^-1(input) (S^-1 = inv o Aff^-1, so
-    Aff^-1(x) = inv(S^-1(x)), inv the GF(2^8) inverse).  Until 2026-11-16 the inverse used the forward spaces (U7 #7)."""
+    Aff^-1(x) = inv(S^-1(x)), inv the GF(2^8) inverse).  Until 2026-11-16 the inverse used the forward spaces."""
     inv = lambda y: _gpow(y, 14) if y else 0              # inverse in GF(16), where the norm N takes its values
     tab = aesfn.table(f)
     pre = (lambda x: _gpow(tab[x], 254)) if f == 'aes-invsbox' else (lambda x: x)   # GF(2^8) inverse of S^-1(x)

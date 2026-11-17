@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""winsat: exact SAT resynthesis of windows that span AND levels (idea 09, 2026-11-17), under the
+"""winsat: exact SAT resynthesis of windows that span AND levels (2026-11-17), under the
 operator contract of ops/common.py:
 
     python3 search/nonlinear/boolflux/ops/winsat.py --in START.circ.txt --target REF --seed S \
         --seconds T --out DIR [--K 8] [--maxg 10] [--budget 20000] [--strong 1] [--odc 1]
         [--strategies bigmffc,and2,viol,pair,and,x] [--modes cost:0.6,gd:0.25,slack:0.15] [--calib]
 
-Method (winsat_lib.py; the window code is agent R1's wres.py of 2026-11-15 with additions):
-  * window W: a convex gate set, 3..maxg gates, <= K inputs, 1..4 outputs; chosen by
-      bigmffc  root drawn with weight (MFFC size - 2) (U1: MFFC >= 5 targets are the kernel's most
+Method (winsat_lib.py; window code of 2026-11-15 with additions):
+  * window W: a convex gate set, --ming (default 4) to --maxg gates, <= K inputs, 1..4 outputs; chosen by
+      bigmffc  root drawn with weight (MFFC size - 2) (MFFC >= 5 targets are the kernel's most
                productive), grown from its cone;
       and2     an AND, an AND that reads it within 3 steps and the gates between (spans an AND level);
       viol     a gate on a critical path and its critical fan-in (gate level = required level);
-      pair, and, x   R1's strategies (two nearby ANDs; an AND and its operand trees; random growth).
+      pair, and, x   the original strategies (two nearby ANDs; an AND and its operand trees; random growth).
   * the exact multi-output Boolean relation of W (all 256 inputs; ODC on by default), arrival times of
     W's inputs and required times of W's outputs (caps = the current circuit's GD and AD, or GD - 1
     in mode gd); a chain of r steps over {AND, XOR, XNOR, NOT} with at most aW ANDs (A never rises).
@@ -20,13 +20,13 @@ Method (winsat_lib.py; the window code is agent R1's wres.py of 2026-11-15 with 
     D = GD - 1 (window must cut every path deeper than GD - 1); slack: every zero-slack output earlier;
     relax: the cost query with deadlines from GD + 1..2 (fewer gates at a deeper GD; offered to the
     Recorder, never adopted as the walk state).
-  * mode andrm (winsat_andrm.py = R1's mc1): a window of 2-4 ANDs (<= 10 inputs, <= 16 gates) is
+  * mode andrm (winsat_andrm.py): a window of 2-4 ANDs (<= 10 inputs, <= 16 gates) is
     rebuilt with one AND fewer when the rank of its outputs mod span(1, inputs) on the care set allows it
     and flat products span the residues (exact per window); AD and GD may rise.  Every rebuild is
     offered; it becomes the walk state if AD <= current AD + --andrm-ad.  Results need a kernel
     polish/pull afterwards (2026-11-17: published inverse 32/4/118/19 -> 31/5/127/21 -> polish 31/5/118/21).
   * --strong 1 (default): the encoding adds dead-steps-first, live-steps-used and removable-step
-    clauses (winsat_lib.Synth strong); --strong 0 is R1's encoding.
+    clauses (winsat_lib.Synth strong); --strong 0 is the original encoding.
   * splice, merge equal functions, verify on all 256 inputs; walk state = best by (A, AD, G, GD), plus
     plateau moves (equal key, new structure) with p --sideways; every result goes to the Recorder
     (aes_check, sidecar, Pareto-new inside A <= ref A, AD <= ref AD).
@@ -137,7 +137,7 @@ def try_window(c, net, W, D, DA, rng, deadline, budget, strong, odc=True, tighte
 
 
 def andrm_window(c, net, rng, K=10, maxg=16, maxo=6, amax=4):
-    """-> (status, circuit or None, detail): R1's mc1 on one window of 2..amax ANDs (winsat_andrm.py).
+    """-> (status, circuit or None, detail): the AND-removal check on one window of 2..amax ANDs (winsat_andrm.py).
     status: nowindow | rank | no_flat | affine | removed (rebuilt, verified) | rebuild-fail | verify-fail."""
     import winsat_andrm as M
     if len(net.ands) < 2: return 'nowindow', None, {}

@@ -1,7 +1,7 @@
-"""Stage accounting and planned (minimal-support) joins (idea 03, 2026-11-17):
+"""Stage accounting and planned (minimal-support) joins (2026-11-17):
     python3 -m unittest boolflux.hub.tests.test_stageplan   (from search/nonlinear/)
 
-Stage splits of published circuits (U6 feats.txt values), the exact plan_pair prediction of the U6 31/5 recipe
+Stage splits of published circuits (measured values), the exact plan_pair prediction of the 31/5 recipe
 (32/5 front + 32/4 last layer = 9+5+17), the built join verified on all 256 inputs, plan_pair equal to the built
 metrics on every feasible pair of a small pool (or an upper bound on A when clean() merges an AND), the 27-AND
 refusal, the span grouping of make_plan.  No test starts a kernel.

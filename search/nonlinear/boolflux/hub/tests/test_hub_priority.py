@@ -1,4 +1,4 @@
-"""Hub scheduling and operator changes of 2026-11-16 (phase 2, W2):
+"""Hub scheduling and operator changes of 2026-11-16:
     python3 -m unittest boolflux.hub.tests.test_hub_priority   (from search/nonlinear/)
 
 --policy priority (levels join, fresh, variant, near, other, repeat), batched join jobs and their marks, the join

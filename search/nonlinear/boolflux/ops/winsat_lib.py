@@ -1,4 +1,4 @@
-"""Window exact resynthesis (agent R1, 2026-11-15).
+"""Window exact resynthesis (2026-11-15).
 
 A *window* W is a convex set of gates (no path leaves W and re-enters it).  Its inputs are the
 signals outside W read by W gates; its outputs are the W gates read outside W or used as primary
@@ -201,7 +201,7 @@ def pick_window(net, strategy, rng, K=8, maxo=4, maxg=9, greedy=0.5, ming=3):
         return grow(net, {g}, rng, K, maxo, maxg, crit=cr, greedy=greedy, ming=ming)
     if strategy == 'mffc':
         return mffc_window(net, rng.randrange(n, net.S), rng, K, maxo, maxg)
-    if strategy == 'bigmffc':       # idea 09: roots drawn by MFFC size (the kernel's most productive targets, U1 3.3)
+    if strategy == 'bigmffc':       # roots drawn by MFFC size (the kernel's most productive targets)
         sz = mffc_sizes(net)
         roots = [s for s in range(n, net.S) if sz[s] >= 3]
         if not roots: return None
@@ -210,7 +210,7 @@ def pick_window(net, strategy, rng, K=8, maxo=4, maxg=9, greedy=0.5, ming=3):
         if len(cone) > maxg:           # keep the root and its nearest fan-in part of the cone
             cone = set(sorted(cone, reverse=True)[:maxg])
         return grow(net, cone, rng, K, maxo, maxg, greedy=greedy, ming=ming)
-    if strategy == 'and2':          # idea 09: an AND and an AND that reads it (across one AND level), with the XORs between
+    if strategy == 'and2':          # an AND and an AND that reads it (across one AND level), with the XORs between
         for _ in range(20):
             g = rng.choice(net.ands) if net.ands else None
             if g is None: return None
@@ -225,7 +225,7 @@ def pick_window(net, strategy, rng, K=8, maxo=4, maxg=9, greedy=0.5, ming=3):
             if hit:
                 return grow(net, path | set(hit), rng, K, maxo, maxg, greedy=greedy, ming=ming)
         return None
-    if strategy == 'viol':          # idea 09: a gate on a critical path (gate level = required level) and its critical fan-in
+    if strategy == 'viol':          # a gate on a critical path (gate level = required level) and its critical fan-in
         cr = critical(net, net.GD)
         if not cr: return None
         g = rng.choice(sorted(cr))
@@ -448,7 +448,7 @@ class Synth:
                         else:
                             if la >= 1: cl.append([-sv, self.ua[(i, la)]])
                             cl.append([-sv, -ai, self.ua[(i, la + 1)]])
-        # strong mode (idea 09): dead steps first in a fixed form, every live step used, no redundant steps
+        # strong mode: dead steps first in a fixed form, every live step used, no redundant steps
         steps = sorted(self.pairs)
         vmin = min(range(1, k + 1), key=lambda v: (self.arr[v], self.arra[v])) if k else None
         if strong and (vmin is None or self.arr[vmin] + 1 > Lm or r < 1):

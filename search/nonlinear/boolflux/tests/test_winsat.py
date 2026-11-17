@@ -1,9 +1,9 @@
-"""Window exact SAT resynthesis (ops/winsat.py, ops/winsat_lib.py; idea 09, 2026-11-17).
+"""Window exact SAT resynthesis (ops/winsat.py, ops/winsat_lib.py; 2026-11-17).
 
     python3 -m unittest boolflux.tests.test_winsat      (from search/nonlinear/)
 
 The strong encoding (dead steps first, live steps used, no removable steps) must keep the answers of
-R1's encoding: same SAT/UNSAT on small exact queries (full adder; random 3-4 input functions at the
+The original encoding: same SAT/UNSAT on small exact queries (full adder; random 3-4 input functions at the
 optimum and one below it), and a redundant XOR detour injected into a published circuit is removed.
 A short winsat run records only aes_check-verified circuits.
 The SAT tests are skipped without pysat (python-sat); the AND-removal test needs the standard library only.
@@ -61,7 +61,7 @@ class TestStrongEncoding(unittest.TestCase):
             k = rng.choice([3, 4]); P = 1 << k
             m = 2 if k == 3 else 1
             fns = [rng.getrandbits(P) for _ in range(m)]
-            # optimum by R1's encoding, then both encodings at the optimum and one below
+            # optimum by the original encoding, then both encodings at the optimum and one below
             opt = None
             for r in range(1, 7):
                 if exact(k, fns, r, r, False) == 'sat': opt = r; break

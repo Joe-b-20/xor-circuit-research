@@ -23,8 +23,10 @@ bp_run with an arbitrary initial base) for the r forms f_i v over x, r ANDs m_i 
 top linear forms rewritten over (x, c, m) with the stage-1 signals in the base; bottom = BP for the forms
 g_i w over F's outputs, r ANDs, BP for y over (w, c, m') with the stage-1 signals in the base.  Each basis
 of each row space (840 for rank 4) is scored with one BP run; the --top best of each side get --runs runs.
-Every written circuit computes aes-sbox-sel on all 512 inputs (core evaluation); verify independently
-with circuits/check.py (the NIST .fn.json beside the file) and independent/verify.py --fn.
+Every written circuit computes aes-sbox-sel on all 512 inputs by both verifiers (core evaluation, and
+independent/verify.py with its own FIPS 197 tables); circuits/check.py checks it again (the NIST .fn.json
+beside the file).  Records in --out: run.json + events.jsonl.gz (runlog), <circuit>.json beside each
+circuit (start, map, bases, modes, seed, checks, run summary), result.json.
 """
 from __future__ import annotations
 
@@ -44,7 +46,9 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parents[1]))
 sys.path.append(str(HERE / 'conj_lib'))
 import transport as T                                 # noqa: E402
-from boolflux import aesfn, core                      # noqa: E402
+sys.path.insert(0, str(HERE.parent / 'independent'))
+from boolflux import aesfn, core, runlog              # noqa: E402
+import verify as IV                                   # noqa: E402
 
 AND, XOR, XNOR, NOT = 8, 6, 9, 3
 
@@ -454,6 +458,17 @@ def score(F, P, rng, top='bp', bottom='wrap'):
     return si, so
 
 
+def independent_fn():
+    """aes-sbox-sel for independent/verify.py from its own FIPS 197 code: 9 inputs c x0..x7 (c the msb),
+    c = 0 the S-box, c = 1 the inverse; checked against NIST's .fn.json when the seed mirror has it."""
+    fn = IV.validate_fn(9, 8, IV.aes_sbox() + IV.aes_inv_sbox(), 'aes-sbox-sel')
+    nist = HERE.parents[1] / 'seeds' / 'aes-sbox-sel' / 'aes-sbox-sel.fn.json'
+    if nist.is_file():
+        fj = json.loads(nist.read_text(encoding='utf-8'))          # NIST's keys: n_inputs, n_outputs, table
+        assert (fj['n_inputs'], fj['n_outputs'], list(fj['table'])) == fn, 'aes-sbox-sel: NIST .fn.json differs from FIPS 197'
+    return fn
+
+
 def nist_name(c, base='aes-sbox-sel'):
     '''NIST file name stem <base>-aA-adAD-gG-gdGD-xxX-Y (X = #XOR + #XNOR, Y = #XNOR; NOT counts as XNOR)'''
     m = c.metrics(); k = m['counts']
@@ -482,31 +497,61 @@ def main():
     else:
         ms = [tuple(int(t) for t in x.split(':')) for x in a.maps.split(',')]
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    m0 = F.metrics()
+    rec = runlog.RunLog(out, 'ops.selbuild', seeds={'seed': a.seed}, function='aes-sbox-sel',
+                        config={'in': a.inp, 'src': src, 'maps': a.maps, 'top': a.top, 'runs': a.runs,
+                                'top_mode': a.top_mode, 'bottom_mode': a.bottom_mode})
+    rec.add_start(a.inp, metrics=[m0[q] for q in ('A', 'AD', 'G', 'GD')], label='start (%s)' % src)
+    rec.event('maps', maps=[list(x) for x in ms])
+    ifn = independent_fn()
     want = sel_table(); rng = random.Random(a.seed); res = []; best = {}
-    for lam, kk in ms:
-        P = Plan(src, lam, kk)
-        si, so = score(F, P, rng, a.top_mode, a.bottom_mode)
-        print(json.dumps({'map': [lam, kk], 'ranks': P.r, 'top_screen': [g for g, _ in si[:6]],
-                          'bottom_screen': [g for g, _ in so[:6]], 'n_bases': [len(si), len(so)]}), flush=True)
-        for (_, bi), (_, bo) in itertools.product(si[:a.top], so[:a.top]):
-            c = build(F, P, bi, bo, rng, a.runs, a.top_mode, a.bottom_mode)
-            ok = list(c.value_table()) == want
-            m = c.metrics()
-            r = {'lam': lam, 'k': kk, 'bin': bi, 'bout': bo, 'ok': ok, **{q: m[q] for q in ('A', 'AD', 'G', 'GD')}}
-            res.append(r); print(json.dumps(r), flush=True)
-            if not ok: continue
-            key = (m['A'], m['AD'], m['G'], m['GD'])
-            if key in best: continue
-            c.name = nist_name(c)
-            p = out / (c.name + '.circ.txt')
-            p.write_text(core.write_ncff(c, core.Model.load('nist'),
-                                         comments=['selbuild from %s, map %d:%d, bases %s / %s, modes %s/%s, seed %d'
-                                                   % (Path(a.inp).name, lam, kk, bi, bo, a.top_mode, a.bottom_mode, a.seed)]), encoding='utf-8')
-            best[key] = str(p)
-    (out / 'result.json').write_text(json.dumps({'in': a.inp, 'src': src, 'maps': ms, 'seed': a.seed,
-                                                 'cpu_s': time.process_time() - t0, 'written': best and
-                                                 {'%d/%d/%d/%d' % k: v for k, v in best.items()},
-                                                 'results': res}, indent=1) + '\n', encoding='utf-8')
+    status = 'error'
+    try:
+        for lam, kk in ms:
+            P = Plan(src, lam, kk)
+            si, so = score(F, P, rng, a.top_mode, a.bottom_mode)
+            sc = {'map': [lam, kk], 'ranks': P.r, 'top_screen': [g for g, _ in si[:6]],
+                  'bottom_screen': [g for g, _ in so[:6]], 'n_bases': [len(si), len(so)]}
+            print(json.dumps(sc), flush=True); rec.event('screen', **sc)
+            for (_, bi), (_, bo) in itertools.product(si[:a.top], so[:a.top]):
+                c = build(F, P, bi, bo, rng, a.runs, a.top_mode, a.bottom_mode)
+                ok = list(c.value_table()) == want
+                m = c.metrics()
+                r = {'lam': lam, 'k': kk, 'bin': bi, 'bout': bo, 'ok': ok, **{q: m[q] for q in ('A', 'AD', 'G', 'GD')}}
+                res.append(r); print(json.dumps(r), flush=True); rec.event('build', **r)
+                if not ok: continue
+                key = (m['A'], m['AD'], m['G'], m['GD'])
+                if key in best: continue
+                c.name = nist_name(c)
+                p = out / (c.name + '.circ.txt')
+                text = core.write_ncff(c, core.Model.load('nist'),
+                                       comments=['selbuild from %s, map %d:%d, bases %s / %s, modes %s/%s, seed %d'
+                                                 % (Path(a.inp).name, lam, kk, bi, bo, a.top_mode, a.bottom_mode, a.seed)])
+                iv = IV.verify_text(text, ifn)            # second verifier: its own parser, evaluator and FIPS 197 tables
+                if not iv['ok']:
+                    rec.event('rejected', file=p.name, why='independent verifier', errors=iv['errors'][:3])
+                    continue
+                p.write_text(text, encoding='utf-8')
+                best[key] = str(p)
+                sha = runlog.sha256_file(p)
+                side = {'function': 'aes-sbox-sel', 'A': key[0], 'AD': key[1], 'G': key[2], 'GD': key[3],
+                        'method': 'ops/selbuild.py direction-select build', 'start': {'path': str(Path(a.inp).resolve()),
+                        'sha256': runlog.sha256_file(a.inp), 'function': src, 'tuple': rec.rec['starts'][0]['metrics']},
+                        'map': [lam, kk], 'bases': [bi, bo], 'modes': [a.top_mode, a.bottom_mode], 'seed': a.seed,
+                        'checks': {'core': 'all 512 inputs', 'independent': 'all 512 inputs (order %s)' % iv['order']},
+                        'circuit_sha256': sha, 'elapsed_s': round(time.time() - rec.t0, 3), 'run': rec.summary(),
+                        'utc': runlog.utc()}
+                (out / (c.name + '.json')).write_text(json.dumps(side, indent=1, default=str) + '\n', encoding='utf-8')
+                rec.improvement({'A': key[0], 'AD': key[1], 'G': key[2], 'GD': key[3]}, 'selbuild', file=p.name,
+                                circuit_sha256=sha, map=[lam, kk])
+        status = 'ok'
+    finally:
+        written = best and {'%d/%d/%d/%d' % k: v for k, v in best.items()}
+        (out / 'result.json').write_text(json.dumps({'in': a.inp, 'src': src, 'maps': ms, 'seed': a.seed,
+                                                     'cpu_s': time.process_time() - t0, 'written': written,
+                                                     'run_record': str(rec.path), 'status': status,
+                                                     'results': res}, indent=1) + '\n', encoding='utf-8')
+        rec.finish(status, written=written, n_builds=len(res))
 
 
 if __name__ == '__main__':

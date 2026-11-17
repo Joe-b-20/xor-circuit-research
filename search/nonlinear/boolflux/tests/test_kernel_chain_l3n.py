@@ -1,9 +1,9 @@
-"""Gate kernel options of idea 04 (2026-11-17), both default off: `chain_p` (two-step compound move) and `l3n`
+"""Gate kernel options of 2026-11-17, both default off: `chain_p` (two-step compound move) and `l3n`
 (AND-like root of two pair values in resub3).  Off, the kernel prints the old lines (6 forms, no chain/l3n kstat);
 on, runs keep the function and report their counters; bad values are refused.  The bit-identity of the default
-trajectory against 08012e1 is checked by the golden trajectories in test_kernel.py and by the idea-04 kid.py run.
+trajectory against 08012e1 is checked by the golden trajectories in test_kernel.py.
 
-    python3 -m unittest search/nonlinear/boolflux/tests/test_kernel_idea04.py     (from the repository root)
+    python3 -m unittest search/nonlinear/boolflux/tests/test_kernel_chain_l3n.py     (from the repository root)
 """
 import re
 import unittest

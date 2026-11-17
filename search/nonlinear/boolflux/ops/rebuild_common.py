@@ -79,7 +79,7 @@ class Recorder:
 
     def dominated(self, m):
         """weakly dominated in (A, AD, G, GD) by a recorded point or the start (in limits); was (G, GD) only,
-        which dropped lower-A / lower-AD worker results in merge_workers (U7 #4)"""
+        which dropped lower-A / lower-AD worker results in merge_workers"""
         pts = list(self.R.points)
         if self.start_m and C.in_limits(self.start_m, self.tid): pts.append(tuple(self.start_m))
         return any(all(a <= b for a, b in zip(p, m)) for p in pts)

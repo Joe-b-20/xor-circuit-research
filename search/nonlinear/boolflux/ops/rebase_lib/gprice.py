@@ -1,4 +1,4 @@
-"""Gate-cost pricing of class re-basings, and re-basing of product classes at any AND level (idea 06).
+"""Gate-cost pricing of class re-basings, and re-basing of product classes at any AND level (2026-11-17).
 
 Re-basing (gbasis.py): a class of products {Q*R_1..Q*R_d} with a common operand function Q is replaced by
 {Q*R'_t}, R'_t = sum_{i in v_t} R_i, {v_t} a basis of GF(2)^d; old product i = sum_t sol_t new_t

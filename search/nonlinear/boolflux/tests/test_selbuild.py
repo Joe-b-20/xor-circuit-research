@@ -60,6 +60,38 @@ class TestSel(unittest.TestCase):
                 self.assertEqual(list(c.value_table()), want, (path.name, top, bottom))
                 self.assertEqual((m['A'], m['AD']), (A0 + 8, AD0 + 2), (path.name, top, bottom))
 
+    def test_cli_records(self):
+        """the command line writes run.json + events (runlog), a record beside every circuit, and checks every
+        circuit with both verifiers"""
+        import gzip
+        import subprocess
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            r = subprocess.run([sys.executable, str(PKG / 'ops' / 'selbuild.py'), '--in', str(FWD), '--maps', '31:0',
+                                '--top', '1', '--runs', '1', '--seed', '3', '--out', d], capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr[-2000:])
+            out = Path(d)
+            run = json.loads((out / 'run.json').read_text())
+            self.assertEqual((run['kind'], run['status'], run['function']), ('ops.selbuild', 'ok', 'aes-sbox-sel'))
+            self.assertEqual(run['seeds'], {'seed': 3})
+            self.assertEqual(run['starts'][0]['metrics'], [32, 4, 117, 19])
+            self.assertTrue(run['sources_sha256'])
+            res = json.loads((out / 'result.json').read_text())
+            self.assertEqual(res['status'], 'ok')
+            circs = sorted(out.glob('aes-sbox-sel-*.circ.txt'))
+            self.assertEqual(len(circs), len(res['written']))
+            self.assertTrue(circs)
+            want = SB.sel_table()
+            for p in circs:
+                side = json.loads(p.with_name(p.name[:-len('.circ.txt')] + '.json').read_text())
+                self.assertEqual(side['circuit_sha256'], SB.runlog.sha256_file(p))
+                self.assertIn('independent', side['checks'])
+                self.assertEqual(list(core.read_ncff(str(p)).value_table()), want)
+                self.assertTrue(SB.IV.verify_file(str(p), SB.independent_fn())['ok'])
+            evs = [json.loads(l) for l in gzip.decompress((out / 'events.jsonl.gz').read_bytes()).decode().splitlines()]
+            self.assertEqual(sum(e['ev'] == 'improvement' for e in evs), len(circs))
+            self.assertEqual(sum(e['ev'] == 'build' for e in evs), len(res['results']))
+
 
 if __name__ == '__main__':
     unittest.main()

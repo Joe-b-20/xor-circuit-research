@@ -503,7 +503,7 @@ def lineage_path():
 
 def lineage_lookup(sha):
     """the record of a circuit (file sha256 or archive id) in the lineage file, or None.  The file is read
-    whole: fine for 1e5 lines; an index is a phase-2 matter."""
+    whole: fine for 1e5 lines; an index can come later."""
     p = lineage_path()
     if not p or not sha or not p.is_file(): return None
     hit = None

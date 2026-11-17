@@ -297,20 +297,20 @@ static int repair_keep = 0;
  * one-pass feasibility test before the pair table is scanned). */
 static int nl_root = 0;
 static int sweep = 0;     /* 1 = target gates in index order instead of at random (exact scans) */
-/* Options added 2026-11-16 (phase 2, W1), all off by default (the defaults keep the old trajectory):
- * tgt_w.mffc1 / tgt_w.and / tgt_w.viol: target weights (U1 B1).  The target s is drawn with weight
+/* Options added 2026-11-16, all off by default (the defaults keep the old trajectory):
+ * tgt_w.mffc1 / tgt_w.and / tgt_w.viol: target weights.  The target s is drawn with weight
  *   (mffc1 ? tgt_w.mffc1 : 1) * (AND-like ? tgt_w.and : 1) * (on a violating path ? tgt_w.viol : 1), where
  *   mffc1 = the fanout-free cone of s is s alone and "violating path" counts only while the current state
  *   violates a GD/AD cap; all 1 = uniform (the old draw).
- * uphill.resub2 / uphill.resub3: new-gate budget slack of that move kind (U1 B2; default = uphill; same units).
+ * uphill.resub2 / uphill.resub3: new-gate budget slack of that move kind (default = uphill; same units).
  * repair_uphill R: while the current state violates a cap, a candidate with the same violation and at most R more
  *   summed path excess (or equal path excess, worse keys within max_excess) is an uphill step (Metropolis, R in
- *   path-excess units, each priced as one cheapest gate) instead of being out of reach (U1 B4).
- * stop_stall_it N: stop when N iterations passed without a new best (U1 F7; stop reason "stall"). */
+ *   path-excess units, each priced as one cheapest gate) instead of being out of reach.
+ * stop_stall_it N: stop when N iterations passed without a new best (stop reason "stall"). */
 static double tw_mffc1 = 1, tw_and = 1, tw_viol = 1, uphill_mv[3] = {-1, -1, -1}, repair_uphill = 0;
 static long stop_stall_it = 0;
 static int pair_xor = 0, pxor = 0;   /* pair_xor option / in effect (see build_pairs) */
-/* chain_p P (idea 04, 2026-11-17; default 0 = off, and then no code path, random draw or output line changes):
+/* chain_p P (2026-11-17; default 0 = off, and then no code path, random draw or output line changes):
  * with probability P per iteration (only while the current state meets every cap) a two-step compound move
  * replaces the ordinary move; see chain_move.  chain.k1 step-1 circuits expanded, chain.k2 step-2 targets per
  * step-1 circuit, chain.rand2 random extra step-2 targets, chain.up1 step-1 new-gate budget slack (units as
@@ -318,7 +318,7 @@ static int pair_xor = 0, pxor = 0;   /* pair_xor option / in effect (see build_p
  * per step (1..3), chain.accept 1 also takes a neutral compound (0: improvements only), chain.freed 0: step-2
  * targets drawn at random only (ablation of the freed-signal choice). */
 #define CH_K1MAX 16
-/* l3n N (idea 04; default 0 = off): resub3 also tries s = r(X1, X2) with r an AND-like library op and X1, X2 pair-table
+/* l3n N (2026-11-17; default 0 = off): resub3 also tries s = r(X1, X2) with r an AND-like library op and X1, X2 pair-table
  * values (3 new gates, e.g. AND(a^b, c^d)); at most N pair checks per root op and move.  See l3n_cands. */
 static long l3n_lim = 0; static long st_l3n_moves, st_l3n_ea, st_l3n_chk, st_l3n_hit;
 static double chain_p = 0, ch_up1 = 2, ch_maxup = -1, ch_up1s, ch_maxups;
@@ -611,7 +611,7 @@ static inline void pair_val(int op, const u64 *a, const u64 *b, const u64 *c, u6
 /* form (kstat only): 0 level 0, 1 level 1, 2 level-2 XOR/XNOR root, 3 level-2 sampled root, 4 level 3, 5 xspan */
 #define NFORM 7
 static const char *FORMNAME[NFORM] = {"L0", "L1", "L2x", "L2n", "L3", "XS", "L3n"};
-static int nform_p = 6;     /* forms printed: the old six unless l3n is on (idea 04; same output lines when off) */
+static int nform_p = 6;     /* forms printed: the old six unless l3n is on (same output lines when off) */
 typedef struct { int k; Gate g[3]; int root; double ncost; const Gate *ext; unsigned char form; } Cand;   /* ext: gate list of an xspan candidate (k may exceed 3) */
 static inline const Gate *cand_gates(const Cand *c) { return c->ext ? c->ext : c->g; }
 static Cand *CAND; static int ncand, nseen;
@@ -637,7 +637,7 @@ static int libnl[16], nlibnl; /* the AND-like ones among them */
 static double budget;          /* max new-gate cost for this move */
 static double pmin_cost = 0;   /* cheapest op that a pair-table entry can have (binary library ops, NOT) */
 static int req_g, req_a;       /* required levels at s */
-/* pair_xor 1 (U1 F1, U5 #3; default 0): the pair table keeps XOR entries but no XNOR ones; an XOR entry also
+/* pair_xor 1 (default 0): the pair table keeps XOR entries but no XNOR ones; an XOR entry also
  * stands for its XNOR (its masked value XOR CARE, digest XOR ldig(CARE)), found by a second, complemented
  * lookup.  Same candidate set (same costs and gate-depth weights of XOR and XNOR required, else off), ~1/3
  * fewer entries to build; candidates come in another order, so the trajectory changes. */
@@ -653,7 +653,7 @@ static inline u64 pair_w0(int op, u64 a, u64 b) {
     default: return apply(op, a, b);
     }
 }
-/* resub1 without the pair scan (U1 F4): the level-1 entries op(d1, d2) == GT on the care set are found directly.
+/* resub1 without the pair scan: the level-1 entries op(d1, d2) == GT on the care set are found directly.
  * XOR/XNOR: d2's masked value is d1's XOR GT (or XOR ~GT): hash lookups.  NOT: one compare per divisor.  Every
  * other library op is AND-like: one input combination (x*, y*) gives the odd output o*, so on S = {care, GT = o*}
  * the operands must equal x* and y*: only divisors passing that filter are paired, then checked exactly.  The hits
@@ -862,7 +862,7 @@ static void l3_pxor(int r, int lim, u64 dgx, int base) {
     }
 }
 
-/* level 3, AND-like root of two pair values (idea 04):  s = r(X1, X2).  r gives its odd output o* only at (x*, y*), so
+/* level 3, AND-like root of two pair values:  s = r(X1, X2).  r gives its odd output o* only at (x*, y*), so
  * on T = {care, s == o*} both operands are fixed (X1 = x*, X2 = y*) and on the rest of the care set they may not be
  * (x*, y*) together.  With A = X1 (x* = 1) or ~X1 on the care set (x* = 0), B likewise: T within A, T within B, and
  * A & B & care & ~T == 0.  Entries passing the T filter are listed (one pass over the table), then pairs are checked,
@@ -1054,7 +1054,7 @@ static void find_cands(int lev) {
     for (int r = 6; r <= 9; r += 3) {
         if (!op_ok[r]) continue;
         int lim = np < 30000 ? np : 30000;
-        /* budget below the cheapest three-gate form (U1 F2: e.g. every MFFC-1 target with unit costs):
+        /* budget below the cheapest three-gate form (e.g. every MFFC-1 target with unit costs):
          * every candidate would fail the cost test below, so skip the probing; the random partner
          * draws of a large table are still made, so the random stream is the same */
         if (pmin_cost + pmin_cost + op_cost[r] > budget) {
@@ -1284,7 +1284,7 @@ static int eval_cand(int s, const Cand *k, Metrics *m, Circ *o) {
     return 1;
 }
 
-/* Exact no-op test before the evaluation (U1 F3).  A candidate is a no-op when its rebuilt circuit is
+/* Exact no-op test before the evaluation.  A candidate is a no-op when its rebuilt circuit is
  * the current one up to gate numbering.  Sufficient condition checked here: resolving the new gates
  * against the current circuit's own gates (exact (op, operands) match, as strash does; operands sorted
  * for symmetric ops, which is how rebuild stores them) maps the root to s itself.  The rebuild then
@@ -1365,7 +1365,7 @@ static int patterns(void) { int c = 0; for (int w = 0; w < W; w++) c += __builti
 /* ------------------------------------------------------------------ main loop */
 /* The kernel's own clock (seconds budget, time-based Tperiod/stall, the t of best lines): `clock real` (default
  * since 2026-11-16; never allowed to run backwards), `clock cpu` (process CPU time: equal budgets for paired
- * runs on a busy host) or `clock mono` (CLOCK_MONOTONIC, the old clock, which runs 3-6 % fast on WSL, U5). */
+ * runs on a busy host) or `clock mono` (CLOCK_MONOTONIC, the old clock, which runs 3-6 % fast on WSL). */
 
 static double now_s(void) {
     static double last = -1e300;
@@ -1474,9 +1474,9 @@ static int pick_target(void) {
     return N + lo;
 }
 
-/* ------------------------------------------------------------------ chain: two-step compound move (idea 04)
+/* ------------------------------------------------------------------ chain: two-step compound move
  * The ordinary move replaces one signal s within the cost of s's fanout-free cone (+ uphill).  Mature circuits
- * are fixed points of that neighbourhood (U1): a gate g whose fanout is shared by s1 and s2 dies only if both
+ * are fixed points of that neighbourhood: a gate g whose fanout is shared by s1 and s2 dies only if both
  * are replaced, and the new gates of one replacement can be the divisors that make another cheap.  The compound
  * move searches two replacements as ONE move:
  *   step 1: target s1 (uniform), candidates with up to chain.lev1 new gates within mffc(s1) + chain.up1;
@@ -1645,7 +1645,7 @@ int main(int argc, char **argv) {
         cheap_cost = u > 0 ? u : 1;      /* kstat dcost unit */
         if (!scale_abs) { T0 *= cost_unit_v; uphill *= cost_unit_v; if (max_excess < 1e17) max_excess *= cost_unit_v; }
         for (int q = 0; q < 3; q++) uphill_mv[q] = uphill_mv[q] < 0 ? uphill : scale_abs ? uphill_mv[q] : uphill_mv[q] * cost_unit_v;
-        ch_up1s = scale_abs ? ch_up1 : ch_up1 * cost_unit_v;           /* chain (idea 04): same units as uphill */
+        ch_up1s = scale_abs ? ch_up1 : ch_up1 * cost_unit_v;           /* chain: same units as uphill */
         ch_maxups = ch_maxup < 0 ? ch_up1s : scale_abs ? ch_maxup : ch_maxup * cost_unit_v;
         if (l3n_lim > 0) nform_p = NFORM;
         if (tw_mffc1 < 0 || tw_and < 0 || tw_viol < 0) die("tgt_w.* must be >= 0");
@@ -1739,7 +1739,7 @@ int main(int argc, char **argv) {
             if (nrestarts_at < 64) restarts_at[nrestarts_at++] = it;
         }
         if (cur.ng == 0) { stop_reason = "empty"; break; }
-        if (chain_p > 0 && mcur.feas && rnd01() < chain_p) {      /* idea 04 compound move (off by default: no draw) */
+        if (chain_p > 0 && mcur.feas && rnd01() < chain_p) {      /* compound move (off by default: no draw) */
             double tm = now_s(); ph_hold = 1; ch_prop++;
             int k = chain_move();
             if (k) {

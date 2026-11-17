@@ -41,7 +41,7 @@ def dist_table(S, m):
 
 def bp_run(m, tl, rng, p_norm=0.5, max_steps=200):
     """One randomised BP run over GF(2)^m: the gate list (pairs of base indices), None past max_steps.
-    Same gates and same rng draws as bp_run_ref (U5 prototype u5/prof/screenfast.py): the distance table
+    Same gates and same rng draws as bp_run_ref: the distance table
     is updated per new base element c by d'(x) = min(d(x), 1 + d(x ^ c)) (exact: a shortest sum uses c at
     most once) instead of a BFS per step; the pair scan is one numpy expression; the two rng.random() per
     candidate of bp_run_ref (their values never decide anything) are drawn as one getrandbits(128 n)

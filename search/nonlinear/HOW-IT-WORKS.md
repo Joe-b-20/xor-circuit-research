@@ -153,8 +153,8 @@ Pull, join, product exchange and AND removal are hub operators ([below](#the-hub
 transport, re-basing, the shared bottom, AND removal, the SAT LNS and the direction-select build
 are scripts in [boolflux/ops/](boolflux/ops/). Each works by GF(2)-linear algebra over complete
 truth tables. Every circuit the hub admits or a script records is checked by both verifiers
-first; the direction-select builder checks its builds on all 512 inputs, and its circuits are
-then checked by both verifiers ([USAGE.md](USAGE.md#checking-and-placing-aes-circuits)).
+first; the direction-select builder checks its builds with both verifiers on all 512 inputs
+([USAGE.md](USAGE.md#checking-and-placing-aes-circuits)).
 
 ## The hub
 

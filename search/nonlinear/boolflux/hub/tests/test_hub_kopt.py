@@ -1,4 +1,4 @@
-"""Per-operator kernel options (2026-11-17, idea 10): ops --kopt, scheduler --kopt / --kopt-first.
+"""Per-operator kernel options (2026-11-17): ops --kopt, scheduler --kopt / --kopt-first.
     python3 -m unittest boolflux.hub.tests.test_hub_kopt   (from search/nonlinear/)
 
 No test starts a kernel.

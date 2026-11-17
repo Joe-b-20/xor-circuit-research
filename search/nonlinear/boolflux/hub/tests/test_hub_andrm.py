@@ -1,4 +1,4 @@
-"""Hub operator andrm (hub/ops/op_andrm.py, opt-in; idea 09's recommendation, 2026-11-17):
+"""Hub operator andrm (hub/ops/op_andrm.py, opt-in, 2026-11-17):
     python3 -m unittest boolflux.hub.tests.test_hub_andrm   (from search/nonlinear/)
 
 A circuit with one AND split in two (AND(a, b) -> AND(a, b ^ d) ^ AND(a, d), same function, A + 1) is put in an

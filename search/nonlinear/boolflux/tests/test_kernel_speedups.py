@@ -1,9 +1,9 @@
-"""Gate kernel and skeleton kernel changes of 2026-11-16 (phase 2, W1): the same-trajectory speedups keep the
+"""Gate kernel and skeleton kernel changes of 2026-11-16: the same-trajectory speedups keep the
 default search bit-identical (golden trajectories in test_kernel.py, plus the no-op pre-check counted here),
 the budget clock, the default-off options (target weights, per-move slack, repair uphill, stall stop,
 XOR-only pair table) and the line-based config reader of skel.c.
 
-    python3 -m unittest search/nonlinear/boolflux/tests/test_kernel_phase2.py     (from the repository root)
+    python3 -m unittest search/nonlinear/boolflux/tests/test_kernel_speedups.py     (from the repository root)
 """
 import re
 import subprocess

@@ -41,10 +41,10 @@ KDEFAULTS = {'T0': 0.6, 'Tperiod_it': 20000, 'stall_it': 60000, 'uphill': 1.0, '
 KEYW = OBJ.WKEY
 DEFAULT_OBJECTIVE = 'a,ad,cost,gd'        # research priorities: AND count, AND depth, then G, GD
 # Kernel behaviour options an operator job may set (--kopt KEY=VAL,...; the scheduler's --kopt / --kopt-first pass
-# them per operator, 2026-11-17 idea 10).  All default off in the kernel (W1, phase 2): pair_xor 1 (same candidates,
+# them per operator, 2026-11-17).  All default off in the kernel: pair_xor 1 (same candidates,
 # fewer probes), tgt_w.* (weighted target draw), stop_stall_it N (end the job N iterations after the last new best).
 KOPT_KEYS = {'pair_xor': int, 'tgt_w.mffc1': float, 'tgt_w.and': float, 'tgt_w.viol': float, 'stop_stall_it': int,
-             'T0': float}       # T0 0: pure plateau walk, no uphill steps (idea 04's observation on mature forward circuits)
+             'T0': float}       # T0 0: pure plateau walk, no uphill steps
 
 
 def parse_kopt(text):
@@ -147,7 +147,7 @@ class OpError(Exception):
 def placeable(ar, c, slack=None):
     """(cleaned circuit, its metrics, status) as admission will judge c: status 'ok' (would be placed),
     'not placed', 'archived' (the cleaned circuit is an archive member) or 'archived structure' (same DAG
-    as a member).  Before 2026-11-16 the operators filtered on the raw metrics and offered exact copies (U7 #2)."""
+    as a member).  Before 2026-11-16 the operators filtered on the raw metrics and offered exact copies."""
     cc = clean(c); m = metrics(cc)
     if not ar.would_place(m, slack): return cc, m, 'not placed'
     if cid(cc) in ar.rec: return cc, m, 'archived'
@@ -164,7 +164,7 @@ def with_bests(ar, cands, info, limit):
     """the kernel's final best (cands, unchanged) + up to `limit` intermediate bests of the run (info
     bests_dir, the kernel's keep_bests files): placeable, distinct tuples, non-dominated among themselves and the
     final (4-D), highest archive gain first.  The kernel ranks lexicographically under caps, the archive keeps
-    4-D cells without caps, so passed bests can be new cells or front points (U7 #1: 41 placeable, 7 with front
+    4-D cells without caps, so passed bests can be new cells or front points (in one inverse run: 41 placeable, 7 with front
     gain in 541 inverse jobs).  info['bests']: counts."""
     d = info.get('bests_dir')
     st = {'files': 0, 'ok': 0, 'not placed': 0, 'archived': 0, 'archived structure': 0, 'unreadable': 0, 'returned': 0}
@@ -241,7 +241,7 @@ def op_polish(ar, args, rng, out):
 
 
 PULL_LOWER = 'GD'       # default draw of op_pull (until 2026-11-16 'GD,GD,GD,AD,A': the A and AD draws met their
-                        # lowered cap in 0 of 105 inverse jobs, U2 section 6)
+                        # lowered cap in 0 of 105 inverse jobs)
 
 
 def op_pull(ar, args, rng, out):
@@ -289,7 +289,7 @@ def op_join(ar, args, rng, out):
     info['joined_through'] (the input) and info['joined_through_by'] {target: t}: every partner admitted up
     to t has been joined with that target (the scheduler passes it back as --since).  --max-cands is met at a
     partner boundary: a partner whose candidates would overflow it is left for the next job (the mark stops at
-    the last partner kept in full; until 2026-11-16 the mark advanced past dropped candidates, U7 #3)."""
+    the last partner kept in full; until 2026-11-16 the mark advanced past dropped candidates)."""
     targets = [(args.inp, args.since)] + parse_batch(getattr(args, 'batch', None))
     for i, t in targets[1:]:
         if i not in ar.rec: raise OpError('--batch %s is not in the archive' % i)
@@ -380,7 +380,7 @@ def op_trb(ar, args, rng, out):
     t0 = time.time(); best = {}; reps = 0; errors = {}
     fa = FilterAudit(ar); c_m = (A, AD, G, GD); by = {}; hg = {}; hgd = {}                 # instrumentation: per (region, GD cap offset) outcome counts; dG, dGD of built circuits
     # GD cap offsets (--gd-offsets, default '0' = the input's GD; until 2026-11-16 '0,0,1': the D = GD-1 draws were an
-    # infeasible start in 98% of the reps on mature fronts, U2 section 4)
+    # infeasible start in 98% of the reps on mature fronts)
     offs = [int(x) for x in str(getattr(args, 'gd_offsets', None) or TRB_GD_OFFSETS).split(',') if x.strip()]
     while time.time() - t0 < args.seconds:
         D = GD - (offs[0] if len(offs) == 1 else rng.choice(offs))

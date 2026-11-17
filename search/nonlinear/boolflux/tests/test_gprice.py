@@ -1,4 +1,4 @@
-"""Gate-cost pricing and any-level re-basing (ops/rebase_lib/gprice.py, idea 06).
+"""Gate-cost pricing and any-level re-basing (ops/rebase_lib/gprice.py).
 
     python3 -m unittest boolflux.tests.test_gprice      (from search/nonlinear/)
 

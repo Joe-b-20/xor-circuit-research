@@ -1,4 +1,4 @@
-"""stageplan: stage accounting of S-box circuits and planned joins (idea 03, from U6 #4/#7).
+"""stageplan: stage accounting of S-box circuits and planned joins (2026-11-17).
 
 Stage split (U6work/feat.py): A = s1 + s2 + s3 with s3 = terminal ANDs (no AND among their successors),
 s1 = level-1 non-terminal ANDs (first-level products), s2 = the rest (the middle).  Every AND class we made
@@ -25,7 +25,7 @@ balanced XOR trees, transport.wrap): their G is inflated, the join result is pol
 CLI:
   stageplan.py tag  POOL... --out FILE.jsonl            tags (stage split, profiles) per circuit
   stageplan.py plan POOL... --function F --out DIR      target pairs (plan.jsonl) + a summary
-  stageplan.py blind POOL... --function F --seconds T   blind joins (hub join_all on random pairs), for the A/B
+  planexec.py --blind ...                                blind joins (hub join_all on random pairs), the A/B arm
 No 27-AND work: targets are classes with A >= --min-a (default 28; values below 28 are refused).
 """
 from __future__ import annotations

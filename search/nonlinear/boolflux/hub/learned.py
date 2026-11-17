@@ -1,4 +1,4 @@
-"""Learned launch scores for the hub (--policy learned, idea 07 of 2026-11-17).
+"""Learned launch scores for the hub (--policy learned, 2026-11-17).
 
 One feature function, used both offline (replay of a finished campaign: archive/index.jsonl + runs/*.json) and
 online (the scheduler), so the model is trained on exactly what the scheduler sees at a launch.
@@ -10,7 +10,7 @@ online (the scheduler), so the model is trained on exactly what the scheduler se
     m = Model.load(path); m.score(op, x)       # predicted front adds per CPU second
 
 Label of a job (offline): number of its admissions that were "front adds" (not weakly dominated by the front
-of all earlier records, the abdigest/U2 rule).  CPU of a job: process CPU from os.wait4 (stats proc_cpu_s)
+of all earlier records).  CPU of a job: process CPU from os.wait4 (stats proc_cpu_s)
 when logged, else the operator's cpu_s, else wall_s.
 The model: one L2 logistic regression per operator for P(job has >= 1 front add), times the operator's mean
 adds per adding job, divided by the operator's mean CPU s (all from the training data; see Model).
@@ -54,7 +54,7 @@ _PAT = re.compile(r'-a(\d+)-ad(\d+)-g(\d+)-gd(\d+)-')
 
 
 def ref_points(circuits_dir, function):
-    """(A, AD, G, GD) of the published circuits of the OTHER direction (U6: the forward set is the inverse
+    """(A, AD, G, GD) of the published circuits of the OTHER direction (the forward set is the inverse
     seeds' reference; transport keeps A and AD).  Parsed from the file names."""
     other = 'aes-sbox' if function == 'aes-invsbox' else 'aes-invsbox'
     out = []

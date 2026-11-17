@@ -1,4 +1,4 @@
-"""--policy learned (idea 07, 2026-11-17):
+"""--policy learned (2026-11-17):
     python3 -m unittest boolflux.hub.tests.test_hub_learned   (from search/nonlinear/)
 
 The feature state (learned.State: front, front-add flags, attempts), the model score, the learned choice (join

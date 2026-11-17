@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Window AND-removal check (agent R1 mc1.py, 2026-11-15; used by winsat.py mode andrm, idea 09, 2026-11-17): can a window with aW ANDs be rebuilt with aW - 1 ANDs?
+"""Window AND-removal check (2026-11-15; used by winsat.py mode andrm and the hub operator andrm): can a window with aW ANDs be rebuilt with aW - 1 ANDs?
 
 Window W: convex, aW in {2, 3, 4} ANDs, K <= 10 inputs.  Window outputs t_h are taken on the
 controllability care set (window-input patterns occurring over all 256 circuit inputs).

@@ -377,12 +377,12 @@ PLANS = {
              (('S0', True, 0, (1,), 0, 30, 4.0), 0.04),
              (('I1', False, 1, (2, 3, 4), 30, 10 ** 6, 1.5), 0.05),
              (('I2', False, 2, (1, 2), 15, 60, 2.0), 0.03)],
-    # tuned (W4, phase 2): 80 logged runs (night + targets, 293k queries, 42.6 k SAT-s; phase2/W4/satlim.py) [C]:
+    # tuned (2026-11-16): 80 logged runs (293k queries, 42.6 k SAT-s) [C]:
     # I2 1 improvement in 2,177 queries / 2,059 s -> dropped (its weight to S1); I1 7 in 6,892 / 2,480 s, all
     # answered within 1.48 s -> limit 1.5 s (was 3 s; same 7, 64 % of the time); S2 limit 2 s (was 4 s; 0 of 3
     # improvements lost, 65 % of the time), S0 3 s (was 8 s; 1 of 3 lost, 35 % of the time); S1 and F kept
     # (every F improvement within 1.6 s at the 2 s limit, F = 57 of the 115 improvements).
-    # A/B (phase2/W4, 4 paired simultaneous 600 s runs from night T03/T04 starts): fast ended lower in G on
+    # A/B (4 paired simultaneous 600 s runs from 2026-11-16 starts): fast ended lower in G on
     # all 4 (117/118/130/116 vs 119/119/131/117) although tuned ran 11 % more queries, so fast stays the
     # default [C for these starts; H: the long S0/S2 moves carry the walk, which a per-query replay misses].
     'tuned': [(('S1', True, 1, (1, 1, 2, 3), 0, 10 ** 6, 1.0), 0.83),
