@@ -153,6 +153,12 @@ class TestBoptCost(_Fn):
 
 class TestJunkAbsorb(_Fn):
     """bottom --junk absorb (idea 05): Y-form junk as bit 8 of affine x-forms"""
+    def test_default_junk(self):
+        """default --junk: absorb5 for the inverse S-box only; the forward S-box keeps terms"""
+        BT = ops_bottom()
+        self.assertEqual(BT.default_junk('aes-invsbox'), 'absorb5')
+        self.assertEqual(BT.default_junk('aes-sbox'), 'terms')
+
     def test_forward_without_junk_unchanged(self):
         BT = ops_bottom()
         import time

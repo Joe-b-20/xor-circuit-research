@@ -18,7 +18,7 @@ A <= build A (default; keeps the A frontier), AD <= ref AD, GD <= D.  A build eq
 already polished in this job, is not polished again (--polish-dup to polish them anyway; night T09: 36 of 112
 --init own builds were the start, each polished 300 s).  --polish-seconds 90 (was 300: 93 % of polishes reached
 their final G within 25 % of the stage, FINDINGS-U4 section 3).
-Affine junk (--junk terms, default): outputs of the form y_j = c_j + sum_i Y_i u_ij(x) + lin(v_j) + sum_{i in t_j} Y_i
+Affine junk (--junk terms, default for the forward S-box): outputs of the form y_j = c_j + sum_i Y_i u_ij(x) + lin(v_j) + sum_{i in t_j} Y_i
 (complemented operands: the inverse S-box inverts the affine A^-1 y + 0x05, so every NIST inverse circuit has
 them) keep v_j (an x-form) and the Y-sum of t_j as fixed extra terms of output j: priced in its Kraft sum
 (Y-sum at its level, x-form at ceil(log2 |v|) + 1) and built into its XOR tree; --junk reject: not applicable.
@@ -29,6 +29,8 @@ space of output j for every NIST inverse circuit probed, so no junk term is left
 Y-form's NOT (when its signal is not an XOR) is priced one level; Y-sums take either polarity free (plan 'nat').
 Idea 05 (2026-11-17): paired runs from NIST inverse 45/4/141/12 (cap 12) and 55/4/148/10 (cap 11), same seeds:
 every absorb / absorb5 build had fewer gates than its terms twin, best A 42 -> 41 at GD 12 and 49 -> 47 at GD 11.
+Default --junk: absorb5 for the inverse S-box (--function aes-invsbox, or auto from --in), terms otherwise (forward
+behaviour unchanged).
 Not applicable (status "not-applicable", exit 0) when there are not four independent base Y-forms,
 an output is not in the span above, or some output has no Kraft-feasible decomposition at D.
 """
@@ -196,6 +198,12 @@ def anneal(M, B, opts, rng, iters, T0, deadline, init=None):
     return best
 
 
+def default_junk(function):
+    """--junk default: absorb5 for the AES inverse S-box (idea 05: fewer gates on every paired seed, fewer ANDs on
+    most), terms (unchanged) for every other function."""
+    return 'absorb5' if function == 'aes-invsbox' else 'terms'
+
+
 SA = {}          # instrumentation: summary of the last anneal() (initial / final cost, iterations, accepted, last best)
 
 
@@ -209,9 +217,10 @@ def main():
     ap.add_argument('--T0', type=float, default=2.0); ap.add_argument('--polish-seconds', type=float, default=90)
     ap.add_argument('--polish-cap-a', choices=['build', 'target'], default='build')
     ap.add_argument('--repair-keep', type=int, default=1)
-    ap.add_argument('--junk', choices=['terms', 'absorb', 'absorb5', 'reject'], default='terms',
-                    help='outputs with affine junk (complemented operands): fixed extra terms (default), Y-form junk '
-                         'absorbed into products with affine x-forms (absorb), or not applicable')
+    ap.add_argument('--junk', choices=['terms', 'absorb', 'absorb5', 'reject'], default=None,
+                    help='outputs with affine junk (complemented operands): fixed extra terms (terms), Y-form junk '
+                         'absorbed into products with affine x-forms (absorb), also the x-form junk (absorb5), or not '
+                         'applicable (reject); default: absorb5 for the inverse S-box, terms otherwise')
     ap.add_argument('--polish-dup', action='store_true', help='also polish builds equal to the start or to a build already polished')
     ap.add_argument('--shard', default=None, help='set by --cpus for worker processes (unused here)')
     ap.add_argument('--plan-seeds', default='', help='comma list of exact SA seeds to use first (bopt.py --seed S gives the same plan)')
@@ -219,7 +228,9 @@ def main():
                     help="SA start: random per-output bases, the start circuit's own bottom, or alternate (mix)")
     MC.C.function_arg(ap)
     a = ap.parse_args()
-    MC.C.init_function(a)
+    fn = MC.C.init_function(a)
+    if a.junk is None:
+        a.junk = default_junk(fn)
     t0 = time.time(); deadline = t0 + a.seconds
     rng = random.Random(a.seed)
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
@@ -229,7 +240,7 @@ def main():
     cap = a.cap or min(tl['GD'], m0[3])
     amax = a.amax or tl['A']
     params = dict(cut=cut, cap=cap, amax=amax, iters=a.iters, pw=a.pw, T0=a.T0, polish_seconds=a.polish_seconds,
-                  polish_cap_a=a.polish_cap_a, repair_keep=a.repair_keep)
+                  polish_cap_a=a.polish_cap_a, repair_keep=a.repair_keep, junk=a.junk)
     rec = MC.Recorder('bottom', a.target, out, a.inp, params, sys.argv, a.seed,
                       'ops/bottom.py: bopt SA (rank-1 shared bottom, exact Kraft per output) + bbuild + A-capped gate kernel')
     log = open(out / 'bottom.jsonl', 'a')

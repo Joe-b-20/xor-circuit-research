@@ -170,8 +170,9 @@ circuit written, its G and GD the point to beat. Search states may pass above th
 its inverse for every check and for the NIST set; `conjpull.py` builds the inverse's conjugates
 (S⁻¹(y) = G′(S⁻¹(Lin y + c_L)), Lin = A G A⁻¹), `satlns.py` pools `circuits/aes-invsbox/` and
 `seeds/aes-invsbox/`. `bottom.py` keeps the inverse's complemented-operand (affine) output terms as
-fixed extra terms (`--junk terms`, default; `--junk reject` restores `not-applicable`), so it runs on
-inverse circuits too; `rebase.py` runs on them, and its `--moves` use GF(4) tables over the inversion
+fixed extra terms (`--junk terms`, the forward default; `--junk reject` restores `not-applicable`), so it
+runs on inverse circuits too; on the inverse the default is `--junk absorb5` (the junk absorbed into
+complemented product operands, idea 05: fewer gates on every paired seed); `rebase.py` runs on them, and its `--moves` use GF(4) tables over the inversion
 input z = S⁻¹(y)²⁵⁴ (`rebase_lib/gf4fn.py`); its class analysis prunes the merge at the decision
 limit (exact; 0.1-1 s per circuit, was up to 150 s).
 
