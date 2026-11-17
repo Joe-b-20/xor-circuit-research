@@ -27,6 +27,9 @@ sleeps until a job exits (SIGCHLD) or 1 s passes.
   first, fallback to the other operators and finally to any tuple over its caps.
 Gain of an admission (archive.Archive.gain, value rule): 8 for a lower A at a known AD, 4 for a new AND depth,
 1 + 0.5 (d - 1) for d fewer gates in the cap box (d <= 6), 0.5 for a new gate depth; 0 when dominated.
+Kernel options (2026-11-17): --kopt 'polish,pull:KEY=VAL,...' passes kernel options (ops.KOPT_KEYS) to every job of
+those operators, --kopt-first 'polish:KEY=VAL,...' only to jobs chosen at a first-job level (--kopt-first-levels,
+default fresh, variant, near, other); none by default (the 08012e1 kernel settings).  Each job event records kopt.
 Every job: DIR/runs/<run_id>.json (code version, seed, settings, parents, timing, status, outcome);
 DIR/stats.jsonl one line per job; DIR/front.json every 5 minutes.
 
@@ -119,6 +122,8 @@ class Scheduler:
         self.secs = dict(DEFAULT_SECONDS)
         for kv in (args.seconds or '').split(','):
             if kv: k, v = kv.split('='); self.secs[k] = float(v)
+        self.kopt = parse_kopt_arg(args.kopt); self.kopt_first = parse_kopt_arg(args.kopt_first)   # op -> kernel options
+        self.kopt_levels = {x.strip() for x in (args.kopt_first_levels or '').split(',') if x.strip()}
         self.hist = {o: [] for o in self.ops}            # recent (cpu_s, gain)
         self.attempts = {}                                 # (op, target key) -> n; key = (A, AD, G, GD), or the id with --target-mode id
         self.sattempts = {}                                # (op, structure key) -> n (--policy priority: first job per structure)
@@ -778,6 +783,13 @@ class Scheduler:
         if j is None: self._idle_why = 'less than %.0f s left' % MIN_JOB_S
         return j
 
+    def job_kopt(self, op, why):
+        """kernel options of a job of `op` chosen at level `why`: --kopt, then --kopt-first when why is a first-job
+        level (--kopt-first-levels); {} for non-kernel operators and by default"""
+        d = dict(self.kopt.get(op) or {})
+        if why in self.kopt_levels: d.update(self.kopt_first.get(op) or {})
+        return d
+
     def start_job(self, cpu, op, why, tid, extra=(), env=None, batch=()):
         """Start operator `op` on archive member `tid`, pinned to `cpu`; returns the job dict, or None when
         too little time is left.  Everything a job needs for its run record is set here (unique run id, fresh job
@@ -805,6 +817,8 @@ class Scheduler:
         if op == 'join' and self.args.join_mode == 'incremental':
             since = self.join_mark.get(tid, 0.0); cmd += ['--since', repr(since)]
             if batch: cmd += ['--batch', ','.join('%s:%r' % (b, self.join_mark.get(b, 0.0)) for b in batch)]
+        kopt = self.job_kopt(op, why)
+        if kopt: cmd += ['--kopt', ','.join('%s=%s' % kv for kv in sorted(kopt.items()))]   # before extra: a subclass's own --kopt wins
         cmd += [str(x) for x in extra]
         cmd, pre = runlog.pin(cmd, cpu)                    # taskset -c CPU, else os.sched_setaffinity in the child
         if env is not None: env = dict(env, **{k: v for k, v in os.environ.items() if k in (aesfn.ENV, 'BOOLFLUX_RUNLOG_STORE')})
@@ -816,7 +830,7 @@ class Scheduler:
         self.runlog.event('job', run_id=run_id, op=op, why=why, target=tid, seed=seed, cpu=cpu, seconds=round(secs, 1),
                           pinning=runlog.pinning(), target_metrics=[tr.get('A'), tr.get('AD'), tr.get('G'), tr.get('GD')],
                           target_attempts=self.attempts.get((op, key)), spawn_s=round(time.time() - t_spawn, 4),
-                          running=len(self.running), decision=dec)
+                          running=len(self.running), decision=dec, kopt=kopt or None)
         return {'p': p, 'lf': lf, 'op': op, 'why': why, 'target': tid, 'run_id': run_id, 'jd': jd, 'seed': seed,
                 'cpu': cpu, 't0': time.time(), 'cmd': cmd, 'key': key, 'secs': secs, 'script': str(script), 'script_sha': file_sha(script),
                 'limit': secs * KILL_FACTOR + KILL_GRACE, 'since': since, 'pinning': runlog.pinning(), 'decision': dec,
@@ -1205,7 +1219,36 @@ def parser():
     ap.add_argument('--repeat-max', type=int, default=None, help='--policy priority: jobs per (operator, tuple) beyond which no repeat is run')
     ap.add_argument('--function', choices=aesfn.NAMES, default=None,
                     help='aes-sbox or aes-invsbox (default: the campaign\'s, from campaign.json; aes-sbox for a new one)')
+    ap.add_argument('--kopt', action='append', metavar='OPS:KEY=VAL,...',
+                    help="kernel options passed to every job of the named kernel operators, e.g. 'polish,pull:pair_xor=1' "
+                         "(repeatable; keys: ops.KOPT_KEYS; default none = the kernel defaults)")
+    ap.add_argument('--kopt-first', action='append', metavar='OPS:KEY=VAL,...',
+                    help="kernel options for the FIRST jobs only (choice level in --kopt-first-levels), over --kopt, "
+                         "e.g. 'polish:tgt_w.mffc1=0.5,tgt_w.and=0.3'")
+    ap.add_argument('--kopt-first-levels', default=','.join(FIRST_LEVELS),
+                    help='choice levels (job why) that count as first jobs for --kopt-first (default %(default)s)')
     return ap
+
+
+FIRST_LEVELS = ('fresh', 'variant', 'near', 'other')      # --policy priority levels of a first job on a tuple / structure ('fresh' also bandit)
+
+
+def parse_kopt_arg(items):
+    """['polish,pull:pair_xor=1', ...] -> {op: {key: value}} (later items win per key)"""
+    from boolflux.hub.ops import parse_kopt
+    out = {}
+    for it in items or ():
+        if ':' not in it: raise SystemExit('--kopt wants OPS:KEY=VAL,..., got %r' % it)
+        ops, kv = it.split(':', 1)
+        try:
+            d = parse_kopt(kv)
+        except ValueError as e:
+            raise SystemExit('--kopt %r: %s' % (it, e))
+        for o in ops.split(','):
+            o = o.strip()
+            if o not in KERNEL_OPS: raise SystemExit('--kopt %r: %r is not a kernel operator (%s)' % (it, o, ', '.join(KERNEL_OPS)))
+            out.setdefault(o, {}).update(d)
+    return out
 
 
 def rec_metrics(r):
