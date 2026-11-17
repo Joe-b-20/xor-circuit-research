@@ -75,6 +75,8 @@ BUILTIN = {
                 'full adder: output = (carry, sum) = popcount of 3 bits'),
     'gf16-mul': (8, 4, gf16_mul, 'GF(2^4) multiplication mod x^4+x+1, input = a<<4 | b'),
     'gf16-inv': (4, 4, gf16_inv, 'GF(2^4) inversion mod x^4+x+1 (0 -> 0)'),
+    'aes-sbox-sel': (9, 8, lambda: aes_sbox() + aes_inv_sbox(),
+                     'AES S-box (c = 0) or inverse S-box (c = 1); inputs c x0..x7 (x0 msb), NIST aes-sbox-sel'),
 }
 
 
