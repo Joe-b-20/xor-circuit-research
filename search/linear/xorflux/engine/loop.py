@@ -202,12 +202,27 @@ def valueset_factory(target, settings, walk: bool) -> Callable:
     limit = cfg.pairsums_max_values
     n = target.n_inputs
     rows = target.rows
+    timing = timing_of(target)
 
     def make(values, cap):
         values = list(values)
         pairs = mode == "on" or (mode == "auto" and walk and n + len(values) <= limit)
+        if timing is not None:
+            from ..core.timed import TimedValueSet
+            return TimedValueSet(n, rows, values, cap=cap, pairsums=pairs, **timing)
         return ValueSet(n, rows, values, cap=cap, pairsums=pairs)
     return make
+
+
+def timing_of(target):
+    """``{"arrival": [...], "deadline": [...]}`` from a target's ``timing`` meta entry (target
+    JSON key ``timing``), or None.  With it, chains use ``core.timed.TimedValueSet``: input i
+    arrives at level ``arrival[i]`` and row r must be realized by level ``deadline[r]``."""
+    timing = (getattr(target, "meta", None) or {}).get("timing")
+    if not timing:
+        return None
+    return {"arrival": list(timing.get("arrival") or [0] * target.n_inputs),
+            "deadline": list(timing.get("deadline") or [None] * len(target.rows))}
 
 
 def canonical_state(factory: Callable, values, cap):
@@ -715,7 +730,12 @@ class Engine(DossierMixin):
         from .polish import polish
         t0 = perf_counter()
         # No pair-sum index: the polish only removes.
-        state = ValueSet(self._n, self.target.rows, sorted(values), cap=d)
+        timing = timing_of(self.target)
+        if timing is not None:
+            from ..core.timed import TimedValueSet
+            state = TimedValueSet(self._n, self.target.rows, sorted(values), cap=d, **timing)
+        else:
+            state = ValueSet(self._n, self.target.rows, sorted(values), cap=d)
         state.trim()
         removed, exact, nodes = polish(state, self._polish_nodes)
         if not removed:
