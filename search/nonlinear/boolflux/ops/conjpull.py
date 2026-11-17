@@ -13,6 +13,7 @@
                                                   (--sh-span), then the screen order) each run the FIRST stage
                                                   of the schedule; the best --sh-keep by (A, AD, G + max(0,
                                                   GD - d), GD) after it run the remaining stages (d = start GD)
+                                                  (with --sh-probe S: a short kernel probe is the halving stage instead)
                                   default rank:1
         [--schedule STAGES]       comma list MODE:CAP:SECONDS[:rk0|rk1]; default g:31:200,m:27:200,m:25:200
                                     g gate (kernel restarted from the stage best)
@@ -31,6 +32,12 @@
         [--overrun scale|refuse]  when the plan (items x schedule seconds) exceeds --seconds: scale every stage of
                                   the not yet started items (default; a note and a `plan` event), or refuse the job
                                   (status refused).  Each item's stages get the time left / the remaining plan
+        [--sh-probe S]            sh:K with a probe screen (idea 08, 2026-11-17; default 0 = off): each of the K
+                                  conjugates gets ONE short stage of S seconds (stage 1's cap, mode k if stage 1 is
+                                  k, else g) instead of stage 1; the best --sh-keep by the same key run the WHOLE
+                                  schedule from their probe best.  On U3's 22 groups a 10-20k-iteration probe
+                                  (~5-10 s) ranks conjugates only a little better than the conj3 screen (within-group
+                                  Spearman 0.24-0.27 vs 0.20, pick regret 2.1-2.2 vs 2.44 gates; stage 1: 0.53, 1.17)
         [--identity-first auto|yes|no]  default no.  auto: an identity staged pull (dropped after one stage without a new point)
                                   before screen-chosen conjugates (rank/top/all/sh) when the start is not a BoolFlux
                                   output (no sidecar with an op, e.g. a NIST seed) and the registry has no identity
@@ -700,6 +707,9 @@ def main(argv=None):
     ap.add_argument('--identity-first', choices=('auto', 'yes', 'no'), default='no')
     ap.add_argument('--registry', default=os.environ.get('BOOLFLUX_CONJ_REGISTRY') or None)
     ap.add_argument('--sh-keep', type=int, default=2, help='sh:K: lineages continued after the first stage')
+    ap.add_argument('--sh-probe', type=float, default=0.0,
+                    help='sh:K: a probe stage of S seconds (stage 1 cap; mode k or g) is the halving stage; the kept '
+                         'lineages run the whole schedule (0 = off: stage 1 is the halving stage)')
     ap.add_argument('--sh-span', type=int, default=2,
                     help='sh:K: k=4 span-keeping conjugates added after 188:0 and 189:0 (by screen rank); 0 = none')
     ap.add_argument('--keep-bests', type=int, default=8)
@@ -740,7 +750,7 @@ def main(argv=None):
               'trb_regions': a.trb_regions, 'top_runs': a.top_runs, 'screen_runs': a.screen_runs,
               'caps': {'A': ctx.lim['A'], 'AD': ctx.lim['AD']}, 'kernel_bin': ctx.bfx.name, 'function': function,
               'stage_caps': a.caps, 'stage_choice': a.stage_choice, 'max_pull': a.max_pull, 'missed_pulls': a.missed_pulls, 'stall_stages': a.stall_stages, 'overrun': a.overrun,
-              'identity_first': a.identity_first, 'registry': a.registry, 'sh_keep': a.sh_keep, 'sh_span': a.sh_span,
+              'identity_first': a.identity_first, 'registry': a.registry, 'sh_keep': a.sh_keep, 'sh_span': a.sh_span, 'sh_probe': a.sh_probe,
               'keep_bests': a.keep_bests, 'bp_cap': a.bp_cap}
     command = ' '.join([sys.executable, str(Path(__file__).resolve())] + list(argv if argv is not None else sys.argv[1:]))
     method = (('' if function == 'aes-sbox' else '%s: ' % CM.aesfn.label(function)) +
@@ -780,6 +790,14 @@ def main(argv=None):
 
     status = 'ok'; items_all = []; fates = {}; refused = []; plan_info = {}; sh_info = {}
     S = [x[2] for x in sched]; full_s = sum(S); s1_s = S[0] if S else 0; rest_s = full_s - s1_s
+    PROBE_SI = 90                                   # stage index of the --sh-probe stage (seed a.seed*1000 + 900 + j)
+    probe_tab = {}
+    if a.sh_probe > 0 and sched:
+        m1, c1, _, rk1, _ = sched[0]
+        probe_tab[PROBE_SI] = ('k' if m1 == 'k' else 'g', c1, a.sh_probe, rk1, None)
+        sh_c1, sh_rest = a.sh_probe, full_s          # per candidate / per kept lineage (whole schedule)
+    else:
+        sh_c1, sh_rest = s1_s, rest_s
     registry = reg_load(a.registry)
     try:
         start = CM.load(a.inp)
@@ -811,7 +829,7 @@ def main(argv=None):
                              'without a new point)')
         items_all[:] = items
         def nominal(its):
-            return sum(full_s if x[1] != 'sh' else (min(x[2], len(a._sh_cands)) * s1_s + min(a.sh_keep, x[2]) * rest_s)
+            return sum(full_s if x[1] != 'sh' else (min(x[2], len(a._sh_cands)) * sh_c1 + min(a.sh_keep, x[2]) * sh_rest)
                        for x in its)
         need = nominal(items); avail = left() - RESERVE_S
         plan_info = {'need_s': round(need), 'avail_s': round(avail), 'schedule_s': full_s, 'items': [x[0] for x in items],
@@ -850,11 +868,12 @@ def main(argv=None):
             return Lineage(name, lam, k, score, cc, 'conj lam %d k %d (%s, score %s)' % (lam, k, name, score), stall,
                            naive=nv, screen_rank=rank)
 
-        def run_stages(L, idx, f):
-            """stages idx of lineage L, each at f x its seconds; returns False if the lineage was dropped"""
+        def run_stages(L, idx, f, table=None):
+            """stages idx of lineage L, each at f x its seconds; returns False if the lineage was dropped.  table:
+            stage index -> stage (default the schedule; the --sh-probe stage is probe_tab)"""
             ctx.L = L
             for si in idx:
-                mode, cap, secs, rk, sseed = sched[si]
+                mode, cap, secs, rk, sseed = (table or sched)[si]
                 if left() < 20:
                     rec.log.event('stop', what='stage loop', conj=L.name, reason='less than 20 s left', stage=si + 1)
                     L.dropped = 'time'; return False
@@ -885,7 +904,7 @@ def main(argv=None):
                     L.lineage.pop()
                     bests.append(b); seen += par
                     L.seconds += now() - t1
-                    stages_log.append({'conj': L.name, 'lam': L.lam, 'k': L.k, 'stage': si + 1, 'mode': mode, 'cap': D,
+                    stages_log.append({'conj': L.name, 'lam': L.lam, 'k': L.k, 'stage': si + 1, 'probe': table is probe_tab and bool(table), 'mode': mode, 'cap': D,
                                        'cap_planned': planned, 'seed': sd, 'in': list(CM.metrics(base)),
                                        'best': list(CM.metrics(b)), 'seconds': round(now() - t1, 1), 'budget_factor': round(f, 3),
                                        'repair_keep': rkk, 'improvements': list(ctx.stage_impr)})
@@ -939,27 +958,37 @@ def main(argv=None):
                 continue
             # ---- successive halving: stage 1 on K conjugates, the rest of the schedule on the best sh_keep -------
             K = k; keep = max(1, min(a.sh_keep, K))
-            k1 = sched_spec(sched, [0]); kr = sched_spec(sched, range(len(sched)))
+            k1 = sched_spec(sched, [0]) if not probe_tab else 'probe:' + sched_spec(probe_tab, [PROBE_SI])
+            kr = sched_spec(sched, range(len(sched)))
             cands = [x for x in a._sh_cands if reg_key(rec.start_sha, x[1], x[2], k1) not in registry]
             nskip = len(a._sh_cands) - len(cands)
             cands = cands[:K]
             avail = left() - RESERVE_S - after
-            while len(cands) > keep + 1 and len(cands) * s1_s + keep * rest_s > avail:
+            while len(cands) > keep + 1 and len(cands) * sh_c1 + keep * sh_rest > avail:
                 cands.pop()                    # the worst screen-ranked one (the span keepers come first, dropped last)
             sh_info = dict(a._sh_info, K_asked=K, K=len(cands), keep=keep, registry_skipped=nskip, avail_s=round(avail),
+                           probe_s=a.sh_probe if probe_tab else None,
                            candidates=[x[0] + '=%s:%s' % (x[1], x[2]) for x in cands])
             rec.log.event('halving', **sh_info)
             pool = []
             for ci, (cn, lam_, k_, sc) in enumerate(cands):
                 if left() < 30:
                     fates[cn] = 'skipped: less than 30 s left'; continue
-                after_c = (len(cands) - ci - 1) * s1_s + keep * rest_s + after
-                f = factor(s1_s, after_c)
+                after_c = (len(cands) - ci - 1) * sh_c1 + keep * sh_rest + after
+                f = factor(sh_c1, after_c)
                 rank_ = next((i + 1 for i, r in enumerate(getattr(a, '_rows', []) or []) if (r['lam'], r['k']) == (lam_, k_)), None)
                 L = new_lineage(cn, lam_, k_, sc, a.stall_stages, rank=rank_)
                 lineages.append(L); fates[cn] = 'run: 0 stages'
-                reg_entry(L, [0])
-                if run_stages(L, [0], f):
+                if probe_tab:
+                    reg_add(a.registry, {'utc': CM.utc(), 'start_sha256': rec.start_sha, 'start': str(a.inp), 'lam': L.lam,
+                                         'k': L.k, 'schedule': k1, 'out': str(out), 'seed': a.seed})
+                    ok = run_stages(L, [PROBE_SI], f, probe_tab)
+                    L.quiet = 0; L.missed = 0; L.stages_done = 0     # the probe is not a stage of the schedule
+                    if ok: fates[cn] = 'probe'
+                else:
+                    reg_entry(L, [0])
+                    ok = run_stages(L, [0], f)
+                if ok:
                     m = CM.metrics(L.cur); L.s1 = (m[0], m[1], m[2] + max(0, m[3] - d0), m[3]); pool.append(L)
             pool.sort(key=lambda L: L.s1)
             for r_, L in enumerate(pool): L.halving_rank = r_ + 1
@@ -967,12 +996,12 @@ def main(argv=None):
                                    'after_stage1': list(CM.metrics(L.cur)), 'key': list(L.s1)} for L in pool]
             rec.log.event('halving-rank', ranking=sh_info['ranking'], keep=keep)
             for L in pool[keep:]:
-                fates[L.name] = 'halving: stage 1 only (rank %d of %d)' % (L.halving_rank, len(pool))
+                fates[L.name] = 'halving: %s only (rank %d of %d)' % ('probe' if probe_tab else 'stage 1', L.halving_rank, len(pool))
             for qi, L in enumerate(pool[:keep]):
                 if left() < 30: fates[L.name] += '; continuation skipped: less than 30 s left'; break
-                f = factor(rest_s, (keep - qi - 1) * rest_s + after)
+                f = factor(sh_rest, (keep - qi - 1) * sh_rest + after)
                 reg_entry(L, range(len(sched)))
-                run_stages(L, range(1, len(sched)), f)
+                run_stages(L, range(0 if probe_tab else 1, len(sched)), f)
         rec.log.event('item-fates', fates=fates, refused=refused)
     except Exception as e:
         import traceback

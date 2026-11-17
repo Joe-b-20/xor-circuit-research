@@ -181,6 +181,26 @@ class TestConjpullRuns(unittest.TestCase):
             side = json.loads(f.with_name(f.name[:-len('.circ.txt')] + '.json').read_text())
             self.assertLessEqual(side['A'], 32); self.assertLessEqual(side['AD'], 4)
 
+    def test_halving_probe(self):
+        """sh:3 --sh-probe 3: one probe stage (stage 1's cap, gate mode) per candidate, the best --sh-keep 1 runs the
+        WHOLE schedule (stages 1 and 2) from its probe best; the probe is logged as a probe stage, not a schedule stage"""
+        out = tmpdir()
+        pr, res = run_cp(['--in', FWD117, '--target', FWD117.name, '--conj', 'sh:3', '--sh-probe', 3, '--sh-keep', 1,
+                          '--schedule', 'g:d+6:4,m:d:4', '--seconds', 90, '--sh-span', 0, '--identity-first', 'no'],
+                         out, self.cache)
+        self.assertEqual(pr.returncode, 0, pr.stderr); self.assertEqual(res['status'], 'ok')
+        h = res['halving']
+        self.assertEqual(h['K'], 3); self.assertEqual(h['probe_s'], 3); self.assertEqual(len(h['ranking']), 3)
+        cont = [x for x in res['conj_run'] if x['stages_done'] == 2]
+        self.assertEqual([x['halving_rank'] for x in cont], [1])
+        self.assertEqual(sum(1 for x in res['conj_run'] if x['stages_done'] == 0), 2)
+        ev = runlog.read_events(out / 'events.jsonl.gz')
+        st = [e for e in ev if e['ev'] == 'stage']
+        self.assertEqual(sum(1 for e in st if e['probe']), 3)
+        self.assertTrue(all(e['cap_planned'] == 25 and e['mode'] == 'g' for e in st if e['probe']))
+        self.assertEqual(sorted(e['stage'] for e in st if not e['probe']), [1, 2])
+        self.assertTrue(any(v.startswith('halving: probe only') for v in res['fates'].values()))
+
 
 if __name__ == '__main__':
     unittest.main()
