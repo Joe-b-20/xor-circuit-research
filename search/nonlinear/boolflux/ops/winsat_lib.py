@@ -24,9 +24,14 @@ from __future__ import annotations
 import random
 import time
 
-from pysat.card import CardEnc, EncType
-from pysat.formula import IDPool
-from pysat.solvers import Solver
+try:                    # pysat (python-sat) is needed by Synth only: the window code and AND removal
+    from pysat.card import CardEnc, EncType      # (winsat_andrm.py, hub/ops/op_andrm.py) run without it
+    from pysat.formula import IDPool
+    from pysat.solvers import Solver
+    HAVE_PYSAT = True
+except ImportError:
+    CardEnc = EncType = IDPool = Solver = None
+    HAVE_PYSAT = False
 
 AND, XOR, XNOR, NOT = 8, 6, 9, 3
 INF = 10 ** 6
@@ -381,6 +386,7 @@ def simulate(chain, k, vin, mask):
 
 class Synth:
     def __init__(self, k, P, vin, okp, arr, arra, rq, ra, r, amax, forbid_in=(), seed=1, solver='cadical195', strong=False):
+        if not HAVE_PYSAT: raise ImportError('winsat_lib.Synth needs pysat (pip install python-sat)')
         self.k, self.P, self.vin, self.okp, self.r, self.amax = k, P, vin, okp, r, amax
         self.arr = [0] + list(arr); self.arra = [0] + list(arra)
         self.rq, self.ra = rq, ra

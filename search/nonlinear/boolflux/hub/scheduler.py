@@ -18,9 +18,9 @@ sleeps until a job exits (SIGCHLD) or 1 s passes.
   2b repeat  polish / pull on front tuples under the tuple caps (fewest jobs first; --variants-first: after level 5)
   3 variant  the first polish / pull of each structure (circuit) of a front tuple that has had its first jobs
   4 near     the first polish / pull of each member of a cell within --near-gap gates of a dominating front point
-  5 other    the first job of every other operator on a front tuple (trb at most once per tuple), and the first
+  5 other    the first job of every other operator on a front tuple (trb, andrm at most once per tuple), and the first
              polish / pull of generator-made cell minima
-  6 repeat   polish / pull (and other operators except join and trb) on front tuples: fewest jobs on the tuple
+  6 repeat   polish / pull (and other operators except join, trb and andrm) on front tuples: fewest jobs on the tuple
              first, under the tuple caps before over them, A, AD ascending (no CPU idles while a front exists)
   The levels' sizes and the rule are in each job's decision record.
 --policy learned (idea 07, 2026-11-17; opt-in): join as level 1 of priority; otherwise every (operator, target) of the
@@ -74,12 +74,13 @@ from boolflux.hub.funcbank import FuncBank   # noqa: E402
 from boolflux.hub.ops import kernel_bin, kernel_record   # noqa: E402
 
 DEFAULT_SECONDS = {'polish': 90, 'pull': 90, 'join': 60, 'trb': 30, 'osc': 90, 'gen_inv3': 60,
-                   'gen_bottom': 60, 'gen_skel': 60, 'linres': 30, 'gen_joinplus': 90}
+                   'gen_bottom': 60, 'gen_skel': 60, 'linres': 30, 'gen_joinplus': 90, 'andrm': 120}
 # operator name -> script (common CLI); the operators beyond the four basic ones live in hub/ops/
 SCRIPTS = {'polish': HUBDIR / 'op_polish.py', 'pull': HUBDIR / 'op_pull.py', 'join': HUBDIR / 'op_join.py',
            'trb': HUBDIR / 'op_trb.py', 'osc': HUBDIR / 'ops' / 'op_osc.py', 'gen_inv3': HUBDIR / 'ops' / 'gen_inv3.py',
            'gen_bottom': HUBDIR / 'ops' / 'gen_bottom.py', 'gen_skel': HUBDIR / 'ops' / 'gen_skel.py',
-           'linres': HUBDIR / 'ops' / 'op_linres.py', 'gen_joinplus': HUBDIR / 'ops' / 'gen_joinplus.py'}
+           'linres': HUBDIR / 'ops' / 'op_linres.py', 'gen_joinplus': HUBDIR / 'ops' / 'gen_joinplus.py',
+           'andrm': HUBDIR / 'ops' / 'op_andrm.py'}
 WINDOW = 40
 GENERATORS = {'gen_skel', 'gen_joinplus', 'gen_inv3', 'gen_bottom'}   # admitted with the nursery slack
 KILL_FACTOR = 2.0; KILL_GRACE = 120.0    # a job is killed after seconds * KILL_FACTOR + KILL_GRACE wall seconds
@@ -87,6 +88,7 @@ MIN_JOB_S = 5.0                          # no job is started with less than this
 FAIL_LIMIT = 5; SUSPEND_S = 600.0        # an operator failing FAIL_LIMIT times in a row is suspended
 FB_SAVE_S = 60.0                         # function bank written at most this often
 KERNEL_OPS = ('polish', 'pull')          # the operators of the fresh / variant / near levels (--policy priority)
+ONCE_OPS = ('join', 'trb', 'andrm')    # never repeated on a front tuple (level 6); andrm (opt-in): once per new front tuple
 WAIT_S = 1.0                             # longest sleep of the main loop (a job exit wakes it at once)
 JOIN_WINDOW_S = 600.0                    # window of --join-share
 
@@ -675,7 +677,7 @@ class Scheduler:
         if best: return pick('fresh', best[1], best[2], 'first polish / pull of a front tuple; A, AD ascending, newest first', n)
         def repeat(under_only):
             best = None; n = 0
-            rops = [o for o in ops if o not in ('join', 'trb')]
+            rops = [o for o in ops if o not in ONCE_OPS]
             for i in fr:
                 if not free_t(i): continue
                 k = self.target_key(i)

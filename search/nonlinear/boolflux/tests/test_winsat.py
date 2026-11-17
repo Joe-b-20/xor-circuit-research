@@ -6,6 +6,7 @@ The strong encoding (dead steps first, live steps used, no removable steps) must
 R1's encoding: same SAT/UNSAT on small exact queries (full adder; random 3-4 input functions at the
 optimum and one below it), and a redundant XOR detour injected into a published circuit is removed.
 A short winsat run records only aes_check-verified circuits.
+The SAT tests are skipped without pysat (python-sat); the AND-removal test needs the standard library only.
 """
 import json
 import os
@@ -44,6 +45,7 @@ def exact(k, fns, r, amax, strong, budget=200000):
     return out[0]
 
 
+@unittest.skipUnless(R.HAVE_PYSAT, 'needs pysat (python-sat); not installed (the CI runners have the standard library only)')
 class TestStrongEncoding(unittest.TestCase):
     def test_full_adder(self):
         k = 3; P = 8
@@ -135,6 +137,7 @@ class TestAndRemoval(unittest.TestCase):
         self.assertLess(best, A0)
 
 
+@unittest.skipUnless(R.HAVE_PYSAT, 'needs pysat (python-sat); not installed (the CI runners have the standard library only)')
 class TestWinsatRun(unittest.TestCase):
     def test_short_run(self):
         src = sorted(FWD.glob('aes-sbox-a32-ad4-*.circ.txt'))[0]

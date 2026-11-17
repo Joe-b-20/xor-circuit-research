@@ -160,7 +160,10 @@ front adds per CPU second (`hub/learned.py`, model `hub/learned_model.json` fitt
 (level, level sizes, rule) is in `runs/<run_id>.json`. `control.json` `"ingest"` globs are read every
 `--ingest-every 60` s (was 1800). polish and pull also return up to `--bests 8` of the kernel's intermediate
 bests (placeable, non-dominated); pull lowers GD by default (`--lower GD,GD,GD,AD,A` is the old draw), trb
-keeps the input's GD (`--gd-offsets 0,0,1` the old). `hub/status.py OUT/hub` prints
+keeps the input's GD (`--gd-offsets 0,0,1` the old). `--ops ...,andrm` (opt-in, 2026-11-17, idea 09;
+`hub/ops/op_andrm.py`, default 120 s, once per front tuple, not under `--policy learned`, which has no model for it):
+exact window AND removal (`ops/winsat_andrm.py`), then a kernel polish of the A - 1 hit at its own caps and
+a pull back to the source's GD. `hub/status.py OUT/hub` prints
 the operators' jobs, admissions and CPU time and the front points the run produced.
 
 ## Method scripts

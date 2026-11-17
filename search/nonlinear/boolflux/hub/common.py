@@ -161,6 +161,7 @@ def source_files():
     fs += [KERNEL_SRC, PKG / 'kernel' / 'skel.c'] + [PKG / n for n in ('core.py', 'objective.py', 'targets.py', 'skeleton.py',
                                                                                  'aesfn.py', 'runlog.py')]
     fs += [PKG / 'independent' / 'verify.py', PKG / 'aes_check.py', PKG / 'models' / 'nist.json']
+    fs += [PKG / 'ops' / n for n in ('winsat.py', 'winsat_lib.py', 'winsat_andrm.py', 'common.py')]   # hub/ops/op_andrm.py
     return [f for f in fs if f.exists()]
 
 
