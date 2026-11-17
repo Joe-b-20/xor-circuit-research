@@ -11,6 +11,8 @@ is the process's ($BOOLFLUX_FUNCTION, set by the scheduler, or --function).
   pull    the same with one cap lowered (--lower: GD by 1-3 by default; AD or A by 1 on request; repair mode)
   join    transplants of the input (and of the --batch targets) with archive partners in both roles (join.py)
   trb     timing-aware XOR-region rebuilds (trb_impl.py) under the input's GD (--gd-offsets)
+polish and pull take --kopt 'KEY=VAL,...' (KOPT_KEYS: pair_xor, tgt_w.mffc1, tgt_w.and, tgt_w.viol, stop_stall_it, T0) over
+the kernel defaults; the scheduler sets it per operator (--kopt, --kopt-first).
 polish and pull return the kernel's final best and, with --bests N (default 8), up to N of its intermediate
 bests (keep_bests): cleaned, placeable in the archive, not archived (id or structure), 4-D Pareto among
 themselves and the final, best value first.  join, trb (and linres) judge every candidate after cleaning
@@ -38,6 +40,29 @@ KDEFAULTS = {'T0': 0.6, 'Tperiod_it': 20000, 'stall_it': 60000, 'uphill': 1.0, '
              'nl_samples': 12, 'cand_cap': 40, 'fraig': 1}
 KEYW = OBJ.WKEY
 DEFAULT_OBJECTIVE = 'a,ad,cost,gd'        # research priorities: AND count, AND depth, then G, GD
+# Kernel behaviour options an operator job may set (--kopt KEY=VAL,...; the scheduler's --kopt / --kopt-first pass
+# them per operator, 2026-11-17 idea 10).  All default off in the kernel (W1, phase 2): pair_xor 1 (same candidates,
+# fewer probes), tgt_w.* (weighted target draw), stop_stall_it N (end the job N iterations after the last new best).
+KOPT_KEYS = {'pair_xor': int, 'tgt_w.mffc1': float, 'tgt_w.and': float, 'tgt_w.viol': float, 'stop_stall_it': int,
+             'T0': float}       # T0 0: pure plateau walk, no uphill steps (idea 04's observation on mature forward circuits)
+
+
+def parse_kopt(text):
+    """'KEY=VAL,KEY=VAL' -> {KEY: VAL} with KEY in KOPT_KEYS (values checked by type; '' -> {})"""
+    out = {}
+    for part in (text or '').split(','):
+        part = part.strip()
+        if not part: continue
+        if '=' not in part: raise ValueError('kernel option wants KEY=VAL, got %r' % part)
+        k, v = (x.strip() for x in part.split('=', 1))
+        if k not in KOPT_KEYS: raise ValueError('unknown kernel option %r (known: %s)' % (k, ', '.join(sorted(KOPT_KEYS))))
+        try:
+            x = KOPT_KEYS[k](v)
+        except ValueError:
+            raise ValueError('kernel option %s wants %s, got %r' % (k, KOPT_KEYS[k].__name__, v))
+        if x < 0: raise ValueError('kernel option %s must be >= 0' % k)
+        out[k] = x
+    return out
 
 
 def kernel_bin(archive_dir):
@@ -69,10 +94,11 @@ def kernel_record(b):
     return {'source': KERNEL_SRC, 'command': ['gcc', '-O3', '-march=native', '-o', str(b), str(KERNEL_SRC), '-lm']}
 
 
-def _kernel(c, caps, objective, seed, seconds, out, archive_dir):
+def _kernel(c, caps, objective, seed, seconds, out, archive_dir, kopt=None):
     sp = out / 'start.bfx'; sp.write_text(core.to_kernel(c))
     bp = out / 'best.bfx'; cp = out / 'kernel.cfg'
     cfg = dict(KDEFAULTS)
+    cfg.update(kopt or {})                  # --kopt (parse_kopt: only KOPT_KEYS)
     cfg.update(OBJ.weights(objective))      # the package's own key validation, weights and `lex` (one definition)
     for op in (8, 6, 9, 3): cfg['cost.%d' % op] = 1
     for k, key in (('A', 'cap.a'), ('AD', 'cap.ad'), ('GD', 'cap.gd')):
@@ -209,7 +235,7 @@ KTIME = [0.0, 0]                           # instrumentation: kernel wall second
 def op_polish(ar, args, rng, out):
     c = ar.circuit(args.inp); A, AD, G, GD = metrics(c)
     caps = args.caps or {'A': A, 'AD': AD, 'GD': GD}
-    cands, info = _kernel(c, caps, args.objective, args.seed, args.seconds, out, args.archive)
+    cands, info = _kernel(c, caps, args.objective, args.seed, args.seconds, out, args.archive, getattr(args, 'kopt', None))
     info['caps'] = caps
     return with_bests(ar, cands, info, getattr(args, 'bests', 0)), info
 
@@ -227,7 +253,7 @@ def op_pull(ar, args, rng, out):
     if which == 'GD': caps['GD'] = max(1, GD - rng.choice([1, 1, 2, 3])); caps['AD'] = None
     elif which == 'AD': caps['AD'] = max(1, AD - 1)
     else: caps['A'] = max(1, A - 1)
-    cands, info = _kernel(c, caps, args.objective, args.seed, args.seconds, out, args.archive)
+    cands, info = _kernel(c, caps, args.objective, args.seed, args.seconds, out, args.archive, getattr(args, 'kopt', None))
     info.update({'caps': caps, 'lowered': which})
     return with_bests(ar, cands, info, getattr(args, 'bests', 0)), info
 
@@ -429,12 +455,17 @@ def main(name, argv=None):
     ap.add_argument('--lower', help="pull: cap(s) to lower, drawn uniformly: 'GD' (default) or 'GD,GD,GD,AD,A' (until 2026-11-16)")
     ap.add_argument('--gd-offsets', help="trb: GD cap offsets below the input's GD, drawn uniformly (default '0'; until 2026-11-16 '0,0,1')")
     ap.add_argument('--bests', type=int, default=8, help='polish/pull: intermediate kernel bests returned besides the final (0: final only)')
+    ap.add_argument('--kopt', default='', help="polish/pull: kernel options 'KEY=VAL,...' over the defaults (keys: %s)" % ', '.join(sorted(KOPT_KEYS)))
     ap.add_argument('--function', choices=aesfn.NAMES, default=None,
                     help='aes-sbox or aes-invsbox (default: $BOOLFLUX_FUNCTION, which the scheduler sets, else aes-sbox)')
     ap.add_argument('--out', required=True)
     args = ap.parse_args(argv)
     if args.function: aesfn.use(args.function)
     if args.caps: args.caps = parse_caps(args.caps)
+    try:
+        args.kopt = parse_kopt(args.kopt)
+    except ValueError as e:
+        raise SystemExit('--kopt: %s' % e)
     OBJ.parse(args.objective)
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     if any(out.glob('cand-*.bfx')): raise SystemExit('--out %s already holds candidates: a job directory is used once' % out)
