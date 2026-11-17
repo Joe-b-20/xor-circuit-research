@@ -1,0 +1,406 @@
+{
+ "target": "aes-sbox-sel",
+ "target_description": "AES S-box (c = 0) or inverse S-box (c = 1); inputs c x0..x7 (x0 msb), NIST aes-sbox-sel",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 25,
+  "AD": 6,
+  "A": 40
+ },
+ "start": "<campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a40-ad6-g160-gd23-xx120-52/aes-sbox-sel-a40-ad6-g160-gd23-xx120-52.circ.txt",
+ "start_metrics": {
+  "G": 160,
+  "A": 40,
+  "GD": 23,
+  "AD": 6,
+  "cost": 160.0,
+  "counts": {
+   "AND": 40,
+   "NOT": 1,
+   "XNOR": 51,
+   "XOR": 68
+  }
+ },
+ "seeds": [
+  1,
+  2
+ ],
+ "iters": 400000,
+ "seconds_cap": 600.0,
+ "rounds": 2,
+ "seed_scheme": "v2",
+ "code_sha256_12": "aa864668b180",
+ "code_snapshot": "<campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd25-p160/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-sbox-sel --model nist --start <campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a40-ad6-g160-gd23-xx120-52/aes-sbox-sel-a40-ad6-g160-gd23-xx120-52.circ.txt --objective a,ad,cost,gd --cap-a 40 --cap-ad 6 --cap-gd 25 --iters 400000 --seconds 600 --seeds 1-2 --rounds 2 --jobs 1 --out <campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd25-p160",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes-sbox-sel",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a40-ad6-g160-gd23-xx120-52/aes-sbox-sel-a40-ad6-g160-gd23-xx120-52.circ.txt",
+  "--objective",
+  "a,ad,cost,gd",
+  "--cap-a",
+  "40",
+  "--cap-ad",
+  "6",
+  "--cap-gd",
+  "25",
+  "--iters",
+  "400000",
+  "--seconds",
+  "600",
+  "--seeds",
+  "1-2",
+  "--rounds",
+  "2",
+  "--jobs",
+  "1",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd25-p160"
+ ],
+ "run_record": "run.json",
+ "runs": [
+  {
+   "round": 0,
+   "seed": 1,
+   "kernel_seed": 1,
+   "tag": "r0-s1",
+   "returncode": 0,
+   "wall_s": 213.89,
+   "final": {
+    "cost": 160.0,
+    "G": 160.0,
+    "A": 40.0,
+    "GD": 23.0,
+    "AD": 6.0,
+    "obj": 40.000601600022996,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 213.85
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 99846.0,
+     "acc": 5824.0,
+     "imp": 0.0,
+     "cands": 70560.0,
+     "time": 2.19
+    },
+    "resub2": {
+     "prop": 200072.0,
+     "acc": 40635.0,
+     "imp": 0.0,
+     "cands": 1527739.0,
+     "time": 129.85
+    },
+    "resub3": {
+     "prop": 100082.0,
+     "acc": 19878.0,
+     "imp": 0.0,
+     "cands": 1064039.0,
+     "time": 81.71
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 160,
+    "A": 40,
+    "GD": 23,
+    "AD": 6,
+    "cost": 160.0,
+    "counts": {
+     "AND": 40,
+     "NOT": 1,
+     "XNOR": 51,
+     "XOR": 68
+    }
+   }
+  },
+  {
+   "round": 0,
+   "seed": 2,
+   "kernel_seed": 2,
+   "tag": "r0-s2",
+   "returncode": 0,
+   "wall_s": 205.94,
+   "final": {
+    "cost": 158.0,
+    "G": 158.0,
+    "A": 40.0,
+    "GD": 25.0,
+    "AD": 6.0,
+    "obj": 40.000601580025,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 205.93
+   },
+   "improvements": [
+    {
+     "t": 10.402,
+     "it": 19328,
+     "mv": "resub2",
+     "cost": 159.0,
+     "G": 159,
+     "A": 40,
+     "GD": 25,
+     "AD": 6
+    },
+    {
+     "t": 10.417,
+     "it": 19358,
+     "mv": "resub2",
+     "cost": 158.0,
+     "G": 158,
+     "A": 40,
+     "GD": 25,
+     "AD": 6
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 99698.0,
+     "acc": 6258.0,
+     "imp": 0.0,
+     "cands": 71822.0,
+     "time": 2.06
+    },
+    "resub2": {
+     "prop": 199929.0,
+     "acc": 41579.0,
+     "imp": 2.0,
+     "cands": 1567702.0,
+     "time": 124.88
+    },
+    "resub3": {
+     "prop": 100373.0,
+     "acc": 20345.0,
+     "imp": 0.0,
+     "cands": 1084873.0,
+     "time": 78.89
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 158,
+    "A": 40,
+    "GD": 25,
+    "AD": 6,
+    "cost": 158.0,
+    "counts": {
+     "AND": 40,
+     "XNOR": 51,
+     "XOR": 67
+    }
+   }
+  },
+  {
+   "round": 1,
+   "seed": 1,
+   "kernel_seed": 4294967297,
+   "tag": "r1-s1",
+   "returncode": 0,
+   "wall_s": 208.15,
+   "final": {
+    "cost": 158.0,
+    "G": 158.0,
+    "A": 40.0,
+    "GD": 25.0,
+    "AD": 6.0,
+    "obj": 40.000601580025,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 208.14
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 100255.0,
+     "acc": 6330.0,
+     "imp": 0.0,
+     "cands": 72562.0,
+     "time": 2.12
+    },
+    "resub2": {
+     "prop": 199959.0,
+     "acc": 42457.0,
+     "imp": 0.0,
+     "cands": 1497359.0,
+     "time": 126.63
+    },
+    "resub3": {
+     "prop": 99786.0,
+     "acc": 20502.0,
+     "imp": 0.0,
+     "cands": 1038945.0,
+     "time": 79.28
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 158,
+    "A": 40,
+    "GD": 25,
+    "AD": 6,
+    "cost": 158.0,
+    "counts": {
+     "AND": 40,
+     "XNOR": 51,
+     "XOR": 67
+    }
+   }
+  },
+  {
+   "round": 1,
+   "seed": 2,
+   "kernel_seed": 4294967298,
+   "tag": "r1-s2",
+   "returncode": 0,
+   "wall_s": 203.44,
+   "final": {
+    "cost": 158.0,
+    "G": 158.0,
+    "A": 40.0,
+    "GD": 25.0,
+    "AD": 6.0,
+    "obj": 40.000601580025,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 203.43
+   },
+   "improvements": [
+    {
+     "t": 101.555,
+     "it": 194493,
+     "mv": "resub3",
+     "cost": 159.0,
+     "G": 159,
+     "A": 40,
+     "GD": 25,
+     "AD": 6
+    },
+    {
+     "t": 163.807,
+     "it": 318852,
+     "mv": "resub2",
+     "cost": 158.0,
+     "G": 158,
+     "A": 40,
+     "GD": 25,
+     "AD": 6
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 100341.0,
+     "acc": 5902.0,
+     "imp": 0.0,
+     "cands": 70942.0,
+     "time": 2.08
+    },
+    "resub2": {
+     "prop": 199900.0,
+     "acc": 40109.0,
+     "imp": 1.0,
+     "cands": 1504643.0,
+     "time": 123.45
+    },
+    "resub3": {
+     "prop": 99759.0,
+     "acc": 19415.0,
+     "imp": 1.0,
+     "cands": 1044056.0,
+     "time": 77.79
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 158,
+    "A": 40,
+    "GD": 25,
+    "AD": 6,
+    "cost": 158.0,
+    "counts": {
+     "AND": 40,
+     "XNOR": 52,
+     "XOR": 66
+    }
+   }
+  }
+ ],
+ "wall_s": 831.8,
+ "best": {
+  "file": "<campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd25-p160/best.circ.txt",
+  "origin": "seed 2 round 0",
+  "feasible": true,
+  "metrics": {
+   "G": 158,
+   "A": 40,
+   "GD": 25,
+   "AD": 6,
+   "cost": 158.0,
+   "counts": {
+    "AND": 40,
+    "XNOR": 51,
+    "XOR": 67
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "buf_lines": 0,
+  "independent_metrics": {
+   "G": 158,
+   "counts": {
+    "AND": 40,
+    "XNOR": 51,
+    "XOR": 67
+   },
+   "A": 40,
+   "XX": 118,
+   "GD": 25,
+   "AD": 6,
+   "dead": 0,
+   "n": 9,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 158.0
+  }
+ }
+}

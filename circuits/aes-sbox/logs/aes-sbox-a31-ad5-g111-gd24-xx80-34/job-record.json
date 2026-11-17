@@ -1,0 +1,172 @@
+{
+ "operator": "andrm",
+ "inputs": [
+  "f93a248955af"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 8110,
+ "seconds": 300.0,
+ "wall_s": 300.16,
+ "cpu_s": 297.48,
+ "candidates": 1,
+ "cand_ids": [
+  "64d0738aa691"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "andrm": {
+   "nowindow": 476,
+   "rank": 476,
+   "no_flat": 24,
+   "removed": 3
+  },
+  "hits": [
+   [
+    31,
+    5,
+    113,
+    28
+   ],
+   [
+    31,
+    5,
+    115,
+    27
+   ],
+   [
+    31,
+    5,
+    118,
+    28
+   ]
+  ],
+  "source": [
+   32,
+   4,
+   111,
+   25
+  ],
+  "polish": {
+   "caps": {
+    "A": 31,
+    "AD": 5,
+    "GD": 28
+   },
+   "seconds": 142.9,
+   "final": [
+    [
+     31,
+     5,
+     112,
+     25
+    ]
+   ],
+   "bests": {
+    "files": 3,
+    "ok": 2,
+    "not placed": 1,
+    "archived": 0,
+    "archived structure": 0,
+    "unreadable": 0,
+    "returned": 0,
+    "returned_metrics": []
+   },
+   "kernel_bin": "bfx-44d5e49eee",
+   "t_last_improvement": 120.94
+  },
+  "pull": {
+   "caps": {
+    "A": 31,
+    "AD": 5,
+    "GD": 25
+   },
+   "seconds": 142.8,
+   "final": [
+    [
+     31,
+     5,
+     111,
+     24
+    ]
+   ],
+   "bests": {
+    "files": 2,
+    "ok": 1,
+    "not placed": 1,
+    "archived": 0,
+    "archived structure": 0,
+    "unreadable": 0,
+    "returned": 0,
+    "returned_metrics": []
+   },
+   "t_last_improvement": 16.762
+  },
+  "placeable": 1,
+  "archive_loaded": {
+   "records": 1468,
+   "cells": 299,
+   "front": 84,
+   "max_t_admit": 1794907122.4687724
+  }
+ },
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G2/feed/a5-32-4-111-25-f93a24/job/run.json",
+  "kind": "hub.op.andrm",
+  "command": "python3 <campaign archive>/2026-11-17-push/G2/scripts/g2_andrm.py --archive <campaign archive>/2026-11-17-push/G2/hub --in f93a248955af --seed 8110 --seconds 300 --out <campaign archive>/2026-11-17-push/G2/feed/a5-32-4-111-25-f93a24/job --bests 8",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G2/scripts/g2_andrm.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G2/hub",
+   "--in",
+   "f93a248955af",
+   "--seed",
+   "8110",
+   "--seconds",
+   "300",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G2/feed/a5-32-4-111-25-f93a24/job",
+   "--bests",
+   "8"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 8110,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": null
+  },
+  "function": "aes-sbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/2026-11-17-push/G2/hub/bin/bfx-44d5e49eee",
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 240430.1207,
+  "mono_t0": 240430.227,
+  "mono_end": 240752.033,
+  "setup_s": 0.106,
+  "op_s": 321.806,
+  "proc_start_to_main_s": 0.14,
+  "archive_load_s": 0.097,
+  "kernel_s": 305.302,
+  "kernel_calls": 2
+ }
+}

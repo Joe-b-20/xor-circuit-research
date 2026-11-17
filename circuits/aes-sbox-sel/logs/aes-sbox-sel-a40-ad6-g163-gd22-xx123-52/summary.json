@@ -1,0 +1,468 @@
+{
+ "target": "aes-sbox-sel",
+ "target_description": "AES S-box (c = 0) or inverse S-box (c = 1); inputs c x0..x7 (x0 msb), NIST aes-sbox-sel",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 22,
+  "AD": 6,
+  "A": 40
+ },
+ "start": "<campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a40-ad6-g169-gd20-xx129-62/aes-sbox-sel-a40-ad6-g169-gd20-xx129-62.circ.txt",
+ "start_metrics": {
+  "G": 169,
+  "A": 40,
+  "GD": 20,
+  "AD": 6,
+  "cost": 169.0,
+  "counts": {
+   "AND": 40,
+   "XNOR": 62,
+   "XOR": 67
+  }
+ },
+ "seeds": [
+  1,
+  2
+ ],
+ "iters": 400000,
+ "seconds_cap": 600.0,
+ "rounds": 2,
+ "seed_scheme": "v2",
+ "code_sha256_12": "aa864668b180",
+ "code_snapshot": "<campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd22-p169/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-sbox-sel --model nist --start <campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a40-ad6-g169-gd20-xx129-62/aes-sbox-sel-a40-ad6-g169-gd20-xx129-62.circ.txt --objective a,ad,cost,gd --cap-a 40 --cap-ad 6 --cap-gd 22 --iters 400000 --seconds 600 --seeds 1-2 --rounds 2 --jobs 1 --out <campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd22-p169",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes-sbox-sel",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a40-ad6-g169-gd20-xx129-62/aes-sbox-sel-a40-ad6-g169-gd20-xx129-62.circ.txt",
+  "--objective",
+  "a,ad,cost,gd",
+  "--cap-a",
+  "40",
+  "--cap-ad",
+  "6",
+  "--cap-gd",
+  "22",
+  "--iters",
+  "400000",
+  "--seconds",
+  "600",
+  "--seeds",
+  "1-2",
+  "--rounds",
+  "2",
+  "--jobs",
+  "1",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd22-p169"
+ ],
+ "run_record": "run.json",
+ "runs": [
+  {
+   "round": 0,
+   "seed": 1,
+   "kernel_seed": 1,
+   "tag": "r0-s1",
+   "returncode": 0,
+   "wall_s": 199.25,
+   "final": {
+    "cost": 165.0,
+    "G": 165.0,
+    "A": 40.0,
+    "GD": 22.0,
+    "AD": 6.0,
+    "obj": 40.000601650022,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 199.23
+   },
+   "improvements": [
+    {
+     "t": 7.736,
+     "it": 14478,
+     "mv": "resub3",
+     "cost": 168.0,
+     "G": 168,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 8.336,
+     "it": 15614,
+     "mv": "resub1",
+     "cost": 167.0,
+     "G": 167,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 16.469,
+     "it": 30583,
+     "mv": "resub2",
+     "cost": 166.0,
+     "G": 166,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 77.999,
+     "it": 154226,
+     "mv": "resub3",
+     "cost": 165.0,
+     "G": 165,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 99669.0,
+     "acc": 6425.0,
+     "imp": 1.0,
+     "cands": 69509.0,
+     "time": 2.16
+    },
+    "resub2": {
+     "prop": 200249.0,
+     "acc": 40611.0,
+     "imp": 1.0,
+     "cands": 1258567.0,
+     "time": 121.52
+    },
+    "resub3": {
+     "prop": 100082.0,
+     "acc": 19802.0,
+     "imp": 2.0,
+     "cands": 834444.0,
+     "time": 75.45
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 165,
+    "A": 40,
+    "GD": 22,
+    "AD": 6,
+    "cost": 165.0,
+    "counts": {
+     "AND": 40,
+     "NOT": 1,
+     "XNOR": 60,
+     "XOR": 64
+    }
+   }
+  },
+  {
+   "round": 0,
+   "seed": 2,
+   "kernel_seed": 2,
+   "tag": "r0-s2",
+   "returncode": 0,
+   "wall_s": 194.6,
+   "final": {
+    "cost": 165.0,
+    "G": 165.0,
+    "A": 40.0,
+    "GD": 22.0,
+    "AD": 6.0,
+    "obj": 40.000601650022,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 5.0,
+    "seconds": 194.59
+   },
+   "improvements": [
+    {
+     "t": 14.034,
+     "it": 30406,
+     "mv": "resub2",
+     "cost": 168.0,
+     "G": 168,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 22.322,
+     "it": 46319,
+     "mv": "resub2",
+     "cost": 167.0,
+     "G": 167,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 84.304,
+     "it": 172228,
+     "mv": "resub2",
+     "cost": 166.0,
+     "G": 166,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 173.572,
+     "it": 356103,
+     "mv": "resub2",
+     "cost": 165.0,
+     "G": 165,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 99532.0,
+     "acc": 5564.0,
+     "imp": 0.0,
+     "cands": 67457.0,
+     "time": 2.08
+    },
+    "resub2": {
+     "prop": 200694.0,
+     "acc": 39756.0,
+     "imp": 4.0,
+     "cands": 1188387.0,
+     "time": 118.78
+    },
+    "resub3": {
+     "prop": 99774.0,
+     "acc": 19462.0,
+     "imp": 0.0,
+     "cands": 795342.0,
+     "time": 73.62
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 165,
+    "A": 40,
+    "GD": 22,
+    "AD": 6,
+    "cost": 165.0,
+    "counts": {
+     "AND": 40,
+     "NOT": 1,
+     "XNOR": 51,
+     "XOR": 73
+    }
+   }
+  },
+  {
+   "round": 1,
+   "seed": 1,
+   "kernel_seed": 4294967297,
+   "tag": "r1-s1",
+   "returncode": 0,
+   "wall_s": 205.06,
+   "final": {
+    "cost": 165.0,
+    "G": 165.0,
+    "A": 40.0,
+    "GD": 22.0,
+    "AD": 6.0,
+    "obj": 40.000601650022,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 207.14
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 99545.0,
+     "acc": 6175.0,
+     "imp": 0.0,
+     "cands": 68942.0,
+     "time": 2.28
+    },
+    "resub2": {
+     "prop": 200204.0,
+     "acc": 39879.0,
+     "imp": 0.0,
+     "cands": 1258104.0,
+     "time": 125.98
+    },
+    "resub3": {
+     "prop": 100251.0,
+     "acc": 19845.0,
+     "imp": 0.0,
+     "cands": 846638.0,
+     "time": 78.78
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 165,
+    "A": 40,
+    "GD": 22,
+    "AD": 6,
+    "cost": 165.0,
+    "counts": {
+     "AND": 40,
+     "NOT": 1,
+     "XNOR": 60,
+     "XOR": 64
+    }
+   }
+  },
+  {
+   "round": 1,
+   "seed": 2,
+   "kernel_seed": 4294967298,
+   "tag": "r1-s2",
+   "returncode": 0,
+   "wall_s": 191.61,
+   "final": {
+    "cost": 163.0,
+    "G": 163.0,
+    "A": 40.0,
+    "GD": 22.0,
+    "AD": 6.0,
+    "obj": 40.000601630022,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 5.0,
+    "seconds": 191.6
+   },
+   "improvements": [
+    {
+     "t": 47.599,
+     "it": 96148,
+     "mv": "resub3",
+     "cost": 164.0,
+     "G": 164,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    },
+    {
+     "t": 83.211,
+     "it": 169976,
+     "mv": "resub2",
+     "cost": 163.0,
+     "G": 163,
+     "A": 40,
+     "GD": 22,
+     "AD": 6
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 100075.0,
+     "acc": 5819.0,
+     "imp": 0.0,
+     "cands": 69439.0,
+     "time": 2.07
+    },
+    "resub2": {
+     "prop": 199316.0,
+     "acc": 40075.0,
+     "imp": 1.0,
+     "cands": 1147612.0,
+     "time": 116.23
+    },
+    "resub3": {
+     "prop": 100609.0,
+     "acc": 19916.0,
+     "imp": 1.0,
+     "cands": 780426.0,
+     "time": 73.2
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 163,
+    "A": 40,
+    "GD": 22,
+    "AD": 6,
+    "cost": 163.0,
+    "counts": {
+     "AND": 40,
+     "XNOR": 52,
+     "XOR": 71
+    }
+   }
+  }
+ ],
+ "wall_s": 790.9,
+ "best": {
+  "file": "<campaign archive>/2026-11-17-push/G4/runs/polish/a40-gd22-p169/best.circ.txt",
+  "origin": "seed 2 round 1",
+  "feasible": true,
+  "metrics": {
+   "G": 163,
+   "A": 40,
+   "GD": 22,
+   "AD": 6,
+   "cost": 163.0,
+   "counts": {
+    "AND": 40,
+    "XNOR": 52,
+    "XOR": 71
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "buf_lines": 0,
+  "independent_metrics": {
+   "G": 163,
+   "counts": {
+    "AND": 40,
+    "XNOR": 52,
+    "XOR": 71
+   },
+   "A": 40,
+   "XX": 123,
+   "GD": 22,
+   "AD": 6,
+   "dead": 0,
+   "n": 9,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 163.0
+  }
+ }
+}

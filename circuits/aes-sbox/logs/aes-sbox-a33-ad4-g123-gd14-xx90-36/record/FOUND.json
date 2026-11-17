@@ -1,0 +1,102 @@
+{
+ "function": "aes-sbox",
+ "tuple": [
+  33,
+  4,
+  123,
+  14
+ ],
+ "hub_id": "548148d97017",
+ "hub": "<campaign archive>/2026-11-17-push/G2/hub",
+ "sha256": "c6662f8b82d8897c9833c6e6205319b931ff0bf13a537d28e48004f795ba9ac1",
+ "code": "4170c41873f9ce5274d01f300948b76fcda83907 (tonight-2026-11-17, frozen copy G2/snap)",
+ "dominates_published": [],
+ "lineage": [
+  {
+   "id": "548148d97017",
+   "m": [
+    33,
+    4,
+    123,
+    14
+   ],
+   "operator": "polish",
+   "parents": [
+    "22194e3299ee"
+   ],
+   "run_id": "hub-bca8b1.r01201-polish",
+   "source": null
+  },
+  {
+   "id": "22194e3299ee",
+   "m": [
+    33,
+    4,
+    124,
+    14
+   ],
+   "operator": "join",
+   "parents": [
+    "b14fedb5bb84",
+    "de7c64688d8a"
+   ],
+   "run_id": "hub-bca8b1.r00804-join",
+   "source": null
+  },
+  {
+   "id": "de7c64688d8a",
+   "m": [
+    34,
+    4,
+    122,
+    14
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a34-ad4-g122-gd14-xx88-38.circ.txt"
+  },
+  {
+   "id": "b14fedb5bb84",
+   "m": [
+    33,
+    4,
+    124,
+    14
+   ],
+   "operator": "join",
+   "parents": [
+    "80f97e3b25cc",
+    "1317ec0f73e9"
+   ],
+   "run_id": "hub-bca8b1.r00793-join",
+   "source": null
+  },
+  {
+   "id": "1317ec0f73e9",
+   "m": [
+    33,
+    4,
+    125,
+    14
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g125-gd14-xx92-18.circ.txt"
+  },
+  {
+   "id": "80f97e3b25cc",
+   "m": [
+    36,
+    4,
+    128,
+    13
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/seeds/finds/2026-11-17-ideas_09_found_fwd-36-4-128-13_aes-sbox-a36-ad4-g128-gd13-xx92-47.circ.txt"
+  }
+ ]
+}

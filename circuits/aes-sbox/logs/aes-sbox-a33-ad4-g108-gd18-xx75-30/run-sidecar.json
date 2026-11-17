@@ -1,0 +1,146 @@
+{
+ "target": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt",
+ "A": 33,
+ "AD": 4,
+ "G": 108,
+ "GD": 18,
+ "class": "other",
+ "reference": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt",
+ "start": {
+  "path": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt",
+  "sha256": "15548f812df3e2d5645bedb6f70b235cacfd7aa7d1f9415eb0c73e07a8215fd9",
+  "tuple": [
+   33,
+   4,
+   109,
+   17
+  ]
+ },
+ "parent": {
+  "path": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt",
+  "sha256": "15548f812df3e2d5645bedb6f70b235cacfd7aa7d1f9415eb0c73e07a8215fd9"
+ },
+ "op": "conjpull",
+ "params": {
+  "conj": "id",
+  "schedule": "g:d+2:150,m:d+0:150,m:d-1:150",
+  "beam": 1,
+  "repair_keep": 1,
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 33,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-44d5e49eee",
+  "function": "aes-sbox",
+  "stage_caps": "plan",
+  "stage_choice": "old",
+  "max_pull": 2,
+  "missed_pulls": 0,
+  "stall_stages": 2,
+  "overrun": "scale",
+  "identity_first": "no",
+  "registry": null,
+  "sh_keep": 2,
+  "sh_span": 2,
+  "sh_probe": 0.0,
+  "keep_bests": 8,
+  "bp_cap": "none"
+ },
+ "how": "g19",
+ "lineage": [
+  "start",
+  "stage 1 g:19:150 seed 9715000 rk 1",
+  "g19"
+ ],
+ "method": "ops/conjpull.py: staged kernel pulls g:d+2:150,m:d+0:150,m:d-1:150 of a GF(2^8) conjugate (conj3 screen + build_conj) or of the start itself (identity pull; the sidecar lineage says which) (kernel bfx-44d5e49eee, repair_keep 1 unless a stage says rk0/rk1); search states may exceed caps, recorded circuits inside A<=33 AD<=4",
+ "command": "/usr/bin/python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt --target <campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt --seed 9715 --seconds 450 --out <campaign archive>/2026-11-17-push/G2/feed/ci-33-4-109-17-78d3b6 --conj id --schedule g:d+2:150,m:d+0:150,m:d-1:150",
+ "seed": 9715,
+ "elapsed_s": 83.7,
+ "code": {
+  "git": "",
+  "dirty": null,
+  "diff_sha256": null,
+  "tree": "not a git checkout",
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "ops_sha256": {
+   "bottom.py": "f1a308eff6eafd58d9f8c4077d0fa15adb3179745ef1778447a49751ae3c0fff",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "3b8bb71fddb834701ee4439b25178a8991d07921ba3cf584097dcee16b1abd1e",
+   "rebase.py": "5e59661b281af560476aa00c9cfdd558fb5d0a3a69b80ce6d395d4495448c742",
+   "rebuild_common.py": "8064584c7575b4b112ce80e4e8ff92118386af89c2bf03afda8b5574018db102",
+   "satlns.py": "fed82746d4685caaea0eaf2d0f8ee4f6717b024b9d91196a7c8e20ff7aab6d92",
+   "selbuild.py": "ac17e99159b37e09af846822efd3f5e9c6c6ca1cbf033473e36aa97a645876c0",
+   "transport.py": "6a9b114a234ddd324bfaba367782ce7ab0cfac6655fc8edd5bc5ba70cc1c43ee",
+   "winsat.py": "4d9d0bb139d570c90c473d85733489f32384000f3ba31850520e416c05050076",
+   "winsat_andrm.py": "0c90e8a336b7606ed81f35224b1c5de5c4ea008f45efb5fd690564371ab7a845",
+   "winsat_lib.py": "180c0879e442d128fa7c98feffc81e901ae4307c7d2f8a1816c2965b67f3259e"
+  },
+  "kernel": "<campaign archive>/2026-11-17-push/G2/cache/bin/bfx-44d5e49eee",
+  "kernel_sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+  "kernel_src_sha256": "7377c0b6fb40942f9776059ad94e999638c3694b0748e8221310497c2829eed8"
+ },
+ "aes_check": "OK   <campaign archive>/2026-11-17-push/G2/feed/ci-33-4-109-17-78d3b6/conjpull-a33-ad4-g108-gd18-c5cc8ea3e4.circ.txt  A AD G GD = 33 4 108 18  counts {'AND': 33, 'XNOR': 30, 'XOR': 45}",
+ "aes_check_full": "OK   <campaign archive>/2026-11-17-push/G2/feed/ci-33-4-109-17-78d3b6/conjpull-a33-ad4-g108-gd18-c5cc8ea3e4.circ.txt  A AD G GD = 33 4 108 18  counts {'AND': 33, 'XNOR': 30, 'XOR': 45}\n     new Pareto point on pinned set: YES\n     published best G at GD<=18: 33 4 116 15 (aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt, gain +8)\n     published best G at A<=33: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -5)\n     published best G at A<=33, GD<=18: 33 4 116 15 (aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt, gain +8)\n",
+ "circuit_sha256": "c5cc8ea3e4ec2dbb2b1825d94cf1d9a45fc812d9751ce69b555e5a9fd13f1ac3",
+ "path_certified": true,
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G2/feed/ci-33-4-109-17-78d3b6/run.json",
+  "kind": "ops.conjpull",
+  "command": "python3 search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt --target <campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt --seed 9715 --seconds 450 --out <campaign archive>/2026-11-17-push/G2/feed/ci-33-4-109-17-78d3b6 --conj id --schedule g:d+2:150,m:d+0:150,m:d-1:150",
+  "argv": [
+   "/usr/bin/python3",
+   "search/nonlinear/boolflux/ops/conjpull.py",
+   "--in",
+   "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt",
+   "--target",
+   "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a33-ad4-g109-gd17-78d3b6cd37a5.circ.txt",
+   "--seed",
+   "9715",
+   "--seconds",
+   "450",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G2/feed/ci-33-4-109-17-78d3b6",
+   "--conj",
+   "id",
+   "--schedule",
+   "g:d+2:150,m:d+0:150,m:d-1:150"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 9715,
+   "stage_seed": "seed x 1000 + stage index x 10 + beam index (or the stage s<N> option); every stage and kernel seed is an event in events.jsonl.gz",
+   "kernel_seed": "stage seed x 100000 + sub-step (+7, +13 within an osc step)",
+   "trb_rng": "random.Random(stage seed)"
+  },
+  "function": "aes-sbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/2026-11-17-push/G2/cache/bin/bfx-44d5e49eee",
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-17T09:09:30Z"
+}

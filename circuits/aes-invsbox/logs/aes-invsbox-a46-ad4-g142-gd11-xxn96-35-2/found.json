@@ -1,0 +1,136 @@
+{
+ "circuit": "aes-invsbox-a46-ad4-g142-gd11-xxn96-35-2.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  46,
+  4,
+  142,
+  11
+ ],
+ "found_by": "BoolFlux",
+ "method": "shared-bottom rebuild",
+ "method_description": "shared rank-1 bottom rebuilt under the kept front, then the gate kernel",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-invsbox",
+  "tuple_A_AD_G_GD": [
+   55,
+   4,
+   148,
+   10
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2",
+  "source": "<campaign archive>/2026-11-17-push/G3/starts/NIST-aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "source_sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2"
+ },
+ "chain_root": "NIST's circuits, through our published circuits and earlier circuits of these runs (the campaign's records in the logs)",
+ "lineage": [
+  "shared-bottom rebuild (ops/bottom.py), then the A-capped gate kernel: kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 190532, \"kernel_seed\": 190532, \"caps\": {\"A\": 46, \"AD\": 4, \"GD\": 11}}"
+ ],
+ "parameters": {
+  "cut": 4,
+  "cap": 11,
+  "amax": 47,
+  "iters": 30000,
+  "pw": "0,3",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1,
+  "junk": "absorb5"
+ },
+ "seed": 61,
+ "found_utc": "2026-11-17T09:10:53Z",
+ "found_utc_source": "the run's improvement event for this circuit (events.jsonl.gz), from the run's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 235.639
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G3",
+  "what": "shared-bottom rebuilds of inverse circuits at gate-depth caps 12 and 11 (ops/bottom.py of the 4170c41 snapshot, --junk absorb5, high AND weights --pw, --amax)"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/ops/bottom.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G3/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": true,
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run recorded the same value; ops/bottom.py of the snapshot (run.json argv), with --pw/--amax options; the run folder's own scripts (G3/bin) only queued these runs",
+  "sources_sha256_at_run": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "git_at_run": {
+   "commit": null,
+   "branch": null,
+   "dirty": null,
+   "note": "not a git checkout (or git missing): see sources_sha256"
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "source_sha256": "7377c0b6fb40942f9776059ad94e999638c3694b0748e8221310497c2829eed8"
+   }
+  ]
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 search/nonlinear/boolflux/ops/bottom.py --in <campaign archive>/2026-11-17-push/G3/starts/NIST-aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target <campaign archive>/2026-11-17-push/G3/starts/aes-invsbox-a47-ad4-g141-gd11-xx94-46.circ.txt --seed 61 --seconds 1500 --out <campaign archive>/2026-11-17-push/G3/runs/i55c11-s61 --cap 11",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-17-push/G3/snap",
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-push/G3/cache",
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G3/runs/i55c11-s61/bottom-a46-ad4-g142-gd11-c62df7191f.circ.txt",
+  "sha256": "c62df7191fdadb602b5565873872e5f0da1a1ce0682e8ecb9adbff3400a82b0a",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "bottom.jsonl.gz",
+  "events.jsonl.gz",
+  "kernel-best.bfx",
+  "kernel-start.bfx",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "launch.txt",
+  "plan.json.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json",
+  "run.log.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "bottom.jsonl.gz",
+  "events.jsonl.gz",
+  "kernel-best.bfx",
+  "kernel-start.bfx",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "launch.txt",
+  "plan.json.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json",
+  "run.log.gz"
+ ]
+}

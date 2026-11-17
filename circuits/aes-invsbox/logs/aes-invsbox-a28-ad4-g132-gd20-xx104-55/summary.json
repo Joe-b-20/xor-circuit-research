@@ -1,0 +1,201 @@
+{
+ "target": "aes-inv",
+ "target_description": "AES inverse S-box, FIPS-197",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 20,
+  "AD": 4,
+  "A": 28
+ },
+ "start": "<campaign archive>/2026-11-17-push/G1/snap/circuits/aes-invsbox/aes-invsbox-a28-ad4-g133-gd20-xx105-53.circ.txt",
+ "start_metrics": {
+  "G": 133,
+  "A": 28,
+  "GD": 20,
+  "AD": 4,
+  "cost": 133.0,
+  "counts": {
+   "AND": 28,
+   "XNOR": 53,
+   "XOR": 52
+  }
+ },
+ "seeds": [
+  602
+ ],
+ "iters": 2000000000,
+ "seconds_cap": 600.0,
+ "rounds": 1,
+ "seed_scheme": "v2",
+ "code_sha256_12": "aa864668b180",
+ "code_snapshot": "<campaign archive>/2026-11-17-push/G1/runs/k03-t0-28-4-133-20/src",
+ "settings": {
+  "T0": "0",
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1,
+  "stop_stall_it": "400000"
+ },
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-inv --model nist --start <campaign archive>/2026-11-17-push/G1/snap/circuits/aes-invsbox/aes-invsbox-a28-ad4-g133-gd20-xx105-53.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 20 --iters 2000000000 --seconds 600 --seeds 602 --jobs 1 --out <campaign archive>/2026-11-17-push/G1/runs/k03-t0-28-4-133-20 --set T0=0 --set stop_stall_it=400000",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes-inv",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-17-push/G1/snap/circuits/aes-invsbox/aes-invsbox-a28-ad4-g133-gd20-xx105-53.circ.txt",
+  "--objective",
+  "cost,gd",
+  "--cap-a",
+  "28",
+  "--cap-ad",
+  "4",
+  "--cap-gd",
+  "20",
+  "--iters",
+  "2000000000",
+  "--seconds",
+  "600",
+  "--seeds",
+  "602",
+  "--jobs",
+  "1",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G1/runs/k03-t0-28-4-133-20",
+  "--set",
+  "T0=0",
+  "--set",
+  "stop_stall_it=400000"
+ ],
+ "run_record": "run.json",
+ "runs": [
+  {
+   "round": 0,
+   "seed": 602,
+   "kernel_seed": 602,
+   "tag": "r0-s602",
+   "returncode": 0,
+   "wall_s": 153.92,
+   "final": {
+    "cost": 132.0,
+    "G": 132.0,
+    "A": 28.0,
+    "GD": 20.0,
+    "AD": 4.0,
+    "obj": 132.002,
+    "feas": 1.0,
+    "iters": 405003.0,
+    "restarts": 0.0,
+    "seconds": 153.87
+   },
+   "improvements": [
+    {
+     "t": 2.024,
+     "it": 5003,
+     "mv": "resub2",
+     "cost": 132.0,
+     "G": 132,
+     "A": 28,
+     "GD": 20,
+     "AD": 4
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 101043.0,
+     "acc": 4596.0,
+     "imp": 0.0,
+     "cands": 77068.0,
+     "time": 1.43
+    },
+    "resub2": {
+     "prop": 203061.0,
+     "acc": 34271.0,
+     "imp": 1.0,
+     "cands": 2095006.0,
+     "time": 94.02
+    },
+    "resub3": {
+     "prop": 100899.0,
+     "acc": 16520.0,
+     "imp": 0.0,
+     "cands": 1261904.0,
+     "time": 58.32
+    }
+   },
+   "time_capped": true,
+   "core_ok": true,
+   "metrics": {
+    "G": 132,
+    "A": 28,
+    "GD": 20,
+    "AD": 4,
+    "cost": 132.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 55,
+     "XOR": 49
+    }
+   }
+  }
+ ],
+ "wall_s": 153.9,
+ "best": {
+  "file": "<campaign archive>/2026-11-17-push/G1/runs/k03-t0-28-4-133-20/best.circ.txt",
+  "origin": "seed 602 round 0",
+  "feasible": true,
+  "metrics": {
+   "G": 132,
+   "A": 28,
+   "GD": 20,
+   "AD": 4,
+   "cost": 132.0,
+   "counts": {
+    "AND": 28,
+    "XNOR": 55,
+    "XOR": 49
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "buf_lines": 0,
+  "independent_metrics": {
+   "G": 132,
+   "counts": {
+    "AND": 28,
+    "XNOR": 55,
+    "XOR": 49
+   },
+   "A": 28,
+   "XX": 104,
+   "GD": 20,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 132.0
+  }
+ }
+}

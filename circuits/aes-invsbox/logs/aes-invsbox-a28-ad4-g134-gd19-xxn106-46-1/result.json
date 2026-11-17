@@ -1,0 +1,105 @@
+{
+ "op": "rebase",
+ "target": "<campaign archive>/2026-11-17-push/G1/found/aes-invsbox-a28-ad4-g132-gd20-xx104-55-0646Z/aes-invsbox-a28-ad4-g132-gd20-xx104-55.circ.txt",
+ "seed": 1102,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G1/found/aes-invsbox-a28-ad4-g132-gd20-xx104-55-0646Z/aes-invsbox-a28-ad4-g132-gd20-xx104-55.circ.txt",
+ "start_tuple": [
+  28,
+  4,
+  132,
+  20
+ ],
+ "params": {
+  "cap": 19,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 240,
+  "stages": 2,
+  "moves": false,
+  "move_top": 4,
+  "descend": false,
+  "move_budget": 0.25,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "price": "gates",
+  "deep": true,
+  "patch": true,
+  "pool": 3000,
+  "patch_singles": 40,
+  "patch_pairs": 120,
+  "shard": "0/1",
+  "function": "aes-invsbox"
+ },
+ "wall_s": 580.1,
+ "n_written": 3,
+ "rejected": {
+  "outside": 0,
+  "dominated": 2,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "build {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 163}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 163, \"kernel_seed\": 441645, \"caps\": {\"A\": 28, \"AD\": 4, \"GD\": 19}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 163, \"kernel_seed\": 168201, \"caps\": {\"A\": 28, \"AD\": 4, \"GD\": 19}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "build {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 173}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 173, \"kernel_seed\": 204545, \"caps\": {\"A\": 28, \"AD\": 4, \"GD\": 19}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.11,
+  "verify_s": 0.19,
+  "verify_calls": 3
+ },
+ "notes": [],
+ "utc": "2026-11-17T09:24:11Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    28,
+    4,
+    134,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/r03-rebase-28-4-132-20-cap19/rebase-a28-ad4-g134-gd19-c79143b95a.circ.txt",
+   "how": "kernel {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 163, \"kernel_seed\": 168201, \"caps\": {\"A\": 28, \"AD\": 4, \"GD\": 19}}",
+   "t": 481.5,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    28,
+    4,
+    134,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/r03-rebase-28-4-132-20-cap19/rebase-a28-ad4-g134-gd19-c79143b95a.circ.txt",
+   "how": "kernel {\"cap\": 19, \"parent_how\": \"start\", \"build_G\": 163, \"kernel_seed\": 168201, \"caps\": {\"A\": 28, \"AD\": 4, \"GD\": 19}}",
+   "t": 481.5,
+   "class": "other"
+  }
+ ]
+}

@@ -1,0 +1,203 @@
+{
+ "operator": "join",
+ "inputs": [
+  "f4f07a0106ea"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 949159705,
+ "seconds": 60.0,
+ "wall_s": 5.81,
+ "cpu_s": 5.44,
+ "candidates": 4,
+ "cand_ids": [
+  "db86ed560b0b",
+  "bc0cb9d3a505",
+  "ca088727f4cd",
+  "835f8a26cd61"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "partners": 3,
+  "partners_done": 3,
+  "tried": 4493,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794901059.39927,
+  "joined_through": 1794901075.5844626,
+  "joined_through_by": {
+   "f4f07a0106ea": 1794901075.5844626,
+   "90ce2e5a6188": 1794901075.5844626,
+   "50fb93294db1": 1794901075.5844626,
+   "595e232589e9": 1794901075.5844626,
+   "3a5c485225a7": 1794901075.5844626,
+   "0186c06e2263": 1794901075.5844626,
+   "f93a248955af": 1794901075.5844626,
+   "6b3a1f2f31f5": 1794901075.5844626
+  },
+  "batch": [
+   {
+    "target": "f4f07a0106ea",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "90ce2e5a6188",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "50fb93294db1",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "595e232589e9",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "3a5c485225a7",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "0186c06e2263",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "f93a248955af",
+    "since": 1794901059.39927,
+    "partners": 3,
+    "partners_done": 3,
+    "joined_through": 1794901075.5844626
+   },
+   {
+    "target": "6b3a1f2f31f5",
+    "since": 0.0,
+    "partners": 565,
+    "partners_done": 565,
+    "joined_through": 1794901075.5844626
+   }
+  ],
+  "joins": [
+   {
+    "front": "6b3a1f2f31f5",
+    "back": "df625e93f138",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 1
+   },
+   {
+    "front": "6b3a1f2f31f5",
+    "back": "df625e93f138",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "6b3a1f2f31f5",
+    "back": "1b1e372812eb",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "6128ecc670f2",
+    "back": "6b3a1f2f31f5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 1
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 4415,
+  "duplicate": 19,
+  "archived": 55,
+  "partners_with_hits": 3,
+  "pair_accounting": {
+   "partner_hash": "256b0e59be77810d",
+   "repeated_pairs": 72,
+   "partner_s_sum": 5.698,
+   "partner_s_max": 0.02,
+   "yields_max": 14,
+   "kept_max": 2,
+   "partners_with_yields": 586
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 1181,
+   "cells": 278,
+   "front": 84,
+   "max_t_admit": 1794901075.5844626
+  }
+ },
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r01110-join/run.json",
+  "kind": "hub.op.join",
+  "command": "python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G2/hub --in f4f07a0106ea --seed 949159705 --seconds 60 --out <campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r01110-join --since 1794901059.39927 --batch 90ce2e5a6188:1794901059.39927,50fb93294db1:1794901059.39927,595e232589e9:1794901059.39927,3a5c485225a7:1794901059.39927,0186c06e2263:1794901059.39927,f93a248955af:1794901059.39927,6b3a1f2f31f5:0.0",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G2/hub",
+   "--in",
+   "f4f07a0106ea",
+   "--seed",
+   "949159705",
+   "--seconds",
+   "60",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r01110-join",
+   "--since",
+   "1794901059.39927",
+   "--batch",
+   "90ce2e5a6188:1794901059.39927,50fb93294db1:1794901059.39927,595e232589e9:1794901059.39927,3a5c485225a7:1794901059.39927,0186c06e2263:1794901059.39927,f93a248955af:1794901059.39927,6b3a1f2f31f5:0.0"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 949159705,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": null
+  },
+  "function": "aes-sbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 233832.2268,
+  "mono_t0": 233832.3005,
+  "mono_end": 233838.1198,
+  "setup_s": 0.074,
+  "op_s": 5.819,
+  "proc_start_to_main_s": 0.11,
+  "archive_load_s": 0.06,
+  "kernel_s": 0.0,
+  "kernel_calls": 0
+ }
+}

@@ -1,0 +1,305 @@
+{
+ "run_id": "hub-847958.r00062-join",
+ "campaign": "hub-847958",
+ "operator": "join",
+ "choice": "join",
+ "target": "8645717283da",
+ "target_metrics": [
+  31,
+  5,
+  118,
+  21
+ ],
+ "target_class": "A<=31",
+ "seed": 577289772,
+ "cpu": 0,
+ "command": [
+  "taskset",
+  "-c",
+  "0",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G1/hub",
+  "--in",
+  "8645717283da",
+  "--seed",
+  "577289772",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r00062-join",
+  "--since",
+  "1794897204.148448",
+  "--batch",
+  "a1ae7402e0a4:1794897204.148448,838ccdf6d5d3:1794897204.148448,d063563b771d:1794897204.148448,769afd198745:1794897204.148448,ee224ce86e99:1794897204.148448,680d270a9310:1794897204.148448,6ad456a98584:1794897204.148448"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_join.py",
+ "script_sha": "9b1bb4e61c",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794897212.1,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "partners": 7,
+  "partners_done": 7,
+  "tried": 534,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794897204.148448,
+  "joined_through": 1794897210.2763684,
+  "joined_through_by": {
+   "8645717283da": 1794897210.2763684,
+   "a1ae7402e0a4": 1794897210.2763684,
+   "838ccdf6d5d3": 1794897210.2763684,
+   "d063563b771d": 1794897210.2763684,
+   "769afd198745": 1794897210.2763684,
+   "ee224ce86e99": 1794897210.2763684,
+   "680d270a9310": 1794897210.2763684,
+   "6ad456a98584": 1794897210.2763684
+  },
+  "batch": [
+   {
+    "target": "8645717283da",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "a1ae7402e0a4",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "838ccdf6d5d3",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "d063563b771d",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "769afd198745",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "ee224ce86e99",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "680d270a9310",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   },
+   {
+    "target": "6ad456a98584",
+    "since": 1794897204.148448,
+    "partners": 7,
+    "partners_done": 7,
+    "joined_through": 1794897210.2763684
+   }
+  ],
+  "joins": [
+   {
+    "front": "ee224ce86e99",
+    "back": "19cd613fd4e8",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 0
+   },
+   {
+    "front": "a9e2f46771ea",
+    "back": "ee224ce86e99",
+    "LX": 6,
+    "LY": 4,
+    "interface_gates": 0
+   },
+   {
+    "front": "4fc83ad7c342",
+    "back": "ee224ce86e99",
+    "LX": 6,
+    "LY": 4,
+    "interface_gates": 0
+   },
+   {
+    "front": "a9e2f46771ea",
+    "back": "680d270a9310",
+    "LX": 6,
+    "LY": 6,
+    "interface_gates": 2
+   },
+   {
+    "front": "4fc83ad7c342",
+    "back": "680d270a9310",
+    "LX": 6,
+    "LY": 6,
+    "interface_gates": 2
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 390,
+  "duplicate": 2,
+  "archived": 137,
+  "partners_with_hits": 5,
+  "pair_accounting": {
+   "partner_hash": "d0d40dc28ed576b1",
+   "repeated_pairs": 0,
+   "partner_s_sum": 1.193,
+   "partner_s_max": 0.044,
+   "yields_max": 22,
+   "kept_max": 1,
+   "partners_with_yields": 35
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 265,
+   "cells": 127,
+   "front": 63,
+   "max_t_admit": 1794897210.2763684
+  }
+ },
+ "parents": [
+  "8645717283da"
+ ],
+ "wall_s": 1.59,
+ "cpu_s": 0.94,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 5,
+ "admitted": 5,
+ "gain": 1.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    31,
+    5,
+    116,
+    25
+   ],
+   "status": "admitted",
+   "id": "1bd6b73227cf",
+   "gain": 1.0,
+   "reason": "fewer G in the cap box by 1"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    31,
+    7,
+    117,
+    30
+   ],
+   "status": "admitted",
+   "id": "f6669730b829",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    31,
+    7,
+    117,
+    30
+   ],
+   "status": "admitted",
+   "id": "1d5327d82d16",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-003.bfx",
+   "metrics": [
+    31,
+    7,
+    119,
+    29
+   ],
+   "status": "admitted",
+   "id": "3bd618e5a876",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-004.bfx",
+   "metrics": [
+    31,
+    7,
+    119,
+    29
+   ],
+   "status": "admitted",
+   "id": "027b2b7c8012",
+   "gain": 0.0,
+   "reason": "dominated"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r00062-join/run.json",
+ "function": "aes-invsbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 53
+  },
+  "suspended": [],
+  "join_share": 0.0975,
+  "mode": "priority",
+  "level": "join",
+  "op": "join",
+  "rule": "front circuits with unmet partners; A, AD ascending, newest first; batched",
+  "n_level": 53,
+  "attempts": 11,
+  "struct_attempts": 6,
+  "why": "join",
+  "batch": 7,
+  "join_partners": 56
+ },
+ "admission": {
+  "counts": {
+   "admitted": 5
+  },
+  "admit_s": 0.318,
+  "finish_s": 0.331,
+  "job_wall_s": 1.59,
+  "op_wall_s": 1.25,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.002,
+  "mono_wall_s": 1.586,
+  "start_to_main_s": 0.129,
+  "setup_s": 0.121,
+  "op_s": 1.27,
+  "end_to_exit_seen_s": 0.066,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 1.216,
+  "proc_maxrss_kb": 38448,
+  "t_exit": 1794897213.689002
+ }
+}

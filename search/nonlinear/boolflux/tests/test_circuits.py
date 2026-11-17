@@ -5,8 +5,8 @@ a third implementation (circuits/boolcirc).
     python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear
 
 Function of a file: a *.fn.json in its folder ({"name", "n_inputs", "n_outputs", "table"}; if there
-are several, the one whose name starts the file name), else the AES S-box or inverse S-box by name
-(aes-sbox..., aes-invsbox...).  Both sides read the file with their own parser and evaluate every
+are several, the one whose name starts the file name), else the AES S-box, inverse S-box or the two with a
+direction bit by name (aes-sbox..., aes-invsbox..., aes-sbox-sel...).  Both sides read the file with their own parser and evaluate every
 input in NIST's bit order (input i and output i are bit 7-i, 'msb/msb'); their metrics must agree.
 """
 import json
@@ -43,6 +43,8 @@ def function_of(path):
         d = json.loads(tables[0].read_text())
         return d['n_inputs'], d['n_outputs'], list(d['table'])
     name = path.name.lower()
+    if name.startswith('aes-sbox-sel'):                # NIST's aes-sbox-sel: c x0..x7, S-box for c = 0, inverse for c = 1
+        return 9, 8, V.aes_sbox() + V.aes_inv_sbox()
     if name.startswith(('aes-invsbox', 'aes-sbox-inv', 'aes-sbox-rev')):
         return 8, 8, V.aes_inv_sbox()
     if name.startswith('aes-sbox'):

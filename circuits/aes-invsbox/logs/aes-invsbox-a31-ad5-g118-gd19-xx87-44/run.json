@@ -1,0 +1,277 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "ops.conjpull",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/conjpull.py",
+  "--in",
+  "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+  "--target",
+  "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+  "--seed",
+  "7150",
+  "--seconds",
+  "900",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19",
+  "--function",
+  "aes-invsbox",
+  "--conj",
+  "id",
+  "--schedule",
+  "g:+0:300,m:+0:300,m:-1:250"
+ ],
+ "cwd": "<campaign archive>/2026-11-17-push/G1/snap",
+ "command": "python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt --target <campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt --seed 7150 --seconds 900 --out <campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250",
+ "git": {
+  "commit": null,
+  "branch": null,
+  "dirty": null,
+  "note": "not a git checkout (or git missing): see sources_sha256"
+ },
+ "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+ "repo": "<campaign archive>/2026-11-17-push/G1/snap",
+ "function": "aes-invsbox",
+ "seeds": {
+  "seed": 7150,
+  "stage_seed": "seed x 1000 + stage index x 10 + beam index (or the stage s<N> option); every stage and kernel seed is an event in events.jsonl.gz",
+  "kernel_seed": "stage seed x 100000 + sub-step (+7, +13 within an osc step)",
+  "trb_rng": "random.Random(stage seed)"
+ },
+ "config": {
+  "target": "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+  "limits": {
+   "A": 31,
+   "AD": 5,
+   "G": 120,
+   "GD": 19
+  },
+  "params": {
+   "conj": "id",
+   "schedule": "g:+0:300,m:+0:300,m:-1:250",
+   "beam": 1,
+   "repair_keep": 1,
+   "kcfg": {},
+   "stage_iters": 200000,
+   "relax": 1,
+   "repair_iters": 100000,
+   "trb_regions": "bottom,top,mid,random",
+   "top_runs": 12,
+   "screen_runs": 4,
+   "caps": {
+    "A": 31,
+    "AD": 5
+   },
+   "kernel_bin": "bfx-44d5e49eee",
+   "function": "aes-invsbox",
+   "stage_caps": "plan",
+   "stage_choice": "old",
+   "max_pull": 2,
+   "missed_pulls": 0,
+   "stall_stages": 2,
+   "overrun": "scale",
+   "identity_first": "no",
+   "registry": null,
+   "sh_keep": 2,
+   "sh_span": 2,
+   "sh_probe": 0.0,
+   "keep_bests": 8,
+   "bp_cap": "none"
+  },
+  "method": "AES inverse S-box: ops/conjpull.py: staged kernel pulls g:+0:300,m:+0:300,m:-1:250 of a GF(2^8) conjugate (conj3 screen + build_conj) or of the start itself (identity pull; the sidecar lineage says which) (kernel bfx-44d5e49eee, repair_keep 1 unless a stage says rk0/rk1); search states may exceed caps, recorded circuits inside A<=31 AD<=5",
+  "command": "/usr/bin/python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt --target <campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt --seed 7150 --seconds 900 --out <campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250"
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+   "sha256": "00a13e178c5c28500f7fcb183bf00bb92d291c7e316da42831b4f9283a89d71e",
+   "metrics": [
+    31,
+    5,
+    120,
+    19
+   ]
+  },
+  {
+   "label": "reference (target)",
+   "path": "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+   "sha256": "00a13e178c5c28500f7fcb183bf00bb92d291c7e316da42831b4f9283a89d71e"
+  }
+ ],
+ "budget_s": 900.0,
+ "kernels": [
+  {
+   "path": "<campaign archive>/2026-11-17-push/G1/cache/bin/bfx-44d5e49eee",
+   "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+   "source": "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/kernel/bfx.c",
+   "source_sha256": "7377c0b6fb40942f9776059ad94e999638c3694b0748e8221310497c2829eed8",
+   "command": [
+    "gcc",
+    "-O3",
+    "-march=native",
+    "-o",
+    "<campaign archive>/2026-11-17-push/G1/cache/bin/bfx-44d5e49eee",
+    "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/kernel/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   4
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-push/G1/cache",
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/independent",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/independent",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/conj_lib"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T09:37:49Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "n_written": 5,
+  "rejected": {
+   "outside": 0,
+   "dominated": 20,
+   "aes_check_fail": 0,
+   "duplicate": 0
+  },
+  "offers_by_how": {
+   "g19": {
+    "offered": 6,
+    "written": 1,
+    "dominated": 5
+   },
+   "g19-kb": {
+    "offered": 1,
+    "written": 1
+   },
+   "o19-relaxed20": {
+    "offered": 2,
+    "written": 0,
+    "dominated": 2
+   },
+   "o19-repair": {
+    "offered": 2,
+    "written": 0,
+    "dominated": 2
+   },
+   "o19-gate": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "t19-random-build": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "t19-random-kb": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "t19-random": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "o18-relaxed19": {
+    "offered": 2,
+    "written": 0,
+    "dominated": 2
+   },
+   "o18-repair-kb": {
+    "offered": 2,
+    "written": 1,
+    "dominated": 1
+   },
+   "o18-repair": {
+    "offered": 2,
+    "written": 1,
+    "dominated": 1
+   },
+   "o18-gate": {
+    "offered": 1,
+    "written": 1
+   },
+   "t18-mid-build": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "t18-mid": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "g18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   }
+  },
+  "pareto_A_AD_G_GD": [
+   [
+    31,
+    5,
+    118,
+    19
+   ],
+   [
+    31,
+    5,
+    121,
+    18
+   ]
+  ]
+ },
+ "t_end_utc": "2026-11-17T09:51:57Z",
+ "wall_s": 848.269,
+ "mono_s": 912.452,
+ "cpu_s": 843.613,
+ "max_rss_kb": 27340
+}

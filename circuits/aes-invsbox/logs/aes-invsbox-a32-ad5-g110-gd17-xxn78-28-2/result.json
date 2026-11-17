@@ -1,0 +1,547 @@
+{
+ "op": "conjpull",
+ "target": "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a32-ad5-g112-gd17-xx80-36-206efb.circ.txt",
+ "seed": 3680,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G1/runs/tg18-f2i-a32-ad5-g112-gd17/transport-a32-ad5-g120-gd20-41b5565f85.circ.txt",
+ "start_tuple": [
+  32,
+  5,
+  120,
+  20
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "g:+0:120,m:19:150,m:17:200",
+  "beam": 1,
+  "repair_keep": 1,
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-44d5e49eee",
+  "function": "aes-invsbox",
+  "stage_caps": "plan",
+  "stage_choice": "old",
+  "max_pull": 2,
+  "missed_pulls": 0,
+  "stall_stages": 2,
+  "overrun": "scale",
+  "identity_first": "no",
+  "registry": null,
+  "sh_keep": 2,
+  "sh_span": 2,
+  "sh_probe": 0.0,
+  "keep_bests": 8,
+  "bp_cap": "none"
+ },
+ "wall_s": 469.1,
+ "n_written": 11,
+ "rejected": {
+  "outside": 0,
+  "dominated": 11,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "g20-kb": {
+   "offered": 2,
+   "written": 2
+  },
+  "g20": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "o19-relaxed20": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o19-repair": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o19-gate-kb": {
+   "offered": 2,
+   "written": 2
+  },
+  "o19-gate": {
+   "offered": 1,
+   "written": 1
+  },
+  "t19-random-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t19-random-kb": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "t19-random": {
+   "offered": 1,
+   "written": 1
+  },
+  "o17-relaxed18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o17-repair-kb": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "o17-repair": {
+   "offered": 1,
+   "written": 1
+  },
+  "o17-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t17-top-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t17-top-kb": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t17-top": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "g17": {
+   "offered": 1,
+   "written": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.12,
+  "verify_s": 0.492,
+  "verify_calls": 11
+ },
+ "notes": [],
+ "utc": "2026-11-17T10:57:02Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    110,
+    17
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/tg18-f2i-a32-ad5-g112-gd17/pull-0/conjpull-a32-ad5-g110-gd17-272826fb30.circ.txt",
+   "how": "g17",
+   "t": 469.1,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    110,
+    17
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/tg18-f2i-a32-ad5-g112-gd17/pull-0/conjpull-a32-ad5-g110-gd17-272826fb30.circ.txt",
+   "how": "g17",
+   "t": 469.1,
+   "class": "strict"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "probe": false,
+   "mode": "g",
+   "cap": 20,
+   "cap_planned": 20,
+   "seed": 3680000,
+   "in": [
+    32,
+    5,
+    120,
+    20
+   ],
+   "best": [
+    32,
+    5,
+    113,
+    19
+   ],
+   "seconds": 119.6,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     0.5,
+     32,
+     5,
+     119,
+     20
+    ],
+    [
+     0.5,
+     32,
+     5,
+     118,
+     20
+    ],
+    [
+     20.1,
+     32,
+     5,
+     118,
+     19
+    ],
+    [
+     20.3,
+     32,
+     5,
+     117,
+     20
+    ],
+    [
+     28.1,
+     32,
+     5,
+     116,
+     20
+    ],
+    [
+     31.1,
+     32,
+     5,
+     115,
+     20
+    ],
+    [
+     31.2,
+     32,
+     5,
+     114,
+     20
+    ],
+    [
+     35.0,
+     32,
+     5,
+     113,
+     20
+    ],
+    [
+     36.9,
+     32,
+     5,
+     113,
+     19
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "probe": false,
+   "mode": "m",
+   "cap": 19,
+   "cap_planned": 19,
+   "seed": 3680010,
+   "in": [
+    32,
+    5,
+    113,
+    19
+   ],
+   "best": [
+    32,
+    5,
+    110,
+    18
+   ],
+   "seconds": 149.4,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     195.3,
+     32,
+     5,
+     112,
+     19
+    ],
+    [
+     196.6,
+     32,
+     5,
+     112,
+     18
+    ],
+    [
+     208.2,
+     32,
+     5,
+     111,
+     19
+    ],
+    [
+     220.0,
+     32,
+     5,
+     111,
+     18
+    ],
+    [
+     228.1,
+     32,
+     5,
+     112,
+     18
+    ],
+    [
+     229.0,
+     32,
+     5,
+     111,
+     19
+    ],
+    [
+     230.1,
+     32,
+     5,
+     110,
+     19
+    ],
+    [
+     232.1,
+     32,
+     5,
+     110,
+     18
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "probe": false,
+   "mode": "m",
+   "cap": 17,
+   "cap_planned": 17,
+   "seed": 3680020,
+   "in": [
+    32,
+    5,
+    110,
+    18
+   ],
+   "best": [
+    32,
+    5,
+    110,
+    17
+   ],
+   "seconds": 200.0,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     302.8,
+     32,
+     5,
+     111,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     110,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     111,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     114,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     113,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     112,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     113,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     112,
+     18
+    ],
+    [
+     302.9,
+     32,
+     5,
+     116,
+     17
+    ],
+    [
+     303.0,
+     32,
+     5,
+     115,
+     17
+    ],
+    [
+     303.0,
+     32,
+     5,
+     114,
+     17
+    ],
+    [
+     303.0,
+     32,
+     5,
+     113,
+     17
+    ],
+    [
+     303.5,
+     32,
+     5,
+     112,
+     17
+    ],
+    [
+     303.6,
+     32,
+     5,
+     111,
+     17
+    ],
+    [
+     369.9,
+     32,
+     5,
+     114,
+     17
+    ],
+    [
+     369.9,
+     32,
+     5,
+     113,
+     17
+    ],
+    [
+     371.1,
+     32,
+     5,
+     111,
+     17
+    ],
+    [
+     451.2,
+     32,
+     5,
+     110,
+     17
+    ]
+   ]
+  }
+ ],
+ "kernel_calls": 11,
+ "conj_planned": [
+  "id"
+ ],
+ "conj_run": [
+  {
+   "label": "id",
+   "lam": null,
+   "k": null,
+   "screen_score": null,
+   "screen_rank": null,
+   "stages_done": 3,
+   "stages_planned": 3,
+   "seconds": 469.0,
+   "dropped": null,
+   "halving_rank": null,
+   "final": [
+    32,
+    5,
+    110,
+    17
+   ],
+   "lineage_front": [
+    [
+     32,
+     5,
+     110,
+     17
+    ]
+   ]
+  }
+ ],
+ "conj_not_reached": [],
+ "conj_refused": [],
+ "fates": {
+  "id": "run: 3 stages"
+ },
+ "plan": {
+  "need_s": 470,
+  "avail_s": 545,
+  "schedule_s": 470.0,
+  "items": [
+   "id"
+  ],
+  "identity_first": false
+ },
+ "halving": {}
+}

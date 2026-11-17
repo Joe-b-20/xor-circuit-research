@@ -1,0 +1,98 @@
+{
+ "op": "bottom",
+ "target": "<campaign archive>/2026-11-17-push/G3/starts/aes-invsbox-a40-ad4-g136-gd12-xx96-42.circ.txt",
+ "seed": 1,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G3/starts/aes-invsbox-a40-ad4-g136-gd12-xx96-42.circ.txt",
+ "start_tuple": [
+  40,
+  4,
+  136,
+  12
+ ],
+ "params": {
+  "cut": 4,
+  "cap": 12,
+  "amax": 40,
+  "iters": 30000,
+  "pw": "0,3",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1,
+  "junk": "absorb5"
+ },
+ "wall_s": 1481.5,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 4,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 140892, \"kernel_seed\": 140892, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 888599, \"kernel_seed\": 888599, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 800876, \"kernel_seed\": 800876, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 267460, \"kernel_seed\": 267460, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 519502, \"kernel_seed\": 519502, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 471326, \"kernel_seed\": 471326, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 3.7,
+  "verify_s": 0.152,
+  "verify_calls": 2
+ },
+ "notes": [],
+ "utc": "2026-11-17T06:51:46Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    40,
+    4,
+    134,
+    12
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G3/runs/i40c12-s1/bottom-a40-ad4-g134-gd12-7c17070801.circ.txt",
+   "how": "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 888599, \"kernel_seed\": 888599, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}",
+   "t": 356.7,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    40,
+    4,
+    134,
+    12
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G3/runs/i40c12-s1/bottom-a40-ad4-g134-gd12-7c17070801.circ.txt",
+   "how": "kernel {\"cap\": 12, \"pw\": 0.0, \"plan_seed\": 888599, \"kernel_seed\": 888599, \"caps\": {\"A\": 40, \"AD\": 4, \"GD\": 12}}",
+   "t": 356.7,
+   "class": "strict"
+  }
+ ]
+}

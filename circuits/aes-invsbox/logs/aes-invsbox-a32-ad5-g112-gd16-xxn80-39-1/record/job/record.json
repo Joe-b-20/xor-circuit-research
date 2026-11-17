@@ -1,0 +1,230 @@
+{
+ "operator": "polish",
+ "inputs": [
+  "7325cc885257"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 124195847,
+ "seconds": 90.0,
+ "wall_s": 90.19,
+ "cpu_s": 88.69,
+ "candidates": 1,
+ "cand_ids": [
+  "e2c88c7088c0"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 32,
+   "cap.ad": 5,
+   "cap.gd": 16,
+   "in": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish/start.bfx",
+   "out": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish/best.bfx",
+   "seed": 124195847,
+   "seconds": 90.0,
+   "keep_bests": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish/bests"
+  },
+  "t_last_improvement": 18.165,
+  "kernel_bin": "bfx-44d5e49eee",
+  "kernel_stats": {
+   "stop": "time",
+   "iters": 243468,
+   "restarts": 3,
+   "last_improve_it": 47893,
+   "last_improve_t": 18.165,
+   "first_feasible_it": 0,
+   "repair_it": 0,
+   "best_lines": 1,
+   "last_bests": [
+    [
+     18.165,
+     47893,
+     "resub1",
+     32,
+     5,
+     112,
+     16,
+     18.166,
+     18.74
+    ]
+   ],
+   "clock": {
+    "mono_s": 90.001,
+    "real_s": 90.001,
+    "cpu_s": 88.439
+   },
+   "first_best": [
+    18.165,
+    47893,
+    "resub1",
+    32,
+    5,
+    112,
+    16,
+    18.166,
+    18.74
+   ],
+   "accept": {
+    "improve": 3412,
+    "neutral": 45080,
+    "uphill": 3537,
+    "uphill_refused": 62252,
+    "no_accept": 167463
+   },
+   "cands": {
+    "evaluated": 1513471,
+    "noop": 460129,
+    "nocand_moves": 23976,
+    "repair_keep_refused": 0
+   },
+   "moves": {
+    "resub1": {
+     "prop": 60893,
+     "acc": 7341,
+     "imp": 1,
+     "nocand": 11442,
+     "time": 1.05
+    },
+    "resub2": {
+     "prop": 121424,
+     "acc": 29982,
+     "imp": 0,
+     "nocand": 8384,
+     "time": 53.77
+    },
+    "resub3": {
+     "prop": 61151,
+     "acc": 14706,
+     "imp": 0,
+     "nocand": 4150,
+     "time": 35.11
+    }
+   },
+   "final": {
+    "G": 112,
+    "A": 32,
+    "GD": 16,
+    "AD": 5,
+    "feas": 1
+   },
+   "walk": {
+    "distinct_struct": 50698,
+    "distinct_metrics": 10
+   },
+   "bestform": {
+    "resub1": [
+     0,
+     1,
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "bests_kept": 1,
+  "bests_dir": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish/bests",
+  "caps": {
+   "A": 32,
+   "AD": 5,
+   "GD": 16
+  },
+  "bests": {
+   "files": 1,
+   "ok": 1,
+   "not placed": 0,
+   "archived": 0,
+   "archived structure": 0,
+   "unreadable": 0,
+   "returned": 0,
+   "returned_metrics": []
+  },
+  "archive_loaded": {
+   "records": 1733,
+   "cells": 197,
+   "front": 57,
+   "max_t_admit": 1794913523.0588498
+  }
+ },
+ "function": "aes-invsbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish/run.json",
+  "kind": "hub.op.polish",
+  "command": "python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/2026-11-17-push/G1/hub --in 7325cc885257 --seed 124195847 --seconds 90 --out <campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_polish.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G1/hub",
+   "--in",
+   "7325cc885257",
+   "--seed",
+   "124195847",
+   "--seconds",
+   "90",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04709-polish"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G1/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 124195847,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": 124195847
+  },
+  "function": "aes-invsbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/2026-11-17-push/G1/hub/bin/bfx-44d5e49eee",
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 247176.531,
+  "mono_t0": 247176.6391,
+  "mono_end": 247274.034,
+  "setup_s": 0.108,
+  "op_s": 97.395,
+  "proc_start_to_main_s": 0.13,
+  "archive_load_s": 0.122,
+  "kernel_s": 97.23,
+  "kernel_calls": 1
+ }
+}

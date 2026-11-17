@@ -1,0 +1,203 @@
+{
+ "operator": "join",
+ "inputs": [
+  "c485fad312e3"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 43955313,
+ "seconds": 60.0,
+ "wall_s": 8.18,
+ "cpu_s": 7.65,
+ "candidates": 4,
+ "cand_ids": [
+  "d59b4e6f1e9f",
+  "d3ee863d57a1",
+  "d822eae39095",
+  "d56b5de8dd34"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "partners": 2,
+  "partners_done": 2,
+  "tried": 3670,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794899159.236373,
+  "joined_through": 1794899199.9112988,
+  "joined_through_by": {
+   "c485fad312e3": 1794899199.9112988,
+   "472d4c94fa8e": 1794899199.9112988,
+   "a92f05158270": 1794899199.9112988,
+   "f996c6b8a2a7": 1794899199.9112988,
+   "85e101cb4bf2": 1794899199.9112988,
+   "f0726062da51": 1794899199.9112988,
+   "8ecf1db7ba9f": 1794899199.9112988,
+   "8e20578d65d7": 1794899199.9112988
+  },
+  "batch": [
+   {
+    "target": "c485fad312e3",
+    "since": 1794899159.236373,
+    "partners": 2,
+    "partners_done": 2,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "472d4c94fa8e",
+    "since": 1794899159.236373,
+    "partners": 2,
+    "partners_done": 2,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "a92f05158270",
+    "since": 1794899159.236373,
+    "partners": 2,
+    "partners_done": 2,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "f996c6b8a2a7",
+    "since": 1794899159.236373,
+    "partners": 2,
+    "partners_done": 2,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "85e101cb4bf2",
+    "since": 0.0,
+    "partners": 529,
+    "partners_done": 529,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "f0726062da51",
+    "since": 0.0,
+    "partners": 529,
+    "partners_done": 529,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "8ecf1db7ba9f",
+    "since": 1794899159.236373,
+    "partners": 2,
+    "partners_done": 2,
+    "joined_through": 1794899199.9112988
+   },
+   {
+    "target": "8e20578d65d7",
+    "since": 1794899115.996025,
+    "partners": 6,
+    "partners_done": 6,
+    "joined_through": 1794899199.9112988
+   }
+  ],
+  "joins": [
+   {
+    "front": "85e101cb4bf2",
+    "back": "f0726062da51",
+    "LX": 2,
+    "LY": 2,
+    "interface_gates": 0
+   },
+   {
+    "front": "71b75b30e015",
+    "back": "f0726062da51",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 1
+   },
+   {
+    "front": "f0726062da51",
+    "back": "299a1ea9e4ed",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "299a1ea9e4ed",
+    "back": "f0726062da51",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 3651,
+  "duplicate": 15,
+  "archived": 0,
+  "partners_with_hits": 3,
+  "pair_accounting": {
+   "partner_hash": "e6cc8a70be59f5f1",
+   "repeated_pairs": 65,
+   "partner_s_sum": 8.1,
+   "partner_s_max": 0.019,
+   "yields_max": 14,
+   "kept_max": 2,
+   "partners_with_yields": 858
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 1029,
+   "cells": 271,
+   "front": 83,
+   "max_t_admit": 1794899199.9112988
+  }
+ },
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00725-join/run.json",
+  "kind": "hub.op.join",
+  "command": "python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G2/hub --in c485fad312e3 --seed 43955313 --seconds 60 --out <campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00725-join --since 1794899159.236373 --batch 472d4c94fa8e:1794899159.236373,a92f05158270:1794899159.236373,f996c6b8a2a7:1794899159.236373,85e101cb4bf2:0.0,f0726062da51:0.0,8ecf1db7ba9f:1794899159.236373,8e20578d65d7:1794899115.996025",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G2/hub",
+   "--in",
+   "c485fad312e3",
+   "--seed",
+   "43955313",
+   "--seconds",
+   "60",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00725-join",
+   "--since",
+   "1794899159.236373",
+   "--batch",
+   "472d4c94fa8e:1794899159.236373,a92f05158270:1794899159.236373,f996c6b8a2a7:1794899159.236373,85e101cb4bf2:0.0,f0726062da51:0.0,8ecf1db7ba9f:1794899159.236373,8e20578d65d7:1794899115.996025"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 43955313,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": null
+  },
+  "function": "aes-sbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 231828.0151,
+  "mono_t0": 231828.0909,
+  "mono_end": 231836.2859,
+  "setup_s": 0.076,
+  "op_s": 8.195,
+  "proc_start_to_main_s": 0.09,
+  "archive_load_s": 0.041,
+  "kernel_s": 0.0,
+  "kernel_calls": 0
+ }
+}

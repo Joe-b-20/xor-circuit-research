@@ -1,0 +1,63 @@
+{
+ "function": "aes-sbox",
+ "tuple": [
+  32,
+  5,
+  110,
+  18
+ ],
+ "hub_id": "6b3a1f2f31f5",
+ "hub": "<campaign archive>/2026-11-17-push/G2/hub",
+ "sha256": "e4219dcaa79e7b7edadd914396951456035c4a80043b67effcafa8d8ad6a61ed",
+ "code": "4170c41873f9ce5274d01f300948b76fcda83907 (tonight-2026-11-17, frozen copy G2/snap)",
+ "dominates_published": [
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a32-ad5-g110-gd19-xx78-31.circ.txt",
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a32-ad5-g111-gd18-xx79-34.circ.txt"
+ ],
+ "lineage": [
+  {
+   "id": "6b3a1f2f31f5",
+   "m": [
+    32,
+    5,
+    110,
+    18
+   ],
+   "operator": "join",
+   "parents": [
+    "e5a6beac7f43",
+    "3cc44b70a9c5"
+   ],
+   "run_id": "hub-bca8b1.r01100-join",
+   "source": null
+  },
+  {
+   "id": "3cc44b70a9c5",
+   "m": [
+    32,
+    5,
+    108,
+    19
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/seeds/finds/2026-11-17-ideas_06_found_f32-5-108-19_aes-sbox-a32-ad5-g108-gd19-xx76-28.circ.txt"
+  },
+  {
+   "id": "e5a6beac7f43",
+   "m": [
+    33,
+    5,
+    113,
+    17
+   ],
+   "operator": "pull",
+   "parents": [
+    "3cc44b70a9c5"
+   ],
+   "run_id": "hub-bca8b1.r01070-pull",
+   "source": null
+  }
+ ]
+}

@@ -1,0 +1,135 @@
+{
+ "circuit": "aes-invsbox-a33-ad4-g110-gd16-xx77-37.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  33,
+  4,
+  110,
+  16
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-invsbox",
+  "tuple_A_AD_G_GD": [
+   33,
+   4,
+   111,
+   16
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a33-ad4-g111-gd16-xx78-38",
+  "source": "<campaign archive>/2026-11-17-push/G1/hub/archive/bdaf8aea4c6c.bfx",
+  "source_sha256": "c01b254da9bbab4efc1bb4b1954b9be242c41d110a39e6263f041878ee492dc2",
+  "note": "hub circuit bdaf8aea4c6c (polish) of hub"
+ },
+ "chain_root": "the hub lineage ends in 1 circuits: 1 ingested from runs; 1 of them were made by transport runs from circuits of the other direction (the forward and inverse campaigns fed each other)",
+ "lineage": [
+  "as the campaign recorded it: polish 33/4/110/16 <- (polish 33/4/111/16 <- (pull 33/5/112/16 <- (ingest 32/5/110/17 [tg18-f2i-a32-ad5-g112-gd17/pull-0])))",
+  "21667d2a4217 polish 33/4/110/16 <- bdaf8aea4c6c (hub-847958.r04689-polish)",
+  "bdaf8aea4c6c polish 33/4/111/16 <- 9f17f981ccca (hub-847958.r04654-polish)",
+  "9f17f981ccca pull 33/5/112/16 <- f8183f67433b (hub-847958.r04645-pull)",
+  "f8183f67433b ingest 32/5/110/17: <campaign archive>/2026-11-17-push/G1/runs/tg18-f2i-a32-ad5-g112-gd17/pull-0/conjpull-a32-ad5-g110-gd17-272826fb30.circ.txt"
+ ],
+ "parameters": {
+  "nursery": false,
+  "caps": {
+   "A": 33,
+   "AD": 4,
+   "GD": 16
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "scheduler_version": "?+4d7be2aa08",
+  "t_last_improvement": 29.061,
+  "kernel_bin": "bfx-44d5e49eee"
+ },
+ "seed": 939914927,
+ "found_utc": "2026-11-17T11:05:03Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 90.16,
+  "cpu_s": 86.04
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G1",
+  "what": "inverse S-box campaign from the published and earlier circuits (4170c41 snapshot): a hub (join, pull, polish), transports of the forward circuits of the parallel forward campaign with staged pulls, re-basing and kernel polishes"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G1/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": "snapshot",
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run wrote no code record of its own (it ran from the snapshot); the hub job ran search/nonlinear/boolflux/hub/op_polish.py from the snapshot"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 1 /usr/bin/python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/2026-11-17-push/G1/hub --in bdaf8aea4c6c --seed 939914927 --seconds 90 --out <campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r04689-polish",
+ "environment": {
+  "cwd": ""
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G1/hub/archive/21667d2a4217.bfx",
+  "sha256": "6ff4e6604c8341343e7b526a0176884037ebbcb7d6c082e29ad0eb616738700e",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-lineage.json.gz",
+  "record/21667d2a4217.bfx",
+  "record/21667d2a4217.json",
+  "record/aes-invsbox-a33-ad4-g110-gd16-xx77-37.circ.txt",
+  "record/aes_check.json",
+  "record/aes_check.txt",
+  "record/campaign.json",
+  "record/check_py.txt",
+  "record/hub-847958.r04689-polish.json",
+  "record/job/events.jsonl.gz",
+  "record/job/kernel.cfg",
+  "record/job/kernel.log.gz",
+  "record/job/record.json",
+  "record/job/run.json",
+  "record/lineage.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "hub-lineage.json.gz",
+  "record/21667d2a4217.bfx",
+  "record/21667d2a4217.json",
+  "record/aes-invsbox-a33-ad4-g110-gd16-xx77-37.circ.txt",
+  "record/aes_check.json",
+  "record/aes_check.txt",
+  "record/campaign.json",
+  "record/check_py.txt",
+  "record/hub-847958.r04689-polish.json",
+  "record/job/events.jsonl.gz",
+  "record/job/kernel.cfg",
+  "record/job/kernel.log.gz",
+  "record/job/record.json",
+  "record/job/run.json",
+  "record/lineage.json"
+ ]
+}

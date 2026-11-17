@@ -53,17 +53,21 @@ grep -v '% command:' OUT/g110/best.circ.txt | sha256sum
 | Start (`--start`) | Caps `--cap-a --cap-ad --cap-gd` | Result | `sha256` without the `% command:` line |
 |---|---|---|---|
 | `aes-sbox-a33-ad4-g110-gd20-xx77-4` | 33 4 20 | [33/4/110/18](https://github.com/Joe-b-20/xor-circuit-research/blob/08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5/circuits/aes-sbox/aes-sbox-a33-ad4-g110-gd18-xx77-26.circ.txt) ² | `bae80c6fd21db8c7582a0c7b60b3c723c30399c8ef3684e6a52bca8215da98f3` |
-| `aes-sbox-a33-ad4-g108-gd20-xx75-5` | 33 4 20 | [33/4/108/19](aes-sbox/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt) | `6e5ddeef56d02ca5fb7cbc4dd05a801bb96e5fcb5533243e635990d1aefa1b73` |
+| `aes-sbox-a33-ad4-g108-gd20-xx75-5` | 33 4 20 | [33/4/108/19](https://github.com/Joe-b-20/xor-circuit-research/blob/8377e785b7d84a311e14ab362029e466b161b0a4/circuits/aes-sbox/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt) ⁴ | `6e5ddeef56d02ca5fb7cbc4dd05a801bb96e5fcb5533243e635990d1aefa1b73` |
 | `aes-sbox-a32-ad5-g109-gd20-xx77-4` | 32 5 20 | [32/5/108/20](https://github.com/Joe-b-20/xor-circuit-research/blob/2c949cb57a7c55dc494f64104cbb0f5ace513fa8/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt) ³ | `dad7dd236509ba8555b3c0a2ce5e149c894a7298b467527768af3de93d16fbb3` |
 
 Each took 200–210 s for 8 jobs on 2 threads. The replay also gave each seed's best circuit
 (`r0-s<S>.best.bfx`) unchanged, and the run's per-seed logs are in the circuit's logs.
 
-² No longer in `aes-sbox/`: a later circuit, [33/4/109/18](aes-sbox/aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt),
+² No longer in `aes-sbox/`: a later circuit, [33/4/109/18](https://github.com/Joe-b-20/xor-circuit-research/blob/8377e785b7d84a311e14ab362029e466b161b0a4/circuits/aes-sbox/aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt)
+(itself replaced since by [33/4/108/18](aes-sbox/aes-sbox-a33-ad4-g108-gd18-xx75-30.circ.txt)),
 beats it. The link is to the file and its logs as they were at `08012e1`, in git history.
 
 ³ No longer in `aes-sbox/`: a later circuit, [32/5/108/19](aes-sbox/aes-sbox-a32-ad5-g108-gd19-xx76-28.circ.txt),
 beats it. The link is to the file and its logs as they were at `2c949cb`, in git history.
+
+⁴ No longer in `aes-sbox/`: a later circuit, [33/4/108/18](aes-sbox/aes-sbox-a33-ad4-g108-gd18-xx75-30.circ.txt),
+beats it. The link is to the file and its logs as they were at `8377e78`, in git history.
 
 ## 2. Staged pull
 
@@ -105,10 +109,13 @@ as the run's `rebase.jsonl.gz` in the logs.
 
 ## 4. Hub depth pull
 
-[35/3/155/15](aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt), one hub job: a depth pull
+[35/3/155/15](https://github.com/Joe-b-20/xor-circuit-research/blob/8377e785b7d84a311e14ab362029e466b161b0a4/circuits/aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt), one hub job: a depth pull
 of a 35/3/143/18 circuit. The hub recorded code version `8922cac+1df9fcd2fb` (no uncommitted
 changes; the hash, recomputed at `8922cac`, is the same). A pull reads only its input from the
-hub archive, so a one-circuit archive made from the published input is enough:
+hub archive, so a one-circuit archive made from the published input is enough. The circuit is no
+longer in `aes-sbox/` (a later [35/3/153/15](aes-sbox/aes-sbox-a35-ad3-g153-gd15-xx118-55.circ.txt) beats it); its
+logs, which this replay reads, are at `8377e78`: first `git -C $X worktree add $X-8377e78 8377e78` and
+`L=$X-8377e78/circuits/aes-sbox/logs`.
 
 ```bash
 git -C $X worktree add $X-8922cac 8922cac && cd $X-8922cac

@@ -1,0 +1,627 @@
+{
+ "op": "conjpull",
+ "target": "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+ "seed": 7150,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G1/runs/tg05-f2i-a31-ad5-g115-gd20/pull-0/conjpull-a31-ad5-g120-gd19-00a13e178c.circ.txt",
+ "start_tuple": [
+  31,
+  5,
+  120,
+  19
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "g:+0:300,m:+0:300,m:-1:250",
+  "beam": 1,
+  "repair_keep": 1,
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 31,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-44d5e49eee",
+  "function": "aes-invsbox",
+  "stage_caps": "plan",
+  "stage_choice": "old",
+  "max_pull": 2,
+  "missed_pulls": 0,
+  "stall_stages": 2,
+  "overrun": "scale",
+  "identity_first": "no",
+  "registry": null,
+  "sh_keep": 2,
+  "sh_span": 2,
+  "sh_probe": 0.0,
+  "keep_bests": 8,
+  "bp_cap": "none"
+ },
+ "wall_s": 848.3,
+ "n_written": 5,
+ "rejected": {
+  "outside": 0,
+  "dominated": 20,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "g19": {
+   "offered": 6,
+   "written": 1,
+   "dominated": 5
+  },
+  "g19-kb": {
+   "offered": 1,
+   "written": 1
+  },
+  "o19-relaxed20": {
+   "offered": 2,
+   "written": 0,
+   "dominated": 2
+  },
+  "o19-repair": {
+   "offered": 2,
+   "written": 0,
+   "dominated": 2
+  },
+  "o19-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t19-random-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t19-random-kb": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t19-random": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o18-relaxed19": {
+   "offered": 2,
+   "written": 0,
+   "dominated": 2
+  },
+  "o18-repair-kb": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "o18-repair": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "o18-gate": {
+   "offered": 1,
+   "written": 1
+  },
+  "t18-mid-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t18-mid": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "g18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.14,
+  "verify_s": 0.268,
+  "verify_calls": 5
+ },
+ "notes": [],
+ "utc": "2026-11-17T09:51:57Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    31,
+    5,
+    118,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19/conjpull-a31-ad5-g118-gd19-3303ab8ae2.circ.txt",
+   "how": "g19",
+   "t": 202.1,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    31,
+    5,
+    121,
+    18
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19/conjpull-a31-ad5-g121-gd18-b2d81bfd45.circ.txt",
+   "how": "o18-gate",
+   "t": 698.9,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    31,
+    5,
+    118,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19/conjpull-a31-ad5-g118-gd19-3303ab8ae2.circ.txt",
+   "how": "g19",
+   "t": 202.1,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    31,
+    5,
+    121,
+    18
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/x-tg05-f2i-a31-31-5-120-19/conjpull-a31-ad5-g121-gd18-b2d81bfd45.circ.txt",
+   "how": "o18-gate",
+   "t": 698.9,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "probe": false,
+   "mode": "g",
+   "cap": 19,
+   "cap_planned": 19,
+   "seed": 7150000,
+   "in": [
+    31,
+    5,
+    120,
+    19
+   ],
+   "best": [
+    31,
+    5,
+    118,
+    19
+   ],
+   "seconds": 299.4,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     159.6,
+     31,
+     5,
+     119,
+     19
+    ],
+    [
+     181.5,
+     31,
+     5,
+     118,
+     19
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "probe": false,
+   "mode": "m",
+   "cap": 19,
+   "cap_planned": 19,
+   "seed": 7150010,
+   "in": [
+    31,
+    5,
+    118,
+    19
+   ],
+   "best": [
+    31,
+    5,
+    118,
+    19
+   ],
+   "seconds": 299.4,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     445.6,
+     31,
+     5,
+     119,
+     19
+    ],
+    [
+     467.0,
+     31,
+     5,
+     118,
+     19
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "probe": false,
+   "mode": "m",
+   "cap": 18,
+   "cap_planned": 18,
+   "seed": 7150020,
+   "in": [
+    31,
+    5,
+    118,
+    19
+   ],
+   "best": [
+    31,
+    5,
+    121,
+    18
+   ],
+   "seconds": 249.4,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     633.4,
+     31,
+     5,
+     118,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     119,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     121,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     122,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     123,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     124,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     124,
+     19
+    ],
+    [
+     633.4,
+     31,
+     5,
+     127,
+     19
+    ],
+    [
+     633.5,
+     31,
+     5,
+     128,
+     19
+    ],
+    [
+     633.5,
+     31,
+     5,
+     127,
+     19
+    ],
+    [
+     633.5,
+     31,
+     5,
+     128,
+     19
+    ],
+    [
+     633.5,
+     31,
+     5,
+     129,
+     19
+    ],
+    [
+     633.5,
+     31,
+     5,
+     131,
+     19
+    ],
+    [
+     633.5,
+     31,
+     5,
+     130,
+     19
+    ],
+    [
+     633.6,
+     31,
+     5,
+     136,
+     19
+    ],
+    [
+     633.6,
+     31,
+     5,
+     138,
+     19
+    ],
+    [
+     633.6,
+     31,
+     5,
+     135,
+     19
+    ],
+    [
+     633.6,
+     31,
+     5,
+     133,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     132,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     136,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     135,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     134,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     134,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     131,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     130,
+     19
+    ],
+    [
+     633.7,
+     31,
+     5,
+     133,
+     18
+    ],
+    [
+     633.7,
+     31,
+     5,
+     132,
+     18
+    ],
+    [
+     633.8,
+     31,
+     5,
+     131,
+     18
+    ],
+    [
+     633.8,
+     31,
+     5,
+     130,
+     18
+    ],
+    [
+     633.8,
+     31,
+     5,
+     129,
+     18
+    ],
+    [
+     634.2,
+     31,
+     5,
+     128,
+     18
+    ],
+    [
+     634.6,
+     31,
+     5,
+     127,
+     18
+    ],
+    [
+     634.6,
+     31,
+     5,
+     126,
+     18
+    ],
+    [
+     634.7,
+     31,
+     5,
+     125,
+     18
+    ],
+    [
+     635.6,
+     31,
+     5,
+     124,
+     18
+    ],
+    [
+     636.1,
+     31,
+     5,
+     123,
+     18
+    ],
+    [
+     651.9,
+     31,
+     5,
+     122,
+     18
+    ],
+    [
+     697.2,
+     31,
+     5,
+     121,
+     18
+    ],
+    [
+     721.0,
+     31,
+     5,
+     121,
+     18
+    ]
+   ]
+  }
+ ],
+ "kernel_calls": 19,
+ "conj_planned": [
+  "id"
+ ],
+ "conj_run": [
+  {
+   "label": "id",
+   "lam": null,
+   "k": null,
+   "screen_score": null,
+   "screen_rank": null,
+   "stages_done": 3,
+   "stages_planned": 3,
+   "seconds": 848.1,
+   "dropped": null,
+   "halving_rank": null,
+   "final": [
+    31,
+    5,
+    121,
+    18
+   ],
+   "lineage_front": [
+    [
+     31,
+     5,
+     118,
+     19
+    ],
+    [
+     31,
+     5,
+     121,
+     18
+    ]
+   ]
+  }
+ ],
+ "conj_not_reached": [],
+ "conj_refused": [],
+ "fates": {
+  "id": "run: 3 stages"
+ },
+ "plan": {
+  "need_s": 850,
+  "avail_s": 880,
+  "schedule_s": 850.0,
+  "items": [
+   "id"
+  ],
+  "identity_first": false
+ },
+ "halving": {}
+}

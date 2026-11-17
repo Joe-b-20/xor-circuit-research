@@ -1,0 +1,329 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "ops.transport",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/transport.py",
+  "--in",
+  "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt",
+  "--target",
+  "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt",
+  "--seed",
+  "362",
+  "--seconds",
+  "1180",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17",
+  "--maps",
+  "id,188:0,189:0,screen:3,depth:2"
+ ],
+ "cwd": "<campaign archive>/2026-11-17-push/G1/snap",
+ "command": "python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/transport.py --in <campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt --target <campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt --seed 362 --seconds 1180 --out <campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17 --maps id,188:0,189:0,screen:3,depth:2",
+ "git": {
+  "commit": null,
+  "branch": null,
+  "dirty": null,
+  "note": "not a git checkout (or git missing): see sources_sha256"
+ },
+ "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+ "repo": "<campaign archive>/2026-11-17-push/G1/snap",
+ "function": "aes-invsbox",
+ "seeds": {
+  "seed": 362,
+  "build_rng": "random.Random(seed x 100003 + lam x 8 + k) per map",
+  "pull_seed": "seed x 10 + pull index"
+ },
+ "config": {
+  "target": "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt",
+  "limits": {
+   "A": 33,
+   "AD": 4,
+   "G": 109,
+   "GD": 17
+  },
+  "params": {
+   "from": "aes-sbox",
+   "to": "aes-invsbox",
+   "maps": "id,188:0,189:0,screen:3,depth:2",
+   "ladder": [
+    -1,
+    0,
+    1,
+    2
+   ],
+   "synth_seeds": 6,
+   "bp_runs": 6,
+   "build_seconds": 295.0,
+   "pull": "g:+0:150,m:+0:150,m:-1:170",
+   "pull_deep": "g:+0:120,m:s+2:150,m:s:200",
+   "deep_margin": 1,
+   "pull_n": 2,
+   "screen_runs": 2
+  },
+  "method": "ops/transport.py: AES S-box -> AES inverse S-box transport (S^-1 = Aff^-1 o F o Aff^-1), affine maps folded into the first and last linear layers (trb Paar with Kraft deadlines at gate-depth caps start GD -1,0,1,2, then trb/Boyar-Peralta polish), then conjpull staged pull --conj id g:+0:150,m:+0:150,m:-1:170",
+  "command": "/usr/bin/python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/transport.py --in <campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt --target <campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt --seed 362 --seconds 1180 --out <campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17 --maps id,188:0,189:0,screen:3,depth:2"
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt",
+   "sha256": "abb2c5c7a23c5f009901f262f4da90fb1c6b2b14f734f657ce485d09cc293d13",
+   "metrics": [
+    33,
+    4,
+    109,
+    17
+   ]
+  },
+  {
+   "label": "reference (target)",
+   "path": "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt",
+   "sha256": "abb2c5c7a23c5f009901f262f4da90fb1c6b2b14f734f657ce485d09cc293d13"
+  }
+ ],
+ "budget_s": 1180.0,
+ "kernels": [],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   4
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-push/G1/cache",
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/independent",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/independent",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/ops/conj_lib"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T11:20:49Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "n_written": 11,
+  "rejected": {
+   "outside": 0,
+   "dominated": 22,
+   "aes_check_fail": 0,
+   "duplicate": 0
+  },
+  "offers_by_how": {
+   "transport 1:0 slp": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 1:0 cap18": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 1:0 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 188:0 slp": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 188:0 cap17": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 188:0 cap18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 188:0 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 189:0 slp": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 189:0 cap17": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 189:0 cap18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 189:0 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 192:3 slp": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 192:3 cap17": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 192:3 cap18": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 192:3 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 1:4 slp": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 1:4 cap17": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 1:4 cap18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 1:4 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 81:0 slp": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 81:0 cap17": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 81:0 cap18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 81:0 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 216:7 slp": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 216:7 cap16": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 216:7 cap17": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 216:7 cap18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 216:7 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 12:4 slp": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 12:4 cap16": {
+    "offered": 1,
+    "written": 1
+   },
+   "transport 12:4 cap17": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 12:4 cap18": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "transport 12:4 cap19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   }
+  },
+  "pareto_A_AD_G_GD": [
+   [
+    33,
+    4,
+    116,
+    18
+   ],
+   [
+    33,
+    4,
+    118,
+    17
+   ],
+   [
+    33,
+    4,
+    125,
+    16
+   ]
+  ]
+ },
+ "t_end_utc": "2026-11-17T11:37:07Z",
+ "wall_s": 978.005,
+ "mono_s": 1055.257,
+ "cpu_s": 974.99,
+ "max_rss_kb": 65964
+}

@@ -1,0 +1,338 @@
+{
+ "run_id": "hub-bca8b1.r02990-pull",
+ "campaign": "hub-bca8b1",
+ "operator": "pull",
+ "choice": "fresh",
+ "target": "c527bc946541",
+ "target_metrics": [
+  35,
+  3,
+  154,
+  15
+ ],
+ "target_class": "A32-35",
+ "seed": 198973054,
+ "cpu": 7,
+ "command": [
+  "taskset",
+  "-c",
+  "7",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_pull.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "c527bc946541",
+  "--seed",
+  "198973054",
+  "--seconds",
+  "90",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_pull.py",
+ "script_sha": "0501d3973e",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794907811.26,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "op_info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 35,
+   "cap.gd": 12,
+   "in": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/start.bfx",
+   "out": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/best.bfx",
+   "seed": 198973054,
+   "seconds": 90.0,
+   "keep_bests": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/bests"
+  },
+  "t_last_improvement": 89.164,
+  "kernel_bin": "bfx-44d5e49eee",
+  "kernel_stats": {
+   "stop": "time",
+   "iters": 230411,
+   "restarts": 2,
+   "last_improve_it": 228447,
+   "last_improve_t": 89.164,
+   "first_feasible_it": -1,
+   "repair_it": 230411,
+   "best_lines": 96,
+   "last_bests": [
+    [
+     87.553,
+     224572,
+     "resub1",
+     35,
+     3,
+     185,
+     15,
+     87.553,
+     86.006
+    ],
+    [
+     88.968,
+     227952,
+     "resub2",
+     35,
+     3,
+     184,
+     15,
+     88.969,
+     87.277
+    ],
+    [
+     89.164,
+     228447,
+     "resub2",
+     35,
+     3,
+     183,
+     15,
+     89.165,
+     87.457
+    ]
+   ],
+   "clock": {
+    "mono_s": 90.001,
+    "real_s": 90.001,
+    "cpu_s": 88.206
+   },
+   "first_best": [
+    0.002,
+    5,
+    "resub1",
+    35,
+    3,
+    154,
+    15,
+    0.003,
+    0.003
+   ],
+   "accept": {
+    "improve": 1219,
+    "neutral": 26170,
+    "uphill": 1200,
+    "uphill_refused": 18328,
+    "no_accept": 129738
+   },
+   "cands": {
+    "evaluated": 1059920,
+    "noop": 230767,
+    "nocand_moves": 72084,
+    "repair_keep_refused": 0
+   },
+   "moves": {
+    "resub1": {
+     "prop": 57712,
+     "acc": 2091,
+     "imp": 4,
+     "nocand": 31066,
+     "time": 1.0
+    },
+    "resub2": {
+     "prop": 114927,
+     "acc": 17899,
+     "imp": 53,
+     "nocand": 27397,
+     "time": 53.75
+    },
+    "resub3": {
+     "prop": 57772,
+     "acc": 8599,
+     "imp": 39,
+     "nocand": 13621,
+     "time": 35.2
+    }
+   },
+   "final": {
+    "G": 183,
+    "A": 35,
+    "GD": 15,
+    "AD": 3,
+    "feas": 0
+   },
+   "walk": {
+    "distinct_struct": 28065,
+    "distinct_metrics": 40
+   },
+   "bestform": {
+    "resub1": [
+     0,
+     4,
+     0,
+     0,
+     0,
+     0
+    ],
+    "resub2": [
+     0,
+     4,
+     47,
+     2,
+     0,
+     0
+    ],
+    "resub3": [
+     0,
+     3,
+     26,
+     0,
+     10,
+     0
+    ]
+   }
+  },
+  "bests_kept": 96,
+  "bests_dir": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/bests",
+  "caps": {
+   "A": 35,
+   "AD": null,
+   "GD": 12
+  },
+  "lowered": "GD",
+  "bests": {
+   "files": 96,
+   "ok": 3,
+   "not placed": 93,
+   "archived": 0,
+   "archived structure": 0,
+   "unreadable": 0,
+   "returned": 1,
+   "returned_metrics": [
+    [
+     35,
+     3,
+     154,
+     15,
+     "best-0.bfx"
+    ]
+   ]
+  },
+  "archive_loaded": {
+   "records": 1505,
+   "cells": 301,
+   "front": 84,
+   "max_t_admit": 1794907787.1120985
+  }
+ },
+ "parents": [
+  "c527bc946541"
+ ],
+ "wall_s": 96.96,
+ "cpu_s": 88.45,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 2,
+ "admitted": 1,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    35,
+    3,
+    183,
+    15
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     35,
+     3,
+     15
+    ],
+    "cell_min_G": 154,
+    "cell_members": 1,
+    "reason": "cell has G 154 < 183"
+   }
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    35,
+    3,
+    154,
+    15
+   ],
+   "status": "admitted",
+   "id": "9c981390fabd",
+   "gain": 0.0,
+   "reason": "dominated"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 232,
+   "fresh": 1
+  },
+  "suspended": [],
+  "join_share": 0.1003,
+  "mode": "priority",
+  "level": "fresh",
+  "op": "pull",
+  "rule": "first polish / pull of a front tuple; A, AD ascending, newest first",
+  "n_level": 1,
+  "attempts": 0,
+  "struct_attempts": 0,
+  "why": "fresh"
+ },
+ "admission": {
+  "counts": {
+   "not-better": 1,
+   "admitted": 1
+  },
+  "admit_s": 0.04,
+  "finish_s": 0.044,
+  "job_wall_s": 96.96,
+  "op_wall_s": 90.21,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0074,
+  "mono_wall_s": 96.957,
+  "start_to_main_s": 0.093,
+  "setup_s": 0.069,
+  "op_s": 96.773,
+  "end_to_exit_seen_s": 0.022,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 88.64,
+  "proc_maxrss_kb": 56056,
+  "t_exit": 1794907901.6596708
+ }
+}

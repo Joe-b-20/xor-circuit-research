@@ -1,0 +1,142 @@
+{
+ "circuit": "aes-invsbox-a35-ad3-g150-gd16-xx115-58.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  35,
+  3,
+  150,
+  16
+ ],
+ "found_by": "BoolFlux",
+ "method": "depth pull",
+ "method_description": "gate kernel with one cap lowered below the start circuit's value",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-invsbox",
+  "tuple_A_AD_G_GD": [
+   35,
+   3,
+   143,
+   18
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a35-ad3-g143-gd18-xx108-52",
+  "source": "<campaign archive>/2026-11-17-push/G1/hub/archive/19f3a33cfebb.bfx",
+  "source_sha256": "44aac183361815118d5cd36627663110584a8fe662490dac7ad102f5e866ab2f",
+  "note": "hub circuit 19f3a33cfebb (join) of hub"
+ },
+ "chain_root": "the hub lineage ends in 2 circuits: 2 circuits of the earlier runs of 2026-11-17",
+ "lineage": [
+  "as the campaign recorded it: pull 35/3/150/16 <- (join 35/3/143/18 <- (pull 35/3/143/18 <- (join 35/3/145/19 <- (pull 35/3/145/19 <- (pull 35/3/143/21 <- (join 35/3/142/25 <- (seed 35/3/142/26 [found/aes-invsbox-a35-ad3-g142-gd26-xx107-40], seed 35/3/143/23 [found/aes-invsbox-a35-ad3-g143-gd23-xx108-52]))), pull 35/3/143/21 <- (join 35/3/142/25 <- (seed 35/3/142/26 [found/aes-invsbox-a35-ad3-g142-gd26-xx107-40], seed 35/3/143/23 [found/aes-invsbox-a35-ad3-g143-gd23-xx108-52])))), pull 35/3/145/17 <- (pull 35/3/143/18 <- (join 35/3/145/19 <- (pull 35/3/145/19 <- (pull 35/3/143/21 <- (join 35/3/142/25 <- (seed 35/3/142/26 [found/aes-invsbox-a35-ad3-g142-gd26-xx107-40], seed 35/3/143/23 [found/aes-invsbox-a35-ad3-g143-gd23-xx108-52]))), pull 35/3/143/21 <- (join 35/3/142/25 <- (seed 35/3/142/26 [found/aes-invsbox-a35-ad3-g142-gd26-xx107-40], seed 35/3/143/23 [found/aes-invsbox-a35-ad3-g143-gd23-xx108-52])))))))",
+  "ea388576580c pull 35/3/150/16 <- 19f3a33cfebb (hub-847958.r02339-pull)",
+  "19f3a33cfebb join 35/3/143/18 <- 7d685372f76a, 1161cae86566 (hub-847958.r01402-join)",
+  "1161cae86566 pull 35/3/145/17 <- 7d685372f76a (hub-847958.r01367-pull)",
+  "7d685372f76a pull 35/3/143/18 <- baf73b7abf9a (hub-847958.r01310-pull)",
+  "baf73b7abf9a join 35/3/145/19 <- 558b6877958a, 349400a99153 (hub-847958.r01266-join)",
+  "558b6877958a pull 35/3/145/19 <- 349400a99153 (hub-847958.r01221-pull)",
+  "349400a99153 pull 35/3/143/21 <- cbfc9a928475 (hub-847958.r01185-pull)",
+  "cbfc9a928475 join 35/3/142/25 <- 323f1749950d, 7530323e30ba (hub-847958.r00273-join)",
+  "7530323e30ba seed 35/3/143/23: <campaign archive>/2026-11-17-ideas/08/found/aes-invsbox-a35-ad3-g143-gd23-xx108-52/aes-invsbox-a35-ad3-g143-gd23-xx108-52.circ.txt",
+  "323f1749950d seed 35/3/142/26: <campaign archive>/2026-11-17-ideas/08/found/aes-invsbox-a35-ad3-g142-gd26-xx107-40/aes-invsbox-a35-ad3-g142-gd26-xx107-40.circ.txt"
+ ],
+ "parameters": {
+  "nursery": false,
+  "caps": {
+   "A": 35,
+   "AD": null,
+   "GD": 16
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "scheduler_version": "?+4d7be2aa08",
+  "lowered": "GD",
+  "t_last_improvement": 82.892,
+  "kernel_bin": "bfx-44d5e49eee"
+ },
+ "seed": 167360576,
+ "found_utc": "2026-11-17T08:41:22Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 90.15,
+  "cpu_s": 89.37
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G1",
+  "what": "inverse S-box campaign from the published and earlier circuits (4170c41 snapshot): a hub (join, pull, polish), transports of the forward circuits of the parallel forward campaign with staged pulls, re-basing and kernel polishes"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G1/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": "snapshot",
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run wrote no code record of its own (it ran from the snapshot); the hub job ran search/nonlinear/boolflux/hub/op_pull.py from the snapshot"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 1 /usr/bin/python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_pull.py --archive <campaign archive>/2026-11-17-push/G1/hub --in 19f3a33cfebb --seed 167360576 --seconds 90 --out <campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r02339-pull",
+ "environment": {
+  "cwd": ""
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G1/hub/archive/ea388576580c.bfx",
+  "sha256": "e9ffee044651f3d2f93ec3552abc92c76f1b04b6667e79fcca3c3fcca0efa1a1",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-lineage.json.gz",
+  "record/aes-invsbox-a35-ad3-g150-gd16-xx115-58.circ.txt",
+  "record/aes_check.json",
+  "record/aes_check.txt",
+  "record/campaign.json",
+  "record/check_py.txt",
+  "record/ea388576580c.bfx",
+  "record/ea388576580c.json",
+  "record/hub-847958.r02339-pull.json",
+  "record/job/events.jsonl.gz",
+  "record/job/kernel.cfg",
+  "record/job/kernel.log.gz",
+  "record/job/record.json",
+  "record/job/run.json",
+  "record/lineage.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "hub-lineage.json.gz",
+  "record/aes-invsbox-a35-ad3-g150-gd16-xx115-58.circ.txt",
+  "record/aes_check.json",
+  "record/aes_check.txt",
+  "record/campaign.json",
+  "record/check_py.txt",
+  "record/ea388576580c.bfx",
+  "record/ea388576580c.json",
+  "record/hub-847958.r02339-pull.json",
+  "record/job/events.jsonl.gz",
+  "record/job/kernel.cfg",
+  "record/job/kernel.log.gz",
+  "record/job/record.json",
+  "record/job/run.json",
+  "record/lineage.json"
+ ]
+}

@@ -1,0 +1,1069 @@
+{
+ "run_id": "hub-bca8b1.r00247-join",
+ "campaign": "hub-bca8b1",
+ "operator": "join",
+ "choice": "join",
+ "target": "1bf550921a6b",
+ "target_metrics": [
+  32,
+  5,
+  106,
+  21
+ ],
+ "target_class": "A32-35",
+ "seed": 295854927,
+ "cpu": 6,
+ "command": [
+  "taskset",
+  "-c",
+  "6",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "1bf550921a6b",
+  "--seed",
+  "295854927",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00247-join",
+  "--since",
+  "1794897235.3383274",
+  "--batch",
+  "f201877dff34:1794897235.3383274,74d8e8d0be3c:1794897235.3383274,b94cabd30332:1794897235.3383274,ebbfbf34a5d0:1794897235.3383274,fde8188e3e7b:0.0,1cc4a8787909:0.0,463c14e13be5:0.0"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+ "script_sha": "9b1bb4e61c",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794897455.32,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "partners": 93,
+  "partners_done": 93,
+  "tried": 7505,
+  "kept_over_limit": 0,
+  "deferred": 1,
+  "since": 1794897235.3383274,
+  "joined_through": 1794897435.9058573,
+  "joined_through_by": {
+   "1bf550921a6b": 1794897435.9058573,
+   "f201877dff34": 1794897435.9058573,
+   "74d8e8d0be3c": 1794897435.9058573,
+   "b94cabd30332": 1794897435.9058573,
+   "ebbfbf34a5d0": 1794897435.9058573,
+   "fde8188e3e7b": 1794897435.9058573,
+   "1cc4a8787909": 1794897435.9058573,
+   "463c14e13be5": 1794896878.9974802
+  },
+  "batch": [
+   {
+    "target": "1bf550921a6b",
+    "since": 1794897235.3383274,
+    "partners": 93,
+    "partners_done": 93,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "f201877dff34",
+    "since": 1794897235.3383274,
+    "partners": 93,
+    "partners_done": 93,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "74d8e8d0be3c",
+    "since": 1794897235.3383274,
+    "partners": 93,
+    "partners_done": 93,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "b94cabd30332",
+    "since": 1794897235.3383274,
+    "partners": 93,
+    "partners_done": 93,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "ebbfbf34a5d0",
+    "since": 1794897235.3383274,
+    "partners": 93,
+    "partners_done": 93,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "fde8188e3e7b",
+    "since": 0.0,
+    "partners": 342,
+    "partners_done": 342,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "1cc4a8787909",
+    "since": 0.0,
+    "partners": 342,
+    "partners_done": 342,
+    "joined_through": 1794897435.9058573
+   },
+   {
+    "target": "463c14e13be5",
+    "since": 0.0,
+    "partners": 342,
+    "partners_done": 190,
+    "joined_through": 1794896878.9974802
+   }
+  ],
+  "joins": [
+   {
+    "front": "fde8188e3e7b",
+    "back": "4e6bd61d0aca",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   },
+   {
+    "front": "0e94f87d670f",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "63e300b7f46f",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "ed99731f9c05",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "d8f237f494ab",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "a905bf65160e",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "5f6ffba2c726",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "71ccfe11b123",
+    "back": "fde8188e3e7b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "c3902d9da111",
+    "back": "1cc4a8787909",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "c3902d9da111",
+    "back": "1cc4a8787909",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "8b139ca58e8a",
+    "back": "1cc4a8787909",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 2
+   },
+   {
+    "front": "f263f16773df",
+    "back": "1cc4a8787909",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "d9722661a56d",
+    "back": "1cc4a8787909",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "f057046ba816",
+    "back": "1cc4a8787909",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 2
+   },
+   {
+    "front": "a84c2ac634c1",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "0d28c704cbcc",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "4d1cbd54925d",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "43177092a030",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "7ddcf3389547",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "eba2235bfc95",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "f02f132fa668",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "8cef5fa22308",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "9149b630c4ea",
+    "back": "1cc4a8787909",
+    "LX": 5,
+    "LY": 2,
+    "interface_gates": 0
+   },
+   {
+    "front": "c3902d9da111",
+    "back": "463c14e13be5",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "f8e91ff405b2",
+    "back": "463c14e13be5",
+    "LX": 6,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "c8f64f4bf1ff",
+    "back": "463c14e13be5",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "9afcc26c8b63",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "7b74b8c821ab",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "717cc86e901b",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "8eb3fe461fec",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   },
+   {
+    "front": "64ad6b7ee3c0",
+    "back": "463c14e13be5",
+    "LX": 6,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "937e88a7bccd",
+    "back": "463c14e13be5",
+    "LX": 4,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "a01f1dc26cd2",
+    "back": "463c14e13be5",
+    "LX": 4,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "d9722661a56d",
+    "back": "463c14e13be5",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "aa0390409643",
+    "back": "463c14e13be5",
+    "LX": 6,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "9535e23668b9",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "668b16747c89",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 8
+   },
+   {
+    "front": "ebcb33d69cc1",
+    "back": "463c14e13be5",
+    "LX": 6,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "463c14e13be5",
+    "back": "22dd46a2c3bb",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 2
+   },
+   {
+    "front": "cf5d9273d73c",
+    "back": "463c14e13be5",
+    "LX": 4,
+    "LY": 3,
+    "interface_gates": 0
+   }
+  ],
+  "stop": "max_cands",
+  "not_placed": 6297,
+  "duplicate": 29,
+  "archived": 1138,
+  "partners_with_hits": 39,
+  "pair_accounting": {
+   "partner_hash": "309fc14d861562ad",
+   "repeated_pairs": 243,
+   "partner_s_sum": 10.881,
+   "partner_s_max": 0.019,
+   "yields_max": 14,
+   "kept_max": 2,
+   "partners_with_yields": 1339
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 547,
+   "cells": 209,
+   "front": 84,
+   "max_t_admit": 1794897435.9058573
+  }
+ },
+ "parents": [
+  "1bf550921a6b"
+ ],
+ "wall_s": 13.1,
+ "cpu_s": 11.87,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 40,
+ "admitted": 33,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    33,
+    4,
+    114,
+    17
+   ],
+   "status": "admitted",
+   "id": "59713858442a",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    33,
+    4,
+    114,
+    17
+   ],
+   "status": "admitted",
+   "id": "8dd3a5540e0f",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    36,
+    4,
+    118,
+    15
+   ],
+   "status": "admitted",
+   "id": "4e575cd97bfa",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-003.bfx",
+   "metrics": [
+    34,
+    4,
+    114,
+    17
+   ],
+   "status": "admitted",
+   "id": "91a836770be3",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-004.bfx",
+   "metrics": [
+    36,
+    4,
+    118,
+    15
+   ],
+   "status": "admitted",
+   "id": "9fc44c2bd1a6",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-005.bfx",
+   "metrics": [
+    36,
+    4,
+    118,
+    15
+   ],
+   "status": "admitted",
+   "id": "80a56ccf4d7c",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-006.bfx",
+   "metrics": [
+    34,
+    4,
+    114,
+    17
+   ],
+   "status": "admitted",
+   "id": "2b2ef2f26d13",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-007.bfx",
+   "metrics": [
+    36,
+    4,
+    118,
+    15
+   ],
+   "status": "admitted",
+   "id": "91a73fa0b539",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-008.bfx",
+   "metrics": [
+    33,
+    4,
+    105,
+    25
+   ],
+   "status": "admitted",
+   "id": "9c7c8c399095",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-009.bfx",
+   "metrics": [
+    33,
+    4,
+    105,
+    25
+   ],
+   "status": "admitted",
+   "id": "b2f12548d1e6",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-010.bfx",
+   "metrics": [
+    34,
+    5,
+    110,
+    30
+   ],
+   "status": "admitted",
+   "id": "59fa098eeda7",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-011.bfx",
+   "metrics": [
+    33,
+    4,
+    105,
+    25
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     4,
+     25
+    ],
+    "cell_min_G": 105,
+    "cell_members": 4,
+    "reason": "cell full at G 105"
+   }
+  },
+  {
+   "cand": "cand-012.bfx",
+   "metrics": [
+    33,
+    4,
+    105,
+    25
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     4,
+     25
+    ],
+    "cell_min_G": 105,
+    "cell_members": 4,
+    "reason": "cell full at G 105"
+   }
+  },
+  {
+   "cand": "cand-013.bfx",
+   "metrics": [
+    34,
+    5,
+    110,
+    31
+   ],
+   "status": "admitted",
+   "id": "dc6ee5448fa6",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-014.bfx",
+   "metrics": [
+    34,
+    6,
+    110,
+    33
+   ],
+   "status": "admitted",
+   "id": "e4c3f462a06e",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-015.bfx",
+   "metrics": [
+    32,
+    6,
+    107,
+    34
+   ],
+   "status": "admitted",
+   "id": "87c96f4c78cd",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-016.bfx",
+   "metrics": [
+    32,
+    6,
+    108,
+    35
+   ],
+   "status": "admitted",
+   "id": "06d6ade55834",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-017.bfx",
+   "metrics": [
+    32,
+    6,
+    108,
+    36
+   ],
+   "status": "admitted",
+   "id": "0e398d0c87f2",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-018.bfx",
+   "metrics": [
+    32,
+    6,
+    108,
+    36
+   ],
+   "status": "admitted",
+   "id": "f34cac79d7fa",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-019.bfx",
+   "metrics": [
+    32,
+    6,
+    109,
+    37
+   ],
+   "status": "admitted",
+   "id": "229948dbb0da",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-020.bfx",
+   "metrics": [
+    32,
+    6,
+    108,
+    36
+   ],
+   "status": "admitted",
+   "id": "aff6c7191f98",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-021.bfx",
+   "metrics": [
+    32,
+    6,
+    108,
+    36
+   ],
+   "status": "admitted",
+   "id": "9d32fd34fdc1",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-022.bfx",
+   "metrics": [
+    34,
+    6,
+    110,
+    35
+   ],
+   "status": "admitted",
+   "id": "3452b3c87bf3",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-023.bfx",
+   "metrics": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "status": "admitted",
+   "id": "c0861307b40e",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-024.bfx",
+   "metrics": [
+    32,
+    7,
+    105,
+    28
+   ],
+   "status": "admitted",
+   "id": "41d5fa8e18e4",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-025.bfx",
+   "metrics": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     4,
+     20
+    ],
+    "cell_min_G": 107,
+    "cell_members": 4,
+    "reason": "cell full at G 107"
+   }
+  },
+  {
+   "cand": "cand-026.bfx",
+   "metrics": [
+    33,
+    4,
+    106,
+    22
+   ],
+   "status": "admitted",
+   "id": "eb369e3a0823",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-027.bfx",
+   "metrics": [
+    32,
+    5,
+    107,
+    23
+   ],
+   "status": "admitted",
+   "id": "6fff53c2ff03",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-028.bfx",
+   "metrics": [
+    32,
+    5,
+    107,
+    23
+   ],
+   "status": "admitted",
+   "id": "ccd3a6a87d98",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-029.bfx",
+   "metrics": [
+    32,
+    5,
+    107,
+    23
+   ],
+   "status": "admitted",
+   "id": "743709d471f2",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-030.bfx",
+   "metrics": [
+    32,
+    7,
+    110,
+    27
+   ],
+   "status": "admitted",
+   "id": "7a62c79965c7",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-031.bfx",
+   "metrics": [
+    32,
+    5,
+    108,
+    23
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     32,
+     5,
+     23
+    ],
+    "cell_min_G": 107,
+    "cell_members": 3,
+    "reason": "cell has G 107 < 108"
+   }
+  },
+  {
+   "cand": "cand-032.bfx",
+   "metrics": [
+    32,
+    5,
+    108,
+    23
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     32,
+     5,
+     23
+    ],
+    "cell_min_G": 107,
+    "cell_members": 3,
+    "reason": "cell has G 107 < 108"
+   }
+  },
+  {
+   "cand": "cand-033.bfx",
+   "metrics": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     4,
+     20
+    ],
+    "cell_min_G": 107,
+    "cell_members": 4,
+    "reason": "cell full at G 107"
+   }
+  },
+  {
+   "cand": "cand-034.bfx",
+   "metrics": [
+    32,
+    7,
+    108,
+    30
+   ],
+   "status": "admitted",
+   "id": "2805f46c33d5",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-035.bfx",
+   "metrics": [
+    34,
+    5,
+    110,
+    27
+   ],
+   "status": "admitted",
+   "id": "c20e8f080b6e",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-036.bfx",
+   "metrics": [
+    31,
+    5,
+    118,
+    31
+   ],
+   "status": "admitted",
+   "id": "59849b26c3f1",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-037.bfx",
+   "metrics": [
+    32,
+    7,
+    108,
+    30
+   ],
+   "status": "admitted",
+   "id": "a168553707dd",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-038.bfx",
+   "metrics": [
+    34,
+    5,
+    110,
+    28
+   ],
+   "status": "admitted",
+   "id": "764f9722d7b4",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-039.bfx",
+   "metrics": [
+    32,
+    5,
+    108,
+    23
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     32,
+     5,
+     23
+    ],
+    "cell_min_G": 107,
+    "cell_members": 3,
+    "reason": "cell has G 107 < 108"
+   }
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00247-join/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 47
+  },
+  "suspended": [],
+  "join_share": 0.0998,
+  "mode": "priority",
+  "level": "join",
+  "op": "join",
+  "rule": "front circuits with unmet partners; A, AD ascending, newest first; batched",
+  "n_level": 47,
+  "attempts": 5,
+  "struct_attempts": 1,
+  "why": "join",
+  "batch": 7,
+  "join_partners": 1491
+ },
+ "admission": {
+  "counts": {
+   "admitted": 33,
+   "not-better": 7
+  },
+  "admit_s": 1.15,
+  "finish_s": 1.209,
+  "job_wall_s": 13.1,
+  "op_wall_s": 10.95,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0018,
+  "mono_wall_s": 13.099,
+  "start_to_main_s": 0.109,
+  "setup_s": 0.081,
+  "op_s": 12.882,
+  "end_to_exit_seen_s": 0.027,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 12.083,
+  "proc_maxrss_kb": 41724,
+  "t_exit": 1794897466.5022275
+ }
+}

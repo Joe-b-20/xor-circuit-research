@@ -1,0 +1,579 @@
+{
+ "op": "conjpull",
+ "target": "<campaign archive>/2026-11-17-push/G1/seeds/g2fwd/aes-sbox-a33-ad4-g109-gd17-xx76-30-590ffc.circ.txt",
+ "seed": 3620,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17/transport-a33-ad4-g116-gd18-bdfcb057a0.circ.txt",
+ "start_tuple": [
+  33,
+  4,
+  116,
+  18
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "g:+0:150,m:+0:150,m:-1:170",
+  "beam": 1,
+  "repair_keep": 1,
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 33,
+   "AD": 4
+  },
+  "kernel_bin": "bfx-44d5e49eee",
+  "function": "aes-invsbox",
+  "stage_caps": "plan",
+  "stage_choice": "old",
+  "max_pull": 2,
+  "missed_pulls": 0,
+  "stall_stages": 2,
+  "overrun": "scale",
+  "identity_first": "no",
+  "registry": null,
+  "sh_keep": 2,
+  "sh_span": 2,
+  "sh_probe": 0.0,
+  "keep_bests": 8,
+  "bp_cap": "none"
+ },
+ "wall_s": 469.0,
+ "n_written": 6,
+ "rejected": {
+  "outside": 0,
+  "dominated": 13,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "g18-kb": {
+   "offered": 3,
+   "written": 3
+  },
+  "g18": {
+   "offered": 3,
+   "written": 2,
+   "dominated": 1
+  },
+  "o17-relaxed18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o17-repair": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o17-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t17-mid-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t17-mid": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o16-relaxed17": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o16-repair-kb": {
+   "offered": 2,
+   "written": 0,
+   "dominated": 2
+  },
+  "o16-repair": {
+   "offered": 1,
+   "written": 1
+  },
+  "o16-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t16-random-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t16-random": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "g16": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.13,
+  "verify_s": 0.296,
+  "verify_calls": 6
+ },
+ "notes": [],
+ "utc": "2026-11-17T11:29:18Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17/pull-0/conjpull-a33-ad4-g109-gd17-31d9261100.circ.txt",
+   "how": "g18",
+   "t": 138.8,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    33,
+    4,
+    111,
+    16
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17/pull-0/conjpull-a33-ad4-g111-gd16-e3e8e89c7c.circ.txt",
+   "how": "o16-repair",
+   "t": 362.5,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17/pull-0/conjpull-a33-ad4-g109-gd17-31d9261100.circ.txt",
+   "how": "g18",
+   "t": 138.8,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    33,
+    4,
+    111,
+    16
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G1/runs/tg12-f2i-a33-ad4-g109-gd17/pull-0/conjpull-a33-ad4-g111-gd16-e3e8e89c7c.circ.txt",
+   "how": "o16-repair",
+   "t": 362.5,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "probe": false,
+   "mode": "g",
+   "cap": 18,
+   "cap_planned": 18,
+   "seed": 3620000,
+   "in": [
+    33,
+    4,
+    116,
+    18
+   ],
+   "best": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "seconds": 149.7,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     0.9,
+     33,
+     4,
+     115,
+     18
+    ],
+    [
+     1.9,
+     33,
+     4,
+     114,
+     18
+    ],
+    [
+     4.4,
+     33,
+     4,
+     114,
+     17
+    ],
+    [
+     13.2,
+     33,
+     4,
+     113,
+     18
+    ],
+    [
+     13.2,
+     33,
+     4,
+     113,
+     17
+    ],
+    [
+     13.2,
+     33,
+     4,
+     113,
+     16
+    ],
+    [
+     13.5,
+     33,
+     4,
+     112,
+     18
+    ],
+    [
+     13.5,
+     33,
+     4,
+     112,
+     17
+    ],
+    [
+     13.9,
+     33,
+     4,
+     112,
+     16
+    ],
+    [
+     90.7,
+     33,
+     4,
+     111,
+     18
+    ],
+    [
+     115.7,
+     33,
+     4,
+     111,
+     17
+    ],
+    [
+     115.9,
+     33,
+     4,
+     110,
+     18
+    ],
+    [
+     118.8,
+     33,
+     4,
+     110,
+     17
+    ],
+    [
+     137.0,
+     33,
+     4,
+     109,
+     17
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "probe": false,
+   "mode": "m",
+   "cap": 17,
+   "cap_planned": 17,
+   "seed": 3620010,
+   "in": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "best": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "seconds": 149.3,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": []
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "probe": false,
+   "mode": "m",
+   "cap": 16,
+   "cap_planned": 16,
+   "seed": 3620020,
+   "in": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "best": [
+    33,
+    4,
+    111,
+    16
+   ],
+   "seconds": 169.9,
+   "budget_factor": 1.0,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     331.2,
+     33,
+     4,
+     109,
+     17
+    ],
+    [
+     331.2,
+     33,
+     4,
+     110,
+     17
+    ],
+    [
+     331.2,
+     33,
+     4,
+     111,
+     17
+    ],
+    [
+     331.2,
+     33,
+     4,
+     111,
+     17
+    ],
+    [
+     331.2,
+     33,
+     4,
+     110,
+     17
+    ],
+    [
+     331.2,
+     33,
+     4,
+     110,
+     17
+    ],
+    [
+     331.2,
+     33,
+     4,
+     110,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     111,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     115,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     116,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     116,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     116,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     114,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     115,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     114,
+     17
+    ],
+    [
+     331.3,
+     33,
+     4,
+     113,
+     17
+    ],
+    [
+     331.4,
+     33,
+     4,
+     114,
+     17
+    ],
+    [
+     331.4,
+     33,
+     4,
+     116,
+     16
+    ],
+    [
+     331.5,
+     33,
+     4,
+     115,
+     16
+    ],
+    [
+     331.5,
+     33,
+     4,
+     114,
+     16
+    ],
+    [
+     331.6,
+     33,
+     4,
+     113,
+     16
+    ],
+    [
+     332.0,
+     33,
+     4,
+     112,
+     16
+    ],
+    [
+     357.0,
+     33,
+     4,
+     111,
+     16
+    ]
+   ]
+  }
+ ],
+ "kernel_calls": 12,
+ "conj_planned": [
+  "id"
+ ],
+ "conj_run": [
+  {
+   "label": "id",
+   "lam": null,
+   "k": null,
+   "screen_score": null,
+   "screen_rank": null,
+   "stages_done": 3,
+   "stages_planned": 3,
+   "seconds": 468.9,
+   "dropped": null,
+   "halving_rank": null,
+   "final": [
+    33,
+    4,
+    111,
+    16
+   ],
+   "lineage_front": [
+    [
+     33,
+     4,
+     109,
+     17
+    ],
+    [
+     33,
+     4,
+     111,
+     16
+    ]
+   ]
+  }
+ ],
+ "conj_not_reached": [],
+ "conj_refused": [],
+ "fates": {
+  "id": "run: 3 stages"
+ },
+ "plan": {
+  "need_s": 470,
+  "avail_s": 535,
+  "schedule_s": 470.0,
+  "items": [
+   "id"
+  ],
+  "identity_first": false
+ },
+ "halving": {}
+}

@@ -1,0 +1,121 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "hub.op.join",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "ebbfbf34a5d0",
+  "--seed",
+  "935410923",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00804-join",
+  "--since",
+  "1794899357.2988875",
+  "--batch",
+  "b14fedb5bb84:0.0,f9fec64c424e:1794899357.2988875,110c157f9ae3:1794899357.2988875,c8dc432bbb77:1794899357.2988875,eb369e3a0823:1794899357.2988875,c0861307b40e:1794899357.2988875,b2f12548d1e6:1794899357.2988875"
+ ],
+ "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+ "command": "python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G2/hub --in ebbfbf34a5d0 --seed 935410923 --seconds 60 --out <campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00804-join --since 1794899357.2988875 --batch b14fedb5bb84:0.0,f9fec64c424e:1794899357.2988875,110c157f9ae3:1794899357.2988875,c8dc432bbb77:1794899357.2988875,eb369e3a0823:1794899357.2988875,c0861307b40e:1794899357.2988875,b2f12548d1e6:1794899357.2988875",
+ "git": {
+  "commit": null,
+  "branch": null,
+  "dirty": null,
+  "note": "not a git checkout (or git missing): see sources_sha256"
+ },
+ "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+ "repo": "<campaign archive>/2026-11-17-push/G2/snap",
+ "function": "aes-sbox",
+ "seeds": {
+  "seed": 935410923,
+  "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+  "kernel_seed": null
+ },
+ "config": {
+  "archive": "<campaign archive>/2026-11-17-push/G2/hub",
+  "inp": "ebbfbf34a5d0",
+  "in2": null,
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seed": 935410923,
+  "seconds": 60.0,
+  "partners": 300,
+  "since": 1794899357.2988875,
+  "max_cands": 40,
+  "batch": "b14fedb5bb84:0.0,f9fec64c424e:1794899357.2988875,110c157f9ae3:1794899357.2988875,c8dc432bbb77:1794899357.2988875,eb369e3a0823:1794899357.2988875,c0861307b40e:1794899357.2988875,b2f12548d1e6:1794899357.2988875",
+  "lower": null,
+  "gd_offsets": null,
+  "bests": 8,
+  "function": null
+ },
+ "starts": [
+  {
+   "label": "archive member ebbfbf34a5d0",
+   "path": "<campaign archive>/2026-11-17-push/G2/hub/archive/ebbfbf34a5d0.bfx",
+   "sha256": "e4e4395e47caa42bafc967b1c71a84d42d119a022b0e943a13921516fae97242"
+  }
+ ],
+ "budget_s": 60.0,
+ "kernels": [],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   6
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_FUNCTION": "aes-sbox",
+  "BOOLFLUX_RUNLOG_STORE": "<campaign archive>/2026-11-17-push/G2/hub/runlog"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/independent",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T07:09:34Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "candidates": 2,
+  "error": null
+ },
+ "t_end_utc": "2026-11-17T07:09:40Z",
+ "wall_s": 6.326,
+ "mono_s": 6.326,
+ "cpu_s": 5.739,
+ "max_rss_kb": 34972
+}

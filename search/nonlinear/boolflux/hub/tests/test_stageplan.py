@@ -18,7 +18,7 @@ from boolflux.hub.common import metrics, verify       # noqa: E402
 
 PUB = Path(__file__).resolve().parents[5] / 'circuits' / 'aes-sbox'
 F = {k: PUB / v for k, v in {
-    '32/5': 'aes-sbox-a32-ad5-g104-gd29-xx72-23.circ.txt', '32/4': 'aes-sbox-a32-ad4-g111-gd25-xx79-30.circ.txt',
+    '32/5': Path(__file__).resolve().parent / 'data' / 'aes-sbox-a32-ad5-g104-gd29-xx72-23.circ.txt', '32/4': 'aes-sbox-a32-ad4-g111-gd25-xx79-30.circ.txt',
     '28/5': 'aes-sbox-a28-ad5-g125-gd24-xx97-50.circ.txt', '28/4': 'aes-sbox-a28-ad4-g130-gd24-xx102-45.circ.txt',
     '35/3': Path(__file__).resolve().parent / 'data' / 'aes-sbox-a35-ad3-g137-gd28-xx102-47.circ.txt'}.items()}
 

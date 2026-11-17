@@ -1,0 +1,225 @@
+{
+ "run_id": "hub-bca8b1.r00730-join",
+ "campaign": "hub-bca8b1",
+ "operator": "join",
+ "choice": "join",
+ "target": "c485fad312e3",
+ "target_metrics": [
+  29,
+  4,
+  131,
+  17
+ ],
+ "target_class": "A<=31",
+ "seed": 866600457,
+ "cpu": 6,
+ "command": [
+  "taskset",
+  "-c",
+  "6",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "c485fad312e3",
+  "--seed",
+  "866600457",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00730-join",
+  "--since",
+  "1794899199.9112988",
+  "--batch",
+  "472d4c94fa8e:1794899199.9112988,a92f05158270:1794899199.9112988,f996c6b8a2a7:1794899199.9112988,d822eae39095:0.0,d59b4e6f1e9f:0.0,85e101cb4bf2:1794899199.9112988,f0726062da51:1794899199.9112988"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+ "script_sha": "9b1bb4e61c",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794899211.76,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "partners": 4,
+  "partners_done": 4,
+  "tried": 3810,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794899199.9112988,
+  "joined_through": 1794899209.9679277,
+  "joined_through_by": {
+   "c485fad312e3": 1794899209.9679277,
+   "472d4c94fa8e": 1794899209.9679277,
+   "a92f05158270": 1794899209.9679277,
+   "f996c6b8a2a7": 1794899209.9679277,
+   "d822eae39095": 1794899209.9679277,
+   "d59b4e6f1e9f": 1794899209.9679277,
+   "85e101cb4bf2": 1794899209.9679277,
+   "f0726062da51": 1794899209.9679277
+  },
+  "batch": [
+   {
+    "target": "c485fad312e3",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "472d4c94fa8e",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "a92f05158270",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "f996c6b8a2a7",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "d822eae39095",
+    "since": 0.0,
+    "partners": 529,
+    "partners_done": 529,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "d59b4e6f1e9f",
+    "since": 0.0,
+    "partners": 529,
+    "partners_done": 529,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "85e101cb4bf2",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "f0726062da51",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   }
+  ],
+  "joins": [
+   {
+    "front": "f0726062da51",
+    "back": "d3ee863d57a1",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 3693,
+  "duplicate": 1,
+  "archived": 115,
+  "partners_with_hits": 1,
+  "pair_accounting": {
+   "partner_hash": "f90fa94f8751e6f5",
+   "repeated_pairs": 64,
+   "partner_s_sum": 6.194,
+   "partner_s_max": 0.021,
+   "yields_max": 14,
+   "kept_max": 1,
+   "partners_with_yields": 858
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 1033,
+   "cells": 271,
+   "front": 83,
+   "max_t_admit": 1794899209.9679277
+  }
+ },
+ "parents": [
+  "c485fad312e3"
+ ],
+ "wall_s": 8.47,
+ "cpu_s": 7.71,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 1,
+ "admitted": 1,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    31,
+    5,
+    112,
+    23
+   ],
+   "status": "admitted",
+   "id": "e39ea88d1e68",
+   "gain": 0.0,
+   "reason": "dominated"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00730-join/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 93
+  },
+  "suspended": [],
+  "join_share": 0.0672,
+  "mode": "priority",
+  "level": "join",
+  "op": "join",
+  "rule": "front circuits with unmet partners; A, AD ascending, newest first; batched",
+  "n_level": 93,
+  "attempts": 129,
+  "struct_attempts": 92,
+  "why": "join",
+  "batch": 7,
+  "join_partners": 1082
+ },
+ "admission": {
+  "counts": {
+   "admitted": 1
+  },
+  "admit_s": 0.034,
+  "finish_s": 0.037,
+  "job_wall_s": 8.47,
+  "op_wall_s": 6.27,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0129,
+  "mono_wall_s": 8.471,
+  "start_to_main_s": 0.12,
+  "setup_s": 0.068,
+  "op_s": 8.259,
+  "end_to_exit_seen_s": 0.024,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 7.924,
+  "proc_maxrss_kb": 49140,
+  "t_exit": 1794899218.2518134
+ }
+}

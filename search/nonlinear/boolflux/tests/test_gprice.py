@@ -24,8 +24,8 @@ FWD = REPO / 'circuits' / 'aes-sbox'
 INV = REPO / 'circuits' / 'aes-invsbox'
 F32 = FWD / 'aes-sbox-a32-ad4-g117-gd17-xx85-35.circ.txt'
 F28 = FWD / 'aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt'
-F35 = FWD / 'aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt'
-I32 = INV / 'aes-invsbox-a32-ad5-g109-gd20-xx77-28.circ.txt'
+F35 = HERE / 'data' / 'aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt'      # replaced in circuits/ (2026-11-17), kept as data
+I32 = HERE / 'data' / 'aes-invsbox-a32-ad5-g109-gd20-xx77-28.circ.txt'
 
 
 class TestGprice(unittest.TestCase):

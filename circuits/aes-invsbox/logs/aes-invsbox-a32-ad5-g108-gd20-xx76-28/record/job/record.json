@@ -1,0 +1,227 @@
+{
+ "operator": "join",
+ "inputs": [
+  "89ad8538787d"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 849968038,
+ "seconds": 60.0,
+ "wall_s": 15.66,
+ "cpu_s": 15.77,
+ "candidates": 7,
+ "cand_ids": [
+  "07ed2cc8be68",
+  "04c852b4e755",
+  "045ceea9c802",
+  "be663138524f",
+  "fd48f20bc569",
+  "0c8426c90781",
+  "419258195252"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "partners": 181,
+  "partners_done": 181,
+  "tried": 6408,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 0.0,
+  "joined_through": 1794897331.9255965,
+  "joined_through_by": {
+   "89ad8538787d": 1794897331.9255965,
+   "8db52d47b344": 1794897331.9255965,
+   "6a2c31c4bead": 1794897331.9255965,
+   "3035f55e521f": 1794897331.9255965,
+   "40c4f780adb3": 1794897331.9255965,
+   "ee1b16db57aa": 1794897331.9255965,
+   "f8cacfe3577d": 1794897331.9255965,
+   "7a64ee8f5775": 1794897331.9255965
+  },
+  "batch": [
+   {
+    "target": "89ad8538787d",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "8db52d47b344",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "6a2c31c4bead",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "3035f55e521f",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "40c4f780adb3",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "ee1b16db57aa",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "f8cacfe3577d",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   },
+   {
+    "target": "7a64ee8f5775",
+    "since": 0.0,
+    "partners": 181,
+    "partners_done": 181,
+    "joined_through": 1794897331.9255965
+   }
+  ],
+  "joins": [
+   {
+    "front": "f8cacfe3577d",
+    "back": "8db52d47b344",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 0
+   },
+   {
+    "front": "2e39b184ce5a",
+    "back": "8db52d47b344",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 1
+   },
+   {
+    "front": "7a64ee8f5775",
+    "back": "8db52d47b344",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 1
+   },
+   {
+    "front": "6a2c31c4bead",
+    "back": "34b0e97b7d18",
+    "LX": 4,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "cfc319550206",
+    "back": "6a2c31c4bead",
+    "LX": 5,
+    "LY": 3,
+    "interface_gates": 0
+   },
+   {
+    "front": "7a64ee8f5775",
+    "back": "2e39b184ce5a",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 0
+   },
+   {
+    "front": "2e39b184ce5a",
+    "back": "7a64ee8f5775",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 0
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 6231,
+  "duplicate": 7,
+  "archived": 163,
+  "partners_with_hits": 6,
+  "pair_accounting": {
+   "partner_hash": "09bc396bdd688d56",
+   "repeated_pairs": 408,
+   "partner_s_sum": 15.625,
+   "partner_s_max": 0.038,
+   "yields_max": 14,
+   "kept_max": 2,
+   "partners_with_yields": 1448
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 321,
+   "cells": 132,
+   "front": 63,
+   "max_t_admit": 1794897331.9255965
+  }
+ },
+ "function": "aes-invsbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r00113-join/run.json",
+  "kind": "hub.op.join",
+  "command": "python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G1/hub --in 89ad8538787d --seed 849968038 --seconds 60 --out <campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r00113-join --since 0.0 --batch 8db52d47b344:0.0,6a2c31c4bead:0.0,3035f55e521f:0.0,40c4f780adb3:0.0,ee1b16db57aa:0.0,f8cacfe3577d:0.0,7a64ee8f5775:0.0",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_join.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G1/hub",
+   "--in",
+   "89ad8538787d",
+   "--seed",
+   "849968038",
+   "--seconds",
+   "60",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r00113-join",
+   "--since",
+   "0.0",
+   "--batch",
+   "8db52d47b344:0.0,6a2c31c4bead:0.0,3035f55e521f:0.0,40c4f780adb3:0.0,ee1b16db57aa:0.0,f8cacfe3577d:0.0,7a64ee8f5775:0.0"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G1/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 849968038,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": null
+  },
+  "function": "aes-invsbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 229862.0049,
+  "mono_t0": 229862.1179,
+  "mono_end": 229879.7441,
+  "setup_s": 0.113,
+  "op_s": 17.626,
+  "proc_start_to_main_s": 0.15,
+  "archive_load_s": 0.011,
+  "kernel_s": 0.0,
+  "kernel_calls": 0
+ }
+}

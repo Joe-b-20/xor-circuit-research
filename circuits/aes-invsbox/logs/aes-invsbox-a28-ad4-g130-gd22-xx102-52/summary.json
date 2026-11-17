@@ -1,0 +1,201 @@
+{
+ "target": "aes-inv",
+ "target_description": "AES inverse S-box, FIPS-197",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "cost,gd",
+ "caps": {
+  "GD": 23,
+  "AD": 4,
+  "A": 28
+ },
+ "start": "<campaign archive>/2026-11-17-push/G1/found/aes-invsbox-a28-ad4-g130-gd23-xx102-51-0646Z/aes-invsbox-a28-ad4-g130-gd23-xx102-51.circ.txt",
+ "start_metrics": {
+  "G": 130,
+  "A": 28,
+  "GD": 23,
+  "AD": 4,
+  "cost": 130.0,
+  "counts": {
+   "AND": 28,
+   "XNOR": 51,
+   "XOR": 51
+  }
+ },
+ "seeds": [
+  874
+ ],
+ "iters": 2000000000,
+ "seconds_cap": 500.0,
+ "rounds": 1,
+ "seed_scheme": "v2",
+ "code_sha256_12": "aa864668b180",
+ "code_snapshot": "<campaign archive>/2026-11-17-push/G1/runs/k-28-4-130-23/src",
+ "settings": {
+  "T0": "0",
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1,
+  "stop_stall_it": "400000"
+ },
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-inv --model nist --start <campaign archive>/2026-11-17-push/G1/found/aes-invsbox-a28-ad4-g130-gd23-xx102-51-0646Z/aes-invsbox-a28-ad4-g130-gd23-xx102-51.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --cap-gd 23 --iters 2000000000 --seconds 500 --seeds 874 --jobs 1 --out <campaign archive>/2026-11-17-push/G1/runs/k-28-4-130-23 --set T0=0 --set stop_stall_it=400000",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes-inv",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-17-push/G1/found/aes-invsbox-a28-ad4-g130-gd23-xx102-51-0646Z/aes-invsbox-a28-ad4-g130-gd23-xx102-51.circ.txt",
+  "--objective",
+  "cost,gd",
+  "--cap-a",
+  "28",
+  "--cap-ad",
+  "4",
+  "--cap-gd",
+  "23",
+  "--iters",
+  "2000000000",
+  "--seconds",
+  "500",
+  "--seeds",
+  "874",
+  "--jobs",
+  "1",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G1/runs/k-28-4-130-23",
+  "--set",
+  "T0=0",
+  "--set",
+  "stop_stall_it=400000"
+ ],
+ "run_record": "run.json",
+ "runs": [
+  {
+   "round": 0,
+   "seed": 874,
+   "kernel_seed": 874,
+   "tag": "r0-s874",
+   "returncode": 0,
+   "wall_s": 179.68,
+   "final": {
+    "cost": 130.0,
+    "G": 130.0,
+    "A": 28.0,
+    "GD": 22.0,
+    "AD": 4.0,
+    "obj": 130.0022,
+    "feas": 1.0,
+    "iters": 431232.0,
+    "restarts": 0.0,
+    "seconds": 179.67
+   },
+   "improvements": [
+    {
+     "t": 10.363,
+     "it": 31232,
+     "mv": "resub3",
+     "cost": 130.0,
+     "G": 130,
+     "A": 28,
+     "GD": 22,
+     "AD": 4
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 107905.0,
+     "acc": 3459.0,
+     "imp": 0.0,
+     "cands": 85817.0,
+     "time": 1.37
+    },
+    "resub2": {
+     "prop": 215869.0,
+     "acc": 34192.0,
+     "imp": 0.0,
+     "cands": 3512264.0,
+     "time": 109.6
+    },
+    "resub3": {
+     "prop": 107458.0,
+     "acc": 13533.0,
+     "imp": 1.0,
+     "cands": 2277565.0,
+     "time": 68.6
+    }
+   },
+   "time_capped": true,
+   "core_ok": true,
+   "metrics": {
+    "G": 130,
+    "A": 28,
+    "GD": 22,
+    "AD": 4,
+    "cost": 130.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 52,
+     "XOR": 50
+    }
+   }
+  }
+ ],
+ "wall_s": 179.7,
+ "best": {
+  "file": "<campaign archive>/2026-11-17-push/G1/runs/k-28-4-130-23/best.circ.txt",
+  "origin": "seed 874 round 0",
+  "feasible": true,
+  "metrics": {
+   "G": 130,
+   "A": 28,
+   "GD": 22,
+   "AD": 4,
+   "cost": 130.0,
+   "counts": {
+    "AND": 28,
+    "XNOR": 52,
+    "XOR": 50
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "buf_lines": 0,
+  "independent_metrics": {
+   "G": 130,
+   "counts": {
+    "AND": 28,
+    "XNOR": 52,
+    "XOR": 50
+   },
+   "A": 28,
+   "XX": 102,
+   "GD": 22,
+   "AD": 4,
+   "dead": 0,
+   "n": 8,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 130.0
+  }
+ }
+}

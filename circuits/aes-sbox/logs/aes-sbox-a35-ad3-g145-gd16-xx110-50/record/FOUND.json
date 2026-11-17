@@ -1,0 +1,46 @@
+{
+ "function": "aes-sbox",
+ "tuple": [
+  35,
+  3,
+  145,
+  16
+ ],
+ "hub_id": "e1a056e87957",
+ "hub": "<campaign archive>/2026-11-17-push/G2/hub",
+ "sha256": "3bb771ee6be4ccc83f2d3362dbe5e5c91e99b48e0f591f95b579b1dff45a4158",
+ "code": "4170c41873f9ce5274d01f300948b76fcda83907 (tonight-2026-11-17, frozen copy G2/snap)",
+ "dominates_published": [
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a35-ad3-g147-gd16-xx112-60.circ.txt"
+ ],
+ "lineage": [
+  {
+   "id": "e1a056e87957",
+   "m": [
+    35,
+    3,
+    145,
+    16
+   ],
+   "operator": "polish",
+   "parents": [
+    "7dfa007818b5"
+   ],
+   "run_id": "hub-bca8b1.r01484-polish",
+   "source": null
+  },
+  {
+   "id": "7dfa007818b5",
+   "m": [
+    35,
+    3,
+    147,
+    16
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a35-ad3-g147-gd16-xx112-60.circ.txt"
+  }
+ ]
+}

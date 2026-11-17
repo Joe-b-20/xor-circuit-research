@@ -1,0 +1,12 @@
+aes_check rc 0
+OK   <campaign archive>/2026-11-17-push/G2/found/.tmp-aes-sbox-a35-ad3-g153-gd15-xx118-23b419/aes-sbox-a35-ad3-g153-gd15-xx118-55-23b419.circ.txt  A AD G GD = 35 3 153 15  counts {'AND': 35, 'XNOR': 55, 'XOR': 63}
+     new Pareto point on pinned set: YES
+     published best G at GD<=15: 33 4 116 15 (aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt, gain -37)
+     published best G at A<=35: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -50)
+     published best G at A<=35, GD<=15: 33 4 116 15 (aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt, gain -37)
+
+
+circuits/check.py rc 0
+ok   <campaign archive>/2026-11-17-push/G2/found/.tmp-aes-sbox-a35-ad3-g153-gd15-xx118-23b419/aes-sbox-a35-ad3-g153-gd15-xx118-55-23b419.circ.txt  A=35 AD=3 G=153 GD=15 XX=118 (XOR 63, XNOR 55)  orders=msb/msb
+1/1 circuits ok (linear 0/0, Boolean 1/1)
+

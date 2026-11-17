@@ -1,0 +1,74 @@
+{
+ "circuit": "aes-sbox-a35-ad3-g143-gd17-xx108-51.circ.txt",
+ "sha256": "ac95b67afcc5682e00222461d7d267ac4d57c697a30b3178fe4a12d3e7cd5ea5",
+ "ok": true,
+ "function": "AES S-box (FIPS 197): inversion in GF(2^8) mod x^8+x^4+x^3+x+1, then the affine map with constant 0x63",
+ "tuple_A_AD_G_GD": [
+  35,
+  3,
+  143,
+  17
+ ],
+ "counts": {
+  "AND": 35,
+  "XNOR": 51,
+  "XOR": 57
+ },
+ "checks": {
+  "all_256_inputs_boolflux_reader": true,
+  "all_256_inputs_independent_verifier": true,
+  "metrics_agree": true,
+  "library_and_xor_xnor_not": true,
+  "boolcirc_gate_list_orders": [
+   "msb/msb"
+  ],
+  "boolcirc_skeleton_agrees": true,
+  "name_and_header_tallies_match": true,
+  "all_256_inputs_third_evaluator": true,
+  "problems": []
+ },
+ "bit_order": "U0 and S0 are the most significant bits (msb/msb), as in NIST's files",
+ "nist": {
+  "pin": "3d807741f937d29d3bef4f32f142ccda0cda9070",
+  "compared_with": "every forward AES S-box circuit of the pin (104): aes-sbox/, sbox/, old-2020/",
+  "dominated_by": [],
+  "best_G_with_A_AD_GD_at_most_ours": {
+   "tuple": [
+    35,
+    3,
+    157,
+    15
+   ],
+   "file": "aes-sbox-a35-ad3-g157-gd15-xx122-31.circ.txt",
+   "gain": 14
+  },
+  "best_G_with_GD_at_most_ours": {
+   "tuple": [
+    33,
+    4,
+    116,
+    15
+   ],
+   "file": "aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt",
+   "gain": -27
+  },
+  "pareto_points_ours_dominates": [
+   "aes-sbox-a35-ad3-g147-gd20-xx112-36"
+  ],
+  "pareto_points_note": "NIST's Pareto points in (A, AD, G, GD) among the 104 (33 points) that this circuit matches or beats in all four and beats in at least one"
+ },
+ "start_circuits": {
+  "start.circ.txt": {
+   "ok": true,
+   "tuple_A_AD_G_GD": [
+    35,
+    3,
+    153,
+    15
+   ],
+   "circuit_name": "aes-sbox-a35-ad3-g153-gd15-xx118-56"
+  }
+ },
+ "checked_utc": "2026-11-17T12:04:19Z",
+ "checker": "circuits/check.py (boolcirc) as at this commit; search/nonlinear/boolflux/aes_check.py as at commit 2c949cb (BoolFlux core and independent/verify.py, NIST's 104 forward circuits); and a third evaluator (the table computed from GF(2^8) and the affine map of FIPS 197, written for this check)"
+}

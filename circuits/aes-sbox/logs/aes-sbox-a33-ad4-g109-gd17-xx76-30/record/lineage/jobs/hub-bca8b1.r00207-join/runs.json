@@ -1,0 +1,285 @@
+{
+ "run_id": "hub-bca8b1.r00207-join",
+ "campaign": "hub-bca8b1",
+ "operator": "join",
+ "choice": "join",
+ "target": "31345644649b",
+ "target_metrics": [
+  29,
+  4,
+  141,
+  15
+ ],
+ "target_class": "A<=31",
+ "seed": 85070663,
+ "cpu": 8,
+ "command": [
+  "taskset",
+  "-c",
+  "8",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "31345644649b",
+  "--seed",
+  "85070663",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00207-join",
+  "--since",
+  "1794897381.170011",
+  "--batch",
+  "a9462251cefd:1794897381.170011,c485fad312e3:1794897381.170011,472d4c94fa8e:1794897381.170011,a92f05158270:1794897381.170011,f996c6b8a2a7:1794897381.170011,6b0dcde06adf:1794897381.170011,e9065e88bc68:1794897381.170011"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+ "script_sha": "9b1bb4e61c",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794897410.9,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "partners": 14,
+  "partners_done": 14,
+  "tried": 556,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794897381.170011,
+  "joined_through": 1794897407.070786,
+  "joined_through_by": {
+   "31345644649b": 1794897407.070786,
+   "a9462251cefd": 1794897407.070786,
+   "c485fad312e3": 1794897407.070786,
+   "472d4c94fa8e": 1794897407.070786,
+   "a92f05158270": 1794897407.070786,
+   "f996c6b8a2a7": 1794897407.070786,
+   "6b0dcde06adf": 1794897407.070786,
+   "e9065e88bc68": 1794897407.070786
+  },
+  "batch": [
+   {
+    "target": "31345644649b",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "a9462251cefd",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "c485fad312e3",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "472d4c94fa8e",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "a92f05158270",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "f996c6b8a2a7",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "6b0dcde06adf",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   },
+   {
+    "target": "e9065e88bc68",
+    "since": 1794897381.170011,
+    "partners": 14,
+    "partners_done": 14,
+    "joined_through": 1794897407.070786
+   }
+  ],
+  "joins": [
+   {
+    "front": "6b0dcde06adf",
+    "back": "84ef9c6cf28d",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "6b0dcde06adf",
+    "back": "84ef9c6cf28d",
+    "LX": 2,
+    "LY": 2,
+    "interface_gates": 0
+   },
+   {
+    "front": "e9065e88bc68",
+    "back": "84ef9c6cf28d",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "e9065e88bc68",
+    "back": "84ef9c6cf28d",
+    "LX": 2,
+    "LY": 2,
+    "interface_gates": 0
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 520,
+  "duplicate": 4,
+  "archived": 28,
+  "partners_with_hits": 2,
+  "pair_accounting": {
+   "partner_hash": "abd2c25b3679f667",
+   "repeated_pairs": 0,
+   "partner_s_sum": 1.087,
+   "partner_s_max": 0.014,
+   "yields_max": 13,
+   "kept_max": 2,
+   "partners_with_yields": 88
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 525,
+   "cells": 204,
+   "front": 84,
+   "max_t_admit": 1794897407.070786
+  }
+ },
+ "parents": [
+  "31345644649b"
+ ],
+ "wall_s": 1.33,
+ "cpu_s": 1.06,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 4,
+ "admitted": 4,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    33,
+    6,
+    109,
+    32
+   ],
+   "status": "admitted",
+   "id": "24b3d54815a3",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    33,
+    6,
+    107,
+    30
+   ],
+   "status": "admitted",
+   "id": "7626c1a49733",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    33,
+    6,
+    109,
+    31
+   ],
+   "status": "admitted",
+   "id": "288e882354f5",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-003.bfx",
+   "metrics": [
+    33,
+    6,
+    107,
+    30
+   ],
+   "status": "admitted",
+   "id": "ab5cede47a8c",
+   "gain": 0.0,
+   "reason": "dominated"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00207-join/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 95
+  },
+  "suspended": [],
+  "join_share": 0.0974,
+  "mode": "priority",
+  "level": "join",
+  "op": "join",
+  "rule": "front circuits with unmet partners; A, AD ascending, newest first; batched",
+  "n_level": 95,
+  "attempts": 32,
+  "struct_attempts": 32,
+  "why": "join",
+  "batch": 7,
+  "join_partners": 112
+ },
+ "admission": {
+  "counts": {
+   "admitted": 4
+  },
+  "admit_s": 0.151,
+  "finish_s": 0.158,
+  "job_wall_s": 1.33,
+  "op_wall_s": 1.13,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0049,
+  "mono_wall_s": 1.333,
+  "start_to_main_s": 0.096,
+  "setup_s": 0.075,
+  "op_s": 1.141,
+  "end_to_exit_seen_s": 0.021,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 1.249,
+  "proc_maxrss_kb": 41380,
+  "t_exit": 1794897412.2295809
+ }
+}

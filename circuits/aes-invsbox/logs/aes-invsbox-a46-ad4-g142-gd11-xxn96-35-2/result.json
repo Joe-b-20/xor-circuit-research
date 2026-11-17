@@ -1,0 +1,138 @@
+{
+ "op": "bottom",
+ "target": "<campaign archive>/2026-11-17-push/G3/starts/aes-invsbox-a47-ad4-g141-gd11-xx94-46.circ.txt",
+ "seed": 61,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G3/starts/NIST-aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+ "start_tuple": [
+  55,
+  4,
+  148,
+  10
+ ],
+ "params": {
+  "cut": 4,
+  "cap": 11,
+  "amax": 47,
+  "iters": 30000,
+  "pw": "0,3",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1,
+  "junk": "absorb5"
+ },
+ "wall_s": 1485.5,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 12,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 190532}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 190532, \"kernel_seed\": 190532, \"caps\": {\"A\": 46, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "build {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 583734}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 583734, \"kernel_seed\": 583734, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 849077}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 849077, \"kernel_seed\": 849077, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 307575}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 307575, \"kernel_seed\": 307575, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 336559}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 336559, \"kernel_seed\": 336559, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 843032}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 843032, \"kernel_seed\": 843032, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 726839}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 0.0, \"plan_seed\": 726839, \"kernel_seed\": 726839, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.27,
+  "verify_s": 0.165,
+  "verify_calls": 2
+ },
+ "notes": [],
+ "utc": "2026-11-17T09:31:43Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    46,
+    4,
+    142,
+    11
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G3/runs/i55c11-s61/bottom-a46-ad4-g142-gd11-c62df7191f.circ.txt",
+   "how": "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 190532, \"kernel_seed\": 190532, \"caps\": {\"A\": 46, \"AD\": 4, \"GD\": 11}}",
+   "t": 235.6,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    46,
+    4,
+    142,
+    11
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G3/runs/i55c11-s61/bottom-a46-ad4-g142-gd11-c62df7191f.circ.txt",
+   "how": "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 190532, \"kernel_seed\": 190532, \"caps\": {\"A\": 46, \"AD\": 4, \"GD\": 11}}",
+   "t": 235.6,
+   "class": "other"
+  }
+ ]
+}

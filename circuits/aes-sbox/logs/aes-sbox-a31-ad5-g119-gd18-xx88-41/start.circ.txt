@@ -1,0 +1,175 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+
+## File source
+  % Not a NIST-issued circuit
+  % A start circuit of the run that found aes-sbox-a31-ad5-g119-gd18-xx88-41
+
+## Index of circuits (circuitName numOutputs numInputs)
+  % aes-sbox-a31-ad5-g115-gd20-xx84-32 8 8
+
+## Circuit
+begin circuit aes-sbox-a31-ad5-g115-gd20-xx84-32
+
+  % Description: AES Sbox, compatible with NIST-FIPS 197
+  % Circuit-name syntax: <basename>-aA-adAD-gG-gdGD-xxX-Y
+  % A = #AND; AD = AND-depth; G = #Gates; GD = Gate-depth; X = #XOR + #XNOR; Y = #XNOR
+  % Tally of variables (123): 8 inputs; 8 outputs; 107 intermediates
+  % Tally of gates (115): 31 AND; 52 XOR; 32 XNOR
+  % Gate depth 20; AND depth 5
+  % Gates per gate level: 5 4 9 8 7 3 4 3 4 3 4 6 6 8 10 8 5 5 6 7
+  % AND gates per AND level: 9 1 2 6 13
+
+Inputs: U0:U7
+Outputs: S0:S7
+Internal: a1:a31 t1:t76
+GateSyntax: GateName Output Inputs
+
+begin SLP
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 1
+XOR t1 U0 U7
+XOR t2 U1 U4
+XNOR t3 U3 U6
+XNOR t4 U2 U3
+XOR t5 U1 U2
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 2
+XOR t6 U5 t2
+XNOR t7 t1 t3
+XNOR t8 t1 t4
+XNOR t9 t2 t3
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 3
+XOR t10 t1 t6
+XOR t11 U4 t7
+XNOR t12 U5 t8
+XOR t13 U6 t8
+XOR t14 t6 t8
+XOR t15 t6 t7
+XOR t16 U0 t9
+%%%%%%%%%%%% AND level 1 (subset 1 of 3)
+AND a1 U7 t6
+AND a2 t5 t9
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 4
+XOR t17 U7 t11
+XNOR t18 U7 t12
+XOR t19 t12 t5
+XNOR t20 t9 a1
+%%%%%%%%%%%% AND level 1 (subset 2 of 3)
+AND a3 t10 t11
+AND a4 t13 t14
+AND a5 t12 t15
+AND a6 U2 t16
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 5
+XOR t21 a3 t17
+XOR t22 U5 a4
+XNOR t23 a3 a5
+XNOR t24 t18 t20
+%%%%%%%%%%%% AND level 1 (subset 3 of 3)
+AND a7 t7 t18
+AND a8 U0 t17
+AND a9 t4 t19
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 6
+XOR t25 t21 a7
+XOR t26 t22 a8
+XOR t27 a8 a9
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 7
+XOR t28 t25 t26
+XOR t29 t23 t27
+XNOR t30 t26 t24
+XNOR t31 t27 t24
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 8
+XOR t32 a6 t30
+XOR t33 a2 t31
+%%%%%%%%%%%% AND level 2 (subset 1 of 1)
+AND a10 t28 t29
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 9
+XOR t34 a10 t32
+XOR t35 t29 t33
+XNOR t36 t28 t32
+XNOR t37 a10 t33
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 10
+XOR t38 a10 t36
+%%%%%%%%%%%% AND level 3 (subset 1 of 1)
+AND a11 t34 t35
+AND a12 t36 t37
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 11
+XOR t39 t33 a11
+XNOR t40 t35 t38
+XOR t41 t28 a12
+XOR t42 t29 a11
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 12
+XOR t43 t41 t42
+XOR t44 t5 t41
+%%%%%%%%%%%% AND level 4 (subset 1 of 2)
+AND a13 t39 t38
+AND a14 t41 t42
+AND a15 t18 t42
+AND a16 t7 t42
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 13
+XOR t45 t28 a13
+XOR t46 a13 a12
+XNOR t47 t40 a14
+XNOR t48 t4 t44
+%%%%%%%%%%%% AND level 4 (subset 2 of 2)
+AND a17 U7 t43
+AND a18 t6 t43
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 14
+XOR t49 t15 t45
+XOR t50 t46 t47
+XOR t51 t47 t43
+XOR t52 t12 t46
+XOR t53 t9 t45
+%%%%%%%%%%%% AND level 5 (subset 1 of 4)
+AND a19 t10 t47
+AND a20 t45 t48
+AND a21 t11 t47
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 15
+XNOR t54 t5 t49
+XOR t55 a19 a20
+XOR t56 t42 t50
+XNOR t57 a17 a21
+%%%%%%%%%%%% AND level 5 (subset 2 of 4)
+AND a22 t13 t50
+AND a23 U0 t51
+AND a24 t49 t52
+AND a25 t14 t50
+AND a26 t17 t51
+AND a27 t44 t53
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 16
+XNOR t58 a23 t55
+XNOR t59 a15 t57
+XOR t60 a5 a24
+XOR t61 a2 a27
+XOR t62 t54 t48
+%%%%%%%%%%%% AND level 5 (subset 3 of 4)
+AND a28 t54 t46
+AND a29 t16 t56
+AND a30 U2 t56
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 17
+XOR t63 a22 t58
+XNOR t64 a29 t59
+XOR t65 a29 a25
+XNOR t66 a17 t61
+%%%%%%%%%%%% AND level 5 (subset 4 of 4)
+AND a31 t41 t62
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 18
+XNOR t67 t41 t63
+XOR t68 t64 t60
+XNOR t69 t60 t65
+XNOR t70 t63 a26
+XOR t71 t65 t66
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 19
+XOR t72 a28 t67
+XOR t73 a16 t68
+XOR t74 t57 t69
+XNOR t75 t68 t70
+XNOR t76 t55 t71
+XOR S6 t69 a31
+%%%%%%%%%%%%%%%%%%%%%%%% Gate level 20
+XNOR S0 t72 t64
+XNOR S1 t72 a30
+XOR S2 a20 t73
+XNOR S3 t58 t74
+XOR S4 a21 t75
+XOR S5 t76 a18
+XNOR S7 t74 t61
+end SLP
+end circuit

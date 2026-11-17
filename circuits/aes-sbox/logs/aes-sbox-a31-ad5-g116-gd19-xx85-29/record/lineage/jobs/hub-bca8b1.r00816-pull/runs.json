@@ -1,0 +1,348 @@
+{
+ "run_id": "hub-bca8b1.r00816-pull",
+ "campaign": "hub-bca8b1",
+ "operator": "pull",
+ "choice": "fresh",
+ "target": "2fa6cdd41f5e",
+ "target_metrics": [
+  31,
+  5,
+  114,
+  21
+ ],
+ "target_class": "A<=31",
+ "seed": 165063125,
+ "cpu": 7,
+ "command": [
+  "taskset",
+  "-c",
+  "7",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_pull.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "2fa6cdd41f5e",
+  "--seed",
+  "165063125",
+  "--seconds",
+  "90",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00816-pull"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_pull.py",
+ "script_sha": "0501d3973e",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794899466.13,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "op_info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 31,
+   "cap.gd": 20,
+   "in": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00816-pull/start.bfx",
+   "out": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00816-pull/best.bfx",
+   "seed": 165063125,
+   "seconds": 90.0,
+   "keep_bests": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00816-pull/bests"
+  },
+  "t_last_improvement": 82.755,
+  "kernel_bin": "bfx-44d5e49eee",
+  "kernel_stats": {
+   "stop": "time",
+   "iters": 233024,
+   "restarts": 3,
+   "last_improve_it": 214708,
+   "last_improve_t": 82.755,
+   "first_feasible_it": 220,
+   "repair_it": 220,
+   "best_lines": 33,
+   "last_bests": [
+    [
+     12.127,
+     29037,
+     "resub2",
+     31,
+     5,
+     116,
+     20,
+     12.128,
+     11.117
+    ],
+    [
+     58.848,
+     151302,
+     "resub3",
+     31,
+     5,
+     116,
+     19,
+     58.851,
+     57.258
+    ],
+    [
+     82.755,
+     214708,
+     "resub3",
+     31,
+     5,
+     115,
+     20,
+     82.757,
+     81.421
+    ]
+   ],
+   "clock": {
+    "mono_s": 90.0,
+    "real_s": 90.0,
+    "cpu_s": 88.213
+   },
+   "first_best": [
+    0.004,
+    10,
+    "resub3",
+    31,
+    5,
+    114,
+    21,
+    0.005,
+    0.004
+   ],
+   "accept": {
+    "improve": 3611,
+    "neutral": 39668,
+    "uphill": 3691,
+    "uphill_refused": 72878,
+    "no_accept": 162519
+   },
+   "cands": {
+    "evaluated": 2005026,
+    "noop": 483698,
+    "nocand_moves": 23535,
+    "repair_keep_refused": 0
+   },
+   "moves": {
+    "resub1": {
+     "prop": 58256,
+     "acc": 6287,
+     "imp": 3,
+     "nocand": 11755,
+     "time": 0.85
+    },
+    "resub2": {
+     "prop": 116922,
+     "acc": 27289,
+     "imp": 17,
+     "nocand": 8133,
+     "time": 54.21
+    },
+    "resub3": {
+     "prop": 57846,
+     "acc": 13394,
+     "imp": 13,
+     "nocand": 3647,
+     "time": 34.9
+    }
+   },
+   "final": {
+    "G": 115,
+    "A": 31,
+    "GD": 20,
+    "AD": 5,
+    "feas": 1
+   },
+   "walk": {
+    "distinct_struct": 45831,
+    "distinct_metrics": 39
+   },
+   "bestform": {
+    "resub1": [
+     0,
+     3,
+     0,
+     0,
+     0,
+     0
+    ],
+    "resub2": [
+     0,
+     1,
+     16,
+     0,
+     0,
+     0
+    ],
+    "resub3": [
+     0,
+     0,
+     9,
+     1,
+     3,
+     0
+    ]
+   }
+  },
+  "bests_kept": 33,
+  "bests_dir": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00816-pull/bests",
+  "caps": {
+   "A": 31,
+   "AD": null,
+   "GD": 20
+  },
+  "lowered": "GD",
+  "bests": {
+   "files": 33,
+   "ok": 7,
+   "not placed": 26,
+   "archived": 0,
+   "archived structure": 0,
+   "unreadable": 0,
+   "returned": 2,
+   "returned_metrics": [
+    [
+     31,
+     5,
+     116,
+     19,
+     "best-31.bfx"
+    ],
+    [
+     31,
+     5,
+     114,
+     21,
+     "best-0.bfx"
+    ]
+   ]
+  },
+  "archive_loaded": {
+   "records": 1081,
+   "cells": 272,
+   "front": 84,
+   "max_t_admit": 1794899453.0509925
+  }
+ },
+ "parents": [
+  "2fa6cdd41f5e"
+ ],
+ "wall_s": 96.4,
+ "cpu_s": 88.39,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 3,
+ "admitted": 3,
+ "gain": 2.5,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    31,
+    5,
+    115,
+    20
+   ],
+   "status": "admitted",
+   "id": "1d886c7bb307",
+   "gain": 1.0,
+   "reason": "fewer G in the cap box by 1"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    31,
+    5,
+    116,
+    19
+   ],
+   "status": "admitted",
+   "id": "038731af2147",
+   "gain": 1.5,
+   "reason": "fewer G in the cap box by 2"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    31,
+    5,
+    114,
+    21
+   ],
+   "status": "admitted",
+   "id": "53b2d97aac5b",
+   "gain": 0.0,
+   "reason": "dominated"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00816-pull/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 92,
+   "fresh": 85
+  },
+  "suspended": [],
+  "join_share": 0.1085,
+  "mode": "priority",
+  "level": "fresh",
+  "op": "pull",
+  "rule": "first polish / pull of a front tuple; A, AD ascending, newest first",
+  "n_level": 85,
+  "attempts": 0,
+  "struct_attempts": 0,
+  "why": "fresh"
+ },
+ "admission": {
+  "counts": {
+   "admitted": 3
+  },
+  "admit_s": 0.086,
+  "finish_s": 0.134,
+  "job_wall_s": 96.4,
+  "op_wall_s": 90.13,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0081,
+  "mono_wall_s": 96.396,
+  "start_to_main_s": 0.086,
+  "setup_s": 0.065,
+  "op_s": 96.222,
+  "end_to_exit_seen_s": 0.023,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 88.573,
+  "proc_maxrss_kb": 52384,
+  "t_exit": 1794899556.446585
+ }
+}

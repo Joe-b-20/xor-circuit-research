@@ -1,0 +1,77 @@
+{
+ "circuit": "aes-invsbox-a33-ad4-g121-gd14-xxn88-31-1.circ.txt",
+ "sha256": "1ba094bab449f177a9982f914d6c50abc3102a6380cfccadc19829afa790c018",
+ "ok": true,
+ "function": "AES S-box, inverse (FIPS 197): the inverse of the affine map with constant 0x63, then inversion in GF(2^8) mod x^8+x^4+x^3+x+1",
+ "tuple_A_AD_G_GD": [
+  33,
+  4,
+  121,
+  14
+ ],
+ "counts": {
+  "AND": 33,
+  "NOT": 1,
+  "XNOR": 31,
+  "XOR": 56
+ },
+ "checks": {
+  "all_256_inputs_boolflux_reader": true,
+  "all_256_inputs_independent_verifier": true,
+  "metrics_agree": true,
+  "library_and_xor_xnor_not": true,
+  "boolcirc_gate_list_orders": [
+   "msb/msb"
+  ],
+  "boolcirc_skeleton_agrees": true,
+  "name_and_header_tallies_match": true,
+  "all_256_inputs_third_evaluator": true,
+  "problems": [
+   "note: 1 NOT gates counted as gates and depth levels"
+  ]
+ },
+ "bit_order": "x0 and y0 are the most significant bits (msb/msb), as in NIST's inverse files",
+ "nist": {
+  "pin": "3d807741f937d29d3bef4f32f142ccda0cda9070",
+  "compared_with": "every inverse AES S-box circuit of the pin (91): aes-invsbox/, sbox/aes-sbox-inv-*, old-2020/aes-sbox-rev-*",
+  "dominated_by": [],
+  "best_G_with_A_AD_GD_at_most_ours": {
+   "tuple": [
+    33,
+    4,
+    123,
+    14
+   ],
+   "file": "aes-invsbox-a33-ad4-g123-gd14-xx90-16.circ.txt",
+   "gain": 2
+  },
+  "best_G_with_GD_at_most_ours": {
+   "tuple": [
+    33,
+    4,
+    123,
+    14
+   ],
+   "file": "aes-invsbox-a33-ad4-g123-gd14-xx90-16.circ.txt",
+   "gain": 2
+  },
+  "pareto_points_ours_dominates": [
+   "aes-invsbox-a33-ad4-g123-gd14-xx90-16"
+  ],
+  "pareto_points_note": "NIST's Pareto points in (A, AD, G, GD) among the 91 (33 points) that this circuit matches or beats in all four and beats in at least one"
+ },
+ "start_circuits": {
+  "start.circ.txt": {
+   "ok": true,
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    122,
+    14
+   ],
+   "circuit_name": "aes-invsbox-a33-ad4-g122-gd14-xxn89-22-1"
+  }
+ },
+ "checked_utc": "2026-11-17T12:04:20Z",
+ "checker": "circuits/check.py (boolcirc) as at this commit; search/nonlinear/boolflux/aes_check.py as at commit 2c949cb (BoolFlux core and independent/verify.py, NIST's 91 inverse circuits); and a third evaluator (the table computed from GF(2^8) and the affine map of FIPS 197, written for this check)"
+}

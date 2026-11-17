@@ -1,0 +1,277 @@
+{
+ "operator": "pull",
+ "inputs": [
+  "c527bc946541"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 198973054,
+ "seconds": 90.0,
+ "wall_s": 90.21,
+ "cpu_s": 88.45,
+ "candidates": 2,
+ "cand_ids": [
+  "b6df956e5cb3",
+  "9c981390fabd"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 35,
+   "cap.gd": 12,
+   "in": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/start.bfx",
+   "out": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/best.bfx",
+   "seed": 198973054,
+   "seconds": 90.0,
+   "keep_bests": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/bests"
+  },
+  "t_last_improvement": 89.164,
+  "kernel_bin": "bfx-44d5e49eee",
+  "kernel_stats": {
+   "stop": "time",
+   "iters": 230411,
+   "restarts": 2,
+   "last_improve_it": 228447,
+   "last_improve_t": 89.164,
+   "first_feasible_it": -1,
+   "repair_it": 230411,
+   "best_lines": 96,
+   "last_bests": [
+    [
+     87.553,
+     224572,
+     "resub1",
+     35,
+     3,
+     185,
+     15,
+     87.553,
+     86.006
+    ],
+    [
+     88.968,
+     227952,
+     "resub2",
+     35,
+     3,
+     184,
+     15,
+     88.969,
+     87.277
+    ],
+    [
+     89.164,
+     228447,
+     "resub2",
+     35,
+     3,
+     183,
+     15,
+     89.165,
+     87.457
+    ]
+   ],
+   "clock": {
+    "mono_s": 90.001,
+    "real_s": 90.001,
+    "cpu_s": 88.206
+   },
+   "first_best": [
+    0.002,
+    5,
+    "resub1",
+    35,
+    3,
+    154,
+    15,
+    0.003,
+    0.003
+   ],
+   "accept": {
+    "improve": 1219,
+    "neutral": 26170,
+    "uphill": 1200,
+    "uphill_refused": 18328,
+    "no_accept": 129738
+   },
+   "cands": {
+    "evaluated": 1059920,
+    "noop": 230767,
+    "nocand_moves": 72084,
+    "repair_keep_refused": 0
+   },
+   "moves": {
+    "resub1": {
+     "prop": 57712,
+     "acc": 2091,
+     "imp": 4,
+     "nocand": 31066,
+     "time": 1.0
+    },
+    "resub2": {
+     "prop": 114927,
+     "acc": 17899,
+     "imp": 53,
+     "nocand": 27397,
+     "time": 53.75
+    },
+    "resub3": {
+     "prop": 57772,
+     "acc": 8599,
+     "imp": 39,
+     "nocand": 13621,
+     "time": 35.2
+    }
+   },
+   "final": {
+    "G": 183,
+    "A": 35,
+    "GD": 15,
+    "AD": 3,
+    "feas": 0
+   },
+   "walk": {
+    "distinct_struct": 28065,
+    "distinct_metrics": 40
+   },
+   "bestform": {
+    "resub1": [
+     0,
+     4,
+     0,
+     0,
+     0,
+     0
+    ],
+    "resub2": [
+     0,
+     4,
+     47,
+     2,
+     0,
+     0
+    ],
+    "resub3": [
+     0,
+     3,
+     26,
+     0,
+     10,
+     0
+    ]
+   }
+  },
+  "bests_kept": 96,
+  "bests_dir": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/bests",
+  "caps": {
+   "A": 35,
+   "AD": null,
+   "GD": 12
+  },
+  "lowered": "GD",
+  "bests": {
+   "files": 96,
+   "ok": 3,
+   "not placed": 93,
+   "archived": 0,
+   "archived structure": 0,
+   "unreadable": 0,
+   "returned": 1,
+   "returned_metrics": [
+    [
+     35,
+     3,
+     154,
+     15,
+     "best-0.bfx"
+    ]
+   ]
+  },
+  "archive_loaded": {
+   "records": 1505,
+   "cells": 301,
+   "front": 84,
+   "max_t_admit": 1794907787.1120985
+  }
+ },
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull/run.json",
+  "kind": "hub.op.pull",
+  "command": "python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_pull.py --archive <campaign archive>/2026-11-17-push/G2/hub --in c527bc946541 --seed 198973054 --seconds 90 --out <campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_pull.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G2/hub",
+   "--in",
+   "c527bc946541",
+   "--seed",
+   "198973054",
+   "--seconds",
+   "90",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r02990-pull"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 198973054,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": 198973054
+  },
+  "function": "aes-sbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/2026-11-17-push/G2/hub/bin/bfx-44d5e49eee",
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 241031.9456,
+  "mono_t0": 241032.0144,
+  "mono_end": 241128.7872,
+  "setup_s": 0.069,
+  "op_s": 96.773,
+  "proc_start_to_main_s": 0.1,
+  "archive_load_s": 0.056,
+  "kernel_s": 96.597,
+  "kernel_calls": 1
+ }
+}

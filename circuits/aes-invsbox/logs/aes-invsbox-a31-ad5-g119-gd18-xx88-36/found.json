@@ -1,0 +1,133 @@
+{
+ "circuit": "aes-invsbox-a31-ad5-g119-gd18-xx88-36.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  31,
+  5,
+  119,
+  18
+ ],
+ "found_by": "BoolFlux",
+ "method": "join",
+ "method_description": "join: the front of one circuit and the back of another, met at a shared interface function, then the gate kernel",
+ "hub": true,
+ "start": {
+  "front": {
+   "kind": "our published circuit",
+   "file": "circuits/aes-invsbox/aes-invsbox-a31-ad5-g119-gd19-xx88-41.circ.txt",
+   "function": "aes-invsbox",
+   "sha256": "84eb368463bad49c945f106c1e9c53b688b3c9cf2b612347067c1ef90c533529",
+   "note": "published until this commit, which removes it (a circuit added here beats it); a copy is start.circ.txt and its logs are in the history of circuits/aes-invsbox/logs/",
+   "file_in_logs": "front.circ.txt"
+  },
+  "back": {
+   "kind": "our published circuit",
+   "file": "circuits/aes-invsbox/aes-invsbox-a31-ad5-g120-gd18-xx89-30.circ.txt",
+   "function": "aes-invsbox",
+   "sha256": "3d6ac632b182c8fec69022d4d32659af61febb3a670f085f2e8fed2f18cff37c",
+   "note": "published until this commit, which removes it (a circuit added here beats it); a copy is start.circ.txt and its logs are in the history of circuits/aes-invsbox/logs/",
+   "file_in_logs": "back.circ.txt"
+  }
+ },
+ "chain_root": "the hub lineage ends in 2 circuits: 2 published circuits of ours (4170c41)",
+ "lineage": [
+  "as the campaign recorded it: join 31/5/119/18 <- (seed 31/5/119/19 [aes-invsbox], seed 31/5/120/18 [aes-invsbox])",
+  "76f8a5bed330 join 31/5/119/18 <- fc6e2a3a16d2, 6ab53e320968 (hub-847958.r00026-join)",
+  "6ab53e320968 seed 31/5/120/18: <campaign archive>/2026-11-17-push/G1/snap/circuits/aes-invsbox/aes-invsbox-a31-ad5-g120-gd18-xx89-30.circ.txt",
+  "fc6e2a3a16d2 seed 31/5/119/19: <campaign archive>/2026-11-17-push/G1/snap/circuits/aes-invsbox/aes-invsbox-a31-ad5-g119-gd19-xx88-41.circ.txt"
+ ],
+ "parameters": {
+  "nursery": false,
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0,
+  "scheduler_version": "?+4d7be2aa08",
+  "front": "fc6e2a3a16d2",
+  "back": "6ab53e320968",
+  "LX": 4,
+  "LY": 4,
+  "interface_gates": 4
+ },
+ "seed": 910039833,
+ "found_utc": "2026-11-17T06:31:42Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 10.9,
+  "cpu_s": 9.08
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G1",
+  "what": "inverse S-box campaign from the published and earlier circuits (4170c41 snapshot): a hub (join, pull, polish), transports of the forward circuits of the parallel forward campaign with staged pulls, re-basing and kernel polishes"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/hub/join.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G1/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": "snapshot",
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run wrote no code record of its own (it ran from the snapshot); the hub job ran search/nonlinear/boolflux/hub/op_join.py from the snapshot"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 0 /usr/bin/python3 <campaign archive>/2026-11-17-push/G1/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G1/hub --in 838ccdf6d5d3 --seed 910039833 --seconds 60 --out <campaign archive>/2026-11-17-push/G1/hub/jobs/hub-847958.r00026-join --since 0.0 --batch 6ab53e320968:0.0,fc6e2a3a16d2:0.0,d063563b771d:0.0,769afd198745:0.0,ee224ce86e99:0.0,6ad456a98584:0.0,e01308c7ba0f:0.0",
+ "environment": {
+  "cwd": ""
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G1/hub/archive/76f8a5bed330.bfx",
+  "sha256": "5c1f65af2565e5cfd31e0c341f7d284a6c45bcf50ccd8c22bf689f311820beed",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-lineage.json.gz",
+  "record/76f8a5bed330.bfx",
+  "record/76f8a5bed330.json",
+  "record/aes-invsbox-a31-ad5-g119-gd18-xx88-36.circ.txt",
+  "record/aes_check.json",
+  "record/aes_check.txt",
+  "record/campaign.json",
+  "record/check_py.txt",
+  "record/hub-847958.r00026-join.json",
+  "record/job/events.jsonl.gz",
+  "record/job/record.json",
+  "record/job/run.json",
+  "record/lineage.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "back.circ.txt",
+  "front.circ.txt",
+  "hub-lineage.json.gz",
+  "record/76f8a5bed330.bfx",
+  "record/76f8a5bed330.json",
+  "record/aes-invsbox-a31-ad5-g119-gd18-xx88-36.circ.txt",
+  "record/aes_check.json",
+  "record/aes_check.txt",
+  "record/campaign.json",
+  "record/check_py.txt",
+  "record/hub-847958.r00026-join.json",
+  "record/job/events.jsonl.gz",
+  "record/job/record.json",
+  "record/job/run.json",
+  "record/lineage.json"
+ ]
+}

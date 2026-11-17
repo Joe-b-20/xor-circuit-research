@@ -1,0 +1,224 @@
+{
+ "circuit": "aes-sbox-a31-ad5-g111-gd24-xx80-34.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  31,
+  5,
+  111,
+  24
+ ],
+ "found_by": "BoolFlux",
+ "method": "AND removal",
+ "method_description": "exact AND removal: a window of gates rebuilt with one AND fewer (rank test and exhaustive flat products), then gate-kernel polish and a pull back to the gate depth of the source",
+ "hub": false,
+ "start": {
+  "kind": "our published circuit",
+  "file": "circuits/aes-sbox/aes-sbox-a32-ad4-g111-gd25-xx79-30.circ.txt",
+  "function": "aes-sbox",
+  "sha256": "8e3d21c6eea4030e0e8e778df2665ef7e764800761d7ac9f33496a16fbc4afa9",
+  "note": "still published; its logs/ give its own start and lineage"
+ },
+ "chain_root": "the start circuit (aes-sbox-a32-ad4-g111-gd25-xx79-30.circ.txt)",
+ "lineage": [
+  "hub operator andrm run as its own job (<campaign archive>/2026-11-17-push/G2/feed/a5-32-4-111-25-f93a24/job), input f93a248955af",
+  "exact AND removal from [32, 4, 111, 25]: 3 windows removed an AND ([[31, 5, 113, 28], [31, 5, 115, 27], [31, 5, 118, 28]]); kept [[31, 5, 113, 28], [31, 5, 115, 27], [31, 5, 118, 28]]",
+  "polish at caps {'A': 31, 'AD': 5, 'GD': 28}, 142.9 s: [[31, 5, 112, 25]]",
+  "pull at caps {'A': 31, 'AD': 5, 'GD': 25}, 142.8 s: [[31, 5, 111, 24]]",
+  "admitted into the hub archive (hub) as 64d0738aa691"
+ ],
+ "parameters": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 300.0,
+  "info": {
+   "andrm": {
+    "nowindow": 476,
+    "rank": 476,
+    "no_flat": 24,
+    "removed": 3
+   },
+   "hits": [
+    [
+     31,
+     5,
+     113,
+     28
+    ],
+    [
+     31,
+     5,
+     115,
+     27
+    ],
+    [
+     31,
+     5,
+     118,
+     28
+    ]
+   ],
+   "source": [
+    32,
+    4,
+    111,
+    25
+   ],
+   "polish": {
+    "caps": {
+     "A": 31,
+     "AD": 5,
+     "GD": 28
+    },
+    "seconds": 142.9,
+    "final": [
+     [
+      31,
+      5,
+      112,
+      25
+     ]
+    ],
+    "bests": {
+     "files": 3,
+     "ok": 2,
+     "not placed": 1,
+     "archived": 0,
+     "archived structure": 0,
+     "unreadable": 0,
+     "returned": 0,
+     "returned_metrics": []
+    },
+    "kernel_bin": "bfx-44d5e49eee",
+    "t_last_improvement": 120.94
+   },
+   "pull": {
+    "caps": {
+     "A": 31,
+     "AD": 5,
+     "GD": 25
+    },
+    "seconds": 142.8,
+    "final": [
+     [
+      31,
+      5,
+      111,
+      24
+     ]
+    ],
+    "bests": {
+     "files": 2,
+     "ok": 1,
+     "not placed": 1,
+     "archived": 0,
+     "archived structure": 0,
+     "unreadable": 0,
+     "returned": 0,
+     "returned_metrics": []
+    },
+    "t_last_improvement": 16.762
+   },
+   "placeable": 1,
+   "archive_loaded": {
+    "records": 1468,
+    "cells": 299,
+    "front": 84,
+    "max_t_admit": 1794907122.4687724
+   }
+  }
+ },
+ "seed": 8110,
+ "found_utc": "2026-11-17T09:25:50Z",
+ "found_utc_source": "the job's improvement event for this circuit's metrics (events.jsonl.gz), from the job's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 300.262,
+  "job_wall_s": 300.16,
+  "job_cpu_s": 297.48
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G2",
+  "what": "forward S-box campaign from the published and earlier circuits (4170c41 snapshot): a hub (join, pull, polish, region rebuild, AND removal) fed by runs (AND removal, staged pulls, transports of the inverse campaign's circuits)"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/hub/ops/op_andrm.py",
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G2/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": true,
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run recorded the same value; the job was started through the run folder's wrapper scripts/g2_andrm.py, which refuses inputs with A <= 28 and otherwise runs the snapshot's hub/ops/op_andrm.py unchanged (copied to the logs)",
+  "sources_sha256_at_run": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "git_at_run": {
+   "commit": null,
+   "branch": null,
+   "dirty": null,
+   "note": "not a git checkout (or git missing): see sources_sha256"
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "source_sha256": "7377c0b6fb40942f9776059ad94e999638c3694b0748e8221310497c2829eed8"
+   }
+  ]
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 <campaign archive>/2026-11-17-push/G2/scripts/g2_andrm.py --archive <campaign archive>/2026-11-17-push/G2/hub --in f93a248955af --seed 8110 --seconds 300 --out <campaign archive>/2026-11-17-push/G2/feed/a5-32-4-111-25-f93a24/job --bests 8",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-push/G2/cache",
+  "BOOLFLUX_FUNCTION": "aes-sbox"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G2/feed/a5-32-4-111-25-f93a24/cand-000.circ.txt",
+  "sha256": "acd36a8557ba6a8a53f91846a4e00f8e70a8faf78ff0503e75908ba42180fd7d",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "events.jsonl.gz",
+  "g2_andrm.py",
+  "job-record.json",
+  "job/polish/best.bfx",
+  "job/polish/kernel.cfg",
+  "job/polish/kernel.log.gz",
+  "job/polish/start.bfx",
+  "job/pull/best.bfx",
+  "job/pull/kernel.cfg",
+  "job/pull/kernel.log.gz",
+  "job/pull/start.bfx",
+  "run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "events.jsonl.gz",
+  "g2_andrm.py",
+  "job-record.json",
+  "job/polish/best.bfx",
+  "job/polish/kernel.cfg",
+  "job/polish/kernel.log.gz",
+  "job/polish/start.bfx",
+  "job/pull/best.bfx",
+  "job/pull/kernel.cfg",
+  "job/pull/kernel.log.gz",
+  "job/pull/start.bfx",
+  "run.json"
+ ]
+}

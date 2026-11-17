@@ -1,0 +1,107 @@
+{
+ "circuit": "aes-sbox-sel-a39-ad7-g162-gd35-xx123-6.circ.txt",
+ "function": "AES S-box (c = 0) or inverse S-box (c = 1), NIST aes-sbox-sel (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  39,
+  7,
+  162,
+  35
+ ],
+ "found_by": "BoolFlux",
+ "method": "direction-select build",
+ "method_description": "direction-select build: one S-box circuit F serves both directions, u = v + c((In+I)v + c_in), w = F(u), y = w + c((Out+I)w + c_out) with In, Out the input and output affine maps that turn F into its inverse; A = A(F) + rank(In+I) + rank(Out+I), AD = AD(F) + 2",
+ "hub": false,
+ "start": {
+  "kind": "our published circuit",
+  "file": "circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt",
+  "function": "aes-sbox",
+  "sha256": "f6bfe009f80c0b47c47dfcef6b469fc8f925b3f4fd0697783d4488c034369a44",
+  "note": "published until this commit, which removes it (a circuit added here beats it); a copy is start.circ.txt and its logs are in the history of circuits/aes-sbox/logs/",
+  "file_in_logs": "start.circ.txt"
+ },
+ "chain_root": "the forward S-box circuit aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt (direction-select build source)",
+ "lineage": [
+  "as the campaign recorded it (newest first): selbuild aes-sbox-a31-ad5-g116-gd22-xx85-6-wrap-wrap-s2 <- F = aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt",
+  "direction-select build (ops/selbuild.py, modes wrap/wrap)"
+ ],
+ "parameters": {
+  "maps_lambda_k": [
+   [
+    31,
+    0
+   ],
+   [
+    95,
+    0
+   ],
+   [
+    174,
+    0
+   ]
+  ],
+  "top_mode": "wrap",
+  "bottom_mode": "wrap",
+  "cpu_s": 36.980461788
+ },
+ "seed": 2,
+ "found_utc": "2026-11-17T06:49:36Z",
+ "found_utc_source": "time of the build's result.json (selbuild.py writes it when the build ends)",
+ "time_to_result_s": null,
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G4",
+  "what": "S-box with a direction bit: direction-select builds (ops/selbuild.py) of forward circuits, then chained GD-capped kernel polishes (cli.py run --target aes-sbox-sel), 4170c41 snapshot"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/ops/selbuild.py",
+   "search/nonlinear/boolflux/targets.py"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G4/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": "snapshot",
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run wrote no code record of its own (it ran from the snapshot); the command line is rebuilt from result.json and the build folder name (the queue scripts build_jobs.sh/build_queue.sh are copied to the logs)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 search/nonlinear/boolflux/ops/selbuild.py --in <campaign archive>/2026-11-17-push/G4/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt --top-mode wrap --bottom-mode wrap --seed 2 --out <campaign archive>/2026-11-17-push/G4/runs/build/aes-sbox-a31-ad5-g116-gd22-xx85-6-wrap-wrap-s2",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-17-push/G4/snap"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G4/runs/build/aes-sbox-a31-ad5-g116-gd22-xx85-6-wrap-wrap-s2/aes-sbox-sel-a39-ad7-g162-gd35-xx123-6.circ.txt",
+  "sha256": "e55859fc46226a52545c58dbb963188e94805b1edbc56994bbc8e2649c8a6616",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "SOURCE",
+  "aes-sbox-a31-ad5-g116-gd22-xx85-6-wrap-wrap-s2.log.gz",
+  "build_jobs.sh",
+  "build_queue.sh",
+  "selbuild-result.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "SOURCE",
+  "aes-sbox-a31-ad5-g116-gd22-xx85-6-wrap-wrap-s2.log.gz",
+  "build_jobs.sh",
+  "build_queue.sh",
+  "selbuild-result.json"
+ ]
+}

@@ -1,0 +1,179 @@
+{
+ "operator": "join",
+ "inputs": [
+  "c485fad312e3"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 866600457,
+ "seconds": 60.0,
+ "wall_s": 6.27,
+ "cpu_s": 7.71,
+ "candidates": 1,
+ "cand_ids": [
+  "e39ea88d1e68"
+ ],
+ "code_version": "?+4d7be2aa08",
+ "info": {
+  "partners": 4,
+  "partners_done": 4,
+  "tried": 3810,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794899199.9112988,
+  "joined_through": 1794899209.9679277,
+  "joined_through_by": {
+   "c485fad312e3": 1794899209.9679277,
+   "472d4c94fa8e": 1794899209.9679277,
+   "a92f05158270": 1794899209.9679277,
+   "f996c6b8a2a7": 1794899209.9679277,
+   "d822eae39095": 1794899209.9679277,
+   "d59b4e6f1e9f": 1794899209.9679277,
+   "85e101cb4bf2": 1794899209.9679277,
+   "f0726062da51": 1794899209.9679277
+  },
+  "batch": [
+   {
+    "target": "c485fad312e3",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "472d4c94fa8e",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "a92f05158270",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "f996c6b8a2a7",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "d822eae39095",
+    "since": 0.0,
+    "partners": 529,
+    "partners_done": 529,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "d59b4e6f1e9f",
+    "since": 0.0,
+    "partners": 529,
+    "partners_done": 529,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "85e101cb4bf2",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   },
+   {
+    "target": "f0726062da51",
+    "since": 1794899199.9112988,
+    "partners": 4,
+    "partners_done": 4,
+    "joined_through": 1794899209.9679277
+   }
+  ],
+  "joins": [
+   {
+    "front": "f0726062da51",
+    "back": "d3ee863d57a1",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 0
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 3693,
+  "duplicate": 1,
+  "archived": 115,
+  "partners_with_hits": 1,
+  "pair_accounting": {
+   "partner_hash": "f90fa94f8751e6f5",
+   "repeated_pairs": 64,
+   "partner_s_sum": 6.194,
+   "partner_s_max": 0.021,
+   "yields_max": 14,
+   "kept_max": 1,
+   "partners_with_yields": 858
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 1033,
+   "cells": 271,
+   "front": 83,
+   "max_t_admit": 1794899209.9679277
+  }
+ },
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00730-join/run.json",
+  "kind": "hub.op.join",
+  "command": "python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G2/hub --in c485fad312e3 --seed 866600457 --seconds 60 --out <campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00730-join --since 1794899199.9112988 --batch 472d4c94fa8e:1794899199.9112988,a92f05158270:1794899199.9112988,f996c6b8a2a7:1794899199.9112988,d822eae39095:0.0,d59b4e6f1e9f:0.0,85e101cb4bf2:1794899199.9112988,f0726062da51:1794899199.9112988",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+   "--archive",
+   "<campaign archive>/2026-11-17-push/G2/hub",
+   "--in",
+   "c485fad312e3",
+   "--seed",
+   "866600457",
+   "--seconds",
+   "60",
+   "--out",
+   "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00730-join",
+   "--since",
+   "1794899199.9112988",
+   "--batch",
+   "472d4c94fa8e:1794899199.9112988,a92f05158270:1794899199.9112988,f996c6b8a2a7:1794899199.9112988,d822eae39095:0.0,d59b4e6f1e9f:0.0,85e101cb4bf2:1794899199.9112988,f0726062da51:1794899199.9112988"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "seeds": {
+   "seed": 866600457,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": null
+  },
+  "function": "aes-sbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 231838.3368,
+  "mono_t0": 231838.4043,
+  "mono_end": 231846.6634,
+  "setup_s": 0.068,
+  "op_s": 8.259,
+  "proc_start_to_main_s": 0.13,
+  "archive_load_s": 0.037,
+  "kernel_s": 0.0,
+  "kernel_calls": 0
+ }
+}

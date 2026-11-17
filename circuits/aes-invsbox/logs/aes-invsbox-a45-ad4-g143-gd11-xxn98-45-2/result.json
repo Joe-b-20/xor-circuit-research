@@ -1,0 +1,78 @@
+{
+ "op": "bottom",
+ "target": "<campaign archive>/2026-11-17-push/G3/runs/i55c11-pw6-s63/bottom-a45-ad4-g148-gd11-1df33ef4cf.circ.txt",
+ "seed": 81,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G3/starts/NIST-aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+ "start_tuple": [
+  55,
+  4,
+  148,
+  10
+ ],
+ "params": {
+  "cut": 4,
+  "cap": 11,
+  "amax": 45,
+  "iters": 30000,
+  "pw": "6",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1,
+  "junk": "absorb5"
+ },
+ "wall_s": 1485.5,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 0,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "build {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 502188}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 502188, \"kernel_seed\": 502188, \"caps\": {\"A\": 45, \"AD\": 4, \"GD\": 11}}": {
+   "offered": 1,
+   "written": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.27,
+  "verify_s": 0.178,
+  "verify_calls": 2
+ },
+ "notes": [],
+ "utc": "2026-11-17T10:21:10Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    45,
+    4,
+    143,
+    11
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G3/runs/i55c11-pw6-s81/bottom-a45-ad4-g143-gd11-c79ff64e83.circ.txt",
+   "how": "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 502188, \"kernel_seed\": 502188, \"caps\": {\"A\": 45, \"AD\": 4, \"GD\": 11}}",
+   "t": 654.6,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    45,
+    4,
+    143,
+    11
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G3/runs/i55c11-pw6-s81/bottom-a45-ad4-g143-gd11-c79ff64e83.circ.txt",
+   "how": "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 502188, \"kernel_seed\": 502188, \"caps\": {\"A\": 45, \"AD\": 4, \"GD\": 11}}",
+   "t": 654.6,
+   "class": "strict"
+  }
+ ]
+}

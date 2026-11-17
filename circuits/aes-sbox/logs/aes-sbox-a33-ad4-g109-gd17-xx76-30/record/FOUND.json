@@ -1,0 +1,402 @@
+{
+ "function": "aes-sbox",
+ "tuple": [
+  33,
+  4,
+  109,
+  17
+ ],
+ "hub_id": "590ffce104e0",
+ "hub": "<campaign archive>/2026-11-17-push/G2/hub",
+ "sha256": "abb2c5c7a23c5f009901f262f4da90fb1c6b2b14f734f657ce485d09cc293d13",
+ "code": "4170c41873f9ce5274d01f300948b76fcda83907 (tonight-2026-11-17, frozen copy G2/snap)",
+ "dominates_published": [
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt"
+ ],
+ "lineage": [
+  {
+   "id": "590ffce104e0",
+   "m": [
+    33,
+    4,
+    109,
+    17
+   ],
+   "operator": "polish",
+   "parents": [
+    "db86ed560b0b"
+   ],
+   "run_id": "hub-bca8b1.r01200-polish",
+   "source": null
+  },
+  {
+   "id": "db86ed560b0b",
+   "m": [
+    33,
+    4,
+    110,
+    17
+   ],
+   "operator": "join",
+   "parents": [
+    "6b3a1f2f31f5",
+    "df625e93f138"
+   ],
+   "run_id": "hub-bca8b1.r01110-join",
+   "source": null
+  },
+  {
+   "id": "df625e93f138",
+   "m": [
+    33,
+    6,
+    111,
+    25
+   ],
+   "operator": "join",
+   "parents": [
+    "b4913c28fb48",
+    "3cc44b70a9c5"
+   ],
+   "run_id": "hub-bca8b1.r00485-join",
+   "source": null
+  },
+  {
+   "id": "3cc44b70a9c5",
+   "m": [
+    32,
+    5,
+    108,
+    19
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/seeds/finds/2026-11-17-ideas_06_found_f32-5-108-19_aes-sbox-a32-ad5-g108-gd19-xx76-28.circ.txt"
+  },
+  {
+   "id": "b4913c28fb48",
+   "m": [
+    33,
+    6,
+    109,
+    26
+   ],
+   "operator": "join",
+   "parents": [
+    "7626c1a49733",
+    "c0861307b40e"
+   ],
+   "run_id": "hub-bca8b1.r00414-join",
+   "source": null
+  },
+  {
+   "id": "c0861307b40e",
+   "m": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "operator": "join",
+   "parents": [
+    "c3902d9da111",
+    "463c14e13be5"
+   ],
+   "run_id": "hub-bca8b1.r00247-join",
+   "source": null
+  },
+  {
+   "id": "463c14e13be5",
+   "m": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "operator": "join",
+   "parents": [
+    "c68418275a2b",
+    "4c99111391e6"
+   ],
+   "run_id": "hub-bca8b1.r00025-join",
+   "source": null
+  },
+  {
+   "id": "4c99111391e6",
+   "m": [
+    33,
+    4,
+    109,
+    18
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt"
+  },
+  {
+   "id": "c68418275a2b",
+   "m": [
+    31,
+    5,
+    115,
+    24
+   ],
+   "operator": "join",
+   "parents": [
+    "a85c8d66544b",
+    "3f3a9c521396"
+   ],
+   "run_id": "hub-bca8b1.r00021-join",
+   "source": null
+  },
+  {
+   "id": "3f3a9c521396",
+   "m": [
+    31,
+    5,
+    116,
+    22
+   ],
+   "operator": "join",
+   "parents": [
+    "09d5f6377419",
+    "10dd9ba26af3"
+   ],
+   "run_id": "hub-bca8b1.r00017-join",
+   "source": null
+  },
+  {
+   "id": "10dd9ba26af3",
+   "m": [
+    31,
+    5,
+    115,
+    24
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g115-gd24-xx84-29.circ.txt"
+  },
+  {
+   "id": "09d5f6377419",
+   "m": [
+    31,
+    5,
+    117,
+    20
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt"
+  },
+  {
+   "id": "a85c8d66544b",
+   "m": [
+    31,
+    5,
+    116,
+    22
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt"
+  },
+  {
+   "id": "c3902d9da111",
+   "m": [
+    33,
+    4,
+    107,
+    20
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a33-ad4-g107-gd20-xx74-26.circ.txt"
+  },
+  {
+   "id": "7626c1a49733",
+   "m": [
+    33,
+    6,
+    107,
+    30
+   ],
+   "operator": "join",
+   "parents": [
+    "6b0dcde06adf",
+    "84ef9c6cf28d"
+   ],
+   "run_id": "hub-bca8b1.r00207-join",
+   "source": null
+  },
+  {
+   "id": "84ef9c6cf28d",
+   "m": [
+    33,
+    6,
+    107,
+    33
+   ],
+   "operator": "join",
+   "parents": [
+    "a514c41eddb2",
+    "a84c2ac634c1"
+   ],
+   "run_id": "hub-bca8b1.r00203-join",
+   "source": null
+  },
+  {
+   "id": "a84c2ac634c1",
+   "m": [
+    34,
+    6,
+    110,
+    33
+   ],
+   "operator": "join",
+   "parents": [
+    "74d8e8d0be3c",
+    "c8f64f4bf1ff"
+   ],
+   "run_id": "hub-bca8b1.r00145-join",
+   "source": null
+  },
+  {
+   "id": "c8f64f4bf1ff",
+   "m": [
+    33,
+    4,
+    105,
+    25
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g105-gd25-xx72-6.circ.txt"
+  },
+  {
+   "id": "74d8e8d0be3c",
+   "m": [
+    32,
+    5,
+    104,
+    29
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a32-ad5-g104-gd29-xx72-23.circ.txt"
+  },
+  {
+   "id": "a514c41eddb2",
+   "m": [
+    32,
+    5,
+    104,
+    29
+   ],
+   "operator": "join",
+   "parents": [
+    "74d8e8d0be3c",
+    "b3b34fdf5429"
+   ],
+   "run_id": "hub-bca8b1.r00145-join",
+   "source": null
+  },
+  {
+   "id": "b3b34fdf5429",
+   "m": [
+    32,
+    5,
+    105,
+    26
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/seeds/aes-sbox/aes-sbox-a32-ad5-g105-gd26-xx73-5.circ.txt"
+  },
+  {
+   "id": "6b0dcde06adf",
+   "m": [
+    31,
+    5,
+    114,
+    28
+   ],
+   "operator": "join",
+   "parents": [
+    "8dbfcdeca5ab",
+    "abd832284533"
+   ],
+   "run_id": "hub-bca8b1.r00025-join",
+   "source": null
+  },
+  {
+   "id": "abd832284533",
+   "m": [
+    31,
+    5,
+    114,
+    28
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g114-gd28-xx83-18.circ.txt"
+  },
+  {
+   "id": "8dbfcdeca5ab",
+   "m": [
+    31,
+    5,
+    115,
+    24
+   ],
+   "operator": "join",
+   "parents": [
+    "10dd9ba26af3",
+    "3f3a9c521396"
+   ],
+   "run_id": "hub-bca8b1.r00021-join",
+   "source": null
+  },
+  {
+   "id": "6b3a1f2f31f5",
+   "m": [
+    32,
+    5,
+    110,
+    18
+   ],
+   "operator": "join",
+   "parents": [
+    "e5a6beac7f43",
+    "3cc44b70a9c5"
+   ],
+   "run_id": "hub-bca8b1.r01100-join",
+   "source": null
+  },
+  {
+   "id": "e5a6beac7f43",
+   "m": [
+    33,
+    5,
+    113,
+    17
+   ],
+   "operator": "pull",
+   "parents": [
+    "3cc44b70a9c5"
+   ],
+   "run_id": "hub-bca8b1.r01070-pull",
+   "source": null
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "circuit": "aes-sbox-sel-a40-ad6-g159-gd24-xxn119-48-1.circ.txt",
+ "sha256": "696b6c36e1bc5b951897b1d1a17623d45e2820855a5f1954de7e6c8cf5f65ef8",
+ "ok": true,
+ "function": "NIST's aes-sbox-sel: inputs c x0..x7, outputs y0..y7; the AES S-box (FIPS 197) for c = 0 and its inverse for c = 1 (x0, y0 the most significant bits)",
+ "tuple_A_AD_G_GD": [
+  40,
+  6,
+  159,
+  24
+ ],
+ "counts": {
+  "AND": 40,
+  "NOT": 1,
+  "XNOR": 48,
+  "XOR": 70
+ },
+ "checks": {
+  "all_512_inputs_boolflux_reader": true,
+  "all_512_inputs_independent_verifier": true,
+  "metrics_agree": true,
+  "library_and_xor_xnor_not": true,
+  "boolcirc_gate_list_orders": [
+   "msb/msb"
+  ],
+  "boolcirc_skeleton_agrees": true,
+  "name_and_header_tallies_match": true,
+  "all_512_inputs_third_evaluator": true,
+  "problems": [
+   "note: 1 NOT gates counted as gates and depth levels"
+  ]
+ },
+ "bit_order": "inputs c x0..x7 and outputs y0..y7 in that order, c and x0, y0 the most significant (msb/msb), as in NIST's aes-sbox-sel files",
+ "nist": {
+  "pin": "3d807741f937d29d3bef4f32f142ccda0cda9070",
+  "compared_with": "every aes-sbox-sel circuit of the pin (9): aes-sbox-sel/",
+  "dominated_by": [],
+  "best_G_with_A_AD_GD_at_most_ours": {
+   "tuple": [
+    40,
+    6,
+    184,
+    23
+   ],
+   "file": "aes-sbox-sel-a40-ad6-g184-gd23-xx144-10.circ.txt",
+   "gain": 25
+  },
+  "best_G_with_GD_at_most_ours": {
+   "tuple": [
+    41,
+    6,
+    151,
+    24
+   ],
+   "file": "aes-sbox-sel-a41-ad6-g151-gd24-xx110-10.circ.txt",
+   "gain": -8
+  },
+  "pareto_points_ours_dominates": [
+   "aes-sbox-sel-a40-ad7-g166-gd25-xx126-23"
+  ],
+  "pareto_points_note": "NIST's Pareto points in (A, AD, G, GD) among the 9 (9 points) that this circuit matches or beats in all four and beats in at least one"
+ },
+ "start_circuits": {
+  "start.circ.txt": {
+   "ok": true,
+   "tuple_A_AD_G_GD": [
+    40,
+    6,
+    169,
+    20
+   ],
+   "circuit_name": "aes-sbox-sel-a40-ad6-g169-gd20-xx129-62"
+  }
+ },
+ "checked_utc": "2026-11-17T12:04:23Z",
+ "checker": "circuits/check.py (boolcirc) as at this commit; BoolFlux core and independent/verify.py as at commit 2c949cb, each with its own FIPS-197 tables, on all 512 inputs (the checks of aes_check.py), and NIST's 9 aes-sbox-sel circuits; and a third evaluator (the table computed from GF(2^8) and the affine map of FIPS 197, written for this check)"
+}

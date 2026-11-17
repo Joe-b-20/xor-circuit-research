@@ -1,0 +1,726 @@
+{
+ "op": "conjpull",
+ "target": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a32-ad5-g106-gd28-f7f92d6eca18.circ.txt",
+ "seed": 9422,
+ "status": "ok",
+ "start": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a32-ad5-g106-gd28-f7f92d6eca18.circ.txt",
+ "start_tuple": [
+  32,
+  5,
+  106,
+  28
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "g:d+2:150,m:d+0:150,m:d-1:150",
+  "beam": 1,
+  "repair_keep": 1,
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 32,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-44d5e49eee",
+  "function": "aes-sbox",
+  "stage_caps": "plan",
+  "stage_choice": "old",
+  "max_pull": 2,
+  "missed_pulls": 0,
+  "stall_stages": 2,
+  "overrun": "scale",
+  "identity_first": "no",
+  "registry": null,
+  "sh_keep": 2,
+  "sh_span": 2,
+  "sh_probe": 0.0,
+  "keep_bests": 8,
+  "bp_cap": "none"
+ },
+ "wall_s": 428.6,
+ "n_written": 7,
+ "rejected": {
+  "outside": 0,
+  "dominated": 16,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "g30-kb": {
+   "offered": 3,
+   "written": 3
+  },
+  "g30": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "o28-relaxed29": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o28-repair": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o28-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t28-top-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t28-top-kb": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "t28-top": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o27-relaxed28": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o27-repair-kb": {
+   "offered": 2,
+   "written": 0,
+   "dominated": 2
+  },
+  "o27-repair": {
+   "offered": 1,
+   "written": 1
+  },
+  "o27-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t27-top-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t27-top-kb": {
+   "offered": 4,
+   "written": 1,
+   "dominated": 3
+  },
+  "t27-top": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.18,
+  "verify_s": 0.335,
+  "verify_calls": 7
+ },
+ "notes": [
+  "plan 450 s (items x schedule) > 430 s available: stages of each item scaled to the time left / the remaining plan"
+ ],
+ "utc": "2026-11-17T11:07:37Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    104,
+    28
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g104-gd28-17d0fdceb7.circ.txt",
+   "how": "g30",
+   "t": 79.6,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    105,
+    27
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g105-gd27-de0b819a97.circ.txt",
+   "how": "o27-repair",
+   "t": 363.7,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    106,
+    26
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g106-gd26-924e16a400.circ.txt",
+   "how": "g30-kb",
+   "t": 79.6,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    107,
+    25
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g107-gd25-91fded6a3f.circ.txt",
+   "how": "t28-top-kb",
+   "t": 285.5,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    113,
+    24
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g113-gd24-6cece68829.circ.txt",
+   "how": "t27-top-kb",
+   "t": 428.6,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    104,
+    28
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g104-gd28-17d0fdceb7.circ.txt",
+   "how": "g30",
+   "t": 79.6,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    105,
+    27
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g105-gd27-de0b819a97.circ.txt",
+   "how": "o27-repair",
+   "t": 363.7,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    106,
+    26
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g106-gd26-924e16a400.circ.txt",
+   "how": "g30-kb",
+   "t": 79.6,
+   "class": "strict"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    107,
+    25
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g107-gd25-91fded6a3f.circ.txt",
+   "how": "t28-top-kb",
+   "t": 285.5,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    5,
+    113,
+    24
+   ],
+   "file": "<campaign archive>/2026-11-17-push/G2/feed/ci-32-5-106-28-f7f92d/conjpull-a32-ad5-g113-gd24-6cece68829.circ.txt",
+   "how": "t27-top-kb",
+   "t": 428.6,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "probe": false,
+   "mode": "g",
+   "cap": 30,
+   "cap_planned": 30,
+   "seed": 9422000,
+   "in": [
+    32,
+    5,
+    106,
+    28
+   ],
+   "best": [
+    32,
+    5,
+    104,
+    28
+   ],
+   "seconds": 142.5,
+   "budget_factor": 0.955,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     1.4,
+     32,
+     5,
+     106,
+     27
+    ],
+    [
+     2.4,
+     32,
+     5,
+     106,
+     26
+    ],
+    [
+     4.1,
+     32,
+     5,
+     105,
+     29
+    ],
+    [
+     4.1,
+     32,
+     5,
+     105,
+     28
+    ],
+    [
+     4.9,
+     32,
+     5,
+     104,
+     29
+    ],
+    [
+     5.0,
+     32,
+     5,
+     104,
+     28
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "probe": false,
+   "mode": "m",
+   "cap": 28,
+   "cap_planned": 28,
+   "seed": 9422010,
+   "in": [
+    32,
+    5,
+    104,
+    28
+   ],
+   "best": [
+    32,
+    5,
+    104,
+    28
+   ],
+   "seconds": 142.9,
+   "budget_factor": 0.955,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     259.4,
+     32,
+     5,
+     111,
+     28
+    ],
+    [
+     259.4,
+     32,
+     5,
+     111,
+     26
+    ],
+    [
+     259.4,
+     32,
+     5,
+     110,
+     28
+    ],
+    [
+     261.2,
+     32,
+     5,
+     110,
+     26
+    ],
+    [
+     261.2,
+     32,
+     5,
+     109,
+     26
+    ],
+    [
+     266.3,
+     32,
+     5,
+     109,
+     25
+    ],
+    [
+     266.8,
+     32,
+     5,
+     108,
+     28
+    ],
+    [
+     266.9,
+     32,
+     5,
+     108,
+     27
+    ],
+    [
+     266.9,
+     32,
+     5,
+     108,
+     26
+    ],
+    [
+     270.6,
+     32,
+     5,
+     108,
+     25
+    ],
+    [
+     271.9,
+     32,
+     5,
+     107,
+     27
+    ],
+    [
+     272.8,
+     32,
+     5,
+     107,
+     26
+    ],
+    [
+     273.6,
+     32,
+     5,
+     107,
+     25
+    ],
+    [
+     274.6,
+     32,
+     5,
+     106,
+     28
+    ],
+    [
+     274.9,
+     32,
+     5,
+     106,
+     27
+    ],
+    [
+     281.9,
+     32,
+     5,
+     106,
+     26
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "probe": false,
+   "mode": "m",
+   "cap": 27,
+   "cap_planned": 27,
+   "seed": 9422020,
+   "in": [
+    32,
+    5,
+    104,
+    28
+   ],
+   "best": [
+    32,
+    5,
+    105,
+    27
+   ],
+   "seconds": 143.1,
+   "budget_factor": 0.955,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     325.2,
+     32,
+     5,
+     105,
+     28
+    ],
+    [
+     325.2,
+     32,
+     5,
+     108,
+     28
+    ],
+    [
+     325.2,
+     32,
+     5,
+     110,
+     27
+    ],
+    [
+     325.2,
+     32,
+     5,
+     109,
+     27
+    ],
+    [
+     325.2,
+     32,
+     5,
+     108,
+     27
+    ],
+    [
+     325.8,
+     32,
+     5,
+     108,
+     26
+    ],
+    [
+     325.8,
+     32,
+     5,
+     107,
+     27
+    ],
+    [
+     327.7,
+     32,
+     5,
+     106,
+     27
+    ],
+    [
+     327.9,
+     32,
+     5,
+     106,
+     26
+    ],
+    [
+     328.7,
+     32,
+     5,
+     105,
+     27
+    ],
+    [
+     399.6,
+     32,
+     5,
+     113,
+     24
+    ],
+    [
+     399.6,
+     32,
+     5,
+     112,
+     25
+    ],
+    [
+     400.5,
+     32,
+     5,
+     111,
+     27
+    ],
+    [
+     401.1,
+     32,
+     5,
+     110,
+     27
+    ],
+    [
+     401.2,
+     32,
+     5,
+     110,
+     26
+    ],
+    [
+     401.4,
+     32,
+     5,
+     109,
+     26
+    ],
+    [
+     402.1,
+     32,
+     5,
+     108,
+     27
+    ],
+    [
+     402.2,
+     32,
+     5,
+     108,
+     26
+    ],
+    [
+     402.2,
+     32,
+     5,
+     107,
+     27
+    ],
+    [
+     404.8,
+     32,
+     5,
+     107,
+     26
+    ],
+    [
+     412.5,
+     32,
+     5,
+     106,
+     27
+    ],
+    [
+     412.8,
+     32,
+     5,
+     106,
+     26
+    ]
+   ]
+  }
+ ],
+ "kernel_calls": 10,
+ "conj_planned": [
+  "id"
+ ],
+ "conj_run": [
+  {
+   "label": "id",
+   "lam": null,
+   "k": null,
+   "screen_score": null,
+   "screen_rank": null,
+   "stages_done": 3,
+   "stages_planned": 3,
+   "seconds": 428.5,
+   "dropped": null,
+   "halving_rank": null,
+   "final": [
+    32,
+    5,
+    105,
+    27
+   ],
+   "lineage_front": [
+    [
+     32,
+     5,
+     106,
+     26
+    ],
+    [
+     32,
+     5,
+     104,
+     28
+    ],
+    [
+     32,
+     5,
+     107,
+     25
+    ],
+    [
+     32,
+     5,
+     105,
+     27
+    ],
+    [
+     32,
+     5,
+     113,
+     24
+    ]
+   ]
+  }
+ ],
+ "conj_not_reached": [],
+ "conj_refused": [],
+ "fates": {
+  "id": "run: 3 stages"
+ },
+ "plan": {
+  "need_s": 450,
+  "avail_s": 430,
+  "schedule_s": 450.0,
+  "items": [
+   "id"
+  ],
+  "identity_first": false
+ },
+ "halving": {}
+}

@@ -1,0 +1,148 @@
+{
+ "circuit": "aes-sbox-a35-ad3-g143-gd17-xx108-51.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  35,
+  3,
+  143,
+  17
+ ],
+ "found_by": "BoolFlux",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate (ops/conjpull.py --conj id)",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-sbox",
+  "tuple_A_AD_G_GD": [
+   35,
+   3,
+   153,
+   15
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a35-ad3-g153-gd15-xx118-56",
+  "source": "<campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a35-ad3-g153-gd15-957a7e012ec1.circ.txt",
+  "source_sha256": "84e52ea70a97e2f062a8598b9e891010ee27c9a2d12ee6eae6447c4eecaf5249"
+ },
+ "chain_root": "NIST's circuits, through our published circuits and earlier circuits of these runs (the campaign's records in the logs)",
+ "lineage": [
+  "staged pull (ops/conjpull.py --conj id --schedule g:d+2:150,m:d+0:150,m:d-1:150)",
+  "admitted into the hub archive (hub) as dba518e98a69"
+ ],
+ "parameters": {
+  "conj": "id",
+  "schedule": "g:d+2:150,m:d+0:150,m:d-1:150",
+  "beam": 1,
+  "repair_keep": 1,
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 35,
+   "AD": 3
+  },
+  "kernel_bin": "bfx-44d5e49eee",
+  "function": "aes-sbox",
+  "stage_caps": "plan",
+  "stage_choice": "old",
+  "max_pull": 2,
+  "missed_pulls": 0,
+  "stall_stages": 2,
+  "overrun": "scale",
+  "identity_first": "no",
+  "registry": null,
+  "sh_keep": 2,
+  "sh_span": 2,
+  "sh_probe": 0.0,
+  "keep_bests": 8,
+  "bp_cap": "none",
+  "stages_done": [
+   "start",
+   "stage 1 g:17:150 seed 9067000 rk 1",
+   "g17"
+  ]
+ },
+ "seed": 9067,
+ "found_utc": "2026-11-17T10:42:33Z",
+ "found_utc_source": "the run's improvement event for this circuit (events.jsonl.gz), from the run's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 92.305
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G2",
+  "what": "forward S-box campaign from the published and earlier circuits (4170c41 snapshot): a hub (join, pull, polish, region rebuild, AND removal) fed by runs (AND removal, staged pulls, transports of the inverse campaign's circuits)"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/ops/conjpull.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G2/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": true,
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run recorded the same value",
+  "sources_sha256_at_run": "1541303806ead5cdd17c8e37db295e21d74e6dd2276c6a5de638ed5b13b59ee6",
+  "git_at_run": {
+   "commit": null,
+   "branch": null,
+   "dirty": null,
+   "note": "not a git checkout (or git missing): see sources_sha256"
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+    "source_sha256": "7377c0b6fb40942f9776059ad94e999638c3694b0748e8221310497c2829eed8"
+   }
+  ]
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a35-ad3-g153-gd15-957a7e012ec1.circ.txt --target <campaign archive>/2026-11-17-push/G2/kstarts/aes-sbox-a35-ad3-g153-gd15-957a7e012ec1.circ.txt --seed 9067 --seconds 450 --out <campaign archive>/2026-11-17-push/G2/feed/ci-35-3-153-15-957a7e --conj id --schedule g:d+2:150,m:d+0:150,m:d-1:150",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-17-push/G2/snap",
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-push/G2/cache",
+  "BOOLFLUX_FUNCTION": "aes-sbox"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G2/feed/ci-35-3-153-15-957a7e/conjpull-a35-ad3-g143-gd17-76be17baea.circ.txt",
+  "sha256": "76be17baea1a56dc217035564a5fb3e8eaaf3c43c93ec9e5a7795b865953daeb",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "conjpull.log.gz",
+  "events.jsonl.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "conjpull.log.gz",
+  "events.jsonl.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json"
+ ]
+}

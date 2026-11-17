@@ -1,0 +1,63 @@
+{
+ "function": "aes-sbox",
+ "tuple": [
+  31,
+  5,
+  113,
+  22
+ ],
+ "hub_id": "85e101cb4bf2",
+ "hub": "<campaign archive>/2026-11-17-push/G2/hub",
+ "sha256": "8979079487bce7c9ed90f55c80f006e63a08fcc3616376510f979002beddeddc",
+ "code": "4170c41873f9ce5274d01f300948b76fcda83907 (tonight-2026-11-17, frozen copy G2/snap)",
+ "dominates_published": [
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt",
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g114-gd28-xx83-18.circ.txt",
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a31-ad5-g115-gd24-xx84-29.circ.txt"
+ ],
+ "lineage": [
+  {
+   "id": "85e101cb4bf2",
+   "m": [
+    31,
+    5,
+    113,
+    22
+   ],
+   "operator": "pull",
+   "parents": [
+    "299a1ea9e4ed"
+   ],
+   "run_id": "hub-bca8b1.r00707-pull",
+   "source": null
+  },
+  {
+   "id": "299a1ea9e4ed",
+   "m": [
+    31,
+    5,
+    112,
+    24
+   ],
+   "operator": "polish",
+   "parents": [
+    "71b75b30e015"
+   ],
+   "run_id": "hub-bca8b1.r00703-polish",
+   "source": null
+  },
+  {
+   "id": "71b75b30e015",
+   "m": [
+    31,
+    5,
+    112,
+    25
+   ],
+   "operator": "ingest",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/feed/ar-32-4-111-25-f93a24/cand-000.circ.txt"
+  }
+ ]
+}

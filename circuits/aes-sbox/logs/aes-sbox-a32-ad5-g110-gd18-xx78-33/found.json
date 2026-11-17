@@ -1,0 +1,166 @@
+{
+ "circuit": "aes-sbox-a32-ad5-g110-gd18-xx78-33.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  32,
+  5,
+  110,
+  18
+ ],
+ "found_by": "BoolFlux",
+ "method": "join",
+ "method_description": "join: the front of one circuit and the back of another, met at a shared interface function, then the gate kernel",
+ "hub": true,
+ "start": {
+  "front": {
+   "kind": "our circuit",
+   "function": "aes-sbox",
+   "tuple_A_AD_G_GD": [
+    33,
+    5,
+    113,
+    17
+   ],
+   "file": "front.circ.txt",
+   "circuit_name": "aes-sbox-a33-ad5-g113-gd17-xx80-38",
+   "source": "<campaign archive>/2026-11-17-push/G2/hub/archive/e5a6beac7f43.bfx",
+   "source_sha256": "2684f83f5a66924d50027615d06a8dd6e10e258e87bed96a9cf05c28b48ec105",
+   "note": "hub circuit e5a6beac7f43 (pull) of hub"
+  },
+  "back": {
+   "kind": "our circuit",
+   "function": "aes-sbox",
+   "tuple_A_AD_G_GD": [
+    32,
+    5,
+    108,
+    19
+   ],
+   "file": "back.circ.txt",
+   "circuit_name": "aes-sbox-a32-ad5-g108-gd19-xx76-28",
+   "source": "<campaign archive>/2026-11-17-push/G2/seeds/finds/2026-11-17-ideas_06_found_f32-5-108-19_aes-sbox-a32-ad5-g108-gd19-xx76-28.circ.txt",
+   "source_sha256": "2e2e4dba4c2840cefa71f8e580b743767744f4c7c79ae8b758ac16334772be8f",
+   "note": "hub seed 3cc44b70a9c5 of hub; a find of the runs published in 8377e78 as circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd19-xx76-28.circ.txt (same A, AD, G, GD)"
+  }
+ },
+ "chain_root": "the hub lineage ends in 1 circuits: 1 circuits of the earlier runs of 2026-11-17",
+ "lineage": [
+  "6b3a1f2f31f5 join 32/5/110/18 <- e5a6beac7f43, 3cc44b70a9c5 (hub-bca8b1.r01100-join)",
+  "e5a6beac7f43 pull 33/5/113/17 <- 3cc44b70a9c5 (hub-bca8b1.r01070-pull)",
+  "3cc44b70a9c5 seed 32/5/108/19: <campaign archive>/2026-11-17-push/G2/seeds/finds/2026-11-17-ideas_06_found_f32-5-108-19_aes-sbox-a32-ad5-g108-gd19-xx76-28.circ.txt"
+ ],
+ "parameters": {
+  "nursery": false,
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0,
+  "scheduler_version": "?+4d7be2aa08",
+  "front": "e5a6beac7f43",
+  "back": "3cc44b70a9c5",
+  "LX": 1,
+  "LY": 1,
+  "interface_gates": 1
+ },
+ "seed": 647317722,
+ "found_utc": "2026-11-17T07:37:55Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 5.85,
+  "cpu_s": 5.45
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-push/G2",
+  "what": "forward S-box campaign from the published and earlier circuits (4170c41 snapshot): a hub (join, pull, polish, region rebuild, AND removal) fed by runs (AND removal, staged pulls, transports of the inverse campaign's circuits)"
+ },
+ "code": {
+  "commit_linked": "4170c41",
+  "commit_linked_full": "4170c41873f9ce5274d01f300948b76fcda83907",
+  "files": [
+   "search/nonlinear/boolflux/hub/join.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-push/G2/snap (git archive of tonight-2026-11-17 at 4170c41, frozen)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": "snapshot",
+  "note": "the snapshot's sources_sha256 (1541303806ea...) equals 4170c41's package; this run wrote no code record of its own (it ran from the snapshot); the hub job ran search/nonlinear/boolflux/hub/op_join.py from the snapshot"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 7 /usr/bin/python3 <campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py --archive <campaign archive>/2026-11-17-push/G2/hub --in f48b67096ae8 --seed 647317722 --seconds 60 --out <campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r01100-join --since 0.0 --batch 9f565f4fe73f:1794901050.9874244,7b3dd3cfd0fc:1794900948.9522974,a514c41eddb2:1794900948.9522974,8975a68a22ad:1794900948.9522974,87abd5abc2eb:1794900948.9522974,4884ebada3f8:1794900948.9522974,3cc44b70a9c5:1794900948.9522974",
+ "environment": {
+  "cwd": ""
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-push/G2/hub/archive/6b3a1f2f31f5.bfx",
+  "sha256": "0727bd5d1c5db57ff5a5c57cbf2188fe70bc2b5b065d296b4d46019d5dc68f1b",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-lineage.json.gz",
+  "job/events.jsonl.gz",
+  "job/record.json",
+  "job/run.json",
+  "record/FOUND.json",
+  "record/aes-sbox-a32-ad5-g110-gd18-xx78-33-6b3a1f.circ.txt",
+  "record/checks.txt",
+  "record/lineage/3cc44b70a9c5.bfx",
+  "record/lineage/3cc44b70a9c5.json",
+  "record/lineage/6b3a1f2f31f5.bfx",
+  "record/lineage/6b3a1f2f31f5.json",
+  "record/lineage/e5a6beac7f43.bfx",
+  "record/lineage/e5a6beac7f43.json",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/events.jsonl.gz",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/job.log.gz",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/record.json",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/run.json",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/runs.json",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/events.jsonl.gz",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/job.log.gz",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/record.json",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/run.json",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/runs.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "back.circ.txt",
+  "front.circ.txt",
+  "hub-lineage.json.gz",
+  "job/events.jsonl.gz",
+  "job/record.json",
+  "job/run.json",
+  "record/FOUND.json",
+  "record/aes-sbox-a32-ad5-g110-gd18-xx78-33-6b3a1f.circ.txt",
+  "record/checks.txt",
+  "record/lineage/3cc44b70a9c5.bfx",
+  "record/lineage/3cc44b70a9c5.json",
+  "record/lineage/6b3a1f2f31f5.bfx",
+  "record/lineage/6b3a1f2f31f5.json",
+  "record/lineage/e5a6beac7f43.bfx",
+  "record/lineage/e5a6beac7f43.json",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/events.jsonl.gz",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/job.log.gz",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/record.json",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/run.json",
+  "record/lineage/jobs/hub-bca8b1.r01070-pull/runs.json",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/events.jsonl.gz",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/job.log.gz",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/record.json",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/run.json",
+  "record/lineage/jobs/hub-bca8b1.r01100-join/runs.json"
+ ]
+}

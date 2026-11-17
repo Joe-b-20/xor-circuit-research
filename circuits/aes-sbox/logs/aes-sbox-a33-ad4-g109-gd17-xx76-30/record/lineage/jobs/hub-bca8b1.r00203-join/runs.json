@@ -1,0 +1,505 @@
+{
+ "run_id": "hub-bca8b1.r00203-join",
+ "campaign": "hub-bca8b1",
+ "operator": "join",
+ "choice": "join",
+ "target": "90ce2e5a6188",
+ "target_metrics": [
+  32,
+  4,
+  117,
+  17
+ ],
+ "target_class": "A32-35",
+ "seed": 227934953,
+ "cpu": 8,
+ "command": [
+  "taskset",
+  "-c",
+  "8",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "90ce2e5a6188",
+  "--seed",
+  "227934953",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00203-join",
+  "--since",
+  "1794897235.3383274",
+  "--batch",
+  "50fb93294db1:1794897235.3383274,595e232589e9:1794897235.3383274,3a5c485225a7:1794897235.3383274,0186c06e2263:1794897235.3383274,f93a248955af:1794897235.3383274,a514c41eddb2:0.0,8975a68a22ad:0.0"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+ "script_sha": "9b1bb4e61c",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794897395.7,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "partners": 73,
+  "partners_done": 73,
+  "tried": 6691,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794897235.3383274,
+  "joined_through": 1794897381.170011,
+  "joined_through_by": {
+   "90ce2e5a6188": 1794897381.170011,
+   "50fb93294db1": 1794897381.170011,
+   "595e232589e9": 1794897381.170011,
+   "3a5c485225a7": 1794897381.170011,
+   "0186c06e2263": 1794897381.170011,
+   "f93a248955af": 1794897381.170011,
+   "a514c41eddb2": 1794897381.170011,
+   "8975a68a22ad": 1794897381.170011
+  },
+  "batch": [
+   {
+    "target": "90ce2e5a6188",
+    "since": 1794897235.3383274,
+    "partners": 73,
+    "partners_done": 73,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "50fb93294db1",
+    "since": 1794897235.3383274,
+    "partners": 73,
+    "partners_done": 73,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "595e232589e9",
+    "since": 1794897235.3383274,
+    "partners": 73,
+    "partners_done": 73,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "3a5c485225a7",
+    "since": 1794897235.3383274,
+    "partners": 73,
+    "partners_done": 73,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "0186c06e2263",
+    "since": 1794897235.3383274,
+    "partners": 73,
+    "partners_done": 73,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "f93a248955af",
+    "since": 1794897235.3383274,
+    "partners": 73,
+    "partners_done": 73,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "a514c41eddb2",
+    "since": 0.0,
+    "partners": 326,
+    "partners_done": 326,
+    "joined_through": 1794897381.170011
+   },
+   {
+    "target": "8975a68a22ad",
+    "since": 0.0,
+    "partners": 326,
+    "partners_done": 326,
+    "joined_through": 1794897381.170011
+   }
+  ],
+  "joins": [
+   {
+    "front": "c3902d9da111",
+    "back": "a514c41eddb2",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "94bff85ff311",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 4
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "94bff85ff311",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 2
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "a84c2ac634c1",
+    "LX": 2,
+    "LY": 2,
+    "interface_gates": 1
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "a84c2ac634c1",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 3
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "278a0fef29d0",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 4
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "278a0fef29d0",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 2
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "56201e541648",
+    "LX": 3,
+    "LY": 3,
+    "interface_gates": 4
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "cc2e00da09de",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "5c12d4a3ffd7",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "710bdf6a7229",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "4faadb3f9b0c",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "a514c41eddb2",
+    "back": "652852cee92f",
+    "LX": 4,
+    "LY": 1,
+    "interface_gates": 1
+   },
+   {
+    "front": "1bf550921a6b",
+    "back": "8975a68a22ad",
+    "LX": 1,
+    "LY": 1,
+    "interface_gates": 0
+   },
+   {
+    "front": "8975a68a22ad",
+    "back": "87abd5abc2eb",
+    "LX": 2,
+    "LY": 2,
+    "interface_gates": 0
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 6110,
+  "duplicate": 66,
+  "archived": 500,
+  "partners_with_hits": 12,
+  "pair_accounting": {
+   "partner_hash": "9ee38fa34fed1e14",
+   "repeated_pairs": 112,
+   "partner_s_sum": 10.629,
+   "partner_s_max": 0.02,
+   "yields_max": 14,
+   "kept_max": 2,
+   "partners_with_yields": 1066
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 510,
+   "cells": 201,
+   "front": 84,
+   "max_t_admit": 1794897381.170011
+  }
+ },
+ "parents": [
+  "90ce2e5a6188"
+ ],
+ "wall_s": 10.88,
+ "cpu_s": 9.89,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 15,
+ "admitted": 15,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    32,
+    5,
+    106,
+    27
+   ],
+   "status": "admitted",
+   "id": "2a81910a5724",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    32,
+    6,
+    107,
+    34
+   ],
+   "status": "admitted",
+   "id": "9d7f05ff8292",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    33,
+    5,
+    109,
+    31
+   ],
+   "status": "admitted",
+   "id": "ebeda6a92180",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-003.bfx",
+   "metrics": [
+    33,
+    6,
+    108,
+    33
+   ],
+   "status": "admitted",
+   "id": "ab4fdac43d18",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-004.bfx",
+   "metrics": [
+    33,
+    6,
+    107,
+    33
+   ],
+   "status": "admitted",
+   "id": "84ef9c6cf28d",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-005.bfx",
+   "metrics": [
+    32,
+    6,
+    107,
+    34
+   ],
+   "status": "admitted",
+   "id": "e4036218387e",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-006.bfx",
+   "metrics": [
+    33,
+    5,
+    109,
+    31
+   ],
+   "status": "admitted",
+   "id": "e2ad1eb6f76e",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-007.bfx",
+   "metrics": [
+    32,
+    6,
+    107,
+    34
+   ],
+   "status": "admitted",
+   "id": "1ff224de6eed",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-008.bfx",
+   "metrics": [
+    33,
+    6,
+    109,
+    35
+   ],
+   "status": "admitted",
+   "id": "895bb6bdbec0",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-009.bfx",
+   "metrics": [
+    31,
+    6,
+    117,
+    38
+   ],
+   "status": "admitted",
+   "id": "43177092a030",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-010.bfx",
+   "metrics": [
+    31,
+    6,
+    117,
+    38
+   ],
+   "status": "admitted",
+   "id": "7ddcf3389547",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-011.bfx",
+   "metrics": [
+    31,
+    6,
+    118,
+    39
+   ],
+   "status": "admitted",
+   "id": "eba2235bfc95",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-012.bfx",
+   "metrics": [
+    31,
+    6,
+    117,
+    38
+   ],
+   "status": "admitted",
+   "id": "f02f132fa668",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-013.bfx",
+   "metrics": [
+    32,
+    5,
+    106,
+    21
+   ],
+   "status": "admitted",
+   "id": "7b3dd3cfd0fc",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-014.bfx",
+   "metrics": [
+    32,
+    5,
+    105,
+    25
+   ],
+   "status": "admitted",
+   "id": "2f984e334aac",
+   "gain": 0.0,
+   "reason": "dominated"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00203-join/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 62
+  },
+  "suspended": [],
+  "join_share": 0.0971,
+  "mode": "priority",
+  "level": "join",
+  "op": "join",
+  "rule": "front circuits with unmet partners; A, AD ascending, newest first; batched",
+  "n_level": 62,
+  "attempts": 8,
+  "struct_attempts": 8,
+  "why": "join",
+  "batch": 7,
+  "join_partners": 1090
+ },
+ "admission": {
+  "counts": {
+   "admitted": 15
+  },
+  "admit_s": 0.483,
+  "finish_s": 0.507,
+  "job_wall_s": 10.88,
+  "op_wall_s": 10.68,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0057,
+  "mono_wall_s": 10.877,
+  "start_to_main_s": 0.093,
+  "setup_s": 0.073,
+  "op_s": 10.689,
+  "end_to_exit_seen_s": 0.022,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 10.082,
+  "proc_maxrss_kb": 41380,
+  "t_exit": 1794897406.5747287
+ }
+}

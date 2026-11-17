@@ -1,0 +1,453 @@
+{
+ "run_id": "hub-bca8b1.r00485-join",
+ "campaign": "hub-bca8b1",
+ "operator": "join",
+ "choice": "join",
+ "target": "4884ebada3f8",
+ "target_metrics": [
+  32,
+  5,
+  106,
+  21
+ ],
+ "target_class": "A32-35",
+ "seed": 684719926,
+ "cpu": 7,
+ "command": [
+  "taskset",
+  "-c",
+  "7",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-push/G2/hub",
+  "--in",
+  "4884ebada3f8",
+  "--seed",
+  "684719926",
+  "--seconds",
+  "60",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00485-join",
+  "--since",
+  "1794898019.2184284",
+  "--batch",
+  "77c15ba251e6:1794898019.2184284,173fb8bba17b:1794898019.2184284,3cc44b70a9c5:1794898019.2184284,d3e54889aa83:1794898019.2184284,1293e26f099f:1794898019.2184284,1bf550921a6b:1794898019.2184284,f201877dff34:1794898019.2184284"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-push/G2/snap/search/nonlinear/boolflux/hub/op_join.py",
+ "script_sha": "9b1bb4e61c",
+ "code_version": "?+4d7be2aa08",
+ "scheduler_version": "?+4d7be2aa08",
+ "t_start": 1794898402.88,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 60.0
+ },
+ "op_info": {
+  "partners": 60,
+  "partners_done": 60,
+  "tried": 2934,
+  "kept_over_limit": 0,
+  "deferred": 0,
+  "since": 1794898019.2184284,
+  "joined_through": 1794898382.8787897,
+  "joined_through_by": {
+   "4884ebada3f8": 1794898382.8787897,
+   "77c15ba251e6": 1794898382.8787897,
+   "173fb8bba17b": 1794898382.8787897,
+   "3cc44b70a9c5": 1794898382.8787897,
+   "d3e54889aa83": 1794898382.8787897,
+   "1293e26f099f": 1794898382.8787897,
+   "1bf550921a6b": 1794898382.8787897,
+   "f201877dff34": 1794898382.8787897
+  },
+  "batch": [
+   {
+    "target": "4884ebada3f8",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "77c15ba251e6",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "173fb8bba17b",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "3cc44b70a9c5",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "d3e54889aa83",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "1293e26f099f",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "1bf550921a6b",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   },
+   {
+    "target": "f201877dff34",
+    "since": 1794898019.2184284,
+    "partners": 60,
+    "partners_done": 60,
+    "joined_through": 1794898382.8787897
+   }
+  ],
+  "joins": [
+   {
+    "front": "b4913c28fb48",
+    "back": "3cc44b70a9c5",
+    "LX": 5,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "2537fdc08567",
+    "back": "3cc44b70a9c5",
+    "LX": 5,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "df7ddb04df89",
+    "back": "3cc44b70a9c5",
+    "LX": 5,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "d4656e853e18",
+    "back": "3cc44b70a9c5",
+    "LX": 5,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "175b7c1f475c",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "ae66c1f352a2",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "f2aea2c4c480",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "4fb04af8b2cc",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "68da25280cf0",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "7e66178e548f",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   },
+   {
+    "front": "b17dd9c98c7f",
+    "back": "3cc44b70a9c5",
+    "LX": 4,
+    "LY": 4,
+    "interface_gates": 3
+   }
+  ],
+  "stop": "partners done",
+  "not_placed": 2922,
+  "duplicate": 0,
+  "archived": 1,
+  "partners_with_hits": 11,
+  "pair_accounting": {
+   "partner_hash": "3c072e632c172810",
+   "repeated_pairs": 24,
+   "partner_s_sum": 5.737,
+   "partner_s_max": 0.033,
+   "yields_max": 14,
+   "kept_max": 1,
+   "partners_with_yields": 480
+  },
+  "filter": null,
+  "archive_loaded": {
+   "records": 848,
+   "cells": 260,
+   "front": 84,
+   "max_t_admit": 1794898382.8787897
+  }
+ },
+ "parents": [
+  "4884ebada3f8"
+ ],
+ "wall_s": 6.04,
+ "cpu_s": 4.94,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 11,
+ "admitted": 8,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    33,
+    6,
+    111,
+    25
+   ],
+   "status": "admitted",
+   "id": "df625e93f138",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    33,
+    6,
+    112,
+    23
+   ],
+   "status": "admitted",
+   "id": "28f600055c22",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    33,
+    6,
+    112,
+    23
+   ],
+   "status": "admitted",
+   "id": "0be09c315f92",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-003.bfx",
+   "metrics": [
+    33,
+    6,
+    112,
+    23
+   ],
+   "status": "admitted",
+   "id": "3ceec3bd6aaa",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-004.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "admitted",
+   "id": "ea5c88ec500c",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-005.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "admitted",
+   "id": "4bcebeabbe31",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-006.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "admitted",
+   "id": "1910862bc6a8",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-007.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "admitted",
+   "id": "30f25767e0dc",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-008.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     5,
+     19
+    ],
+    "cell_min_G": 113,
+    "cell_members": 4,
+    "reason": "cell full at G 113"
+   }
+  },
+  {
+   "cand": "cand-009.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     5,
+     19
+    ],
+    "cell_min_G": 113,
+    "cell_members": 4,
+    "reason": "cell full at G 113"
+   }
+  },
+  {
+   "cand": "cand-010.bfx",
+   "metrics": [
+    33,
+    5,
+    113,
+    19
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     33,
+     5,
+     19
+    ],
+    "cell_min_G": 113,
+    "cell_members": 4,
+    "reason": "cell full at G 113"
+   }
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-push/G2/hub/jobs/hub-bca8b1.r00485-join/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 59
+  },
+  "suspended": [],
+  "join_share": 0.0995,
+  "mode": "priority",
+  "level": "join",
+  "op": "join",
+  "rule": "front circuits with unmet partners; A, AD ascending, newest first; batched",
+  "n_level": 59,
+  "attempts": 37,
+  "struct_attempts": 8,
+  "why": "join",
+  "batch": 7,
+  "join_partners": 480
+ },
+ "admission": {
+  "counts": {
+   "admitted": 8,
+   "not-better": 3
+  },
+  "admit_s": 0.379,
+  "finish_s": 0.397,
+  "job_wall_s": 6.04,
+  "op_wall_s": 5.81,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0099,
+  "mono_wall_s": 6.039,
+  "start_to_main_s": 0.097,
+  "setup_s": 0.1,
+  "op_s": 5.82,
+  "end_to_exit_seen_s": 0.022,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 5.14,
+  "proc_maxrss_kb": 46032,
+  "t_exit": 1794898408.9166443
+ }
+}

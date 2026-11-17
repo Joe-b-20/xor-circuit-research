@@ -1,0 +1,105 @@
+{
+ "function": "aes-sbox",
+ "tuple": [
+  35,
+  3,
+  153,
+  15
+ ],
+ "hub_id": "23b4197c276b",
+ "hub": "<campaign archive>/2026-11-17-push/G2/hub",
+ "sha256": "4de16b1ad7c323e0be05bd20174e55113b9358d39eaeaf9eb8870a2a8b97516e",
+ "code": "4170c41873f9ce5274d01f300948b76fcda83907 (tonight-2026-11-17, frozen copy G2/snap)",
+ "dominates_published": [
+  "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt"
+ ],
+ "lineage": [
+  {
+   "id": "23b4197c276b",
+   "m": [
+    35,
+    3,
+    153,
+    15
+   ],
+   "operator": "polish",
+   "parents": [
+    "9c981390fabd"
+   ],
+   "run_id": "hub-bca8b1.r02992-polish",
+   "source": null
+  },
+  {
+   "id": "9c981390fabd",
+   "m": [
+    35,
+    3,
+    154,
+    15
+   ],
+   "operator": "pull",
+   "parents": [
+    "c527bc946541"
+   ],
+   "run_id": "hub-bca8b1.r02990-pull",
+   "source": null
+  },
+  {
+   "id": "c527bc946541",
+   "m": [
+    35,
+    3,
+    154,
+    15
+   ],
+   "operator": "polish",
+   "parents": [
+    "e852b87cda67"
+   ],
+   "run_id": "hub-bca8b1.r02958-polish",
+   "source": null
+  },
+  {
+   "id": "e852b87cda67",
+   "m": [
+    35,
+    3,
+    155,
+    15
+   ],
+   "operator": "join",
+   "parents": [
+    "69f05ab1c3fa",
+    "a281db52e9ad"
+   ],
+   "run_id": "hub-bca8b1.r00934-join",
+   "source": null
+  },
+  {
+   "id": "a281db52e9ad",
+   "m": [
+    35,
+    3,
+    143,
+    18
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a35-ad3-g143-gd18-xx108-49.circ.txt"
+  },
+  {
+   "id": "69f05ab1c3fa",
+   "m": [
+    35,
+    3,
+    155,
+    15
+   ],
+   "operator": "seed",
+   "parents": [],
+   "run_id": null,
+   "source": "<campaign archive>/2026-11-17-push/G2/snap/circuits/aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt"
+  }
+ ]
+}

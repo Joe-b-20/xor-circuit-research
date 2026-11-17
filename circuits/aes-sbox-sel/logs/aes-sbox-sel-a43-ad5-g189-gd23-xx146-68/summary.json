@@ -1,0 +1,765 @@
+{
+ "target": "aes-sbox-sel",
+ "target_description": "AES S-box (c = 0) or inverse S-box (c = 1); inputs c x0..x7 (x0 msb), NIST aes-sbox-sel",
+ "model": "nist",
+ "model_gates": {
+  "AND": 1,
+  "XOR": 1,
+  "XNOR": 1,
+  "NOT": 1
+ },
+ "objective": "a,ad,cost,gd",
+ "caps": {
+  "GD": 23,
+  "AD": 5,
+  "A": 43
+ },
+ "start": "<campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a43-ad5-g189-gd24-xx146-69/aes-sbox-sel-a43-ad5-g189-gd24-xx146-69.circ.txt",
+ "start_metrics": {
+  "G": 189,
+  "A": 43,
+  "GD": 24,
+  "AD": 5,
+  "cost": 189.0,
+  "counts": {
+   "AND": 43,
+   "XNOR": 69,
+   "XOR": 77
+  }
+ },
+ "seeds": [
+  1,
+  2
+ ],
+ "iters": 400000,
+ "seconds_cap": 600.0,
+ "rounds": 2,
+ "seed_scheme": "v2",
+ "code_sha256_12": "aa864668b180",
+ "code_snapshot": "<campaign archive>/2026-11-17-push/G4/runs/polish/a43p-gd23-p189/src",
+ "settings": {
+  "T0": 0.6,
+  "Tperiod_it": 20000,
+  "stall_it": 60000,
+  "uphill": 1.0,
+  "max_excess": 8,
+  "mv.resub1": 1,
+  "mv.resub2": 2,
+  "mv.resub3": 1,
+  "dmax": 220,
+  "pdiv": 90,
+  "nl_samples": 12,
+  "cand_cap": 40,
+  "fraig": 1
+ },
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-sbox-sel --model nist --start <campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a43-ad5-g189-gd24-xx146-69/aes-sbox-sel-a43-ad5-g189-gd24-xx146-69.circ.txt --objective a,ad,cost,gd --cap-a 43 --cap-ad 5 --cap-gd 23 --iters 400000 --seconds 600 --seeds 1-2 --rounds 2 --jobs 1 --out <campaign archive>/2026-11-17-push/G4/runs/polish/a43p-gd23-p189",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes-sbox-sel",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-17-push/G4/found/aes-sbox-sel-a43-ad5-g189-gd24-xx146-69/aes-sbox-sel-a43-ad5-g189-gd24-xx146-69.circ.txt",
+  "--objective",
+  "a,ad,cost,gd",
+  "--cap-a",
+  "43",
+  "--cap-ad",
+  "5",
+  "--cap-gd",
+  "23",
+  "--iters",
+  "400000",
+  "--seconds",
+  "600",
+  "--seeds",
+  "1-2",
+  "--rounds",
+  "2",
+  "--jobs",
+  "1",
+  "--out",
+  "<campaign archive>/2026-11-17-push/G4/runs/polish/a43p-gd23-p189"
+ ],
+ "run_record": "run.json",
+ "runs": [
+  {
+   "round": 0,
+   "seed": 1,
+   "kernel_seed": 1,
+   "tag": "r0-s1",
+   "returncode": 0,
+   "wall_s": 207.78,
+   "final": {
+    "cost": 190.0,
+    "G": 190.0,
+    "A": 43.0,
+    "GD": 23.0,
+    "AD": 5.0,
+    "obj": 43.000501900023,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 5.0,
+    "seconds": 207.75
+   },
+   "improvements": [
+    {
+     "t": 0.01,
+     "it": 12,
+     "mv": "resub1",
+     "cost": 189.0,
+     "G": 189,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.011,
+     "it": 14,
+     "mv": "resub3",
+     "cost": 190.0,
+     "G": 190,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.014,
+     "it": 19,
+     "mv": "resub2",
+     "cost": 191.0,
+     "G": 191,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.031,
+     "it": 54,
+     "mv": "resub2",
+     "cost": 193.0,
+     "G": 193,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.034,
+     "it": 59,
+     "mv": "resub3",
+     "cost": 194.0,
+     "G": 194,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.041,
+     "it": 72,
+     "mv": "resub2",
+     "cost": 195.0,
+     "G": 195,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.042,
+     "it": 73,
+     "mv": "resub2",
+     "cost": 195.0,
+     "G": 195,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.063,
+     "it": 105,
+     "mv": "resub2",
+     "cost": 196.0,
+     "G": 196,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.066,
+     "it": 108,
+     "mv": "resub3",
+     "cost": 197.0,
+     "G": 197,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.069,
+     "it": 113,
+     "mv": "resub2",
+     "cost": 199.0,
+     "G": 199,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.074,
+     "it": 119,
+     "mv": "resub3",
+     "cost": 199.0,
+     "G": 199,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.129,
+     "it": 193,
+     "mv": "resub3",
+     "cost": 203.0,
+     "G": 203,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.187,
+     "it": 265,
+     "mv": "resub2",
+     "cost": 205.0,
+     "G": 205,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 0.196,
+     "it": 278,
+     "mv": "resub2",
+     "cost": 204.0,
+     "G": 204,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 0.495,
+     "it": 692,
+     "mv": "resub2",
+     "cost": 203.0,
+     "G": 203,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 0.499,
+     "it": 698,
+     "mv": "resub2",
+     "cost": 202.0,
+     "G": 202,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 0.517,
+     "it": 724,
+     "mv": "resub2",
+     "cost": 201.0,
+     "G": 201,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 0.521,
+     "it": 729,
+     "mv": "resub2",
+     "cost": 200.0,
+     "G": 200,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 0.528,
+     "it": 737,
+     "mv": "resub2",
+     "cost": 199.0,
+     "G": 199,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 5.416,
+     "it": 11502,
+     "mv": "resub3",
+     "cost": 198.0,
+     "G": 198,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 5.665,
+     "it": 11940,
+     "mv": "resub3",
+     "cost": 197.0,
+     "G": 197,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 5.788,
+     "it": 12148,
+     "mv": "resub2",
+     "cost": 196.0,
+     "G": 196,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 7.115,
+     "it": 14114,
+     "mv": "resub2",
+     "cost": 195.0,
+     "G": 195,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 7.709,
+     "it": 14963,
+     "mv": "resub2",
+     "cost": 194.0,
+     "G": 194,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 8.275,
+     "it": 15841,
+     "mv": "resub2",
+     "cost": 193.0,
+     "G": 193,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 19.925,
+     "it": 34254,
+     "mv": "resub1",
+     "cost": 192.0,
+     "G": 192,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 84.996,
+     "it": 159988,
+     "mv": "resub2",
+     "cost": 191.0,
+     "G": 191,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 176.165,
+     "it": 338377,
+     "mv": "resub2",
+     "cost": 190.0,
+     "G": 190,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 100141.0,
+     "acc": 5608.0,
+     "imp": 2.0,
+     "cands": 57338.0,
+     "time": 2.23
+    },
+    "resub2": {
+     "prop": 199440.0,
+     "acc": 33503.0,
+     "imp": 19.0,
+     "cands": 1387135.0,
+     "time": 128.07
+    },
+    "resub3": {
+     "prop": 100419.0,
+     "acc": 16819.0,
+     "imp": 7.0,
+     "cands": 817716.0,
+     "time": 77.35
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 190,
+    "A": 43,
+    "GD": 23,
+    "AD": 5,
+    "cost": 190.0,
+    "counts": {
+     "AND": 43,
+     "XNOR": 62,
+     "XOR": 85
+    }
+   }
+  },
+  {
+   "round": 0,
+   "seed": 2,
+   "kernel_seed": 2,
+   "tag": "r0-s2",
+   "returncode": 0,
+   "wall_s": 204.68,
+   "final": {
+    "cost": 189.0,
+    "G": 189.0,
+    "A": 43.0,
+    "GD": 23.0,
+    "AD": 5.0,
+    "obj": 43.000501890023,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 5.0,
+    "seconds": 204.65
+   },
+   "improvements": [
+    {
+     "t": 0.0,
+     "it": 1,
+     "mv": "resub1",
+     "cost": 189.0,
+     "G": 189,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.008,
+     "it": 7,
+     "mv": "resub3",
+     "cost": 191.0,
+     "G": 191,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.014,
+     "it": 16,
+     "mv": "resub2",
+     "cost": 192.0,
+     "G": 192,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.037,
+     "it": 45,
+     "mv": "resub2",
+     "cost": 192.0,
+     "G": 192,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.043,
+     "it": 50,
+     "mv": "resub2",
+     "cost": 193.0,
+     "G": 193,
+     "A": 43,
+     "GD": 24,
+     "AD": 5
+    },
+    {
+     "t": 0.049,
+     "it": 61,
+     "mv": "resub2",
+     "cost": 194.0,
+     "G": 194,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 6.704,
+     "it": 11448,
+     "mv": "resub2",
+     "cost": 193.0,
+     "G": 193,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 7.237,
+     "it": 12452,
+     "mv": "resub3",
+     "cost": 192.0,
+     "G": 192,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 39.518,
+     "it": 75271,
+     "mv": "resub2",
+     "cost": 191.0,
+     "G": 191,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 172.406,
+     "it": 336667,
+     "mv": "resub3",
+     "cost": 190.0,
+     "G": 190,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    },
+    {
+     "t": 190.866,
+     "it": 370019,
+     "mv": "resub2",
+     "cost": 189.0,
+     "G": 189,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 100040.0,
+     "acc": 6153.0,
+     "imp": 1.0,
+     "cands": 57914.0,
+     "time": 2.26
+    },
+    "resub2": {
+     "prop": 199930.0,
+     "acc": 34596.0,
+     "imp": 7.0,
+     "cands": 1438435.0,
+     "time": 126.51
+    },
+    "resub3": {
+     "prop": 100030.0,
+     "acc": 17175.0,
+     "imp": 3.0,
+     "cands": 840826.0,
+     "time": 75.78
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 189,
+    "A": 43,
+    "GD": 23,
+    "AD": 5,
+    "cost": 189.0,
+    "counts": {
+     "AND": 43,
+     "XNOR": 68,
+     "XOR": 78
+    }
+   }
+  },
+  {
+   "round": 1,
+   "seed": 1,
+   "kernel_seed": 4294967297,
+   "tag": "r1-s1",
+   "returncode": 0,
+   "wall_s": 211.28,
+   "final": {
+    "cost": 189.0,
+    "G": 189.0,
+    "A": 43.0,
+    "GD": 23.0,
+    "AD": 5.0,
+    "obj": 43.000501890023,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 211.28
+   },
+   "improvements": [],
+   "moves": {
+    "resub1": {
+     "prop": 100164.0,
+     "acc": 5514.0,
+     "imp": 0.0,
+     "cands": 57664.0,
+     "time": 2.28
+    },
+    "resub2": {
+     "prop": 199406.0,
+     "acc": 33067.0,
+     "imp": 0.0,
+     "cands": 1398853.0,
+     "time": 130.29
+    },
+    "resub3": {
+     "prop": 100430.0,
+     "acc": 16453.0,
+     "imp": 0.0,
+     "cands": 831010.0,
+     "time": 78.61
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 189,
+    "A": 43,
+    "GD": 23,
+    "AD": 5,
+    "cost": 189.0,
+    "counts": {
+     "AND": 43,
+     "XNOR": 68,
+     "XOR": 78
+    }
+   }
+  },
+  {
+   "round": 1,
+   "seed": 2,
+   "kernel_seed": 4294967298,
+   "tag": "r1-s2",
+   "returncode": 0,
+   "wall_s": 202.01,
+   "final": {
+    "cost": 189.0,
+    "G": 189.0,
+    "A": 43.0,
+    "GD": 23.0,
+    "AD": 5.0,
+    "obj": 43.000501890023,
+    "feas": 1.0,
+    "iters": 400000.0,
+    "restarts": 6.0,
+    "seconds": 201.97
+   },
+   "improvements": [
+    {
+     "t": 68.501,
+     "it": 133744,
+     "mv": "resub3",
+     "cost": 189.0,
+     "G": 189,
+     "A": 43,
+     "GD": 23,
+     "AD": 5
+    }
+   ],
+   "moves": {
+    "resub1": {
+     "prop": 99832.0,
+     "acc": 5486.0,
+     "imp": 0.0,
+     "cands": 56858.0,
+     "time": 2.14
+    },
+    "resub2": {
+     "prop": 199970.0,
+     "acc": 33434.0,
+     "imp": 0.0,
+     "cands": 1400210.0,
+     "time": 124.89
+    },
+    "resub3": {
+     "prop": 100198.0,
+     "acc": 16557.0,
+     "imp": 1.0,
+     "cands": 808263.0,
+     "time": 74.83
+    }
+   },
+   "time_capped": false,
+   "core_ok": true,
+   "metrics": {
+    "G": 189,
+    "A": 43,
+    "GD": 23,
+    "AD": 5,
+    "cost": 189.0,
+    "counts": {
+     "AND": 43,
+     "XNOR": 76,
+     "XOR": 70
+    }
+   }
+  }
+ ],
+ "wall_s": 826.1,
+ "best": {
+  "file": "<campaign archive>/2026-11-17-push/G4/runs/polish/a43p-gd23-p189/best.circ.txt",
+  "origin": "seed 2 round 0",
+  "feasible": true,
+  "metrics": {
+   "G": 189,
+   "A": 43,
+   "GD": 23,
+   "AD": 5,
+   "cost": 189.0,
+   "counts": {
+    "AND": 43,
+    "XNOR": 68,
+    "XOR": 78
+   }
+  },
+  "core_ok": true,
+  "library_ok": true,
+  "independent_ok": true,
+  "buf_lines": 0,
+  "independent_metrics": {
+   "G": 189,
+   "counts": {
+    "AND": 43,
+    "XNOR": 68,
+    "XOR": 78
+   },
+   "A": 43,
+   "XX": 146,
+   "GD": 23,
+   "AD": 5,
+   "dead": 0,
+   "n": 9,
+   "m": 8,
+   "model": "nist",
+   "library_violations": [],
+   "cost": 189.0
+  }
+ }
+}
