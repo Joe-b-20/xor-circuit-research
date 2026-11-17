@@ -151,6 +151,67 @@ class TestBoptCost(_Fn):
         self.assertEqual(a, b)
 
 
+class TestJunkAbsorb(_Fn):
+    """bottom --junk absorb (idea 05): Y-form junk as bit 8 of affine x-forms"""
+    def test_forward_without_junk_unchanged(self):
+        BT = ops_bottom()
+        import time
+        use(FWD45); c = load(FWD45)
+        M0, B0, o0, i0 = BT.setup(c, 4, 12, 45, 'terms')[0]
+        a = BT.anneal(M0, B0, o0, random.Random(4), 500, 2.0, time.time() + 1e9, None)
+        M1, B1, o1, i1 = BT.setup(c, 4, 12, 45, 'absorb')[0]
+        self.assertEqual((B0, o0, i0['own']), (B1, o1, i1['own']))
+        b = BT.anneal(M1, B1, o1, random.Random(4), 500, 2.0, time.time() + 1e9, None)
+        BT.BO.NCOL = 8
+        self.assertEqual(a, b)
+
+    def test_inverse_absorb_builds(self):
+        BT = ops_bottom()
+        import time
+        inv45 = INV_SEEDS / 'aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt'
+        use(inv45); c = load(inv45)
+        try:
+            M, B, opts, info = BT.setup(c, 4, 12, 45, 'absorb')[0]
+            self.assertEqual([len(o) for o in opts], [141] * 8)         # terms mode: 13 for the outputs with level-10 junk
+            self.assertTrue(info['own'] is not None)
+            self.assertTrue(all(BT.BO.sum_t(S) == B[j] for j, S in enumerate(info['own'])))
+            self.assertTrue(any(p[1] & BT.BO.ONE for S in info['own'] for p in S))
+            for sd in (1, 2):
+                cc, ch = BT.anneal(M, B, opts, random.Random(sd), 800, 2.0, time.time() + 1e9, None)
+                plan = {'circuit': str(inv45), 'cap': 12, 'Lb': info['Lb'], 'cost': cc,
+                        'choice': [[list(p) for p in S] for S in ch], 'C': info['C'], 'nat': BT.BO.NROW == 5}
+                BT.BU.RNG = None
+                nc = BT.clean(BT.BU.build(plan))
+                self.assertTrue(BT.verify(nc)[0])
+                m = BT.metrics(nc)
+                self.assertEqual(m[0], info['nfront'] + cc[1])
+                self.assertLessEqual(m[3], 12)
+        finally:
+            BT.BO.NCOL = 8
+
+    def test_inverse_absorb5_gd11(self):
+        """absorb5 also absorbs the x-form junk (complemented Y operands): the 45@12 front at GD 11 (terms / absorb:
+        not applicable, every output's 4 level-9 products already fill its Kraft sum) builds 17 + 32 ANDs"""
+        BT = ops_bottom()
+        import time
+        inv45 = INV_SEEDS / 'aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt'
+        use(inv45); c = load(inv45)
+        try:
+            self.assertIsNone(BT.setup(c, 4, 11, 99, 'absorb')[0])
+            M, B, opts, info = BT.setup(c, 4, 11, 99, 'absorb5')[0]
+            self.assertEqual([len(o) for o in opts], [1] * 8)
+            cc, ch = BT.anneal(M, B, opts, random.Random(1), 50, 2.0, time.time() + 1e9, None)
+            plan = {'circuit': str(inv45), 'cap': 11, 'Lb': info['Lb'], 'cost': cc,
+                    'choice': [[list(p) for p in S] for S in ch], 'C': info['C'], 'nat': BT.BO.NROW == 5}
+            BT.BU.RNG = None
+            nc = BT.clean(BT.BU.build(plan))
+            self.assertTrue(BT.verify(nc)[0])
+            m = BT.metrics(nc)
+            self.assertEqual((m[0], m[1]), (49, 4)); self.assertLessEqual(m[3], 11)
+        finally:
+            BT.BO.NCOL = 8; BT.BO.NROW = 4
+
+
 class TestGf4Port(_Fn):
     def test_forward_tables_and_inverse_build(self):
         import gf4fn

@@ -115,9 +115,10 @@ def build(plan):
     c = L.load(plan['circuit']); n = c.n; cap = plan['cap']
     T, lg, la, base = bopt.base_front(c)
     net = Net(c)
-    Ysig = {}
+    Ysig = {}; Yneg = {}
     for i, (lv, t, s, pol) in enumerate(base):
         if pol:
+            Yneg[1 << i] = s
             op, a, b = c.gates[s - n]
             s = net.add(XNOR if op == XOR else XOR, a, b) if op in (XOR, XNOR) else net.add(NOT, s, s)
         Ysig[1 << i] = s
@@ -125,25 +126,33 @@ def build(plan):
     P = sorted({p for S in choice for p in S})
     junk = [(cj[1], cj[2]) for cj in plan['C']]        # per output (v: x-form, yt: Y-sum) fixed extra terms (affine junk)
     # Y-sums
-    need = sorted({a for a, w in P if a not in Ysig} | {yt for v, yt in junk if yt and yt not in Ysig},
+    need = sorted({a & 15 for a, w in P if a & 15 and (a & 15) not in Ysig} | {yt for v, yt in junk if yt and yt not in Ysig},
                   key=lambda a: bin(a).count('1'))
+    nat = plan.get('nat')     # absorb5 plans: Y-sums from the base Y-forms' own signals (polarity by XNOR, no NOT level)
+    Ys_ = {1 << i: b[2] for i, b in enumerate(base)} if nat else Ysig
+
+    def yadd(s1, s2):
+        return xadd(net, s1, s2) if nat else net.add(XOR, s1, s2)
     for a in need:
         best = None
-        for b1 in list(Ysig):
+        for b1 in list(Ys_):
             b2 = a ^ b1
-            if b2 in Ysig and b1 < b2:
-                lv = max(net.lev[Ysig[b1]], net.lev[Ysig[b2]])
+            if b2 in Ys_ and b1 < b2:
+                lv = max(net.lev[Ys_[b1]], net.lev[Ys_[b2]])
                 if best is None or lv < best[0]: best = (lv, b1, b2)
         if best is None:
             bits = [1 << i for i in range(4) if (a >> i) & 1]
-            s = Ysig[bits[0]]
+            s = Ys_[bits[0]]
             acc = bits[0]
             for bt in bits[1:]:
                 acc |= bt
-                if acc in Ysig: s = Ysig[acc]; continue
-                s = net.add(XOR, s, Ysig[bt]); Ysig[acc] = s
+                if acc in Ys_: s = Ys_[acc]; continue
+                s = yadd(s, Ys_[bt]); Ys_[acc] = s
         else:
-            Ysig[a] = net.add(XOR, Ysig[best[1]], Ysig[best[2]])
+            Ys_[a] = yadd(Ys_[best[1]], Ys_[best[2]])
+    if nat:
+        for a, sg in Ys_.items():
+            if bin(a).count('1') > 1: Ysig[a] = sg
     # x-forms: available forms = inputs + top-layer gates of the front cone
     avail = {1 << i: i for i in range(n)}
     cone = set(); st = [b[2] for b in base]
@@ -158,18 +167,45 @@ def build(plan):
             if m is not None and (m not in avail or (T[s] & 1 == 0 and net.tab[avail[m]] & 1)):
                 avail[m] = s
     k0 = net.nid
-    needx = {w for a, w in P if w not in avail} | {v for v, yt in junk if v and v not in avail}
+    ONE = bopt.ONE        # affine plans (ops/bottom.py --junk absorb): bit 8 of w = complemented x-form; w == ONE: bare Y-form
+    lins = {w & 255 for a, w in P if w != ONE}
+    needx = {m for m in lins if m not in avail} | {v for v, yt in junk if v and v not in avail}
     bp_synth(net, avail, needx)
     k1 = net.nid
-    for w in {w for a, w in P} | {v for v, yt in junk if v}:
+    poss = {w for a, w in P if not w & ONE} | {v for v, yt in junk if v}
+    negs = {w & 255 for a, w in P if w & ONE and w != ONE}
+    neg = {}
+    for m in negs:                 # complemented twin (XNOR of the same operands, or NOT of an input / a gate of another type)
+        sg = avail[m]
+        if net.tab[sg] & 1: neg[m] = sg; continue
+        op, a, b = net.nodes[sg] if sg >= n else (None, None, None)
+        neg[m] = net.add(XNOR if op == XOR else XOR, a, b) if op in (XOR, XNOR) else net.add(NOT, sg, sg)
+    for w in poss:
         sg = avail[w]
         if net.tab[sg] & 1:            # complemented form: positive twin
             op, a, b = net.nodes[sg]
             avail[w] = net.add(XNOR if op == XOR else XOR, a, b) if op in (XOR, XNOR) else net.add(NOT, sg, sg)
-    Psig = {p: net.add(AND, Ysig[p[0]], avail[p[1]]) for p in P}
+    CY = bopt.CY          # absorb5 plans: bit CY of alpha = complemented Y operand; alpha == CY: bare x-form (w == ONE: constant)
+    for a in sorted({a & 15 for a, w in P if a & CY and a & 15}):
+        if a in Yneg: continue
+        sg = Ysig[a]
+        op, x1, x2 = net.nodes[sg] if sg >= n else (None, None, None)
+        Yneg[a] = net.add(XNOR if op == XOR else XOR, x1, x2) if op in (XOR, XNOR) else net.add(NOT, sg, sg)
+
+    def ysg(a):
+        return Yneg[a & 15] if a & CY else Ysig[a]
+
+    def xsg(w):
+        return neg[w & 255] if w & ONE else avail[w]
+    Psig = {}
+    for p in P:
+        a, w = p
+        if not a & 15: Psig[p] = None if w == ONE else xsg(w)
+        elif w == ONE: Psig[p] = ysg(a)
+        else: Psig[p] = net.add(AND, ysg(a), xsg(w))
     # outputs: shared pairs first
     items = [list(S) for S in choice]
-    terms = [[Psig[p] for p in S] + ([Ysig[yt]] if yt else []) + ([avail[v]] if v else [])
+    terms = [[Psig[p] for p in S if Psig[p] is not None] + ([Ysig[yt]] if yt else []) + ([avail[v]] if v else [])
              for S, (v, yt) in zip(choice, junk)]
     while True:
         cnt = Counter()
