@@ -8,8 +8,9 @@ Boolean circuits (S-boxes; every other folder): every *.circ.txt, *.ncff.txt and
 with each gate's own semantics (XOR, XNOR, AND, NOT; also OR, NAND, NOR); NIST's metrics (#AND, AND
 depth, #gates, gate depth, #XOR, #XNOR) must match the file name and the tallies in its header, if
 any; and it is verified twice by complete truth table, from the gate list and from its AND skeleton,
-against the function its folder or name designates: the AES S-box or inverse S-box by FIPS-197's
-definition (names aes-sbox..., aes-invsbox...), or the *.fn.json table in its folder.
+against the function its folder or name designates: the AES S-box, its inverse, or the S-box with a
+direction bit by FIPS-197's definition (names aes-sbox..., aes-invsbox..., aes-sbox-sel...), or the
+*.fn.json table in its folder.
 
 Default: circuits/ and NIST's circuits in search/nonlinear/seeds/.  Files in logs/ folders are
 records of how a circuit was found and are not checked.  Exit status 1 if any circuit fails.
@@ -93,7 +94,7 @@ def check_linear(circ, mat):
 
 def function_for(path):
     """The Function a circuit file must compute, from a ``*.fn.json`` in its folder or from
-    its name (``aes-sbox``, ``aes-invsbox``, ``aes-sbox-fwd/-inv/-rev``)."""
+    its name (``aes-sbox``, ``aes-invsbox``, ``aes-sbox-fwd/-inv/-rev``, ``aes-sbox-sel``)."""
     tables = sorted(path.parent.glob("*.fn.json"))
     if len(tables) > 1:          # several targets in one folder: the file name starts with the target's
         tables = [t for t in tables if path.name.startswith(t.name[:-len(".fn.json")])]
@@ -105,6 +106,8 @@ def function_for(path):
     if tables:
         raise ValueError("%s: several *.fn.json match" % path)
     name = path.name.lower()
+    if name.startswith("aes-sbox-sel"):
+        return truth.aes_sbox_sel()
     if name.startswith(("aes-invsbox", "aes-sbox-inv", "aes-sbox-rev")):
         return truth.aes_inv_sbox()
     if name.startswith("aes-sbox"):

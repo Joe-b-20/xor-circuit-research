@@ -1,0 +1,76 @@
+{
+ "op": "kpolish",
+ "target": "<checkout>/circuits/aes-invsbox/aes-invsbox-a32-ad5-g121-gd16-xx89-44.circ.txt",
+ "seed": 1074,
+ "status": "ok",
+ "start": "<checkout>/circuits/aes-invsbox/aes-invsbox-a32-ad5-g121-gd16-xx89-44.circ.txt",
+ "start_tuple": [
+  32,
+  5,
+  121,
+  16
+ ],
+ "params": {
+  "seconds": 30.0,
+  "gd_cap": 16
+ },
+ "wall_s": 30.2,
+ "n_written": 1,
+ "rejected": {
+  "outside": 0,
+  "dominated": 1,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "kernel best best-0.bfx": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel best best.bfx": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.17,
+  "verify_s": 0.079,
+  "verify_calls": 1
+ },
+ "notes": [],
+ "utc": "2026-11-17T04:25:43Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    120,
+    16
+   ],
+   "file": "<campaign archive>/2026-11-17-ideas/09/runs/abk/074-aes-invsbox-a32-ad5-g121-gd16-xx89-44/kpolish-a32-ad5-g120-gd16-23f3b6b12a.circ.txt",
+   "how": "kernel best best-0.bfx",
+   "t": 30.2,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    120,
+    16
+   ],
+   "file": "<campaign archive>/2026-11-17-ideas/09/runs/abk/074-aes-invsbox-a32-ad5-g121-gd16-xx89-44/kpolish-a32-ad5-g120-gd16-23f3b6b12a.circ.txt",
+   "how": "kernel best best-0.bfx",
+   "t": 30.2,
+   "class": "strict"
+  }
+ ],
+ "kernel": {
+  "rc": 0,
+  "cpu_s": 30.0,
+  "bests": 2
+ }
+}

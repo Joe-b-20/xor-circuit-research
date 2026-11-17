@@ -1,0 +1,121 @@
+{
+ "op": "rebase",
+ "target": "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+ "seed": 1,
+ "status": "ok",
+ "start": "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+ "start_tuple": [
+  32,
+  5,
+  108,
+  20
+ ],
+ "params": {
+  "cap": null,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 80.0,
+  "stages": 1,
+  "moves": false,
+  "move_top": 4,
+  "descend": false,
+  "move_budget": 0.25,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "shard": "0/1",
+  "function": "auto"
+ },
+ "wall_s": 321.7,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 8,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "build {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 122}": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 122, \"kernel_seed\": 37043, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 122, \"kernel_seed\": 753754, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 123}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 123, \"kernel_seed\": 168011, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 20, \"parent_how\": \"result of build 23541d69358e\", \"build_G\": 127}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 20, \"parent_how\": \"result of build 23541d69358e\", \"build_G\": 127, \"kernel_seed\": 575952, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 20, \"parent_how\": \"result of build 23541d69358e\", \"build_G\": 129}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 20, \"parent_how\": \"result of build 23541d69358e\", \"build_G\": 130}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.25,
+  "verify_s": 0.173,
+  "verify_calls": 2
+ },
+ "notes": [],
+ "utc": "2026-11-17T03:41:06Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    108,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old/rebase-a32-ad5-g108-gd19-2e2e4dba4c.circ.txt",
+   "how": "kernel {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 122, \"kernel_seed\": 37043, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}",
+   "t": 81.0,
+   "class": "strict"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    5,
+    108,
+    19
+   ],
+   "file": "<campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old/rebase-a32-ad5-g108-gd19-2e2e4dba4c.circ.txt",
+   "how": "kernel {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 122, \"kernel_seed\": 37043, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}",
+   "t": 81.0,
+   "class": "strict"
+  }
+ ]
+}

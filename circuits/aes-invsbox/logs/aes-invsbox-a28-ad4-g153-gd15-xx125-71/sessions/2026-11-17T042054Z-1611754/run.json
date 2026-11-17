@@ -1,0 +1,1053 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "hub.scheduler",
+ "status": "time",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/hub/scheduler.py",
+  "--dir",
+  "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19",
+  "--cpus",
+  "19",
+  "--hours",
+  "0.25",
+  "--function",
+  "aes-invsbox",
+  "--seed-list",
+  "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/seeds.list",
+  "--ops",
+  "polish,pull,join,trb",
+  "--seed",
+  "13",
+  "--policy",
+  "priority",
+  "--seconds",
+  "polish=90,pull=90,join=60,trb=30",
+  "--kopt",
+  "polish,pull:stop_stall_it=90000"
+ ],
+ "cwd": "<campaign archive>/2026-11-17-ideas/10/snap/kopt",
+ "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19 --cpus 19 --hours 0.25 --function aes-invsbox --seed-list <campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/seeds.list --ops polish,pull,join,trb --seed 13 --policy priority --seconds polish=90,pull=90,join=60,trb=30 --kopt polish,pull:stop_stall_it=90000",
+ "git": {
+  "commit": null,
+  "branch": null,
+  "dirty": null,
+  "note": "not a git checkout (or git missing): see sources_sha256"
+ },
+ "sources_sha256": "87733db1cfc4dee06d8d54e3ab1108b46b2cd557d454a65c8a9ff358a579f6a8",
+ "repo": "<campaign archive>/2026-11-17-ideas/10/snap/kopt",
+ "function": "aes-invsbox",
+ "seeds": {
+  "seed": 13,
+  "rng": "random.Random('%s/%d' % (seed, last run number))",
+  "last_run_number": 0,
+  "jobs": "each job gets rng.randrange(1, 2^30); every job is an event"
+ },
+ "config": {
+  "dir": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19",
+  "cpus": "19",
+  "cpu_allow": null,
+  "hours": 0.25,
+  "seed_list": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/seeds.list",
+  "ops": "polish,pull,join,trb",
+  "seconds": "polish=90,pull=90,join=60,trb=30",
+  "eps": 0.25,
+  "seed": 13,
+  "seed_only": false,
+  "near": 0.0,
+  "near_gap": 3,
+  "nursery": 0.0,
+  "gain": "value",
+  "target_mode": "tuple",
+  "join_mode": "incremental",
+  "tuple_caps": "polish=2,pull=3",
+  "cap_renew": "never",
+  "cap_renew_max": 3,
+  "policy": "priority",
+  "ingest_every": 60.0,
+  "join_batch": 8,
+  "join_cpus": 1,
+  "join_share": 0.1,
+  "variants_first": false,
+  "repeat_max": null,
+  "function": "aes-invsbox",
+  "kopt": [
+   "polish,pull:stop_stall_it=90000"
+  ],
+  "kopt_first": null,
+  "kopt_first_levels": "fresh,variant,near,other",
+  "seconds_resolved": {
+   "polish": 90.0,
+   "pull": 90.0,
+   "join": 60.0,
+   "trb": 30.0,
+   "osc": 90,
+   "gen_inv3": 60,
+   "gen_bottom": 60,
+   "gen_skel": 60,
+   "linres": 30,
+   "gen_joinplus": 90
+  },
+  "campaign": "p5-ss-19-892236",
+  "code_version": "?+0a7413ff05"
+ },
+ "starts": [
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt",
+   "sha256": "7f25f5b3cc7b89d38a8fa00a72422eb27b566653e84208c6d620bb33c2829555",
+   "metrics": [
+    28,
+    4,
+    135,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g140-gd19-xx112-30.circ.txt",
+   "sha256": "9692afa26d2381e0ec7b34a35000e9634aff23dd3291a21d42d3e6649140c23c",
+   "metrics": [
+    28,
+    4,
+    140,
+    19
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g140-gd30-xx112-28.circ.txt",
+   "sha256": "6586476c21aecd33bf8f90f3e446cd8ce9d07ac69e93cb7085f0e0bd98f4ab33",
+   "metrics": [
+    28,
+    4,
+    140,
+    30
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g141-gd31-xx113-28.circ.txt",
+   "sha256": "8fd99f716e12882655cc6afa7e162dc4c2d01defca0b9371855a3b826ac02255",
+   "metrics": [
+    28,
+    4,
+    141,
+    31
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g142-gd28-xx114-28.circ.txt",
+   "sha256": "1777e20958c96915f4d106a3ed0e5ab1768705228a5e1f57548f26a94c353ea8",
+   "metrics": [
+    28,
+    4,
+    142,
+    28
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g147-gd19-xx119-26.circ.txt",
+   "sha256": "9196cdb3abb898ca709f20f66a0d8f59aa4fb124f3d29d1287304a2dbc7fbc21",
+   "metrics": [
+    28,
+    4,
+    147,
+    19
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g149-gd19-xx121-26.circ.txt",
+   "sha256": "5b9586f0c3ecd5aa0fc0b66d9ccdfe68dc8d935083ee546d445571405160095a",
+   "metrics": [
+    28,
+    4,
+    149,
+    19
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g150-gd16-xx122-27.circ.txt",
+   "sha256": "4ec19ae277ec5e6175d85bca2179461db1651e9bccad572c3540895c97248d25",
+   "metrics": [
+    28,
+    4,
+    150,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g156-gd15-xx128-28.circ.txt",
+   "sha256": "5fe752c969a1aba1ae3fb25b1843b46276222e01cb9ff06ffaee06f4e1ed6aee",
+   "metrics": [
+    28,
+    4,
+    156,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g167-gd15-xx139-31.circ.txt",
+   "sha256": "fb394d4db78b96358bac2cea78922fcb155560d676fbca535d172b2b5e367709",
+   "metrics": [
+    28,
+    4,
+    167,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g171-gd15-xx143-32.circ.txt",
+   "sha256": "16e898c54d707bd6844350d0b652bee9ebe1de642fdfca3bbac6c3a873805d6a",
+   "metrics": [
+    28,
+    4,
+    171,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g174-gd15-xx146-33.circ.txt",
+   "sha256": "6663b8334fd3f8f1c1dfb3f4eceb86107b5b2da700ca57a0108dced384e25bfb",
+   "metrics": [
+    28,
+    4,
+    174,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g202-gd15-xx174-28.circ.txt",
+   "sha256": "c81f1f243975bb3ed92d1e3c8bd490e7371cd7397e548aea588f17e1a865dc09",
+   "metrics": [
+    28,
+    4,
+    202,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad5-g126-gd27-xx98-26.circ.txt",
+   "sha256": "847aa699a938b0dda332b2a5254952232809f0cb5a2df8d75481dfcee3ec0632",
+   "metrics": [
+    28,
+    5,
+    126,
+    27
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad5-g129-gd22-xx101-30.circ.txt",
+   "sha256": "e2ab201fcd3c65f1a48741e53807387c5f5191df8c77caddc7baf114142dbc29",
+   "metrics": [
+    28,
+    5,
+    129,
+    22
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad5-g131-gd20-xx103-29.circ.txt",
+   "sha256": "dd9a0bdc230e4e031d63712277dc8df7dca4fa167c7626d056880780a3043eae",
+   "metrics": [
+    28,
+    5,
+    131,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad5-g132-gd19-xx104-23.circ.txt",
+   "sha256": "04cde7b5995f04a3a47dd44d3f7d6e5037a08f620406a6d3871dbacf248ca9fe",
+   "metrics": [
+    28,
+    5,
+    132,
+    19
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad5-g147-gd16-xx119-25.circ.txt",
+   "sha256": "5ca0959e45f4a6677a7e1bf8c055cfa3ab669bdb3bebbc14bad2181118144042",
+   "metrics": [
+    28,
+    5,
+    147,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad5-g152-gd15-xx124-18.circ.txt",
+   "sha256": "e8f88e8d77c91055f9946a297962c8c4397a1b8f8adceeae293bab47d3d7a02b",
+   "metrics": [
+    28,
+    5,
+    152,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a29-ad5-g145-gd32-xx116-29.circ.txt",
+   "sha256": "a2cfb0724fc8a5cf642c0872a3d1b104603378171187f84414145afbf1ad1f08",
+   "metrics": [
+    29,
+    5,
+    145,
+    32
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a29-ad5-g176-gd16-xx147-31.circ.txt",
+   "sha256": "756529dad4de939c9fc7f959fc6ffc4db4b8b0f77390937c9df9f70a63559fde",
+   "metrics": [
+    29,
+    5,
+    176,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a29-ad5-g186-gd16-xx157-43.circ.txt",
+   "sha256": "1367aceef345f340f109a034c9ef56f8f7963d444fcb949a1453cbe9bca36fb8",
+   "metrics": [
+    29,
+    5,
+    186,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a30-ad4-g150-gd30-xx120-33.circ.txt",
+   "sha256": "e155e8312f9a4b91668b6ca83612083bcd7c4d9bfb3e8b5dc84c98adca015a74",
+   "metrics": [
+    30,
+    4,
+    150,
+    30
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a30-ad4-g203-gd15-xx173-52.circ.txt",
+   "sha256": "744d804f2493a48a882c29a1eba9cbdab6a6e40d6b5e649da5ae5c7d5c7e98ae",
+   "metrics": [
+    30,
+    4,
+    203,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g117-gd21-xx85-10.circ.txt",
+   "sha256": "b64bbd22e35ef8fecb86909a9fba73cdf0515a7994695265146993e85bb75608",
+   "metrics": [
+    32,
+    4,
+    117,
+    21
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g119-gd20-xx87-10.circ.txt",
+   "sha256": "fb126b35c38235930c00a8dfb4b48fa5d37bfb0f5d8bb287b5c4e2385b467a79",
+   "metrics": [
+    32,
+    4,
+    119,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g128-gd16-xx96-11.circ.txt",
+   "sha256": "1587f6a54c3cb7df7ed584d41f91504e6f7f39b4102077df061abfe2393632d5",
+   "metrics": [
+    32,
+    4,
+    128,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g135-gd15-xx103-11.circ.txt",
+   "sha256": "cb671d3e416a6bb6c11e52a11b14aee2a00df8786c198b24e609abd48824cb9d",
+   "metrics": [
+    32,
+    4,
+    135,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g106-gd25-xx74-9.circ.txt",
+   "sha256": "919c3574f7181c92809b242e225daf2d3a53488ec65ebe4909ee8218f29aed6d",
+   "metrics": [
+    32,
+    5,
+    106,
+    25
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g107-gd23-xx75-6.circ.txt",
+   "sha256": "32121f41279c9c52db84e3ae273d04af5136561fff4823d1e1d90abc3b4a6d8f",
+   "metrics": [
+    32,
+    5,
+    107,
+    23
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g110-gd20-xx78-7.circ.txt",
+   "sha256": "2029c62a445de6dbb551ed55ca2ea4012256fba1431048ad8f5a058b36565f9f",
+   "metrics": [
+    32,
+    5,
+    110,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g112-gd20-xx80-7.circ.txt",
+   "sha256": "d289c6f2e8d4e64b2b7dd9eba13a31858a0f273186716af10024c2199bdd4f2f",
+   "metrics": [
+    32,
+    5,
+    112,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g112-gd26-xx80-9.circ.txt",
+   "sha256": "ecd5a7ba33549ff72314defc83b0f2389fa5c6c4c5e42952659f5d066c6d6fbf",
+   "metrics": [
+    32,
+    5,
+    112,
+    26
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g112-gd27-xx80-9.circ.txt",
+   "sha256": "5d5e1f9689a81851f7690cb37e08b30c1fff7a14c7e33d1d5d884402a9a4a6d7",
+   "metrics": [
+    32,
+    5,
+    112,
+    27
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g125-gd15-xx93-21.circ.txt",
+   "sha256": "02011058d0299f0b68d850a9b4016478f7c94df7433438891817fec96f29bd29",
+   "metrics": [
+    32,
+    5,
+    125,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g128-gd16-xx96-23.circ.txt",
+   "sha256": "8035e6380dcbbba199a1b495e44251fd7750557a6f027e9c01b2299258a428b8",
+   "metrics": [
+    32,
+    5,
+    128,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad7-g105-gd27-xx73-14.circ.txt",
+   "sha256": "d7e588110afe37488947cd9b2095d3faa508930e7e5947f08402b0f0141fe56b",
+   "metrics": [
+    32,
+    7,
+    105,
+    27
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g107-gd21-xx74-10.circ.txt",
+   "sha256": "db577e91098ce54c5d8d796dc3b0c25a08c8de29d34c8a74eedb192a83ce64c7",
+   "metrics": [
+    33,
+    4,
+    107,
+    21
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g108-gd20-xx75-9.circ.txt",
+   "sha256": "b68ce9e438f14383864318b94f9dbaf7f6ace74ac31598f79b06273db30ddf10",
+   "metrics": [
+    33,
+    4,
+    108,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g109-gd23-xx76-11.circ.txt",
+   "sha256": "7a481aec33b76f0f8064b7cfe7a2c24eeaf982c4b56fdb04684c195127e34536",
+   "metrics": [
+    33,
+    4,
+    109,
+    23
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g114-gd18-xx81-11.circ.txt",
+   "sha256": "f143ea1b7bbc49bb8bddb73e3abe8559187bebb20f3af4aa6b2cefe579e946e6",
+   "metrics": [
+    33,
+    4,
+    114,
+    18
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g118-gd15-xx85-9.circ.txt",
+   "sha256": "4f1cfbac80c87c94d0f1750b3f7b3b67455fc07dfb415b343201675e5a5acac1",
+   "metrics": [
+    33,
+    4,
+    118,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g120-gd15-xx87-8.circ.txt",
+   "sha256": "debd2453592563455e5f9fc27cea085f5dfbf3db61bb3a836fac5e006621ffe0",
+   "metrics": [
+    33,
+    4,
+    120,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g122-gd15-xx89-8.circ.txt",
+   "sha256": "633b096104df449f8b46ea6ff9f85bbb9b59a53a106e0798019131e56c1bb229",
+   "metrics": [
+    33,
+    4,
+    122,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g123-gd14-xx90-16.circ.txt",
+   "sha256": "17f29951d16182718b0c4b7af57b6750de7672f9852d440c860c44c0b7ba26fb",
+   "metrics": [
+    33,
+    4,
+    123,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g114-gd26-xx80-11.circ.txt",
+   "sha256": "4fae12ca5e6df4769141df3f4827390632f2de35f4ab935ce14ca38e9649e46e",
+   "metrics": [
+    34,
+    4,
+    114,
+    26
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g114-gd27-xx80-11.circ.txt",
+   "sha256": "7ddb614105a9cbb6b7af4cad5087710bf32c25c9e83c2e232e53d13d8c77c612",
+   "metrics": [
+    34,
+    4,
+    114,
+    27
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g134-gd13-xx100-23.circ.txt",
+   "sha256": "5382734e93b9c0a27c45439e7c51bcfb8a1a67c5156a2e3d2faf9fbd1eade674",
+   "metrics": [
+    34,
+    4,
+    134,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g134-gd15-xx100-18.circ.txt",
+   "sha256": "cd43cad2975b925e224da3e4337956d3d07dd8c5548194400a80dd0f2ea238fd",
+   "metrics": [
+    34,
+    4,
+    134,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g136-gd13-xx102-23.circ.txt",
+   "sha256": "b859fd67ed7e53452e734660b14470449faacebc4827e4d2f5f42b2f3f7c2076",
+   "metrics": [
+    34,
+    4,
+    136,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g139-gd14-xx105-23.circ.txt",
+   "sha256": "0e9cb5ad00f0d14e2fe1f7a3f00cebf70547a4dff18ccb375135634e43d16ee4",
+   "metrics": [
+    34,
+    4,
+    139,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g142-gd14-xx108-24.circ.txt",
+   "sha256": "fd89bcbc5b813452f21fb946b120ebba8a303f96e890ae0bf433289922c3a46f",
+   "metrics": [
+    34,
+    4,
+    142,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a34-ad4-g194-gd14-xx160-20.circ.txt",
+   "sha256": "341c79ea7d4f471366fd056b841d24e4d13536bab481171da1806e761000d46f",
+   "metrics": [
+    34,
+    4,
+    194,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g149-gd26-xx114-32.circ.txt",
+   "sha256": "c8fd22a42de8a131091edbb735a2a7599b47370c58d4fa1d5708c266840f3710",
+   "metrics": [
+    35,
+    3,
+    149,
+    26
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g151-gd22-xx116-30.circ.txt",
+   "sha256": "feed7c9628b985d2b031ec06e1af9b34878990ad3d4641023ece98ef74883d6b",
+   "metrics": [
+    35,
+    3,
+    151,
+    22
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g152-gd26-xx117-31.circ.txt",
+   "sha256": "72083083b45fbba8a679e8486f89f1bcdf132b5d070635edbd295b104e6e4904",
+   "metrics": [
+    35,
+    3,
+    152,
+    26
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g154-gd20-xx119-30.circ.txt",
+   "sha256": "5e1e3c01f2ce145d18c8d7867c227e35fa9621cf247d655f84b6bb7efac75743",
+   "metrics": [
+    35,
+    3,
+    154,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g155-gd20-xx120-29.circ.txt",
+   "sha256": "5240e71abc95de6e559add229d92baa231af2af5f5b161eafdcd29d02fe93347",
+   "metrics": [
+    35,
+    3,
+    155,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g157-gd15-xx122-27.circ.txt",
+   "sha256": "ff93ec39083596b74dd8fffecf1543b45871c74bb0ad48e162dc17f37c57e6eb",
+   "metrics": [
+    35,
+    3,
+    157,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g158-gd28-xx123-34.circ.txt",
+   "sha256": "05e0329bb51b1c326c64e38dc1c026eee3449d9db06c3fcd4254cc09f4ac91c9",
+   "metrics": [
+    35,
+    3,
+    158,
+    28
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g164-gd20-xx129-28.circ.txt",
+   "sha256": "a59c29d313627515993567a509d94c03966dbe86c954a1fa723c2de7f5971686",
+   "metrics": [
+    35,
+    3,
+    164,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g165-gd15-xx130-27.circ.txt",
+   "sha256": "61416e229f101680ecbbf8b887b380657f306f770ac1009a676202b63f0c7fc7",
+   "metrics": [
+    35,
+    3,
+    165,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g166-gd16-xx131-30.circ.txt",
+   "sha256": "0dae22bd2116f3c775eff81ba127814eaf011eefacdd030987b053b96e57adc4",
+   "metrics": [
+    35,
+    3,
+    166,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g172-gd15-xx137-30.circ.txt",
+   "sha256": "4d28e9d4e67cc444e9d35312fdca9446d50eb4ec0cff909f400e0fc0df4f553c",
+   "metrics": [
+    35,
+    3,
+    172,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g178-gd15-xx143-30.circ.txt",
+   "sha256": "e88774f6c4bc6948cca7101d78e28ddacf327d52d5f67c2e7784a54e6f47dd52",
+   "metrics": [
+    35,
+    3,
+    178,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g179-gd15-xx144-25.circ.txt",
+   "sha256": "e2fd456ddd60de00fd7d3e995b9727f75518db15729cb2cea5a1a3f0cdad3d41",
+   "metrics": [
+    35,
+    3,
+    179,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g185-gd15-xx150-26.circ.txt",
+   "sha256": "683ed637ee8e479c0b869e24794ec5e50814af2fc3f1b678dec07864832548c3",
+   "metrics": [
+    35,
+    3,
+    185,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g190-gd14-xx155-27.circ.txt",
+   "sha256": "65bee73e814f858dee1f86640d89f4350e2b06aff29c036d4babedb77363f5c7",
+   "metrics": [
+    35,
+    3,
+    190,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad3-g195-gd15-xx160-28.circ.txt",
+   "sha256": "8e88030e933d683822dbaab2766b53ce8b4cc50ff1d4f3921601c71e90c51bcb",
+   "metrics": [
+    35,
+    3,
+    195,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad4-g131-gd13-xx96-14.circ.txt",
+   "sha256": "3b10120d077c3befa882b2d0c485e71ff1fb6121c7935e6e577e8d6be962baed",
+   "metrics": [
+    35,
+    4,
+    131,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a35-ad4-g133-gd13-xx98-18.circ.txt",
+   "sha256": "1fcb0cfe438b412411e5e448d3aee34e386b3aedf8382b8da7cb57ca054e9a8f",
+   "metrics": [
+    35,
+    4,
+    133,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a36-ad4-g138-gd13-xx102-20.circ.txt",
+   "sha256": "f931b2de6b6b2b886b95e2a2e8695202cde77174361bafa46645c1a80dde43b5",
+   "metrics": [
+    36,
+    4,
+    138,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a36-ad4-g138-gd14-xx102-24.circ.txt",
+   "sha256": "9874e8d27ed14e7bb82df43dee9861f0908b872ccfb1c0b7deb21e89781a6767",
+   "metrics": [
+    36,
+    4,
+    138,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a36-ad4-g140-gd14-xx104-24.circ.txt",
+   "sha256": "bf21bb9370138a1e1ffaeea13ba1c02341914d89c97cbeb07559c4cc73557455",
+   "metrics": [
+    36,
+    4,
+    140,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a36-ad4-g147-gd14-xx111-24.circ.txt",
+   "sha256": "13e641d0b99d4d2c33eae91d9fb1403c64be0e3c2fbde20f632e1b41bb3585fd",
+   "metrics": [
+    36,
+    4,
+    147,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a37-ad4-g157-gd13-xx120-19.circ.txt",
+   "sha256": "58e9eeab4243968ee9812b3d4b1edbb890c6a93fce27e917aec0c1040486c346",
+   "metrics": [
+    37,
+    4,
+    157,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a37-ad4-g172-gd13-xx135-24.circ.txt",
+   "sha256": "76160f27fea2535133221fd2f4a380408b48304b992188d2df6c54832be1c0f2",
+   "metrics": [
+    37,
+    4,
+    172,
+    13
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+   "sha256": "65a98db180babff46b17df674fa5cda16123d41445a961fa58b4e98b6a7742d6",
+   "metrics": [
+    45,
+    4,
+    141,
+    12
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a47-ad3-g201-gd25-xx154-3.circ.txt",
+   "sha256": "8bde79df01d1a7e0cd833eef33d62bda8ff4488ff0452c95ac9fbce68957db98",
+   "metrics": [
+    47,
+    3,
+    201,
+    25
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2",
+   "metrics": [
+    55,
+    4,
+    148,
+    10
+   ]
+  }
+ ],
+ "budget_s": 900.0,
+ "kernels": [
+  {
+   "path": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/bin/bfx-974af65f75",
+   "sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+   "source": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/kernel/bfx.c",
+   "source_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0",
+   "command": [
+    "gcc",
+    "-O3",
+    "-march=native",
+    "-o",
+    "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/bin/bfx-974af65f75",
+    "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/kernel/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   19
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_FUNCTION": "aes-invsbox",
+  "BOOLFLUX_RUNLOG_STORE": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/runlog"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/independent",
+   "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear",
+   "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear",
+   "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/hub",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T04:20:54Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "archive": 234,
+  "cells": 116,
+  "front": 41,
+  "jobs": 90
+ },
+ "t_end_utc": "2026-11-17T04:35:58Z",
+ "wall_s": 904.485,
+ "mono_s": 953.94,
+ "cpu_s": 901.138,
+ "max_rss_kb": 124740
+}

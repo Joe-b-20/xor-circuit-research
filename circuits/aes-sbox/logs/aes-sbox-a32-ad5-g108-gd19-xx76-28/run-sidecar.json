@@ -1,0 +1,190 @@
+{
+ "target": "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+ "A": 32,
+ "AD": 5,
+ "G": 108,
+ "GD": 19,
+ "class": "strict",
+ "reference": "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+ "start": {
+  "path": "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+  "sha256": "6bf08c55fac3165c572b2850cd32cb8a5084d2082d72f5df94d9dba2cd0ed3e2",
+  "tuple": [
+   32,
+   5,
+   108,
+   20
+  ]
+ },
+ "parent": {
+  "path": "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+  "sha256": "6bf08c55fac3165c572b2850cd32cb8a5084d2082d72f5df94d9dba2cd0ed3e2"
+ },
+ "op": "rebase",
+ "params": {
+  "cap": null,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 80.0,
+  "stages": 1,
+  "moves": false,
+  "move_top": 4,
+  "descend": false,
+  "move_budget": 0.25,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "shard": "0/1",
+  "function": "auto"
+ },
+ "how": "kernel {\"cap\": 20, \"parent_how\": \"start\", \"build_G\": 122, \"kernel_seed\": 37043, \"caps\": {\"A\": 32, \"AD\": 5, \"GD\": 20}}",
+ "lineage": [
+  {
+   "parent": "<campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old/builds/b-23541d69358e.bfx",
+   "parent_sha256": "ea867cc3b3b2594c6110d6d44c7780a32397ba647e660c9fd5da8cdf615c079f",
+   "parent_tuple": [
+    32,
+    5,
+    122,
+    19
+   ],
+   "method": {
+    "engine": "ops/rebase.py (gbasis + hybrid + kernel)",
+    "cap": 20,
+    "parent_how": "start",
+    "combo": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ]
+    ],
+    "build_G": 122,
+    "stage": "kernel",
+    "kernel_seed": 37043,
+    "stage_index": 0,
+    "caps": {
+     "A": 32,
+     "AD": 5,
+     "GD": 20
+    }
+   }
+  }
+ ],
+ "method": {
+  "engine": "ops/rebase.py: gbasis class re-basing + hybrid build + capped gate kernel",
+  "operator": "rebase"
+ },
+ "command": "cd <campaign archive>/2026-11-17-ideas/06/base && python3 search/nonlinear/boolflux/ops/rebase.py --in <checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt --target <checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt --seed 1 --seconds 360 --stage-seconds 80 --stages 1 --top 3 --out <campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old",
+ "seed": 1,
+ "elapsed_s": 81.0,
+ "code": {
+  "git": "",
+  "dirty": null,
+  "diff_sha256": null,
+  "tree": "not a git checkout",
+  "sources_sha256": "d9b0793ed84f3361d5691392154c9e1bcd4f3baf93918348e1953534c313aa1b",
+  "ops_sha256": {
+   "bottom.py": "30dab32508e2a29e1247d43ce69c71111485ebe8ceaed5b6b5d79d2d5a2be9be",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "23abdef52cf61ca139b688a1e4e676f7bfa9168b82067363c4d5e5697846e1e1",
+   "rebase.py": "88c947e6b01cc98f7e9897e23026ad8b3a3c93842e24bb77c0e6b8d372386c0c",
+   "rebuild_common.py": "8064584c7575b4b112ce80e4e8ff92118386af89c2bf03afda8b5574018db102",
+   "satlns.py": "fed82746d4685caaea0eaf2d0f8ee4f6717b024b9d91196a7c8e20ff7aab6d92",
+   "transport.py": "6a9b114a234ddd324bfaba367782ce7ab0cfac6655fc8edd5bc5ba70cc1c43ee"
+  },
+  "kernel": "<campaign archive>/2026-11-17-ideas/06/cache/bin/bfx-974af65f75",
+  "kernel_sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+  "kernel_src_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0"
+ },
+ "aes_check": "OK   <campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old/rebase-a32-ad5-g108-gd19-2e2e4dba4c.circ.txt  A AD G GD = 32 5 108 19  counts {'AND': 32, 'XNOR': 28, 'XOR': 48}",
+ "aes_check_full": "OK   <campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old/rebase-a32-ad5-g108-gd19-2e2e4dba4c.circ.txt  A AD G GD = 32 5 108 19  counts {'AND': 32, 'XNOR': 28, 'XOR': 48}\n     new Pareto point on pinned set: YES\n     published best G at GD<=19: 33 4 116 15 (aes-sbox-a33-ad4-g116-gd15-xx83-7.circ.txt, gain +8)\n     published best G at A<=32: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -5)\n     published best G at A<=32, GD<=19: 32 4 117 19 (aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt, gain +9)\n",
+ "circuit_sha256": "2e2e4dba4c2840cefa71f8e580b743767744f4c7c79ae8b758ac16334772be8f",
+ "path_certified": "unknown",
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old/run.json",
+  "kind": "ops.rebase",
+  "command": "python3 search/nonlinear/boolflux/ops/rebase.py --in <checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt --target <checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt --seed 1 --seconds 360 --stage-seconds 80 --stages 1 --top 3 --out <campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old",
+  "argv": [
+   "/usr/bin/python3",
+   "search/nonlinear/boolflux/ops/rebase.py",
+   "--in",
+   "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+   "--target",
+   "<checkout>/circuits/aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt",
+   "--seed",
+   "1",
+   "--seconds",
+   "360",
+   "--stage-seconds",
+   "80",
+   "--stages",
+   "1",
+   "--top",
+   "3",
+   "--out",
+   "<campaign archive>/2026-11-17-ideas/06/ab/runs/b-f32-5/old"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-ideas/06/base",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "d9b0793ed84f3361d5691392154c9e1bcd4f3baf93918348e1953534c313aa1b",
+  "seeds": {
+   "seed": 1
+  },
+  "function": "aes-sbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/2026-11-17-ideas/06/cache/bin/bfx-974af65f75",
+    "sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-17T03:37:05Z"
+}

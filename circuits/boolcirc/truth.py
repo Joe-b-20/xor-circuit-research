@@ -245,6 +245,13 @@ def aes_inv_sbox():
                                reference='FIPS-197 5.3.2')
 
 
+def aes_sbox_sel():
+    """NIST's aes-sbox-sel: inputs c x0..x7 (file order), the S-box for c = 0 and the inverse S-box for
+    c = 1; in msb order (c and x0 the high bits) the value at c·256 + x is S(x) or S^-1(x)."""
+    return Function.from_table('aes-sbox-sel', 9, 8, aes_sbox_table() + aes_inv_sbox_table(),
+                               reference='FIPS-197 5.1.1 (c = 0) and 5.3.2 (c = 1)')
+
+
 _s = aes_sbox_table()
 assert _s[0x00] == 0x63 and _s[0x01] == 0x7C and _s[0x53] == 0xED and _s[0xFF] == 0x16
 assert sorted(_s) == list(range(256))

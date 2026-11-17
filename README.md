@@ -4,11 +4,12 @@
 [![lower-bound proofs](https://github.com/Joe-b-20/xor-circuit-research/actions/workflows/proofs.yml/badge.svg)](https://github.com/Joe-b-20/xor-circuit-research/actions/workflows/proofs.yml)
 
 Small, shallow circuits for parts of ciphers: XOR circuits for linear maps and Boolean circuits
-with AND gates for the AES S-box and its inverse, the two searches that found them (XORFlux and
-BoolFlux), how those searches came to be, and two lower-bound proofs for AES MixColumns.
+with AND gates for the AES S-box and its inverse (also with a direction bit), the two searches
+that found them (XORFlux and BoolFlux), how those searches came to be, and two lower-bound proofs
+for AES MixColumns.
 
-**208 XOR circuits for 59 linear maps, 74 Boolean circuits for the AES S-box and 52 for its
-inverse.** A circuit
+**208 XOR circuits for 59 linear maps, 73 Boolean circuits for the AES S-box, 53 for its inverse
+and 9 for the S-box with a direction bit.** A circuit
 is written **G@D**: G two-input gates, with every output at depth at most D (inputs are at depth
 0). For the S-box, G counts every gate (AND, XOR, XNOR, NOT) and the number of AND gates and the
 AND depth are given with it: NIST's four metrics. Fewer gates is better, and so is a lower depth;
@@ -39,41 +40,45 @@ the same gate depth. NIST's circuits are those of its
 | KLSW17 4×4 MDS over GF(2⁸) | **64@6** | 72@7 |
 | AES S-box, 28 ANDs, AND depth 4 | **174@14**, **132@20**, **131@22** | 176@14, 134@20, 132@22 |
 | AES S-box, 32 ANDs, AND depth 4 | **114@19**, **111@25** | 117@19 |
-| AES S-box, 32 ANDs, AND depth 5 | **108@20**, **105@24** | 109@20, 107@22 |
+| AES S-box, 32 ANDs, AND depth 5 | **108@19**, **105@24** | 109@20, 107@22 |
 | AES S-box, 33 ANDs, AND depth 4 | **115@15**, **107@20** | 116@15, 108@20 |
 | AES S-box, 34 ANDs, AND depth 4 | **134@13** | 139@13 |
-| AES S-box, 35 ANDs, AND depth 3 | **165@13**, **162@14**, **155@15** | 183@13, 172@14, 157@15 |
+| AES S-box, 35 ANDs, AND depth 3 | **165@13**, **160@14**, **155@15** | 183@13, 172@14, 157@15 |
 | AES S-box, AND depth 3, gate depth 12 | **181@12** with 35 ANDs | none (lowest gate depth at AND depth 3: 13) |
 | AES S-box, AND depth 4, gate depth 12 | **135@12** with 38 ANDs | 141@12 with 45 ANDs |
-| AES inverse S-box, 28 ANDs, AND depth 4 | **154@15**, **143@16**, **135@18**, **133@20** | 156@15, 150@16, 135@20 |
+| AES inverse S-box, 28 ANDs, AND depth 4 | **153@15**, **143@16**, **135@18**, **133@20** | 156@15, 150@16, 135@20 |
 | AES inverse S-box, 32 ANDs, AND depth 4 | **124@15**, **122@16**, **119@18** | 135@15, 128@16 |
 | AES inverse S-box, 33 ANDs, AND depth 4 | **122@14**, **117@15**, **110@18** | 123@14, 118@15, 114@18 |
 | AES inverse S-box, 34 ANDs, AND depth 4 | **130@13** | 134@13 |
 | AES inverse S-box, 35 ANDs, AND depth 3 | **154@14**, **151@15**, **149@17**, **145@19** | 190@14, 157@15 |
 | AES inverse S-box, AND depth 3, gate depth 13 | **163@13** with 35 ANDs | none (lowest gate depth at AND depth 3: 14) |
-| AES inverse S-box, AND depth 4, gate depth 12 | 162@12 with **42 ANDs** | 141@12 with 45 ANDs |
-| AES inverse S-box, AND depth 4, gate depth 11 | 168@11 with **49 ANDs** | 148@10 with 55 ANDs |
+| AES inverse S-box, AND depth 4, gate depth 12 | **136@12** with **40 ANDs** | 141@12 with 45 ANDs |
+| AES inverse S-box, AND depth 4, gate depth 11 | **143@11** with **46 ANDs** | 148@10 with 55 ANDs |
+| AES S-box with direction select, 36 ANDs, AND depth 6 | **181@23**, **179@24**, **177@27** | none below gate depth 26; 187@27 |
+| AES S-box with direction select, AND depth 5 | **238@25**, **183@40** with 43 ANDs | none (lowest AND depth: 6) |
 
 For 46 of the 53 maps taken from NIST's repository, we have a circuit with fewer gates than
 NIST's at the same or a lower depth; on the other maps NIST is ahead at some depths. Our
 InvMixColumns 118@5 is at the lowest depth possible for InvMixColumns, whose heaviest row has
 19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. Against NIST's 104 forward AES S-box circuits, each of our
-74 S-box circuits is a new point, and 22 of NIST's 33 Pareto points are dominated by one of ours
+73 S-box circuits is a new point, and 22 of NIST's 33 Pareto points are dominated by one of ours
 (as good in all four metrics and better in at least one); at the other 11 we have only circuits
-equal to NIST's, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 52
-inverse circuits is a new point, and 21 of NIST's 33 inverse Pareto points are dominated by one of
-ours; they come from the runs of 2026-11-16 and the night after, published with their logs.
+equal to NIST's, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 53
+inverse circuits is a new point, and 22 of NIST's 33 inverse Pareto points are dominated by one of
+ours; they come from the runs of 2026-11-16 and 11-17, published with their logs. Against NIST's 9
+circuits for the S-box with a direction bit, each of our 9 is a new point and 3 of NIST's 9 Pareto
+points are dominated by one of ours; they are built from our forward circuits.
 None of ours has fewer than 28 ANDs (NIST's open target is 27) or fewer than 103 gates (we have
 103 at gate depth 29, NIST at 32), and all of them descend from NIST's circuits. We don't claim any circuit
 is optimal or the best known. The complete comparison, map by map and depth by depth, is in
-[circuits/](circuits/README.md#circuits) (the S-box and its inverse in their own sections: [S-box](circuits/README.md#aes-s-box), [inverse](circuits/README.md#aes-inverse-s-box)); the time and hardware behind each linear-map circuit
+[circuits/](circuits/README.md#circuits) (the S-box and its inverse in their own sections: [S-box](circuits/README.md#aes-s-box), [inverse](circuits/README.md#aes-inverse-s-box), [with direction select](circuits/README.md#aes-s-box-with-direction-select)); the time and hardware behind each linear-map circuit
 are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).
 
 ## Contents
 
 | Section | What is in it |
 |---|---|
-| [circuits/](circuits/README.md) | the smallest circuit our searches found at each depth, per linear map, and our AES S-box and inverse S-box circuits, in NIST's file format, each with its logs, next to NIST's circuits; one independent checker for all of them |
+| [circuits/](circuits/README.md) | the smallest circuit our searches found at each depth, per linear map, and our AES S-box and inverse S-box circuits (also with a direction bit), in NIST's file format, each with its logs, next to NIST's circuits; one independent checker for all of them |
 | [search/](search/README.md) | the two searches: [XORFlux](search/linear/README.md) for XOR circuits of linear maps and [BoolFlux](search/nonlinear/README.md) for Boolean circuits with AND gates, each with how it works, how to use it and how it came to be |
 | [lower-bound-proofs/](lower-bound-proofs/README.md) | two proofs: AES MixColumns needs at least 75 XOR gates, and at least 93 at depth 3; and the certified open cases of the 75 proof at G = 75 (no new bound) |
 
@@ -102,7 +107,8 @@ MU8, and every linear map of NIST's
 matrices from the literature). S-box circuits are compared with every forward AES S-box circuit
 of NIST's repository at commit
 [3d80774](https://github.com/usnistgov/Circuits/tree/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes)
-(104 circuits), and inverse S-box circuits with its 91 inverse ones, all kept verbatim in
+(104 circuits), inverse S-box circuits with its 91 inverse ones and the ones with a direction bit
+with its 9, all kept verbatim in
 [search/nonlinear/seeds/](search/nonlinear/seeds/).
 
 ## Checks

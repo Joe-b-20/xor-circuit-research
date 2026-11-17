@@ -1,0 +1,167 @@
+{
+ "circuit": "aes-invsbox-a46-ad4-g143-gd11-xxn97-46-2.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  46,
+  4,
+  143,
+  11
+ ],
+ "found_by": "BoolFlux",
+ "method": "shared-bottom rebuild",
+ "method_description": "shared rank-1 bottom rebuilt under the kept front, then the gate kernel",
+ "hub": false,
+ "start": {
+  "kind": "NIST circuit",
+  "file": "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "nist_path": "data/slp/aes/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt"
+ },
+ "chain_root": "NIST's aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2",
+ "lineage": [
+  {
+   "parent": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/builds/b-f0fd2e2caff1.bfx",
+   "parent_sha256": "f286a88160909c2768d00422fdbab8a10c2ba63ae376dd07ed0faee96b52cc9b",
+   "parent_tuple": [
+    46,
+    4,
+    148,
+    11
+   ],
+   "method": {
+    "engine": "ops/bottom.py (bopt SA + bbuild, any cut)",
+    "cut": 4,
+    "cap": 11,
+    "pw": 6.0,
+    "plan": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/plans/plan-s31362.json",
+    "plan_cost": [
+     215.0,
+     23,
+     5,
+     21,
+     28
+    ],
+    "plan_seed": 31362,
+    "stage": "kernel",
+    "kernel_seed": 31362,
+    "caps": {
+     "A": 46,
+     "AD": 4,
+     "GD": 11
+    }
+   }
+  }
+ ],
+ "parameters": {
+  "cut": 4,
+  "cap": 11,
+  "amax": 55,
+  "iters": 30000,
+  "pw": "3,6",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1,
+  "how": "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 31362, \"kernel_seed\": 31362, \"caps\": {\"A\": 46, \"AD\": 4, \"GD\": 11}}"
+ },
+ "seed": 34,
+ "found_utc": "2026-11-17T05:02:10Z",
+ "found_utc_source": "the run's improvement event for this circuit (events.jsonl.gz), from the run's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 1201.222
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-ideas/05",
+  "what": "shared-bottom rebuilds of NIST inverse circuits at gate depth caps 12 and 11 with the absorbed junk terms (--junk absorb5), paired with the 08012e1 terms"
+ },
+ "code": {
+  "commit_linked": "3acf6be",
+  "commit_linked_full": "3acf6be17158493fe3ba0f3960735dacc2fdea59",
+  "files": [
+   "search/nonlinear/boolflux/ops/bottom.py",
+   "search/nonlinear/boolflux/ops/bottom_lib/",
+   "search/nonlinear/boolflux/ops/rebuild_common.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "the idea checkout on 08012e1 with uncommitted ops/bottom.py and bottom_lib/ (code.diff.gz)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": true,
+  "run_code_identical_to_commit": true,
+  "note": "the run's sources_sha256 (8e2fcf53...) equals 3acf6be's package: the code that ran was committed unchanged as 3acf6be (--junk absorb5 was given on the command line; 920cf2d later made it the inverse default)",
+  "sources_sha256_at_run": "8e2fcf53a0e16f718e5ed131b3b1355dae17ae9043e722959dbb4794d62f113d",
+  "git_at_run": {
+   "commit": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+   "branch": "idea-05",
+   "dirty": true,
+   "diff_sha256": "b4a236dfb4ceeeb66b39b2d7865eb017f814d845d18965f0f5613041c58ab85b",
+   "diff_bytes": 24299,
+   "diff": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/git-b4a236dfb4ceeeb6.diff.gz"
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+    "source_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0"
+   }
+  ],
+  "diff": {
+   "file": "code.diff.gz",
+   "sha256_uncompressed": "b4a236dfb4ceeeb66b39b2d7865eb017f814d845d18965f0f5613041c58ab85b",
+   "what": "the run's recorded git diff of its checkout against 08012e1 (tracked changes and untracked files)"
+  }
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 34 --seconds 1500 --out <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36 --cap 11 --junk absorb5 --pw 3,6",
+ "environment": {
+  "cwd": "<checkout>",
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-ideas/05/found/inv-a46-ad4-g143-gd11/bottom-a46-ad4-g143-gd11-76dbc6910a.circ.txt",
+  "sha256": "76dbc6910a9b7678f27458de1443b6b365851cd449981c25fb40ecc4bb470209",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "bottom.jsonl.gz",
+  "bottom.log.gz",
+  "code.diff.gz",
+  "events.jsonl.gz",
+  "kernel-best.bfx",
+  "kernel-start.bfx",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "launch.txt",
+  "plan.json.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "bottom.jsonl.gz",
+  "bottom.log.gz",
+  "code.diff.gz",
+  "events.jsonl.gz",
+  "kernel-best.bfx",
+  "kernel-start.bfx",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "launch.txt",
+  "plan.json.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json"
+ ]
+}

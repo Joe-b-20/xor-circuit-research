@@ -1,0 +1,147 @@
+{
+ "circuit": "aes-invsbox-a28-ad4-g153-gd15-xx125-71.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  4,
+  153,
+  15
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "hub": true,
+ "start": {
+  "kind": "NIST circuit",
+  "file": "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g156-gd15-xx128-28.circ.txt",
+  "nist_path": "data/slp/aes/aes-invsbox/aes-invsbox-a28-ad4-g156-gd15-xx128-28.circ.txt"
+ },
+ "chain_root": "NIST's aes-invsbox-a28-ad4-g156-gd15-xx128-28",
+ "lineage": [
+  "NIST's aes-invsbox-a28-ad4-g156-gd15-xx128-28 (hub seed f75d3fd778da)",
+  "hub polish job p5-ss-19-892236.r00015-polish: gate kernel 90 s at caps {'A': 28, 'AD': 4, 'GD': 15} with the kernel option stop_stall_it=90000 (seed 135382712)"
+ ],
+ "parameters": {
+  "caps": {
+   "A": 28,
+   "AD": 4,
+   "GD": 15
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "t_last_improvement": 19.134,
+  "kernel_bin": "bfx-974af65f75",
+  "kopt": "stop_stall_it=90000"
+ },
+ "seed": 135382712,
+ "found_utc": "2026-11-17T04:24:10Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 49.22,
+  "cpu_s": 49.79,
+  "t_last_improvement_s": 19.134
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": [
+   {
+    "file": "<campaign archive>/2026-11-17-ideas/10/found/aes-invsbox-a28-ad4-g153-gd15-xx125-65-p7-px-18/00c710edfa19.bfx",
+    "found_utc": "2026-11-17T04:48:21Z",
+    "note": null
+   }
+  ]
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19",
+  "what": "paired 15-minute hub runs from NIST's 91 inverse circuits (1 CPU per arm, --policy priority), kernel option stop_stall_it=90000 on polish and pull"
+ },
+ "code": {
+  "commit_linked": "987b0e5",
+  "commit_linked_full": "987b0e5823a634003629d67d2d920bd3f08ad7c8",
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<campaign archive>/2026-11-17-ideas/10/snap/kopt (a frozen copy of the idea checkout: 08012e1 plus uncommitted hub/ops.py, hub/scheduler.py and a test)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": true,
+  "run_code_identical_to_commit": false,
+  "note": "the snapshot's sources_sha256 (87733db1...) matches the run's; against 987b0e5 it differs only in T0 added to the whitelist of kernel options (ops.KOPT_KEYS), two doc lines and a test: the --kopt stop_stall_it=90000 path these jobs used is 987b0e5's. The kernel is 08012e1's (its option stop_stall_it is from 08012e1)",
+  "sources_sha256_at_run": "87733db1cfc4dee06d8d54e3ab1108b46b2cd557d454a65c8a9ff358a579f6a8",
+  "git_at_run": {
+   "commit": null,
+   "branch": null,
+   "dirty": null,
+   "note": "not a git checkout (or git missing): see sources_sha256"
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+    "source_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0"
+   }
+  ],
+  "diff": {
+   "file": "code.diff.gz",
+   "sha256_uncompressed": "0004053478eb863dc85caa0f9ba4399bc46982d69b1c998444147147d58324ec",
+   "what": "diff -ruN of search/ at 08012e1 against the frozen snapshot the run used"
+  }
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 <campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19 --in f75d3fd778da --seed 135382712 --seconds 90.0 --out <campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish --kopt stop_stall_it=90000",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-17-ideas/10/snap/kopt",
+  "BOOLFLUX_FUNCTION": "aes-invsbox",
+  "BOOLFLUX_RUNLOG_STORE": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/runlog"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-ideas/10/found/aes-invsbox-a28-ad4-g153-gd15-xx125-71-p5-ss-19/3a9ea45b2c98.bfx",
+  "sha256": "3ec3d90ad10a62b24699de27e5cb7679248829f01977b1391c5d9bd0e0a32e5d",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "campaign.json",
+  "circuit.json",
+  "code.diff.gz",
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz",
+  "job/best.bfx",
+  "job/events.jsonl.gz",
+  "job/kernel.cfg",
+  "job/kernel.log.gz",
+  "job/record.json",
+  "job/run.json",
+  "job/start.bfx",
+  "run.json",
+  "sessions/2026-11-17T042054Z-1611754/events.jsonl.gz.gz",
+  "sessions/2026-11-17T042054Z-1611754/run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "campaign.json",
+  "circuit.json",
+  "code.diff.gz",
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz",
+  "job/best.bfx",
+  "job/events.jsonl.gz",
+  "job/kernel.cfg",
+  "job/kernel.log.gz",
+  "job/record.json",
+  "job/run.json",
+  "job/start.bfx",
+  "run.json",
+  "sessions/2026-11-17T042054Z-1611754/events.jsonl.gz.gz",
+  "sessions/2026-11-17T042054Z-1611754/run.json"
+ ]
+}

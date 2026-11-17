@@ -99,6 +99,16 @@ class TruthTests(unittest.TestCase):
         self.assertTrue(all(inv.value(s.value(x)) == x for x in range(256)))
         self.assertTrue(all(truth.degree(t, 8) == 7 for t in s.outputs))
 
+    def test_aes_sbox_sel(self):
+        sel = truth.aes_sbox_sel()
+        s, inv = truth.aes_sbox(), truth.aes_inv_sbox()
+        self.assertEqual((sel.n_inputs, sel.n_outputs), (9, 8))
+        self.assertTrue(all(sel.value(x) == s.value(x) and sel.value(256 + x) == inv.value(x) for x in range(256)))
+        fj = NIST / 'aes-sbox-sel' / 'aes-sbox-sel.fn.json'
+        if fj.exists():                      # NIST's own table of the function
+            import json
+            self.assertEqual(sel.table(), json.loads(fj.read_text())['table'])
+
     def test_alt_rank(self):
         n = 4
         x = truth.input_tables(n)
@@ -284,6 +294,20 @@ class NistTests(unittest.TestCase):
                 self.assertIn(('msb', 'msb'), orders, f.name)
             with_tallies += 'gates' in M.header_tallies(ncff.load(f))
         self.assertEqual(with_tallies, len(files), 'every NIST file states its tallies')
+
+    def test_sel_by_name(self):
+        """an aes-sbox-sel file in a folder without a *.fn.json is checked against FIPS-197's definition"""
+        import check
+        import shutil
+        import tempfile
+        src = sorted((NIST / 'aes-sbox-sel').glob('aes-sbox-sel-*.circ.txt'))[0]
+        with tempfile.TemporaryDirectory() as d:
+            f = pathlib.Path(d) / src.name
+            shutil.copy(src, f)
+            self.assertEqual(check.function_for(f).name, 'aes-sbox-sel')
+            [(name, m, orders, problems)] = check.check_file(f)
+            self.assertEqual([p for p in problems if not p.startswith('note:')], [])
+            self.assertIn(('msb', 'msb'), orders)
 
 
 if __name__ == '__main__':

@@ -43,12 +43,15 @@ Files derived from it, and how they were changed (2026-10-30 unless noted):
   contributions NIST credits in their headers (28-AND and 35-AND circuits by Milad Nasr,
   2026-09; circuits derived from the 29-AND circuit of github.com/umizame/S-box_29-AND); they
   keep their authors' rights and terms.
-- circuits/aes-sbox/: 74 circuits found by BoolFlux, all of them descended from NIST's circuits
+- circuits/aes-sbox/: 73 circuits found by BoolFlux, all of them descended from NIST's circuits
   above; each one's logs name the circuit it started from.
-- circuits/aes-invsbox/: 52 inverse S-box circuits found by BoolFlux (2026-11-16 and 11-17), all
-  of them descended from NIST's circuits above (46 from its inverse circuits, 6 from its forward
+- circuits/aes-invsbox/: 53 inverse S-box circuits found by BoolFlux (2026-11-16 and 11-17), all
+  of them descended from NIST's circuits above (47 from its inverse circuits, 6 from its forward
   ones through our forward circuits); each one's logs name the circuit it started from and hold
   its lineage back to NIST's circuits.
+- circuits/aes-sbox-sel/: 9 circuits for the S-box with a direction bit, found by BoolFlux
+  (2026-11-17), each built from one of our forward circuits above (so descended from NIST's
+  circuits); each one's logs name the circuit it started from.
 - search/linear/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
   repository files (targets/nist/), as those versions used them (2026-10-24 to 10-28), and a
   saved copy of NIST's list-of-circuits web page (v4, targets/nist/invmixcolumns/).

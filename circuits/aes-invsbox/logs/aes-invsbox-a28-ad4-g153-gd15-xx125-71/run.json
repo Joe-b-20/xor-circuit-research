@@ -1,0 +1,294 @@
+{
+ "run_id": "p5-ss-19-892236.r00015-polish",
+ "campaign": "p5-ss-19-892236",
+ "operator": "polish",
+ "choice": "fresh",
+ "target": "f75d3fd778da",
+ "target_metrics": [
+  28,
+  4,
+  156,
+  15
+ ],
+ "target_class": "A<=31",
+ "seed": 135382712,
+ "cpu": 19,
+ "command": [
+  "taskset",
+  "-c",
+  "19",
+  "/usr/bin/python3",
+  "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/hub/op_polish.py",
+  "--archive",
+  "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19",
+  "--in",
+  "f75d3fd778da",
+  "--seed",
+  "135382712",
+  "--seconds",
+  "90.0",
+  "--out",
+  "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish",
+  "--kopt",
+  "stop_stall_it=90000"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<campaign archive>/2026-11-17-ideas/10/snap/kopt/search/nonlinear/boolflux/hub/op_polish.py",
+ "script_sha": "192d2a0510",
+ "code_version": "?+0a7413ff05",
+ "scheduler_version": "?+0a7413ff05",
+ "t_start": 1794889401.13,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0
+ },
+ "op_info": {
+  "kernel_settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1,
+   "stop_stall_it": 90000,
+   "w.cost": 1e-08,
+   "w.g": 0.0,
+   "w.a": 1.0,
+   "w.gd": 1e-12,
+   "w.ad": 0.0001,
+   "lex": "a,ad,cost,gd",
+   "cost.8": 1,
+   "cost.6": 1,
+   "cost.9": 1,
+   "cost.3": 1,
+   "cap.a": 28,
+   "cap.ad": 4,
+   "cap.gd": 15,
+   "in": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish/start.bfx",
+   "out": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish/best.bfx",
+   "seed": 135382712,
+   "seconds": 90.0,
+   "keep_bests": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish/bests"
+  },
+  "t_last_improvement": 19.134,
+  "kernel_bin": "bfx-974af65f75",
+  "kernel_stats": {
+   "stop": "stall",
+   "iters": 147005,
+   "restarts": 1,
+   "last_improve_it": 57005,
+   "last_improve_t": 19.134,
+   "first_feasible_it": 0,
+   "repair_it": 0,
+   "best_lines": 3,
+   "last_bests": [
+    [
+     6.689,
+     18376,
+     "resub2",
+     28,
+     4,
+     155,
+     15,
+     6.69,
+     6.345
+    ],
+    [
+     11.203,
+     35322,
+     "resub2",
+     28,
+     4,
+     154,
+     15,
+     11.204,
+     12.163
+    ],
+    [
+     19.134,
+     57005,
+     "resub2",
+     28,
+     4,
+     153,
+     15,
+     19.134,
+     19.685
+    ]
+   ],
+   "clock": {
+    "mono_s": 49.178,
+    "real_s": 49.178,
+    "cpu_s": 49.714
+   },
+   "first_best": [
+    6.689,
+    18376,
+    "resub2",
+    28,
+    4,
+    155,
+    15,
+    6.69,
+    6.345
+   ],
+   "accept": {
+    "improve": 2035,
+    "neutral": 23815,
+    "uphill": 2089,
+    "uphill_refused": 38254,
+    "no_accept": 89029
+   },
+   "cands": {
+    "evaluated": 884517,
+    "noop": 205201,
+    "nocand_moves": 30037,
+    "repair_keep_refused": 0
+   },
+   "moves": {
+    "resub1": {
+     "prop": 36822,
+     "acc": 3460,
+     "imp": 0,
+     "nocand": 14728,
+     "time": 0.61
+    },
+    "resub2": {
+     "prop": 73621,
+     "acc": 16304,
+     "imp": 3,
+     "nocand": 10222,
+     "time": 29.88
+    },
+    "resub3": {
+     "prop": 36562,
+     "acc": 8175,
+     "imp": 0,
+     "nocand": 5087,
+     "time": 18.65
+    }
+   },
+   "final": {
+    "G": 153,
+    "A": 28,
+    "GD": 15,
+    "AD": 4,
+    "feas": 1
+   },
+   "walk": {
+    "distinct_struct": 27484,
+    "distinct_metrics": 12
+   },
+   "bestform": {
+    "resub2": [
+     0,
+     0,
+     3,
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "bests_kept": 3,
+  "bests_dir": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish/bests",
+  "caps": {
+   "A": 28,
+   "AD": 4,
+   "GD": 15
+  },
+  "bests": {
+   "files": 3,
+   "ok": 3,
+   "not placed": 0,
+   "archived": 0,
+   "archived structure": 0,
+   "unreadable": 0,
+   "returned": 0,
+   "returned_metrics": []
+  },
+  "archive_loaded": {
+   "records": 164,
+   "cells": 88,
+   "front": 38,
+   "max_t_admit": 1794889401.0951803
+  }
+ },
+ "parents": [
+  "f75d3fd778da"
+ ],
+ "wall_s": 52.67,
+ "cpu_s": 49.79,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 1,
+ "admitted": 1,
+ "gain": 2.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    28,
+    4,
+    153,
+    15
+   ],
+   "status": "admitted",
+   "id": "3a9ea45b2c98",
+   "gain": 2.0,
+   "reason": "fewer G in the cap box by 3"
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-17-ideas/10/runs/p5-ss-19/jobs/p5-ss-19-892236.r00015-polish/run.json",
+ "function": "aes-invsbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 46,
+   "fresh": 45
+  },
+  "suspended": [],
+  "join_share": 0.1197,
+  "mode": "priority",
+  "level": "fresh",
+  "op": "polish",
+  "rule": "first polish / pull of a front tuple; A, AD ascending, newest first",
+  "n_level": 45,
+  "attempts": 0,
+  "struct_attempts": 0,
+  "why": "fresh"
+ },
+ "admission": {
+  "counts": {
+   "admitted": 1
+  },
+  "admit_s": 0.037,
+  "finish_s": 0.04,
+  "job_wall_s": 52.67,
+  "op_wall_s": 49.22,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0067,
+  "mono_wall_s": 52.666,
+  "start_to_main_s": 0.094,
+  "setup_s": 0.07,
+  "op_s": 52.479,
+  "end_to_exit_seen_s": 0.023,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 49.985,
+  "proc_maxrss_kb": 33408,
+  "t_exit": 1794889450.5535483
+ }
+}

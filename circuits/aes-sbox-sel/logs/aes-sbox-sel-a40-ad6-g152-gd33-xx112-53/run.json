@@ -1,0 +1,202 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "cli.run",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes-sbox-sel",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-17-ideas/02/A/aes-sbox-a32-ad4-g111-gd25-xx79-30-bp-wrap/aes-sbox-sel-a40-ad6-g156-gd34-xx116-24.circ.txt",
+  "--objective",
+  "a,ad,cost,gd",
+  "--cap-a",
+  "40",
+  "--cap-ad",
+  "6",
+  "--iters",
+  "100000000",
+  "--seconds",
+  "300",
+  "--seeds",
+  "1",
+  "--jobs",
+  "1",
+  "--out",
+  "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6"
+ ],
+ "cwd": "<checkout>",
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-sbox-sel --model nist --start <campaign archive>/2026-11-17-ideas/02/A/aes-sbox-a32-ad4-g111-gd25-xx79-30-bp-wrap/aes-sbox-sel-a40-ad6-g156-gd34-xx116-24.circ.txt --objective a,ad,cost,gd --cap-a 40 --cap-ad 6 --iters 100000000 --seconds 300 --seeds 1 --jobs 1 --out <campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6",
+ "git": {
+  "commit": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+  "branch": "idea-02",
+  "dirty": true,
+  "untracked": [
+   "search/nonlinear/boolflux/ops/selbuild.py",
+   "search/nonlinear/boolflux/tests/test_selbuild.py"
+  ],
+  "diff_sha256": "38b30e721f7e01381a3a7b611322079afbab041a663b56ffcd62183952b10da8",
+  "diff_bytes": 26722,
+  "diff": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/git-38b30e721f7e0138.diff.gz"
+ },
+ "sources_sha256": "58d6f9ef4bd9e9e8f3c60eda4ccead54191954ba9d653c59a8bdaa30f8ff05bd",
+ "repo": "<checkout>",
+ "function": null,
+ "seeds": {
+  "seeds": [
+   1
+  ],
+  "seed_scheme": "v2",
+  "kernel_seeds": {
+   "r0-s1": 1
+  }
+ },
+ "config": {
+  "target": "aes-sbox-sel",
+  "model": "nist",
+  "objective": "a,ad,cost,gd",
+  "caps": {
+   "GD": null,
+   "AD": 6,
+   "A": 40
+  },
+  "iters": 100000000,
+  "seconds_cap": 300.0,
+  "rounds": 1,
+  "settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1
+  },
+  "pool": 4,
+  "jobs": 1
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<campaign archive>/2026-11-17-ideas/02/A/aes-sbox-a32-ad4-g111-gd25-xx79-30-bp-wrap/aes-sbox-sel-a40-ad6-g156-gd34-xx116-24.circ.txt",
+   "sha256": "755e01ffe277d4aecb3ec8cc394a495bdffdca07e8913d4f1bc5764cc3be82d1",
+   "text_sha256": "2665c812976b89d5a1c16bf58b0f61571f5a5a4704a64220543318b4020bc5c6",
+   "metrics": {
+    "G": 156,
+    "A": 40,
+    "GD": 34,
+    "AD": 6,
+    "cost": 156.0,
+    "counts": {
+     "AND": 40,
+     "XNOR": 24,
+     "XOR": 92
+    }
+   }
+  }
+ ],
+ "budget_s": null,
+ "kernels": [
+  {
+   "path": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/bin/bfx",
+   "sha256": "427ef7dca186ae2809e4c5877e3747e78fc5cce0cda59899877c6f5bc410943b",
+   "source": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/src/bfx.c",
+   "source_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0",
+   "command": [
+    "gcc",
+    "-O2",
+    "-o",
+    "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/bin/bfx",
+    "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/src/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  {
+   "path": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/bin/skel",
+   "sha256": "2fd9bb3b5ce2ef3951fdf0289e21e054df6b4def00f2cf5547d7bf7425182a08",
+   "source": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/src/skel.c",
+   "source_sha256": "f050cddf40ef6a07f36cecf1fe15e12fc89fc05cdef818fbacd4cfb924481cf2",
+   "command": [
+    "gcc",
+    "-O2",
+    "-o",
+    "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/bin/skel",
+    "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/src/skel.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   3
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-ideas/02/cache"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear/boolflux",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T04:07:27Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "best": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/best.circ.txt",
+  "metrics": {
+   "cost": 152.0,
+   "G": 152,
+   "A": 40,
+   "GD": 33,
+   "AD": 6
+  },
+  "feasible": true,
+  "failures": []
+ },
+ "t_end_utc": "2026-11-17T04:12:28Z",
+ "wall_s": 300.98,
+ "mono_s": 317.011,
+ "cpu_s": 300.945,
+ "max_rss_kb": 84176
+}

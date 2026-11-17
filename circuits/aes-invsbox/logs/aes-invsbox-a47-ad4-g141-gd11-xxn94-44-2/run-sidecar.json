@@ -1,0 +1,152 @@
+{
+ "target": "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+ "A": 47,
+ "AD": 4,
+ "G": 141,
+ "GD": 11,
+ "class": "other",
+ "reference": "<checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+ "start": {
+  "path": "<checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2",
+  "tuple": [
+   55,
+   4,
+   148,
+   10
+  ]
+ },
+ "parent": {
+  "path": "<checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2"
+ },
+ "op": "bottom",
+ "params": {
+  "cut": 4,
+  "cap": 11,
+  "amax": 55,
+  "iters": 30000,
+  "pw": "3,6",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1
+ },
+ "how": "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 942298, \"kernel_seed\": 942298, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}",
+ "lineage": [
+  {
+   "parent": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/builds/b-f5ce81a9eac8.bfx",
+   "parent_sha256": "5c7860a7ce53ddf8e964d60fec3eaa4b7247b35be2d1e4bac5999413e8281b95",
+   "parent_tuple": [
+    47,
+    4,
+    146,
+    11
+   ],
+   "method": {
+    "engine": "ops/bottom.py (bopt SA + bbuild, any cut)",
+    "cut": 4,
+    "cap": 11,
+    "pw": 3.0,
+    "plan": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/plans/plan-s942298.json",
+    "plan_cost": [
+     150.0,
+     24,
+     6,
+     20,
+     28
+    ],
+    "plan_seed": 942298,
+    "stage": "kernel",
+    "kernel_seed": 942298,
+    "caps": {
+     "A": 47,
+     "AD": 4,
+     "GD": 11
+    }
+   }
+  }
+ ],
+ "method": {
+  "engine": "ops/bottom.py: bopt SA (rank-1 shared bottom, exact Kraft per output) + bbuild + A-capped gate kernel",
+  "operator": "bottom"
+ },
+ "command": "cd <checkout> && python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 34 --seconds 1500 --out <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36 --cap 11 --junk absorb5 --pw 3,6",
+ "seed": 34,
+ "elapsed_s": 1054.1,
+ "code": {
+  "git": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+  "dirty": true,
+  "diff_sha256": "b4a236dfb4ceeeb66b39b2d7865eb017f814d845d18965f0f5613041c58ab85b",
+  "tree": "working tree with uncommitted changes (diff saved with the run record, run.json)",
+  "sources_sha256": "8e2fcf53a0e16f718e5ed131b3b1355dae17ae9043e722959dbb4794d62f113d",
+  "ops_sha256": {
+   "bottom.py": "d34f63fe9024098976899ad50fb050f1ed3b68f0a2bdfc71b4444ded435ac5d8",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "23abdef52cf61ca139b688a1e4e676f7bfa9168b82067363c4d5e5697846e1e1",
+   "rebase.py": "88c947e6b01cc98f7e9897e23026ad8b3a3c93842e24bb77c0e6b8d372386c0c",
+   "rebuild_common.py": "8064584c7575b4b112ce80e4e8ff92118386af89c2bf03afda8b5574018db102",
+   "satlns.py": "fed82746d4685caaea0eaf2d0f8ee4f6717b024b9d91196a7c8e20ff7aab6d92",
+   "transport.py": "6a9b114a234ddd324bfaba367782ce7ab0cfac6655fc8edd5bc5ba70cc1c43ee"
+  },
+  "kernel": "<home>/.cache/boolflux/bin/bfx-974af65f75",
+  "kernel_sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+  "kernel_src_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0"
+ },
+ "aes_check": "OK   <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/bottom-a47-ad4-g141-gd11-9c3ed66346.circ.txt  A AD G GD = 47 4 141 11  counts {'AND': 47, 'XNOR': 46, 'XOR': 48}  (aes-invsbox)",
+ "aes_check_full": "OK   <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/bottom-a47-ad4-g141-gd11-9c3ed66346.circ.txt  A AD G GD = 47 4 141 11  counts {'AND': 47, 'XNOR': 46, 'XOR': 48}  (aes-invsbox)\n     new Pareto point on pinned set: YES\n     published best G at GD<=11: 55 4 148 10 (aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt, gain +7)\n     published best G at A<=47: 32 7 105 27 (aes-invsbox-a32-ad7-g105-gd27-xx73-14.circ.txt, gain -36)\n     published best G at A<=47, GD<=11: none\n",
+ "circuit_sha256": "9c3ed6634615654baa1e62c0b0bd995e3037f9158328a834bcfb472333afb14d",
+ "path_certified": "unknown",
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-invsbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/run.json",
+  "kind": "ops.bottom",
+  "command": "python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 34 --seconds 1500 --out <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36 --cap 11 --junk absorb5 --pw 3,6",
+  "argv": [
+   "/usr/bin/python3",
+   "search/nonlinear/boolflux/ops/bottom.py",
+   "--in",
+   "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "--target",
+   "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "--seed",
+   "34",
+   "--seconds",
+   "1500",
+   "--out",
+   "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36",
+   "--cap",
+   "11",
+   "--junk",
+   "absorb5",
+   "--pw",
+   "3,6"
+  ],
+  "cwd": "<checkout>",
+  "git": {
+   "commit": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+   "dirty": true,
+   "diff": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/git-b4a236dfb4ceeeb6.diff.gz",
+   "diff_sha256": "b4a236dfb4ceeeb66b39b2d7865eb017f814d845d18965f0f5613041c58ab85b"
+  },
+  "sources_sha256": "8e2fcf53a0e16f718e5ed131b3b1355dae17ae9043e722959dbb4794d62f113d",
+  "seeds": {
+   "seed": 34
+  },
+  "function": "aes-invsbox",
+  "kernels": [
+   {
+    "path": "<home>/.cache/boolflux/bin/bfx-974af65f75",
+    "sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-17T04:59:43Z"
+}

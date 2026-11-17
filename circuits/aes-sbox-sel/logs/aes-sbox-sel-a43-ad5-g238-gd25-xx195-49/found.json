@@ -1,0 +1,102 @@
+{
+ "circuit": "aes-sbox-sel-a43-ad5-g238-gd25-xx195-49.circ.txt",
+ "function": "AES S-box (c = 0) or inverse S-box (c = 1), NIST aes-sbox-sel (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  43,
+  5,
+  238,
+  25
+ ],
+ "found_by": "BoolFlux",
+ "method": "direction-select build",
+ "method_description": "direction-select build: one S-box circuit F serves both directions, u = v + c((In+I)v + c_in), w = F(u), y = w + c((Out+I)w + c_out) with In, Out the input and output affine maps that turn F into its inverse; A = A(F) + rank(In+I) + rank(Out+I), AD = AD(F) + 2",
+ "hub": false,
+ "start": {
+  "kind": "our published circuit",
+  "file": "circuits/aes-sbox/aes-sbox-a35-ad3-g141-gd19-xx106-46.circ.txt",
+  "function": "aes-sbox",
+  "sha256": "64b48127f9d27b5fb18c34712894ba4dd55a4fe473504f4d2706aa93098b8bed",
+  "note": "still published; its logs/ give its own start and lineage"
+ },
+ "chain_root": "our published forward circuit aes-sbox-a35-ad3-g141-gd19-xx106-46 (its own logs give its lineage)",
+ "lineage": [
+  "published aes-sbox-a35-ad3-g141-gd19-xx106-46",
+  "direction-select build (ops/selbuild.py, modes xdelta/leafg, all three rank-8 maps [[31, 0], [95, 0], [174, 0]])"
+ ],
+ "parameters": {
+  "maps_lambda_k": [
+   [
+    31,
+    0
+   ],
+   [
+    95,
+    0
+   ],
+   [
+    174,
+    0
+   ]
+  ],
+  "top_mode": "xdelta",
+  "bottom_mode": "leafg",
+  "cpu_s": 7.455294077
+ },
+ "seed": 1,
+ "found_utc": "2026-11-17T04:12:38Z",
+ "found_utc_source": "time of the build's result.json (selbuild.py writes it when the build ends)",
+ "time_to_result_s": null,
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-ideas/02",
+  "what": "S-box with a direction bit from one forward circuit (ops/selbuild.py: input and output affine maps switched by c around the shared circuit), then kernel polishes of the builds (cli.py run --target aes-sbox-sel)"
+ },
+ "code": {
+  "commit_linked": "b8ba66e",
+  "commit_linked_full": "b8ba66ed846d1b8cb156529b65e6114924b90fe9",
+  "files": [
+   "search/nonlinear/boolflux/ops/selbuild.py",
+   "search/nonlinear/boolflux/targets.py"
+  ],
+  "run_tree": "the idea checkout on 08012e1 with uncommitted changes (untracked ops/selbuild.py)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": true,
+  "run_code_identical_to_commit": null,
+  "note": "selbuild.py writes no code record; the kernel polishes run in the same checkout just before (04:07 UTC) and after (04:13 UTC) this build (04:12 UTC) recorded sources_sha256 58d6f9ef..., equal to b8ba66e's package, so the build most likely ran b8ba66e's code (not recorded directly)"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 search/nonlinear/boolflux/ops/selbuild.py --in circuits/aes-sbox/aes-sbox-a35-ad3-g141-gd19-xx106-46.circ.txt --top 2 --runs 4 --top-mode xdelta --bottom-mode leafg --out <campaign archive>/2026-11-17-ideas/02/C/a35-g141-xdelta-leafg",
+ "environment": {
+  "cwd": "<checkout>",
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-ideas/02/cache"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-ideas/02/found/aes-sbox-sel-a43-ad5-g238-gd25-xx195-49.circ.txt",
+  "sha256": "87c862f21fe30ca417c223310ca02b405b93883282a3c88c00522d9300094979",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "launch.sh",
+  "selbuild-result.json",
+  "selbuild.log.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "launch.sh",
+  "selbuild-result.json",
+  "selbuild.log.gz"
+ ]
+}

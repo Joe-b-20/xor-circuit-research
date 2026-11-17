@@ -1,0 +1,280 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "ops.bottom",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/ops/bottom.py",
+  "--in",
+  "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "--target",
+  "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "--seed",
+  "34",
+  "--seconds",
+  "1500",
+  "--out",
+  "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36",
+  "--cap",
+  "11",
+  "--junk",
+  "absorb5",
+  "--pw",
+  "3,6"
+ ],
+ "cwd": "<checkout>",
+ "command": "python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 34 --seconds 1500 --out <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36 --cap 11 --junk absorb5 --pw 3,6",
+ "git": {
+  "commit": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+  "branch": "idea-05",
+  "dirty": true,
+  "diff_sha256": "b4a236dfb4ceeeb66b39b2d7865eb017f814d845d18965f0f5613041c58ab85b",
+  "diff_bytes": 24299,
+  "diff": "<campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36/git-b4a236dfb4ceeeb6.diff.gz"
+ },
+ "sources_sha256": "8e2fcf53a0e16f718e5ed131b3b1355dae17ae9043e722959dbb4794d62f113d",
+ "repo": "<checkout>",
+ "function": "aes-invsbox",
+ "seeds": {
+  "seed": 34
+ },
+ "config": {
+  "target": "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "limits": {
+   "A": 55,
+   "AD": 4,
+   "G": 148,
+   "GD": 10
+  },
+  "params": {
+   "cut": 4,
+   "cap": 11,
+   "amax": 55,
+   "iters": 30000,
+   "pw": "3,6",
+   "T0": 2.0,
+   "polish_seconds": 90,
+   "polish_cap_a": "build",
+   "repair_keep": 1
+  },
+  "method": {
+   "engine": "ops/bottom.py: bopt SA (rank-1 shared bottom, exact Kraft per output) + bbuild + A-capped gate kernel",
+   "operator": "bottom"
+  },
+  "command": "cd <checkout> && python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 34 --seconds 1500 --out <campaign archive>/2026-11-17-ideas/05/runs/inv55c11-absorb5-pw36 --cap 11 --junk absorb5 --pw 3,6"
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2",
+   "metrics": [
+    55,
+    4,
+    148,
+    10
+   ]
+  },
+  {
+   "label": "reference (target)",
+   "path": "<checkout>/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2"
+  }
+ ],
+ "budget_s": 1500.0,
+ "kernels": [
+  {
+   "path": "<home>/.cache/boolflux/bin/bfx-974af65f75",
+   "sha256": "f98de23b7d2d31d293b55dbe8e0b7ef6355c51c6f9852c2ad7aff2f3be212763",
+   "source": "<checkout>/search/nonlinear/boolflux/kernel/bfx.c",
+   "source_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0",
+   "command": [
+    "gcc",
+    "-O3",
+    "-march=native",
+    "-o",
+    "<home>/.cache/boolflux/bin/bfx-974af65f75",
+    "<checkout>/search/nonlinear/boolflux/kernel/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   8
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<checkout>/search/nonlinear/boolflux/ops/bottom_lib",
+   "<checkout>/search/nonlinear/boolflux/ops/bottom_lib",
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear/boolflux/ops/bottom_lib",
+   "<checkout>/search/nonlinear/boolflux/independent",
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear/boolflux/independent",
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear/boolflux",
+   "<checkout>/search/nonlinear/boolflux/ops",
+   "<checkout>/search/nonlinear/boolflux/ops/bottom_lib",
+   "<checkout>/search/nonlinear/boolflux/ops",
+   "<checkout>/search/nonlinear/boolflux/ops",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T04:42:09Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "n_written": 9,
+  "rejected": {
+   "outside": 0,
+   "dominated": 11,
+   "aes_check_fail": 0,
+   "duplicate": 0
+  },
+  "offers_by_how": {
+   "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 554629}": {
+    "offered": 1,
+    "written": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 554629, \"kernel_seed\": 554629, \"caps\": {\"A\": 48, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 374418}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 374418, \"kernel_seed\": 374418, \"caps\": {\"A\": 48, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 614201}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 614201, \"kernel_seed\": 614201, \"caps\": {\"A\": 49, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "build {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 29017}": {
+    "offered": 1,
+    "written": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 29017, \"kernel_seed\": 29017, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 884292}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 884292, \"kernel_seed\": 884292, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 240452}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 240452, \"kernel_seed\": 240452, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 942298}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 942298, \"kernel_seed\": 942298, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 31362}": {
+    "offered": 1,
+    "written": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 31362, \"kernel_seed\": 31362, \"caps\": {\"A\": 46, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 925040}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 925040, \"kernel_seed\": 925040, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "build {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 407955}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 11, \"pw\": 6.0, \"plan_seed\": 407955, \"kernel_seed\": 407955, \"caps\": {\"A\": 47, \"AD\": 4, \"GD\": 11}}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   }
+  },
+  "pareto_A_AD_G_GD": [
+   [
+    46,
+    4,
+    143,
+    11
+   ],
+   [
+    47,
+    4,
+    141,
+    11
+   ]
+  ]
+ },
+ "t_end_utc": "2026-11-17T05:06:49Z",
+ "wall_s": 1480.035,
+ "mono_s": 1561.976,
+ "cpu_s": 1430.421,
+ "max_rss_kb": 140764
+}

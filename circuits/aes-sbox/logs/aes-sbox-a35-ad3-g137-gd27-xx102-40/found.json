@@ -1,0 +1,100 @@
+{
+ "circuit": "aes-sbox-a35-ad3-g137-gd27-xx102-40.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  35,
+  3,
+  137,
+  27
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "hub": false,
+ "start": {
+  "kind": "our published circuit",
+  "file": "circuits/aes-sbox/aes-sbox-a35-ad3-g137-gd28-xx102-47.circ.txt",
+  "function": "aes-sbox",
+  "sha256": "c2400cbd72bcc27dfdf53e096939b859785854ccd1aec7421b9f4417abb36fe5",
+  "note": "published until this commit, which removes it (a circuit added here beats it); a copy is start.circ.txt and its logs are in the history of circuits/aes-sbox/logs/",
+  "file_in_logs": "start.circ.txt"
+ },
+ "chain_root": "our published forward circuit aes-sbox-a35-ad3-g137-gd28-xx102-47 (its own logs give its lineage)",
+ "lineage": [
+  "published aes-sbox-a35-ad3-g137-gd28-xx102-47 (removed here)",
+  "gate kernel, 20 CPU-s at caps A 35, AD 3, GD 28 with T0 0 (plateau walk); chain_p and l3n off"
+ ],
+ "parameters": {
+  "kernel_cfg": "k.cfg",
+  "T0": 0,
+  "caps": {
+   "A": 35,
+   "AD": 3,
+   "GD": 28
+  },
+  "seconds_cpu": 20
+ },
+ "seed": 201,
+ "found_utc": "2026-11-17T03:20:33Z",
+ "found_utc_source": "end of the 20 CPU-s kernel job (time of its out.bfx)",
+ "time_to_result_s": null,
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-ideas/04",
+  "what": "paired kernel A/Bs on mature published circuits (ab.py: treatment and control at the same time on two CPUs, same start, same seed, same CPU budget, clock cpu)"
+ },
+ "code": {
+  "commit_linked": "b62159d",
+  "commit_linked_full": "b62159d234a4712951b274a96b48395fac8e85da",
+  "files": [
+   "search/nonlinear/boolflux/kernel/bfx.c",
+   "search/nonlinear/boolflux/kernel/README.md"
+  ],
+  "run_tree": "kernel binary <campaign archive>/2026-11-17-ideas/04/bin/bfx-new as built before 03:20 UTC from the idea worktree (uncommitted kernel/bfx.c on 08012e1)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": true,
+  "run_code_identical_to_commit": false,
+  "note": "this binary was rebuilt (overwritten) at 03:43 UTC, so the one that ran cannot be compared; it ran with the idea's options off (chain_p 0, l3n 0), with which the idea's kernel makes the moves of 08012e1's kernel (kid.py comparison). b62159d is the kernel as committed"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c CPU <campaign archive>/2026-11-17-ideas/04/bin/bfx-new <campaign archive>/2026-11-17-ideas/04/runs/probe/Fa-s1-C/k.cfg (ab.py probe 20 1 \"T0=0,chain_p=1\" \"T0=0\" ... new: the control arm)",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-17-ideas/04"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-ideas/04/found/aes-sbox-a35-ad3-g137-gd27-5920bba991/aes-sbox-a35-ad3-g137-gd27.circ.txt",
+  "sha256": "5920bba99156be5124c06e0629b48acdc691ca7e141fd972a30d7b67ec12b617",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "ab.py",
+  "kernel-best.bfx",
+  "kernel-start.bfx",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "run-note.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "ab.py",
+  "kernel-best.bfx",
+  "kernel-start.bfx",
+  "kernel.cfg",
+  "kernel.log.gz",
+  "run-note.json"
+ ]
+}

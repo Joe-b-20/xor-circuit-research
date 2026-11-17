@@ -1,0 +1,15 @@
+hub verify: True {'counts': {'AND': 31, 'XNOR': 38, 'XOR': 44}}
+circuits/check.py rc 1
+FAIL <campaign archive>/2026-11-17-ideas/03/found/aes-sbox-a31-ad6-g113-gd27-d5775fc13219/aes-sbox-a31-ad6-g113-gd27-d5775fc13219.circ.txt [circuit]  A=31 AD=6 G=113 GD=27 XX=82 (XOR 44, XNOR 38)  orders=msb/msb
+      no metrics in name
+0/1 circuits ok (linear 0/0, Boolean 0/1)
+
+aes_check rc 0
+OK   <campaign archive>/2026-11-17-ideas/03/found/aes-sbox-a31-ad6-g113-gd27-d5775fc13219/aes-sbox-a31-ad6-g113-gd27-d5775fc13219.circ.txt  A AD G GD = 31 6 113 27  counts {'AND': 31, 'XNOR': 38, 'XOR': 44}
+     new Pareto point on pinned set: YES
+     published best G at GD<=27: 32 5 105 26 (aes-sbox-a32-ad5-g105-gd26-xx73-5.circ.txt, gain -8)
+     published best G at A<=31: 28 5 124 27 (aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt, gain +11)
+     published best G at A<=31, GD<=27: 28 5 124 27 (aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt, gain +11)
+
+ok   <campaign archive>/2026-11-17-ideas/03/found/aes-sbox-a31-ad6-g113-gd27-d5775fc13219/aes-sbox-a31-ad6-g113-gd27-xx82-38.circ.txt [circuit]  A=31 AD=6 G=113 GD=27 XX=82 (XOR 44, XNOR 38)  orders=msb/msb
+1/1 circuits ok (linear 0/0, Boolean 1/1)

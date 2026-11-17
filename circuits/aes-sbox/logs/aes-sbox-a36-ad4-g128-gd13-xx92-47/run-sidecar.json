@@ -1,0 +1,97 @@
+{
+ "target": "<campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx",
+ "A": 36,
+ "AD": 4,
+ "G": 128,
+ "GD": 13,
+ "class": "strict",
+ "reference": "<campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx",
+ "start": {
+  "path": "<campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx",
+  "sha256": "b6e9a2f5b2bf465218705a8371ca710f296b363a7e25d2ae147424403c8f6138",
+  "tuple": [
+   36,
+   4,
+   128,
+   14
+  ]
+ },
+ "parent": {
+  "path": "<campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx",
+  "sha256": "b6e9a2f5b2bf465218705a8371ca710f296b363a7e25d2ae147424403c8f6138"
+ },
+ "op": "kpolish",
+ "params": {
+  "seconds": 90.0,
+  "gd_cap": 13
+ },
+ "how": "kernel best best-19.bfx",
+ "lineage": null,
+ "method": "kernel polish (hub op_polish settings)",
+ "command": "<campaign archive>/2026-11-17-ideas/09/karm.py --in <campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx --seed 304 --seconds 90 --out <campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13 --gd 13",
+ "seed": 304,
+ "elapsed_s": 99.7,
+ "code": {
+  "git": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+  "dirty": true,
+  "diff_sha256": "18f0cf2d988a5ef6e06124155588e73825b0417b810f9a76358b26e7b50cb2dd",
+  "tree": "working tree with uncommitted changes (diff saved with the run record, run.json)",
+  "sources_sha256": "3ee7fdd222ab205f6321a5775ab0e1eb890fb36f7d2cc303b68aab33395b23df",
+  "ops_sha256": {
+   "bottom.py": "30dab32508e2a29e1247d43ce69c71111485ebe8ceaed5b6b5d79d2d5a2be9be",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "23abdef52cf61ca139b688a1e4e676f7bfa9168b82067363c4d5e5697846e1e1",
+   "rebase.py": "88c947e6b01cc98f7e9897e23026ad8b3a3c93842e24bb77c0e6b8d372386c0c",
+   "rebuild_common.py": "8064584c7575b4b112ce80e4e8ff92118386af89c2bf03afda8b5574018db102",
+   "satlns.py": "fed82746d4685caaea0eaf2d0f8ee4f6717b024b9d91196a7c8e20ff7aab6d92",
+   "transport.py": "6a9b114a234ddd324bfaba367782ce7ab0cfac6655fc8edd5bc5ba70cc1c43ee",
+   "winsat.py": "4d9d0bb139d570c90c473d85733489f32384000f3ba31850520e416c05050076",
+   "winsat_andrm.py": "0c90e8a336b7606ed81f35224b1c5de5c4ea008f45efb5fd690564371ab7a845",
+   "winsat_lib.py": "bcaa67fd3dc16cd85d3244162a35537510b0a9abe13dc9844c8f494a708d94e1"
+  }
+ },
+ "aes_check": "OK   <campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13/kpolish-a36-ad4-g128-gd13-c6d88e928d.circ.txt  A AD G GD = 36 4 128 13  counts {'AND': 36, 'XNOR': 47, 'XOR': 45}",
+ "aes_check_full": "OK   <campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13/kpolish-a36-ad4-g128-gd13-c6d88e928d.circ.txt  A AD G GD = 36 4 128 13  counts {'AND': 36, 'XNOR': 47, 'XOR': 45}\n     new Pareto point on pinned set: YES\n     published best G at GD<=13: 35 4 133 13 (aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt, gain +5)\n     published best G at A<=36: 32 7 103 32 (aes-sbox-a32-ad7-g103-gd32-xx71-10.circ.txt, gain -25)\n     published best G at A<=36, GD<=13: 35 4 133 13 (aes-sbox-a35-ad4-g133-gd13-xx98-21.circ.txt, gain +5)\n",
+ "circuit_sha256": "c6d88e928d5505bfcac38a4307dd6b5b05fea38267ce60c316a37bd5fd3553b0",
+ "path_certified": "unknown",
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13/run.json",
+  "kind": "ops.kpolish",
+  "command": "python3 <campaign archive>/2026-11-17-ideas/09/karm.py --in <campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx --seed 304 --seconds 90 --out <campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13 --gd 13",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/2026-11-17-ideas/09/karm.py",
+   "--in",
+   "<campaign archive>/2026-11-17-ideas/09/runs/andrm1/andrm-2689.bfx",
+   "--seed",
+   "304",
+   "--seconds",
+   "90",
+   "--out",
+   "<campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13",
+   "--gd",
+   "13"
+  ],
+  "cwd": "<campaign archive>/2026-11-17-ideas/09",
+  "git": {
+   "commit": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+   "dirty": true,
+   "diff": "<campaign archive>/2026-11-17-ideas/09/runs/ap1src/004-andrm-2689-gd13/git-18f0cf2d988a5ef6.diff.gz",
+   "diff_sha256": "18f0cf2d988a5ef6e06124155588e73825b0417b810f9a76358b26e7b50cb2dd"
+  },
+  "sources_sha256": "3ee7fdd222ab205f6321a5775ab0e1eb890fb36f7d2cc303b68aab33395b23df",
+  "seeds": {
+   "seed": 304
+  },
+  "function": "aes-sbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-17T03:44:44Z"
+}

@@ -1,0 +1,169 @@
+{
+ "circuit": "aes-sbox-sel-a40-ad6-g152-gd33-xx112-53.circ.txt",
+ "function": "AES S-box (c = 0) or inverse S-box (c = 1), NIST aes-sbox-sel (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  40,
+  6,
+  152,
+  33
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   40,
+   6,
+   156,
+   34
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-sel-a40-ad6-g156-gd34-xx116-24",
+  "source": "<campaign archive>/2026-11-17-ideas/02/A/aes-sbox-a32-ad4-g111-gd25-xx79-30-bp-wrap/aes-sbox-sel-a40-ad6-g156-gd34-xx116-24.circ.txt",
+  "source_sha256": "755e01ffe277d4aecb3ec8cc394a495bdffdca07e8913d4f1bc5764cc3be82d1"
+ },
+ "chain_root": "our published forward circuit aes-sbox-a32-ad4-g111-gd25-xx79-30 (its own logs give its lineage)",
+ "lineage": [
+  "published aes-sbox-a32-ad4-g111-gd25-xx79-30",
+  "direction-select build (ops/selbuild.py, modes bp/wrap): sbox-sel/A40/AD6/G156/GD34 (start.circ.txt)",
+  "gate kernel polish (cli.py run --target aes-sbox-sel): this circuit"
+ ],
+ "parameters": {
+  "target": "aes-sbox-sel",
+  "model": "nist",
+  "objective": "a,ad,cost,gd",
+  "caps": {
+   "GD": null,
+   "AD": 6,
+   "A": 40
+  },
+  "iters": 100000000,
+  "seconds_cap": 300.0,
+  "rounds": 1,
+  "settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1
+  },
+  "pool": 4,
+  "jobs": 1
+ },
+ "seed": [
+  1
+ ],
+ "found_utc": "2026-11-17T04:09:03Z",
+ "found_utc_source": "the run's improvement event for this circuit (events.jsonl.gz), from the run's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 96.078
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan.py of every circuit file in the run folders of these runs and the published circuits: the earliest circuit with this (A, AD, G, GD)",
+  "later_finds_same_tuple": []
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-17-ideas/02",
+  "what": "S-box with a direction bit from one forward circuit (ops/selbuild.py: input and output affine maps switched by c around the shared circuit), then kernel polishes of the builds (cli.py run --target aes-sbox-sel)"
+ },
+ "code": {
+  "commit_linked": "b8ba66e",
+  "commit_linked_full": "b8ba66ed846d1b8cb156529b65e6114924b90fe9",
+  "files": [
+   "search/nonlinear/boolflux/cli.py",
+   "search/nonlinear/boolflux/targets.py",
+   "search/nonlinear/boolflux/kernel/bfx.c",
+   "search/nonlinear/boolflux/ops/selbuild.py"
+  ],
+  "run_tree": "the idea checkout on 08012e1 with uncommitted changes (targets.py aes-sbox-sel target, untracked ops/selbuild.py; code.diff.gz)",
+  "base_commit": "08012e1",
+  "uncommitted_changes_at_run": true,
+  "run_code_identical_to_commit": true,
+  "note": "the run's sources_sha256 (58d6f9ef...) equals b8ba66e's package: the code that ran was committed unchanged as b8ba66e; the direction-select builds it started from were made by ops/selbuild.py (lineage)",
+  "sources_sha256_at_run": "58d6f9ef4bd9e9e8f3c60eda4ccead54191954ba9d653c59a8bdaa30f8ff05bd",
+  "git_at_run": {
+   "commit": "08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5",
+   "branch": "idea-02",
+   "dirty": true,
+   "untracked": [
+    "search/nonlinear/boolflux/ops/selbuild.py",
+    "search/nonlinear/boolflux/tests/test_selbuild.py"
+   ],
+   "diff_sha256": "38b30e721f7e01381a3a7b611322079afbab041a663b56ffcd62183952b10da8",
+   "diff_bytes": 26722,
+   "diff": "<campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6/git-38b30e721f7e0138.diff.gz"
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "427ef7dca186ae2809e4c5877e3747e78fc5cce0cda59899877c6f5bc410943b",
+    "source_sha256": "875fd95ea48bc42c5499c99d3299be22ab5f195359b6291090decb7433ae59f0"
+   },
+   {
+    "sha256": "2fd9bb3b5ce2ef3951fdf0289e21e054df6b4def00f2cf5547d7bf7425182a08",
+    "source_sha256": "f050cddf40ef6a07f36cecf1fe15e12fc89fc05cdef818fbacd4cfb924481cf2"
+   }
+  ],
+  "diff": {
+   "file": "code.diff.gz",
+   "sha256_uncompressed": "38b30e721f7e01381a3a7b611322079afbab041a663b56ffcd62183952b10da8",
+   "what": "the run's recorded git diff of its checkout against 08012e1 (tracked changes and untracked files)"
+  }
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 search/nonlinear/boolflux/cli.py run --target aes-sbox-sel --model nist --start <campaign archive>/2026-11-17-ideas/02/A/aes-sbox-a32-ad4-g111-gd25-xx79-30-bp-wrap/aes-sbox-sel-a40-ad6-g156-gd34-xx116-24.circ.txt --objective a,ad,cost,gd --cap-a 40 --cap-ad 6 --iters 100000000 --seconds 300 --seeds 1 --jobs 1 --out <campaign archive>/2026-11-17-ideas/02/B/b6-a40ad6",
+ "environment": {
+  "cwd": "<checkout>",
+  "BOOLFLUX_CACHE": "<campaign archive>/2026-11-17-ideas/02/cache"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<checkout>": "the working checkout of this repository the run used (a worktree on 08012e1 with the run's changes, or the frozen copy named in code); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-17-ideas/02/found/aes-sbox-sel-a40-ad6-g152-gd33-xx112-53.circ.txt",
+  "sha256": "42c762e17fd820387a296f4fc10b13605abbcd1b3208c0502c692414a9ec7a1e",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "SOURCE",
+  "code.diff.gz",
+  "events.jsonl.gz",
+  "polish.sh",
+  "r0-s1.cfg",
+  "r0-s1.log.gz",
+  "r0-s1.start.bfx",
+  "run.json",
+  "selbuild-result.json",
+  "summary.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "SOURCE",
+  "code.diff.gz",
+  "events.jsonl.gz",
+  "polish.sh",
+  "r0-s1.cfg",
+  "r0-s1.log.gz",
+  "r0-s1.start.bfx",
+  "run.json",
+  "selbuild-result.json",
+  "summary.json"
+ ]
+}

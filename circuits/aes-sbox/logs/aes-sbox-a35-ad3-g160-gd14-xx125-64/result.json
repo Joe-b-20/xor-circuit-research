@@ -1,0 +1,125 @@
+{
+ "op": "rebase",
+ "target": "<checkout>/circuits/aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt",
+ "seed": 1,
+ "status": "ok",
+ "start": "<checkout>/circuits/aes-sbox/aes-sbox-a35-ad3-g155-gd15-xx120-56.circ.txt",
+ "start_tuple": [
+  35,
+  3,
+  155,
+  15
+ ],
+ "params": {
+  "cap": 14,
+  "goal": null,
+  "builds": 160,
+  "top": 3,
+  "stage_seconds": 80.0,
+  "stages": 1,
+  "moves": false,
+  "move_top": 4,
+  "descend": false,
+  "move_budget": 0.25,
+  "relax": 0,
+  "slack3": 0,
+  "no_paar": false,
+  "repair_keep": 1,
+  "max_build_over": 40,
+  "shard": "0/1",
+  "function": "auto"
+ },
+ "wall_s": 322.1,
+ "n_written": 2,
+ "rejected": {
+  "outside": 0,
+  "dominated": 8,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "build {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 197}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 197, \"kernel_seed\": 26682, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 14}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "build {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 200}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 200, \"kernel_seed\": 681099, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 14}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 208}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 208, \"kernel_seed\": 567713, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 14}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 14, \"parent_how\": \"result of build 99cdb6590fa1\", \"build_G\": 172}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 14, \"parent_how\": \"result of build 99cdb6590fa1\", \"build_G\": 172, \"kernel_seed\": 779859, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 14}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 14, \"parent_how\": \"result of build 99cdb6590fa1\", \"build_G\": 179}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 14, \"parent_how\": \"result of build 99cdb6590fa1\", \"build_G\": 186}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.32,
+  "verify_s": 0.162,
+  "verify_calls": 2
+ },
+ "notes": [],
+ "utc": "2026-11-17T03:52:32Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    160,
+    14
+   ],
+   "file": "<campaign archive>/2026-11-17-ideas/06/ab/runs/a-f35/old/rebase-a35-ad3-g160-gd14-c1581d331c.circ.txt",
+   "how": "kernel {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 197, \"kernel_seed\": 26682, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 14}}",
+   "t": 81.2,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    160,
+    14
+   ],
+   "file": "<campaign archive>/2026-11-17-ideas/06/ab/runs/a-f35/old/rebase-a35-ad3-g160-gd14-c1581d331c.circ.txt",
+   "how": "kernel {\"cap\": 14, \"parent_how\": \"start\", \"build_G\": 197, \"kernel_seed\": 26682, \"caps\": {\"A\": 35, \"AD\": 3, \"GD\": 14}}",
+   "t": 81.2,
+   "class": "other"
+  }
+ ]
+}
