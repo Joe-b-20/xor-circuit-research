@@ -24,6 +24,13 @@ a 168@13 circuit of NIST lineage with --cap 13 -> 35/3/167/13 after 489 s.
    builds -> --stages kernel stages (caps A <= ref A, AD <= ref AD, GD <= D; objective cost,gd);
    optional --relax S: one more kernel stage at D+1 (S s), whose result re-enters the pool as a parent.
 4. Every verified circuit inside A/AD that is new in this run's (G, GD) front is recorded (rebuild_common).
+5. --price gates (rebase_lib/gprice.py; default --price kraft = the combo order of step 3): a parent's candidates
+   are priced by an estimate of the built circuit's gate count and the cheapest --builds are built with
+   gprice.gbuild (hybrid generalised; a unit basis vector keeps the parent's product): Kraft-feasible combos of
+   the top classes (up to --pool, gbasis DFS) ranked by price; with --deep also classes below the top AND level
+   (gprice.find_classes; combos best-first by price with skeleton bound <= D); with --patch also patch builds
+   (every parent gate kept, each replaced product redirected to the XOR of the new ones; single classes and
+   pairs; only builds within the cap D are kept, as for the other builds).  No --moves in this mode.
 """
 import argparse
 import json
@@ -38,6 +45,7 @@ import rebuild_common as MC                           # noqa: E402
 from rebuild_common import core, verify, metrics, clean, load, cid   # noqa: E402
 import gbasis as GB                                   # noqa: E402
 import hybrid as HY                                   # noqa: E402
+import gprice as GP                                   # noqa: E402  (--price gates, --deep, --patch)
 HY.new_skeleton = GB.new_skeleton                     # generalised skeleton (any classes, other output terms kept)
 
 
@@ -96,6 +104,61 @@ def gf4_moves(c, cap, rng, budget_s, limit, shard='0/1'):
     return out, len(seen)
 
 
+def _js(combo):
+    return json.loads(json.dumps(combo, default=str))
+
+
+def gate_builds(par, res, D, a, rng, tl, L):
+    """--price gates (docstring 5): priced candidates of one parent, built and verified.
+    Returns (builds [(G, id, circuit, desc)], stats by id, all (G, GD, ok, in-cap), number of candidates, t0)."""
+    tb = time.time(); P = GP.Parent(par); cand = []
+    if res is not None and res['best'] <= 1 + 1e-9:
+        cls_k = GP.gb_classes(res)
+        for pr, cb in GP.priced_feasible(P, res, pool=a.pool, rng=rng)[:a.builds]:
+            cand.append((pr, 'kraft', (cls_k, cb)))
+    if a.deep:
+        cls_d = GP.find_classes(P, deep=True)
+        if cls_d:
+            for pr, bd, cb, st in GP.ranked_combos(P, cls_d, D, rng, pool=a.builds):
+                cand.append((pr, 'deep', (cls_d, cb, st)))
+    cand.sort(key=lambda t: t[0])
+    cand = cand[:a.builds]
+    builds = []; hst = {}; allg = []; seen = set(); npr = len(cand)
+    for pr, kind, pl in cand:
+        if time.time() > tb + 0.25 * a.seconds: break
+        try:
+            if kind == 'kraft':
+                st = GP.skeleton_of(P, pl[0], pl[1]); desc = {'kind': kind, 'price': pr, 'combo': [list(B) for B in pl[1]]}
+            else:
+                st = pl[2]; desc = {'kind': kind, 'price': pr, 'combo': [list(B) for B in pl[1]], 'classes': [pc['ands'] for pc in pl[0]]}
+            if st is None: continue
+            nc, stt = GP.gbuild(P, st, D, None, not a.no_paar)
+        except Exception as e:
+            L(event='build-error', err=repr(e)[:200]); continue
+        k = cid(nc)
+        if k in seen: continue
+        seen.add(k)
+        ok, inf = verify(nc); m = metrics(nc)
+        allg.append((m[2], m[3], bool(ok), m[3] <= D and m[1] <= tl['AD']))
+        if ok and m[3] <= D and m[1] <= tl['AD'] and m[0] <= tl['A']:
+            builds.append((m[2], k, nc, desc)); hst[k] = stt
+    if a.patch:
+        try:
+            pv, pcls = GP.patch_variants(par, deep=a.deep, max_single=a.patch_singles, max_pairs=a.patch_pairs, rng=rng)
+        except Exception as e:
+            pv = []; L(event='build-error', err='patch ' + repr(e)[:200])
+        npr += len(pv)
+        for nc, dsc in pv:
+            k = cid(nc)
+            if k in seen: continue
+            seen.add(k)
+            ok, inf = verify(nc); m = metrics(nc)
+            allg.append((m[2], m[3], bool(ok), m[3] <= D and m[1] <= tl["AD"]))
+            if ok and m[3] <= D and m[1] <= tl["AD"] and m[0] <= tl["A"]:
+                builds.append((m[2], k, nc, {"kind": "patch", 'changes': [[ci, list(B)] for ci, B in dsc]}))
+    return builds, hst, allg, npr, tb
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--in', dest='inp', required=True); ap.add_argument('--target', required=True)
@@ -110,6 +173,11 @@ def main():
     ap.add_argument('--relax', type=float, default=0); ap.add_argument('--slack3', type=int, default=0)
     ap.add_argument('--no-paar', action='store_true'); ap.add_argument('--repair-keep', type=int, default=1)
     ap.add_argument('--max-build-over', type=int, default=40, help='skip builds with G > best build + this')
+    ap.add_argument('--price', choices=['kraft', 'gates'], default='kraft', help='gates: gate-cost pricing of candidates (docstring 5)')
+    ap.add_argument('--deep', action='store_true', help='with --price gates: classes below the top AND level too')
+    ap.add_argument('--patch', action='store_true', help='with --price gates: patch builds (no rebuild below the class)')
+    ap.add_argument('--pool', type=int, default=3000, help='with --price gates: Kraft-feasible combos priced per parent')
+    ap.add_argument('--patch-singles', type=int, default=40); ap.add_argument('--patch-pairs', type=int, default=120)
     ap.add_argument('--shard', default=None, help='i/K: this worker scans move candidates with index = i mod K (set by --cpus)')
     MC.C.function_arg(ap)
     a = ap.parse_args()
@@ -134,6 +202,11 @@ def main():
     goal = a.goal or 'gates'
     # applicability and the cap
     r0 = GB.analyse(c0, m0[3], ub=1.0)
+    gates_mode = a.price == 'gates'
+    if gates_mode and a.moves: ap.error('--price gates does not take --moves')
+    if r0 is None and gates_mode and (a.deep or a.patch):
+        ncls = GP.find_classes(GP.Parent(c0), deep=a.deep)
+        if ncls: r0 = {'class_sizes': [len(pc['ands']) for pc in ncls], 'n_top': None, 'diag': {'gprice_classes': True}}
     if r0 is None:
         rec.notes.append('no class of >= 2 top products with a common operand function')
         L(event='not-applicable', reason=rec.notes[-1]); rec.write('not-applicable'); return
@@ -169,8 +242,12 @@ def main():
         if ppath is None:
             ppath = out / 'parents' / ('%s.bfx' % cid(par)); ppath.parent.mkdir(exist_ok=True); ppath.write_text(core.to_kernel(par))
         ta = time.time(); res = GB.analyse(par, D, ub=1.0); ta = time.time() - ta
-        if res is None: L(event='analyse-none', parent=cid(par), how=how, secs=round(ta, 2)); continue
         pk = cid(par)
+        if gates_mode:
+            builds, hst, allg, ncand, tb = gate_builds(par, res, D, a, rng, tl, L)
+            if not builds and not ncand:
+                L(event='analyse-none', parent=pk, how=how, secs=round(ta, 2)); continue
+        elif res is None: L(event='analyse-none', parent=cid(par), how=how, secs=round(ta, 2)); continue
         def scan_moves():
             if a.moves and pk not in scanned and time.time() < deadline - 120:
                 scanned.add(pk)
@@ -191,19 +268,21 @@ def main():
                         else: queue.append(item)
                     return bool(strict)
             return False
-        if a.moves and pk not in scanned and res['best'] <= 1 + 1e-9 and how == 'start':
+        if gates_mode: pass
+        elif a.moves and pk not in scanned and res['best'] <= 1 + 1e-9 and how == 'start':
             # scan first: if a coordinate move gives strictly more slack, build those variants before this parent
             if scan_moves():
                 queue.append((par, how, ppath)); continue
-        if res['best'] > 1 + 1e-9:
+        if gates_mode: pass
+        elif res['best'] > 1 + 1e-9:
             L(event='skip', parent=pk, how=how, bound=res['best'])
             scan_moves()
             if not queue and not pool:
                 rec.notes.append('no parent with re-basing bound <= 1 at cap %d' % D)
                 break
             continue
-        combos = GB.feasible_combos(res, maxn=max(a.builds, 1) * 3, rng=rng)
-        builds = []; tb = time.time(); allg = []; hst = {}
+        combos = [] if gates_mode else GB.feasible_combos(res, maxn=max(a.builds, 1) * 3, rng=rng)
+        if not gates_mode: builds = []; tb = time.time(); allg = []; hst = {}
         for it, combo in enumerate(combos[:a.builds]):
             if time.time() > deadline - 60: break
             try:
@@ -220,13 +299,13 @@ def main():
             if b[1] in seen or (pick and b[0] > pick[0][0] + a.max_build_over): continue
             seen.add(b[1]); pick.append(b)
             if len(pick) >= a.top: break
-        L(event='builds', parent=pk, how=how, bound=res['best'], n=len(builds), combos=len(combos),
-          picked=[p[0] for p in pick], secs=round(time.time() - tb, 1), analyse_s=round(ta, 2), analyse_diag=res.get('diag'),
-          all_builds=sorted(allg), picked_hybrid=[{'G': p[0], 'combo': [list(B) for B in p[3]], 'stats': hst.get(p[1])} for p in pick])
+        L(event='builds', parent=pk, how=how, bound=(res['best'] if res is not None else None), n=len(builds), price=a.price, combos=len(combos),
+          picked=[p[0] for p in pick], secs=round(time.time() - tb, 1), analyse_s=round(ta, 2), analyse_diag=(res or {}).get("diag"),
+          all_builds=sorted(allg), picked_hybrid=[{'G': p[0], 'combo': _js(p[3]), 'stats': hst.get(p[1])} for p in pick])
         for g0, h, nc, combo in pick:
             if time.time() > deadline - 30: break
             meth = {'engine': 'ops/rebase.py (gbasis + hybrid + kernel)', 'cap': D, 'parent_how': how,
-                    'combo': [list(B) for B in combo], 'build_G': g0}
+                    'combo': _js(combo), 'build_G': g0}
             bp = out / 'builds' / ('b-%s.bfx' % h); bp.parent.mkdir(exist_ok=True); bp.write_text(core.to_kernel(nc))
             rec.offer(nc, ppath, dict(meth, stage='build'))
             cur, cm = nc, metrics(nc)
