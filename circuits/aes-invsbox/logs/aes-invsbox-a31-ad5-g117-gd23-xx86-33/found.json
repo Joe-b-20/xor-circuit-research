@@ -1,0 +1,1247 @@
+{
+ "circuit": "aes-invsbox-a31-ad5-g117-gd23-xx86-33.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  31,
+  5,
+  117,
+  23
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   31,
+   5,
+   118,
+   23
+  ],
+  "source_sha256": "8afdd05280da5cafb79046647b16a6e4cc0bc1fe97a146d1b89e06930a2b0dcf",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a31-ad5-g118-gd23-xx87-28",
+  "archive_id": "7a5535f804f8",
+  "made_by": "hub operator pull"
+ },
+ "chain_root": [
+  "NIST's aes-invsbox-a32-ad4-g117-gd21-xx85-10",
+  "NIST's aes-invsbox-a32-ad4-g119-gd20-xx87-10",
+  "NIST's aes-invsbox-a32-ad5-g106-gd25-xx74-9",
+  "NIST's aes-invsbox-a32-ad7-g105-gd27-xx73-14",
+  "NIST's aes-invsbox-a33-ad4-g107-gd21-xx74-10"
+ ],
+ "lineage": [
+  {
+   "id": "46c0c60d681d",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    117,
+    23
+   ],
+   "parents": [
+    "7a5535f804f8"
+   ],
+   "seed": 474713612,
+   "run_id": "inv-new-3b05e9.r02370-polish",
+   "admitted_utc": "2026-11-17T02:31:03Z"
+  },
+  {
+   "id": "7a5535f804f8",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    118,
+    23
+   ],
+   "parents": [
+    "08dbbf682dd8"
+   ],
+   "seed": 1035374101,
+   "run_id": "inv-new-3b05e9.r01052-pull",
+   "admitted_utc": "2026-11-16T23:50:56Z"
+  },
+  {
+   "id": "08dbbf682dd8",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    116,
+    26
+   ],
+   "parents": [
+    "169cbdbe1380",
+    "63c88149a7c5"
+   ],
+   "seed": 523483669,
+   "run_id": "inv-new-3b05e9.r00969-join",
+   "admitted_utc": "2026-11-16T23:47:47Z"
+  },
+  {
+   "id": "169cbdbe1380",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    117,
+    26
+   ],
+   "parents": [
+    "e6cd105d52cf",
+    "cba76fba7f6e"
+   ],
+   "seed": 692333531,
+   "run_id": "inv-new-3b05e9.r00961-join",
+   "admitted_utc": "2026-11-16T23:47:44Z"
+  },
+  {
+   "id": "e6cd105d52cf",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    123,
+    29
+   ],
+   "parents": [
+    "2400abe3e7bd",
+    "d87bad061301"
+   ],
+   "seed": 741127885,
+   "run_id": "inv-new-3b05e9.r00955-join",
+   "admitted_utc": "2026-11-16T23:47:42Z"
+  },
+  {
+   "id": "2400abe3e7bd",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    123,
+    29
+   ],
+   "parents": [
+    "b762a96a107d",
+    "b29c796518d7"
+   ],
+   "seed": 210967645,
+   "run_id": "inv-new-3b05e9.r00950-join",
+   "admitted_utc": "2026-11-16T23:47:39Z"
+  },
+  {
+   "id": "b29c796518d7",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    122,
+    28
+   ],
+   "parents": [
+    "a76370de7cd5",
+    "6ad8163a8bde"
+   ],
+   "seed": 346727098,
+   "run_id": "inv-new-3b05e9.r00928-join",
+   "admitted_utc": "2026-11-16T23:46:30Z"
+  },
+  {
+   "id": "a76370de7cd5",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    117,
+    24
+   ],
+   "parents": [
+    "caef60547ad9"
+   ],
+   "seed": 630609859,
+   "run_id": "inv-new-3b05e9.r00880-polish",
+   "admitted_utc": "2026-11-16T23:41:40Z"
+  },
+  {
+   "id": "caef60547ad9",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    117,
+    25
+   ],
+   "parents": [
+    "528a4dee5eec",
+    "d910fffdc209"
+   ],
+   "seed": 826649232,
+   "run_id": "inv-new-3b05e9.r00840-join",
+   "admitted_utc": "2026-11-16T23:39:43Z"
+  },
+  {
+   "id": "d910fffdc209",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    117,
+    25
+   ],
+   "parents": [
+    "231252db2790",
+    "238635f6fbdc"
+   ],
+   "seed": 372658748,
+   "run_id": "inv-new-3b05e9.r00836-join",
+   "admitted_utc": "2026-11-16T23:39:35Z"
+  },
+  {
+   "id": "231252db2790",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    118,
+    25
+   ],
+   "parents": [
+    "1570356cfaf6",
+    "cba76fba7f6e"
+   ],
+   "seed": 68718456,
+   "run_id": "inv-new-3b05e9.r00832-join",
+   "admitted_utc": "2026-11-16T23:39:29Z"
+  },
+  {
+   "id": "1570356cfaf6",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    119,
+    24
+   ],
+   "parents": [
+    "3aeb7fdb2713",
+    "230132e78edb"
+   ],
+   "seed": 565243370,
+   "run_id": "inv-new-3b05e9.r00826-join",
+   "admitted_utc": "2026-11-16T23:39:07Z"
+  },
+  {
+   "id": "d87bad061301",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    121,
+    20
+   ],
+   "parents": [
+    "f06322e270c0",
+    "230132e78edb"
+   ],
+   "seed": 565243370,
+   "run_id": "inv-new-3b05e9.r00826-join",
+   "admitted_utc": "2026-11-16T23:39:07Z"
+  },
+  {
+   "id": "230132e78edb",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    121,
+    20
+   ],
+   "parents": [
+    "8d2d1f9d12d5",
+    "f06322e270c0"
+   ],
+   "seed": 185665751,
+   "run_id": "inv-new-3b05e9.r00822-join",
+   "admitted_utc": "2026-11-16T23:39:01Z"
+  },
+  {
+   "id": "3aeb7fdb2713",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    121,
+    26
+   ],
+   "parents": [
+    "718e57435c0c",
+    "f06322e270c0"
+   ],
+   "seed": 185665751,
+   "run_id": "inv-new-3b05e9.r00822-join",
+   "admitted_utc": "2026-11-16T23:39:00Z"
+  },
+  {
+   "id": "f06322e270c0",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    121,
+    20
+   ],
+   "parents": [
+    "8cbadbeaaf32"
+   ],
+   "seed": 65114464,
+   "run_id": "inv-new-3b05e9.r00735-polish",
+   "admitted_utc": "2026-11-16T23:38:52Z"
+  },
+  {
+   "id": "8d2d1f9d12d5",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    129,
+    18
+   ],
+   "parents": [
+    "238635f6fbdc",
+    "947d2b9136d8"
+   ],
+   "seed": 892151744,
+   "run_id": "inv-new-3b05e9.r00813-join",
+   "admitted_utc": "2026-11-16T23:38:50Z"
+  },
+  {
+   "id": "947d2b9136d8",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    123,
+    19
+   ],
+   "parents": [
+    "bc1aef70e0db"
+   ],
+   "seed": 918927076,
+   "run_id": "inv-new-3b05e9.r00728-polish",
+   "admitted_utc": "2026-11-16T23:38:45Z"
+  },
+  {
+   "id": "8cbadbeaaf32",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    123,
+    20
+   ],
+   "parents": [
+    "475f9e66e9dc",
+    "5ca6c775f923"
+   ],
+   "seed": 771550688,
+   "run_id": "inv-new-3b05e9.r00732-join",
+   "admitted_utc": "2026-11-16T23:37:24Z"
+  },
+  {
+   "id": "475f9e66e9dc",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    130,
+    18
+   ],
+   "parents": [
+    "238635f6fbdc",
+    "bc1aef70e0db"
+   ],
+   "seed": 780799172,
+   "run_id": "inv-new-3b05e9.r00727-join",
+   "admitted_utc": "2026-11-16T23:37:20Z"
+  },
+  {
+   "id": "bc1aef70e0db",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    125,
+    19
+   ],
+   "parents": [
+    "a6ef486d46c8"
+   ],
+   "seed": 230433092,
+   "run_id": "inv-new-3b05e9.r00691-pull",
+   "admitted_utc": "2026-11-16T23:37:15Z"
+  },
+  {
+   "id": "cba76fba7f6e",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    19
+   ],
+   "parents": [
+    "787d9c7e8fd8",
+    "b762a96a107d"
+   ],
+   "seed": 792571457,
+   "run_id": "inv-new-3b05e9.r00704-join",
+   "admitted_utc": "2026-11-16T23:36:36Z"
+  },
+  {
+   "id": "a6ef486d46c8",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    119,
+    21
+   ],
+   "parents": [
+    "c6c49e9b0732"
+   ],
+   "seed": 40308422,
+   "run_id": "inv-new-3b05e9.r00675-pull",
+   "admitted_utc": "2026-11-16T23:34:15Z"
+  },
+  {
+   "id": "787d9c7e8fd8",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    110,
+    18
+   ],
+   "parents": [
+    "b80cc12531ec"
+   ],
+   "seed": 273921931,
+   "run_id": "inv-new-3b05e9.r00673-polish",
+   "admitted_utc": "2026-11-16T23:33:01Z"
+  },
+  {
+   "id": "c6c49e9b0732",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    119,
+    22
+   ],
+   "parents": [
+    "6486b92c166e"
+   ],
+   "seed": 706167882,
+   "run_id": "inv-new-3b05e9.r00635-polish",
+   "admitted_utc": "2026-11-16T23:31:20Z"
+  },
+  {
+   "id": "5ca6c775f923",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    119,
+    26
+   ],
+   "parents": [
+    "2dfaadfca654"
+   ],
+   "seed": 664560932,
+   "run_id": "inv-new-3b05e9.r00551-polish",
+   "admitted_utc": "2026-11-16T23:29:52Z"
+  },
+  {
+   "id": "6486b92c166e",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    121,
+    22
+   ],
+   "parents": [
+    "238635f6fbdc",
+    "c85091e7e7c8"
+   ],
+   "seed": 575419190,
+   "run_id": "inv-new-3b05e9.r00630-join",
+   "admitted_utc": "2026-11-16T23:29:46Z"
+  },
+  {
+   "id": "c85091e7e7c8",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    119,
+    23
+   ],
+   "parents": [
+    "b262c11392a8"
+   ],
+   "seed": 227865609,
+   "run_id": "inv-new-3b05e9.r00539-polish",
+   "admitted_utc": "2026-11-16T23:29:43Z"
+  },
+  {
+   "id": "6ad8163a8bde",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    130,
+    30
+   ],
+   "parents": [
+    "b762a96a107d",
+    "34c3c91ced7f"
+   ],
+   "seed": 627152340,
+   "run_id": "inv-new-3b05e9.r00609-join",
+   "admitted_utc": "2026-11-16T23:29:18Z"
+  },
+  {
+   "id": "34c3c91ced7f",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    130,
+    29
+   ],
+   "parents": [
+    "799261ddfd8d",
+    "56a0c0fee761"
+   ],
+   "seed": 789386681,
+   "run_id": "inv-new-3b05e9.r00585-join",
+   "admitted_utc": "2026-11-16T23:28:52Z"
+  },
+  {
+   "id": "56a0c0fee761",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    125,
+    25
+   ],
+   "parents": [
+    "85529a030406",
+    "fb7ef4b58968"
+   ],
+   "seed": 789680436,
+   "run_id": "inv-new-3b05e9.r00581-join",
+   "admitted_utc": "2026-11-16T23:28:44Z"
+  },
+  {
+   "id": "fb7ef4b58968",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    118,
+    24
+   ],
+   "parents": [
+    "2e2b27779bef"
+   ],
+   "seed": 1019838442,
+   "run_id": "inv-new-3b05e9.r00488-polish",
+   "admitted_utc": "2026-11-16T23:28:39Z"
+  },
+  {
+   "id": "85529a030406",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    5,
+    106,
+    25
+   ],
+   "parents": [
+    "b762a96a107d",
+    "96c89da797fb"
+   ],
+   "seed": 1049181229,
+   "run_id": "inv-new-3b05e9.r00538-join",
+   "admitted_utc": "2026-11-16T23:28:18Z"
+  },
+  {
+   "id": "b262c11392a8",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    128,
+    23
+   ],
+   "parents": [
+    "63c88149a7c5",
+    "8524fb613cf2"
+   ],
+   "seed": 823182041,
+   "run_id": "inv-new-3b05e9.r00516-join",
+   "admitted_utc": "2026-11-16T23:27:53Z"
+  },
+  {
+   "id": "799261ddfd8d",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    132,
+    30
+   ],
+   "parents": [
+    "2e2b27779bef",
+    "143e37cd1eef"
+   ],
+   "seed": 986794577,
+   "run_id": "inv-new-3b05e9.r00510-join",
+   "admitted_utc": "2026-11-16T23:27:35Z"
+  },
+  {
+   "id": "143e37cd1eef",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    132,
+    30
+   ],
+   "parents": [
+    "5c5011cac1fe",
+    "8524fb613cf2"
+   ],
+   "seed": 623743667,
+   "run_id": "inv-new-3b05e9.r00496-join",
+   "admitted_utc": "2026-11-16T23:27:20Z"
+  },
+  {
+   "id": "8524fb613cf2",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    5,
+    128,
+    24
+   ],
+   "parents": [
+    "96c89da797fb",
+    "5c5011cac1fe"
+   ],
+   "seed": 503110503,
+   "run_id": "inv-new-3b05e9.r00492-join",
+   "admitted_utc": "2026-11-16T23:27:18Z"
+  },
+  {
+   "id": "5c5011cac1fe",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    123,
+    25
+   ],
+   "parents": [
+    "0e0b8ace5e43",
+    "2e2b27779bef"
+   ],
+   "seed": 895498559,
+   "run_id": "inv-new-3b05e9.r00487-join",
+   "admitted_utc": "2026-11-16T23:27:14Z"
+  },
+  {
+   "id": "2dfaadfca654",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    122,
+    26
+   ],
+   "parents": [
+    "60985c9373de",
+    "2e2b27779bef"
+   ],
+   "seed": 895498559,
+   "run_id": "inv-new-3b05e9.r00487-join",
+   "admitted_utc": "2026-11-16T23:27:14Z"
+  },
+  {
+   "id": "96c89da797fb",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    32,
+    5,
+    107,
+    24
+   ],
+   "parents": [
+    "6a2c31c4bead"
+   ],
+   "seed": 453400471,
+   "run_id": "inv-new-3b05e9.r00449-pull",
+   "admitted_utc": "2026-11-16T23:27:11Z"
+  },
+  {
+   "id": "2e2b27779bef",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    123,
+    25
+   ],
+   "parents": [
+    "3186ef238041",
+    "bcc267b7c0f5"
+   ],
+   "seed": 723570905,
+   "run_id": "inv-new-3b05e9.r00483-join",
+   "admitted_utc": "2026-11-16T23:27:05Z"
+  },
+  {
+   "id": "3186ef238041",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    123,
+    25
+   ],
+   "parents": [
+    "d31ed96096c7",
+    "0e0b8ace5e43"
+   ],
+   "seed": 861635684,
+   "run_id": "inv-new-3b05e9.r00479-join",
+   "admitted_utc": "2026-11-16T23:26:59Z"
+  },
+  {
+   "id": "bcc267b7c0f5",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    6,
+    122,
+    26
+   ],
+   "parents": [
+    "db327bf60729",
+    "0e0b8ace5e43"
+   ],
+   "seed": 861635684,
+   "run_id": "inv-new-3b05e9.r00479-join",
+   "admitted_utc": "2026-11-16T23:26:58Z"
+  },
+  {
+   "id": "d31ed96096c7",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    32,
+    6,
+    108,
+    25
+   ],
+   "parents": [
+    "061dc0452c86"
+   ],
+   "seed": 1007069908,
+   "run_id": "inv-new-3b05e9.r00448-polish",
+   "admitted_utc": "2026-11-16T23:26:56Z"
+  },
+  {
+   "id": "db327bf60729",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    32,
+    6,
+    107,
+    26
+   ],
+   "parents": [
+    "061dc0452c86"
+   ],
+   "seed": 1007069908,
+   "run_id": "inv-new-3b05e9.r00448-polish",
+   "admitted_utc": "2026-11-16T23:26:56Z"
+  },
+  {
+   "id": "63c88149a7c5",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    19
+   ],
+   "parents": [
+    "8f90d5314029",
+    "238635f6fbdc"
+   ],
+   "seed": 359197818,
+   "run_id": "inv-new-3b05e9.r00328-join",
+   "admitted_utc": "2026-11-16T23:18:59Z"
+  },
+  {
+   "id": "b80cc12531ec",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    112,
+    18
+   ],
+   "parents": [
+    "238635f6fbdc",
+    "528a4dee5eec"
+   ],
+   "seed": 359197818,
+   "run_id": "inv-new-3b05e9.r00328-join",
+   "admitted_utc": "2026-11-16T23:18:58Z"
+  },
+  {
+   "id": "238635f6fbdc",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    121,
+    18
+   ],
+   "parents": [
+    "da39dbda3f18"
+   ],
+   "seed": 291835568,
+   "run_id": "inv-new-3b05e9.r00280-pull",
+   "admitted_utc": "2026-11-16T23:18:55Z"
+  },
+  {
+   "id": "b762a96a107d",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    117,
+    21
+   ],
+   "parents": [
+    "40a39acc553b",
+    "8f90d5314029"
+   ],
+   "seed": 1035917872,
+   "run_id": "inv-new-3b05e9.r00231-join",
+   "admitted_utc": "2026-11-16T23:15:38Z"
+  },
+  {
+   "id": "da39dbda3f18",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    19
+   ],
+   "parents": [
+    "8f90d5314029",
+    "e01308c7ba0f"
+   ],
+   "seed": 1035917872,
+   "run_id": "inv-new-3b05e9.r00231-join",
+   "admitted_utc": "2026-11-16T23:15:38Z"
+  },
+  {
+   "id": "8f90d5314029",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    19
+   ],
+   "parents": [
+    "40a39acc553b"
+   ],
+   "seed": 489523986,
+   "run_id": "inv-new-3b05e9.r00212-pull",
+   "admitted_utc": "2026-11-16T23:15:35Z"
+  },
+  {
+   "id": "061dc0452c86",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    7,
+    105,
+    27
+   ],
+   "parents": [
+    "60985c9373de",
+    "6d53796f82b3"
+   ],
+   "seed": 44654879,
+   "run_id": "inv-new-3b05e9.r00179-join",
+   "admitted_utc": "2026-11-16T23:12:51Z"
+  },
+  {
+   "id": "6d53796f82b3",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    7,
+    109,
+    26
+   ],
+   "parents": [
+    "0e0b8ace5e43",
+    "60985c9373de"
+   ],
+   "seed": 693026244,
+   "run_id": "inv-new-3b05e9.r00166-join",
+   "admitted_utc": "2026-11-16T23:12:44Z"
+  },
+  {
+   "id": "0e0b8ace5e43",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    118,
+    26
+   ],
+   "parents": [
+    "da54b6506a88"
+   ],
+   "seed": 664478248,
+   "run_id": "inv-new-3b05e9.r00159-polish",
+   "admitted_utc": "2026-11-16T23:12:41Z"
+  },
+  {
+   "id": "718e57435c0c",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    23
+   ],
+   "parents": [
+    "e01308c7ba0f",
+    "fc1fc5d3050e"
+   ],
+   "seed": 347486190,
+   "run_id": "inv-new-3b05e9.r00041-join",
+   "admitted_utc": "2026-11-16T23:01:54Z"
+  },
+  {
+   "id": "fc1fc5d3050e",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    123,
+    23
+   ],
+   "parents": [
+    "603234210cba",
+    "40a39acc553b"
+   ],
+   "seed": 712391096,
+   "run_id": "inv-new-3b05e9.r00038-join",
+   "admitted_utc": "2026-11-16T23:01:52Z"
+  },
+  {
+   "id": "603234210cba",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    34,
+    5,
+    112,
+    26
+   ],
+   "parents": [
+    "6a2c31c4bead",
+    "528a4dee5eec"
+   ],
+   "seed": 224762662,
+   "run_id": "inv-new-3b05e9.r00029-join",
+   "admitted_utc": "2026-11-16T23:00:16Z"
+  },
+  {
+   "id": "40a39acc553b",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    117,
+    21
+   ],
+   "parents": [
+    "528a4dee5eec",
+    "84ff6728e2b5"
+   ],
+   "seed": 315282419,
+   "run_id": "inv-new-3b05e9.r00014-join",
+   "admitted_utc": "2026-11-16T22:59:49Z"
+  },
+  {
+   "id": "da54b6506a88",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    121,
+    28
+   ],
+   "parents": [
+    "60985c9373de",
+    "84ff6728e2b5"
+   ],
+   "seed": 315282419,
+   "run_id": "inv-new-3b05e9.r00014-join",
+   "admitted_utc": "2026-11-16T22:59:48Z"
+  },
+  {
+   "id": "528a4dee5eec",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    107,
+    21
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g107-gd21-xx74-10.circ.txt"
+  },
+  {
+   "id": "60985c9373de",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    7,
+    105,
+    27
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad7-g105-gd27-xx73-14.circ.txt"
+  },
+  {
+   "id": "6a2c31c4bead",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    5,
+    106,
+    25
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad5-g106-gd25-xx74-9.circ.txt"
+  },
+  {
+   "id": "84ff6728e2b5",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    20
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g119-gd20-xx87-10.circ.txt"
+  },
+  {
+   "id": "e01308c7ba0f",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    117,
+    21
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g117-gd21-xx85-10.circ.txt"
+  }
+ ],
+ "parameters": {
+  "caps": {
+   "A": 31,
+   "AD": 5,
+   "GD": 23
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "t_last_improvement": 45.441,
+  "kernel_bin": "bfx-a24578108a",
+  "scheduler_choice": "repeat"
+ },
+ "seed": 474713612,
+ "found_utc": "2026-11-17T02:31:03Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 85.96,
+  "cpu_s": 86.2,
+  "since_session_start_s": 549.1
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan of every circuit of phase 2 (hub archives W2/runs/*, run folders of W3, W4, W5): the earliest circuit with this (A, AD, G, GD)"
+ },
+ "campaign": {
+  "name": "2026-11-16 phase 2, hub workstream (W2), campaign late-rf",
+  "what": "late-phase order A/B: a copy of inv-new at 125 min continued 40 min with the new2 tree, repeats before variants (the default)",
+  "sessions": [
+   {
+    "session": "2026-11-16T225920Z-3068410",
+    "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/W2/runs/inv-new --cpus 3,5,7,9 --hours 1.3333333333333333 --function aes-invsbox --seed-list <campaign archive>/W2/runs/inv-new/seeds.list --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30",
+    "cwd": "<campaign archive>/W2/snap/new1",
+    "t_start_utc": "2026-11-16T22:59:20Z",
+    "t_end_utc": "2026-11-17T00:19:25Z",
+    "status": "time",
+    "sources_sha256": "6abac0e2eee4cc38325defab61f847bed1f2810fe6c11a54070c2a6bac5de6db",
+    "code_version": "?+a12cf1b905",
+    "kernels": [
+     {
+      "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+      "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+     }
+    ]
+   },
+   {
+    "session": "2026-11-17T013000Z-4124254",
+    "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/W2/runs/inv-new --cpus 3,5,7,9 --hours 0.75 --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30",
+    "cwd": "<campaign archive>/W2/snap/new1",
+    "t_start_utc": "2026-11-17T01:30:00Z",
+    "t_end_utc": "2026-11-17T02:15:02Z",
+    "status": "time",
+    "sources_sha256": "6abac0e2eee4cc38325defab61f847bed1f2810fe6c11a54070c2a6bac5de6db",
+    "code_version": "?+a12cf1b905",
+    "kernels": [
+     {
+      "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+      "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+     }
+    ]
+   },
+   {
+    "session": "2026-11-17T022154Z-247896",
+    "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/W2/runs/late-rf --cpus 3,5,7,9 --hours 0.6666666666666666 --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30",
+    "cwd": "<campaign archive>/W2/snap/new2",
+    "t_start_utc": "2026-11-17T02:21:54Z",
+    "t_end_utc": "2026-11-17T03:01:56Z",
+    "status": "time",
+    "sources_sha256": "ee6905491021211f1f8b34296f0e4e4745ed3decb3a3f07ccbc092a47a61cace",
+    "code_version": "?+1423063878",
+    "kernels": [
+     {
+      "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+      "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+     }
+    ]
+   }
+  ],
+  "session_of_this_job": "2026-11-17T022154Z-247896",
+  "seed_list": "NIST's 91 pinned inverse S-box circuits (search/nonlinear/seeds/)",
+  "launch": "W2/bin/hub.sh (new campaign) and W2/bin/cont.sh (continuation; late-* are copies of inv-new continued with cont.sh): cd <code tree> && python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign folder> --cpus C --hours H [--function F --seed-list S] --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30 [--eps 0.25], under xsrun (the local systemd-run wrapper: CPU pinning, 3 GB memory cap)",
+  "note": "late-* began as a copy of inv-new (archive, jobs, runs, events); ancestors made before the copy are inv-new's"
+ },
+ "code": {
+  "tree_at_run": "<campaign archive>/W2/snap/new2",
+  "tree_made_by": "git archive e87c34a plus the hub workstream's uncommitted files of search/nonlinear/boolflux/hub/ (W2/bin/snap.sh)",
+  "base_commit": "e87c34a",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/hub/archive.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "08012e1",
+  "diff": {
+   "file": "code.diff.gz",
+   "sha256_uncompressed": "db616fae117cfa4ad9e4933b6668f66de02c5c32c1bf0f51dd8c3062765ebe6e",
+   "what": "diff -ruN of search/ at e87c34a against the run's tree (every changed and new file)"
+  },
+  "changed_files_vs_08012e1": {
+   "search/nonlinear/boolflux/hub/archive.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/common.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/join.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/ops.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/ops/op_linres.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/scheduler.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/tests/test_hub_instrumentation.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/tests/test_hub_invariants.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/tests/test_hub_priority.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/hub/trb_impl.py": "same-as-08012e1"
+  },
+  "committed_as": "08012e1",
+  "note": "the run used the uncommitted workstream tree recorded in code.diff.gz (base e87c34a); the code as committed is 08012e1. The files named here that the tree changed (hub/archive.py, hub/ops.py, hub/scheduler.py) equal 08012e1's. Files the tree did not change (kernel/bfx.c among them) are as at e87c34a; 08012e1 changes some of them, which the run did not use.",
+  "kernel_src_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9",
+  "kernel_src": "search/nonlinear/boolflux/kernel/bfx.c as at e87c34a (= 5a80ca3)",
+  "code_version_at_run": "?+1423063878",
+  "kernel_bin_sha256_at_run": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run. The exact commands, seeds, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 9 /usr/bin/python3 <campaign archive>/W2/snap/new2/search/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/W2/runs/late-rf --in 7a5535f804f8 --seed 474713612 --seconds 90.0 --out <campaign archive>/W2/runs/late-rf/jobs/inv-new-3b05e9.r02370-polish",
+ "environment": {
+  "cwd": "<campaign archive>/W2/snap/new2",
+  "note": "the scheduler's working folder (its code tree); the job reads its input circuit from the hub archive (--archive, --in), whose records for this circuit's lineage are in hub-lineage.json.gz"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of phase 2 (not published): W2..W5 are its workstreams, with their frozen code trees (snap/, old-tree/) and run folders (runs/, ab/)",
+  "<checkout>": "the working checkout of this repository the workstreams ran next to (at e87c34a when the runs started); the NIST seeds were read from its search/nonlinear/seeds/",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): W2/runs/late-rf, hub archive, circuit id 46c0c60d681d",
+  "sha256": "5ca6d0308f04260a3acecff9f72faa0553a98b2618ec26677e6344b7c663321b",
+  "note": "the circuit as first recorded (kernel .bfx text); this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz",
+  "code.diff.gz"
+ ]
+}

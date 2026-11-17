@@ -7,7 +7,7 @@ Small, shallow circuits for parts of ciphers: XOR circuits for linear maps and B
 with AND gates for the AES S-box and its inverse, the two searches that found them (XORFlux and
 BoolFlux), how those searches came to be, and two lower-bound proofs for AES MixColumns.
 
-**208 XOR circuits for 59 linear maps, 74 Boolean circuits for the AES S-box and 45 for its
+**208 XOR circuits for 59 linear maps, 74 Boolean circuits for the AES S-box and 52 for its
 inverse.** A circuit
 is written **G@D**: G two-input gates, with every output at depth at most D (inputs are at depth
 0). For the S-box, G counts every gate (AND, XOR, XNOR, NOT) and the number of AND gates and the
@@ -18,7 +18,8 @@ a circuit at a lower depth also counts for every higher one.
 
 Each of these has fewer gates than NIST's circuit for the same map, at the same or a lower depth
 (for the S-box: with the same number of ANDs and the same AND depth, unless the row says
-otherwise), or reaches a depth NIST's circuits do not. NIST's circuits are those of its
+otherwise), or reaches a depth NIST's circuits do not, or (for the S-box) needs fewer ANDs at
+the same gate depth. NIST's circuits are those of its
 [circuit repository](https://github.com/usnistgov/Circuits) and
 [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits).
 
@@ -44,11 +45,14 @@ otherwise), or reaches a depth NIST's circuits do not. NIST's circuits are those
 | AES S-box, 35 ANDs, AND depth 3 | **165@13**, **162@14**, **155@15** | 183@13, 172@14, 157@15 |
 | AES S-box, AND depth 3, gate depth 12 | **181@12** with 35 ANDs | none (lowest gate depth at AND depth 3: 13) |
 | AES S-box, AND depth 4, gate depth 12 | **135@12** with 38 ANDs | 141@12 with 45 ANDs |
-| AES inverse S-box, 28 ANDs, AND depth 4 | **154@15**, **143@16**, **135@19** | 156@15, 150@16, 140@19 |
-| AES inverse S-box, 32 ANDs, AND depth 4 | **131@15**, **123@16**, **119@18** | 135@15, 128@16 |
+| AES inverse S-box, 28 ANDs, AND depth 4 | **154@15**, **143@16**, **135@18**, **133@20** | 156@15, 150@16, 135@20 |
+| AES inverse S-box, 32 ANDs, AND depth 4 | **124@15**, **122@16**, **119@18** | 135@15, 128@16 |
 | AES inverse S-box, 33 ANDs, AND depth 4 | **122@14**, **117@15**, **110@18** | 123@14, 118@15, 114@18 |
-| AES inverse S-box, 34 ANDs, AND depth 4 | **131@13** | 134@13 |
-| AES inverse S-box, 35 ANDs, AND depth 3 | **154@14**, **152@15**, **149@17**, **145@20** | 190@14, 157@15, 154@20 |
+| AES inverse S-box, 34 ANDs, AND depth 4 | **130@13** | 134@13 |
+| AES inverse S-box, 35 ANDs, AND depth 3 | **154@14**, **151@15**, **149@17**, **145@19** | 190@14, 157@15 |
+| AES inverse S-box, AND depth 3, gate depth 13 | **163@13** with 35 ANDs | none (lowest gate depth at AND depth 3: 14) |
+| AES inverse S-box, AND depth 4, gate depth 12 | 162@12 with **42 ANDs** | 141@12 with 45 ANDs |
+| AES inverse S-box, AND depth 4, gate depth 11 | 168@11 with **49 ANDs** | 148@10 with 55 ANDs |
 
 For 46 of the 53 maps taken from NIST's repository, we have a circuit with fewer gates than
 NIST's at the same or a lower depth; on the other maps NIST is ahead at some depths. Our
@@ -56,9 +60,9 @@ InvMixColumns 118@5 is at the lowest depth possible for InvMixColumns, whose hea
 19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. Against NIST's 104 forward AES S-box circuits, each of our
 74 S-box circuits is a new point, and 22 of NIST's 33 Pareto points are dominated by one of ours
 (as good in all four metrics and better in at least one); at the other 11 we have only circuits
-equal to NIST's, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 45
+equal to NIST's, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 52
 inverse circuits is a new point, and 21 of NIST's 33 inverse Pareto points are dominated by one of
-ours; they come from one run (2026-11-16 16:14-21:03 UTC), published with its logs.
+ours; they come from the runs of 2026-11-16 and the night after, published with their logs.
 None of ours has fewer than 28 ANDs (NIST's open target is 27) or fewer than 103 gates (we have
 103 at gate depth 29, NIST at 32), and all of them descend from NIST's circuits. We don't claim any circuit
 is optimal or the best known. The complete comparison, map by map and depth by depth, is in

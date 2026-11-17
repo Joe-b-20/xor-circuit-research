@@ -36,7 +36,7 @@ NIST's counting unless stated.
 | Nov 14–15 | the hub: shared archive, operators, scheduler | 33/4/112/16, 33/4/107/20; the 29/4 and 30/4 families |
 | Nov 15 | structure study: algebra of the low-AND circuits, window redesigns, goal-directed runs | 28/4/131/22, 28/4/132/20; 42–47 ANDs at GD 11; 35/3/142/19 |
 | Nov 15–16 | runs against ten named NIST circuits; four methods around the kernel | 32/4/114/19, 32/7/103/29, 35/3/138/23, 35/3/181/12, 38/4/135/12, 28/4/174/14 |
-| Nov 16–17 | the logs read line by line; a faster kernel, a priority hub, faster conjugation and rebuilds, transport between the S-box and its inverse | new inverse circuits: our first at GD ≤ 12 and at AD 3 with GD 13; the inverse 29/4 and 30/4 families |
+| Nov 16–17 | the logs read line by line; a faster kernel, a priority hub, faster conjugation and rebuilds, transport between the S-box and its inverse | new inverse circuits: our first at GD ≤ 12 and at AD 3 with GD 13; the inverse 29/4 family; one forward circuit |
 
 ## Groundwork (October 31)
 
@@ -189,9 +189,10 @@ followed were each checked by identical outputs or by paired, simultaneous runs 
   labelled conjugation were staged pulls without a conjugate, and 12 forward circuits re-find a
   tuple an earlier job had reached (above; each `found.json` says which).
 
-The result was new inverse S-box circuits, among them our first at GD 12 and below, at AD 3 with
-GD 13, and in the 29/4 and 30/4 families ([circuits/](../../circuits/README.md#aes-inverse-s-box));
-nothing new for the forward S-box, and no lower A or AD in either direction.
+The result was 27 new inverse S-box circuits, among them our first at GD 12 and below, at AD 3
+with GD 13, and in the 29/4 family (the 30/4 ones are beaten by 29/4 circuits of the hub)
+([circuits/](../../circuits/README.md#aes-inverse-s-box)); for the forward S-box one, 33/4/109/18,
+from the old arm of the hub A/B; no lower A or AD in either direction.
 
 ## Three NIST pins
 

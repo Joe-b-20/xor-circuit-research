@@ -1,0 +1,295 @@
+{
+ "circuit": "aes-invsbox-a31-ad7-g115-gd27-xx84-38.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  31,
+  7,
+  115,
+  27
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "operator": "polish",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   31,
+   7,
+   116,
+   27
+  ],
+  "source_sha256": "e0926ea49df7f9044fb24615547db47169a8ae3c802086c81ddc5c5edd48813f",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a31-ad7-g116-gd27-xxn85-33-1",
+  "archive_id": "b06ef35500c7",
+  "made_by": "hub operator join"
+ },
+ "chain_root": [
+  "NIST's aes-invsbox-a32-ad4-g119-gd20-xx87-10",
+  "NIST's aes-invsbox-a32-ad7-g105-gd27-xx73-14",
+  "NIST's aes-invsbox-a33-ad4-g107-gd21-xx74-10"
+ ],
+ "lineage": [
+  {
+   "id": "2846230e6e63",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    115,
+    27
+   ],
+   "parents": [
+    "b06ef35500c7"
+   ],
+   "seed": 723668231,
+   "run_id": "inv-old-b599f0.r00212-polish",
+   "admitted_utc": "2026-11-17T00:00:44Z"
+  },
+  {
+   "id": "b06ef35500c7",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    116,
+    27
+   ],
+   "parents": [
+    "60985c9373de",
+    "2655cfef519a"
+   ],
+   "seed": 618141492,
+   "run_id": "inv-old-b599f0.r00211-join",
+   "admitted_utc": "2026-11-16T23:59:16Z"
+  },
+  {
+   "id": "2655cfef519a",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    117,
+    27
+   ],
+   "parents": [
+    "40a39acc553b",
+    "a3c56b6295b3"
+   ],
+   "seed": 695979323,
+   "run_id": "inv-old-b599f0.r00201-join",
+   "admitted_utc": "2026-11-16T23:58:35Z"
+  },
+  {
+   "id": "a3c56b6295b3",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    118,
+    27
+   ],
+   "parents": [
+    "da54b6506a88"
+   ],
+   "seed": 2806111,
+   "run_id": "inv-old-b599f0.r00165-polish",
+   "admitted_utc": "2026-11-16T23:49:38Z"
+  },
+  {
+   "id": "40a39acc553b",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    117,
+    21
+   ],
+   "parents": [
+    "528a4dee5eec",
+    "84ff6728e2b5"
+   ],
+   "seed": 235766984,
+   "run_id": "inv-old-b599f0.r00164-join",
+   "admitted_utc": "2026-11-16T23:48:09Z"
+  },
+  {
+   "id": "da54b6506a88",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    31,
+    7,
+    121,
+    28
+   ],
+   "parents": [
+    "60985c9373de",
+    "84ff6728e2b5"
+   ],
+   "seed": 235766984,
+   "run_id": "inv-old-b599f0.r00164-join",
+   "admitted_utc": "2026-11-16T23:48:09Z"
+  },
+  {
+   "id": "528a4dee5eec",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    107,
+    21
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a33-ad4-g107-gd21-xx74-10.circ.txt"
+  },
+  {
+   "id": "60985c9373de",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    7,
+    105,
+    27
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:22Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad7-g105-gd27-xx73-14.circ.txt"
+  },
+  {
+   "id": "84ff6728e2b5",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    20
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-16T22:59:21Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a32-ad4-g119-gd20-xx87-10.circ.txt"
+  }
+ ],
+ "parameters": {
+  "caps": {
+   "A": 31,
+   "AD": 7,
+   "GD": 27
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 90.0,
+  "t_last_improvement": 37.512,
+  "kernel_bin": "bfx-a24578108a",
+  "scheduler_choice": "fresh"
+ },
+ "seed": 723668231,
+ "found_utc": "2026-11-17T00:00:44Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 86.98,
+  "cpu_s": 85.44,
+  "since_session_start_s": 3684.3
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan of every circuit of phase 2 (hub archives W2/runs/*, run folders of W3, W4, W5): the earliest circuit with this (A, AD, G, GD)"
+ },
+ "campaign": {
+  "name": "2026-11-16 phase 2, hub workstream (W2), campaign inv-old",
+  "what": "inverse A/B, old arm: the hub at 5a80ca3 (bandit policy), 91 NIST inverse seeds, 80 min, then continued 45 min",
+  "sessions": [
+   {
+    "session": "2026-11-16T225920Z-3068360",
+    "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/W2/runs/inv-old --cpus 2,4,6,8 --hours 1.3333333333333333 --function aes-invsbox --seed-list <campaign archive>/W2/runs/inv-old/seeds.list --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30 --eps 0.25",
+    "cwd": "<campaign archive>/W2/snap/old",
+    "t_start_utc": "2026-11-16T22:59:20Z",
+    "t_end_utc": "2026-11-17T00:19:24Z",
+    "status": "time",
+    "sources_sha256": "512da76e0c4f7239c989b25b9d5ef2a9b77ff9c505fc6327a8f027a79e88fe76",
+    "code_version": "?+4ff7a778ab",
+    "kernels": [
+     {
+      "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+      "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+     }
+    ]
+   },
+   {
+    "session": "2026-11-17T013000Z-4124247",
+    "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/W2/runs/inv-old --cpus 2,4,6,8 --hours 0.75 --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30 --eps 0.25",
+    "cwd": "<campaign archive>/W2/snap/old",
+    "t_start_utc": "2026-11-17T01:30:00Z",
+    "t_end_utc": "2026-11-17T02:15:01Z",
+    "status": "time",
+    "sources_sha256": "512da76e0c4f7239c989b25b9d5ef2a9b77ff9c505fc6327a8f027a79e88fe76",
+    "code_version": "?+4ff7a778ab",
+    "kernels": [
+     {
+      "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+      "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+     }
+    ]
+   }
+  ],
+  "session_of_this_job": "2026-11-16T225920Z-3068360",
+  "seed_list": "NIST's 91 pinned inverse S-box circuits (search/nonlinear/seeds/)",
+  "launch": "W2/bin/hub.sh (new campaign) and W2/bin/cont.sh (continuation; late-* are copies of inv-new continued with cont.sh): cd <code tree> && python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign folder> --cpus C --hours H [--function F --seed-list S] --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30 [--eps 0.25], under xsrun (the local systemd-run wrapper: CPU pinning, 3 GB memory cap)"
+ },
+ "code": {
+  "tree_at_run": "<campaign archive>/W2/snap/old",
+  "tree_made_by": "git archive 5a80ca3",
+  "base_commit": "5a80ca3",
+  "uncommitted_changes_at_run": false,
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/hub/archive.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "5a80ca3",
+  "note": "the tree is git archive 5a80ca3 with no change (its search/ tree is the same as e87c34a's)",
+  "kernel_src_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9",
+  "kernel_src": "search/nonlinear/boolflux/kernel/bfx.c as at e87c34a (= 5a80ca3)",
+  "code_version_at_run": "?+4ff7a778ab",
+  "kernel_bin_sha256_at_run": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+  "commit_at_run": "5a80ca3"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run. The exact commands, seeds, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 2 /usr/bin/python3 <campaign archive>/W2/snap/old/search/nonlinear/boolflux/hub/op_polish.py --archive <campaign archive>/W2/runs/inv-old --in b06ef35500c7 --seed 723668231 --seconds 90.0 --out <campaign archive>/W2/runs/inv-old/jobs/inv-old-b599f0.r00212-polish",
+ "environment": {
+  "cwd": "<campaign archive>/W2/snap/old",
+  "note": "the scheduler's working folder (its code tree); the job reads its input circuit from the hub archive (--archive, --in), whose records for this circuit's lineage are in hub-lineage.json.gz"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of phase 2 (not published): W2..W5 are its workstreams, with their frozen code trees (snap/, old-tree/) and run folders (runs/, ab/)",
+  "<checkout>": "the working checkout of this repository the workstreams ran next to (at e87c34a when the runs started); the NIST seeds were read from its search/nonlinear/seeds/",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): W2/runs/inv-old, hub archive, circuit id 2846230e6e63",
+  "sha256": "4bb90bd69d32758b21edec16221b20f61d3954492a0658f6a21d08f272d28c4d",
+  "note": "the circuit as first recorded (kernel .bfx text); this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz"
+ ]
+}

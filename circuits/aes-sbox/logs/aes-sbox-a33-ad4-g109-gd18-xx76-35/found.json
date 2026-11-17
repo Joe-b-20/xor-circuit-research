@@ -1,0 +1,360 @@
+{
+ "circuit": "aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  33,
+  4,
+  109,
+  18
+ ],
+ "found_by": "BoolFlux",
+ "method": "depth pull",
+ "method_description": "gate kernel with one cap lowered below the start circuit's value",
+ "operator": "pull",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   33,
+   4,
+   108,
+   19
+  ],
+  "source_sha256": "f589fb22c7a98e51184063a177734148fa20c2b87778d8779987639225c8a8ae",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a33-ad4-g108-gd19-xx75-31",
+  "archive_id": "3e4c4ba8f2a4",
+  "made_by": "hub operator join"
+ },
+ "chain_root": [
+  "NIST's aes-sbox-a32-ad4-g117-gd19-xx85-6",
+  "NIST's aes-sbox-a33-ad4-g105-gd25-xx72-6",
+  "NIST's aes-sbox-a33-ad4-g106-gd22-xx73-5",
+  "NIST's aes-sbox-a33-ad4-g108-gd20-xx75-5"
+ ],
+ "lineage": [
+  {
+   "id": "50d35fc64e35",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    109,
+    18
+   ],
+   "parents": [
+    "3e4c4ba8f2a4"
+   ],
+   "seed": 921593529,
+   "run_id": "fwd-old-f7dff6.r00244-pull",
+   "admitted_utc": "2026-11-17T01:29:40Z"
+  },
+  {
+   "id": "3e4c4ba8f2a4",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    108,
+    19
+   ],
+   "parents": [
+    "ec92be4c3680",
+    "6740aa998f73"
+   ],
+   "seed": 334663467,
+   "run_id": "fwd-old-f7dff6.r00239-join",
+   "admitted_utc": "2026-11-17T01:27:23Z"
+  },
+  {
+   "id": "6740aa998f73",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    110,
+    18
+   ],
+   "parents": [
+    "617d1a93414a",
+    "b89bbaddca86"
+   ],
+   "seed": 142478955,
+   "run_id": "fwd-old-f7dff6.r00226-join",
+   "admitted_utc": "2026-11-17T01:24:59Z"
+  },
+  {
+   "id": "b89bbaddca86",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    109,
+    19
+   ],
+   "parents": [
+    "ec92be4c3680"
+   ],
+   "seed": 499281330,
+   "run_id": "fwd-old-f7dff6.r00211-pull",
+   "admitted_utc": "2026-11-17T01:23:54Z"
+  },
+  {
+   "id": "ec92be4c3680",
+   "operator": "polish",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    109,
+    19
+   ],
+   "parents": [
+    "acc00fcc74f2"
+   ],
+   "seed": 551698153,
+   "run_id": "fwd-old-f7dff6.r00193-polish",
+   "admitted_utc": "2026-11-17T01:21:00Z"
+  },
+  {
+   "id": "acc00fcc74f2",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    110,
+    19
+   ],
+   "parents": [
+    "c63979459361",
+    "46b66cf3aa1e"
+   ],
+   "seed": 97817441,
+   "run_id": "fwd-old-f7dff6.r00192-join",
+   "admitted_utc": "2026-11-17T01:19:32Z"
+  },
+  {
+   "id": "46b66cf3aa1e",
+   "operator": "join",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    107,
+    21
+   ],
+   "parents": [
+    "c8f64f4bf1ff",
+    "b5694373e83b"
+   ],
+   "seed": 352835698,
+   "run_id": "fwd-old-f7dff6.r00170-join",
+   "admitted_utc": "2026-11-17T01:13:51Z"
+  },
+  {
+   "id": "617d1a93414a",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    119,
+    18
+   ],
+   "parents": [
+    "073a719e1bc5"
+   ],
+   "seed": 708541596,
+   "run_id": "fwd-old-f7dff6.r00086-pull",
+   "admitted_utc": "2026-11-17T00:51:50Z"
+  },
+  {
+   "id": "b5694373e83b",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    108,
+    20
+   ],
+   "parents": [
+    "9afcc26c8b63"
+   ],
+   "seed": 818302648,
+   "run_id": "fwd-old-f7dff6.r00063-pull",
+   "admitted_utc": "2026-11-17T00:43:05Z"
+  },
+  {
+   "id": "c63979459361",
+   "operator": "pull",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    112,
+    17
+   ],
+   "parents": [
+    "d77f93c65e73"
+   ],
+   "seed": 897499852,
+   "run_id": "fwd-old-f7dff6.r00059-pull",
+   "admitted_utc": "2026-11-17T00:41:37Z"
+  },
+  {
+   "id": "d77f93c65e73",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    108,
+    20
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-17T00:19:40Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g108-gd20-xx75-5.circ.txt"
+  },
+  {
+   "id": "9afcc26c8b63",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    106,
+    22
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-17T00:19:40Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g106-gd22-xx73-5.circ.txt"
+  },
+  {
+   "id": "c8f64f4bf1ff",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    33,
+    4,
+    105,
+    25
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-17T00:19:40Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-sbox/aes-sbox-a33-ad4-g105-gd25-xx72-6.circ.txt"
+  },
+  {
+   "id": "073a719e1bc5",
+   "operator": "seed",
+   "tuple_A_AD_G_GD": [
+    32,
+    4,
+    117,
+    19
+   ],
+   "parents": [],
+   "seed": null,
+   "run_id": null,
+   "admitted_utc": "2026-11-17T00:19:40Z",
+   "file": "<campaign archive>/W2/snap/old/search/nonlinear/seeds/aes-sbox/aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt"
+  }
+ ],
+ "parameters": {
+  "caps": {
+   "A": 33,
+   "AD": null,
+   "GD": 18
+  },
+  "objective": "a,ad,cost,gd",
+  "seconds": 50.7,
+  "lowered": "GD",
+  "t_last_improvement": 4.855,
+  "kernel_bin": "bfx-a24578108a",
+  "scheduler_choice": "fresh"
+ },
+ "seed": 921593529,
+ "found_utc": "2026-11-17T01:29:40Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 48.27,
+  "cpu_s": 48.37,
+  "since_session_start_s": 4201.7
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan of every circuit of phase 2 (hub archives W2/runs/*, run folders of W3, W4, W5): the earliest circuit with this (A, AD, G, GD)"
+ },
+ "campaign": {
+  "name": "2026-11-16 phase 2, hub workstream (W2), campaign fwd-old",
+  "what": "forward A/B, old arm: the hub at 5a80ca3, 104 NIST forward seeds, 70 min",
+  "sessions": [
+   {
+    "session": "2026-11-17T001939Z-3752797",
+    "command": "python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/W2/runs/fwd-old --cpus 2,4,6,8 --hours 1.1666666666666667 --function aes-sbox --seed-list <campaign archive>/W2/runs/fwd-old/seeds.list --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30 --eps 0.25",
+    "cwd": "<campaign archive>/W2/snap/old",
+    "t_start_utc": "2026-11-17T00:19:39Z",
+    "t_end_utc": "2026-11-17T01:29:43Z",
+    "status": "time",
+    "sources_sha256": "512da76e0c4f7239c989b25b9d5ef2a9b77ff9c505fc6327a8f027a79e88fe76",
+    "code_version": "?+4ff7a778ab",
+    "kernels": [
+     {
+      "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+      "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+     }
+    ]
+   }
+  ],
+  "session_of_this_job": "2026-11-17T001939Z-3752797",
+  "seed_list": "NIST's 104 pinned forward S-box circuits (search/nonlinear/seeds/)",
+  "launch": "W2/bin/hub.sh (new campaign) and W2/bin/cont.sh (continuation; late-* are copies of inv-new continued with cont.sh): cd <code tree> && python3 search/nonlinear/boolflux/hub/scheduler.py --dir <campaign folder> --cpus C --hours H [--function F --seed-list S] --ops polish,pull,join,trb --seed 2 --seconds polish=90,pull=90,join=60,trb=30 [--eps 0.25], under xsrun (the local systemd-run wrapper: CPU pinning, 3 GB memory cap)"
+ },
+ "code": {
+  "tree_at_run": "<campaign archive>/W2/snap/old",
+  "tree_made_by": "git archive 5a80ca3",
+  "base_commit": "5a80ca3",
+  "uncommitted_changes_at_run": false,
+  "files": [
+   "search/nonlinear/boolflux/hub/ops.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/hub/archive.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "5a80ca3",
+  "note": "the tree is git archive 5a80ca3 with no change (its search/ tree is the same as e87c34a's)",
+  "kernel_src_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9",
+  "kernel_src": "search/nonlinear/boolflux/kernel/bfx.c as at e87c34a (= 5a80ca3)",
+  "code_version_at_run": "?+4ff7a778ab",
+  "kernel_bin_sha256_at_run": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+  "commit_at_run": "5a80ca3"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted hub job (not bit-reproducible); not re-run. The exact commands, seeds, code and the run's own logs for this circuit are here"
+ },
+ "command": "taskset -c 2 /usr/bin/python3 <campaign archive>/W2/snap/old/search/nonlinear/boolflux/hub/op_pull.py --archive <campaign archive>/W2/runs/fwd-old --in 3e4c4ba8f2a4 --seed 921593529 --seconds 50.7 --out <campaign archive>/W2/runs/fwd-old/jobs/fwd-old-f7dff6.r00244-pull",
+ "environment": {
+  "cwd": "<campaign archive>/W2/snap/old",
+  "note": "the scheduler's working folder (its code tree); the job reads its input circuit from the hub archive (--archive, --in), whose records for this circuit's lineage are in hub-lineage.json.gz"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of phase 2 (not published): W2..W5 are its workstreams, with their frozen code trees (snap/, old-tree/) and run folders (runs/, ab/)",
+  "<checkout>": "the working checkout of this repository the workstreams ran next to (at e87c34a when the runs started); the NIST seeds were read from its search/nonlinear/seeds/",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): W2/runs/fwd-old, hub archive, circuit id 50d35fc64e35",
+  "sha256": "5abe2d09b74039d19879cd1657450205457c215fa8de0995b515591549a5b227",
+  "note": "the circuit as first recorded (kernel .bfx text); this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-lineage.json.gz"
+ ]
+}

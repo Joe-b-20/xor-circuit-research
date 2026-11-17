@@ -1,0 +1,117 @@
+{
+ "target": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+ "A": 31,
+ "AD": 5,
+ "G": 143,
+ "GD": 19,
+ "class": "other",
+ "reference": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+ "start": {
+  "path": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+  "sha256": "3abb73b5470c10856940a1d74b55ce9de18dcdc06745dbee227becfad69ec552",
+  "tuple": [
+   31,
+   5,
+   117,
+   20
+  ]
+ },
+ "parent": {
+  "path": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+  "sha256": "3abb73b5470c10856940a1d74b55ce9de18dcdc06745dbee227becfad69ec552"
+ },
+ "op": "transport",
+ "params": {
+  "from": "aes-sbox",
+  "to": "aes-invsbox",
+  "maps": "id,188:0,189:0,screen:3,depth:2",
+  "ladder": [
+   -1,
+   0,
+   1,
+   2
+  ],
+  "synth_seeds": 6,
+  "bp_runs": 6,
+  "build_seconds": 300.0,
+  "pull": "g:+0:150,m:+0:150,m:-1:170",
+  "pull_deep": "g:+0:120,m:s+2:150,m:s:200",
+  "deep_margin": 1,
+  "pull_n": 2,
+  "screen_runs": 2
+ },
+ "how": "transport 81:4 cap19",
+ "lineage": [
+  "transport aes-sbox -> aes-invsbox",
+  "conj lam 81 k 4 (depth rank 1 (flat GD 19 G 173))",
+  "synth cap19 -> 31/5/143/19"
+ ],
+ "method": "ops/transport.py: AES S-box -> AES inverse S-box transport (S^-1 = Aff^-1 o F o Aff^-1), affine maps folded into the first and last linear layers (trb Paar with Kraft deadlines at gate-depth caps start GD -1,0,1,2, then trb/Boyar-Peralta polish), then conjpull staged pull --conj id g:+0:150,m:+0:150,m:-1:170",
+ "command": "/usr/bin/python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/transport.py --in <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt --target <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt --seed 105 --seconds 1200 --out <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20 --maps id,188:0,189:0,screen:3,depth:2",
+ "seed": 105,
+ "elapsed_s": 253.1,
+ "code": {
+  "git": "",
+  "dirty": null,
+  "diff_sha256": null,
+  "tree": "not a git checkout",
+  "sources_sha256": "e03338b92aabdc2dd18faffb615bd67c6719f9f7374be5e7f0e85bdbaf28c053",
+  "ops_sha256": {
+   "bottom.py": "cbbfb59018555d14f5932c67b0c9526b1bddfbb18a7e43901f962e203d4dbffa",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "2efb852dd9f5a4d64827aa918989898e203f8801454b4eae2b3ebe91a5047604",
+   "rebase.py": "7ddec715dbef1253c877611ed0b37049d116539fa297b6363dfd602ded7cbe42",
+   "rebuild_common.py": "7a6af13cda75b509ea3aabaeb8ed082e072af422ab5ea228758781934ed03dfe",
+   "satlns.py": "6a3f6d0ed69dd9fd8ccd809722a4204555e7aea2fb6a33aafee52277e6a0bdab",
+   "transport.py": "6a9b114a234ddd324bfaba367782ce7ab0cfac6655fc8edd5bc5ba70cc1c43ee"
+  }
+ },
+ "aes_check": "OK   <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/transport-a31-ad5-g143-gd19-c537694027.circ.txt  A AD G GD = 31 5 143 19  counts {'AND': 31, 'XNOR': 25, 'XOR': 87}  (aes-invsbox)",
+ "aes_check_full": "OK   <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/transport-a31-ad5-g143-gd19-c537694027.circ.txt  A AD G GD = 31 5 143 19  counts {'AND': 31, 'XNOR': 25, 'XOR': 87}  (aes-invsbox)\n     new Pareto point on pinned set: no (dominated by aes-invsbox-a28-ad4-g140-gd19-xx112-30.circ.txt, aes-invsbox-a28-ad5-g132-gd19-xx104-23.circ.txt)\n     published best G at GD<=19: 33 4 114 18 (aes-invsbox-a33-ad4-g114-gd18-xx81-11.circ.txt, gain -29)\n     published best G at A<=31: 28 5 126 27 (aes-invsbox-a28-ad5-g126-gd27-xx98-26.circ.txt, gain -17)\n     published best G at A<=31, GD<=19: 28 5 132 19 (aes-invsbox-a28-ad5-g132-gd19-xx104-23.circ.txt, gain -11)\n",
+ "circuit_sha256": "c537694027bd0a81adcc6b9a010825408d237f9936347abe0bbfdc2d6c7512ab",
+ "path_certified": true,
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-invsbox",
+ "run": {
+  "run_record": "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/run.json",
+  "kind": "ops.transport",
+  "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/transport.py --in <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt --target <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt --seed 105 --seconds 1200 --out <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20 --maps id,188:0,189:0,screen:3,depth:2",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/transport.py",
+   "--in",
+   "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+   "--target",
+   "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+   "--seed",
+   "105",
+   "--seconds",
+   "1200",
+   "--out",
+   "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20",
+   "--maps",
+   "id,188:0,189:0,screen:3,depth:2"
+  ],
+  "cwd": "<campaign archive>/W5/snap/t3/tree",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "e03338b92aabdc2dd18faffb615bd67c6719f9f7374be5e7f0e85bdbaf28c053",
+  "seeds": {
+   "seed": 105,
+   "build_rng": "random.Random(seed x 100003 + lam x 8 + k) per map",
+   "pull_seed": "seed x 10 + pull index"
+  },
+  "function": "aes-invsbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-16T23:34:12Z"
+}

@@ -1,0 +1,134 @@
+{
+ "target": "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt",
+ "A": 31,
+ "AD": 5,
+ "G": 120,
+ "GD": 18,
+ "class": "strict",
+ "reference": "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt",
+ "start": {
+  "path": "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt",
+  "sha256": "91e18d1631c2b1e6a492ca0c6d971d628e63078c65228a07badcd92221eff3c2",
+  "tuple": [
+   31,
+   5,
+   123,
+   19
+  ]
+ },
+ "parent": {
+  "path": "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt",
+  "sha256": "91e18d1631c2b1e6a492ca0c6d971d628e63078c65228a07badcd92221eff3c2"
+ },
+ "op": "conjpull",
+ "params": {
+  "conj": "id",
+  "schedule": "g:+0:300,m:+0:300,m:-1:250",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 31,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-a24578108a",
+  "function": "aes-invsbox"
+ },
+ "how": "t18-top",
+ "lineage": [
+  "start",
+  "stage 1 g:19 best 31/5/120/19",
+  "stage 2 m:19 best 31/5/119/19",
+  "stage 3 m:18:250 seed 7044020 rk 1",
+  "t18-top"
+ ],
+ "method": "AES inverse S-box: ops/conjpull.py: GF(2^8) conjugate (conj3 screen + build_conj) then staged kernel pulls g:+0:300,m:+0:300,m:-1:250 (kernel bfx-a24578108a, repair_keep 1 unless a stage says rk0/rk1); search states may exceed caps, recorded circuits inside A<=31 AD<=5",
+ "command": "/usr/bin/python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt --target <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt --seed 7044 --seconds 900 --out <campaign archive>/W5/runs/c-06-31-5-123-19 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250",
+ "seed": 7044,
+ "elapsed_s": 846.2,
+ "code": {
+  "git": "",
+  "dirty": null,
+  "diff_sha256": null,
+  "tree": "not a git checkout",
+  "sources_sha256": "e03338b92aabdc2dd18faffb615bd67c6719f9f7374be5e7f0e85bdbaf28c053",
+  "ops_sha256": {
+   "bottom.py": "cbbfb59018555d14f5932c67b0c9526b1bddfbb18a7e43901f962e203d4dbffa",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "2efb852dd9f5a4d64827aa918989898e203f8801454b4eae2b3ebe91a5047604",
+   "rebase.py": "7ddec715dbef1253c877611ed0b37049d116539fa297b6363dfd602ded7cbe42",
+   "rebuild_common.py": "7a6af13cda75b509ea3aabaeb8ed082e072af422ab5ea228758781934ed03dfe",
+   "satlns.py": "6a3f6d0ed69dd9fd8ccd809722a4204555e7aea2fb6a33aafee52277e6a0bdab",
+   "transport.py": "6a9b114a234ddd324bfaba367782ce7ab0cfac6655fc8edd5bc5ba70cc1c43ee"
+  },
+  "kernel": "<campaign archive>/W5/cache/bin/bfx-a24578108a",
+  "kernel_sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+  "kernel_src_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+ },
+ "aes_check": "OK   <campaign archive>/W5/runs/c-06-31-5-123-19/conjpull-a31-ad5-g120-gd18-a09a773261.circ.txt  A AD G GD = 31 5 120 18  counts {'AND': 31, 'XNOR': 30, 'XOR': 59}  (aes-invsbox)",
+ "aes_check_full": "OK   <campaign archive>/W5/runs/c-06-31-5-123-19/conjpull-a31-ad5-g120-gd18-a09a773261.circ.txt  A AD G GD = 31 5 120 18  counts {'AND': 31, 'XNOR': 30, 'XOR': 59}  (aes-invsbox)\n     new Pareto point on pinned set: YES\n     published best G at GD<=18: 33 4 114 18 (aes-invsbox-a33-ad4-g114-gd18-xx81-11.circ.txt, gain -6)\n     published best G at A<=31: 28 5 126 27 (aes-invsbox-a28-ad5-g126-gd27-xx98-26.circ.txt, gain +6)\n     published best G at A<=31, GD<=18: 28 5 147 16 (aes-invsbox-a28-ad5-g147-gd16-xx119-25.circ.txt, gain +27)\n",
+ "circuit_sha256": "a09a7732612cc3e32f7b54acd398f8bf5d0d6be9b42b5bf196ab136274e53cb3",
+ "path_certified": true,
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-invsbox",
+ "run": {
+  "run_record": "<campaign archive>/W5/runs/c-06-31-5-123-19/run.json",
+  "kind": "ops.conjpull",
+  "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt --target <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt --seed 7044 --seconds 900 --out <campaign archive>/W5/runs/c-06-31-5-123-19 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250",
+  "argv": [
+   "/usr/bin/python3",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py",
+   "--in",
+   "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt",
+   "--target",
+   "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1/conjpull-a31-ad5-g123-gd19-91e18d1631.circ.txt",
+   "--seed",
+   "7044",
+   "--seconds",
+   "900",
+   "--out",
+   "<campaign archive>/W5/runs/c-06-31-5-123-19",
+   "--function",
+   "aes-invsbox",
+   "--conj",
+   "id",
+   "--schedule",
+   "g:+0:300,m:+0:300,m:-1:250"
+  ],
+  "cwd": "<campaign archive>/W5/snap/t3/tree",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "e03338b92aabdc2dd18faffb615bd67c6719f9f7374be5e7f0e85bdbaf28c053",
+  "seeds": {
+   "seed": 7044,
+   "stage_seed": "seed x 1000 + stage index x 10 + beam index (or the stage s<N> option); every stage and kernel seed is an event in events.jsonl.gz",
+   "kernel_seed": "stage seed x 100000 + sub-step (+7, +13 within an osc step)",
+   "trb_rng": "random.Random(stage seed)"
+  },
+  "function": "aes-invsbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/W5/cache/bin/bfx-a24578108a",
+    "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-17T00:21:21Z"
+}

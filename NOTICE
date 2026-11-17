@@ -45,9 +45,10 @@ Files derived from it, and how they were changed (2026-10-30 unless noted):
   keep their authors' rights and terms.
 - circuits/aes-sbox/: 74 circuits found by BoolFlux, all of them descended from NIST's circuits
   above; each one's logs name the circuit it started from.
-- circuits/aes-invsbox/: 45 inverse S-box circuits found by BoolFlux (2026-11-16), all of them
-  descended from NIST's inverse circuits above; each one's logs name the circuit it started from
-  and hold its lineage back to NIST's circuits.
+- circuits/aes-invsbox/: 52 inverse S-box circuits found by BoolFlux (2026-11-16 and 11-17), all
+  of them descended from NIST's circuits above (46 from its inverse circuits, 6 from its forward
+  ones through our forward circuits); each one's logs name the circuit it started from and hold
+  its lineage back to NIST's circuits.
 - search/linear/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
   repository files (targets/nist/), as those versions used them (2026-10-24 to 10-28), and a
   saved copy of NIST's list-of-circuits web page (v4, targets/nist/invmixcolumns/).

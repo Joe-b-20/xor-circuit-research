@@ -1,0 +1,131 @@
+{
+ "op": "bottom",
+ "target": "aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+ "seed": 55,
+ "status": "ok",
+ "start": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+ "start_tuple": [
+  45,
+  4,
+  141,
+  12
+ ],
+ "params": {
+  "cut": 4,
+  "cap": 12,
+  "amax": 45,
+  "iters": 60000,
+  "pw": "3",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1
+ },
+ "wall_s": 883.6,
+ "n_written": 5,
+ "rejected": {
+  "outside": 0,
+  "dominated": 6,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 94729}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 94729, \"kernel_seed\": 94729, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 996812}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 996812, \"kernel_seed\": 996812, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 205780}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 205780, \"kernel_seed\": 205780, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 157257}": {
+   "offered": 1,
+   "written": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 157257, \"kernel_seed\": 157257, \"caps\": {\"A\": 42, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 775287}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 775287, \"kernel_seed\": 775287, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+   "offered": 1,
+   "written": 1
+  },
+  "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 317392}": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.24,
+  "verify_s": 0.284,
+  "verify_calls": 5
+ },
+ "notes": [],
+ "utc": "2026-11-17T02:18:19Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    43,
+    4,
+    161,
+    12
+   ],
+   "file": "<campaign archive>/W4/runs/invbot45f/bottom-a43-ad4-g161-gd12-d06db08496.circ.txt",
+   "how": "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 775287, \"kernel_seed\": 775287, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}",
+   "t": 832.5,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    42,
+    4,
+    162,
+    12
+   ],
+   "file": "<campaign archive>/W4/runs/invbot45f/bottom-a42-ad4-g162-gd12-5b72765bb2.circ.txt",
+   "how": "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 157257, \"kernel_seed\": 157257, \"caps\": {\"A\": 42, \"AD\": 4, \"GD\": 12}}",
+   "t": 691.5,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    43,
+    4,
+    161,
+    12
+   ],
+   "file": "<campaign archive>/W4/runs/invbot45f/bottom-a43-ad4-g161-gd12-d06db08496.circ.txt",
+   "how": "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 775287, \"kernel_seed\": 775287, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}",
+   "t": 832.5,
+   "class": "other"
+  }
+ ]
+}

@@ -293,7 +293,7 @@ totals. Compute before v1 is in [search/linear/HISTORY.md](../search/linear/HIST
 
 ## AES S-box circuits
 
-The 74 circuits in [aes-sbox/](aes-sbox/), found by BoolFlux from 2026-11-13 to 2026-11-16 on
+The 74 circuits in [aes-sbox/](aes-sbox/), found by BoolFlux from 2026-11-13 to 2026-11-17 on
 the laptop above. Most were found by a short job (a few seconds to half an hour, one process)
 that started from an earlier circuit, ours or NIST's, so a job's time is not the time from
 scratch: each circuit grew through a chain of such jobs, and the chain is not timed as a whole.
@@ -357,7 +357,7 @@ Read from each `logs/<name>/found.json`:
 | [aes-sbox 32/7/103/29](aes-sbox/aes-sbox-a32-ad7-g103-gd29-xx71-25.circ.txt) | conjugation | 2026-11-16 03:03 | 10 min | job start | job 17 min | from NIST 32/7/103/32 |
 | [aes-sbox 33/4/115/15](aes-sbox/aes-sbox-a33-ad4-g115-gd15-xx82-19.circ.txt) | join | 2026-11-14 15:48 ¹ | 19 min | run start | — | join: front of NIST 32/4/127/15, back of our 37/4/121/14 |
 | [aes-sbox 33/4/112/16](aes-sbox/aes-sbox-a33-ad4-g112-gd16-xx79-28.circ.txt) | gate kernel (hub) | 2026-11-14 18:30 | 17 s | kernel start in the hub job | wall 101 s, CPU 100 s | from our 33/4/113/16 |
-| [aes-sbox 33/4/110/18](aes-sbox/aes-sbox-a33-ad4-g110-gd18-xx77-26.circ.txt) | gate kernel | 2026-11-13 19:02 | 17 s | job start | — | from NIST 33/4/110/20; iteration 47182 of a deterministic job |
+| [aes-sbox 33/4/109/18](aes-sbox/aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt) | depth pull (hub) | 2026-11-17 01:29 | 5 s | kernel start in the hub job | wall 48 s, CPU 48 s | from our 33/4/108/19 (a join in the same campaign) |
 | [aes-sbox 33/4/108/19](aes-sbox/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt) | gate kernel | 2026-11-13 19:01 | 6 s | job start | — | from NIST 33/4/108/20; iteration 16645 of a deterministic job |
 | [aes-sbox 33/4/107/20](aes-sbox/aes-sbox-a33-ad4-g107-gd20-xx74-26.circ.txt) | depth pull (hub) | 2026-11-14 18:14 | 79 s | kernel start in the hub job | wall 101 s, CPU 100 s | from NIST 33/4/106/22 |
 | [aes-sbox 34/4/134/13](aes-sbox/aes-sbox-a34-ad4-g134-gd13-xx100-51.circ.txt) | gate kernel (hub) | 2026-11-14 19:42 | 45 s | kernel start in the hub job | wall 101 s, CPU 100 s | from NIST 35/4/133/13 |

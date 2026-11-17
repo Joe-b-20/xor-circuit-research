@@ -1,0 +1,226 @@
+{
+ "circuit": "aes-invsbox-a31-ad5-g133-gd16-xxn102-44-1.circ.txt",
+ "function": "AES S-box, inverse (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  31,
+  5,
+  133,
+  16
+ ],
+ "found_by": "BoolFlux",
+ "method": "staged pull",
+ "method_description": "staged pull: staged gate-kernel pulls of the start as given, no conjugate applied in this run (ops/conjpull.py with --conj id)",
+ "operator": "conjpull",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "tuple_A_AD_G_GD": [
+   31,
+   5,
+   132,
+   17
+  ],
+  "source_sha256": "21187e60c6f0cf222e957f536577c716ba4a72f60efc75eecb89819a2fa62c5c",
+  "file": "start.circ.txt",
+  "circuit_name": "aes-invsbox-a31-ad5-g132-gd17-xx101-46",
+  "made_by": "an earlier run of the same workstream (chain-*/ in the logs)"
+ },
+ "chain_root": "our forward S-box circuit circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt (descended from NIST's forward circuits)",
+ "lineage": [
+  {
+   "step": 1,
+   "folder": "chain-1-transport/",
+   "kind": "ops.transport",
+   "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/transport.py --in <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt --target <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt --seed 100 --seconds 1200 --out <campaign archive>/W5/runs/r2-01-f2i-31-5-116-22 --maps id,188:0,189:0,screen:3,depth:2",
+   "seed": 100,
+   "input": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt",
+   "wrote": "<campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/transport-a31-ad5-g149-gd18-6ac07d63d2.circ.txt",
+   "wrote_sha256": "6ac07d63d2e354221ae44cc97e3da2df573d476efe4af6db9cc26e821ae86b24",
+   "t_start_utc": "2026-11-16T23:10:44Z",
+   "t_end_utc": "2026-11-16T23:29:57Z"
+  },
+  {
+   "step": 2,
+   "folder": "chain-2-conjpull/",
+   "kind": "ops.conjpull",
+   "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/transport-a31-ad5-g149-gd18-6ac07d63d2.circ.txt --target <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g116-gd22-xx85-6.circ.txt --seed 1001 --seconds 417 --out <campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/pull-1 --function aes-invsbox --conj id --schedule g:+0:150,m:+0:150,m:-1:170",
+   "seed": 1001,
+   "input": "<campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/transport-a31-ad5-g149-gd18-6ac07d63d2.circ.txt",
+   "wrote": "<campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/pull-1/conjpull-a31-ad5-g128-gd18-feb327c49a.circ.txt",
+   "wrote_sha256": "feb327c49a430ffd8d7651563973a9ae3c841fd3e83d0da7513ad1f46d38c334",
+   "t_start_utc": "2026-11-16T23:23:17Z",
+   "t_end_utc": "2026-11-16T23:29:57Z"
+  },
+  {
+   "step": 3,
+   "folder": "chain-3-conjpull/",
+   "kind": "ops.conjpull",
+   "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/pull-1/conjpull-a31-ad5-g128-gd18-feb327c49a.circ.txt --target <campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/pull-1/conjpull-a31-ad5-g128-gd18-feb327c49a.circ.txt --seed 7034 --seconds 900 --out <campaign archive>/W5/runs/c-01-31-5-128-18 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250",
+   "seed": 7034,
+   "input": "<campaign archive>/W5/runs/r2-01-f2i-31-5-116-22/pull-1/conjpull-a31-ad5-g128-gd18-feb327c49a.circ.txt",
+   "wrote": "<campaign archive>/W5/runs/c-01-31-5-128-18/conjpull-a31-ad5-g132-gd17-21187e60c6.circ.txt",
+   "wrote_sha256": "21187e60c6f0cf222e957f536577c716ba4a72f60efc75eecb89819a2fa62c5c",
+   "t_start_utc": "2026-11-17T00:33:23Z",
+   "t_end_utc": "2026-11-17T00:47:29Z"
+  },
+  {
+   "step": 4,
+   "folder": "./",
+   "kind": "ops.conjpull",
+   "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/c-01-31-5-128-18/conjpull-a31-ad5-g132-gd17-21187e60c6.circ.txt --target <campaign archive>/W5/runs/c-01-31-5-128-18/conjpull-a31-ad5-g132-gd17-21187e60c6.circ.txt --seed 7047 --seconds 900 --out <campaign archive>/W5/runs/c-01-31-5-128-18-31-5-132-17 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250",
+   "seed": 7047,
+   "input": "<campaign archive>/W5/runs/c-01-31-5-128-18/conjpull-a31-ad5-g132-gd17-21187e60c6.circ.txt",
+   "wrote": "<campaign archive>/W5/runs/c-01-31-5-128-18-31-5-132-17/conjpull-a31-ad5-g133-gd16-f4fa341edb.circ.txt",
+   "wrote_sha256": "f4fa341edb5a67ee873c09d6320534172b369e38725c7d6d3a4ae1ff178d1096",
+   "t_start_utc": "2026-11-17T00:49:43Z",
+   "t_end_utc": "2026-11-17T01:03:51Z"
+  }
+ ],
+ "parameters": {
+  "conj": "id",
+  "schedule": "g:+0:300,m:+0:300,m:-1:250",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 31,
+   "AD": 5
+  },
+  "kernel_bin": "bfx-a24578108a",
+  "function": "aes-invsbox",
+  "stages_done": [
+   "start",
+   "stage 1 g:17 best 31/5/130/17",
+   "stage 2 m:17 best 31/5/129/17",
+   "stage 3 m:16:250 seed 7047020 rk 1",
+   "o16-repair"
+  ],
+  "how": "o16-repair"
+ },
+ "seed": 7047,
+ "found_utc": "2026-11-17T01:01:14Z",
+ "found_utc_source": "the run's improvement event for this circuit (events.jsonl.gz), from the run's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 691.573
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "scan of every circuit of phase 2 (hub archives W2/runs/*, run folders of W3, W4, W5): the earliest circuit with this (A, AD, G, GD)"
+ },
+ "campaign": {
+  "name": "2026-11-16 phase 2, transport workstream (W5)",
+  "what": "forward -> inverse transports of our forward circuits (W5/scripts/mkjobs.py, lane.py), and chained staged pulls of their near misses (W5/scripts/chain.py), one CPU per job"
+ },
+ "code": {
+  "tree_at_run": "<campaign archive>/W5/snap/t3/tree",
+  "tree_made_by": "git archive e87c34a plus the transport workstream's ops/transport.py and tests/test_transport.py (W5/scripts/snap.sh)",
+  "base_commit": "e87c34a",
+  "uncommitted_changes_at_run": true,
+  "files": [
+   "search/nonlinear/boolflux/ops/conjpull.py",
+   "search/nonlinear/boolflux/ops/conj_lib/",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "files_at": "e87c34a",
+  "diff": {
+   "file": "code.diff.gz",
+   "sha256_uncompressed": "f0083dee771852e3571d8e6a29a9a92fd5df58956c840fb7019357764e8e4163",
+   "what": "diff -ruN of search/ at e87c34a against the run's tree (every changed and new file)"
+  },
+  "changed_files_vs_08012e1": {
+   "search/nonlinear/boolflux/ops/transport.py": "same-as-08012e1",
+   "search/nonlinear/boolflux/tests/test_transport.py": "same-as-08012e1"
+  },
+  "committed_as": "08012e1",
+  "note": "the run used the uncommitted workstream tree recorded in code.diff.gz (base e87c34a); the code as committed is 08012e1. None of the files named here was changed in the tree. Files the tree did not change (kernel/bfx.c among them) are as at e87c34a; 08012e1 changes some of them, which the run did not use. This job ran ops/conjpull.py, unchanged in the tree (as at e87c34a); the tree's uncommitted file ops/transport.py made the start circuit's lineage (chain-*/), not this job.",
+  "kernel_src_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9",
+  "kernel_src": "search/nonlinear/boolflux/kernel/bfx.c as at e87c34a (= 5a80ca3)",
+  "kernel_bin_at_run": [
+   {
+    "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+    "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+   }
+  ],
+  "sources_sha256_at_run": "e03338b92aabdc2dd18faffb615bd67c6719f9f7374be5e7f0e85bdbaf28c053"
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: time-budgeted runs (not bit-reproducible); not re-run. The exact commands, seeds, code and the runs' own logs for this circuit are here"
+ },
+ "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/c-01-31-5-128-18/conjpull-a31-ad5-g132-gd17-21187e60c6.circ.txt --target <campaign archive>/W5/runs/c-01-31-5-128-18/conjpull-a31-ad5-g132-gd17-21187e60c6.circ.txt --seed 7047 --seconds 900 --out <campaign archive>/W5/runs/c-01-31-5-128-18-31-5-132-17 --function aes-invsbox --conj id --schedule g:+0:300,m:+0:300,m:-1:250",
+ "environment": {
+  "cwd": "<campaign archive>/W5/snap/t3/tree",
+  "BOOLFLUX_CACHE": "<campaign archive>/W5/cache",
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of phase 2 (not published): W2..W5 are its workstreams, with their frozen code trees (snap/, old-tree/) and run folders (runs/, ab/)",
+  "<checkout>": "the working checkout of this repository the workstreams ran next to (at e87c34a when the runs started); the NIST seeds were read from its search/nonlinear/seeds/",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/W5/runs/c-01-31-5-128-18-31-5-132-17/conjpull-a31-ad5-g133-gd16-f4fa341edb.circ.txt",
+  "sha256": "f4fa341edb5a67ee873c09d6320534172b369e38725c7d6d3a4ae1ff178d1096",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "conjpull.log.gz",
+  "events.jsonl.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json",
+  "chain-1-transport/events.jsonl.gz",
+  "chain-1-transport/result.json",
+  "chain-1-transport/run-sidecar.json",
+  "chain-1-transport/run.json",
+  "chain-1-transport/transport.log.gz",
+  "chain-2-conjpull/conjpull.log.gz",
+  "chain-2-conjpull/events.jsonl.gz",
+  "chain-2-conjpull/result.json",
+  "chain-2-conjpull/run-sidecar.json",
+  "chain-2-conjpull/run-start.circ.txt",
+  "chain-2-conjpull/run.json",
+  "chain-3-conjpull/conjpull.log.gz",
+  "chain-3-conjpull/events.jsonl.gz",
+  "chain-3-conjpull/result.json",
+  "chain-3-conjpull/run-sidecar.json",
+  "chain-3-conjpull/run-start.circ.txt",
+  "chain-3-conjpull/run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "run-start.circ.txt",
+  "start.circ.txt",
+  "conjpull.log.gz",
+  "events.jsonl.gz",
+  "result.json",
+  "run-sidecar.json",
+  "run.json",
+  "code.diff.gz",
+  "chain-1-transport/events.jsonl.gz",
+  "chain-1-transport/result.json",
+  "chain-1-transport/run-sidecar.json",
+  "chain-1-transport/run.json",
+  "chain-1-transport/transport.log.gz",
+  "chain-2-conjpull/conjpull.log.gz",
+  "chain-2-conjpull/events.jsonl.gz",
+  "chain-2-conjpull/result.json",
+  "chain-2-conjpull/run-sidecar.json",
+  "chain-2-conjpull/run-start.circ.txt",
+  "chain-2-conjpull/run.json",
+  "chain-3-conjpull/conjpull.log.gz",
+  "chain-3-conjpull/events.jsonl.gz",
+  "chain-3-conjpull/result.json",
+  "chain-3-conjpull/run-sidecar.json",
+  "chain-3-conjpull/run-start.circ.txt",
+  "chain-3-conjpull/run.json"
+ ]
+}

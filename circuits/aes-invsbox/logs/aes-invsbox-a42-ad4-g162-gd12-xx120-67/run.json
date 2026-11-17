@@ -1,0 +1,237 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "ops.bottom",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "search/nonlinear/boolflux/ops/bottom.py",
+  "--in",
+  "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+  "--target",
+  "aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+  "--seed",
+  "55",
+  "--seconds",
+  "900",
+  "--out",
+  "<campaign archive>/W4/runs/invbot45f",
+  "--cap",
+  "12",
+  "--pw",
+  "3",
+  "--iters",
+  "60000"
+ ],
+ "cwd": "<campaign archive>/W4/snap/s5/tree",
+ "command": "python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt --target aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt --seed 55 --seconds 900 --out <campaign archive>/W4/runs/invbot45f --cap 12 --pw 3 --iters 60000",
+ "git": {
+  "commit": null,
+  "branch": null,
+  "dirty": null,
+  "note": "not a git checkout (or git missing): see sources_sha256"
+ },
+ "sources_sha256": "8b7332d5cbb5e6b4881094b3c27797cfe4a6bef86fdc57feb9bbb8991d11ab20",
+ "repo": "<campaign archive>/W4/snap/s5/tree",
+ "function": "aes-invsbox",
+ "seeds": {
+  "seed": 55
+ },
+ "config": {
+  "target": "aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+  "limits": {
+   "A": 45,
+   "AD": 4,
+   "G": 141,
+   "GD": 12
+  },
+  "params": {
+   "cut": 4,
+   "cap": 12,
+   "amax": 45,
+   "iters": 60000,
+   "pw": "3",
+   "T0": 2.0,
+   "polish_seconds": 90,
+   "polish_cap_a": "build",
+   "repair_keep": 1
+  },
+  "method": {
+   "engine": "ops/bottom.py: bopt SA (rank-1 shared bottom, exact Kraft per output) + bbuild + A-capped gate kernel",
+   "operator": "bottom"
+  },
+  "command": "cd <campaign archive>/W4/snap/s5/tree && python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt --target aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt --seed 55 --seconds 900 --out <campaign archive>/W4/runs/invbot45f --cap 12 --pw 3 --iters 60000"
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+   "sha256": "65a98db180babff46b17df674fa5cda16123d41445a961fa58b4e98b6a7742d6",
+   "metrics": [
+    45,
+    4,
+    141,
+    12
+   ]
+  },
+  {
+   "label": "reference (target)",
+   "path": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt",
+   "sha256": "65a98db180babff46b17df674fa5cda16123d41445a961fa58b4e98b6a7742d6"
+  }
+ ],
+ "budget_s": 900.0,
+ "kernels": [
+  {
+   "path": "<home>/.cache/boolflux/bin/bfx-a24578108a",
+   "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+   "source": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/kernel/bfx.c",
+   "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9",
+   "command": [
+    "gcc",
+    "-O3",
+    "-march=native",
+    "-o",
+    "<home>/.cache/boolflux/bin/bfx-a24578108a",
+    "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/kernel/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   16
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops/bottom_lib",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops/bottom_lib",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops/bottom_lib",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/independent",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/independent",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops/bottom_lib",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops",
+   "<campaign archive>/W4/snap/s5/tree/search/nonlinear/boolflux/ops",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-17T02:03:36Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "n_written": 5,
+  "rejected": {
+   "outside": 0,
+   "dominated": 6,
+   "aes_check_fail": 0,
+   "duplicate": 0
+  },
+  "offers_by_how": {
+   "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 94729}": {
+    "offered": 1,
+    "written": 1
+   },
+   "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 94729, \"kernel_seed\": 94729, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 996812}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 996812, \"kernel_seed\": 996812, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 205780}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 205780, \"kernel_seed\": 205780, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 157257}": {
+    "offered": 1,
+    "written": 1
+   },
+   "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 157257, \"kernel_seed\": 157257, \"caps\": {\"A\": 42, \"AD\": 4, \"GD\": 12}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 775287}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "kernel {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 775287, \"kernel_seed\": 775287, \"caps\": {\"A\": 43, \"AD\": 4, \"GD\": 12}}": {
+    "offered": 1,
+    "written": 1
+   },
+   "build {\"cap\": 12, \"pw\": 3.0, \"plan_seed\": 317392}": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   }
+  },
+  "pareto_A_AD_G_GD": [
+   [
+    42,
+    4,
+    162,
+    12
+   ],
+   [
+    43,
+    4,
+    161,
+    12
+   ]
+  ]
+ },
+ "t_end_utc": "2026-11-17T02:18:19Z",
+ "wall_s": 883.639,
+ "mono_s": 920.482,
+ "cpu_s": 882.283,
+ "max_rss_kb": 127572
+}

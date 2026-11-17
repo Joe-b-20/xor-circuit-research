@@ -1,0 +1,1560 @@
+{
+ "op": "transport",
+ "target": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt",
+ "seed": 121,
+ "status": "ok",
+ "start": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt",
+ "start_tuple": [
+  32,
+  4,
+  119,
+  16
+ ],
+ "params": {
+  "from": "aes-sbox",
+  "to": "aes-invsbox",
+  "maps": "id,188:0,189:0,screen:3,depth:2",
+  "ladder": [
+   -1,
+   0,
+   1,
+   2
+  ],
+  "synth_seeds": 6,
+  "bp_runs": 6,
+  "build_seconds": 300.0,
+  "pull": "g:+0:150,m:+0:150,m:-1:170",
+  "pull_deep": "g:+0:120,m:s+2:150,m:s:200",
+  "deep_margin": 1,
+  "pull_n": 2,
+  "screen_runs": 2
+ },
+ "wall_s": 1154.6,
+ "n_written": 10,
+ "rejected": {
+  "outside": 0,
+  "dominated": 17,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "transport 1:0 slp": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 1:0 cap17": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 1:0 cap18": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 188:0 slp": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 188:0 cap16": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 188:0 cap17": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 188:0 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 189:0 slp": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 189:0 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 187:5 slp": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 187:5 cap16": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 187:5 cap17": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 187:5 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 200:0 slp": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 200:0 cap17": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 200:0 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 254:0 slp": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 254:0 cap17": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 254:0 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 12:4 slp": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 12:4 cap16": {
+   "offered": 1,
+   "written": 1
+  },
+  "transport 12:4 cap17": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 12:4 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 115:0 slp": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 115:0 cap16": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 115:0 cap17": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "transport 115:0 cap18": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.09,
+  "verify_s": 0.432,
+  "verify_calls": 10
+ },
+ "notes": [],
+ "utc": "2026-11-17T02:41:06Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    128,
+    19
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g128-gd19-671a040ec2.circ.txt",
+   "how": "transport 187:5 slp",
+   "t": 159.8,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    132,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g132-gd17-1447bbabf4.circ.txt",
+   "how": "transport 187:5 cap17",
+   "t": 160.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    134,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g134-gd16-eca9c67582.circ.txt",
+   "how": "transport 12:4 cap16",
+   "t": 224.2,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    32,
+    4,
+    128,
+    19
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g128-gd19-671a040ec2.circ.txt",
+   "how": "transport 187:5 slp",
+   "t": 159.8,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    132,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g132-gd17-1447bbabf4.circ.txt",
+   "how": "transport 187:5 cap17",
+   "t": 160.3,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    32,
+    4,
+    134,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g134-gd16-eca9c67582.circ.txt",
+   "how": "transport 12:4 cap16",
+   "t": 224.2,
+   "class": "other"
+  }
+ ],
+ "builds": [
+  {
+   "lam": 1,
+   "k": 0,
+   "label": "id",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    139,
+    25
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g139-gd25-ac56d0801a.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     143,
+     20
+    ],
+    "bp_top": [
+     32,
+     4,
+     139,
+     25
+    ],
+    "bp_bottom_timeouts": 2,
+    "bp_bottom": [
+     32,
+     4,
+     139,
+     25
+    ],
+    "final": [
+     32,
+     4,
+     139,
+     25
+    ],
+    "seconds": 20.39
+   }
+  },
+  {
+   "lam": 1,
+   "k": 0,
+   "label": "id",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    140,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g140-gd17-814da52020.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     193,
+     17
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     157,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     142,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     140,
+     17
+    ],
+    "seconds": 0.44
+   }
+  },
+  {
+   "lam": 1,
+   "k": 0,
+   "label": "id",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    138,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g138-gd18-0a0b1395f2.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     193,
+     17
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     157,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     141,
+     18
+    ],
+    "final": [
+     32,
+     4,
+     138,
+     18
+    ],
+    "seconds": 0.44
+   }
+  },
+  {
+   "lam": 188,
+   "k": 0,
+   "label": "188:0",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    131,
+    22
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g131-gd22-8f49ba2752.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     141,
+     25
+    ],
+    "bp_top": [
+     32,
+     4,
+     134,
+     26
+    ],
+    "bp_bottom_timeouts": 3,
+    "bp_bottom": [
+     32,
+     4,
+     134,
+     26
+    ],
+    "final": [
+     32,
+     4,
+     131,
+     22
+    ],
+    "seconds": 20.52
+   }
+  },
+  {
+   "lam": 188,
+   "k": 0,
+   "label": "188:0",
+   "variant": "cap16",
+   "tuple": [
+    32,
+    4,
+    139,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g139-gd16-512d4f7ac4.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     193,
+     16
+    ],
+    "cap_used": 16,
+    "top": [
+     32,
+     4,
+     155,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     139,
+     16
+    ],
+    "final": [
+     32,
+     4,
+     139,
+     16
+    ],
+    "seconds": 0.15
+   }
+  },
+  {
+   "lam": 188,
+   "k": 0,
+   "label": "188:0",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    135,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g135-gd17-759420471e.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 17,
+    "flat": [
+     32,
+     4,
+     193,
+     16
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     154,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     138,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     17
+    ],
+    "seconds": 0.38
+   }
+  },
+  {
+   "lam": 188,
+   "k": 0,
+   "label": "188:0",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    135,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-188-0-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     193,
+     16
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     154,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     135,
+     18
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     18
+    ],
+    "seconds": 0.15
+   }
+  },
+  {
+   "lam": 189,
+   "k": 0,
+   "label": "189:0",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    136,
+    22
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-189-0-slp.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     152,
+     27
+    ],
+    "bp_top": [
+     32,
+     4,
+     143,
+     26
+    ],
+    "bp_bottom_timeouts": 3,
+    "bp_bottom": [
+     32,
+     4,
+     143,
+     26
+    ],
+    "final": [
+     32,
+     4,
+     136,
+     22
+    ],
+    "seconds": 20.78
+   }
+  },
+  {
+   "lam": 189,
+   "k": 0,
+   "label": "189:0",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    142,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-189-0-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     196,
+     18
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     160,
+     18
+    ],
+    "bottom": [
+     32,
+     4,
+     142,
+     18
+    ],
+    "final": [
+     32,
+     4,
+     142,
+     18
+    ],
+    "seconds": 0.2
+   }
+  },
+  {
+   "lam": 187,
+   "k": 5,
+   "label": "screen rank 1 (score 54)",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    128,
+    19
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g128-gd19-671a040ec2.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     148,
+     22
+    ],
+    "bp_top": [
+     32,
+     4,
+     136,
+     22
+    ],
+    "bp_bottom_timeouts": 2,
+    "bp_bottom": [
+     32,
+     4,
+     136,
+     22
+    ],
+    "final": [
+     32,
+     4,
+     128,
+     19
+    ],
+    "seconds": 20.83
+   }
+  },
+  {
+   "lam": 187,
+   "k": 5,
+   "label": "screen rank 1 (score 54)",
+   "variant": "cap16",
+   "tuple": [
+    32,
+    4,
+    137,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g137-gd16-7b9e1e07d5.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     161,
+     16
+    ],
+    "cap_used": 16,
+    "top": [
+     32,
+     4,
+     138,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     137,
+     16
+    ],
+    "final": [
+     32,
+     4,
+     137,
+     16
+    ],
+    "seconds": 0.15
+   }
+  },
+  {
+   "lam": 187,
+   "k": 5,
+   "label": "screen rank 1 (score 54)",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    132,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g132-gd17-1447bbabf4.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 17,
+    "flat": [
+     32,
+     4,
+     161,
+     16
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     138,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     132,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     132,
+     17
+    ],
+    "seconds": 0.15
+   }
+  },
+  {
+   "lam": 187,
+   "k": 5,
+   "label": "screen rank 1 (score 54)",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    132,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-187-5-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     161,
+     16
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     138,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     133,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     132,
+     17
+    ],
+    "seconds": 0.28
+   }
+  },
+  {
+   "lam": 200,
+   "k": 0,
+   "label": "screen rank 2 (score 54)",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    134,
+    24
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-200-0-slp.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     147,
+     24
+    ],
+    "bp_top": [
+     32,
+     4,
+     137,
+     28
+    ],
+    "bp_bottom_timeouts": 3,
+    "bp_bottom": [
+     32,
+     4,
+     137,
+     28
+    ],
+    "final": [
+     32,
+     4,
+     134,
+     24
+    ],
+    "seconds": 20.75
+   }
+  },
+  {
+   "lam": 200,
+   "k": 0,
+   "label": "screen rank 2 (score 54)",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    137,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-200-0-cap17.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     191,
+     17
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     149,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     137,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     137,
+     17
+    ],
+    "seconds": 0.14
+   }
+  },
+  {
+   "lam": 200,
+   "k": 0,
+   "label": "screen rank 2 (score 54)",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    135,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-200-0-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     191,
+     17
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     149,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     135,
+     18
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     18
+    ],
+    "seconds": 0.14
+   }
+  },
+  {
+   "lam": 254,
+   "k": 0,
+   "label": "screen rank 3 (score 54)",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    131,
+    24
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-254-0-slp.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     151,
+     30
+    ],
+    "bp_top": [
+     32,
+     4,
+     138,
+     33
+    ],
+    "bp_bottom_timeouts": 3,
+    "bp_bottom": [
+     32,
+     4,
+     138,
+     33
+    ],
+    "final": [
+     32,
+     4,
+     131,
+     24
+    ],
+    "seconds": 20.61
+   }
+  },
+  {
+   "lam": 254,
+   "k": 0,
+   "label": "screen rank 3 (score 54)",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    137,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-254-0-cap17.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     187,
+     17
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     153,
+     17
+    ],
+    "bottom": [
+     32,
+     4,
+     137,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     137,
+     17
+    ],
+    "seconds": 0.16
+   }
+  },
+  {
+   "lam": 254,
+   "k": 0,
+   "label": "screen rank 3 (score 54)",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    134,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-254-0-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     187,
+     17
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     153,
+     18
+    ],
+    "bottom": [
+     32,
+     4,
+     137,
+     18
+    ],
+    "final": [
+     32,
+     4,
+     134,
+     18
+    ],
+    "seconds": 0.28
+   }
+  },
+  {
+   "lam": 12,
+   "k": 4,
+   "label": "depth rank 1 (flat GD 16 G 164)",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    132,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-12-4-slp.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     149,
+     24
+    ],
+    "bp_top": [
+     32,
+     4,
+     136,
+     28
+    ],
+    "bp_bottom_timeouts": 2,
+    "bp_bottom": [
+     32,
+     4,
+     136,
+     28
+    ],
+    "final": [
+     32,
+     4,
+     132,
+     18
+    ],
+    "seconds": 20.72
+   }
+  },
+  {
+   "lam": 12,
+   "k": 4,
+   "label": "depth rank 1 (flat GD 16 G 164)",
+   "variant": "cap16",
+   "tuple": [
+    32,
+    4,
+    134,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g134-gd16-eca9c67582.circ.txt",
+   "recorded": true,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     164,
+     16
+    ],
+    "cap_used": 16,
+    "top": [
+     32,
+     4,
+     145,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     134,
+     16
+    ],
+    "final": [
+     32,
+     4,
+     134,
+     16
+    ],
+    "seconds": 0.13
+   }
+  },
+  {
+   "lam": 12,
+   "k": 4,
+   "label": "depth rank 1 (flat GD 16 G 164)",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    133,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-12-4-cap17.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 17,
+    "flat": [
+     32,
+     4,
+     164,
+     16
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     145,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     133,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     133,
+     17
+    ],
+    "seconds": 0.12
+   }
+  },
+  {
+   "lam": 12,
+   "k": 4,
+   "label": "depth rank 1 (flat GD 16 G 164)",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    133,
+    17
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-12-4-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     164,
+     16
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     145,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     133,
+     17
+    ],
+    "final": [
+     32,
+     4,
+     133,
+     17
+    ],
+    "seconds": 0.13
+   }
+  },
+  {
+   "lam": 115,
+   "k": 0,
+   "label": "depth rank 2 (flat GD 16 G 166)",
+   "variant": "slp",
+   "tuple": [
+    32,
+    4,
+    135,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-115-0-slp.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "slp",
+    "slp": [
+     32,
+     4,
+     143,
+     22
+    ],
+    "bp_top": [
+     32,
+     4,
+     137,
+     20
+    ],
+    "bp_bottom_timeouts": 3,
+    "bp_bottom": [
+     32,
+     4,
+     137,
+     20
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "seconds": 20.58
+   }
+  },
+  {
+   "lam": 115,
+   "k": 0,
+   "label": "depth rank 2 (flat GD 16 G 166)",
+   "variant": "cap16",
+   "tuple": [
+    32,
+    4,
+    135,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-115-0-cap16.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 15,
+    "flat": [
+     32,
+     4,
+     166,
+     16
+    ],
+    "cap_used": 16,
+    "top": [
+     32,
+     4,
+     148,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "seconds": 0.15
+   }
+  },
+  {
+   "lam": 115,
+   "k": 0,
+   "label": "depth rank 2 (flat GD 16 G 166)",
+   "variant": "cap17",
+   "tuple": [
+    32,
+    4,
+    135,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-115-0-cap17.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 17,
+    "flat": [
+     32,
+     4,
+     166,
+     16
+    ],
+    "cap_used": 17,
+    "top": [
+     32,
+     4,
+     148,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "seconds": 0.13
+   }
+  },
+  {
+   "lam": 115,
+   "k": 0,
+   "label": "depth rank 2 (flat GD 16 G 166)",
+   "variant": "cap18",
+   "tuple": [
+    32,
+    4,
+    135,
+    16
+   ],
+   "file": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/builds/build-115-0-cap18.circ.txt",
+   "recorded": false,
+   "info": {
+    "variant": "depth",
+    "cap": 18,
+    "flat": [
+     32,
+     4,
+     166,
+     16
+    ],
+    "cap_used": 18,
+    "top": [
+     32,
+     4,
+     148,
+     16
+    ],
+    "bottom": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "final": [
+     32,
+     4,
+     135,
+     16
+    ],
+    "seconds": 0.13
+   }
+  }
+ ],
+ "pulls": [
+  {
+   "index": 0,
+   "from": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g128-gd19-671a040ec2.circ.txt",
+   "from_tuple": [
+    32,
+    4,
+    128,
+    19
+   ],
+   "dir": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-0",
+   "rc": 0,
+   "schedule": "g:+0:120,m:18:150,m:16:200",
+   "deep_build": true,
+   "variant": "slp",
+   "lam": 187,
+   "k": 5,
+   "seconds": 447.0,
+   "command": [
+    "/usr/bin/python3",
+    "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py",
+    "--in",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g128-gd19-671a040ec2.circ.txt",
+    "--target",
+    "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt",
+    "--seed",
+    "1210",
+    "--seconds",
+    "462",
+    "--out",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-0",
+    "--function",
+    "aes-invsbox",
+    "--conj",
+    "id",
+    "--schedule",
+    "g:+0:120,m:18:150,m:16:200"
+   ],
+   "pareto_A_AD_G_GD": [
+    [
+     32,
+     4,
+     119,
+     18
+    ],
+    [
+     32,
+     4,
+     121,
+     17
+    ],
+    [
+     32,
+     4,
+     124,
+     16
+    ]
+   ],
+   "files": [
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-0/conjpull-a32-ad4-g119-gd18-69fe49d5a8.circ.txt",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-0/conjpull-a32-ad4-g121-gd17-06899fb6f2.circ.txt",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-0/conjpull-a32-ad4-g124-gd16-4247cf9ae5.circ.txt"
+   ]
+  },
+  {
+   "index": 1,
+   "from": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g134-gd16-eca9c67582.circ.txt",
+   "from_tuple": [
+    32,
+    4,
+    134,
+    16
+   ],
+   "dir": "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-1",
+   "rc": 0,
+   "schedule": "g:+0:150,m:+0:150,m:-1:170",
+   "deep_build": false,
+   "variant": "cap16",
+   "lam": 12,
+   "k": 4,
+   "seconds": 461.8,
+   "command": [
+    "/usr/bin/python3",
+    "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py",
+    "--in",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/transport-a32-ad4-g134-gd16-eca9c67582.circ.txt",
+    "--target",
+    "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a32-ad4-g119-gd16-xx87-37.circ.txt",
+    "--seed",
+    "1211",
+    "--seconds",
+    "477",
+    "--out",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-1",
+    "--function",
+    "aes-invsbox",
+    "--conj",
+    "id",
+    "--schedule",
+    "g:+0:150,m:+0:150,m:-1:170"
+   ],
+   "pareto_A_AD_G_GD": [
+    [
+     32,
+     4,
+     122,
+     17
+    ],
+    [
+     32,
+     4,
+     123,
+     16
+    ],
+    [
+     32,
+     4,
+     124,
+     15
+    ]
+   ],
+   "files": [
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-1/conjpull-a32-ad4-g122-gd17-1fef80f0f0.circ.txt",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-1/conjpull-a32-ad4-g123-gd16-8c403b792f.circ.txt",
+    "<campaign archive>/W5/runs/r2-22-f2i-32-4-119-16/pull-1/conjpull-a32-ad4-g124-gd15-85413e1bd5.circ.txt"
+   ]
+  }
+ ]
+}

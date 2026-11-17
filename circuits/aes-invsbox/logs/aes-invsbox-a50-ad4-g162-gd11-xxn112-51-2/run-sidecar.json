@@ -1,0 +1,147 @@
+{
+ "target": "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+ "A": 50,
+ "AD": 4,
+ "G": 162,
+ "GD": 11,
+ "class": "other",
+ "reference": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+ "start": {
+  "path": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2",
+  "tuple": [
+   55,
+   4,
+   148,
+   10
+  ]
+ },
+ "parent": {
+  "path": "<campaign archive>/W4/snap/s5/tree/search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+  "sha256": "4dd4327002a8432b63fb6585994e9fca9ead72cc00ee1123eb567d77350ad2a2"
+ },
+ "op": "bottom",
+ "params": {
+  "cut": 4,
+  "cap": 11,
+  "amax": 55,
+  "iters": 30000,
+  "pw": "0,3",
+  "T0": 2.0,
+  "polish_seconds": 90,
+  "polish_cap_a": "build",
+  "repair_keep": 1
+ },
+ "how": "kernel {\"cap\": 11, \"pw\": 3.0, \"plan_seed\": 971504, \"kernel_seed\": 971504, \"caps\": {\"A\": 50, \"AD\": 4, \"GD\": 11}}",
+ "lineage": [
+  {
+   "parent": "<campaign archive>/W4/runs/invbot55c11/builds/b-7bb0cad9965a.bfx",
+   "parent_sha256": "c5d7fae8a6a50c18fa5c60baca88e13a8547039d8ee0fec7cb18581a684f3a47",
+   "parent_tuple": [
+    50,
+    4,
+    169,
+    11
+   ],
+   "method": {
+    "engine": "ops/bottom.py (bopt SA + bbuild, any cut)",
+    "cut": 4,
+    "cap": 11,
+    "pw": 3.0,
+    "plan": "<campaign archive>/W4/runs/invbot55c11/plans/plan-s971504.json",
+    "plan_cost": [
+     160.0,
+     27,
+     4,
+     20,
+     28
+    ],
+    "plan_seed": 971504,
+    "stage": "kernel",
+    "kernel_seed": 971504,
+    "caps": {
+     "A": 50,
+     "AD": 4,
+     "GD": 11
+    }
+   }
+  }
+ ],
+ "method": {
+  "engine": "ops/bottom.py: bopt SA (rank-1 shared bottom, exact Kraft per output) + bbuild + A-capped gate kernel",
+  "operator": "bottom"
+ },
+ "command": "cd <campaign archive>/W4/snap/s5/tree && python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 32 --seconds 1200 --cap 11 --out <campaign archive>/W4/runs/invbot55c11",
+ "seed": 32,
+ "elapsed_s": 301.6,
+ "code": {
+  "git": "",
+  "dirty": null,
+  "diff_sha256": null,
+  "tree": "not a git checkout",
+  "sources_sha256": "8b7332d5cbb5e6b4881094b3c27797cfe4a6bef86fdc57feb9bbb8991d11ab20",
+  "ops_sha256": {
+   "bottom.py": "30dab32508e2a29e1247d43ce69c71111485ebe8ceaed5b6b5d79d2d5a2be9be",
+   "common.py": "14366e25edda9eec0e0c3efe93a2c3e0667033e030bd25d1381a54535958f05f",
+   "conjpull.py": "2efb852dd9f5a4d64827aa918989898e203f8801454b4eae2b3ebe91a5047604",
+   "rebase.py": "88c947e6b01cc98f7e9897e23026ad8b3a3c93842e24bb77c0e6b8d372386c0c",
+   "rebuild_common.py": "8064584c7575b4b112ce80e4e8ff92118386af89c2bf03afda8b5574018db102",
+   "satlns.py": "cd28f2b8b652d1eeeaa74d1eb6509511415d88e037578247fac668e0d178a72d"
+  },
+  "kernel": "<campaign archive>/W4/cache/bin/bfx-a24578108a",
+  "kernel_sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+  "kernel_src_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9"
+ },
+ "aes_check": "OK   <campaign archive>/W4/runs/invbot55c11/bottom-a50-ad4-g162-gd11-d1cdd00481.circ.txt  A AD G GD = 50 4 162 11  counts {'AND': 50, 'XNOR': 53, 'XOR': 59}  (aes-invsbox)",
+ "aes_check_full": "OK   <campaign archive>/W4/runs/invbot55c11/bottom-a50-ad4-g162-gd11-d1cdd00481.circ.txt  A AD G GD = 50 4 162 11  counts {'AND': 50, 'XNOR': 53, 'XOR': 59}  (aes-invsbox)\n     new Pareto point on pinned set: YES\n     published best G at GD<=11: 55 4 148 10 (aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt, gain -14)\n     published best G at A<=50: 32 7 105 27 (aes-invsbox-a32-ad7-g105-gd27-xx73-14.circ.txt, gain -57)\n     published best G at A<=50, GD<=11: none\n",
+ "circuit_sha256": "d1cdd004812e9d958ac47b86b6def991500b752f111d797dd150be09be7f39a7",
+ "path_certified": "unknown",
+ "path_note": "informational; search states may exceed the caps, recorded circuits never exceed A and AD",
+ "function": "aes-invsbox",
+ "run": {
+  "run_record": "<campaign archive>/W4/runs/invbot55c11/run.json",
+  "kind": "ops.bottom",
+  "command": "python3 search/nonlinear/boolflux/ops/bottom.py --in search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --target aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt --seed 32 --seconds 1200 --cap 11 --out <campaign archive>/W4/runs/invbot55c11",
+  "argv": [
+   "/usr/bin/python3",
+   "search/nonlinear/boolflux/ops/bottom.py",
+   "--in",
+   "search/nonlinear/seeds/aes-invsbox/aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "--target",
+   "aes-invsbox-a55-ad4-g148-gd10-xxn93-26-2.circ.txt",
+   "--seed",
+   "32",
+   "--seconds",
+   "1200",
+   "--cap",
+   "11",
+   "--out",
+   "<campaign archive>/W4/runs/invbot55c11"
+  ],
+  "cwd": "<campaign archive>/W4/snap/s5/tree",
+  "git": {
+   "commit": null,
+   "dirty": null,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "8b7332d5cbb5e6b4881094b3c27797cfe4a6bef86fdc57feb9bbb8991d11ab20",
+  "seeds": {
+   "seed": 32
+  },
+  "function": "aes-invsbox",
+  "kernels": [
+   {
+    "path": "<campaign archive>/W4/cache/bin/bfx-a24578108a",
+    "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+   }
+  ],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "utc": "2026-11-17T00:20:12Z"
+}

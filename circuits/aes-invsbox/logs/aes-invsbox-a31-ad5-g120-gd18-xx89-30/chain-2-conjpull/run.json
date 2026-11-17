@@ -1,0 +1,249 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "ops.conjpull",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py",
+  "--in",
+  "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/transport-a31-ad5-g143-gd19-c537694027.circ.txt",
+  "--target",
+  "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+  "--seed",
+  "1051",
+  "--seconds",
+  "463",
+  "--out",
+  "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1",
+  "--function",
+  "aes-invsbox",
+  "--conj",
+  "id",
+  "--schedule",
+  "g:+0:150,m:+0:150,m:-1:170"
+ ],
+ "cwd": "<campaign archive>/W5/snap/t3/tree",
+ "command": "python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/transport-a31-ad5-g143-gd19-c537694027.circ.txt --target <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt --seed 1051 --seconds 463 --out <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1 --function aes-invsbox --conj id --schedule g:+0:150,m:+0:150,m:-1:170",
+ "git": {
+  "commit": null,
+  "branch": null,
+  "dirty": null,
+  "note": "not a git checkout (or git missing): see sources_sha256"
+ },
+ "sources_sha256": "e03338b92aabdc2dd18faffb615bd67c6719f9f7374be5e7f0e85bdbaf28c053",
+ "repo": "<campaign archive>/W5/snap/t3/tree",
+ "function": "aes-invsbox",
+ "seeds": {
+  "seed": 1051,
+  "stage_seed": "seed x 1000 + stage index x 10 + beam index (or the stage s<N> option); every stage and kernel seed is an event in events.jsonl.gz",
+  "kernel_seed": "stage seed x 100000 + sub-step (+7, +13 within an osc step)",
+  "trb_rng": "random.Random(stage seed)"
+ },
+ "config": {
+  "target": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+  "limits": {
+   "A": 31,
+   "AD": 5,
+   "G": 117,
+   "GD": 20
+  },
+  "params": {
+   "conj": "id",
+   "schedule": "g:+0:150,m:+0:150,m:-1:170",
+   "beam": 1,
+   "repair_keep": 1,
+   "beam_rk": [],
+   "kcfg": {},
+   "stage_iters": 200000,
+   "relax": 1,
+   "repair_iters": 100000,
+   "trb_regions": "bottom,top,mid,random",
+   "top_runs": 12,
+   "screen_runs": 4,
+   "caps": {
+    "A": 31,
+    "AD": 5
+   },
+   "kernel_bin": "bfx-a24578108a",
+   "function": "aes-invsbox"
+  },
+  "method": "AES inverse S-box: ops/conjpull.py: GF(2^8) conjugate (conj3 screen + build_conj) then staged kernel pulls g:+0:150,m:+0:150,m:-1:170 (kernel bfx-a24578108a, repair_keep 1 unless a stage says rk0/rk1); search states may exceed caps, recorded circuits inside A<=31 AD<=5",
+  "command": "/usr/bin/python3 <campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conjpull.py --in <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/transport-a31-ad5-g143-gd19-c537694027.circ.txt --target <campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt --seed 1051 --seconds 463 --out <campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/pull-1 --function aes-invsbox --conj id --schedule g:+0:150,m:+0:150,m:-1:170"
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<campaign archive>/W5/runs/r2-06-f2i-31-5-117-20/transport-a31-ad5-g143-gd19-c537694027.circ.txt",
+   "sha256": "c537694027bd0a81adcc6b9a010825408d237f9936347abe0bbfdc2d6c7512ab",
+   "metrics": [
+    31,
+    5,
+    143,
+    19
+   ]
+  },
+  {
+   "label": "reference (target)",
+   "path": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a31-ad5-g117-gd20-xx86-24.circ.txt",
+   "sha256": "3abb73b5470c10856940a1d74b55ce9de18dcdc06745dbee227becfad69ec552"
+  }
+ ],
+ "budget_s": 463.0,
+ "kernels": [
+  {
+   "path": "<campaign archive>/W5/cache/bin/bfx-a24578108a",
+   "sha256": "a1fd9ee41d93bc18e4ce34d0935ed5f1a188b46af9e439fcdd8f7bec49371381",
+   "source": "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/kernel/bfx.c",
+   "source_sha256": "8514b8a949501f131afa3d0ed803592c57e48baaee7e898d815f9d90fbe196a9",
+   "command": [
+    "gcc",
+    "-O3",
+    "-march=native",
+    "-o",
+    "<campaign archive>/W5/cache/bin/bfx-a24578108a",
+    "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/kernel/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   17
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_CACHE": "<campaign archive>/W5/cache",
+  "BOOLFLUX_FUNCTION": "aes-invsbox"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/independent",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/independent",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages",
+   "<campaign archive>/W5/snap/t3/tree/search/nonlinear/boolflux/ops/conj_lib"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-16T23:41:45Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "n_written": 6,
+  "rejected": {
+   "outside": 0,
+   "dominated": 7,
+   "aes_check_fail": 0,
+   "duplicate": 0
+  },
+  "offers_by_how": {
+   "g19": {
+    "offered": 3,
+    "written": 2,
+    "dominated": 1
+   },
+   "o19-relaxed20": {
+    "offered": 1,
+    "written": 1
+   },
+   "o19-repair": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "o19-gate": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "t19-bottom-build": {
+    "offered": 1,
+    "written": 1
+   },
+   "t19-bottom": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "o18-relaxed19": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "o18-repair": {
+    "offered": 1,
+    "written": 1
+   },
+   "o18-gate": {
+    "offered": 1,
+    "written": 1
+   },
+   "t18-top-build": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   },
+   "t18-top": {
+    "offered": 1,
+    "written": 0,
+    "dominated": 1
+   }
+  },
+  "pareto_A_AD_G_GD": [
+   [
+    31,
+    5,
+    121,
+    20
+   ],
+   [
+    31,
+    5,
+    122,
+    19
+   ],
+   [
+    31,
+    5,
+    123,
+    18
+   ]
+  ]
+ },
+ "t_end_utc": "2026-11-16T23:49:13Z",
+ "wall_s": 447.439,
+ "mono_s": 462.217,
+ "cpu_s": 442.168,
+ "max_rss_kb": 25600
+}

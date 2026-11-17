@@ -52,12 +52,15 @@ grep -v '% command:' OUT/g110/best.circ.txt | sha256sum
 
 | Start (`--start`) | Caps `--cap-a --cap-ad --cap-gd` | Result | `sha256` without the `% command:` line |
 |---|---|---|---|
-| `aes-sbox-a33-ad4-g110-gd20-xx77-4` | 33 4 20 | [33/4/110/18](aes-sbox/aes-sbox-a33-ad4-g110-gd18-xx77-26.circ.txt) | `bae80c6fd21db8c7582a0c7b60b3c723c30399c8ef3684e6a52bca8215da98f3` |
+| `aes-sbox-a33-ad4-g110-gd20-xx77-4` | 33 4 20 | [33/4/110/18](https://github.com/Joe-b-20/xor-circuit-research/blob/08012e17c9db2d8fe1ebf2e392c56c6f70c43cd5/circuits/aes-sbox/aes-sbox-a33-ad4-g110-gd18-xx77-26.circ.txt) ² | `bae80c6fd21db8c7582a0c7b60b3c723c30399c8ef3684e6a52bca8215da98f3` |
 | `aes-sbox-a33-ad4-g108-gd20-xx75-5` | 33 4 20 | [33/4/108/19](aes-sbox/aes-sbox-a33-ad4-g108-gd19-xx75-22.circ.txt) | `6e5ddeef56d02ca5fb7cbc4dd05a801bb96e5fcb5533243e635990d1aefa1b73` |
 | `aes-sbox-a32-ad5-g109-gd20-xx77-4` | 32 5 20 | [32/5/108/20](aes-sbox/aes-sbox-a32-ad5-g108-gd20-xx76-35.circ.txt) | `dad7dd236509ba8555b3c0a2ce5e149c894a7298b467527768af3de93d16fbb3` |
 
 Each took 200–210 s for 8 jobs on 2 threads. The replay also gave each seed's best circuit
 (`r0-s<S>.best.bfx`) unchanged, and the run's per-seed logs are in the circuit's logs.
+
+² No longer in `aes-sbox/`: a later circuit, [33/4/109/18](aes-sbox/aes-sbox-a33-ad4-g109-gd18-xx76-35.circ.txt),
+beats it. The link is to the file and its logs as they were at `08012e1`, in git history.
 
 ## 2. Staged pull
 

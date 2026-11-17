@@ -1,0 +1,498 @@
+{
+ "op": "conjpull",
+ "target": "<campaign archive>/W5/snap/t3/tree/circuits/aes-sbox/aes-sbox-a35-ad3-g141-gd19-xx106-46.circ.txt",
+ "seed": 1081,
+ "status": "ok",
+ "start": "<campaign archive>/W5/runs/r2-09-f2i-35-3-141-19/transport-a35-ad3-g161-gd19-4ed523598c.circ.txt",
+ "start_tuple": [
+  35,
+  3,
+  161,
+  19
+ ],
+ "params": {
+  "conj": "id",
+  "schedule": "g:+0:150,m:+0:150,m:-1:170",
+  "beam": 1,
+  "repair_keep": 1,
+  "beam_rk": [],
+  "kcfg": {},
+  "stage_iters": 200000,
+  "relax": 1,
+  "repair_iters": 100000,
+  "trb_regions": "bottom,top,mid,random",
+  "top_runs": 12,
+  "screen_runs": 4,
+  "caps": {
+   "A": 35,
+   "AD": 3
+  },
+  "kernel_bin": "bfx-a24578108a",
+  "function": "aes-invsbox"
+ },
+ "wall_s": 466.0,
+ "n_written": 4,
+ "rejected": {
+  "outside": 0,
+  "dominated": 6,
+  "aes_check_fail": 0,
+  "duplicate": 0
+ },
+ "offers_by_how": {
+  "g19": {
+   "offered": 2,
+   "written": 1,
+   "dominated": 1
+  },
+  "o19-relaxed20": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o19-repair": {
+   "offered": 1,
+   "written": 1
+  },
+  "o19-gate": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o18-relaxed19": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "o18-repair": {
+   "offered": 1,
+   "written": 1
+  },
+  "o18-gate": {
+   "offered": 1,
+   "written": 1
+  },
+  "t18-random-build": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  },
+  "t18-random": {
+   "offered": 1,
+   "written": 0,
+   "dominated": 1
+  }
+ },
+ "timing": {
+  "proc_start_to_recorder_s": 0.19,
+  "verify_s": 0.281,
+  "verify_calls": 4
+ },
+ "notes": [],
+ "utc": "2026-11-17T01:21:43Z",
+ "pareto_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    145,
+    19
+   ],
+   "file": "<campaign archive>/W5/runs/r2-09-f2i-35-3-141-19/pull-1/conjpull-a35-ad3-g145-gd19-ca72f24682.circ.txt",
+   "how": "o19-repair",
+   "t": 252.9,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    35,
+    3,
+    149,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-09-f2i-35-3-141-19/pull-1/conjpull-a35-ad3-g149-gd18-6a3630452e.circ.txt",
+   "how": "o18-gate",
+   "t": 442.2,
+   "class": "other"
+  }
+ ],
+ "pareto_A_AD_G_GD": [
+  {
+   "tuple": [
+    35,
+    3,
+    145,
+    19
+   ],
+   "file": "<campaign archive>/W5/runs/r2-09-f2i-35-3-141-19/pull-1/conjpull-a35-ad3-g145-gd19-ca72f24682.circ.txt",
+   "how": "o19-repair",
+   "t": 252.9,
+   "class": "other"
+  },
+  {
+   "tuple": [
+    35,
+    3,
+    149,
+    18
+   ],
+   "file": "<campaign archive>/W5/runs/r2-09-f2i-35-3-141-19/pull-1/conjpull-a35-ad3-g149-gd18-6a3630452e.circ.txt",
+   "how": "o18-gate",
+   "t": 442.2,
+   "class": "other"
+  }
+ ],
+ "stages": [
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 1,
+   "mode": "g",
+   "cap": 19,
+   "seed": 1081000,
+   "in": [
+    35,
+    3,
+    161,
+    19
+   ],
+   "best": [
+    35,
+    3,
+    147,
+    19
+   ],
+   "seconds": 148.7,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     0.8,
+     35,
+     3,
+     160,
+     19
+    ],
+    [
+     2.5,
+     35,
+     3,
+     159,
+     19
+    ],
+    [
+     3.3,
+     35,
+     3,
+     158,
+     19
+    ],
+    [
+     3.5,
+     35,
+     3,
+     157,
+     19
+    ],
+    [
+     4.4,
+     35,
+     3,
+     156,
+     19
+    ],
+    [
+     5.5,
+     35,
+     3,
+     155,
+     19
+    ],
+    [
+     5.5,
+     35,
+     3,
+     154,
+     19
+    ],
+    [
+     8.1,
+     35,
+     3,
+     153,
+     19
+    ],
+    [
+     10.6,
+     35,
+     3,
+     152,
+     19
+    ],
+    [
+     11.7,
+     35,
+     3,
+     151,
+     19
+    ],
+    [
+     61.5,
+     35,
+     3,
+     150,
+     19
+    ],
+    [
+     63.9,
+     35,
+     3,
+     149,
+     19
+    ],
+    [
+     74.7,
+     35,
+     3,
+     148,
+     19
+    ],
+    [
+     85.0,
+     35,
+     3,
+     147,
+     19
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 2,
+   "mode": "m",
+   "cap": 19,
+   "seed": 1081010,
+   "in": [
+    35,
+    3,
+    147,
+    19
+   ],
+   "best": [
+    35,
+    3,
+    145,
+    19
+   ],
+   "seconds": 148.8,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     241.1,
+     35,
+     3,
+     146,
+     19
+    ],
+    [
+     241.8,
+     35,
+     3,
+     145,
+     19
+    ]
+   ]
+  },
+  {
+   "conj": "id",
+   "lam": null,
+   "k": null,
+   "stage": 3,
+   "mode": "m",
+   "cap": 18,
+   "seed": 1081020,
+   "in": [
+    35,
+    3,
+    145,
+    19
+   ],
+   "best": [
+    35,
+    3,
+    149,
+    18
+   ],
+   "seconds": 168.2,
+   "repair_keep": 1,
+   "improvements": [
+    [
+     343.4,
+     35,
+     3,
+     146,
+     19
+    ],
+    [
+     343.4,
+     35,
+     3,
+     148,
+     19
+    ],
+    [
+     343.4,
+     35,
+     3,
+     149,
+     19
+    ],
+    [
+     343.4,
+     35,
+     3,
+     150,
+     19
+    ],
+    [
+     343.4,
+     35,
+     3,
+     151,
+     19
+    ],
+    [
+     343.5,
+     35,
+     3,
+     153,
+     19
+    ],
+    [
+     343.5,
+     35,
+     3,
+     155,
+     19
+    ],
+    [
+     343.5,
+     35,
+     3,
+     158,
+     19
+    ],
+    [
+     343.5,
+     35,
+     3,
+     159,
+     19
+    ],
+    [
+     343.5,
+     35,
+     3,
+     160,
+     18
+    ],
+    [
+     343.6,
+     35,
+     3,
+     159,
+     18
+    ],
+    [
+     343.6,
+     35,
+     3,
+     158,
+     18
+    ],
+    [
+     343.7,
+     35,
+     3,
+     157,
+     18
+    ],
+    [
+     343.7,
+     35,
+     3,
+     156,
+     18
+    ],
+    [
+     343.7,
+     35,
+     3,
+     155,
+     18
+    ],
+    [
+     343.7,
+     35,
+     3,
+     154,
+     18
+    ],
+    [
+     343.7,
+     35,
+     3,
+     153,
+     18
+    ],
+    [
+     343.8,
+     35,
+     3,
+     152,
+     18
+    ],
+    [
+     348.6,
+     35,
+     3,
+     151,
+     18
+    ],
+    [
+     358.6,
+     35,
+     3,
+     150,
+     18
+    ],
+    [
+     430.5,
+     35,
+     3,
+     149,
+     18
+    ]
+   ]
+  }
+ ],
+ "kernel_calls": 9,
+ "conj_planned": [
+  "id"
+ ],
+ "conj_run": [
+  {
+   "label": "id",
+   "lam": null,
+   "k": null,
+   "screen_score": null,
+   "screen_rank": null,
+   "stages_done": 3,
+   "stages_planned": 3,
+   "seconds": 465.7
+  }
+ ],
+ "conj_not_reached": [],
+ "conj_replaced": []
+}
