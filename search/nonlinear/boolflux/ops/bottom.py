@@ -22,6 +22,13 @@ Affine junk (--junk terms, default): outputs of the form y_j = c_j + sum_i Y_i u
 (complemented operands: the inverse S-box inverts the affine A^-1 y + 0x05, so every NIST inverse circuit has
 them) keep v_j (an x-form) and the Y-sum of t_j as fixed extra terms of output j: priced in its Kraft sum
 (Y-sum at its level, x-form at ceil(log2 |v|) + 1) and built into its XOR tree; --junk reject: not applicable.
+--junk absorb: affine x-forms (bit 8 = constant): Y_i (u + 1) = Y_i u + Y_i puts t_j into the tensor's constant column, so
+the Y-form junk costs no product and no Kraft term (rank unchanged); products AND(Y_alpha, NOT w).  --junk absorb5: also
+v_j, as row 4 (the constant Y-form): (Y_alpha + 1) w = Y_alpha w + w, products AND(NOT Y_alpha, w); v_j lies in the row
+space of output j for every NIST inverse circuit probed, so no junk term is left and the rank stays 4; a single base
+Y-form's NOT (when its signal is not an XOR) is priced one level; Y-sums take either polarity free (plan 'nat').
+Idea 05 (2026-11-17): paired runs from NIST inverse 45/4/141/12 (cap 12) and 55/4/148/10 (cap 11), same seeds:
+every absorb / absorb5 build had fewer gates than its terms twin, best A 42 -> 41 at GD 12 and 49 -> 47 at GD 11.
 Not applicable (status "not-applicable", exit 0) when there are not four independent base Y-forms,
 an output is not in the span above, or some output has no Kraft-feasible decomposition at D.
 """
@@ -58,13 +65,41 @@ def setup(c, cut, cap, amax, junk='terms'):
     jk = [j for j, (cst, v, yt) in enumerate(C) if v or yt]
     if jk and junk == 'reject':
         return None, 'outputs %s carry linear / Y-form junk terms' % jk
-    B = [tuple(U[j][i] for i in range(4)) for j in range(8)]
+    BO.NCOL = 8; BO.NROW = 4
+    if junk == 'absorb5':
+        # absorb, and the x-form junk v_j too: row 4 of the tensor is the constant Y-form 1 (bit CY of alpha = complemented
+        # Y operand, (Y_a + 1) w = Y_a w + w); when v_j lies in the row space of output j's rows (true for every output of
+        # the NIST inverse circuits probed) the 5 x 9 tensor keeps rank 4: no junk term at all
+        BO.NCOL = 9; BO.NROW = 5
+        U = [[U[j][i] | (BO.ONE if (C[j][2] >> i) & 1 else 0) for i in range(4)] + [C[j][1]] for j in range(8)]
+        for j in range(8):     # entry (row 4, bit 8) is the output constant (free: XNOR at the end); pick it so that row 4
+            r4 = None          # lies in the span of rows 0-3 when its x-part does (then the rank stays 4)
+            for bits in range(16):
+                acc = 0
+                for i in range(4):
+                    if (bits >> i) & 1: acc ^= U[j][i]
+                if acc & 255 == U[j][4]: r4 = acc; break
+            if r4 is not None: U[j][4] = r4
+        C = [(cst, 0, 0) for (cst, v, yt) in C]
+        jk = []
+    elif junk == 'absorb':
+        # affine x-forms: Y_i * (u_ij(x) + 1) = Y_i u_ij(x) + Y_i, so output j's Y-form junk yt_j is bit 8 (the constant
+        # column) of the rows i in yt_j; the tensor keeps its rank (4 rows), so the junk costs no product and no
+        # Kraft term; only the x-form junk v_j stays a fixed term
+        BO.NCOL = 9
+        U = [[U[j][i] | (BO.ONE if (C[j][2] >> i) & 1 else 0) for i in range(4)] for j in range(8)]
+        C = [(cst, v, 0) for (cst, v, yt) in C]
+        jk = [j for j, (cst, v, yt) in enumerate(C) if v]
+    B = [tuple(U[j][i] for i in range(BO.NROW)) for j in range(8)]
     nfront = sum(1 for j, g in enumerate(c.gates) if g[0] in core.NONLINEAR_OPS and la[n + j] < cut)
     nbottom = sum(1 for j, g in enumerate(c.gates) if g[0] in core.NONLINEAR_OPS and la[n + j] >= cut)
     free = BO.front_free_forms(c, T, la)
     M = BO.Model(B, Lb, cap, free, amax - nfront)
     if jk:
         M.xlev = [junk_levels(M, v, yt) for (cst, v, yt) in C]
+    if junk == 'absorb5':
+        xt = [c.gates[b[2] - n][0] in (BU.XOR, BU.XNOR) for b in base]
+        M.ypol = [(0, 0) if x else ((1, 0) if b[3] else (0, 1)) for x, b in zip(xt, base)]
     opts = []
     for j in range(8):
         oj = [S for A in BO.bases_of(BO.colspace(B[j])) for S in [BO.decompose(B[j], A)] if M.kraft(S, j)]
@@ -72,6 +107,9 @@ def setup(c, cut, cap, amax, junk='terms'):
             return None, 'output %d has no Kraft-feasible 4-product decomposition at GD %d (base Y levels %s)' % (j, cap, Lb)
         opts.append(oj)
     own = own_choice(c, cut, Ys)
+    if own is not None and BO.NROW == 5:        # the constant entry (row 4, bit 8) is free: a constant term (CY, ONE) fixes it
+        own = [S + [(BO.CY, BO.ONE)] if BO.sum_t(S) != B[j] and BO.sum_t(S + [(BO.CY, BO.ONE)]) == B[j] else S
+               for j, S in enumerate(own)]
     if own is not None and not all(BO.sum_t(S) == B[j] for j, S in enumerate(own)): own = None
     return (M, B, opts, {'Lb': Lb, 'nfront': nfront, 'nbottom': nbottom, 'C': C, 'own': own,
                          'own_kraft': [M.kraft(S, j) for j, S in enumerate(own)] if own else None,
@@ -99,11 +137,16 @@ def own_choice(c, cut, Ys):
         if L.deg(T[x]) > 1: ty, tx = T[x], T[y]
         else: ty, tx = T[y], T[x]
         if L.deg(tx) > 1: return None
-        if (ty & 1) or (tx & 1): return None          # complemented operands: linear junk, not in the model
+        cy = 0
+        if BO.NCOL == 9:       # affine mode: a complemented x operand is bit 8; a complemented Y operand adds x-junk (in v_j,
+            cy = BO.CY if (ty & 1) and BO.NROW == 5 else 0      # or bit CY of alpha with absorb5)
+            ty = ty ^ (L.ONES if ty & 1 else 0)
+        elif (ty & 1) or (tx & 1): return None          # complemented operands: linear junk, not in the model
         sol = bsel.gauss_solve(Ys, ty)
         w = BO.mask_of(tx)
+        if w is not None and tx & 1: w |= BO.ONE
         if sol is None or w is None or w == 0: return None
-        p = (sum(1 << i for i in sol), w)
+        p = (sum(1 << i for i in sol) | cy, w)
         for j, F in enumerate(sk['outputs']):
             if (F >> (1 + n + k)) & 1: choice[j].append(p)
     return choice
@@ -166,8 +209,9 @@ def main():
     ap.add_argument('--T0', type=float, default=2.0); ap.add_argument('--polish-seconds', type=float, default=90)
     ap.add_argument('--polish-cap-a', choices=['build', 'target'], default='build')
     ap.add_argument('--repair-keep', type=int, default=1)
-    ap.add_argument('--junk', choices=['terms', 'reject'], default='terms',
-                    help='outputs with affine junk (complemented operands): fixed extra terms (default) or not applicable')
+    ap.add_argument('--junk', choices=['terms', 'absorb', 'absorb5', 'reject'], default='terms',
+                    help='outputs with affine junk (complemented operands): fixed extra terms (default), Y-form junk '
+                         'absorbed into products with affine x-forms (absorb), or not applicable')
     ap.add_argument('--polish-dup', action='store_true', help='also polish builds equal to the start or to a build already polished')
     ap.add_argument('--shard', default=None, help='set by --cpus for worker processes (unused here)')
     ap.add_argument('--plan-seeds', default='', help='comma list of exact SA seeds to use first (bopt.py --seed S gives the same plan)')
@@ -222,6 +266,7 @@ def main():
             same_own = None
         plan = {'circuit': str(sp), 'cap': cap, 'amax': amax, 'Lb': info['Lb'], 'cost': cc,
                 'choice': [[list(p) for p in S] for S in ch], 'C': info['C']}
+        if BO.NROW == 5: plan['nat'] = True
         pj = out / 'plans' / ('plan-s%d.json' % sd); pj.parent.mkdir(exist_ok=True); json.dump(plan, open(pj, 'w'))
         t1 = time.time()
         try:

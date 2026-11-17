@@ -20,6 +20,10 @@ import signals as L  # noqa: E402
 import bsel  # noqa: E402
 core = L.core
 CUT = 4          # AND level of the bottom products (4 for the AD4 tower circuits); set by ops/bottom.py --cut
+NCOL = 8         # x-form columns: 8 (linear x-forms) or 9 (affine: bit 8 = constant 1; ops/bottom.py --junk absorb)
+ONE = 256        # bit 8 of an affine x-form; a product (alpha, ONE) is the bare Y-form Y_alpha (no AND, level ylev(alpha))
+NROW = 4         # tensor rows: the 4 base Y-forms, or 5 (affine mode with x-form junk): row 4 = the constant Y-form 1, so
+CY = 16          # bit 4 (CY) of alpha complements the Y operand ((Y + 1) w = Y w + w), and alpha == CY alone is a bare x-form
 
 
 def base_front(c):
@@ -60,8 +64,8 @@ def front_free_forms(c, T, la):
 
 def colspace(M):
     cols = set()
-    for l in range(8):
-        cols.add(sum(((M[i] >> l) & 1) << i for i in range(4)))
+    for l in range(NCOL):
+        cols.add(sum(((M[i] >> l) & 1) << i for i in range(NROW)))
     # span
     sp = {0}
     for v in cols:
@@ -95,7 +99,7 @@ _DEC = {}
 def decompose(M, A):
     """M (4 row masks) = sum_k alpha_k w_k^T with alphas A (basis of colspace(M)).  Memoised (pure function;
     a fresh list per call; the memo is cleared at 200,000 entries)."""
-    key = (tuple(M), tuple(A))
+    key = (tuple(M), tuple(A), NCOL)
     r = _DEC.get(key)
     if r is None:
         if len(_DEC) >= 200000: _DEC.clear()
@@ -114,8 +118,8 @@ def _decompose(M, A):
             if (bits >> k) & 1: v ^= A[k]
         comb[v] = bits
     w = [0] * r
-    for l in range(8):
-        col = sum(((M[i] >> l) & 1) << i for i in range(4))
+    for l in range(NCOL):
+        col = sum(((M[i] >> l) & 1) << i for i in range(NROW))
         bits = comb[col]
         for k in range(r):
             if (bits >> k) & 1: w[k] |= 1 << l
@@ -124,12 +128,12 @@ def _decompose(M, A):
 
 def tensor(p):
     a, w = p
-    return tuple(w if (a >> i) & 1 else 0 for i in range(4))
+    return tuple(w if (a >> i) & 1 else 0 for i in range(NROW))
 
 
 def tsub(M, p):
     a, w = p
-    return tuple(M[i] ^ (w if (a >> i) & 1 else 0) for i in range(4))
+    return tuple(M[i] ^ (w if (a >> i) & 1 else 0) for i in range(NROW))
 
 
 class Model:
@@ -138,12 +142,22 @@ class Model:
         self._kkey = None; self._kw = {}      # memo of 2^(plev(a) - D) per alpha (pure in Lb, D; reset when they change)
         self.xlev = None      # per output: levels of its fixed extra terms (affine junk, ops/bottom.py --junk terms), or None
 
+    ypol = None                # absorb5: per base Y-form (extra level of its positive form, of its complement): 1 when that
+                               # polarity needs a NOT (the base signal is not an XOR / XNOR); Y-sums take either polarity free
+
     def ylev(self, a):
+        if self.ypol is not None and bin(a & 15).count('1') == 1:
+            i = (a & 15).bit_length() - 1
+            return self.Lb[i] + self.ypol[i][1 if a & CY else 0]
+        a &= 15                # a complemented Y-sum is an XNOR twin (same level)
         k = bin(a).count('1')
         return max(self.Lb[i] for i in range(4) if (a >> i) & 1) + (0 if k == 1 else 1 if k == 2 else 2)
 
     def plev(self, p):
-        return self.ylev(p[0]) + 1
+        if not p[0] & 15:      # bare (affine) x-form term: as the junk x-forms; the constant 1 is no term (level -99)
+            m = p[1] & 255
+            return -99 if not m else max(1, (bin(m).count('1') - 1).bit_length() + 1)
+        return self.ylev(p[0]) + (0 if p[1] == ONE else 1)
 
     def kraft(self, S, j=None):
         """exact Kraft check at D of output j's products S (plus output j's fixed extra terms, if any)"""
@@ -151,7 +165,7 @@ class Model:
         if key != self._kkey: self._kkey = key; self._kw = {}
         kw = self._kw; terms = []
         for p in S:
-            a = p[0]
+            a = p[0] if p[1] != ONE and p[0] & 15 else p      # bare Y-forms / x-forms (affine mode): own levels
             t = kw.get(a)
             if t is None: t = kw[a] = 2.0 ** (self.plev(p) - self.D)
             terms.append(t)
@@ -162,14 +176,27 @@ class Model:
     def cost(self, choice):
         P = set();
         for S in choice: P.update(S)
-        al = {a for a, w in P if bin(a).count('1') >= 2}
+        al = {a & 15 for a, w in P if bin(a & 15).count('1') >= 2}
         yc = 0
         for a in al:
             k = bin(a).count('1')
             if k == 2: yc += 1
             else:
                 yc += 1 if any((a ^ (1 << i)) in al for i in range(4) if (a >> i) & 1) else 2
-        xf0 = {w for a, w in P if bin(w).count('1') >= 2 and w not in self.free}
+        if NROW == 5:   # complemented Y operands: one XNOR / NOT twin when one base Y or its positive form is needed too
+            ya = {a for a, w in P if a & 15}
+            yc += sum(1 for a in {a & 15 for a in ya if a & CY} if bin(a).count('1') == 1 or a in ya)
+        if NCOL == 8:
+            NA = len(P)
+            xf0 = {w for a, w in P if bin(w).count('1') >= 2 and w not in self.free}
+            xcomp = 0
+        else:     # affine x-forms: a bare Y-form (w == ONE) is no AND; a complemented x-form costs one more
+            NA = sum(1 for a, w in P if w != ONE and a & 15)   # gate when it is one variable or its positive form is
+            lins = {w & 255 for a, w in P if w != ONE}            # needed too; (CY, w) is a bare x-form (no AND)
+            xf0 = {m for m in lins if bin(m).count('1') >= 2 and m not in self.free}
+            pos = {w for a, w in P if not w & ONE}
+            xcomp = sum(1 for m in {w & 255 for a, w in P if w & ONE and w != ONE}
+                        if bin(m).count('1') == 1 or m in pos or m in self.free)
         av = set(self.free) | {1 << i for i in range(8)}
         rem = set(xf0); xc = 0
         while rem:
@@ -177,6 +204,7 @@ class Model:
             if not got:
                 w = min(rem); xc += 2; av.add(w); rem.discard(w); continue
             for w in got: av.add(w); rem.discard(w); xc += 1
+        xc += xcomp
         xf = range(xc)
         out = sum(len(S) - 1 for S in choice)
         if self.pairs:
@@ -202,9 +230,9 @@ class Model:
                 for tl in terms:
                     if k[0] in tl and k[1] in tl:
                         tl.remove(k[0]); tl.remove(k[1]); tl.append(nk)
-        g = len(P) + yc + len(xf) + out
-        over = max(0, len(P) - self.amax)
-        return g + self.pw * len(P) + 1000 * over, len(P), yc, len(xf), out
+        g = NA + yc + len(xf) + out
+        over = max(0, NA - self.amax)
+        return g + self.pw * NA + 1000 * over, NA, yc, len(xf), out
 
     def cost_reference(self, choice):
         """the earlier cost() (pairs oriented by str()), kept for the identity test (tests/test_rebuild_ops.py)"""
@@ -424,7 +452,7 @@ def main():
 
 
 def sum_t(S):
-    M = (0, 0, 0, 0)
+    M = (0,) * NROW
     for p in S: M = tsub(M, p)
     return M
 
