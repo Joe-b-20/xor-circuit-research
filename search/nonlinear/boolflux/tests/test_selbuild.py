@@ -2,6 +2,7 @@
 
     python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear -p 'test_selbuild.py'
 """
+import importlib.util
 import json
 import random
 import sys
@@ -14,13 +15,25 @@ sys.path.insert(0, str(PKG.parent))
 sys.path.insert(0, str(PKG / 'ops'))
 
 from boolflux import core, targets      # noqa: E402
-import selbuild as SB                    # noqa: E402
+HAVE_DEPS = all(importlib.util.find_spec(m) is not None for m in ('numpy', 'pysat'))
+SB = None
+if HAVE_DEPS:
+    import selbuild as SB                # noqa: E402   (numpy; its Boyar-Peralta rebuilds also python-sat)
 
 SEEDS = PKG.parent / 'seeds'
 FWD = SEEDS / 'aes-sbox' / 'aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt'
 INV = SEEDS / 'aes-invsbox' / 'aes-invsbox-a32-ad4-g117-gd21-xx85-10.circ.txt'
 
 
+class TestSelTarget(unittest.TestCase):
+    def test_target_matches_nist_file(self):
+        """standard library only: the aes-sbox-sel target is NIST's table (S-box for c = 0, inverse for c = 1)"""
+        n, m, t, _ = targets.load('aes-sbox-sel')
+        fj = json.loads((SEEDS / 'aes-sbox-sel' / 'aes-sbox-sel.fn.json').read_text())
+        self.assertEqual((n, m, t), (fj['n_inputs'], fj['n_outputs'], fj['table']))
+
+
+@unittest.skipUnless(HAVE_DEPS, 'ops/selbuild.py needs numpy and python-sat')
 class TestSel(unittest.TestCase):
     def test_target_is_nist_table(self):
         n, m, t, _ = targets.load('aes-sbox-sel')

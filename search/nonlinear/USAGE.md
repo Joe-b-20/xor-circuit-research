@@ -14,7 +14,8 @@ on one CPU of the machine in [HISTORY.md](HISTORY.md#compute).
 | gcc | the C kernels, compiled on first use (each `run`/`pipe`/`flow` compiles a private copy into its output folder) | nothing runs a search |
 | GNU time (`time -v` on `PATH`) | wall time and peak RSS of each kernel process in `flow`, `bench/bench.py` | Python measures both (wall clock, `os.wait4` `ru_maxrss`); the run record says which |
 | `taskset` (util-linux) | pinning: `flow --cpus`, the hub's workers | pinned with `os.sched_setaffinity` (unpinned, with a warning, where that is missing too) |
-| `numpy` and `python-sat` | `ops/conjpull.py` (both) | that script stops at import |
+| `numpy` and `python-sat` | `ops/conjpull.py` (both), `ops/selbuild.py`, the builds of `ops/transport.py` (`conj_lib/bp.py`) | that script stops at import (their tests are skipped) |
+| `python-sat` | `ops/winsat.py` (SAT windows; its AND removal and the hub's `andrm` need neither) | that script stops at the first SAT query |
 | `python-sat` | `ops/satlns.py` | that script stops at import |
 
 `python3 search/nonlinear/boolflux/cli.py tools` prints what this machine has; `run`, `pipe`,

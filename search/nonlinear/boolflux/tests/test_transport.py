@@ -2,6 +2,7 @@
 
     python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear
 """
+import importlib.util
 import json
 import os
 import random
@@ -25,6 +26,9 @@ FWD = SEEDS / 'aes-sbox' / 'aes-sbox-a32-ad4-g117-gd19-xx85-6.circ.txt'
 INV = SEEDS / 'aes-invsbox' / 'aes-invsbox-a32-ad4-g117-gd21-xx85-10.circ.txt'
 
 
+HAVE_DEPS = all(importlib.util.find_spec(m) is not None for m in ('numpy', 'pysat'))   # builds: conj_lib/bp.py, slp.py
+
+
 def tab(c):
     return tuple(c.value_table())
 
@@ -45,6 +49,7 @@ class TestTransportMaps(unittest.TestCase):
         self.assertEqual((cin, cout), (0x63, 0x63))
 
 
+@unittest.skipUnless(HAVE_DEPS, 'transport builds (conj_lib/bp.py) need numpy and python-sat')
 class TestTransportBuild(unittest.TestCase):
     def setUp(self):
         self.f = CM.load(FWD); self.i = CM.load(INV)
@@ -120,6 +125,7 @@ class TestTransportSelection(unittest.TestCase):
             aesfn.use('aes-sbox')
 
 
+@unittest.skipUnless(HAVE_DEPS, 'transport builds (conj_lib/bp.py) need numpy and python-sat')
 class TestTransportOperator(unittest.TestCase):
     def test_operator_no_pull(self):
         # forward NIST circuit -> verified inverse circuits with sidecars and a run record
