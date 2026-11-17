@@ -310,6 +310,19 @@ static int sweep = 0;     /* 1 = target gates in index order instead of at rando
 static double tw_mffc1 = 1, tw_and = 1, tw_viol = 1, uphill_mv[3] = {-1, -1, -1}, repair_uphill = 0;
 static long stop_stall_it = 0;
 static int pair_xor = 0, pxor = 0;   /* pair_xor option / in effect (see build_pairs) */
+/* chain_p P (idea 04, 2026-11-17; default 0 = off, and then no code path, random draw or output line changes):
+ * with probability P per iteration (only while the current state meets every cap) a two-step compound move
+ * replaces the ordinary move; see chain_move.  chain.k1 step-1 circuits expanded, chain.k2 step-2 targets per
+ * step-1 circuit, chain.rand2 random extra step-2 targets, chain.up1 step-1 new-gate budget slack (units as
+ * uphill), chain.maxup largest actual step-1 rise expanded (default = up1), chain.lev1 / chain.lev2 new gates
+ * per step (1..3), chain.accept 1 also takes a neutral compound (0: improvements only), chain.freed 0: step-2
+ * targets drawn at random only (ablation of the freed-signal choice). */
+#define CH_K1MAX 16
+/* l3n N (idea 04; default 0 = off): resub3 also tries s = r(X1, X2) with r an AND-like library op and X1, X2 pair-table
+ * values (3 new gates, e.g. AND(a^b, c^d)); at most N pair checks per root op and move.  See l3n_cands. */
+static long l3n_lim = 0; static long st_l3n_moves, st_l3n_ea, st_l3n_chk, st_l3n_hit;
+static double chain_p = 0, ch_up1 = 2, ch_maxup = -1, ch_up1s, ch_maxups;
+static int ch_k1 = 4, ch_k2 = 8, ch_rand2 = 2, ch_lev1 = 2, ch_lev2 = 3, ch_accept = 1, ch_freed = 1;
 static int l1_fast = 1;   /* resub1 through l1_direct (same result; config `l1_direct 0` = the old scan, for tests) */
 static int dmax = 200, pdiv = 90, nl_samples = 12, cand_cap = 40, use_fraig = 1;
 static int use_neutral = 1, use_odc = 1, linear_mode = 0;   /* ablation switches; linear: see main */
@@ -393,6 +406,17 @@ static void parse_config(const char *path) {
         else if (!strcmp(k, "stop_stall_it")) stop_stall_it = atol(v);
         else if (!strcmp(k, "pair_xor")) pair_xor = atoi(v);
         else if (!strcmp(k, "l1_direct")) l1_fast = atoi(v);
+        else if (!strcmp(k, "chain_p")) chain_p = atof(v);
+        else if (!strcmp(k, "l3n")) l3n_lim = atol(v);
+        else if (!strcmp(k, "chain.k1")) ch_k1 = atoi(v);
+        else if (!strcmp(k, "chain.k2")) ch_k2 = atoi(v);
+        else if (!strcmp(k, "chain.rand2")) ch_rand2 = atoi(v);
+        else if (!strcmp(k, "chain.up1")) ch_up1 = atof(v);
+        else if (!strcmp(k, "chain.maxup")) ch_maxup = atof(v);
+        else if (!strcmp(k, "chain.lev1")) ch_lev1 = atoi(v);
+        else if (!strcmp(k, "chain.lev2")) ch_lev2 = atoi(v);
+        else if (!strcmp(k, "chain.accept")) ch_accept = atoi(v);
+        else if (!strcmp(k, "chain.freed")) ch_freed = atoi(v);
         else if (!strncmp(k, "mv.", 3)) {
             int hit = 0;
             for (int i = 0; i < NMOVES; i++) if (!strcmp(k + 3, MVNAME[i])) { mv_w[i] = atof(v); hit = 1; }
@@ -425,6 +449,9 @@ static void parse_config(const char *path) {
     }
     fclose(f);
     if (cand_cap < 1) die("cand_cap must be at least 1");
+    if (chain_p < 0 || chain_p > 1) die("chain_p must be in 0..1");
+    if (ch_k1 < 1 || ch_k1 > CH_K1MAX || ch_k2 < 0 || ch_rand2 < 0 || ch_lev1 < 1 || ch_lev1 > 3 || ch_lev2 < 1 || ch_lev2 > 3
+        || ch_accept < 0 || ch_accept > 1 || ch_up1 < 0) die("chain.*: k1 1..16, k2/rand2 >= 0, lev1/lev2 1..3, accept 0/1, up1 >= 0");
     if (xspan_tries < 1 || xspan_tries > 16) die("xspan_tries must be 1..16");
     if (!cfg_in[0] || !cfg_out[0]) die("config needs in and out");
 }
@@ -582,8 +609,9 @@ static inline void pair_val(int op, const u64 *a, const u64 *b, const u64 *c, u6
 
 /* candidates */
 /* form (kstat only): 0 level 0, 1 level 1, 2 level-2 XOR/XNOR root, 3 level-2 sampled root, 4 level 3, 5 xspan */
-#define NFORM 6
-static const char *FORMNAME[NFORM] = {"L0", "L1", "L2x", "L2n", "L3", "XS"};
+#define NFORM 7
+static const char *FORMNAME[NFORM] = {"L0", "L1", "L2x", "L2n", "L3", "XS", "L3n"};
+static int nform_p = 6;     /* forms printed: the old six unless l3n is on (idea 04; same output lines when off) */
 typedef struct { int k; Gate g[3]; int root; double ncost; const Gate *ext; unsigned char form; } Cand;   /* ext: gate list of an xspan candidate (k may exceed 3) */
 static inline const Gate *cand_gates(const Cand *c) { return c->ext ? c->ext : c->g; }
 static Cand *CAND; static int ncand, nseen;
@@ -834,6 +862,74 @@ static void l3_pxor(int r, int lim, u64 dgx, int base) {
     }
 }
 
+/* level 3, AND-like root of two pair values (idea 04):  s = r(X1, X2).  r gives its odd output o* only at (x*, y*), so
+ * on T = {care, s == o*} both operands are fixed (X1 = x*, X2 = y*) and on the rest of the care set they may not be
+ * (x*, y*) together.  With A = X1 (x* = 1) or ~X1 on the care set (x* = 0), B likewise: T within A, T within B, and
+ * A & B & care & ~T == 0.  Entries passing the T filter are listed (one pass over the table), then pairs are checked,
+ * starting at a random entry, at most l3n_lim pair checks per root op.  The pair table holds the entries of the
+ * pair divisors within the budget (pair_xor 1: XNOR forms are not tried here). */
+static int *L3N_A, *L3N_B;
+static void l3n_cands(int base) {
+    Cand c; c.ext = 0; c.form = 6;
+    if (!L3N_A) { L3N_A = malloc(sizeof(int) * PCAP); L3N_B = malloc(sizeof(int) * PCAP); }
+    st_l3n_moves++;
+    u64 T[1024], NT[1024];
+    for (int ri = 0; ri < nlibnl; ri++) {
+        int r = libnl[ri];
+        if (pmin_cost + pmin_cost + op_cost[r] > budget) continue;
+        int xs = -1, ys = -1, os = -1;
+        for (int x = 0; x < 2; x++) for (int y = 0; y < 2; y++) {
+            int o = (r >> ((x << 1) | y)) & 1, n1 = 0;
+            for (int x2 = 0; x2 < 2; x2++) for (int y2 = 0; y2 < 2; y2++) n1 += ((r >> ((x2 << 1) | y2)) & 1) == o;
+            if (n1 == 1) { xs = x; ys = y; os = o; }
+        }
+        if (xs < 0) continue;
+        int any = 0;
+        for (int w = 0; w < W; w++) { T[w] = CARE[w] & (os ? GT[w] : ~GT[w]); NT[w] = CARE[w] & ~T[w]; any |= T[w] != 0; }
+        if (!any) continue;                       /* s never o* on the care set: lower levels cover it */
+        int na = 0, nb = 0, same = xs == ys;
+        for (int i = 0; i < np; i++) {
+            const u64 *pv = PV + (size_t)i * W; int fa = 1, fb = 1;
+            for (int w = 0; w < W && (fa || fb); w++) {
+                u64 v1 = pv[w], v0 = ~pv[w] & CARE[w];
+                if (T[w] & ~(xs ? v1 : v0)) fa = 0;
+                if (T[w] & ~(ys ? v1 : v0)) fb = 0;
+            }
+            if (fa) L3N_A[na++] = i;
+            if (fb && !same) L3N_B[nb++] = i;
+        }
+        int *LB = same ? L3N_A : L3N_B; if (same) nb = na;
+        st_l3n_ea += na;
+        if (!na || !nb) continue;
+        long chk = 0; int p0 = rndint(na);
+        for (int pp = 0; pp < na && chk < l3n_lim; pp++) {
+            int i = L3N_A[(p0 + pp) % na]; PEnt *e = &PE[i];
+            if (op_cost[e->op] + pmin_cost + op_cost[r] > budget) continue;
+            const u64 *pi = PV + (size_t)i * W;
+            u64 Ai[1024];
+            for (int w = 0; w < W; w++) Ai[w] = (xs ? pi[w] : ~pi[w] & CARE[w]) & NT[w];
+            for (int qq = 0; qq < nb && chk < l3n_lim; qq++) {
+                int j = LB[qq];
+                if (same && j <= i && op_sym(r)) continue;
+                if (j == i) continue;
+                chk++;
+                const u64 *pj = PV + (size_t)j * W; int ok = 1;
+                for (int w = 0; w < W; w++) if (Ai[w] & (ys ? pj[w] : ~pj[w])) { ok = 0; break; }
+                if (!ok) continue;
+                PEnt *e2 = &PE[j];
+                double nc = op_cost[e->op] + op_cost[e2->op] + op_cost[r];
+                if (nc > budget) continue;
+                if (arr_g(r, e->lg, e2->lg) > req_g || arr_a(r, e->la, e2->la) > req_a) continue;
+                st_l3n_hit++;
+                c.k = 3; c.g[0].op = e->op; c.g[0].a = e->a; c.g[0].b = e->b;
+                c.g[1].op = e2->op; c.g[1].a = e2->a; c.g[1].b = e2->b;
+                c.g[2].op = r; c.g[2].a = base; c.g[2].b = base + 1; c.root = base + 2; c.ncost = nc; add_cand(&c);
+            }
+        }
+        st_l3n_chk += chk;
+    }
+}
+
 /* enumerate candidates for signal s up to `lev` new gates */
 static void find_cands(int lev) {
     int base = N + cur.ng;
@@ -996,6 +1092,7 @@ static void find_cands(int lev) {
             }
         }
     }
+    if (l3n_lim > 0) l3n_cands(base);
 }
 
 /* ------------------------------------------------------------------ xspan
@@ -1324,7 +1421,7 @@ static long sx_tgt[NSTRAT][6][4];
 static long sx_viol_prop;        /* proposals made while the current state violates a cap (stratum 4 counts only those) */
 static void put_vec(const char *name, const long *v) {
     printf(" %s ", name);
-    for (int f = 0; f < NFORM; f++) printf(f ? ",%ld" : "%ld", v[f]);
+    for (int f = 0; f < nform_p; f++) printf(f ? ",%ld" : "%ld", v[f]);
 }
 /* kstat walk: distinct structures (structural hash, as in same_structure) and distinct (G, A, GD, AD)
  * of the accepted states, in saturating hash sets; the iterations of the first 64 restarts */
@@ -1377,6 +1474,147 @@ static int pick_target(void) {
     return N + lo;
 }
 
+/* ------------------------------------------------------------------ chain: two-step compound move (idea 04)
+ * The ordinary move replaces one signal s within the cost of s's fanout-free cone (+ uphill).  Mature circuits
+ * are fixed points of that neighbourhood (U1): a gate g whose fanout is shared by s1 and s2 dies only if both
+ * are replaced, and the new gates of one replacement can be the divisors that make another cheap.  The compound
+ * move searches two replacements as ONE move:
+ *   step 1: target s1 (uniform), candidates with up to chain.lev1 new gates within mffc(s1) + chain.up1;
+ *           up to chain.k1 of them (random order, no-ops skipped, actual rise <= chain.maxup) give circuits C1;
+ *   step 2: in each C1, targets s2 = the signals whose fanout count dropped against the current circuit C0
+ *           ("freed": matched by complete function, so their care sets shrank and the fanout that is left may
+ *           now own them in its cone), the gate fanouts of those, and chain.rand2 random gates; chain.k2 of
+ *           them (random) are searched with the ordinary candidate generator (chain.lev2 new gates, budget
+ *           mffc(s2) + uphill of that level) and every candidate is evaluated;
+ *   result: every C1 and every two-step circuit C2 is compared with C0: the best strict improvement is taken;
+ *           else (chain.accept 1) a uniformly drawn neutral one (equal keys, other structure than C0).
+ * Every intermediate state is a correct circuit (each step is an ordinary exact-care-set replacement in its own
+ * circuit), so the compound result is correct; the evaluation guards (outputs re-simulated) apply as usual.
+ * Uphill compounds are never taken: the move is an escape, the walk stays with the ordinary moves. */
+static Circ CH_save, CH_pool[CH_K1MAX], CH_best, CH_neu, CH_tmp; static int CH_ok;
+static Metrics ch_mb, ch_mn; static int ch_bset; static long ch_nneu;
+static u64 *CH_hk; static int *CH_hr, *CH_list; static unsigned char *CH_mark; static Cand *CH_c1;
+static long ch_prop, ch_c1, ch_tg, ch_tgfreed, ch_ev, ch_acc_imp, ch_acc_neu, ch_nbest, ch_none, ch_c1imp, ch_c2imp; static double ch_time;
+static int ch_bfrom2;
+static long ch_eqm, ch_eqs, ch_h1[7], ch_h2[7]; static double ch_b2;   /* kstat chain_hist: step-1 rise, best step-2 change per C1 (cheapest-gate units vs C0) */
+static inline u64 ch_vhash(const u64 *pv) {
+    u64 h = 0x777; for (int w = 0; w < W; w++) { h ^= pv[w] & wmask(w); h *= 0x9E3779B97F4A7C15ULL; h ^= h >> 29; }
+    return h | 1;
+}
+/* target s: care set, required levels, budget = mffc cost + slack, divisors (as the main loop does) */
+static void ch_prep(int s, double slack) {
+    tfo_care(s);
+    req_g = RGc[s] > LGc[s] ? RGc[s] : LGc[s]; req_a = RAc[s] > LAc[s] ? RAc[s] : LAc[s];
+    budget = mffc_cost(s) + slack;
+    ndiv = 0;
+    for (int v = 0; v < N + cur.ng; v++) if (!TFO[v]) DIV[ndiv++] = v;
+    for (int i = ndiv - 1; i > 0; i--) { int j = rndint(i + 1); int x = DIV[i]; DIV[i] = DIV[j]; DIV[j] = x; }
+    if (ndiv > dmax && dmax > 0) ndiv = dmax;
+}
+static void ch_consider(const Circ *x, const Metrics *m, const Metrics *m0, int from2) {
+    if (!m->feas) return;
+    int c = mcmp(m, m0);
+    if (from2 && m->cost - m0->cost < ch_b2) ch_b2 = m->cost - m0->cost;
+    if (c < 0) {
+        if (!ch_bset || mcmp(m, &ch_mb) < 0) { circ_copy(&CH_best, x); ch_mb = *m; ch_bset = 1; ch_bfrom2 = from2; }
+        return;
+    }
+    if (c || !ch_accept) return;
+    ch_eqm++;
+    SH_ycached = 0; int same = same_structure(x, &CH_save); SH_ycached = 0;   /* y = C0 here; cache dropped again */
+    if (same) { ch_eqs++; return; }
+    ch_nneu++;
+    if (rndint((int)ch_nneu) == 0) { circ_copy(&CH_neu, x); ch_mn = *m; }
+}
+/* 0 nothing, 1 improvement in CH_best, 2 neutral in CH_neu.  The current state is unchanged on return. */
+static int chain_move(void) {
+    int S = N + GCAP + 16;
+    if (!CH_ok) {
+        circ_alloc(&CH_save); circ_alloc(&CH_best); circ_alloc(&CH_neu); circ_alloc(&CH_tmp);
+        for (int i = 0; i < CH_K1MAX; i++) circ_alloc(&CH_pool[i]);
+        CH_hk = calloc(1 << 16, sizeof(u64)); CH_hr = malloc(sizeof(int) * (1 << 16));
+        CH_list = malloc(sizeof(int) * S); CH_mark = calloc(S, 1); CH_c1 = malloc(sizeof(Cand) * (cand_cap + 1));
+        CH_ok = 1;
+    }
+    Metrics m0 = mcur; circ_copy(&CH_save, &cur);
+    ch_bset = 0; ch_nneu = 0;
+    /* complete function -> fanout count in C0 (first signal of each function) */
+    int tot0 = N + cur.ng, hs = 64; while (hs < 2 * tot0) hs <<= 1;
+    if (hs > (1 << 16)) return 0;
+    for (int i = 0; i < hs; i++) CH_hk[i] = 0;
+    for (int v = 0; v < tot0; v++) {
+        u64 h = ch_vhash(Vcur + (size_t)v * W); unsigned q = (unsigned)(h >> 20) & (hs - 1);
+        while (CH_hk[q] && CH_hk[q] != h) q = (q + 1) & (hs - 1);
+        if (!CH_hk[q]) { CH_hk[q] = h; CH_hr[q] = REF[v]; }
+    }
+    /* step 1 */
+    int s1 = N + rndint(cur.ng);
+    ch_prep(s1, ch_up1s);
+    if (!ndiv) return 0;
+    find_cands(ch_lev1);
+    int nc = ncand; memcpy(CH_c1, CAND, sizeof(Cand) * nc);
+    int order[64 + 1], *ord = nc <= 64 ? order : malloc(sizeof(int) * nc);
+    for (int i = 0; i < nc; i++) ord[i] = i;
+    for (int i = nc - 1; i > 0; i--) { int j = rndint(i + 1); int x = ord[i]; ord[i] = ord[j]; ord[j] = x; }
+    Metrics m; int n1 = 0;
+    for (int q = 0; q < nc && n1 < ch_k1; q++) {
+        Cand *k = &CH_c1[ord[q]];
+        if (noop_pre(s1, k)) continue;
+        if (!eval_cand(s1, k, &m, &CH_pool[n1])) continue;
+        ch_ev++;
+        if (!m.feas) continue;
+        if (m.g == mcur.g && m.a == mcur.a && m.gd == mcur.gd && m.ad == mcur.ad && same_structure(&CH_pool[n1], &cur)) continue;
+        ch_consider(&CH_pool[n1], &m, &m0, 0);
+        ch_h1[dcb(m.cost - m0.cost)]++;
+        if (ldelta(&m, &m0) > ch_maxups + 1e-9) continue;
+        n1++;
+    }
+    if (ord != order) free(ord);
+    ch_c1 += n1;
+    double up2 = uphill_mv[ch_lev2 - 1];
+    for (int a = 0; a < n1; a++) {
+        circ_copy(&cur, &CH_pool[a]); state_refresh();
+        int tot = N + cur.ng, nt = 0;
+        memset(CH_mark, 0, tot);
+        if (ch_freed) {
+            /* freed signals: same complete function as a C0 signal with more fanout */
+            for (int v = 0; v < tot; v++) {
+                u64 h = ch_vhash(Vcur + (size_t)v * W); unsigned q = (unsigned)(h >> 20) & (hs - 1);
+                while (CH_hk[q] && CH_hk[q] != h) q = (q + 1) & (hs - 1);
+                if (CH_hk[q] && REF[v] < CH_hr[q]) CH_mark[v] = 1;
+            }
+            for (int j = 0; j < cur.ng; j++) {
+                const Gate *g = &cur.g[j];
+                if (CH_mark[g->a] == 1 || (!op_unary(g->op) && CH_mark[g->b] == 1)) { if (!CH_mark[N + j]) CH_mark[N + j] = 2; }
+            }
+            for (int v = N; v < tot; v++) if (CH_mark[v]) { CH_list[nt++] = v; ch_tgfreed++; }
+        }
+        for (int r = 0; r < ch_rand2; r++) { int v = N + rndint(cur.ng); if (!CH_mark[v]) { CH_mark[v] = 3; CH_list[nt++] = v; } }
+        for (int i = nt - 1; i > 0; i--) { int j = rndint(i + 1); int x = CH_list[i]; CH_list[i] = CH_list[j]; CH_list[j] = x; }
+        if (nt > ch_k2) nt = ch_k2;
+        ch_b2 = 1e300;
+        for (int t = 0; t < nt; t++) {
+            int s2 = CH_list[t];
+            ch_tg++;
+            ch_prep(s2, up2);
+            if (!ndiv) continue;
+            find_cands(ch_lev2);
+            for (int i = 0; i < ncand; i++) {
+                if (noop_pre(s2, &CAND[i])) continue;
+                if (!eval_cand(s2, &CAND[i], &m, &CH_tmp)) continue;
+                ch_ev++;
+                ch_consider(&CH_tmp, &m, &m0, 1);
+            }
+        }
+        if (ch_b2 < 1e299) ch_h2[dcb(ch_b2)]++;
+    }
+    if (n1) { circ_copy(&cur, &CH_save); state_refresh(); }
+    if (ch_bset) { if (ch_bfrom2) ch_c2imp++; else ch_c1imp++; return 1; }
+    if (ch_nneu) return 2;
+    ch_none++;
+    return 0;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) die("usage: bfx CONFIG");
     circ_alloc(&cur); circ_alloc(&best); circ_alloc(&tmp_c);
@@ -1407,6 +1645,9 @@ int main(int argc, char **argv) {
         cheap_cost = u > 0 ? u : 1;      /* kstat dcost unit */
         if (!scale_abs) { T0 *= cost_unit_v; uphill *= cost_unit_v; if (max_excess < 1e17) max_excess *= cost_unit_v; }
         for (int q = 0; q < 3; q++) uphill_mv[q] = uphill_mv[q] < 0 ? uphill : scale_abs ? uphill_mv[q] : uphill_mv[q] * cost_unit_v;
+        ch_up1s = scale_abs ? ch_up1 : ch_up1 * cost_unit_v;           /* chain (idea 04): same units as uphill */
+        ch_maxups = ch_maxup < 0 ? ch_up1s : scale_abs ? ch_maxup : ch_maxup * cost_unit_v;
+        if (l3n_lim > 0) nform_p = NFORM;
         if (tw_mffc1 < 0 || tw_and < 0 || tw_viol < 0) die("tgt_w.* must be >= 0");
         weighted_tgt = tw_mffc1 != 1 || tw_and != 1 || tw_viol != 1;
         if (cost_unit_v != 1) printf("scale unit %.10g (T0, uphill, max_excess in units of the cheapest gate)\n", cost_unit_v);
@@ -1498,6 +1739,34 @@ int main(int argc, char **argv) {
             if (nrestarts_at < 64) restarts_at[nrestarts_at++] = it;
         }
         if (cur.ng == 0) { stop_reason = "empty"; break; }
+        if (chain_p > 0 && mcur.feas && rnd01() < chain_p) {      /* idea 04 compound move (off by default: no draw) */
+            double tm = now_s(); ph_hold = 1; ch_prop++;
+            int k = chain_move();
+            if (k) {
+                circ_copy(&cur, k == 1 ? &CH_best : &CH_neu); state_refresh();
+                if (k == 1) ch_acc_imp++; else ch_acc_neu++;
+                int newbest = (mcur.feas || !mbest.feas) && (mcmp(&mcur, &mbest) < 0 || (mcur.feas && !mbest.feas));
+                walk_note();
+                if (newbest) {
+                    imp_it = it; imp_t = t; ch_nbest++;
+                    circ_copy(&best, &cur); mbest = mcur; last_best = t; last_best_it = it;
+                    write_circuit(cfg_out, &best, &mbest, "best");
+                    if (cfg_keep_bests[0]) {
+                        char fn[1200], note[160];
+                        snprintf(fn, sizeof fn, "%s/best-%ld.bfx", cfg_keep_bests, n_kept_bests);
+                        snprintf(note, sizeof note, "best %ld t %.3f it %ld mv chain", n_kept_bests, t, it);
+                        write_circuit(fn, &best, &mbest, note); n_kept_bests++;
+                    }
+                    printf("best t %.3f it %ld mv chain%d cost %.10g G %d A %d GD %d AD %d obj %.17g\n", t, it, ch_bfrom2 + 1,
+                           mbest.cost, mbest.g, mbest.a, mbest.gd, mbest.ad, mbest.obj);
+                    printf("kstat best it %ld treal %.3f cpu %.3f\n", it, clk_s(CLOCK_REALTIME) - treal0, clk_s(CLOCK_PROCESS_CPUTIME_ID) - tcpu0);
+                    fflush(stdout);
+                }
+                if (trace) fprintf(trace, "%.3f %ld %s %.10g %d %d %d %d\n", t, it, "chain", mcur.cost, mcur.g, mcur.a, mcur.gd, mcur.ad);
+            }
+            ph_hold = 0; ch_time += now_s() - tm;
+            continue;
+        }
         if (!mcur.feas) st_repair_it++;
         double r = rnd01() * mvsum; int mv = 0;
         while (mv < NMOVES - 1 && r >= mv_w[mv]) { r -= mv_w[mv]; mv++; }
@@ -1679,6 +1948,18 @@ int main(int argc, char **argv) {
     printf("noop_candidates_skipped %ld\n", st_noop);
     if (use_fraig >= 2) printf("fraig_reverse_merges %ld\n", st_fraig_rev);
     if (mv_w[MV_XSPAN] > 0) printf("xspan_solutions %ld\n", st_xspan_solved);
+    if (l3n_lim > 0) printf("kstat l3n moves %ld listed %ld checks %ld hits %ld\n", st_l3n_moves, st_l3n_ea, st_l3n_chk, st_l3n_hit);
+    if (chain_p > 0)
+        printf("kstat chain prop %ld step1_circuits %ld targets2 %ld targets2_freed %ld evaluated %ld acc_improve %ld"
+               " (from_step1 %ld from_step2 %ld) acc_neutral %ld none %ld new_best %ld time %.2f\n", ch_prop, ch_c1, ch_tg,
+               ch_tgfreed, ch_ev, ch_acc_imp, ch_c1imp, ch_c2imp, ch_acc_neu, ch_none, ch_nbest, ch_time);
+    if (chain_p > 0) {
+        printf("kstat chain_hist equal_keys %ld equal_is_start %ld step1_rise", ch_eqm, ch_eqs);
+        for (int i = 0; i < 7; i++) printf(" %+d:%ld", i - 3, ch_h1[i]);
+        printf(" best_step2_change");
+        for (int i = 0; i < 7; i++) printf(" %+d:%ld", i - 3, ch_h2[i]);
+        putchar('\n');
+    }
     /* kstat summary (after every older line, so parsers of those see the same text) */
     {
         double tf = now_s() - t0;
@@ -1697,7 +1978,7 @@ int main(int argc, char **argv) {
                                              MVNAME[i], st_nocand[i], st_aimp[i], st_aneu[i], st_aup[i], st_imp[i]);
         /* form vectors are L0,L1,L2x,L2n,L3,XS (FORMNAME) */
         printf("kstat forms");
-        for (int f = 0; f < NFORM; f++) printf(f ? ",%s" : " %s", FORMNAME[f]);
+        for (int f = 0; f < nform_p; f++) printf(f ? ",%s" : " %s", FORMNAME[f]);
         printf("\n");
         for (int i = 0; i < NMOVES; i++) {
             if (!(i < 3 || mv_w[i] > 0)) continue;
