@@ -1,0 +1,119 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+% Candidate of the hardware study (hardware/research/sample.py), not a published circuit
+% Structure hash a59c7f7b73c52fd4; source: ~/xs-campaigns/2026-11-06-layout/workers/runs/w240/workers/mc-43/records/g105-d6-003c8e0194a7f3d0.json
+
+begin circuit aes-mixcolumns-xor105-depth6-ha59c7f7b73c52fd4
+
+Inputs: x0:x31
+Outputs: t81 t96 t84:t85 t100 t64 t88 t73 t95 t97 t60 t99 t87 t65 t69 t74 t90:t91 t98 t105 t103 t68 t71 t78 t104 t89 t83 t92:t93 t63 t66 t70
+Internal: t1:t59 t61:t62 t67 t72 t75:t77 t79:t80 t82 t86 t94 t101:t102
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR t1 x4 x5
+XOR t2 x3 x7
+XOR t3 x2 x9
+XOR t4 x2 x10
+XOR t5 x3 x11
+XOR t6 x4 x11
+XOR t7 x10 x11
+XOR t8 x1 x16
+XOR t9 x1 x17
+XOR t10 x17 x18
+XOR t11 x13 x21
+XOR t12 x20 x21
+XOR t13 x6 x22
+XOR t14 x7 x23
+XOR t15 x15 x23
+XOR t16 x16 x24
+XOR t17 x9 x25
+XOR t18 x23 x25
+XOR t19 x4 x27
+XOR t20 x19 x27
+XOR t21 x20 x28
+XOR t22 x5 x29
+XOR t23 x14 x29
+XOR t24 x6 x30
+XOR t25 x7 x30
+XOR t26 x7 x31
+XOR t27 x14 x31
+XOR t28 x22 x31
+XOR t29 x28 x31
+XOR t30 t5 x15
+XOR t31 x0 t9
+XOR t32 t4 t9
+XOR t33 t5 x19
+XOR t34 t1 t11
+XOR t35 t11 t13
+XOR t36 x8 t14
+XOR t37 x6 t15
+XOR t38 t7 t15
+XOR t39 x0 t17
+XOR t40 t8 t18
+XOR t41 t3 x26
+XOR t42 t2 t19
+XOR t43 x2 t20
+XOR t44 t6 t21
+XOR t45 x12 t22
+XOR t46 t13 t23
+XOR t47 t21 t22
+XOR t48 t23 t24
+XOR t49 x2 t26
+XOR t50 x15 t28
+XOR t51 t14 t28
+XOR t52 x24 t26
+XOR t53 x12 t29
+XOR t54 t36 t15
+XOR t55 t14 t38
+XOR t56 x18 t33
+XOR t57 x0 t36
+XOR t58 t32 x25
+XOR t59 x7 t40
+XOR t60 t10 t41
+XOR t61 t30 t21
+XOR t62 x19 t44
+XOR t63 t34 x28
+XOR t64 t34 t45
+XOR t65 t12 t45
+XOR t66 x5 t46
+XOR t67 t35 t22
+XOR t68 x13 t47
+XOR t69 t35 x30
+XOR t70 t37 t25
+XOR t71 x21 t48
+XOR t72 t21 t53
+XOR t73 t37 t27
+XOR t74 x14 t51
+XOR t75 x9 t52
+XOR t76 x26 t49
+XOR t77 x23 t53
+XOR t78 t25 t50
+XOR t79 t54 x17
+XOR t80 t56 t38
+XOR t81 t54 t16
+XOR t82 x1 t58
+XOR t83 t10 t58
+XOR t84 t32 t60
+XOR t85 t55 t43
+XOR t86 x12 t61
+XOR t87 t15 t62
+XOR t88 t67 t71
+XOR t89 t31 t75
+XOR t90 t57 t52
+XOR t91 t59 t75
+XOR t92 t33 t76
+XOR t93 t42 t72
+XOR t94 x4 t77
+XOR t95 t57 t81
+XOR t96 t79 t39
+XOR t97 t79 t59
+XOR t98 t82 x26
+XOR t99 t80 x27
+XOR t100 x7 t86
+XOR t101 t16 t90
+XOR t102 t85 t76
+XOR t103 t20 t94
+XOR t104 t14 t101
+XOR t105 t80 t102
+end SLP
+end circuit

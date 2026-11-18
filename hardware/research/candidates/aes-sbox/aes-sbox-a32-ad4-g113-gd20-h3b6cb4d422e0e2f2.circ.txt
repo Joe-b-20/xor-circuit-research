@@ -1,0 +1,127 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+% Candidate of the hardware study (hardware/research/sample.py), not a published circuit
+% Structure hash 3b6cb4d422e0e2f2; source: ~/xs-campaigns/2026-11-16-night/m2/validate/t04w2-s4-b/conjpull-a32-ad4-g113-gd20-f1b125d31e.circ.txt
+
+begin circuit aes-sbox-a32-ad4-g113-gd20-h3b6cb4d422e0e2f2
+
+Inputs: x0:x7
+Outputs: y0:y7
+Internal: t1:t105
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XNOR t1 x0 x7
+XOR t2 x3 x6
+XNOR t3 t1 t2
+XOR t4 x2 t3
+XNOR t5 x2 x3
+XOR t6 x5 t1
+XNOR t7 t5 t6
+XOR t8 x1 x4
+XNOR t9 t7 t8
+AND t10 t4 t9
+XOR t11 x5 t10
+XOR t12 x4 t3
+XNOR t13 t6 t8
+AND t14 t12 t13
+XOR t15 x7 t12
+AND t16 x0 t15
+XNOR t17 t14 t16
+XOR t18 t11 t17
+XNOR t19 x7 t7
+AND t20 t3 t19
+XNOR t21 t15 t20
+XOR t22 t18 t21
+XOR t23 t2 t8
+XOR t24 x0 t23
+AND t25 x2 t24
+XOR t26 t11 t25
+XNOR t27 t5 t23
+XOR t28 t6 t27
+XOR t29 x0 t13
+AND t30 x7 t29
+XOR t31 t16 t30
+XNOR t32 t28 t31
+XOR t33 t26 t32
+XOR t34 t22 t33
+XOR t35 x1 x2
+XOR t36 t6 t35
+AND t37 t5 t36
+XOR t38 t17 t37
+AND t39 t7 t27
+XOR t40 t38 t39
+AND t41 t22 t40
+AND t42 t23 t35
+XNOR t43 t37 t42
+XOR t44 t32 t43
+AND t45 t33 t44
+XNOR t46 t41 t45
+AND t47 t34 t46
+XOR t48 t33 t41
+XOR t49 t47 t48
+XOR t50 t41 t44
+XOR t51 t40 t44
+AND t52 t46 t51
+XOR t53 t50 t52
+XOR t54 t49 t53
+AND t55 x0 t54
+AND t56 t34 t50
+XOR t57 t33 t56
+XOR t58 t35 t57
+XNOR t59 t5 t58
+AND t60 t49 t59
+XOR t61 t49 t57
+AND t62 t48 t51
+XOR t63 t44 t62
+XOR t64 t53 t63
+XOR t65 t61 t64
+AND t66 t13 t65
+XOR t67 t60 t66
+XNOR t68 t55 t67
+AND t69 t4 t64
+XOR t70 t68 t69
+XOR t71 t23 t49
+XNOR t72 t36 t71
+AND t73 t61 t72
+XNOR t74 t49 t73
+XNOR t75 t70 t74
+XOR t76 t57 t63
+AND t77 x7 t76
+AND t78 t12 t65
+XOR t79 t77 t78
+AND t80 t19 t63
+AND t81 t24 t53
+XOR t82 t80 t81
+XNOR t83 t79 t82
+XOR y0 t75 t83
+AND t84 x2 t53
+XOR y1 t75 t84
+XNOR t85 t6 t71
+XOR t86 t7 t61
+AND t87 t85 t86
+XOR t88 t39 t87
+XNOR t89 t83 t88
+AND t90 t3 t63
+XOR t91 t60 t90
+XNOR y2 t89 t91
+AND t92 t9 t64
+XNOR t93 t81 t92
+XNOR t94 t88 t93
+XNOR t95 t79 t94
+XOR y3 t68 t95
+XOR t96 t78 t89
+AND t97 t15 t54
+XNOR t98 t70 t97
+XOR y4 t96 t98
+AND t99 t58 t71
+XNOR t100 t42 t99
+XNOR t101 t93 t100
+AND t102 t29 t76
+XOR t103 t67 t102
+XNOR y5 t101 t103
+XOR t104 t28 t61
+AND t105 t57 t104
+XNOR y6 t94 t105
+XNOR y7 t95 t100
+end SLP
+end circuit

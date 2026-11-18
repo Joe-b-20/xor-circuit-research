@@ -83,6 +83,7 @@ are in [circuits/SEARCH-TIME.md](circuits/SEARCH-TIME.md).
 |---|---|
 | [circuits/](circuits/README.md) | the smallest circuit our searches found at each depth, per linear map, and our AES S-box and inverse S-box circuits (also with a direction bit), in NIST's file format, each with its logs, next to NIST's circuits; one independent checker for all of them |
 | [search/](search/README.md) | the two searches: [XORFlux](search/linear/README.md) for XOR circuits of linear maps and [BoolFlux](search/nonlinear/README.md) for Boolean circuits with AND gates, each with how it works, how to use it and how it came to be |
+| [hardware/](hardware/README.md) | standard-cell benchmarks of our AES circuits against NIST's: area, delay and power after synthesis, placement and routing (Yosys, ABC, OpenROAD; Nangate45 and SKY130), with every netlist checked equivalent; and [a study](hardware/research/README.md) of what the gate counts miss physically, on 1,457 circuits mostly from all our search runs, with recommendations for searching for better hardware directly |
 | [lower-bound-proofs/](lower-bound-proofs/README.md) | two proofs: AES MixColumns needs at least 75 XOR gates, and at least 93 at depth 3; and the certified open cases of the 75 proof at G = 75 (no new bound) |
 
 **Proof status:** the lower-bound proofs were developed with language-model assistance and

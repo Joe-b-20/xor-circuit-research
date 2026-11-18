@@ -1,0 +1,102 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+% Candidate of the hardware study (hardware/research/sample.py), not a published circuit
+% Structure hash 3fbeeb25d60ca8ab; source: ~/xs-campaigns/2026-11-13-boolflux/nist-e6ac0d0/data/slp/aes/aes-invmixcols/aes-invmixcols-xor88-depth34.circ.txt
+
+begin circuit aes-invmixcolumns-xor88-depth34-h3fbeeb25d60ca8ab
+
+Inputs: x0:x31
+Outputs: y0:y31
+Internal: t1:t56
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR t1 x22 x14
+XOR t2 x18 x26
+XOR t3 x28 x4
+XOR t4 x31 x15
+XOR t5 t1 x6
+XOR t6 x2 t2
+XOR t7 x12 t3
+XOR t8 t4 x7
+XOR t9 x10 t6
+XOR t10 x30 t5
+XOR t11 x23 t8
+XOR t12 x19 t11
+XOR t13 t4 t10
+XOR t14 t12 x27
+XOR t15 t13 x16
+XOR t16 t13 x24
+XOR t17 t13 t14
+XOR t18 x11 t14
+XOR t19 t15 x0
+XOR t20 t18 x3
+XOR t21 t18 t9
+XOR t22 t12 t20
+XOR t23 t20 x4
+XOR t24 x19 t21
+XOR t25 t13 t24
+XOR t26 t23 x20
+XOR t27 t23 t7
+XOR t28 t25 t3
+XOR t29 t27 x29
+XOR t30 t29 x5
+XOR t31 x13 t29
+XOR t32 t31 t26
+XOR t33 t31 x21
+XOR y30 t30 t5
+XOR t34 t32 t1
+XOR t35 x29 t33
+XOR y5 t28 t33
+XOR t36 t34 x15
+XOR y29 y5 t30
+XOR t37 x14 t35
+XOR y13 y29 t32
+XOR y15 t11 t36
+XOR y14 t37 t10
+XOR y31 y15 t13
+XOR y22 y14 t34
+XOR y21 t35 y13
+XOR t38 y22 y30
+XOR y6 t38 t37
+XOR y23 t8 t38
+XOR t39 y31 y23
+XOR t40 t39 t19
+XOR y7 t39 t36
+XOR t41 t39 t7
+XOR t42 x1 t40
+XOR t43 t40 x8
+XOR y8 x24 t40
+XOR t44 t43 x16
+XOR y24 t43 t11
+XOR t45 t16 y24
+XOR y16 t16 t44
+XOR y0 t45 x0
+XOR t46 t45 t42
+XOR t47 t46 x17
+XOR t48 x25 t46
+XOR t49 x9 t47
+XOR t50 x26 t48
+XOR t51 t47 t19
+XOR y25 t49 t44
+XOR t52 x1 t49
+XOR y26 t9 t50
+XOR t53 t51 t2
+XOR t54 t39 t53
+XOR y10 t52 t6
+XOR y1 t48 y25
+XOR y18 y26 t53
+XOR t55 t50 y10
+XOR y19 t54 t22
+XOR y3 t21 t54
+XOR y17 y1 t51
+XOR t56 t17 t55
+XOR y9 y17 t52
+XOR y2 y18 t55
+XOR y27 y19 t56
+XOR y20 t56 t41
+XOR y4 t26 y20
+XOR y11 y27 t24
+XOR y28 t28 y4
+XOR y12 t27 y28
+end SLP
+end circuit

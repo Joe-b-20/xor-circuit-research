@@ -1,0 +1,118 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+% Candidate of the hardware study (hardware/research/sample.py), not a published circuit
+% Structure hash ff65ab5d49a922b9; source: ~/xs-campaigns/2026-11-17-push/G2/kstarts/aes-sbox-a32-ad7-g104-gd26-fff23dfbb156.circ.txt
+
+begin circuit aes-sbox-a32-ad7-g104-gd26-hff65ab5d49a922b9
+
+Inputs: x0:x7
+Outputs: y0:y7
+Internal: t1:t96
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XNOR t1 x5 x6
+XNOR t2 x7 t1
+XOR t3 x4 t1
+XOR t4 x2 t2
+XOR t5 x3 t2
+XNOR t6 x2 t3
+XNOR t7 x1 t3
+XOR t8 x0 t4
+XOR t9 x7 t7
+XOR t10 t8 t5
+XNOR t11 x6 t9
+XOR t12 t6 t9
+AND t13 t8 t6
+XOR t14 x5 t10
+XNOR t15 t10 t11
+AND t16 t5 t12
+AND t17 t10 t9
+AND t18 x7 t11
+XOR t19 t14 t6
+AND t20 t7 t15
+AND t21 t4 t14
+XOR t22 t4 t15
+XNOR t23 t16 t13
+XOR t24 t13 t17
+XOR t25 t19 t20
+XOR t26 x7 t19
+XOR t27 t5 t22
+AND t28 x0 t19
+XNOR t29 t3 t23
+XNOR t30 x3 t24
+XNOR t31 t2 t24
+AND t32 x2 t22
+XNOR t33 t25 t21
+AND t34 t26 t27
+XOR t35 t11 t28
+XNOR t36 t28 t18
+XOR t37 t20 t32
+XOR t38 t34 t35
+XOR t39 t30 t36
+XNOR t40 t31 t37
+XNOR t41 t33 t38
+XNOR t42 t38 t29
+AND t43 t39 t40
+XNOR t44 t43 t42
+AND t45 t41 t44
+XNOR t46 t43 t45
+XNOR t47 t40 t44
+AND t48 t46 t47
+XOR t49 t41 t48
+AND t50 x7 t49
+XOR t51 t39 t45
+XNOR t52 t47 t51
+AND t53 t49 t51
+XOR t54 t40 t53
+XOR t55 t52 t54
+AND t56 t52 t54
+XNOR t57 t47 t56
+XOR t58 t55 t57
+AND t59 x2 t58
+AND t60 t4 t55
+AND t61 t11 t49
+XOR t62 t49 t61
+XOR t63 t49 t54
+AND t64 t27 t63
+XOR t65 t62 t64
+XNOR t66 t60 t65
+XNOR t67 t59 t66
+AND t68 t19 t54
+AND t69 t7 t57
+XOR t70 t68 t69
+XNOR t71 t67 t70
+XNOR y0 t50 t71
+XOR t72 t49 t57
+XOR t73 t52 t72
+AND t74 t12 t73
+AND t75 t9 t72
+XOR t76 t74 t75
+AND t77 t14 t55
+XOR t78 t67 t77
+XNOR y1 t76 t78
+AND t79 t15 t57
+AND t80 t6 t52
+XNOR t81 t68 t80
+XNOR t82 t50 t81
+XNOR t83 t75 t82
+AND t84 t22 t58
+XNOR t85 t83 t84
+XNOR t86 t79 t85
+XOR t87 t60 t84
+AND t88 t5 t73
+XOR t89 t87 t88
+AND t90 t8 t52
+XNOR t91 t89 t90
+XNOR y2 t86 t91
+XNOR y3 t66 t85
+XNOR t92 t71 t76
+AND t93 t26 t63
+XOR y4 t92 t93
+AND t94 x0 t54
+XNOR t95 t62 t94
+XOR y5 t91 t95
+AND t96 t10 t72
+XNOR y6 t89 t96
+XNOR y7 t83 y6
+end SLP
+end circuit

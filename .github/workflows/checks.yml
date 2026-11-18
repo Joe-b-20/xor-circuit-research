@@ -1,4 +1,5 @@
-# Independent circuit checker and the XORFlux and BoolFlux test suites, on every push and pull request.
+# Independent circuit checker, the XORFlux and BoolFlux test suites and the hardware benchmark's
+# unit tests, on every push and pull request.
 name: checks
 
 on:
@@ -59,3 +60,17 @@ jobs:
         run: python3 -m unittest discover -s search/nonlinear/boolflux/tests -t search/nonlinear
       - name: Hub tests
         run: python3 -m unittest discover -s search/nonlinear/boolflux/hub/tests -t search/nonlinear
+
+  hardware:
+    name: hardware benchmark tests (no EDA tools)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: hwbench unit tests (the tests that need Yosys/OpenROAD skip themselves)
+        run: python3 -m unittest discover -s hardware/tests -t hardware -v
+      - name: Research tests (structure hash)
+        run: python3 -m unittest discover -s hardware/research/tests -t hardware/research -v

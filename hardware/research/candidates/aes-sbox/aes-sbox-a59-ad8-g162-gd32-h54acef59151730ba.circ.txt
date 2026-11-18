@@ -1,0 +1,176 @@
+%NCFF-0.1-2026 (NIST Circuit File Format)
+% Candidate of the hardware study (hardware/research/sample.py), not a published circuit
+% Structure hash 54acef59151730ba; source: ~/xs-campaigns/2026-11-13-boolflux/ext/results/aes-warm104__nist__eslim__s1/step1_m1.circ.txt
+
+begin circuit aes-sbox-a59-ad8-g162-gd32-h54acef59151730ba
+
+Inputs: x0:x7
+Outputs: y0:y7
+Internal: new_n50 new_n22 new_n29 new_n35 new_n58 new_n34 new_n59:new_n61 new_n46 new_n19 new_n17 new_n20:new_n21 new_n23 new_n56:new_n57 new_n62 new_n40:new_n42 new_n25:new_n26 new_n36:new_n39 new_n43 new_n30:new_n33 new_n44 new_n63:new_n64 new_n49 new_n51:new_n52 new_n47:new_n48 new_n53 new_n27:new_n28 new_n45 new_n54 new_n91 new_n82 new_n81 new_n83 new_n18 new_n24 new_n67:new_n68 new_n84 new_n80 new_n85:new_n86 new_n130:new_n131 new_n72:new_n73 new_n70 new_n69 new_n71 new_n74:new_n76 new_n55 new_n65:new_n66 new_n77 new_n132:new_n133 new_n93 new_n92 new_n94:new_n95 new_n134 new_n162 new_n117:new_n118 new_n140:new_n143 new_n78:new_n79 new_n87:new_n89 new_n139 new_n144 new_n163 new_n107 new_n121:new_n122 new_n119:new_n120 new_n123:new_n124 new_n101:new_n102 new_n125:new_n126 new_n96:new_n100 new_n127:new_n128 new_n159 new_n157:new_n158 new_n160 new_n108:new_n111 new_n105:new_n106 new_n112 new_n103 new_n113 new_n153:new_n154 new_n129 new_n155 new_n149 new_n135:new_n136 new_n150 new_n145:new_n146 new_n137:new_n138 new_n147 new_n114:new_n115 new_n104 new_n116 new_n148 new_n151 new_n90 new_n152 new_n161 new_n165:new_n167 new_n169 new_n171:new_n172 new_n174:new_n175
+GateSyntax: GateName Output Inputs
+
+begin SLP
+XOR new_n50 x5 x3
+XOR new_n22 x4 x1
+XNOR new_n29 new_n22 x5
+XOR new_n35 new_n29 x6
+XOR new_n58 new_n50 new_n35
+NOT new_n34 x0
+XOR new_n59 new_n58 new_n34
+AND new_n60 new_n59 x2
+XOR new_n61 new_n60 x4
+NOT new_n46 new_n35
+XOR new_n19 x5 x0
+XOR new_n17 x3 x2
+XNOR new_n20 new_n19 new_n17
+XOR new_n21 new_n20 x7
+XOR new_n23 new_n22 new_n21
+NOT new_n56 new_n23
+AND new_n57 new_n46 new_n56
+XNOR new_n62 new_n61 new_n57
+NOT new_n40 x7
+AND new_n41 new_n40 x0
+NOT new_n42 new_n41
+XOR new_n25 x2 x1
+XOR new_n26 new_n25 new_n21
+XOR new_n36 new_n35 new_n26
+NOT new_n37 new_n36
+AND new_n38 new_n37 new_n34
+NOT new_n39 new_n38
+AND new_n43 new_n42 new_n39
+NOT new_n30 new_n29
+AND new_n31 new_n30 x7
+XNOR new_n32 new_n31 new_n19
+NOT new_n33 new_n32
+XOR new_n44 new_n43 new_n33
+XOR new_n63 new_n62 new_n44
+NOT new_n64 new_n63
+NOT new_n49 new_n25
+AND new_n51 new_n50 new_n49
+NOT new_n52 new_n51
+AND new_n47 new_n46 new_n25
+NOT new_n48 new_n47
+AND new_n53 new_n52 new_n48
+NOT new_n27 new_n26
+AND new_n28 new_n27 new_n17
+XNOR new_n45 new_n44 new_n28
+XOR new_n54 new_n53 new_n45
+AND new_n91 new_n64 new_n54
+XOR new_n82 new_n59 new_n56
+NOT new_n81 new_n20
+AND new_n83 new_n82 new_n81
+NOT new_n18 new_n17
+XOR new_n24 new_n23 new_n18
+AND new_n67 new_n36 new_n24
+XOR new_n68 new_n67 new_n33
+XNOR new_n84 new_n83 new_n68
+XOR new_n80 new_n61 new_n30
+XOR new_n85 new_n84 new_n80
+NOT new_n86 new_n85
+AND new_n130 new_n91 new_n86
+NOT new_n131 new_n130
+NOT new_n72 new_n58
+AND new_n73 new_n72 new_n25
+XOR new_n70 new_n58 new_n18
+NOT new_n69 new_n21
+AND new_n71 new_n70 new_n69
+XNOR new_n74 new_n73 new_n71
+XOR new_n75 new_n74 new_n68
+NOT new_n76 new_n75
+NOT new_n55 new_n54
+AND new_n65 new_n64 new_n55
+NOT new_n66 new_n65
+AND new_n77 new_n76 new_n66
+AND new_n132 new_n131 new_n77
+NOT new_n133 new_n132
+AND new_n93 new_n85 new_n75
+NOT new_n92 new_n91
+AND new_n94 new_n93 new_n92
+NOT new_n95 new_n94
+AND new_n134 new_n133 new_n95
+AND new_n162 new_n134 new_n27
+AND new_n117 new_n86 new_n76
+NOT new_n118 new_n117
+AND new_n140 new_n118 new_n63
+NOT new_n141 new_n140
+AND new_n142 new_n141 new_n131
+AND new_n143 new_n142 new_n69
+AND new_n78 new_n63 new_n54
+NOT new_n79 new_n78
+AND new_n87 new_n86 new_n79
+XNOR new_n88 new_n87 new_n77
+NOT new_n89 new_n88
+AND new_n139 new_n89 new_n36
+XOR new_n144 new_n143 new_n139
+XOR new_n163 new_n162 new_n144
+AND new_n107 new_n76 new_n64
+AND new_n121 new_n107 new_n54
+NOT new_n122 new_n121
+AND new_n119 new_n118 new_n55
+NOT new_n120 new_n119
+AND new_n123 new_n122 new_n120
+NOT new_n124 new_n123
+AND new_n101 new_n75 new_n55
+NOT new_n102 new_n101
+AND new_n125 new_n124 new_n102
+NOT new_n126 new_n125
+NOT new_n96 new_n93
+AND new_n97 new_n96 new_n79
+NOT new_n98 new_n97
+AND new_n99 new_n98 new_n95
+NOT new_n100 new_n99
+AND new_n127 new_n126 new_n100
+NOT new_n128 new_n127
+AND new_n159 new_n128 new_n46
+AND new_n157 new_n123 new_n81
+XOR new_n158 new_n157 new_n139
+XOR new_n160 new_n159 new_n158
+NOT new_n108 new_n107
+AND new_n109 new_n108 new_n85
+AND new_n110 new_n109 new_n66
+NOT new_n111 new_n110
+AND new_n105 new_n96 new_n65
+NOT new_n106 new_n105
+AND new_n112 new_n111 new_n106
+AND new_n103 new_n102 new_n100
+XNOR new_n113 new_n112 new_n103
+NOT new_n153 new_n113
+AND new_n154 new_n153 x0
+AND new_n129 new_n128 new_n56
+XOR new_n155 new_n154 new_n129
+AND new_n149 new_n142 new_n70
+AND new_n135 new_n134 new_n17
+XOR new_n136 new_n135 new_n129
+XOR new_n150 new_n149 new_n136
+AND new_n145 new_n112 new_n25
+XOR new_n146 new_n145 new_n144
+AND new_n137 new_n112 new_n72
+XNOR new_n138 new_n137 new_n136
+XOR new_n147 new_n146 new_n138
+XOR new_n114 new_n113 new_n88
+AND new_n115 new_n114 x7
+AND new_n104 new_n103 new_n59
+XNOR new_n116 new_n115 new_n104
+XOR new_n148 new_n147 new_n116
+XOR new_n151 new_n150 new_n148
+AND new_n90 new_n89 new_n24
+XOR new_n152 new_n151 new_n90
+XOR y3 new_n155 new_n152
+XOR new_n161 new_n160 y3
+XOR y0 new_n163 new_n161
+AND new_n165 new_n103 x2
+XOR new_n166 new_n165 new_n116
+XOR new_n167 new_n166 new_n158
+XOR y1 new_n167 y0
+AND new_n169 new_n123 new_n82
+XNOR y2 new_n169 new_n151
+XOR new_n171 new_n36 x7
+AND new_n172 new_n171 new_n153
+XOR y4 new_n172 new_n161
+AND new_n174 new_n114 new_n30
+XNOR new_n175 new_n174 new_n147
+XOR y5 new_n175 new_n152
+XOR y6 new_n138 new_n104
+NOT y7 new_n148
+end SLP
+end circuit

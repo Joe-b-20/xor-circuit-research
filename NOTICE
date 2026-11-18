@@ -52,6 +52,14 @@ Files derived from it, and how they were changed (2026-10-30 unless noted):
 - circuits/aes-sbox-sel/: 31 circuits for the S-box with a direction bit, found by BoolFlux
   (2026-11-17), each built from one of our forward circuits above (so descended from NIST's
   circuits); each one's logs name the circuit it started from.
+- hardware/nist/linear/: byte-for-byte copies of 6 AES MixColumns and InvMixColumns circuit
+  files of data/slp/aes/aes-mixcols/ and aes-invmixcols/ at commit
+  3d807741f937d29d3bef4f32f142ccda0cda9070 (2026-11-17); hardware/nist/MANIFEST.json lists each
+  file with its NIST path, URL and SHA-256.
+- hardware/research/candidates/: 1,121 AES S-box, inverse S-box, direction-select, MixColumns and
+  InvMixColumns circuits from the files of our XORFlux and BoolFlux runs (2026-10 and 2026-11),
+  with their gates as found, written in NIST's file format under a new name with a header that
+  names their source; like our published circuits, many descend from NIST's circuits above.
 - search/linear/versions/v2-search-framework/, v3-... and v4-...: verbatim copies of NIST
   repository files (targets/nist/), as those versions used them (2026-10-24 to 10-28), and a
   saved copy of NIST's list-of-circuits web page (v4, targets/nist/invmixcolumns/).
@@ -78,6 +86,8 @@ Before release, local home-directory paths, temporary paths and the machine's ho
 replaced in run logs and archived run state (by "~", "<tmp>" and "host"; in the logs of
 circuits/aes-sbox/ and circuits/aes-invsbox/ by "<checkout>" and "<campaign archive>", and in the
 latter also "<home>").
+In hardware/research/ (sample.json, screen.json, inventory/summary*.json and the headers of
+candidates/) home-directory paths are written "~".
 Hashes that cover changed files were recomputed; the two rebuilt archives in
 search/linear/versions/v4-search-framework/targets/local/invmixcolumns/repository/sources/
 record their original hashes in their manifests.
