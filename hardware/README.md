@@ -4,12 +4,14 @@ Standard-cell benchmarks of our circuits against NIST's: every BoolFlux circuit 
 its inverse and the S-box with a direction bit, XORFlux's AES MixColumns and InvMixColumns
 circuits, and NIST's circuits for the same functions. Each circuit is turned into Verilog,
 synthesized with Yosys and ABC, placed and routed with OpenROAD on two open standard-cell libraries
-(Nangate45 and SKY130HD), and measured: cell area, critical-path delay, area-delay product and
-power. Every netlist is checked equivalent to the function it should compute, at every stage.
+(Nangate45 and SKY130HD), and measured with OpenSTA's models: cell area, critical-path delay,
+area-delay product and power. Every netlist is checked equivalent to the function it should
+compute, at every stage.
 
 The gate counts of the circuit files (#AND, AND depth, #gates, gate depth) are abstract measures;
-these benchmarks show what they become in cells and wires. We don't claim the numbers rank the
-circuits in general: they depend on the library, the constraints and the flow, all stated here.
+these benchmarks show what they become in cells and wires, as modeled after placement and
+routing. We don't claim the numbers rank the circuits in general: they depend on the library and
+its cells, the corner, the constraints and the flow, all stated here.
 
 [research/](research/README.md) uses the same benchmark on 1,457 circuits, mostly from all our
 search runs, to ask what the counts miss and how the searches could look for better hardware
@@ -48,7 +50,8 @@ libraries and have the lower area-delay product in 56 (Nangate45) and 51 (SKY130
 restructures the circuit (free, free-area), the median change stays negative but the advantage is
 less consistent (ours smaller in 33 to 46 of the 59): the result then depends on ABC's heuristics
 as much as on the starting circuit (for the first pair on SKY130HD, ABC's delay-oriented sizing
-makes ours 19% larger). Differences of a few percent in one pair mean
+made ours 19% larger in this run; over 6 statement orders the difference is within noise).
+Differences of a few percent in one pair mean
 little: circuits with the same counts (our MixColumns 88@5 and 97@3 against NIST's) differ by
 1.5-4.5% in routed delay in the preserve flow and by up to 27% after free synthesis. Power is
 zero-delay power (glitches not counted); with the structure kept it follows area on Nangate45 and
@@ -57,11 +60,25 @@ is even on SKY130HD (median +0.5%).
 Every number above comes from one run per job. Repeated runs in [research/](research/README.md)
 measure the noise:
 - **Placement.** Placement parameters move routed delay by 0.2–0.7%.
-- **Synthesis.** Reordering the RTL statements moves the free flows by 2–3%.
-- **The first pair.** Its free-flow delay losses above are within that noise: Nangate45
-  0.721 ± 0.037 against 0.734 ± 0.017 ns. Its SKY130 free-flow area loss is not (1,492 ± 144
-  against 1,316 ± 74 µm²), nor is its preserve-flow advantage: 0.829 ± 0.002 against
-  0.867 ± 0.004 ns.
+- **Synthesis.** Reordering the RTL statements moves the free flows by 2–3.5%.
+- **The first pair.** Over 6 statement orders × 3 placement settings (free flows; mean ± sd of
+  the order means) and 6 placement settings (preserve):
+  - **Free flow.** Its losses above are within that noise on both libraries: Nangate45 delay
+    0.697 ± 0.028 against 0.724 ± 0.027 ns, SKY130 area 1,466 ± 159 against 1,334 ± 82 µm².
+  - **Preserve.** Its advantage holds in every measure on both libraries, e.g. Nangate45 delay
+    0.828 ± 0.002 against 0.867 ± 0.003 ns.
+  - **Free-area.** So do its area and power advantages.
+
+**Electrical checks.** The flow repairs no slew or capacitance violations, so a few netlists keep
+the ones synthesis gave them.
+- **Benchmark jobs.** 14 of the 2,040 have one after routing, mostly a single overloaded net.
+- **Pairs.** 2 of the 354 pair comparisons involve one, neither on the worst path.
+- **First pair.** It has none in the benchmark runs. Over the repeats, NIST's circuit has one
+  overloaded net in 3 of its 88 jobs (one statement order, Nangate45 free).
+
+These are OpenSTA's checks against the Liberty limits, not routing DRC errors, which are 0 in
+every job. Per job: the `drv_*` columns of results.csv; by type:
+[research/results/ELECTRICAL.md](research/results/ELECTRICAL.md).
 
 Every pair, flow and library, the smallest area, delay and ADP over all circuits of each set, and
 every job's numbers: [results/RESULTS.md](results/RESULTS.md), [results/results.csv](results/results.csv).
@@ -75,21 +92,37 @@ that depth.
 - 937 drawn from 394,027 distinct circuits in every circuit file of our search runs;
 - 180 picked by a prospective test.
 
-That covers 10,187 jobs, with repeated runs to measure noise. Its findings:
+It ran 12,203 new jobs (6,647 base runs, 5,556 repeated runs to measure noise), 14,243 with the
+benchmark's own 2,040 above. Its findings, for these two libraries, the typical corner and the
+benchmark's constraints:
 - **Same counts, different hardware.** Circuits with identical (A, AD, G, GD) differ in routed
   delay by a median 5.6–6.5% when the structure is kept, and 11–14% after resynthesis.
 - **Worse counts, often better hardware.** The counts weigh an inverter, an AND and an XOR alike
   and ignore load. Among circuits with fewer than 400 gates, logically worse ones are physically
-  better in 9–15% of dominated pairs with the structure kept, and 17–38% after resynthesis
-  (with the larger machine-synthesised S-boxes included, up to 28% and 44% for delay).
+  better in 9–15% of dominated pairs with the structure kept, and 16–38% after resynthesis.
+  - **With the larger S-boxes.** Including the larger machine-synthesised ones gives up to 28% and
+    44% for delay.
+  - **Their electrical violations.** Many of their jobs have slew or capacitance violations on the
+    critical path; without those jobs the preserve-flow shares fall to 11–24%.
 - **A cheap score predicts it when the structure is kept.** A load-aware longest path from the
-  Liberty tables (about 1 ms per circuit) ranks circuits with equal counts on held-out data. In a
-  prospective test, its picks were significantly faster than random picks in 8 of 12 pools, by
-  2–11%.
-- **Resynthesis hides it from the file.** After resynthesis the order is no longer predictable
-  from the file; synthesis and timing before placement (0.75 s per circuit) still predict it.
+  Liberty tables (about 1 ms per circuit) ranks circuits with equal counts on held-out data.
+  - **Prospective test.** Its top 10 picks were significantly faster than 10 random picks in 8 of
+    12 pool × library tests (6 pools, 2 libraries; Holm-corrected over 144 tests).
+  - **Gain.** Their median routed delay was 2–11% lower.
+- **Resynthesis hides it, from the file and largely from everything else.** After resynthesis
+  the tested file-derived scores did not reliably predict the ranking within a metric class.
+  - **Same run.** Synthesis and timing before placement (about 1 s of CPU per circuit, library and
+    flow) predict the routed delay of the same synthesis run.
+  - **Other orders.** Another RTL statement order's delay they predict only weakly (ρ 0.28–0.47).
+    A whole routed run of the same orders does about as well: within a class, the order moves
+    delay more than the structure does.
 - **Published circuits are rarely the best of their metric class.** Physically better ones with
-  the same counts are already in the archives.
+  the same counts are already in the archives (with the structure kept; after resynthesis these
+  are single runs, partly within noise).
+
+- **Repeated comparisons.** Six of seven highlighted comparisons of a logically worse circuit
+  beating a better one hold in all six configurations after Holm correction, over 6 statement
+  orders (6 placement settings with the structure kept). The seventh holds in 3.
 
 It ends with recommendations for new XORFlux and BoolFlux objectives.
 
@@ -120,10 +153,12 @@ Delay: OpenSTA's worst input-to-output path; inputs driven by the library's X1 b
 (Nangate45) or 5 fF (SKY130, ORFS's values) on each output; after synthesis without wires, after
 placement with estimated wires, after routing with the extracted parasitics. ADP: area x routed
 delay. Power: OpenSTA after routing, at 100 MHz with a new uniformly random input every cycle; the
-switching activity of each net is set exactly (a net that is 1 for a fraction p of the inputs
-toggles with probability 2p(1-p)), so it is zero-delay power: glitches are not counted, which
-favours circuits with a large gate depth. Typical corner only (Nangate45 typical, SKY130 tt 25 °C
-1.80 V).
+switching activity of each net is set from simulation (a net that is 1 for a fraction p of the
+inputs toggles with probability 2p(1-p)): exact for the S-boxes, whose inputs are all simulated,
+and estimated from the 65,570 simulated inputs for the 32-bit linear maps. It is zero-delay power:
+glitches are not counted, which favours circuits with a large gate depth. Typical corner only
+(Nangate45 typical, SKY130 tt 25 °C 1.80 V). Electrical limits: OpenSTA's max slew, capacitance and
+fanout checks after each stage are reported, not repaired (no fanout limit is set).
 
 **Checks** (a job reports nothing unless all pass):
 
@@ -172,7 +207,7 @@ against [tools/platforms.sha256](tools/platforms.sha256). `run` takes suites
 and `-j` parallel jobs (default: all cores); each job's files (Verilog, Yosys and OpenROAD
 scripts and logs, timing and power reports, netlists, DEF, SPEF, `metrics.json`) go to
 `hardware/build/<circuit>/<library>/<flow>/`. A job is rerun when its circuit file, the benchmark's
-code or the tool versions change. `table` writes [results/](results/). The whole suite (340
+code, the library or the tool versions change, and `run` exits with status 1 if any job fails. `table` writes [results/](results/). The whole suite (340
 circuits, 2,040 jobs) took 30 minutes on 19 cores.
 
 Tools: Yosys 0.71 with its ABC, Icarus Verilog 12.0, OpenROAD 2.0-12381-g01bba3695 (the litex-hub

@@ -16,7 +16,8 @@ FUNC_ORDER = ['aes-invsbox', 'aes-sbox', 'aes-sbox-sel', 'aes-mixcolumns', 'aes-
 COLUMNS = ['design', 'origin', 'function', 'A', 'AD', 'G', 'GD', 'platform', 'flow', 'cells',
            'area_um2', 'delay_synth_ns', 'delay_place_ns', 'delay_route_ns', 'adp_route_um2ns',
            'power_route_uW', 'power_switching_uW', 'power_internal_uW', 'power_leakage_uW',
-           'wirelength_um', 'die_um2', 'drc', 'sim_vectors', 'sim_exhaustive', 'file', 'sha256']
+           'wirelength_um', 'die_um2', 'drc', 'drv_synth', 'drv_place', 'drv_route',
+           'sim_vectors', 'sim_exhaustive', 'file', 'sha256']
 
 
 def load(build):
@@ -40,6 +41,8 @@ def row(r):
             'power_internal_uW': round(pw['internal_W'] * 1e6, 3),
             'power_leakage_uW': round(pw['leakage_W'] * 1e6, 4),
             'wirelength_um': rt['wirelength_um'], 'die_um2': rt['die_um2'], 'drc': rt['drc'],
+            'drv_synth': st['synth']['drv_violations'], 'drv_place': st['place']['drv_violations'],
+            'drv_route': st['route']['drv_violations'],
             'sim_vectors': r['checks']['routed']['sim_vectors'],
             'sim_exhaustive': r['checks']['routed']['sim_exhaustive'],
             'file': r['file'], 'sha256': r['sha256']}
@@ -183,6 +186,33 @@ def label(r):
     return '%d/%d/%d/%d' % (m['A'], m['AD'], m['G'], m['GD'])
 
 
+def electrical(res, prs):
+    """Jobs with OpenSTA slew/capacitance/fanout violations (no repair is run), and the pair
+    comparisons that involve one."""
+    md = ['| Library | Flow | Jobs | after synthesis | after placement | after routing | pairs involving one (routed) |',
+          '|---|---|---:|---:|---:|---:|---:|']
+    hit = []
+    for plat in P.PLATFORMS:
+        for fl in F.FLOWS:
+            rs = [r for (d, p, f), r in res.items() if p == plat and f == fl]
+            c = {st: sum(1 for r in rs if r['stages'][st]['drv_violations']) for st in ('synth', 'place', 'route')}
+            np_ = 0
+            for n, o in prs:
+                if o is None:
+                    continue
+                bad = [x.label for x in (n, o)
+                       if (x.id, plat, fl) in res and res[(x.id, plat, fl)]['stages']['route']['drv_violations']]
+                if bad:
+                    np_ += 1
+                    hit.append('%s %s %s: %s' % (PLAT_NAMES[plat], fl, FUNC_NAMES.get(n.function, n.function),
+                                                 ', '.join(bad)))
+            md.append('| %s | %s | %d | %d | %d | %d | %d |' % (PLAT_NAMES[plat], fl, len(rs), c['synth'],
+                                                               c['place'], c['route'], np_))
+    if hit:
+        md += ['', 'Pair comparisons with a routed-stage violation: ' + '; '.join(hit) + '.']
+    return md
+
+
 def write(build, out, designs):
     out = pathlib.Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -230,8 +260,9 @@ def write(build, out, designs):
           'the library\'s X1 buffer, 3.898 fF (Nangate45) or 5 fF (SKY130HD) on each output; '
           '*synth* without wires, *routed* with '
           'OpenRCX parasitics. ADP = area x routed delay. Power: OpenSTA after routing, at %g MHz '
-          'with a new random input every cycle and exact zero-delay switching activity (glitches '
-          'not counted). Tools: %s; %s; %s.'
+          'with a new random input every cycle and zero-delay switching activity (glitches not '
+          'counted), exact for the S-boxes (all inputs) and estimated from the simulated inputs '
+          'for the 32-bit linear maps. Typical corner only. Tools: %s; %s; %s.'
           % (1000.0 / s['period_ns'], tools.get('Yosys', 'Yosys')[:11],
              tools.get('openroad', 'OpenROAD'), tools.get('orfs', 'ORFS platforms')),
           '']
@@ -260,6 +291,14 @@ def write(build, out, designs):
         md += ['NIST front circuits with no circuit of ours at least as good in all four metrics '
                '(not compared): ' + ', '.join('%s %s' % (FUNC_NAMES.get(n.function, n.function),
                                                          n.label) for n in unpaired) + '.', '']
+    md += ['## Electrical checks', '',
+           'Jobs whose OpenSTA report (`report_check_types -max_slew -max_capacitance -max_fanout '
+           '-violators`) lists a violation of the Liberty limits. These are not routing DRC errors '
+           '(0 in every job). The flow repairs nothing: the numbers above are those of the '
+           'netlists as synthesized, violations included. Per job and stage: the drv_* columns of '
+           'results.csv; by type, and for the research study: '
+           '[research/results/ELECTRICAL.md](../research/results/ELECTRICAL.md).', '']
+    md += electrical(res, prs) + ['']
     md += ['## Best of each set', '',
            'Over all circuits of each set (every published circuit of ours, every NIST circuit in '
            'this repository): the smallest area, routed delay and routed ADP, with the circuit '

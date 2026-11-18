@@ -7,10 +7,11 @@ from __future__ import annotations
 
 import collections
 import json
+import os
 import pathlib
 
 HERE = pathlib.Path(__file__).resolve().parent
-RES = HERE / 'results'
+RES = pathlib.Path(os.environ.get('HWRESEARCH_RESULTS', HERE / 'results'))   # results/, or a staging folder
 LIB = {'nangate45': 'Nangate45', 'sky130hd': 'SKY130HD'}
 FN = {'aes-sbox': 'S-box', 'aes-invsbox': 'inv S-box', 'aes-sbox-sel': 'sel S-box',
       'aes-mixcolumns': 'MixColumns', 'aes-invmixcolumns': 'InvMixColumns'}
@@ -44,6 +45,19 @@ def main():
                 n = max(c['n'] for c in cells if c)
                 md.append('| %s | %s | %s | %d | %s |' % (kind, LIB[p], f, n, ' | '.join(
                     pct(c['median_cv']) if c else '—' for c in cells)))
+    md += ['', 'Beyond-noise threshold on a relative difference: 2√2 × the median-unbiased CV (each circuit\'s '
+           'sd / mean divided by sqrt(median(χ²ₖ) / k), k = runs − 1: 0.83 for 3 runs, 0.89 for 4); placement '
+           'seeds for preserve, synthesis seeds (three single runs, each its own order and placement) for the '
+           'free flows.', '',
+           '| Library | Flow | area | delay | ADP | power |', '|---|---|---:|---:|---:|---:|']
+    for p in LIB:
+        for f in FLOWS:
+            kind = 'pnr' if f == 'preserve' else 'synth'
+            cells = []
+            for m in MEAS:
+                c = a['noise'].get('%s|%s|%s|%s' % (kind, p, f, m)) or a['noise'].get('pnr|%s|%s|%s' % (p, f, m))
+                cells.append(pct(2 * 2 ** 0.5 * c['median_cv_unbiased']) if c and 'median_cv_unbiased' in c else '—')
+            md.append('| %s | %s | %s |' % (LIB[p], f, ' | '.join(cells)))
     md.append('')
     # iso
     md += ['## Same-metric groups: relative range (max-min)/median of each measure', '',

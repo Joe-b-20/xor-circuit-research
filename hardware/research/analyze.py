@@ -24,13 +24,15 @@ import hashlib
 import itertools
 import json
 import math
+import os
 import pathlib
+import re
 
 import numpy as np
 from scipy import stats
 
 HERE = pathlib.Path(__file__).resolve().parent
-RES = HERE / 'results'
+RES = pathlib.Path(os.environ.get('HWRESEARCH_RESULTS', HERE / 'results'))   # results/, or a staging folder
 Z = 2.0
 MEASURES = ('area', 'delay', 'adp', 'power')
 CONFIGS = [(p, f) for p in ('nangate45', 'sky130hd') for f in ('preserve', 'free', 'free-area')]
@@ -66,9 +68,22 @@ def noise(rows, seeds):
     base = {(r['circuit'], r['platform'], r['flow']): r for r in rows}
     groups = collections.defaultdict(list)
     for s in seeds:
-        kind = 'synth' if s['variant'].startswith('synth') else 'pnr'
+        # pnr: order 0 (o0pK); synth: order K with placement K (oKpK, K > 0); other cells of a
+        # balanced follow-up grid are left to seeded.py
+        if s.get('statement_order') not in (None, '') and s.get('placement') not in (None, ''):
+            o, pl = int(s['statement_order']), int(s['placement'])
+        else:
+            m = re.fullmatch(r'(?:(pnr)|synth|o(\d+)p)(\d+)', s['variant'])
+            o, pl = (0 if m.group(1) else int(m.group(2) or m.group(3))), int(m.group(3))
+        if o == 0 and pl > 0:
+            kind = 'pnr'
+        elif o == pl > 0:
+            kind = 'synth'
+        else:
+            continue
         groups[(kind, s['circuit'], s['platform'], s['flow'])].append(s)
     cv = collections.defaultdict(list)
+    cvu = collections.defaultdict(list)
     per = {}
     for (kind, c, p, f), ss in groups.items():
         b = base.get((c, p, f))
@@ -81,15 +96,20 @@ def noise(rows, seeds):
             mu = float(np.mean(v))
             sd = float(np.std(v, ddof=1))
             cv[(kind, p, f, m)].append(sd / mu)
+            # a sample sd of n runs has median sigma * sqrt(median(chi2_{n-1}) / (n-1)) (0.83 for
+            # n = 3, 0.89 for n = 4): divide it out so the median CV is median-unbiased
+            cvu[(kind, p, f, m)].append(sd / mu / math.sqrt(stats.chi2.median(len(v) - 1) / (len(v) - 1)))
             per[(kind, c, p, f, m)] = (mu, sd, len(v), min(v), max(v))
     summary = {'%s|%s|%s|%s' % k: {'n': len(v), 'median_cv': float(np.median(v)),
+                                   'median_cv_unbiased': float(np.median(cvu[k])),
                                    'p90_cv': float(np.percentile(v, 90))} for k, v in cv.items()}
 
     def thr(p, f, m):
         # pnr noise for preserve (synthesis is deterministic and order-blind there), synth+pnr
-        # noise for the free flows
+        # noise for the free flows: base, synth1, synth2 are three single runs, each with its own
+        # statement order and placement setting, so their spread is that of one benchmark run
         kind = 'pnr' if f == 'preserve' else 'synth'
-        v = cv.get((kind, p, f, m)) or cv.get(('pnr', p, f, m))
+        v = cvu.get((kind, p, f, m)) or cvu.get(('pnr', p, f, m))
         return Z * math.sqrt(2) * float(np.median(v)) if v else None
     return summary, thr, per
 
@@ -493,7 +513,13 @@ def screen(srows, rows, thr):
     return out
 
 
-def main():
+def main(argv=None):
+    import argparse
+    global RES
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--res', default=str(RES), help='folder with table.csv (and seeds.csv); '
+                    'analysis.json is written there')
+    RES = pathlib.Path(ap.parse_args(argv).res).resolve()
     rows, seeds = load()
     dups = [r for r in rows if r.get('dup_of')]
     rows = [r for r in rows if not r.get('dup_of')]

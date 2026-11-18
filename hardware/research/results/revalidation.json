@@ -1,0 +1,264 @@
+{
+ "reproduced": [
+  {
+   "compared": [
+    "area_um2",
+    "cells",
+    "delay_ns",
+    "route.delay_ns",
+    "route.adp_um2ns",
+    "route.power.total_W",
+    "route.wirelength_um",
+    "stages.place.delay_ns"
+   ],
+   "date": "2026-11-18T13:40:24Z",
+   "differing": {},
+   "identical": 120,
+   "n": 120,
+   "note": "stages and population added afterwards from the command line used (revalidate.py --reproduce 120 -j 8 --stage base,repeats); the drawn jobs were not recorded by that version",
+   "population": "research jobs with G < 400",
+   "seed": 20261118,
+   "stages": [
+    "base",
+    "repeats"
+   ]
+  },
+  {
+   "compared": [
+    "area_um2",
+    "cells",
+    "delay_ns",
+    "route.delay_ns",
+    "route.adp_um2ns",
+    "route.power.total_W",
+    "route.wirelength_um",
+    "stages.place.delay_ns"
+   ],
+   "date": "2026-11-18T15:06:41Z",
+   "differing": {},
+   "identical": 120,
+   "jobs": [
+    "base|cand--aes-invmixcolumns-xor106-depth6-h47f126a61d5117b9|nangate45|free",
+    "base|cand--aes-invmixcolumns-xor119-depth5-hbf760ac063c36b09|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor130-depth5-h0e9996a601ae259e|sky130hd|preserve",
+    "base|cand--aes-invmixcolumns-xor130-depth5-h173597de15dd6eb1|nangate45|free",
+    "base|cand--aes-invmixcolumns-xor130-depth5-h23b2d7b4c4a60016|sky130hd|free-area",
+    "base|cand--aes-invmixcolumns-xor130-depth5-h9a55a57636e75ac5|sky130hd|free",
+    "base|cand--aes-invmixcolumns-xor130-depth5-he4ed25b7496f2d4c|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor131-depth5-h729e128b5c2bfa39|sky130hd|free-area",
+    "base|cand--aes-invmixcolumns-xor131-depth5-hc7b9e043a4a8ebef|sky130hd|preserve",
+    "base|cand--aes-invmixcolumns-xor132-depth5-h707862761ff95bf8|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor132-depth5-hd270ff2bc9570893|sky130hd|free-area",
+    "base|cand--aes-invmixcolumns-xor132-depth5-he3413c8248481c27|sky130hd|preserve",
+    "base|cand--aes-invmixcolumns-xor132-depth5-he3d9b999e92665c5|nangate45|preserve",
+    "base|cand--aes-invmixcolumns-xor134-depth5-h2200a23fefae1d1a|nangate45|preserve",
+    "base|cand--aes-invmixcolumns-xor136-depth5-h2be0c824e099a198|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor138-depth5-h7505e36c7cd2ccfa|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor140-depth5-hb69e298edd2c4859|nangate45|preserve",
+    "base|cand--aes-invmixcolumns-xor165-depth5-h9d67dcbf081ede1e|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor333-depth7-h24c2b187011ace7f|nangate45|free-area",
+    "base|cand--aes-invmixcolumns-xor89-depth16-hb002f87faf085a45|nangate45|free-area",
+    "base|cand--aes-invsbox-a28-ad5-g325-gd28-hf75059343fe87ee1|sky130hd|preserve",
+    "base|cand--aes-invsbox-a29-ad4-g135-gd18-h07b3613871ef6ac4|sky130hd|free",
+    "base|cand--aes-invsbox-a32-ad4-g125-gd16-heea4fced08b3c049|sky130hd|free-area",
+    "base|cand--aes-invsbox-a33-ad4-g108-gd20-h85ed780bb54119d0|nangate45|free",
+    "base|cand--aes-invsbox-a38-ad4-g148-gd20-ha9f695e436372137|nangate45|free-area",
+    "base|cand--aes-invsbox-a41-ad4-g137-gd12-h219d9c4b37822c50|nangate45|free-area",
+    "base|cand--aes-invsbox-a49-ad4-g149-gd12-h566ecc0254c8fd27|nangate45|preserve",
+    "base|cand--aes-mixcolumns-xor101-depth4-h229aca0554d42ebe|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor101-depth4-h229aca0554d42ebe|sky130hd|preserve",
+    "base|cand--aes-mixcolumns-xor104-depth9-hddad9722a549f44c|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor110-depth7-h55429b6b316de9b0|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor124-depth5-hc7c85832de951b68|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor88-depth11-h677d0543265f3c16|nangate45|free",
+    "base|cand--aes-mixcolumns-xor89-depth4-h5885f8300bbfd8dd|sky130hd|free",
+    "base|cand--aes-mixcolumns-xor89-depth4-h5885f8300bbfd8dd|sky130hd|preserve",
+    "base|cand--aes-mixcolumns-xor89-depth4-h8e2d8c92b451abae|sky130hd|preserve",
+    "base|cand--aes-mixcolumns-xor90-depth12-h581ef9ebba0a896a|sky130hd|free",
+    "base|cand--aes-mixcolumns-xor90-depth4-h210e633621e79458|sky130hd|free-area",
+    "base|cand--aes-mixcolumns-xor90-depth4-hb97601083ee07cf9|nangate45|preserve",
+    "base|cand--aes-mixcolumns-xor91-depth12-h38ad4c7671af7a9f|sky130hd|free-area",
+    "base|cand--aes-mixcolumns-xor91-depth4-h4ec56e1ad306758d|sky130hd|free-area",
+    "base|cand--aes-mixcolumns-xor91-depth4-hf05acb29faeda95a|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor94-depth13-hb2b76e9e3d638ff2|nangate45|preserve",
+    "base|cand--aes-mixcolumns-xor95-depth6-hda40a46c3c393674|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor96-depth6-h51bef88b586b98db|nangate45|free-area",
+    "base|cand--aes-mixcolumns-xor97-depth3-h061a99c7c585f4df|nangate45|free-area",
+    "base|cand--aes-sbox-a28-ad4-g132-gd21-h8d498064c4ea38c4|sky130hd|free-area",
+    "base|cand--aes-sbox-a28-ad4-g132-gd21-hc73165fdcb7bdf79|sky130hd|preserve",
+    "base|cand--aes-sbox-a28-ad4-g132-gd21-hcf6fa4a8ca34cb61|nangate45|free-area",
+    "base|cand--aes-sbox-a28-ad5-g129-gd19-h3827d8437f3a0a5c|nangate45|free",
+    "base|cand--aes-sbox-a28-ad5-g129-gd19-h7284533484a06fd6|nangate45|preserve",
+    "base|cand--aes-sbox-a28-ad5-g129-gd19-h96106babb5cae1d7|nangate45|free",
+    "base|cand--aes-sbox-a28-ad5-g129-gd19-hb78b17e2f64ef475|sky130hd|free",
+    "base|cand--aes-sbox-a28-ad5-g129-gd19-hce987fe5d24abd5b|sky130hd|preserve",
+    "base|cand--aes-sbox-a32-ad4-g112-gd24-h14d0d66e12ddb579|sky130hd|preserve",
+    "base|cand--aes-sbox-a32-ad4-g113-gd20-h39e573ad9399af08|sky130hd|free",
+    "base|cand--aes-sbox-a32-ad7-g104-gd26-h88c58fd0d44791bd|sky130hd|free",
+    "base|cand--aes-sbox-a33-ad4-g109-gd18-hbdd411e5084edd93|nangate45|preserve",
+    "base|cand--aes-sbox-a33-ad5-g108-gd23-h3928136dd55b70f5|sky130hd|free-area",
+    "base|cand--aes-sbox-a33-ad5-g119-gd19-h54f94930244a8312|sky130hd|free-area",
+    "base|cand--aes-sbox-a35-ad3-g138-gd23-h765dcbdddfdd3def|nangate45|free-area",
+    "base|cand--aes-sbox-a35-ad3-g138-gd23-haa97e0186d1a936a|nangate45|free",
+    "base|cand--aes-sbox-a35-ad3-g142-gd19-h0ca47d9d0dbe6b7b|nangate45|free",
+    "base|cand--aes-sbox-a36-ad4-g134-gd13-h0aea47917c56df2c|sky130hd|free",
+    "base|cand--aes-sbox-a36-ad4-g134-gd13-hc9ed4237e22ad424|nangate45|preserve",
+    "base|cand--aes-sbox-sel-a36-ad6-g188-gd33-hd535a6bbb7b2923e|sky130hd|preserve",
+    "base|cand--aes-sbox-sel-a36-ad6-g188-gd33-hf0be8ea5e035912f|nangate45|preserve",
+    "base|cand--aes-sbox-sel-a36-ad6-g189-gd36-h0c0c78f89d862802|nangate45|free",
+    "base|cand--aes-sbox-sel-a36-ad6-g195-gd36-h6f59561600f06fde|nangate45|free",
+    "base|cand--aes-sbox-sel-a36-ad6-g195-gd40-hfaf7940dc980dd3f|nangate45|free",
+    "base|cand--aes-sbox-sel-a36-ad6-g202-gd40-h923ac0edc7c39477|nangate45|preserve",
+    "base|cand--aes-sbox-sel-a40-ad6-g163-gd36-hefd12ddebd5f4003|sky130hd|preserve",
+    "o1p2|cand--aes-mixcolumns-xor96-depth6-ha95fc8567d6525f8|sky130hd|free",
+    "o2p0|cand--aes-mixcolumns-xor95-depth4-h8e0de6fd5c10def1|nangate45|free",
+    "o2p0|cand--aes-mixcolumns-xor95-depth4-h8e0de6fd5c10def1|sky130hd|free",
+    "o2p0|cand--aes-sbox-a28-ad5-g172-gd27-hb9d61cfc26a4a3bb|sky130hd|free-area",
+    "o3p0|cand--aes-invmixcolumns-xor94-depth12-h9a6dbc99f2ba69a4|nangate45|free",
+    "o3p0|nist--aes-sbox-sel-a36-ad6-g191-gd26-xx155-31|sky130hd|free",
+    "o3p2|cand--aes-invmixcolumns-xor94-depth10-h9658e21226ac92de|sky130hd|free-area",
+    "o3p2|ours--aes-invsbox-a28-ad4-g137-gd17-xx109-69|sky130hd|free-area",
+    "o4p2|cand--aes-invmixcolumns-xor94-depth10-h9658e21226ac92de|nangate45|free",
+    "o4p2|cand--aes-invmixcolumns-xor94-depth12-h9a6dbc99f2ba69a4|sky130hd|free",
+    "o4p2|cand--aes-invsbox-a31-ad5-g138-gd20-h18e16082a70397fb|nangate45|free-area",
+    "o4p2|cand--aes-invsbox-a31-ad5-g138-gd20-h18e16082a70397fb|sky130hd|free",
+    "o4p2|cand--aes-mixcolumns-xor95-depth7-hb43429649e4b7eca|nangate45|free-area",
+    "o5p1|cand--aes-mixcolumns-xor95-depth6-hfca2934f2afadbfa|nangate45|free-area",
+    "o5p1|ours--aes-invsbox-a28-ad4-g143-gd16-xxn115-59-1|sky130hd|free",
+    "o5p2|cand--aes-sbox-sel-a36-ad6-g190-gd37-h7627f071489d2e22|nangate45|free",
+    "pnr1|cand--aes-invmixcolumns-xor104-depth6-hcc503403722f4142|sky130hd|free",
+    "pnr1|cand--aes-invmixcolumns-xor92-depth11-h44649c6175a35e05|sky130hd|preserve",
+    "pnr1|cand--aes-invmixcolumns-xor92-depth11-hf29251ac7f06a14f|nangate45|free-area",
+    "pnr1|cand--aes-mixcolumns-xor90-depth4-h14f4bb716f7d3e1f|nangate45|free-area",
+    "pnr1|cand--aes-mixcolumns-xor95-depth7-hb43429649e4b7eca|nangate45|free-area",
+    "pnr1|cand--aes-mixcolumns-xor97-depth3-hd8d4a0fd422ed7de|nangate45|free-area",
+    "pnr1|cand--aes-sbox-a32-ad4-g113-gd20-hb8d393f85c22b0a1|nangate45|preserve",
+    "pnr2|cand--aes-invmixcolumns-xor92-depth11-h44649c6175a35e05|nangate45|free-area",
+    "pnr2|cand--aes-invmixcolumns-xor92-depth11-h44649c6175a35e05|sky130hd|free-area",
+    "pnr2|cand--aes-mixcolumns-xor90-depth4-h3a7b8a2527d76499|nangate45|free-area",
+    "pnr2|cand--aes-mixcolumns-xor90-depth4-h5546d9203b1cbc83|nangate45|free-area",
+    "pnr2|cand--aes-mixcolumns-xor90-depth4-hd5514e28dbd4f0af|sky130hd|free",
+    "pnr2|cand--aes-mixcolumns-xor95-depth6-hfca2934f2afadbfa|nangate45|free-area",
+    "pnr2|cand--aes-sbox-a28-ad5-g129-gd19-hfb03fab04be592db|sky130hd|free-area",
+    "pnr2|ours--aes-sbox-sel-a36-ad6-g187-gd21-xx151-82|nangate45|free",
+    "pnr3|cand--aes-invmixcolumns-xor104-depth6-h13339281b02b2a7c|sky130hd|free",
+    "pnr3|cand--aes-mixcolumns-xor90-depth4-h037664f560503f0c|sky130hd|free-area",
+    "pnr3|cand--aes-mixcolumns-xor90-depth4-h857c3c69cb6d74c5|nangate45|free",
+    "pnr3|cand--aes-mixcolumns-xor96-depth6-h8cf392f5936ef3a4|sky130hd|free",
+    "pnr3|cand--aes-sbox-sel-a36-ad6-g183-gd32-h02e719d35ed328ab|sky130hd|preserve",
+    "pnr3|ours--aes-sbox-sel-a36-ad6-g171-gd25-xx135-74|nangate45|free-area",
+    "pnr3|ours--aes-sbox-sel-a36-ad6-g187-gd21-xx151-82|sky130hd|preserve",
+    "pnr4|cand--aes-sbox-sel-a36-ad6-g190-gd37-h7627f071489d2e22|nangate45|preserve",
+    "synth1|cand--aes-invmixcolumns-xor92-depth11-hf29251ac7f06a14f|nangate45|free",
+    "synth1|cand--aes-mixcolumns-xor90-depth4-h9e8c4e68c07e7c62|sky130hd|free-area",
+    "synth1|cand--aes-mixcolumns-xor90-depth4-had628517515291d8|sky130hd|free",
+    "synth1|cand--aes-mixcolumns-xor97-depth3-h6d893b6082398e49|sky130hd|free-area",
+    "synth1|cand--aes-sbox-a35-ad3-g161-gd28-hcbd5947dab83eb80|nangate45|free-area",
+    "synth2|cand--aes-invmixcolumns-xor94-depth12-h9a6dbc99f2ba69a4|nangate45|free",
+    "synth2|cand--aes-mixcolumns-xor97-depth3-h061a99c7c585f4df|sky130hd|free-area",
+    "synth2|cand--aes-mixcolumns-xor97-depth3-h6d893b6082398e49|sky130hd|free",
+    "synth2|ours--aes-sbox-a32-ad4-g113-gd20-xx81-36|nangate45|free"
+   ],
+   "n": 120,
+   "population": "research jobs with G < 400",
+   "seed": 20261118,
+   "stages": [
+    "base",
+    "repeats",
+    "balanced"
+   ]
+  }
+ ],
+ "runs": [
+  {
+   "checked": [
+    "old fingerprint = benchmark fingerprint under the current benchmark code and tools",
+    "rtl.v",
+    "synth.ys",
+    "abc.constr or cellmap.v",
+    "mapped.v (Yosys + ABC rerun)",
+    "pnr.tcl",
+    "constraints.sdc"
+   ],
+   "date": "2026-11-18T13:21:46Z",
+   "designs": {
+    "restamp": 1809
+   },
+   "dry_run": false,
+   "harness_sha256": "878cafe150462a8bf8d012cb9e79a7deede6c0045656bb4a50b815a9a79d4985",
+   "jobs": {
+    "base": {
+     "restamped": 6647
+    },
+    "pnr1": {
+     "restamped": 818
+    },
+    "pnr2": {
+     "restamped": 818
+    },
+    "pnr3": {
+     "restamped": 818
+    },
+    "synth1": {
+     "restamped": 542,
+     "superseded": 2
+    },
+    "synth2": {
+     "restamped": 542
+    }
+   },
+   "superseded": {
+    "synth1|cand--aes-invmixcolumns-xor118-depth5-h5cde55925db74ced|nangate45|free": {
+     "after": {
+      "adp_um2ns": 85.718,
+      "area_um2": 198.17,
+      "delay_ns": 0.432548,
+      "fingerprint": "8c9c77dabdaaf9fa",
+      "power_W": 5.287888e-05
+     },
+     "before": {
+      "adp_um2ns": 85.4798,
+      "area_um2": 198.17,
+      "delay_ns": 0.431346,
+      "fingerprint": "dffba7b39354968e",
+      "power_W": 5.278571e-05
+     },
+     "change": {
+      "adp_um2ns": 0.0027866232723989803,
+      "area_um2": 0.0,
+      "delay_ns": 0.0027866260496214323,
+      "power_W": 0.001765061036405502
+     },
+     "reasons": [
+      "pnr.tcl"
+     ]
+    },
+    "synth1|cand--aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9|nangate45|free": {
+     "after": {
+      "adp_um2ns": 74.8543,
+      "area_um2": 194.446,
+      "delay_ns": 0.384962,
+      "fingerprint": "7dff0ff230ee0d08",
+      "power_W": 5.160476e-05
+     },
+     "before": {
+      "adp_um2ns": 75.2059,
+      "area_um2": 194.446,
+      "delay_ns": 0.38677,
+      "fingerprint": "aaf86c2fb68ab13d",
+      "power_W": 5.15943e-05
+     },
+     "change": {
+      "adp_um2ns": -0.004675165113375512,
+      "area_um2": 0.0,
+      "delay_ns": -0.0046746128189879554,
+      "power_W": 0.00020273557350325433
+     },
+     "reasons": [
+      "pnr.tcl"
+     ]
+    }
+   }
+  }
+ ]
+}

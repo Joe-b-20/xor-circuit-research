@@ -28,9 +28,15 @@ RES = HERE / 'results'
 LARGE_G = 400       # as sample.py: circuits this large run on Nangate45 and SKY130 preserve only
 
 
-def main():
-    rows = list(csv.DictReader(open(RES / 'table.csv')))
-    a = json.loads((RES / 'analysis.json').read_text())
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--res', default=str(RES), help='folder with table.csv and analysis.json')
+    ap.add_argument('--out', default=str(HERE / 'lists'), help='where seeds*.txt are written')
+    args = ap.parse_args(argv)
+    res = pathlib.Path(args.res).resolve()
+    rows = list(csv.DictReader(open(res / 'table.csv')))
+    a = json.loads((res / 'analysis.json').read_text())
     file_of = {r['circuit']: r['file'] for r in rows}
     members = collections.defaultdict(set)
     has_base = set()
@@ -60,8 +66,8 @@ def main():
         for c in (t['worse_logically'], t['better_logically']):
             chosen.setdefault(c, 'inversion %s %s %s %s' % k)
     lines = ['%s  # %s' % (file_of[c], why) for c, why in sorted(chosen.items())]
-    out = HERE / 'lists'
-    out.mkdir(exist_ok=True)
+    out = pathlib.Path(args.out).resolve()
+    out.mkdir(parents=True, exist_ok=True)
     (out / 'seeds.txt').write_text('\n'.join(lines) + '\n')
     gates = {r['file']: int(r['key'].split('/')[2]) for r in rows}
     small = [l for l in lines if gates[l.split()[0]] < LARGE_G]

@@ -72,5 +72,5 @@ jobs:
           python-version: "3.12"
       - name: hwbench unit tests (the tests that need Yosys/OpenROAD skip themselves)
         run: python3 -m unittest discover -s hardware/tests -t hardware -v
-      - name: Research tests (structure hash)
+      - name: Research tests (structure hash, pipeline manifest, fingerprints, exit status)
         run: python3 -m unittest discover -s hardware/research/tests -t hardware/research -v

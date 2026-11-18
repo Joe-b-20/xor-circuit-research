@@ -1,0 +1,28 @@
+# Jobs outside the lists' rule that are part of the published results.
+# stage  variant  platform  flow  circuit file  # why
+#
+# Base run: the 41 circuits with G >= 400 run on Nangate45 and SKY130 preserve only (their
+# SKY130 free-flow routing takes 30-60 min per job).  SKY130 free/free-area was started for some
+# of them before that rule; these three finished and are kept; the others were stopped and are
+# not part of the study (their folders hold no metrics.json).
+base  base  sky130hd  free-area  hardware/research/candidates/aes-sbox/aes-sbox-a294-ad14-g749-gd34-h71dea2c50dafff99.circ.txt  # finished before the G >= 400 rule
+base  base  sky130hd  free-area  hardware/research/candidates/aes-sbox/aes-sbox-a742-ad12-g1291-gd24-h8e8889e9198aef3d.circ.txt  # finished before the G >= 400 rule
+base  base  sky130hd  free-area  hardware/research/candidates/aes-sbox/aes-sbox-a743-ad15-g1307-gd28-hebd583a5845bd952.circ.txt  # finished before the G >= 400 rule
+#
+# Repeats: two InvMixColumns 118@5 circuits used to test the seeds (whether pin seeds and
+# instance order change anything, then the placement-parameter seeds) before lists/seeds.txt
+# was chosen.
+repeats  pnr1    nangate45  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  pnr1    sky130hd   preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  pnr2    nangate45  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  pnr2    sky130hd   preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  pnr3    nangate45  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  pnr3    sky130hd   preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  synth1  nangate45  free      hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h5cde55925db74ced.circ.txt  # seed test
+repeats  pnr1    nangate45  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test
+repeats  pnr1    sky130hd   preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test
+repeats  pnr2    nangate45  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test
+repeats  pnr2    sky130hd   preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test
+repeats  pnr3    nangate45  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test
+repeats  pnr3    sky130hd   preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test
+repeats  synth1  nangate45  free      hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor118-depth5-h9605a105fc120bb9.circ.txt  # seed test

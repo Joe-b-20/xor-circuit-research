@@ -1,18 +1,366 @@
 {
  "features_s": {
   "n": 1420,
-  "median": 0.0012426325120031834,
-  "p10": 0.000845092989038676,
-  "p90": 0.002098102995660156
+  "median": 0.0012871479848399758,
+  "p10": 0.0008500739932060242,
+  "p90": 0.0021317200153134763
  },
- "synthesis_s": {
+ "synthesis_only_s": {
   "n": 2160,
   "median": 0.75,
-  "p90": 1.09
+  "p90": 1.09,
+  "what": "Yosys + ABC wall time from synth.log, free-area flow, base run (-j 19); no timing analysis"
+ },
+ "screen_synth_sta_s": {
+  "definition": "Yosys + ABC (flow.synth) then OpenROAD/OpenSTA up to hwb_report synth (flow.PNR_TCL cut there): the stages.synth delay, one statement order, per circuit-library-flow; equivalence checks not included",
+  "n_circuits": 60,
+  "n": 240,
+  "all": {
+   "wall": {
+    "n": 240,
+    "median": 1.14,
+    "p10": 0.689,
+    "p90": 3.005
+   },
+   "cpu": {
+    "n": 240,
+    "median": 0.98,
+    "p10": 0.589,
+    "p90": 2.716
+   }
+  },
+  "by_config": {
+   "nangate45/free": {
+    "wall": {
+     "n": 60,
+     "median": 0.843,
+     "p10": 0.688,
+     "p90": 2.685
+    },
+    "cpu": {
+     "n": 60,
+     "median": 0.723,
+     "p10": 0.572,
+     "p90": 2.431
+    }
+   },
+   "nangate45/free-area": {
+    "wall": {
+     "n": 60,
+     "median": 0.792,
+     "p10": 0.638,
+     "p90": 2.729
+    },
+    "cpu": {
+     "n": 60,
+     "median": 0.663,
+     "p10": 0.547,
+     "p90": 2.432
+    }
+   },
+   "sky130hd/free": {
+    "wall": {
+     "n": 60,
+     "median": 1.226,
+     "p10": 1.024,
+     "p90": 3.134
+    },
+    "cpu": {
+     "n": 60,
+     "median": 1.088,
+     "p10": 0.909,
+     "p90": 2.797
+    }
+   },
+   "sky130hd/free-area": {
+    "wall": {
+     "n": 60,
+     "median": 1.167,
+     "p10": 0.988,
+     "p90": 3.156
+    },
+    "cpu": {
+     "n": 60,
+     "median": 1.021,
+     "p10": 0.866,
+     "p90": 2.854
+    }
+   }
+  },
+  "steps": {
+   "rtl": {
+    "wall": {
+     "n": 240,
+     "median": 0.0,
+     "p10": 0.0,
+     "p90": 0.001
+    },
+    "cpu": {
+     "n": 240,
+     "median": 0.0,
+     "p10": 0.0,
+     "p90": 0.001
+    }
+   },
+   "yosys": {
+    "wall": {
+     "n": 240,
+     "median": 0.469,
+     "p10": 0.317,
+     "p90": 0.669
+    },
+    "cpu": {
+     "n": 240,
+     "median": 0.418,
+     "p10": 0.255,
+     "p90": 0.592
+    }
+   },
+   "prep": {
+    "wall": {
+     "n": 240,
+     "median": 0.006,
+     "p10": 0.003,
+     "p90": 2.093
+    },
+    "cpu": {
+     "n": 240,
+     "median": 0.005,
+     "p10": 0.003,
+     "p90": 1.915
+    }
+   },
+   "openroad": {
+    "wall": {
+     "n": 240,
+     "median": 0.378,
+     "p10": 0.278,
+     "p90": 0.491
+    },
+    "cpu": {
+     "n": 240,
+     "median": 0.322,
+     "p10": 0.238,
+     "p90": 0.427
+    }
+   }
+  },
+  "per_circuit_2_libraries_2_flows": {
+   "wall": {
+    "n": 60,
+    "median": 3.912,
+    "p10": 3.326,
+    "p90": 11.72
+   },
+   "cpu": {
+    "n": 60,
+    "median": 3.392,
+    "p10": 2.904,
+    "p90": 10.529
+   }
+  },
+  "loadavg_1min": {
+   "n": 240,
+   "median": 5.1,
+   "p10": 4.7,
+   "p90": 6.0
+  },
+  "jobs_in_parallel": 4,
+  "cpu_count": 20
+ },
+ "screen_orders_s": {
+  "subset_circuits": 20,
+  "measured_orders": 5,
+  "note": "every k up to measured_orders is measured (orders 0..k-1, 0 = the benchmark's RTL), none extrapolated; values per circuit-library-flow",
+  "k1": {
+   "wall": {
+    "n": 80,
+    "median": 1.126,
+    "p10": 0.685,
+    "p90": 2.954
+   },
+   "cpu": {
+    "n": 80,
+    "median": 0.984,
+    "p10": 0.571,
+    "p90": 2.659
+   },
+   "per_circuit_2_libraries_2_flows": {
+    "wall": {
+     "n": 20,
+     "median": 3.912,
+     "p10": 3.174,
+     "p90": 11.142
+    },
+    "cpu": {
+     "n": 20,
+     "median": 3.379,
+     "p10": 2.8,
+     "p90": 10.065
+    }
+   }
+  },
+  "k3": {
+   "wall": {
+    "n": 80,
+    "median": 3.336,
+    "p10": 1.988,
+    "p90": 8.919
+   },
+   "cpu": {
+    "n": 80,
+    "median": 2.913,
+    "p10": 1.71,
+    "p90": 8.02
+   },
+   "per_circuit_2_libraries_2_flows": {
+    "wall": {
+     "n": 20,
+     "median": 11.42,
+     "p10": 9.69,
+     "p90": 34.066
+    },
+    "cpu": {
+     "n": 20,
+     "median": 9.908,
+     "p10": 8.241,
+     "p90": 30.641
+    }
+   }
+  },
+  "k5": {
+   "wall": {
+    "n": 80,
+    "median": 5.481,
+    "p10": 3.29,
+    "p90": 14.827
+   },
+   "cpu": {
+    "n": 80,
+    "median": 4.834,
+    "p10": 2.839,
+    "p90": 13.254
+   },
+   "per_circuit_2_libraries_2_flows": {
+    "wall": {
+     "n": 20,
+     "median": 18.998,
+     "p10": 16.284,
+     "p90": 55.579
+    },
+    "cpu": {
+     "n": 20,
+     "median": 16.538,
+     "p10": 13.935,
+     "p90": 50.052
+    }
+   }
+  }
+ },
+ "screen_verify": {
+  "compared": 400,
+  "exact": 400,
+  "by_order": {
+   "0": 240,
+   "1": 80,
+   "2": 80
+  },
+  "cells_identical": 400,
+  "tcl_prefix_identical": 400,
+  "reference": "stages.synth.delay_ns of build/base (order 0) and build/synth1, synth2 (orders 1, 2) metrics.json",
+  "mismatches": [],
+  "failures": []
+ },
+ "startup_s": {
+  "nangate45/openroad_empty": {
+   "wall": 0.115,
+   "cpu": 0.067
+  },
+  "nangate45/openroad_read_lef_liberty": {
+   "wall": 0.221,
+   "cpu": 0.19
+  },
+  "nangate45/yosys_empty": {
+   "wall": 0.009,
+   "cpu": 0.006
+  },
+  "nangate45/yosys_read_liberty": {
+   "wall": 0.033,
+   "cpu": 0.025
+  },
+  "sky130hd/openroad_empty": {
+   "wall": 0.065,
+   "cpu": 0.051
+  },
+  "sky130hd/openroad_read_lef_liberty": {
+   "wall": 0.367,
+   "cpu": 0.315
+  },
+  "sky130hd/yosys_empty": {
+   "wall": 0.008,
+   "cpu": 0.005
+  },
+  "sky130hd/yosys_read_liberty": {
+   "wall": 0.065,
+   "cpu": 0.04
+  }
+ },
+ "checks_s": {
+  "note": "not in the screening path; check_mapped per job (ABC &cec of mapped.v), check_rtl per circuit (Icarus simulation + proof of rtl.v)",
+  "check_mapped": {
+   "wall": {
+    "n": 240,
+    "median": 0.534,
+    "p10": 0.232,
+    "p90": 1.439
+   },
+   "cpu": {
+    "n": 240,
+    "median": 0.574,
+    "p10": 0.188,
+    "p90": 1.334
+   }
+  },
+  "check_rtl": {
+   "wall": {
+    "n": 240,
+    "median": 0.923,
+    "p10": 0.417,
+    "p90": 6.447
+   },
+   "cpu": {
+    "n": 240,
+    "median": 1.18,
+    "p10": 0.46,
+    "p90": 5.856
+   }
+  }
+ },
+ "screen_measurement": {
+  "date": "2026-11-18 15:11 UTC",
+  "seed": 20261118,
+  "n": 60,
+  "subset": 20,
+  "orders": 5,
+  "jobs": 4,
+  "cpu_count": 20,
+  "loadavg_start": [
+   5.623046875,
+   5.87890625,
+   3.60009765625
+  ],
+  "loadavg_end": [
+   5.50341796875,
+   5.3818359375,
+   4.19677734375
+  ],
+  "seconds": 413.2,
+  "command": "python3 hardware/research/timing.py --measure-screen 60 --subset 20 --orders 5 -j 4"
  },
  "job_s": {
   "n": 2160,
   "median": 15.1,
-  "p90": 23.9
+  "p90": 23.9,
+  "what": "whole job (metrics.json seconds), free-area flow, base run (-j 19)"
  }
 }

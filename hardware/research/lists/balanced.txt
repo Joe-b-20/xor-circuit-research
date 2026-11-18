@@ -1,0 +1,80 @@
+# Balanced repeats (stage balanced): the circuits of the claims that rest on repeated runs.
+# Free flows: statement orders 0-5 x placement settings 0-2 (o<O>p<P>; o0p0-o0p2, o1p1 and
+# o2p2 are base, pnr1-2, synth1-2 of the earlier stages); preserve: placements 0-5 (pnr4,
+# pnr5 added).  Chosen in the 2026-11-18 review of the repeated-run statistics:
+#   tier 1: the circuits of the README's exact comparisons, the other pairs that held in all
+#           six configurations or whose count changed under the hierarchy, the first pair;
+#   tier 2: the remaining apparent inversions that got repeats.
+# stage  variants  platforms  flows  circuit file  # why
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox/aes-sbox-a57-ad9-g152-gd36-hb2092f6d0c4adc01.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox/aes-sbox-a57-ad9-g152-gd36-hb2092f6d0c4adc01.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  search/nonlinear/seeds/aes-sbox/aes-sbox-a30-ad4-g147-gd36-xx117-13.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  search/nonlinear/seeds/aes-sbox/aes-sbox-a30-ad4-g147-gd36-xx117-13.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox/aes-sbox-a68-ad13-g176-gd37-hdd064a2dd98cf1eb.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox/aes-sbox-a68-ad13-g176-gd37-hdd064a2dd98cf1eb.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox/aes-sbox-a28-ad5-g172-gd27-hb9d61cfc26a4a3bb.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox/aes-sbox-a28-ad5-g172-gd27-hb9d61cfc26a4a3bb.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invsbox/aes-invsbox-a31-ad5-g138-gd20-h18e16082a70397fb.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invsbox/aes-invsbox-a31-ad5-g138-gd20-h18e16082a70397fb.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  search/nonlinear/seeds/aes-invsbox/aes-invsbox-a28-ad4-g135-gd20-xx107-35.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invsbox/aes-invsbox-a54-ad4-g144-gd16-h2d9970ea050c3592.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invsbox/aes-invsbox-a54-ad4-g144-gd16-h2d9970ea050c3592.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  circuits/aes-invsbox/aes-invsbox-a28-ad4-g143-gd16-xxn115-59-1.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  circuits/aes-invsbox/aes-invsbox-a28-ad4-g143-gd16-xxn115-59-1.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor117-depth6-hac7ce23fbc1f9bb9.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor117-depth6-hac7ce23fbc1f9bb9.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor95-depth6-hfca2934f2afadbfa.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor95-depth6-hfca2934f2afadbfa.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor351-depth7-h7711bf97e4bcf8b8.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor351-depth7-h7711bf97e4bcf8b8.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor113-depth7-h5e49d90bd57a4550.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor113-depth7-h5e49d90bd57a4550.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g241-gd26-hcb958a27654d3809.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g241-gd26-hcb958a27654d3809.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  search/nonlinear/seeds/aes-sbox-sel/aes-sbox-sel-a36-ad6-g191-gd26-xx155-31.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  search/nonlinear/seeds/aes-sbox-sel/aes-sbox-sel-a36-ad6-g191-gd26-xx155-31.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor113-depth7-hb462644904803870.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor113-depth7-hb462644904803870.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor95-depth7-hb43429649e4b7eca.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor95-depth7-hb43429649e4b7eca.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a41-ad6-g183-gd32-he860b36d2015cd9a.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a41-ad6-g183-gd32-he860b36d2015cd9a.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g183-gd32-h02e719d35ed328ab.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g183-gd32-h02e719d35ed328ab.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invsbox/aes-invsbox-a31-ad5-g137-gd23-h87dc5f950aac1e61.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invsbox/aes-invsbox-a31-ad5-g137-gd23-h87dc5f950aac1e61.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  circuits/aes-invsbox/aes-invsbox-a28-ad4-g137-gd17-xx109-69.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  circuits/aes-invsbox/aes-invsbox-a28-ad4-g137-gd17-xx109-69.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor95-depth4-h8e0de6fd5c10def1.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor95-depth4-h8e0de6fd5c10def1.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  circuits/aes-invsbox/aes-invsbox-a40-ad4-g134-gd12-xx94-41.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  circuits/aes-invsbox/aes-invsbox-a40-ad4-g134-gd12-xx94-41.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt  # tier 1
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  search/nonlinear/seeds/aes-invsbox/aes-invsbox-a45-ad4-g141-gd12-xx96-25.circ.txt  # tier 1
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor134-depth5-h755575932b2b0040.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor134-depth5-h755575932b2b0040.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor133-depth5-h2f16134a580c3feb.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor133-depth5-h2f16134a580c3feb.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor94-depth12-h9a6dbc99f2ba69a4.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor94-depth12-h9a6dbc99f2ba69a4.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor94-depth10-h9658e21226ac92de.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-invmixcolumns/aes-invmixcolumns-xor94-depth10-h9658e21226ac92de.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor96-depth6-ha95fc8567d6525f8.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor96-depth6-ha95fc8567d6525f8.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor96-depth4-hf5562227fa6ddfd3.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor96-depth4-hf5562227fa6ddfd3.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor96-depth6-h8cf392f5936ef3a4.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-mixcolumns/aes-mixcolumns-xor96-depth6-h8cf392f5936ef3a4.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g193-gd38-h930ddcb08a344524.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g193-gd38-h930ddcb08a344524.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g190-gd37-h7627f071489d2e22.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a36-ad6-g190-gd37-h7627f071489d2e22.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a42-ad6-g187-gd24-h6752c22e46affcd3.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a42-ad6-g187-gd24-h6752c22e46affcd3.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  circuits/aes-sbox-sel/aes-sbox-sel-a36-ad6-g187-gd21-xx151-82.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  circuits/aes-sbox-sel/aes-sbox-sel-a36-ad6-g187-gd21-xx151-82.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a41-ad6-g171-gd27-h2e80b1f515d14e6f.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  hardware/research/candidates/aes-sbox-sel/aes-sbox-sel-a41-ad6-g171-gd27-h2e80b1f515d14e6f.circ.txt  # tier 2
+balanced  o1p0,o1p2,o2p0,o2p1,o3p0,o3p1,o3p2,o4p0,o4p1,o4p2,o5p0,o5p1,o5p2  nangate45,sky130hd  free,free-area  circuits/aes-sbox-sel/aes-sbox-sel-a36-ad6-g171-gd25-xx135-74.circ.txt  # tier 2
+balanced  pnr4,pnr5  nangate45,sky130hd  preserve  circuits/aes-sbox-sel/aes-sbox-sel-a36-ad6-g171-gd25-xx135-74.circ.txt  # tier 2
