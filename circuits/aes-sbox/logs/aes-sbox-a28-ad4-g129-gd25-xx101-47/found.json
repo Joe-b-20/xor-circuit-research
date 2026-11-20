@@ -1,0 +1,207 @@
+{
+ "circuit": "aes-sbox-a28-ad4-g129-gd25-xx101-47.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  4,
+  129,
+  25
+ ],
+ "found_by": "BoolFlux",
+ "method": "gate kernel",
+ "method_description": "gate kernel: care-set gate replacement moves with annealing, under caps on (A, AD, GD)",
+ "hub": false,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-sbox",
+  "tuple_A_AD_G_GD": [
+   28,
+   4,
+   195,
+   31
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a28-ad4-g195-gd31-xx167-25",
+  "source": "<campaign archive>/2026-11-18-walk/POL/scr/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45/own-start.circ.txt",
+  "source_sha256": "79c564371dae22bf0e6aa10c858f8bc682646e43fdb7f7017673c6b8db3406ea",
+  "note": "28/4/195/31: the AND skeleton (the 28 products and the outputs as XORs of them) of our published 28/4/130/24 (circuits/aes-sbox/aes-sbox-a28-ad4-g130-gd24-xx102-45.circ.txt), re-synthesised into a circuit by a script of the research notes that is not in this repository (it is not recorded as a run of its own; the file is the start the run read, run.json starts[0] sha256 79c564371dae22bf0e6aa10c858f8bc682646e43fdb7f7017673c6b8db3406ea)"
+ },
+ "chain_root": "our published circuit aes-sbox-a28-ad4-g130-gd24-xx102-45 (its AND skeleton; its own logs give its lineage)",
+ "lineage": [
+  "published 28/4/130/24 (aes-sbox-a28-ad4-g130-gd24-xx102-45)",
+  "its AND skeleton re-synthesised into a 28/4/195/31 circuit (start.circ.txt; script of the research notes, not published, no run record)",
+  "gate kernel polish (cli.py run --objective cost,gd --cap-a 28 --cap-ad 4, 4 seeds x 400k iterations x 3 rounds, pool 3): round 0 best 28/4/131/27, round 1 28/4/130/25, round 2 28/4/129/25 (seed 4); this circuit"
+ ],
+ "parameters": {
+  "caps": {
+   "GD": null,
+   "AD": 4,
+   "A": 28
+  },
+  "objective": "cost,gd",
+  "iters": 400000,
+  "rounds": 3,
+  "pool": 3,
+  "seeds": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1
+  },
+  "seconds_cap": 3600
+ },
+ "seed": {
+  "seed": 4,
+  "round": 2,
+  "kernel_seed": 8589934596,
+  "run_seeds": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "seed_scheme": "v2"
+ },
+ "found_utc": "2026-11-18T23:09:28Z",
+ "found_utc_source": "the run's improvement event for this circuit (events.jsonl.gz), from the run's start time",
+ "time_to_result_s": {
+  "since_run_start_s": 578.34
+ },
+ "first_find": {
+  "first": true,
+  "evidence": "no circuit with this (A, AD, G, GD) is in circuits/ or in the runs' folders read for this publication before it",
+  "earlier_finds_same_tuple": [],
+  "later_finds_same_tuple": [],
+  "note": "the hubs of 2026-11-20 were seeded with this file (hub seed 90cc50e1c41a of the control hub)"
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-18-walk/POL",
+  "what": "kernel polishes of 28-AND structures re-synthesised from their AND skeletons (2026-11-18); this circuit is the long-budget control run on the published 28/4/130/24 structure"
+ },
+ "code": {
+  "commit_linked": "0101cae",
+  "commit_linked_full": "0101cae66886135672a6cf5c59104f8784e39a9b",
+  "files": [
+   "search/nonlinear/boolflux/cli.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<checkout> (the repository at 0101cae6, clean: run.json git.dirty false)",
+  "base_commit": "0101cae",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": true,
+  "note": "the run's recorded sources_sha256 (4f2e454144c7...) equals 0101cae6's package (and 057fcfc6's: the package is unchanged since); the run compiled its kernels from copies of kernel/bfx.c and kernel/skel.c whose sha256 (run.json kernels) equal 0101cae6's",
+  "sources_sha256_at_run": "4f2e454144c7f9514b8df5b30991bd643020f9d8d06e86af8b646c6a33ea1a95",
+  "git_at_run": {
+   "commit": "0101cae66886135672a6cf5c59104f8784e39a9b",
+   "branch": "pub-2026-11-17",
+   "dirty": false
+  },
+  "kernels_at_run": [
+   {
+    "sha256": "b4f62ad57f6c814ab007405cb0c279ddd7db40534c9d70e55466cdbf2624869f",
+    "source_sha256": "e855d7f6f8a350355ed07b00770c8b51006a98ca91366bede19aedf9c341256b"
+   },
+   {
+    "sha256": "2fd9bb3b5ce2ef3951fdf0289e21e054df6b4def00f2cf5547d7bf7425182a08",
+    "source_sha256": "f050cddf40ef6a07f36cecf1fe15e12fc89fc05cdef818fbacd4cfb924481cf2"
+   }
+  ]
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 <checkout>/search/nonlinear/boolflux/cli.py run --target aes --model nist --start <campaign archive>/2026-11-18-walk/POL/scr/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45/own-start.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --iters 400000 --seeds 1-4 --rounds 3 --pool 3 --jobs 4 --out <campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own",
+ "environment": {
+  "cwd": "<checkout>"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<research notes>": "the research notes of the campaign (not published); a run's result file was kept there",
+  "<checkout>": "the working checkout of this repository the run used (at the commit named in code, clean); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <research notes>/walk-2026-11-18/POL/results/control/aes-sbox-a28-ad4-g129-gd25-xx101-47.circ.txt",
+  "sha256": "83fbaed351d13fda2892cb9dfec3eb16e96e992af3b15749f3e50482d44f413e",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "events.jsonl.gz",
+  "r0-s1.cfg",
+  "r0-s1.log.gz",
+  "r0-s2.cfg",
+  "r0-s2.log.gz",
+  "r0-s3.cfg",
+  "r0-s3.log.gz",
+  "r0-s4.cfg",
+  "r0-s4.log.gz",
+  "r1-s1.cfg",
+  "r1-s1.log.gz",
+  "r1-s2.cfg",
+  "r1-s2.log.gz",
+  "r1-s3.cfg",
+  "r1-s3.log.gz",
+  "r1-s4.cfg",
+  "r1-s4.log.gz",
+  "r2-s1.cfg",
+  "r2-s1.log.gz",
+  "r2-s2.cfg",
+  "r2-s2.log.gz",
+  "r2-s3.cfg",
+  "r2-s3.log.gz",
+  "r2-s4.cfg",
+  "r2-s4.log.gz",
+  "run-best.circ.txt",
+  "run.json",
+  "summary.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "events.jsonl.gz",
+  "r0-s1.cfg",
+  "r0-s1.log.gz",
+  "r0-s2.cfg",
+  "r0-s2.log.gz",
+  "r0-s3.cfg",
+  "r0-s3.log.gz",
+  "r0-s4.cfg",
+  "r0-s4.log.gz",
+  "r1-s1.cfg",
+  "r1-s1.log.gz",
+  "r1-s2.cfg",
+  "r1-s2.log.gz",
+  "r1-s3.cfg",
+  "r1-s3.log.gz",
+  "r1-s4.cfg",
+  "r1-s4.log.gz",
+  "r2-s1.cfg",
+  "r2-s1.log.gz",
+  "r2-s2.cfg",
+  "r2-s2.log.gz",
+  "r2-s3.cfg",
+  "r2-s3.log.gz",
+  "r2-s4.cfg",
+  "r2-s4.log.gz",
+  "run-best.circ.txt",
+  "run.json",
+  "summary.json"
+ ]
+}

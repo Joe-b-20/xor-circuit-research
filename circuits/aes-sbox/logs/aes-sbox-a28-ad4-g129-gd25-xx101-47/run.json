@@ -1,0 +1,214 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "cli.run",
+ "status": "ok",
+ "argv": [
+  "/usr/bin/python3",
+  "<checkout>/search/nonlinear/boolflux/cli.py",
+  "run",
+  "--target",
+  "aes",
+  "--model",
+  "nist",
+  "--start",
+  "<campaign archive>/2026-11-18-walk/POL/scr/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45/own-start.circ.txt",
+  "--objective",
+  "cost,gd",
+  "--cap-a",
+  "28",
+  "--cap-ad",
+  "4",
+  "--iters",
+  "400000",
+  "--seeds",
+  "1-4",
+  "--rounds",
+  "3",
+  "--pool",
+  "3",
+  "--jobs",
+  "4",
+  "--out",
+  "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own"
+ ],
+ "cwd": "<checkout>",
+ "command": "python3 <checkout>/search/nonlinear/boolflux/cli.py run --target aes --model nist --start <campaign archive>/2026-11-18-walk/POL/scr/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45/own-start.circ.txt --objective cost,gd --cap-a 28 --cap-ad 4 --iters 400000 --seeds 1-4 --rounds 3 --pool 3 --jobs 4 --out <campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own",
+ "git": {
+  "commit": "0101cae66886135672a6cf5c59104f8784e39a9b",
+  "branch": "pub-2026-11-17",
+  "dirty": false
+ },
+ "sources_sha256": "4f2e454144c7f9514b8df5b30991bd643020f9d8d06e86af8b646c6a33ea1a95",
+ "repo": "<checkout>",
+ "function": "aes-sbox",
+ "seeds": {
+  "seeds": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "seed_scheme": "v2",
+  "kernel_seeds": {
+   "r0-s1": 1,
+   "r0-s2": 2,
+   "r0-s3": 3,
+   "r0-s4": 4,
+   "r1-s1": 4294967297,
+   "r1-s2": 4294967298,
+   "r1-s3": 4294967299,
+   "r1-s4": 4294967300,
+   "r2-s1": 8589934593,
+   "r2-s2": 8589934594,
+   "r2-s3": 8589934595,
+   "r2-s4": 8589934596
+  }
+ },
+ "config": {
+  "target": "aes",
+  "model": "nist",
+  "objective": "cost,gd",
+  "caps": {
+   "GD": null,
+   "AD": 4,
+   "A": 28
+  },
+  "iters": 400000,
+  "seconds_cap": 3600,
+  "rounds": 3,
+  "settings": {
+   "T0": 0.6,
+   "Tperiod_it": 20000,
+   "stall_it": 60000,
+   "uphill": 1.0,
+   "max_excess": 8,
+   "mv.resub1": 1,
+   "mv.resub2": 2,
+   "mv.resub3": 1,
+   "dmax": 220,
+   "pdiv": 90,
+   "nl_samples": 12,
+   "cand_cap": 40,
+   "fraig": 1
+  },
+  "pool": 3,
+  "jobs": 4
+ },
+ "starts": [
+  {
+   "label": "start",
+   "path": "<campaign archive>/2026-11-18-walk/POL/scr/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45/own-start.circ.txt",
+   "sha256": "79c564371dae22bf0e6aa10c858f8bc682646e43fdb7f7017673c6b8db3406ea",
+   "text_sha256": "d6cfea375bdbef7012554a4926d0c5175105336232afcef84d5ee1f0a9a98b6a",
+   "metrics": {
+    "G": 195,
+    "A": 28,
+    "GD": 31,
+    "AD": 4,
+    "cost": 195.0,
+    "counts": {
+     "AND": 28,
+     "XNOR": 25,
+     "XOR": 142
+    }
+   }
+  }
+ ],
+ "budget_s": null,
+ "kernels": [
+  {
+   "path": "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/bin/bfx",
+   "sha256": "b4f62ad57f6c814ab007405cb0c279ddd7db40534c9d70e55466cdbf2624869f",
+   "source": "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/src/bfx.c",
+   "source_sha256": "e855d7f6f8a350355ed07b00770c8b51006a98ca91366bede19aedf9c341256b",
+   "command": [
+    "gcc",
+    "-O2",
+    "-o",
+    "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/bin/bfx",
+    "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/src/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  {
+   "path": "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/bin/skel",
+   "sha256": "2fd9bb3b5ce2ef3951fdf0289e21e054df6b4def00f2cf5547d7bf7425182a08",
+   "source": "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/src/skel.c",
+   "source_sha256": "f050cddf40ef6a07f36cecf1fe15e12fc89fc05cdef818fbacd4cfb924481cf2",
+   "command": [
+    "gcc",
+    "-O2",
+    "-o",
+    "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/bin/skel",
+    "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/src/skel.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   10,
+   11,
+   12,
+   13
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {},
+ "interpreter": {
+  "sys_path": [
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear/boolflux",
+   "<checkout>/search/nonlinear",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONPATH": "<checkout>/search/nonlinear",
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-18T22:59:50Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "best": "<campaign archive>/2026-11-18-walk/POL/long/ctl-aes-sbox-a28-ad4-g130-gd24-xx102-45-own/best.circ.txt",
+  "metrics": {
+   "cost": 129.0,
+   "G": 129,
+   "A": 28,
+   "GD": 25,
+   "AD": 4
+  },
+  "feasible": true,
+  "failures": []
+ },
+ "t_end_utc": "2026-11-18T23:14:08Z",
+ "wall_s": 857.588,
+ "mono_s": 897.435,
+ "cpu_s": 3262.428,
+ "max_rss_kb": 87384
+}

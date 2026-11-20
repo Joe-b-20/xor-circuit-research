@@ -1,0 +1,240 @@
+{
+ "circuit": "aes-sbox-a28-ad5-g127-gd21-xx99-59.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  5,
+  127,
+  21
+ ],
+ "found_by": "BoolFlux",
+ "method": "region rebuild",
+ "method_description": "timing-aware rebuild of one XOR region, then the gate kernel",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-sbox",
+  "tuple_A_AD_G_GD": [
+   28,
+   5,
+   127,
+   21
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a28-ad5-g127-gd21-xx99-60",
+  "source": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/e8630069de26.bfx",
+  "source_sha256": "e3cf076a412e42296b196915eacf24a7c4b56cca08cffe4be709b8fe9dafd489",
+  "note": "hub circuit e8630069de26 (polish, hub-a0f061.r00257-polish) of the control hub"
+ },
+ "chain_root": "hub seed 70ad2b1cd416: our published aes-sbox-a28-ad5-g127-gd22-xx99-48",
+ "lineage": [
+  "391f5a97fc3b trb 28/5/127/21 <- e8630069de26 (hub-a0f061.r01061-trb, 17:45:29 UTC)",
+  "e8630069de26 polish 28/5/127/21 <- 9f5c6c2a7329 (hub-a0f061.r00257-polish, 16:53:14 UTC)",
+  "9f5c6c2a7329 pull 28/5/129/21 <- 70ad2b1cd416 (hub-a0f061.r00118-pull, 16:40:52 UTC)",
+  "70ad2b1cd416 seed 28/5/127/22: our published aes-sbox-a28-ad5-g127-gd22-xx99-48"
+ ],
+ "parameters": {
+  "nursery": false,
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 30.0,
+  "scheduler_version": "0101cae6+eccb31a0b8",
+  "hub": {
+   "scheduler_command": "python3 <checkout>/search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/2026-11-20-hub28/run/hubC/hub --cpus 8-15 --hours 1.5 --seed-list <campaign archive>/2026-11-20-hub28/results/hubC.list --ops polish,pull,join,trb --seed 1 --near-gap 10",
+   "ops": "polish,pull,join,trb",
+   "seed": 1,
+   "near_gap": 10,
+   "hours": 1.5,
+   "cpus": "8-15 (8 CPUs)",
+   "started_utc": "2026-11-20T16:25:50Z",
+   "seeds": "28 circuits (hub-seed-list.txt)"
+  },
+  "job_op_info": {
+   "reps": 23746,
+   "rebuild_errors": {},
+   "by_region": {
+    "bottom/-0": {
+     "built: worse G, not placed": 4803
+    },
+    "mid/-0": {
+     "built: archived structure": 13,
+     "built: worse G, not placed": 3613,
+     "built: would_place": 1165
+    },
+    "random/-0": {
+     "built: archived structure": 11,
+     "built: worse G, not placed": 6236,
+     "built: would_place": 1502,
+     "skip: region < 2 gates": 1752
+    },
+    "top/-0": {
+     "built: worse G, not placed": 4651
+    }
+   },
+   "dG": {
+    "+6": 12491,
+    "+0": 2691,
+    "+1": 2494,
+    "+4": 1589,
+    "+3": 1115,
+    "+2": 1047,
+    "+5": 567
+   },
+   "dGD": {
+    "+0": 21994
+   },
+   "reps_per_s": 791.5,
+   "filter": null,
+   "archive_loaded": {
+    "records": 229,
+    "cells": 58,
+    "front": 28,
+    "max_t_admit": 1795196600.1357677
+   }
+  }
+ },
+ "seed": 574193522,
+ "found_utc": "2026-11-20T17:45:29Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 30.02,
+  "cpu_s": 30.0
+ },
+ "first_find": {
+  "first": false,
+  "evidence": "the archives of the two hubs of this campaign (every circuit admitted, with its admission time)",
+  "earlier_finds_same_tuple": [
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/e8630069de26.bfx",
+    "found_utc": "2026-11-20T16:53:14Z",
+    "note": "control hub e8630069de26 (polish, hub-a0f061.r00257-polish), parents 9f5c6c2a7329"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/8802ff8b7f1f.bfx",
+    "found_utc": "2026-11-20T17:45:29Z",
+    "note": "control hub 8802ff8b7f1f (trb, hub-a0f061.r01061-trb), parents e8630069de26"
+   }
+  ],
+  "later_finds_same_tuple": [
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/5ca6da4c3180.bfx",
+    "found_utc": "2026-11-20T17:45:29Z",
+    "note": "control hub 5ca6da4c3180 (trb, hub-a0f061.r01061-trb), parents e8630069de26"
+   }
+  ],
+  "why_this_one": "the circuit the campaign exported and verified (results/hubC-final/), published as named; the earlier circuits with the same (A, AD, G, GD) are other circuits of the campaign's hubs (listed above), not published"
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-20-hub28",
+  "what": "two BoolFlux hubs of 1.5 h on 8 CPUs each (scheduler.py --seed 1 --near-gap 10, operators polish, pull, join, region rebuild), 2026-11-20 16:25-17:56 UTC; this circuit is from the control hub, seeded with the 13 published 28-AND circuits, NIST's 14 28-AND circuits and our 28/4/129/25"
+ },
+ "code": {
+  "commit_linked": "0101cae",
+  "commit_linked_full": "0101cae66886135672a6cf5c59104f8784e39a9b",
+  "files": [
+   "search/nonlinear/boolflux/hub/op_trb.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<checkout> (the repository at 0101cae6, clean: run.json git.dirty false)",
+  "base_commit": "0101cae",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": true,
+  "note": "the run's recorded sources_sha256 (4f2e454144c7...) equals 0101cae6's package (and 057fcfc6's: the package is unchanged since); the hub job ran search/nonlinear/boolflux/hub/op_trb.py of that checkout (script_sha ac616a6e78); scheduler and job code_version 0101cae6+eccb31a0b8",
+  "sources_sha256_at_run": "4f2e454144c7f9514b8df5b30991bd643020f9d8d06e86af8b646c6a33ea1a95",
+  "git_at_run": {
+   "commit": "0101cae66886135672a6cf5c59104f8784e39a9b",
+   "branch": "pub-2026-11-17",
+   "dirty": false
+  },
+  "kernels_at_run": []
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 <checkout>/search/nonlinear/boolflux/hub/op_trb.py --archive <campaign archive>/2026-11-20-hub28/run/hubC/hub --in e8630069de26 --seed 574193522 --seconds 30 --out <campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01061-trb",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-20-hub28/run/hubC",
+  "BOOLFLUX_FUNCTION": "aes-sbox",
+  "BOOLFLUX_RUNLOG_STORE": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/runlog"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<research notes>": "the research notes of the campaign (not published); a run's result file was kept there",
+  "<checkout>": "the working checkout of this repository the run used (at the commit named in code, clean); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-20-hub28/results/hubC-final/aes-sbox-a28-ad5-g127-gd21-xx99-59-391f5a97fc3b.circ.txt",
+  "sha256": "8abf9464f31fea76a9f4ab29692fda77149398675c43ba69d036137f1511383d",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "chain-1-pull/circuit.json",
+  "chain-1-pull/job/best.bfx",
+  "chain-1-pull/job/events.jsonl.gz",
+  "chain-1-pull/job/kernel.cfg",
+  "chain-1-pull/job/kernel.log.gz",
+  "chain-1-pull/job/record.json",
+  "chain-1-pull/job/run.json",
+  "chain-1-pull/job/start.bfx",
+  "chain-1-pull/run.json",
+  "chain-2-polish/circuit.json",
+  "chain-2-polish/job/best.bfx",
+  "chain-2-polish/job/events.jsonl.gz",
+  "chain-2-polish/job/kernel.cfg",
+  "chain-2-polish/job/kernel.log.gz",
+  "chain-2-polish/job/record.json",
+  "chain-2-polish/job/run.json",
+  "chain-2-polish/job/start.bfx",
+  "chain-2-polish/run.json",
+  "circuit.json",
+  "export.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-export.json",
+  "hub-lineage.json.gz",
+  "hub-seed-list.txt",
+  "job-record.json",
+  "job/events.jsonl.gz",
+  "job/record.json",
+  "job/run.json",
+  "run.json",
+  "scheduler-run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "chain-1-pull/circuit.json",
+  "chain-1-pull/job/best.bfx",
+  "chain-1-pull/job/events.jsonl.gz",
+  "chain-1-pull/job/kernel.cfg",
+  "chain-1-pull/job/kernel.log.gz",
+  "chain-1-pull/job/record.json",
+  "chain-1-pull/job/run.json",
+  "chain-1-pull/job/start.bfx",
+  "chain-1-pull/run.json",
+  "chain-2-polish/circuit.json",
+  "chain-2-polish/job/best.bfx",
+  "chain-2-polish/job/events.jsonl.gz",
+  "chain-2-polish/job/kernel.cfg",
+  "chain-2-polish/job/kernel.log.gz",
+  "chain-2-polish/job/record.json",
+  "chain-2-polish/job/run.json",
+  "chain-2-polish/job/start.bfx",
+  "chain-2-polish/run.json",
+  "circuit.json",
+  "export.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-export.json",
+  "hub-lineage.json.gz",
+  "hub-seed-list.txt",
+  "job-record.json",
+  "job/events.jsonl.gz",
+  "job/record.json",
+  "job/run.json",
+  "run.json",
+  "scheduler-run.json"
+ ]
+}

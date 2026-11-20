@@ -1,0 +1,488 @@
+{
+ "schema": "boolflux-run/1",
+ "kind": "hub.scheduler",
+ "status": "time",
+ "argv": [
+  "/usr/bin/python3",
+  "<checkout>/search/nonlinear/boolflux/hub/scheduler.py",
+  "--dir",
+  "<campaign archive>/2026-11-20-hub28/run/hubC/hub",
+  "--cpus",
+  "8-15",
+  "--hours",
+  "1.5",
+  "--seed-list",
+  "<campaign archive>/2026-11-20-hub28/results/hubC.list",
+  "--ops",
+  "polish,pull,join,trb",
+  "--seed",
+  "1",
+  "--near-gap",
+  "10"
+ ],
+ "cwd": "<campaign archive>/2026-11-20-hub28/run/hubC",
+ "command": "python3 <checkout>/search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/2026-11-20-hub28/run/hubC/hub --cpus 8-15 --hours 1.5 --seed-list <campaign archive>/2026-11-20-hub28/results/hubC.list --ops polish,pull,join,trb --seed 1 --near-gap 10",
+ "git": {
+  "commit": "0101cae66886135672a6cf5c59104f8784e39a9b",
+  "branch": "pub-2026-11-17",
+  "dirty": false
+ },
+ "sources_sha256": "4f2e454144c7f9514b8df5b30991bd643020f9d8d06e86af8b646c6a33ea1a95",
+ "repo": "<checkout>",
+ "function": "aes-sbox",
+ "seeds": {
+  "seed": 1,
+  "rng": "random.Random('%s/%d' % (seed, last run number))",
+  "last_run_number": 0,
+  "jobs": "each job gets rng.randrange(1, 2^30); every job is an event"
+ },
+ "config": {
+  "dir": "<campaign archive>/2026-11-20-hub28/run/hubC/hub",
+  "cpus": "8-15",
+  "cpu_allow": null,
+  "hours": 1.5,
+  "seed_list": "<campaign archive>/2026-11-20-hub28/results/hubC.list",
+  "ops": "polish,pull,join,trb",
+  "seconds": null,
+  "eps": 0.25,
+  "seed": 1,
+  "seed_only": false,
+  "near": 0.0,
+  "near_gap": 10,
+  "nursery": 0.0,
+  "gain": "value",
+  "target_mode": "tuple",
+  "join_mode": "incremental",
+  "tuple_caps": "polish=2,pull=3",
+  "cap_renew": "never",
+  "cap_renew_max": 3,
+  "policy": "priority",
+  "learned_model": null,
+  "learned_noise": 0.3,
+  "learned_k": 2.0,
+  "learned_max_att": 3,
+  "learned_a_decay": 0.7,
+  "ingest_every": 60.0,
+  "join_batch": 8,
+  "join_cpus": 1,
+  "join_share": 0.1,
+  "variants_first": false,
+  "repeat_max": null,
+  "function": null,
+  "kopt": null,
+  "kopt_first": null,
+  "kopt_first_levels": "fresh,variant,near,other",
+  "seconds_resolved": {
+   "polish": 90,
+   "pull": 90,
+   "join": 60,
+   "trb": 30,
+   "osc": 90,
+   "gen_inv3": 60,
+   "gen_bottom": 60,
+   "gen_skel": 60,
+   "linres": 30,
+   "gen_joinplus": 90,
+   "andrm": 120
+  },
+  "campaign": "hub-a0f061",
+  "code_version": "0101cae6+eccb31a0b8"
+ },
+ "starts": [
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g130-gd24-xx102-45.circ.txt",
+   "sha256": "36093db92d402c45d1e7e36c319314d8000e740cd30ca38334fc47d73d4f80f2",
+   "metrics": [
+    28,
+    4,
+    130,
+    24
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g131-gd22-xx103-52.circ.txt",
+   "sha256": "860f9aed1e0ff61b8cc2d3e7e0964380e9b40bdcfb48e9b84f9c6891dd9904e4",
+   "metrics": [
+    28,
+    4,
+    131,
+    22
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g132-gd20-xx104-56.circ.txt",
+   "sha256": "380ef7b74135169b4709c14dad13dc0223746476479f4359a0563554d6f2943a",
+   "metrics": [
+    28,
+    4,
+    132,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g133-gd19-xx105-55.circ.txt",
+   "sha256": "315492bb1d1280366685d14c80bdfe716eb3a8b02b46d913b17e30c1a75abc78",
+   "metrics": [
+    28,
+    4,
+    133,
+    19
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g135-gd18-xx107-55.circ.txt",
+   "sha256": "680ab72f5fc5bfeb97d42fed6341e19ab46362f78c6c5c8a069329138b234e32",
+   "metrics": [
+    28,
+    4,
+    135,
+    18
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g138-gd17-xx110-61.circ.txt",
+   "sha256": "1ed042909900905402f57af91263e282a6e8b42dbb86fafcf71368a2de13e757",
+   "metrics": [
+    28,
+    4,
+    138,
+    17
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad4-g174-gd14-xx146-80.circ.txt",
+   "sha256": "3ccb5376dfbd30444d5745856f8febb2438a4692f3ed7359676f773e70536562",
+   "metrics": [
+    28,
+    4,
+    174,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad5-g125-gd24-xx97-50.circ.txt",
+   "sha256": "739b79b6de4e264fb2bb4f90b8c67c49a4e69a7be38cc778129bb556a0b948ea",
+   "metrics": [
+    28,
+    5,
+    125,
+    24
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad5-g126-gd23-xx98-58.circ.txt",
+   "sha256": "7961b1bf5f6be729f91b725bddba1887e47db320715d84d9834c3faa551f97e8",
+   "metrics": [
+    28,
+    5,
+    126,
+    23
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt",
+   "sha256": "9b318613682f10fd11bcc082a80d2bb3ee7c1df18ef1127b63fcf594f272294f",
+   "metrics": [
+    28,
+    5,
+    127,
+    22
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad5-g129-gd19-xx101-56.circ.txt",
+   "sha256": "8a1944ab458e6f2ee90f12d6a973408861047b8b672f65547897141f57550ec6",
+   "metrics": [
+    28,
+    5,
+    129,
+    19
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt",
+   "sha256": "479e83779f35f225d71003236a4833c899b0333cd7b2e0d83cef85897e224c33",
+   "metrics": [
+    28,
+    5,
+    133,
+    18
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/circuits/aes-sbox/aes-sbox-a28-ad5-g136-gd17-xx108-60.circ.txt",
+   "sha256": "071e418a1138195765582b7ae6fae00935978b58519ad5443d66e271287c3858",
+   "metrics": [
+    28,
+    5,
+    136,
+    17
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g131-gd31-xx103-43.circ.txt",
+   "sha256": "d14de8e6ed6f7482629278b51139aa389ee55ee766f58f9f744f5706fad0b79c",
+   "metrics": [
+    28,
+    4,
+    131,
+    31
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g131-gd32-xx103-47.circ.txt",
+   "sha256": "9e6c8dbed90aab60b19587c9a281f7962813b8557aac6c3a7498bc454a8c48bb",
+   "metrics": [
+    28,
+    4,
+    131,
+    32
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g131-gd36-xx103-28.circ.txt",
+   "sha256": "00081b94e742619ab513b69fc5acc2f8a4b7856cd6996373a5694870d0101186",
+   "metrics": [
+    28,
+    4,
+    131,
+    36
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt",
+   "sha256": "bb6b0004c6c1c4b0019d9c83f5429ffd78b4205ec26f60fb5aac1e61e83b5bae",
+   "metrics": [
+    28,
+    4,
+    132,
+    22
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g132-gd23-xx104-27.circ.txt",
+   "sha256": "5eff7e4e244558febb35b140b0cda1dbd05c5eb8224f41d0958d09da94bd64f2",
+   "metrics": [
+    28,
+    4,
+    132,
+    23
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g134-gd20-xx106-41.circ.txt",
+   "sha256": "c00feb0f6fad2d57fdf76f69312513dfbadfcb88e9428edcb8b94f74a5e9734b",
+   "metrics": [
+    28,
+    4,
+    134,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt",
+   "sha256": "2539f43e53e7326eaddc021c734aaea429fcd4f837f4f9d8bc6eaad77e5f31f8",
+   "metrics": [
+    28,
+    4,
+    141,
+    16
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g153-gd15-xx125-29.circ.txt",
+   "sha256": "3dc10d06bc3af74a75bc95a3d9104dc93b6493b3e614b676f8dc5a1a5f581157",
+   "metrics": [
+    28,
+    4,
+    153,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g154-gd15-xx126-28.circ.txt",
+   "sha256": "4ddc9b2a12a33e67c5c323e25c9889eef5c9d9a080c284cec2e7e0cdb43e88e2",
+   "metrics": [
+    28,
+    4,
+    154,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g176-gd14-xx148-25.circ.txt",
+   "sha256": "a88e3a0047f442606fe5944335e9465d5203d58b6ff2587934d51fbf2ff81d53",
+   "metrics": [
+    28,
+    4,
+    176,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad4-g177-gd14-xx149-24.circ.txt",
+   "sha256": "7bc3b4fd1cef2bdae4bdbe12b582efdec3447e7abbe7aa224b8d0594af4d9746",
+   "metrics": [
+    28,
+    4,
+    177,
+    14
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad5-g124-gd27-xx96-26.circ.txt",
+   "sha256": "dcae5252bc89603aca763a0af914ffbea0026e4a0d59d0a3caff408e19e502ac",
+   "metrics": [
+    28,
+    5,
+    124,
+    27
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt",
+   "sha256": "e00a6c5f5c7a216904f15e78b74c292170c86bbe185543a2b6f80b04e1ed0de1",
+   "metrics": [
+    28,
+    5,
+    128,
+    20
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<checkout>/search/nonlinear/seeds/aes-sbox/aes-sbox-a28-ad5-g150-gd15-xx122-23.circ.txt",
+   "sha256": "ce8e394bf1e34f6126f071f04c9c5fa80860f5d901bc4576367ed5de21728a08",
+   "metrics": [
+    28,
+    5,
+    150,
+    15
+   ]
+  },
+  {
+   "label": "seed: admitted",
+   "path": "<research notes>/walk-2026-11-18/POL/results/control/aes-sbox-a28-ad4-g129-gd25-xx101-47.circ.txt",
+   "sha256": "83fbaed351d13fda2892cb9dfec3eb16e96e992af3b15749f3e50482d44f413e",
+   "metrics": [
+    28,
+    4,
+    129,
+    25
+   ]
+  }
+ ],
+ "budget_s": 5400.0,
+ "kernels": [
+  {
+   "path": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/bin/bfx-8eb045748b",
+   "sha256": "a2675e0516bb5b082b66e561d5edad4064e1b7f05966f7b08e232c260c07cd6c",
+   "source": "<checkout>/search/nonlinear/boolflux/kernel/bfx.c",
+   "source_sha256": "e855d7f6f8a350355ed07b00770c8b51006a98ca91366bede19aedf9c341256b",
+   "command": [
+    "gcc",
+    "-O3",
+    "-march=native",
+    "-o",
+    "<campaign archive>/2026-11-20-hub28/run/hubC/hub/bin/bfx-8eb045748b",
+    "<checkout>/search/nonlinear/boolflux/kernel/bfx.c",
+    "-lm"
+   ],
+   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  }
+ ],
+ "host": {
+  "cpu_count": 20,
+  "affinity": [
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+  "python": "CPython 3.12.3",
+  "python_executable": "/usr/bin/python3"
+ },
+ "tools": {
+  "gnu_time": "/usr/bin/time",
+  "taskset": "/usr/bin/taskset",
+  "timing": "gnu-time",
+  "pinning": "taskset",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "numpy": "1.26.4",
+  "python_sat": "1.9.dev5"
+ },
+ "env": {
+  "BOOLFLUX_FUNCTION": "aes-sbox",
+  "BOOLFLUX_RUNLOG_STORE": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/runlog"
+ },
+ "interpreter": {
+  "sys_path": [
+   "<checkout>/search/nonlinear/boolflux/independent",
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear",
+   "<checkout>/search/nonlinear/boolflux/hub",
+   "<checkout>/search/nonlinear",
+   "/usr/lib/python312.zip",
+   "/usr/lib/python3.12",
+   "/usr/lib/python3.12/lib-dynload",
+   "<home>/.local/lib/python3.12/site-packages",
+   "/usr/local/lib/python3.12/dist-packages",
+   "/usr/lib/python3/dist-packages"
+  ],
+  "customize": {
+   "sitecustomize": {
+    "file": "/usr/lib/python3.12/sitecustomize.py",
+    "sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+   }
+  },
+  "env": {
+   "PYTHONDONTWRITEBYTECODE": "1",
+   "PYTHONPATH": "<checkout>/search/nonlinear",
+   "PYTHONUNBUFFERED": "1"
+  }
+ },
+ "t_start_utc": "2026-11-20T16:25:50Z",
+ "events": "events.jsonl.gz",
+ "result": {
+  "archive": 260,
+  "cells": 59,
+  "front": 29,
+  "jobs": 1234
+ },
+ "t_end_utc": "2026-11-20T17:55:52Z",
+ "wall_s": 5402.234,
+ "mono_s": 5853.861,
+ "cpu_s": 43133.055,
+ "max_rss_kb": 127660
+}

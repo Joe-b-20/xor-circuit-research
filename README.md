@@ -8,7 +8,7 @@ with AND gates for the AES S-box and its inverse (also with a direction bit), th
 that found them (XORFlux and BoolFlux), how those searches came to be, and two lower-bound proofs
 for AES MixColumns.
 
-**208 XOR circuits for 59 linear maps, 73 Boolean circuits for the AES S-box, 48 for its inverse
+**208 XOR circuits for 59 linear maps, 77 Boolean circuits for the AES S-box, 48 for its inverse
 and 31 for the S-box with a direction bit.** A circuit
 is written **G@D**: G two-input gates, with every output at depth at most D (inputs are at depth
 0). For the S-box, G counts every gate (AND, XOR, XNOR, NOT) and the number of AND gates and the
@@ -38,7 +38,7 @@ the same gate depth. NIST's circuits are those of its
 | JPST17 8×8 MDS over GF(2⁸), inverse | **493@11** | 528@11 |
 | KLSW17 8×8 MDS over GF(2⁸) | **347@6**, **321@10** | 364@11 |
 | KLSW17 4×4 MDS over GF(2⁸) | **64@6** | 72@7 |
-| AES S-box, 28 ANDs, AND depth 4 | **174@14**, **132@20**, **131@22** | 176@14, 134@20, 132@22 |
+| AES S-box, 28 ANDs, AND depth 4 | **174@14**, **132@20**, **131@21**, **129@25** | 176@14, 134@20, 132@22 |
 | AES S-box, 32 ANDs, AND depth 4 | **114@19**, **111@25** | 117@19 |
 | AES S-box, 32 ANDs, AND depth 5 | **108@19**, **105@24** | 109@20, 107@22 |
 | AES S-box, 33 ANDs, AND depth 4 | **123@14**, **115@15**, **107@20** | 125@14, 116@15, 108@20 |
@@ -64,7 +64,7 @@ For 46 of the 53 maps taken from NIST's repository, we have a circuit with fewer
 NIST's at the same or a lower depth; on the other maps NIST is ahead at some depths. Our
 InvMixColumns 118@5 is at the lowest depth possible for InvMixColumns, whose heaviest row has
 19 ones. Our MixColumns 97@3 and 88@5 equal NIST's. Against NIST's 104 forward AES S-box circuits, each of our
-73 S-box circuits is a new point, and 23 of NIST's 33 Pareto points are dominated by one of ours
+77 S-box circuits is a new point, and 23 of NIST's 33 Pareto points are dominated by one of ours
 (as good in all four metrics and better in at least one); at the other 10 we have only circuits
 equal to NIST's or none better, which are not listed. Against NIST's 91 inverse S-box circuits, each of our 48
 inverse circuits is a new point, and 22 of NIST's 33 inverse Pareto points are dominated by one of

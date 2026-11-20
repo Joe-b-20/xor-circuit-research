@@ -97,6 +97,7 @@ Boolean circuits:
 | `hub-lineage.json.gz`, `hub-events.jsonl.gz`, `conjpull.log.gz`, `conj-job.json.gz` | hub runs of the inverse S-box and of 2026-11-16/17, and the first inverse run's conjugation jobs ([below](#aes-inverse-s-box)) |
 | `selbuild-result.json`, `selbuild.circ.txt`, `chain-<k>-polish/`, `*.py`, `*.sh` | direction-select builds: the build's record and circuit, and the kernel polishes between the build and the circuit; the driver scripts of the run's folder, where the run used one |
 | `record/`, `job/`, `transport/`, `job-record.json`, `collected.json`, `SOURCE` | runs at `4170c41`: the campaign's own record of the circuit (its found folder), the hub or operator job's folder and record, the transport run before the staged pulls, where the campaign collected the circuit from |
+| `scheduler-run.json`, `hub-seed-list.txt`, `hub-export.json`, `export.circ.txt`, `run-best.circ.txt` | runs at `0101cae`: the hub scheduler's run record and its seed list, the campaign's export of the hub's front and the exported file this circuit was taken from; the result file of a `cli.py run` |
 | `code.diff.gz`, `chain-<k>-<op>/` | a run of uncommitted code: the diff of its code tree against the base commit; a run whose start came from earlier runs: their records, one folder each ([below](#aes-inverse-s-box)) |
 
 `found.json` lists the files of each circuit. Paths in them are rewritten: `<checkout>` is the
@@ -108,7 +109,7 @@ was not: most BoolFlux runs were time-budgeted and are not bit-reproducible.
 
 ## Circuits
 
-208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128); and 73 circuits for the [AES S-box](#aes-s-box), 48 for the [AES inverse S-box](#aes-inverse-s-box) and 31 for the [S-box with direction select](#aes-s-box-with-direction-select), at the top of the AES section. Sizes are inputs × outputs; notes are [below the tables](#notes).
+208 circuits for 59 maps, grouped as in NIST's [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits): [AES](#aes) · [16×16](#1616) · [32×32](#3232) · [64×64](#6464) · [128×128](#128128); and 77 circuits for the [AES S-box](#aes-s-box), 48 for the [AES inverse S-box](#aes-inverse-s-box) and 31 for the [S-box with direction select](#aes-s-box-with-direction-select), at the top of the AES section. Sizes are inputs × outputs; notes are [below the tables](#notes).
 
 ## AES
 
@@ -122,7 +123,9 @@ X = #XOR + #XNOR, Y = #XNOR.
 
 Which circuits are here: every circuit of ours for which no NIST circuit of the same function has
 A, AD, G and GD all at most ours, one per (A, AD, G, GD), and none that another of ours matches
-or beats. We compared with all 104 forward S-box circuits of NIST's repository at commit
+or beats, except 3 that [hardware/](../hardware/README.md) benchmarks by path, kept for now and
+marked *dominated* in the table: 28/4/131/22 (by 28/4/131/21), 28/5/127/22 (by 28/5/127/21), 28/5/136/17 (by 28/5/135/17).
+We compared with all 104 forward S-box circuits of NIST's repository at commit
 `3d807741` (its folders `aes-sbox/`, `sbox/` and `old-2020/`, mirrored in
 [search/nonlinear/seeds/](../search/nonlinear/seeds/)). Every AES S-box circuit on NIST's
 [list of circuits](https://csrc.nist.gov/projects/circuit-complexity/list-of-circuits) (page
@@ -141,8 +144,10 @@ BoolFlux's runs on them found nothing better than the published circuits
 
 | A | AD | G | GD | Found by | NIST | Logs |
 |---:|---:|---:|---:|---|---:|---|
+| 28 | 4 | [129](aes-sbox/aes-sbox-a28-ad4-g129-gd25-xx101-47.circ.txt) | 25 | [gate kernel @ 0101cae](https://github.com/Joe-b-20/xor-circuit-research/blob/0101cae66886135672a6cf5c59104f8784e39a9b/search/nonlinear/boolflux/cli.py) | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g129-gd25-xx101-47/) |
 | 28 | 4 | [130](aes-sbox/aes-sbox-a28-ad4-g130-gd24-xx102-45.circ.txt) | 24 | [gate kernel @ 924b4c0](https://github.com/Joe-b-20/xor-circuit-research/blob/924b4c0f7f1fc1bd2e6ca4adbe9974d42468d60f/nonlinear/boolflux/strategies/T1/t1run.py) | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g130-gd24-xx102-45/) |
-| 28 | 4 | [131](aes-sbox/aes-sbox-a28-ad4-g131-gd22-xx103-52.circ.txt) | 22 | [gate kernel @ d961083](https://github.com/Joe-b-20/xor-circuit-research/tree/d961083c97330ea269d4f86fb0d55618cec72c32/nonlinear/boolflux) | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g131-gd22-xx103-52/) |
+| 28 | 4 | [131](aes-sbox/aes-sbox-a28-ad4-g131-gd21-xx103-42.circ.txt) | 21 | [depth pull (hub) @ 0101cae](https://github.com/Joe-b-20/xor-circuit-research/blob/0101cae66886135672a6cf5c59104f8784e39a9b/search/nonlinear/boolflux/hub/op_pull.py) (re-find) | [134](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g134-gd20-xx106-41.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g131-gd21-xx103-42/) |
+| 28 | 4 | [131](aes-sbox/aes-sbox-a28-ad4-g131-gd22-xx103-52.circ.txt) | 22 | [gate kernel @ d961083](https://github.com/Joe-b-20/xor-circuit-research/tree/d961083c97330ea269d4f86fb0d55618cec72c32/nonlinear/boolflux); *dominated* by our [28/4/131/21](aes-sbox/aes-sbox-a28-ad4-g131-gd21-xx103-42.circ.txt), kept for [hardware/](../hardware/README.md) | [132](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g132-gd22-xx104-40.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g131-gd22-xx103-52/) |
 | 28 | 4 | [132](aes-sbox/aes-sbox-a28-ad4-g132-gd20-xx104-56.circ.txt) | 20 | [gate kernel @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/strategies/T1/t1run.py) | [134](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g134-gd20-xx106-41.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g132-gd20-xx104-56/) |
 | 28 | 4 | [133](aes-sbox/aes-sbox-a28-ad4-g133-gd19-xx105-55.circ.txt) | 19 | [gate kernel @ f9fe6f7](https://github.com/Joe-b-20/xor-circuit-research/tree/f9fe6f7db5b57ec8d3802ac18fbca2905486bde0/nonlinear/boolflux) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g133-gd19-xx105-55/) |
 | 28 | 4 | [135](aes-sbox/aes-sbox-a28-ad4-g135-gd18-xx107-55.circ.txt) | 18 | [gate kernel @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/strategies/E/low.sh) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g135-gd18-xx107-55/) |
@@ -150,10 +155,12 @@ BoolFlux's runs on them found nothing better than the published circuits
 | 28 | 4 | [174](aes-sbox/aes-sbox-a28-ad4-g174-gd14-xx146-80.circ.txt) | 14 | [staged pull @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/campaigns/targets/ops/conjpull.py) (re-find) | [176](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g176-gd14-xx148-25.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad4-g174-gd14-xx146-80/) |
 | 28 | 5 | [125](aes-sbox/aes-sbox-a28-ad5-g125-gd24-xx97-50.circ.txt) | 24 | [staged pull @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/campaigns/targets/ops/conjpull.py) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g125-gd24-xx97-50/) |
 | 28 | 5 | [126](aes-sbox/aes-sbox-a28-ad5-g126-gd23-xx98-58.circ.txt) | 23 | [staged pull @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/campaigns/targets/ops/conjpull.py) (re-find) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g126-gd23-xx98-58/) |
-| 28 | 5 | [127](aes-sbox/aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt) | 22 | [skeleton kick (hub) @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/hub/ops/gen_skel.py) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g127-gd22-xx99-48/) |
+| 28 | 5 | [127](aes-sbox/aes-sbox-a28-ad5-g127-gd21-xx99-59.circ.txt) | 21 | [region rebuild (hub) @ 0101cae](https://github.com/Joe-b-20/xor-circuit-research/blob/0101cae66886135672a6cf5c59104f8784e39a9b/search/nonlinear/boolflux/hub/op_trb.py) (re-find) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g127-gd21-xx99-59/) |
+| 28 | 5 | [127](aes-sbox/aes-sbox-a28-ad5-g127-gd22-xx99-48.circ.txt) | 22 | [skeleton kick (hub) @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/hub/ops/gen_skel.py); *dominated* by our [28/5/127/21](aes-sbox/aes-sbox-a28-ad5-g127-gd21-xx99-59.circ.txt), kept for [hardware/](../hardware/README.md) | [128](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad5-g128-gd20-xx100-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g127-gd22-xx99-48/) |
 | 28 | 5 | [129](aes-sbox/aes-sbox-a28-ad5-g129-gd19-xx101-56.circ.txt) | 19 | [SAT LNS @ e657298](https://github.com/Joe-b-20/xor-circuit-research/blob/e6572989734e1106785c89c6e6d99b01ae681402/nonlinear/boolflux/strategies/P1/unionsat2.py) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g129-gd19-xx101-56/) |
 | 28 | 5 | [133](aes-sbox/aes-sbox-a28-ad5-g133-gd18-xx105-51.circ.txt) | 18 | [depth pull (hub) @ 97abda7](https://github.com/Joe-b-20/xor-circuit-research/blob/97abda77475b990ee0df77957807dfd718cb3c17/nonlinear/boolflux/hub/op_pull.py) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g133-gd18-xx105-51/) |
-| 28 | 5 | [136](aes-sbox/aes-sbox-a28-ad5-g136-gd17-xx108-60.circ.txt) | 17 | [depth pull @ f9fe6f7](https://github.com/Joe-b-20/xor-circuit-research/tree/f9fe6f7db5b57ec8d3802ac18fbca2905486bde0/nonlinear/boolflux) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g136-gd17-xx108-60/) |
+| 28 | 5 | [135](aes-sbox/aes-sbox-a28-ad5-g135-gd17-xx107-52.circ.txt) | 17 | [region rebuild (hub) @ 0101cae](https://github.com/Joe-b-20/xor-circuit-research/blob/0101cae66886135672a6cf5c59104f8784e39a9b/search/nonlinear/boolflux/hub/op_trb.py) (re-find) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g135-gd17-xx107-52/) |
+| 28 | 5 | [136](aes-sbox/aes-sbox-a28-ad5-g136-gd17-xx108-60.circ.txt) | 17 | [depth pull @ f9fe6f7](https://github.com/Joe-b-20/xor-circuit-research/tree/f9fe6f7db5b57ec8d3802ac18fbca2905486bde0/nonlinear/boolflux); *dominated* by our [28/5/135/17](aes-sbox/aes-sbox-a28-ad5-g135-gd17-xx107-52.circ.txt), kept for [hardware/](../hardware/README.md) | [141](https://github.com/usnistgov/Circuits/blob/3d807741f937d29d3bef4f32f142ccda0cda9070/data/slp/aes/aes-sbox/aes-sbox-a28-ad4-g141-gd16-xx113-27.circ.txt) | [logs](aes-sbox/logs/aes-sbox-a28-ad5-g136-gd17-xx108-60/) |
 
 #### 29 ≤ #AND ≤ 31
 
@@ -251,7 +258,7 @@ rebuilt with one AND fewer, then a polish and a pull; *SAT LNS*, the span-pooled
 exchanged within their span, then the kernel. "(hub)": the operator ran in the
 [hub](../search/nonlinear/HOW-IT-WORKS.md#the-hub), the shared archive that schedules the
 operators. Each `found.json` names the start: 5 runs started from a NIST circuit and 1 join had
-a NIST parent; 60 runs started from circuits of ours (in `logs/`), most of them descended from
+a NIST parent; 64 runs started from circuits of ours (in `logs/`), most of them descended from
 NIST's; for 7 the start was an intermediate circuit the run did not keep. Several staged pulls
 started from circuits that descend from a conjugate made in an earlier job; `found.json`
 (`lineage_note`) says which. "(re-find)": an earlier job had already found a circuit with the same
@@ -270,6 +277,15 @@ the commit file by file (and the run's `sources_sha256` recomputed), or the kern
 from the commit and compared byte for byte, or, for the runs at `4170c41` (frozen copies of
 that commit), the copy's `sources_sha256` compared with the commit's. Where the run's code was
 uncommitted, its diff against `08012e1` is `code.diff.gz` in the logs.
+
+The four circuits found on 2026-11-18 and 11-20 ran a clean checkout of `0101cae`: each run
+recorded that commit and its `sources_sha256`, which equals the commit's, and the kernel sources
+equal the commit's (`found.json`, `code`). The 28/4/129/25 is a kernel polish of the AND skeleton of
+our 28/4/130/24, re-synthesised into a circuit by a script of the research notes that is not
+published (its output, the run's start, is `start.circ.txt`). The other three come from one hub run
+(1.5 h on 8 CPUs) seeded with our 28-AND circuits, NIST's and the 28/4/129/25; each is a hub job's
+re-find of an (A, AD, G, GD) the same hub had reached earlier, and `found.json` (`first_find`)
+names the earlier circuits.
 
 ### AES inverse S-box
 

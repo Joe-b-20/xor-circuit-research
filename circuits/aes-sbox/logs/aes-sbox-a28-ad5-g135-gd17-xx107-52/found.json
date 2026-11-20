@@ -1,0 +1,238 @@
+{
+ "circuit": "aes-sbox-a28-ad5-g135-gd17-xx107-52.circ.txt",
+ "function": "AES S-box, forward (FIPS 197)",
+ "tuple_A_AD_G_GD": [
+  28,
+  5,
+  135,
+  17
+ ],
+ "found_by": "BoolFlux",
+ "method": "region rebuild",
+ "method_description": "timing-aware rebuild of one XOR region, then the gate kernel",
+ "hub": true,
+ "start": {
+  "kind": "our circuit",
+  "function": "aes-sbox",
+  "tuple_A_AD_G_GD": [
+   28,
+   5,
+   135,
+   17
+  ],
+  "file": "start.circ.txt",
+  "circuit_name": "aes-sbox-a28-ad5-g135-gd17-xx107-56",
+  "source": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/3c171a740074.bfx",
+  "source_sha256": "d934171627b15cf721977b11d8fa097aa36f47284b5bca943f26fc88a7a2b243",
+  "note": "hub circuit 3c171a740074 (polish, hub-a0f061.r00034-polish) of the control hub"
+ },
+ "chain_root": "hub seed 9f1fd375e050: our published aes-sbox-a28-ad5-g136-gd17-xx108-60",
+ "lineage": [
+  "3828d437e1dc trb 28/5/135/17 <- 3c171a740074 (hub-a0f061.r01094-trb, 17:47:58 UTC)",
+  "3c171a740074 polish 28/5/135/17 <- 9f1fd375e050 (hub-a0f061.r00034-polish, 16:30:22 UTC)",
+  "9f1fd375e050 seed 28/5/136/17: our published aes-sbox-a28-ad5-g136-gd17-xx108-60"
+ ],
+ "parameters": {
+  "nursery": false,
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 30.0,
+  "scheduler_version": "0101cae6+eccb31a0b8",
+  "hub": {
+   "scheduler_command": "python3 <checkout>/search/nonlinear/boolflux/hub/scheduler.py --dir <campaign archive>/2026-11-20-hub28/run/hubC/hub --cpus 8-15 --hours 1.5 --seed-list <campaign archive>/2026-11-20-hub28/results/hubC.list --ops polish,pull,join,trb --seed 1 --near-gap 10",
+   "ops": "polish,pull,join,trb",
+   "seed": 1,
+   "near_gap": 10,
+   "hours": 1.5,
+   "cpus": "8-15 (8 CPUs)",
+   "started_utc": "2026-11-20T16:25:50Z",
+   "seeds": "28 circuits (hub-seed-list.txt)"
+  },
+  "job_op_info": {
+   "reps": 20328,
+   "rebuild_errors": {},
+   "by_region": {
+    "bottom/-0": {
+     "built: worse G, not placed": 4116
+    },
+    "mid/-0": {
+     "built: worse G, not placed": 3017,
+     "built: would_place": 1014
+    },
+    "random/-0": {
+     "built: worse G, not placed": 4267,
+     "built: would_place": 2017,
+     "skip: region < 2 gates": 1820
+    },
+    "top/-0": {
+     "built: worse G, not placed": 4077
+    }
+   },
+   "dG": {
+    "+6": 10541,
+    "+0": 3031,
+    "+1": 1402,
+    "+5": 1187,
+    "+2": 1117,
+    "+3": 901,
+    "+4": 329
+   },
+   "dGD": {
+    "+0": 18508
+   },
+   "reps_per_s": 677.6,
+   "filter": null,
+   "archive_loaded": {
+    "records": 234,
+    "cells": 58,
+    "front": 28,
+    "max_t_admit": 1795196736.4006984
+   }
+  }
+ },
+ "seed": 798954231,
+ "found_utc": "2026-11-20T17:47:58Z",
+ "found_utc_source": "hub archive admission time",
+ "time_to_result_s": {
+  "wall_s": 30.04,
+  "cpu_s": 29.97
+ },
+ "first_find": {
+  "first": false,
+  "evidence": "the archives of the two hubs of this campaign (every circuit admitted, with its admission time)",
+  "earlier_finds_same_tuple": [
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/3c171a740074.bfx",
+    "found_utc": "2026-11-20T16:30:22Z",
+    "note": "control hub 3c171a740074 (polish, hub-a0f061.r00034-polish), parents 9f1fd375e050"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/47d0a72f87af.bfx",
+    "found_utc": "2026-11-20T17:47:58Z",
+    "note": "control hub 47d0a72f87af (trb, hub-a0f061.r01094-trb), parents 3c171a740074"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/archive/45558bbedb7e.bfx",
+    "found_utc": "2026-11-20T17:47:58Z",
+    "note": "control hub 45558bbedb7e (trb, hub-a0f061.r01094-trb), parents 3c171a740074"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubF/hub/archive/3c171a740074.bfx",
+    "found_utc": "2026-11-20T16:30:25Z",
+    "note": "parallel (fed) hub 3c171a740074 (polish, hub-a8cf68.r00034-polish), parents 9f1fd375e050"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubF/hub/archive/11f666733e76.bfx",
+    "found_utc": "2026-11-20T16:33:26Z",
+    "note": "parallel (fed) hub 11f666733e76 (pull, hub-a8cf68.r00058-pull), parents 3c171a740074"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubF/hub/archive/3779abf60a4b.bfx",
+    "found_utc": "2026-11-20T17:19:53Z",
+    "note": "parallel (fed) hub 3779abf60a4b (trb, hub-a8cf68.r00587-trb), parents 11f666733e76"
+   },
+   {
+    "file": "<campaign archive>/2026-11-20-hub28/run/hubF/hub/archive/3441ad925a00.bfx",
+    "found_utc": "2026-11-20T17:19:53Z",
+    "note": "parallel (fed) hub 3441ad925a00 (trb, hub-a8cf68.r00587-trb), parents 11f666733e76"
+   }
+  ],
+  "later_finds_same_tuple": [],
+  "why_this_one": "the circuit the campaign exported and verified (results/hubC-final/), published as named; the earlier circuits with the same (A, AD, G, GD) are other circuits of the campaign's hubs (listed above), not published"
+ },
+ "campaign": {
+  "folder": "<campaign archive>/2026-11-20-hub28",
+  "what": "two BoolFlux hubs of 1.5 h on 8 CPUs each (scheduler.py --seed 1 --near-gap 10, operators polish, pull, join, region rebuild), 2026-11-20 16:25-17:56 UTC; this circuit is from the control hub, seeded with the 13 published 28-AND circuits, NIST's 14 28-AND circuits and our 28/4/129/25"
+ },
+ "code": {
+  "commit_linked": "0101cae",
+  "commit_linked_full": "0101cae66886135672a6cf5c59104f8784e39a9b",
+  "files": [
+   "search/nonlinear/boolflux/hub/op_trb.py",
+   "search/nonlinear/boolflux/hub/scheduler.py",
+   "search/nonlinear/boolflux/kernel/bfx.c"
+  ],
+  "run_tree": "<checkout> (the repository at 0101cae6, clean: run.json git.dirty false)",
+  "base_commit": "0101cae",
+  "uncommitted_changes_at_run": false,
+  "run_code_identical_to_commit": true,
+  "note": "the run's recorded sources_sha256 (4f2e454144c7...) equals 0101cae6's package (and 057fcfc6's: the package is unchanged since); the hub job ran search/nonlinear/boolflux/hub/op_trb.py of that checkout (script_sha ac616a6e78); scheduler and job code_version 0101cae6+eccb31a0b8",
+  "sources_sha256_at_run": "4f2e454144c7f9514b8df5b30991bd643020f9d8d06e86af8b646c6a33ea1a95",
+  "git_at_run": {
+   "commit": "0101cae66886135672a6cf5c59104f8784e39a9b",
+   "branch": "pub-2026-11-17",
+   "dirty": false
+  },
+  "kernels_at_run": []
+ },
+ "reproducibility": {
+  "class": "one-off",
+  "text": "one-off: a time-budgeted run (not bit-reproducible); not re-run. The exact command, seed, code and the run's own logs for this circuit are here"
+ },
+ "command": "python3 <checkout>/search/nonlinear/boolflux/hub/op_trb.py --archive <campaign archive>/2026-11-20-hub28/run/hubC/hub --in 3c171a740074 --seed 798954231 --seconds 30 --out <campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01094-trb",
+ "environment": {
+  "cwd": "<campaign archive>/2026-11-20-hub28/run/hubC",
+  "BOOLFLUX_FUNCTION": "aes-sbox",
+  "BOOLFLUX_RUNLOG_STORE": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/runlog"
+ },
+ "paths": {
+  "<campaign archive>": "the campaign archive of these runs (not published); the run folders are under it",
+  "<research notes>": "the research notes of the campaign (not published); a run's result file was kept there",
+  "<checkout>": "the working checkout of this repository the run used (at the commit named in code, clean); NIST seeds and published circuits were read from it",
+  "<home>": "the home folder of the machine that ran the search"
+ },
+ "record": {
+  "where": "campaign archive (not published): <campaign archive>/2026-11-20-hub28/results/hubC-final/aes-sbox-a28-ad5-g135-gd17-xx107-52-3828d437e1dc.circ.txt",
+  "sha256": "626f7d34c78c7fcb55fffdd8af2b7ae7671cd06af8d145109c83954e2b8ae7f2",
+  "note": "the circuit as first recorded; this file has the same gates up to wire names and gate order"
+ },
+ "run_logs": [
+  "chain-1-polish/circuit.json",
+  "chain-1-polish/job/best.bfx",
+  "chain-1-polish/job/events.jsonl.gz",
+  "chain-1-polish/job/kernel.cfg",
+  "chain-1-polish/job/kernel.log.gz",
+  "chain-1-polish/job/record.json",
+  "chain-1-polish/job/run.json",
+  "chain-1-polish/job/start.bfx",
+  "chain-1-polish/run.json",
+  "circuit.json",
+  "export.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-export.json",
+  "hub-lineage.json.gz",
+  "hub-seed-list.txt",
+  "job-record.json",
+  "job/events.jsonl.gz",
+  "job/record.json",
+  "job/run.json",
+  "run.json",
+  "scheduler-run.json"
+ ],
+ "logs": [
+  "found.json",
+  "verification.json",
+  "start.circ.txt",
+  "chain-1-polish/circuit.json",
+  "chain-1-polish/job/best.bfx",
+  "chain-1-polish/job/events.jsonl.gz",
+  "chain-1-polish/job/kernel.cfg",
+  "chain-1-polish/job/kernel.log.gz",
+  "chain-1-polish/job/record.json",
+  "chain-1-polish/job/run.json",
+  "chain-1-polish/job/start.bfx",
+  "chain-1-polish/run.json",
+  "circuit.json",
+  "export.circ.txt",
+  "hub-events.jsonl.gz",
+  "hub-export.json",
+  "hub-lineage.json.gz",
+  "hub-seed-list.txt",
+  "job-record.json",
+  "job/events.jsonl.gz",
+  "job/record.json",
+  "job/run.json",
+  "run.json",
+  "scheduler-run.json"
+ ]
+}

@@ -1,0 +1,143 @@
+{
+ "operator": "trb",
+ "inputs": [
+  "3c171a740074"
+ ],
+ "caps": null,
+ "objective": "a,ad,cost,gd",
+ "seed": 798954231,
+ "seconds": 30.0,
+ "wall_s": 30.04,
+ "cpu_s": 29.97,
+ "candidates": 35,
+ "cand_ids": [
+  "47d0a72f87af",
+  "45558bbedb7e",
+  "3828d437e1dc",
+  "2895aaa2b999",
+  "eaab64584e0a",
+  "ccb621f2825c",
+  "87d60d49dd21",
+  "78a88c96ff49",
+  "5aa976b11751",
+  "abd50bbc1019",
+  "19bfb5a8233b",
+  "acc9120b458e",
+  "a63fdd485be4",
+  "30ba53ae7843",
+  "63802a964945",
+  "34fd52fb172a",
+  "bf1e3c804a6c",
+  "0acdb285a65c",
+  "818792078b51",
+  "15c754e3856e",
+  "f6414d64e80c",
+  "6455c390943e",
+  "a2aa75e325c9",
+  "34b6bebfe4a8",
+  "8d3a0da36735",
+  "08e149c4c441",
+  "95ceabd86588",
+  "21710791f841",
+  "00b4c6850d06",
+  "faf653b63ced",
+  "1a7553799a37",
+  "8e323462088a",
+  "14e9ffb575ea",
+  "38fb611bc100",
+  "20d1ce8881e7"
+ ],
+ "code_version": "0101cae6+eccb31a0b8",
+ "info": {
+  "reps": 20328,
+  "rebuild_errors": {},
+  "by_region": {
+   "bottom/-0": {
+    "built: worse G, not placed": 4116
+   },
+   "mid/-0": {
+    "built: worse G, not placed": 3017,
+    "built: would_place": 1014
+   },
+   "random/-0": {
+    "built: worse G, not placed": 4267,
+    "built: would_place": 2017,
+    "skip: region < 2 gates": 1820
+   },
+   "top/-0": {
+    "built: worse G, not placed": 4077
+   }
+  },
+  "dG": {
+   "+6": 10541,
+   "+0": 3031,
+   "+1": 1402,
+   "+5": 1187,
+   "+2": 1117,
+   "+3": 901,
+   "+4": 329
+  },
+  "dGD": {
+   "+0": 18508
+  },
+  "reps_per_s": 677.6,
+  "filter": null,
+  "archive_loaded": {
+   "records": 234,
+   "cells": 58,
+   "front": 28,
+   "max_t_admit": 1795196736.4006984
+  }
+ },
+ "function": "aes-sbox",
+ "run": {
+  "run_record": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01094-trb/run.json",
+  "kind": "hub.op.trb",
+  "command": "python3 <checkout>/search/nonlinear/boolflux/hub/op_trb.py --archive <campaign archive>/2026-11-20-hub28/run/hubC/hub --in 3c171a740074 --seed 798954231 --seconds 30 --out <campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01094-trb",
+  "argv": [
+   "/usr/bin/python3",
+   "<checkout>/search/nonlinear/boolflux/hub/op_trb.py",
+   "--archive",
+   "<campaign archive>/2026-11-20-hub28/run/hubC/hub",
+   "--in",
+   "3c171a740074",
+   "--seed",
+   "798954231",
+   "--seconds",
+   "30",
+   "--out",
+   "<campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01094-trb"
+  ],
+  "cwd": "<campaign archive>/2026-11-20-hub28/run/hubC",
+  "git": {
+   "commit": "0101cae66886135672a6cf5c59104f8784e39a9b",
+   "dirty": false,
+   "diff": null,
+   "diff_sha256": null
+  },
+  "sources_sha256": "4f2e454144c7f9514b8df5b30991bd643020f9d8d06e86af8b646c6a33ea1a95",
+  "seeds": {
+   "seed": 798954231,
+   "rng": "random.Random(seed): pull cap choice, join partner order, trb regions",
+   "kernel_seed": null
+  },
+  "function": "aes-sbox",
+  "kernels": [],
+  "host": {
+   "cpu_count": 20,
+   "os": "Linux 6.6.114.1-microsoft-standard-WSL2 x86_64",
+   "python": "CPython 3.12.3"
+  }
+ },
+ "timing": {
+  "mono_main": 540098.7591,
+  "mono_t0": 540098.8841,
+  "mono_end": 540131.4369,
+  "setup_s": 0.125,
+  "op_s": 32.553,
+  "proc_start_to_main_s": 0.11,
+  "archive_load_s": 0.013,
+  "kernel_s": 0.0,
+  "kernel_calls": 0
+ }
+}

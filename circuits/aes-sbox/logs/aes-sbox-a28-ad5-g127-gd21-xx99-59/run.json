@@ -1,0 +1,451 @@
+{
+ "run_id": "hub-a0f061.r01061-trb",
+ "campaign": "hub-a0f061",
+ "operator": "trb",
+ "choice": "other",
+ "target": "e8630069de26",
+ "target_metrics": [
+  28,
+  5,
+  127,
+  21
+ ],
+ "target_class": "A<=31",
+ "seed": 574193522,
+ "cpu": 13,
+ "command": [
+  "taskset",
+  "-c",
+  "13",
+  "/usr/bin/python3",
+  "<checkout>/search/nonlinear/boolflux/hub/op_trb.py",
+  "--archive",
+  "<campaign archive>/2026-11-20-hub28/run/hubC/hub",
+  "--in",
+  "e8630069de26",
+  "--seed",
+  "574193522",
+  "--seconds",
+  "30",
+  "--out",
+  "<campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01061-trb"
+ ],
+ "returncode": 0,
+ "status": "ok",
+ "record_error": null,
+ "script": "<checkout>/search/nonlinear/boolflux/hub/op_trb.py",
+ "script_sha": "ac616a6e78",
+ "code_version": "0101cae6+eccb31a0b8",
+ "scheduler_version": "0101cae6+eccb31a0b8",
+ "t_start": 1795196699.02,
+ "settings": {
+  "caps": null,
+  "objective": "a,ad,cost,gd",
+  "seconds": 30.0
+ },
+ "op_info": {
+  "reps": 23746,
+  "rebuild_errors": {},
+  "by_region": {
+   "bottom/-0": {
+    "built: worse G, not placed": 4803
+   },
+   "mid/-0": {
+    "built: archived structure": 13,
+    "built: worse G, not placed": 3613,
+    "built: would_place": 1165
+   },
+   "random/-0": {
+    "built: archived structure": 11,
+    "built: worse G, not placed": 6236,
+    "built: would_place": 1502,
+    "skip: region < 2 gates": 1752
+   },
+   "top/-0": {
+    "built: worse G, not placed": 4651
+   }
+  },
+  "dG": {
+   "+6": 12491,
+   "+0": 2691,
+   "+1": 2494,
+   "+4": 1589,
+   "+3": 1115,
+   "+2": 1047,
+   "+5": 567
+  },
+  "dGD": {
+   "+0": 21994
+  },
+  "reps_per_s": 791.5,
+  "filter": null,
+  "archive_loaded": {
+   "records": 229,
+   "cells": 58,
+   "front": 28,
+   "max_t_admit": 1795196600.1357677
+  }
+ },
+ "parents": [
+  "e8630069de26"
+ ],
+ "wall_s": 32.76,
+ "cpu_s": 30.0,
+ "applicable": null,
+ "na_reason": null,
+ "candidates": 15,
+ "admitted": 3,
+ "gain": 0.0,
+ "outcome": [
+  {
+   "cand": "cand-000.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "admitted",
+   "id": "8802ff8b7f1f",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-001.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "admitted",
+   "id": "391f5a97fc3b",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-002.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "admitted",
+   "id": "5ca6da4c3180",
+   "gain": 0.0,
+   "reason": "dominated"
+  },
+  {
+   "cand": "cand-003.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-004.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-005.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-006.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-007.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-008.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-009.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-010.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-011.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-012.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-013.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  },
+  {
+   "cand": "cand-014.bfx",
+   "metrics": [
+    28,
+    5,
+    127,
+    21
+   ],
+   "status": "not-better",
+   "id": null,
+   "gain": 0.0,
+   "reason": {
+    "cell": [
+     28,
+     5,
+     21
+    ],
+    "cell_min_G": 127,
+    "cell_members": 4,
+    "reason": "cell full at G 127"
+   }
+  }
+ ],
+ "run_record": "<campaign archive>/2026-11-20-hub28/run/hubC/hub/jobs/hub-a0f061.r01061-trb/run.json",
+ "function": "aes-sbox",
+ "pinning": "taskset",
+ "decision": {
+  "policy": "priority",
+  "levels": {
+   "join": 0,
+   "fresh": 0,
+   "repeat-under-cap": 0,
+   "variant": 0,
+   "near": 0,
+   "other": 23
+  },
+  "suspended": [],
+  "join_share": 0.0082,
+  "mode": "priority",
+  "level": "other",
+  "op": "trb",
+  "rule": "first job of the other operators per front tuple; first polish / pull of nursery minima",
+  "n_level": 23,
+  "attempts": 0,
+  "struct_attempts": 0,
+  "why": "other"
+ },
+ "admission": {
+  "counts": {
+   "admitted": 3,
+   "not-better": 12
+  },
+  "admit_s": 0.111,
+  "finish_s": 0.137,
+  "job_wall_s": 32.76,
+  "op_wall_s": 30.02,
+  "killed": null
+ },
+ "timing": {
+  "spawn_s": 0.0052,
+  "mono_wall_s": 32.763,
+  "start_to_main_s": 0.087,
+  "setup_s": 0.118,
+  "op_s": 32.534,
+  "end_to_exit_seen_s": 0.024,
+  "exit_seen_to_finish_s": 0.0,
+  "proc_cpu_s": 30.229,
+  "proc_maxrss_kb": 33400,
+  "t_exit": 1795196729.2987118
+ }
+}
